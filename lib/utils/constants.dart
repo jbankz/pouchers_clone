@@ -48,6 +48,7 @@ const double kPadding = 5;
 const double kSmallPadding = 10;
 const double kRegularPadding = 15;
 const double kMediumPadding = 20;
+const double kMicroPadding = 25;
 const double kMacroPadding = 30;
 const double kLargePadding = 40;
 const double kFullPadding = 60;
@@ -57,10 +58,11 @@ const double kWidthRatio = 0.9;
 const double kIconSize = 24;
 
 double kCalculatedWidth(Size size) => size.width * kWidthRatio;
+
 double kCalculatedMargin(Size size) => size.width * (1 - kWidthRatio) / 2;
 
 // Colors
-const Color kPrimaryColor = Color(0xff23273B);
+const Color kPrimaryColor = Color(0xff6D7A98);
 const Color kPrimaryBlack = Color(0xff0B2253);
 const Color kIconBlack = Color(0xFF3A434B);
 const Color kPrimaryWhite = Colors.white;
@@ -74,7 +76,6 @@ const Color kIconBlue = Color(0xFF1844A3);
 const Color kLightGrey = Color(0xFFC4C4C4);
 const Color kGreyFill = Color(0xFFF7F9FB);
 const Color kGreyDeepFill = Color(0xFFDEE3EB);
-const Color kGreyBackground = Color(0xFFF7F9FB);
 
 const Color kColorBackgroundColor = Color(0xffEDEDED);
 const Color kColorBackgroundLight = Color(0xffF5F4F4);
@@ -93,7 +94,7 @@ const double kBorderWidth = 1;
 const double kThickBorderWidth = 3;
 const BorderRadius kBorderRadius = BorderRadius.all(Radius.circular(kPadding));
 const BorderRadius kBorderSmallRadius =
-    BorderRadius.all(Radius.circular(kSmallPadding));
+    BorderRadius.all(Radius.circular(8));
 const BorderRadius kBorderMidRadius =
     BorderRadius.all(Radius.circular(kRegularPadding));
 const BorderRadius kFullBorderRadius = BorderRadius.all(Radius.circular(100));
@@ -125,12 +126,14 @@ BoxShadow kBoxShadow(Color color) => BoxShadow(
       blurRadius: 7,
       offset: Offset(0, 2), // changes position of shadow
     );
+
 BoxShadow kBoxShadowMid(Color color) => BoxShadow(
       color: color,
       spreadRadius: 2,
       blurRadius: 4,
       offset: Offset(0, 5), // changes position of shadow
     );
+
 BoxShadow kBoxShadowCondensed(Color color) => BoxShadow(
       color: color,
       spreadRadius: 1,
@@ -140,8 +143,9 @@ BoxShadow kBoxShadowCondensed(Color color) => BoxShadow(
 
 // Text
 TextStyle kHeadline1TextStyle = const TextStyle(
-  fontWeight: FontWeight.w800,
-  color: kPrimaryBlack,
+  fontWeight: FontWeight.bold,
+  height: 1.5,
+  color: kPrimaryColor,
   fontSize: 26,
 );
 
@@ -170,13 +174,13 @@ TextStyle kBodyText1Style = const TextStyle(
 
 TextStyle kBodyText2Style = const TextStyle(
   fontWeight: FontWeight.w400,
-  color: kPrimaryGrey,
+  color: kPrimaryColor,
   fontSize: 16,
 );
 
 TextStyle kSubtitle1Style = const TextStyle(
   fontWeight: FontWeight.w400,
-  color: kPrimaryGrey,
+  color: kPrimaryColor,
   fontSize: 14,
 );
 

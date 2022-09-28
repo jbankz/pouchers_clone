@@ -29,9 +29,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_native_splash: ^2.2.6
   shared_preferences: ^2.0.13
   another_flushbar: ^1.10.28
   permission_handler: ^9.2.0
+  pin_code_fields: ^7.3.0
   flutter_spinkit: ^5.1.0
   auto_size_text: ^3.0.0
   path_provider: ^2.0.9
@@ -56,6 +58,14 @@ flutter_icons:
   android: true
   ios: true
   remove_alpha_ios: true
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/background.png
+  android: true
+  ios: true
+  android_gravity: fill
+  ios_content_mode: scaleAspectFill
 
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -84,7 +94,6 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
-    - assets/launcher/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
