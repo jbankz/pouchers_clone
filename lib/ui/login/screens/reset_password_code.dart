@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_boilerplate/app/navigators/navigators.dart';
-import 'package:flutter_boilerplate/ui/login/screens/set_password.dart';
-import 'package:flutter_boilerplate/utils/components.dart';
-import 'package:flutter_boilerplate/utils/constants.dart';
-import 'package:flutter_boilerplate/utils/strings.dart';
-import 'package:flutter_boilerplate/utils/widgets.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/login/screens/set_password.dart';
+import 'package:pouchers/utils/constants.dart';
+import 'package:pouchers/utils/strings.dart';
+import 'package:pouchers/utils/widgets.dart';
 
 class ResetPasswordCode extends StatefulWidget {
   const ResetPasswordCode({Key? key}) : super(key: key);
@@ -36,15 +35,19 @@ class _ResetPasswordCodeState extends State<ResetPasswordCode> {
             ),
             Text(
               resetPasswordCodeSub,
-              style: textTheme.bodyText1!
-                  .copyWith(fontWeight: FontWeight.normal, height: 1.6),
+              style: textTheme.bodyText1!.copyWith(
+                fontWeight: FontWeight.normal,
+                height: 1.6,
+              ),
             ),
             SizedBox(
               height: kMacroPadding,
             ),
             Text(
               resetCode,
-              style: textTheme.subtitle1,
+              style: textTheme.headline6!.copyWith(
+                color: kPrimaryGrey,
+              ),
             ),
             SizedBox(
               height: kSmallPadding,
@@ -68,9 +71,9 @@ class _ResetPasswordCodeState extends State<ResetPasswordCode> {
                 selectedColor: kPrimaryColor,
                 inactiveColor: kTransparent,
                 activeColor: kTransparent,
-                selectedFillColor: kGreyFill,
-                activeFillColor: kGreyFill,
-                inactiveFillColor: kGreyFill,
+                selectedFillColor: kBackgroundColor,
+                activeFillColor: kBackgroundColor,
+                inactiveFillColor: kBackgroundColor,
                 borderRadius: BorderRadius.circular(3),
               ),
               appContext: context,
@@ -81,7 +84,7 @@ class _ResetPasswordCodeState extends State<ResetPasswordCode> {
               height: kMacroPadding,
             ),
             LargeButton(
-              title: nextText,
+              title: recoverPassword,
               onPressed: () {
                 pushTo(context, SetPassword());
               },

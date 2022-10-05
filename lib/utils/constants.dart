@@ -62,39 +62,37 @@ double kCalculatedWidth(Size size) => size.width * kWidthRatio;
 double kCalculatedMargin(Size size) => size.width * (1 - kWidthRatio) / 2;
 
 // Colors
-const Color kPrimaryColor = Color(0xff6D7A98);
+const Color kPrimaryTextColor = Color(0xff060628);
+const Color kSecondaryTextColor = Color(0xFF8F8E9B);
+const Color kPrimaryColor = Color(0xff6463FD);
+const Color kPrimaryGrey = Color(0xff6D7A98);
+const Color kPrimaryWhite = Colors.white;
+const Color kBackgroundColor = Color(0xFFF4F4FB);
+const Color kIconPink = Color(0xFFFF5FCD);
+const Color kPurpleColor = Color(0xff5034C4);
+const Color kColorGreen = Color(0xff00BB64);
+const Color kColorOrange = Color(0xffFF6414);
+const Color kColorBackgroundLight = Color(0xffEEEBFA);
+const Color kColorBackgroundLight100 = Color(0xffF8F9FD);
+const Color kLightPurple = Color(0xffE9E6FD);
+const Color kDarkGrey = Color(0xFF9B9BA5);
+
+
 const Color kPrimaryBlack = Color(0xff0B2253);
 const Color kIconBlack = Color(0xFF3A434B);
-const Color kPrimaryWhite = Colors.white;
-const Color kPrimaryGrey = Color(0xff6D7A98);
-const Color kPrimaryGreen = Color(0xff41DC65);
 const Color kTransparent = Colors.transparent;
-
-const Color kInnerBorderGrey = Color(0xFFE6E9F0);
-const Color kIconBlueBackground = Color(0xFFE4ECFB);
-const Color kIconBlue = Color(0xFF1844A3);
-const Color kLightGrey = Color(0xFFC4C4C4);
 const Color kGreyFill = Color(0xFFF7F9FB);
 const Color kGreyDeepFill = Color(0xFFDEE3EB);
-
-const Color kColorBackgroundColor = Color(0xffEDEDED);
-const Color kColorBackgroundLight = Color(0xffF5F4F4);
 const Color kColorRed = Color(0xFFFF5460);
 const Color kColorBackgroundRed = Color(0xffFEF2F2);
-const Color kColorBrown = Color(0xffA06262);
-const Color kColorGreen = Color(0xff1AA551);
 const Color kColorBackgroundGreen = Color(0xFFEAFBF1);
-const Color kColorOrange = Color(0xffEDA345);
-const Color kPurpleColor = Color(0xff9B8CFB);
-const Color kColorGrey = Color(0xffC4C4C4);
 const Color kColorDeepGrey = Colors.grey;
 
 // Border
 const double kBorderWidth = 1;
 const double kThickBorderWidth = 3;
 const BorderRadius kBorderRadius = BorderRadius.all(Radius.circular(kPadding));
-const BorderRadius kBorderSmallRadius =
-    BorderRadius.all(Radius.circular(8));
+const BorderRadius kBorderSmallRadius = BorderRadius.all(Radius.circular(8));
 const BorderRadius kBorderMidRadius =
     BorderRadius.all(Radius.circular(kRegularPadding));
 const BorderRadius kFullBorderRadius = BorderRadius.all(Radius.circular(100));
@@ -143,98 +141,119 @@ BoxShadow kBoxShadowCondensed(Color color) => BoxShadow(
 
 // Text
 TextStyle kHeadline1TextStyle = const TextStyle(
-  fontWeight: FontWeight.bold,
-  height: 1.5,
-  color: kPrimaryColor,
-  fontSize: 26,
+  fontWeight: FontWeight.w700,
+  fontFamily: "Altone",
+  color: kPrimaryTextColor,
+  fontSize: 24,
 );
 
 TextStyle kHeadline2TextStyle = const TextStyle(
-  fontWeight: FontWeight.w800,
+  fontWeight: FontWeight.normal,
   color: kPrimaryColor,
-  fontSize: 24,
+  fontFamily: "DMSans",
+  fontSize: 16,
 );
 TextStyle kHeadline3TextStyle = const TextStyle(
-  fontWeight: FontWeight.w700,
-  color: kPrimaryColor,
-  fontSize: 22,
+  fontWeight: FontWeight.normal,
+  color: kSecondaryTextColor,
+  fontFamily: "DMSans",
+  fontSize: 16,
 );
 
 TextStyle kHeadline4TextStyle = const TextStyle(
-  fontWeight: FontWeight.w500,
-  color: kPrimaryBlack,
-  fontSize: 17,
+  fontWeight: FontWeight.normal,
+  color: kPrimaryTextColor,
+  fontFamily: "DMSans",
+  fontSize: 14,
 );
 
 TextStyle kBodyText1Style = const TextStyle(
-  fontWeight: FontWeight.w600,
-  color: kPrimaryColor,
+  fontWeight: FontWeight.normal,
+  color: kSecondaryTextColor,
+  fontFamily: "DMSans",
   fontSize: 18,
 );
 
 TextStyle kBodyText2Style = const TextStyle(
-  fontWeight: FontWeight.w400,
-  color: kPrimaryColor,
-  fontSize: 16,
+  fontWeight: FontWeight.w500,
+  color: kPrimaryWhite,
+  fontSize: 18,
+  fontFamily: "Altone",
 );
 
 TextStyle kSubtitle1Style = const TextStyle(
-  fontWeight: FontWeight.w400,
-  color: kPrimaryColor,
-  fontSize: 14,
+  fontWeight: FontWeight.normal,
+  color: kPrimaryTextColor,
+  fontFamily: "DMSans",
+  fontSize: 18,
 );
 
 TextStyle kSubtitle2Style = const TextStyle(
-  fontWeight: FontWeight.w600,
-  color: kPrimaryGrey,
-  fontSize: 12,
+  fontWeight: FontWeight.w500,
+  color: kPrimaryColor,
+  fontFamily: "Altone",
+  fontSize: 16,
+);
+
+TextStyle kHeadline5Style = const TextStyle(
+  fontWeight: FontWeight.normal,
+  color: kSecondaryTextColor,
+  fontFamily: "Altone",
+  fontSize: 14,
+);
+TextStyle kHeadline6Style = const TextStyle(
+  fontWeight: FontWeight.w300,
+  color: kSecondaryTextColor,
+  fontFamily: "DMSans",
+  fontSize: 14,
 );
 
 ThemeData kThemeData = ThemeData.light().copyWith(
   visualDensity: VisualDensity.adaptivePlatformDensity,
   scaffoldBackgroundColor: kPrimaryWhite,
   iconTheme: const IconThemeData(size: kIconSize, color: kPrimaryColor),
-  dividerColor: kLightGrey,
+  dividerColor: kDarkGrey,
   primaryColor: kPrimaryColor,
   canvasColor: kPrimaryWhite,
   backgroundColor: kPrimaryWhite,
   textSelectionTheme: const TextSelectionThemeData(
     selectionHandleColor: kColorGreen,
     cursorColor: kPrimaryColor,
-    selectionColor: kLightGrey,
+    selectionColor: kDarkGrey,
   ),
   dialogBackgroundColor: kPrimaryBlack,
   appBarTheme: AppBarTheme(
     color: kPrimaryWhite,
     systemOverlayStyle: SystemUiOverlayStyle.light,
     elevation: 0,
-    iconTheme: const IconThemeData(size: kIconSize, color: kPrimaryColor),
+    iconTheme: const IconThemeData(size: kIconSize, color: kPrimaryGrey),
     titleTextStyle: kBodyText1Style,
   ),
   textTheme: TextTheme(
-    headline1: kHeadline1TextStyle,
-    headline2: kHeadline2TextStyle,
-    headline3: kHeadline3TextStyle,
-    headline4: kHeadline4TextStyle,
-    bodyText1: kBodyText1Style,
-    bodyText2: kBodyText2Style,
-    subtitle1: kSubtitle1Style,
-    subtitle2: kSubtitle2Style,
-  ),
+      headline1: kHeadline1TextStyle,
+      headline2: kHeadline2TextStyle,
+      headline3: kHeadline3TextStyle,
+      headline4: kHeadline4TextStyle,
+      bodyText1: kBodyText1Style,
+      bodyText2: kBodyText2Style,
+      subtitle1: kSubtitle1Style,
+      subtitle2: kSubtitle2Style,
+      headline5: kHeadline5Style,
+      headline6: kHeadline6Style),
 );
 
 ThemeData kThemeDataDark = ThemeData.dark().copyWith(
   visualDensity: VisualDensity.adaptivePlatformDensity,
   scaffoldBackgroundColor: kPrimaryBlack,
   iconTheme: const IconThemeData(size: kIconSize, color: kPrimaryWhite),
-  dividerColor: kLightGrey,
+  dividerColor: kDarkGrey,
   primaryColor: kPrimaryColor,
   canvasColor: kPrimaryWhite,
   backgroundColor: kPrimaryBlack,
   textSelectionTheme: const TextSelectionThemeData(
     selectionHandleColor: kColorGreen,
     cursorColor: kPrimaryColor,
-    selectionColor: kLightGrey,
+    selectionColor: kDarkGrey,
   ),
   dialogBackgroundColor: kPrimaryColor,
   appBarTheme: AppBarTheme(
@@ -245,13 +264,14 @@ ThemeData kThemeDataDark = ThemeData.dark().copyWith(
     titleTextStyle: kBodyText1Style.copyWith(color: kPrimaryWhite),
   ),
   textTheme: TextTheme(
-    headline1: kHeadline1TextStyle.copyWith(color: kPrimaryWhite),
-    headline2: kHeadline2TextStyle.copyWith(color: kPrimaryWhite),
-    headline3: kHeadline3TextStyle.copyWith(color: kPrimaryWhite),
-    headline4: kHeadline4TextStyle.copyWith(color: kPrimaryWhite),
-    bodyText1: kBodyText1Style.copyWith(color: kPrimaryWhite),
-    bodyText2: kBodyText2Style.copyWith(color: kPrimaryWhite),
-    subtitle1: kSubtitle1Style.copyWith(color: kPrimaryWhite),
-    subtitle2: kSubtitle2Style.copyWith(color: kPrimaryWhite),
-  ),
+      headline1: kHeadline1TextStyle.copyWith(color: kPrimaryWhite),
+      headline2: kHeadline2TextStyle.copyWith(color: kPrimaryWhite),
+      headline3: kHeadline3TextStyle.copyWith(color: kPrimaryWhite),
+      headline4: kHeadline4TextStyle.copyWith(color: kPrimaryWhite),
+      bodyText1: kBodyText1Style.copyWith(color: kPrimaryWhite),
+      bodyText2: kBodyText2Style.copyWith(color: kPrimaryWhite),
+      subtitle1: kSubtitle1Style.copyWith(color: kPrimaryWhite),
+      subtitle2: kSubtitle2Style.copyWith(color: kPrimaryWhite),
+      headline5: kHeadline5Style,
+      headline6: kHeadline6Style),
 );

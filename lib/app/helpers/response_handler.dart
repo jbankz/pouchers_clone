@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/app/helpers/session_manager.dart';
-import 'package:flutter_boilerplate/app/navigators/navigators.dart';
-import 'package:flutter_boilerplate/utils/widgets.dart';
+import 'package:pouchers/app/helpers/session_manager.dart';
+import 'package:pouchers/utils/widgets.dart';
 
 mixin ResponseHandler {
   handleExpiredToken(BuildContext context) async {

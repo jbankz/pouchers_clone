@@ -1,14 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_boilerplate/app/navigators/navigators.dart';
-import 'package:flutter_boilerplate/ui/create_account/screens/create_account.dart';
-import 'package:flutter_boilerplate/ui/login/screens/forgot_password.dart';
-import 'package:flutter_boilerplate/utils/assets_path.dart';
-import 'package:flutter_boilerplate/utils/components.dart';
-import 'package:flutter_boilerplate/utils/constants.dart';
-import 'package:flutter_boilerplate/utils/strings.dart';
-import 'package:flutter_boilerplate/utils/widgets.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/create_account/screens/create_account.dart';
+import 'package:pouchers/ui/login/screens/forgot_password.dart';
+import 'package:pouchers/ui/tab_layout/tab_layout.dart';
+import 'package:pouchers/utils/assets_path.dart';
+import 'package:pouchers/utils/components.dart';
+import 'package:pouchers/utils/constants.dart';
+import 'package:pouchers/utils/strings.dart';
+import 'package:pouchers/utils/widgets.dart';
 
 class LogInAccount extends StatefulWidget {
   const LogInAccount({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class _LogInAccountState extends State<LogInAccount> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              logIn,
+              logInPoucher,
               style: textTheme.headline1,
             ),
             SizedBox(
@@ -43,7 +44,7 @@ class _LogInAccountState extends State<LogInAccount> {
                   .copyWith(fontWeight: FontWeight.normal, height: 1.6),
             ),
             SizedBox(
-              height: kLargePadding,
+              height: 50,
             ),
             TextInputNoIcon(
               textTheme: textTheme,
@@ -76,9 +77,9 @@ class _LogInAccountState extends State<LogInAccount> {
                   child: obscure
                       ? Icon(
                           Icons.visibility_off_outlined,
-                          color: kPrimaryColor,
+                          color: kSecondaryTextColor,
                         )
-                      : Icon(Icons.visibility_outlined, color: kPrimaryColor)),
+                      : Icon(Icons.visibility_outlined, color: kSecondaryTextColor)),
             ),
             SizedBox(
               height: kSmallPadding,
@@ -91,7 +92,7 @@ class _LogInAccountState extends State<LogInAccount> {
                 alignment: Alignment.centerRight,
                 child: Text(
                   forgotPasswordText,
-                  style: textTheme.bodyText2,
+                  style: textTheme.headline2,
                   textAlign: TextAlign.right,
                 ),
               ),
@@ -101,7 +102,9 @@ class _LogInAccountState extends State<LogInAccount> {
             ),
             LargeButton(
               title: logIn,
-              onPressed: () {},
+              onPressed: () {
+                pushToAndClearStack(context, TabLayout());
+              },
             ),
             SizedBox(
               height: kMediumPadding,
@@ -110,7 +113,7 @@ class _LogInAccountState extends State<LogInAccount> {
               child: RichText(
                   text: TextSpan(
                       text: noAccount,
-                      style: textTheme.bodyText2,
+                      style: textTheme.headline6!.copyWith(fontSize: 16),
                       children: [
                     TextSpan(
                         recognizer: TapGestureRecognizer()
@@ -118,8 +121,11 @@ class _LogInAccountState extends State<LogInAccount> {
                             pushTo(context, CreateAccount());
                           },
                         text: create,
-                        style: textTheme.bodyText2!
-                            .copyWith(fontWeight: FontWeight.bold))
+                        style: textTheme.headline6!.copyWith(
+                          fontSize: 16,
+                          color: kPrimaryColor,
+                          fontWeight: FontWeight.w700,
+                        ),)
                   ])),
             ),
             SizedBox(
@@ -130,11 +136,12 @@ class _LogInAccountState extends State<LogInAccount> {
               padding: EdgeInsets.all(kRegularPadding),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: kPrimaryColor.withOpacity(0.1),
+                color: kBackgroundColor,
               ),
               child: Image.asset(
                 AssetPaths.faceId,
                 fit: BoxFit.scaleDown,
+                color: kPrimaryColor,
               ),
             )
           ],

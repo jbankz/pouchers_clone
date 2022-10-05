@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter_boilerplate/utils/logger.dart';
 import 'package:intl/intl.dart';
+import 'package:pouchers/utils/logger.dart';
 
 class Utils {
   static String handleRequestError(Exception e) {

@@ -2,26 +2,25 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_boilerplate/utils/constants.dart';
-import 'package:flutter_boilerplate/utils/strings.dart';
+import 'package:pouchers/utils/constants.dart';
+import 'package:pouchers/utils/strings.dart';
 
 class TextInputNoIcon extends StatelessWidget {
-  const TextInputNoIcon(
-      {required this.textTheme,
-      this.text,
-      this.icon,
-      this.onSaved,
-      this.onChanged,
-      this.inputType,
-      this.controller,
-      this.inputFormatters,
-      this.read = false,
-      this.validator,
-      this.widget,
-      this.textCapitalize,
-      this.obscure,
-      this.hintText,
-      this.focusNode});
+  const TextInputNoIcon({required this.textTheme,
+    this.text,
+    this.icon,
+    this.onSaved,
+    this.onChanged,
+    this.inputType,
+    this.controller,
+    this.inputFormatters,
+    this.read = false,
+    this.validator,
+    this.widget,
+    this.textCapitalize,
+    this.obscure,
+    this.hintText,
+    this.focusNode});
 
   final TextTheme textTheme;
   final String? text;
@@ -47,9 +46,9 @@ class TextInputNoIcon extends StatelessWidget {
       children: [
         widget == null
             ? Text(
-                text!,
-                style: textTheme.subtitle1,
-              )
+          text!,
+          style: textTheme.headline6,
+        )
             : widget!,
         SizedBox(
           height: kSmallPadding,
@@ -75,11 +74,10 @@ class TextInputNoIcon extends StatelessWidget {
             decoration: InputDecoration(
               filled: true,
               hintText: hintText,
-              hintStyle: textTheme.bodyText2!.copyWith(
-                color: kPrimaryColor.withOpacity(0.4),
-              ),
+              hintStyle: textTheme.headline6!.copyWith(
+                  color: kSecondaryTextColor.withOpacity(0.7), fontSize: 18),
               suffixIcon: icon,
-              fillColor: kGreyFill,
+              fillColor: kBackgroundColor,
               border: OutlineInputBorder(),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(style: BorderStyle.none),
@@ -154,7 +152,9 @@ class _CodeResendTimerState extends State<CodeResendTimer> {
 
   @override
   Widget build(BuildContext context) {
-    TextTheme textTheme = Theme.of(context).textTheme;
+    TextTheme textTheme = Theme
+        .of(context)
+        .textTheme;
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -165,19 +165,27 @@ class _CodeResendTimerState extends State<CodeResendTimer> {
             children: [
               Text(
                 noCode,
-                style: textTheme.bodyText2,
+                style: textTheme.headline3,
               ),
               Container(
                 child: refreshTime == 0
-                    ? Text(resend)
-                    : Text("$resend in ${timeCheck()}"),
+                    ? Text(resend, style: textTheme.headline6!.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: kPrimaryColor,
+                ), textAlign: TextAlign.center,)
+                    : Text(
+                  "$resend in ${timeCheck()}",
+                  style: textTheme.headline6!.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
                 padding: EdgeInsets.symmetric(
-                  horizontal: refreshTime == 0 ? kMicroPadding : kSmallPadding,
-                  vertical: kPadding,
+                  horizontal: kRegularPadding,
+                  vertical: 8 ,
                 ),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(kMediumPadding),
-                    color: kGreyFill),
+                    color: refreshTime == 0 ? kLightPurple : kBackgroundColor),
               )
             ],
           ),
@@ -189,11 +197,13 @@ class _CodeResendTimerState extends State<CodeResendTimer> {
   String timeCheck() {
     return refreshTime == 60
         ? "01:00"
-        : "${Duration(seconds: refreshTime).inSeconds.remainder(60).toString().padLeft(2, '0')}s";
+        : "${Duration(seconds: refreshTime).inSeconds.remainder(60)
+        .toString()
+        .padLeft(2, '0')}s";
   }
 }
 
-InkWell inkWell ({required Function() onTap, required Widget child}){
+InkWell inkWell({required Function() onTap, required Widget child}) {
   return InkWell(
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,

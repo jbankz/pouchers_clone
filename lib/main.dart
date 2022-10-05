@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_boilerplate/app/helpers/session_manager.dart';
-import 'package:flutter_boilerplate/ui/onboarding/onboarding.dart';
-import 'package:flutter_boilerplate/utils/constants.dart';
 import 'package:path_provider/path_provider.dart' as path;
-import 'package:flutter_boilerplate/app/helpers/service_constants.dart';
+import 'package:pouchers/app/helpers/service_constants.dart';
+import 'package:pouchers/app/helpers/session_manager.dart';
+import 'package:pouchers/ui/onboarding/onboarding.dart';
+import 'package:pouchers/utils/constants.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

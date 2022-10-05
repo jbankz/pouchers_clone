@@ -1,13 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_boilerplate/app/navigators/navigators.dart';
-import 'package:flutter_boilerplate/ui/create_account/screens/verify_account.dart';
-import 'package:flutter_boilerplate/ui/login/screens/login.dart';
-import 'package:flutter_boilerplate/utils/components.dart';
-import 'package:flutter_boilerplate/utils/constants.dart';
-import 'package:flutter_boilerplate/utils/strings.dart';
-import 'package:flutter_boilerplate/utils/widgets.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/create_account/screens/verify_account.dart';
+import 'package:pouchers/ui/login/screens/login.dart';
+import 'package:pouchers/utils/components.dart';
+import 'package:pouchers/utils/constants.dart';
+import 'package:pouchers/utils/strings.dart';
+import 'package:pouchers/utils/widgets.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({Key? key}) : super(key: key);
@@ -17,6 +17,8 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
+  bool obscure = true;
+
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -30,15 +32,7 @@ class _CreateAccountState extends State<CreateAccount> {
             style: textTheme.headline1,
           ),
           SizedBox(
-            height: kPadding,
-          ),
-          Text(
-            createAccountSub,
-            style: textTheme.bodyText1!
-                .copyWith(fontWeight: FontWeight.normal, height: 1.6),
-          ),
-          SizedBox(
-            height: kMacroPadding,
+            height: kSmallPadding,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,9 +57,6 @@ class _CreateAccountState extends State<CreateAccount> {
               ),
             ],
           ),
-          SizedBox(
-            height: kRegularPadding,
-          ),
           TextInputNoIcon(
             textTheme: textTheme,
             text: emailText,
@@ -82,16 +73,35 @@ class _CreateAccountState extends State<CreateAccount> {
           ),
           TextInputNoIcon(
             textTheme: textTheme,
-            text: passwordText,
-            hintText: enterPasswordText,
+            text: referral,
+            hintText: enterReferral,
           ),
           TextInputNoIcon(
             textTheme: textTheme,
-            text: confirmPasswordText,
+            text: passwordText,
             hintText: enterPasswordText,
+            obscure: obscure,
+            icon: InkWell(
+              onTap: () {
+                setState(() {
+                  obscure = !obscure;
+                });
+              },
+              child: obscure
+                  ? Icon(
+                      Icons.visibility_off_outlined,
+                      color: kSecondaryTextColor,
+                    )
+                  : Icon(Icons.visibility_outlined, color: kSecondaryTextColor),
+            ),
+          ),
+          Text(
+            passwordValidation,
+            style: textTheme.subtitle1!.copyWith(
+                fontSize: 16, color: kPrimaryTextColor.withOpacity(0.8)),
           ),
           SizedBox(
-            height: kRegularPadding,
+            height: kMacroPadding,
           ),
           LargeButton(
             title: createAccount,
@@ -106,16 +116,20 @@ class _CreateAccountState extends State<CreateAccount> {
             child: RichText(
                 text: TextSpan(
                     text: alreadyHaveAccount,
-                    style: textTheme.bodyText2,
+                    style: textTheme.headline6!.copyWith(fontSize: 16),
                     children: [
                   TextSpan(
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          pushTo(context, LogInAccount());
-                        },
-                      text: logIn,
-                      style: textTheme.bodyText2!
-                          .copyWith(fontWeight: FontWeight.bold))
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        pushTo(context, LogInAccount());
+                      },
+                    text: logIn,
+                    style: textTheme.headline6!.copyWith(
+                      fontSize: 16,
+                      color: kPrimaryColor,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )
                 ])),
           ),
           SizedBox(
@@ -126,17 +140,23 @@ class _CreateAccountState extends State<CreateAccount> {
                 textAlign: TextAlign.center,
                 text: TextSpan(
                     text: byCreatingAccount,
-                    style: textTheme.bodyText2!.copyWith(height: 1.8),
+                    style: textTheme.headline6!.copyWith(fontSize: 16),
                     children: [
                       TextSpan(
-                          text: " \n$termsOfUse",
-                          style: textTheme.bodyText2!
-                              .copyWith(fontWeight: FontWeight.bold)),
-                      TextSpan(text: " $andText", style: textTheme.bodyText2),
+                          text: " $termsOfUse",
+                          style:  textTheme.headline6!.copyWith(
+                            fontSize: 16,
+                            color: kPrimaryColor,
+                            fontWeight: FontWeight.w700,
+                          ),),
+                      TextSpan(text: " $andText", style: textTheme.headline6!.copyWith(fontSize: 16),),
                       TextSpan(
                           text: " $privacyPolicy",
-                          style: textTheme.bodyText2!
-                              .copyWith(fontWeight: FontWeight.bold)),
+                          style:  textTheme.headline6!.copyWith(
+                            fontSize: 16,
+                            color: kPrimaryColor,
+                            fontWeight: FontWeight.w700,
+                          ),),
                     ])),
           ),
         ],

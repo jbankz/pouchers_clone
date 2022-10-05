@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_boilerplate/utils/components.dart';
-import 'package:flutter_boilerplate/utils/constants.dart';
-import 'package:flutter_boilerplate/utils/strings.dart';
-import 'package:flutter_boilerplate/utils/widgets.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/create_account/screens/poucher_tag.dart';
+import 'package:pouchers/utils/components.dart';
+import 'package:pouchers/utils/constants.dart';
+import 'package:pouchers/utils/strings.dart';
+import 'package:pouchers/utils/widgets.dart';
 
 class VerifyAccount extends StatefulWidget {
-  
+
   const VerifyAccount({Key? key}) : super(key: key);
 
   @override
@@ -40,11 +42,10 @@ class _VerifyAccountState extends State<VerifyAccount> {
                   TextSpan(
                     text: " faith@gmail.com",
                     style: textTheme.bodyText1!
-                        .copyWith(fontWeight: FontWeight.w500, height: 1.6),
+                        .copyWith(fontWeight: FontWeight.bold),
                   )
                 ],
                 style: textTheme.bodyText1!
-                    .copyWith(fontWeight: FontWeight.normal, height: 1.6),
               ),
             ),
             SizedBox(
@@ -69,9 +70,9 @@ class _VerifyAccountState extends State<VerifyAccount> {
                 selectedColor: kPrimaryColor,
                 inactiveColor: kTransparent,
                 activeColor: kTransparent,
-                selectedFillColor: kGreyFill,
-                activeFillColor: kGreyFill,
-                inactiveFillColor: kGreyFill,
+                selectedFillColor: kBackgroundColor,
+                activeFillColor: kBackgroundColor,
+                inactiveFillColor: kBackgroundColor,
                 borderRadius: BorderRadius.circular(3),
               ),
               appContext: context,
@@ -83,7 +84,9 @@ class _VerifyAccountState extends State<VerifyAccount> {
             ),
             LargeButton(
               title: verifyCode,
-              onPressed: () {},
+              onPressed: () {
+                pushTo(context, PoucherTag());
+              },
             ),
             SizedBox(
               height: kMicroPadding,

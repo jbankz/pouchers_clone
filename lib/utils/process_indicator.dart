@@ -1,8 +1,6 @@
-import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/utils/constants.dart';
+import 'package:pouchers/utils/constants.dart';
 
 bool _isShowing = false;
 String _dialogMessage = "Loading...";

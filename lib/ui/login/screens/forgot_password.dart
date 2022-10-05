@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/app/navigators/navigators.dart';
-import 'package:flutter_boilerplate/ui/login/screens/reset_password_code.dart';
-import 'package:flutter_boilerplate/utils/components.dart';
-import 'package:flutter_boilerplate/utils/constants.dart';
-import 'package:flutter_boilerplate/utils/strings.dart';
-import 'package:flutter_boilerplate/utils/widgets.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/login/screens/reset_password_code.dart';
+import 'package:pouchers/utils/components.dart';
+import 'package:pouchers/utils/constants.dart';
+import 'package:pouchers/utils/strings.dart';
+import 'package:pouchers/utils/widgets.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           ),
           TextInputNoIcon(
             textTheme: textTheme,
-            text: emailText,
+            text: onlyEmailText,
             hintText: emailAddressText,
           ),
           SizedBox(

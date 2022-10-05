@@ -1,7 +1,7 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/utils/constants.dart';
+import 'package:pouchers/utils/constants.dart';
 
 
 /// Redesign or replace your flushbar design here
