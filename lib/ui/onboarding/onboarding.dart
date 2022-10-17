@@ -1,21 +1,27 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/create_account/screens/biometrics_page.dart';
 import 'package:pouchers/ui/create_account/screens/create_account.dart';
 import 'package:pouchers/ui/login/screens/login.dart';
 import 'package:pouchers/ui/onboarding/welcome_guest.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constants.dart';
+import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
 class OnBoardingPage extends StatefulWidget {
+  static const String routeName = "onboarding";
+
   @override
   State<OnBoardingPage> createState() => _OnBoardingPageState();
 }
 
 class _OnBoardingPageState extends State<OnBoardingPage> {
-  PageController _controller = PageController();
+  late PageController _controller = PageController();
   int _currentPage = 0;
 
   List<Widget> _pages = [
@@ -49,28 +55,28 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           text: onBoardingText4,
           subText: onBoardingSubText4,
           color: kIconPink,
-          path: AssetPaths.wifi,
+          path: AssetPaths.wifiIcon,
         ),
         OnBoardingWidget2(
           isRight: false,
           text: onBoardingText4,
           subText: onBoardingSubText7,
           color: kPurpleColor,
-          path: AssetPaths.airtime,
+          path: AssetPaths.airtimeIcon,
         ),
         OnBoardingWidget2(
           isRight: true,
           text: onBoardingText5,
           subText: onBoardingSubText5,
           color: kColorGreen,
-          path: AssetPaths.airplane,
+          path: AssetPaths.ticketIcon,
         ),
         OnBoardingWidget2(
           isRight: false,
           text: onBoardingText6,
           subText: onBoardingSubText6,
           color: kColorOrange,
-          path: AssetPaths.electricity,
+          path: AssetPaths.electricityIcon,
         ),
       ],
     ),
@@ -86,7 +92,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _animateSlider());
+    SchedulerBinding.instance.addPostFrameCallback((_) => _animateSlider());
   }
 
   @override
@@ -126,18 +132,19 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               Expanded(
                 child: Container(
                   padding: EdgeInsets.all(kMediumPadding),
-                  child: ListView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(onBoardingTitle,
                           style: textTheme.headline1!.copyWith(height: 1.4)),
-                      SizedBox(
-                        height: kPadding,
-                      ),
+                      // SizedBox(
+                      //   height: kPadding,
+                      // ),
                       Text(onBoardingSubTitle,
                           style: textTheme.bodyText1!.copyWith(height: 1.5)),
-                      SizedBox(
-                        height: kFullPadding,
-                      ),
+                      // SizedBox(
+                      //   height: kFullPadding,
+                      // ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -147,7 +154,12 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                               outlineButton: true,
                               whiteButton: true,
                               onPressed: () {
-                                pushTo(context, LogInAccount());
+                                pushTo(
+                                  context,
+                                  LogInAccount(),
+                                  settings: RouteSettings(
+                                      name: LogInAccount.routeName),
+                                );
                               },
                             ),
                           ),
@@ -164,9 +176,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: kMicroPadding,
-                      ),
+                      // SizedBox(
+                      //   height: kMicroPadding,
+                      // ),
                       inkWell(
                         onTap: () {
                           pushTo(
@@ -217,9 +229,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   }
 
   void _animateSlider() {
+    int nextPage = 0;
     Future.delayed(Duration(seconds: 2)).then((_) {
-      int nextPage = _controller.page!.round() + 1;
-
+      nextPage = _controller.page!.round() + 1;
       if (nextPage == _pages.length) {
         nextPage = 0;
       }

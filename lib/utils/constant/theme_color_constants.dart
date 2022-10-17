@@ -7,10 +7,14 @@ bool isFirstTime = true;
 
 RegExp onlyTextValues = RegExp(r'[a-zA-Z]');
 
+
+bool isPassword(String password) {
+  String pattern = r'^(?=.*?[a-zA-Z])(?=.*?[0-9]).{4,}$';
+  RegExp regExp = RegExp(pattern);
+    return regExp.hasMatch(password);
+}
+
 bool isEmail(String? email) {
-  if (email == null || email.isEmpty) {
-    return false;
-  } else {
     String p = "[a-zA-Z0-9\+\.\_\%\-\+]{1,256}" +
         "\\@" +
         "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
@@ -19,9 +23,7 @@ bool isEmail(String? email) {
         "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
         ")+";
     RegExp regExp = RegExp(p);
-
-    return regExp.hasMatch(email);
-  }
+    return regExp.hasMatch(email!);
 }
 
 bool isValidName(String? name) {
@@ -64,7 +66,7 @@ double kCalculatedMargin(Size size) => size.width * (1 - kWidthRatio) / 2;
 // Colors
 const Color kPrimaryTextColor = Color(0xff060628);
 const Color kSecondaryTextColor = Color(0xFF8F8E9B);
-const Color kPrimaryColor = Color(0xff6463FD);
+const Color kPrimaryColor = Color(0xff5034C4);
 const Color kPrimaryGrey = Color(0xff6D7A98);
 const Color kPrimaryWhite = Colors.white;
 const Color kBackgroundColor = Color(0xFFF4F4FB);
@@ -76,17 +78,25 @@ const Color kColorBackgroundLight = Color(0xffEEEBFA);
 const Color kColorBackgroundLight100 = Color(0xffF8F9FD);
 const Color kLightPurple = Color(0xffE9E6FD);
 const Color kDarkGrey = Color(0xFF9B9BA5);
-
-
-const Color kPrimaryBlack = Color(0xff0B2253);
-const Color kIconBlack = Color(0xFF3A434B);
-const Color kTransparent = Colors.transparent;
-const Color kGreyFill = Color(0xFFF7F9FB);
-const Color kGreyDeepFill = Color(0xFFDEE3EB);
-const Color kColorRed = Color(0xFFFF5460);
+const Color kDarkFill = Color(0xFF160808);
+const Color kPurpleLight = Color(0xffC3C3FE);
 const Color kColorBackgroundRed = Color(0xffFEF2F2);
 const Color kColorBackgroundGreen = Color(0xFFEAFBF1);
-const Color kColorDeepGrey = Colors.grey;
+const Color kColorRed = Color(0xFFFF5460);
+const Color kPurple200 = Color(0xFFDCDCFF);
+const Color kPurple300 = Color(0xffE4E1F5);
+const Color kOffWhite = Color(0xffF4F4F4);
+const Color kTransparent = Colors.transparent;
+const Color kPrimaryBlack = Color(0xff0B2253);
+const Color kIconGrey = Color(0xFF6D6D6F);
+const Color kContainerColor = Color(0xFFF7F7F8);
+const Color kPurpleColor100 = Color(0xFFC7C7E1);
+const Color kPurpleColor200 = Color(0xFFD9DBE9);
+const Color kDarkFill100 = Color(0xFF14142B);
+const Color kPurpleColor300 = Color(0xFFEFF0F7);
+const Color kGreenColor = Color(0xff27BE63);
+const Color kPurpleColor400 = Color(0xffA5ADC0);
+
 
 // Border
 const double kBorderWidth = 1;
@@ -202,7 +212,7 @@ TextStyle kHeadline5Style = const TextStyle(
   fontSize: 14,
 );
 TextStyle kHeadline6Style = const TextStyle(
-  fontWeight: FontWeight.w300,
+  fontWeight: FontWeight.normal,
   color: kSecondaryTextColor,
   fontFamily: "DMSans",
   fontSize: 14,
@@ -230,16 +240,17 @@ ThemeData kThemeData = ThemeData.light().copyWith(
     titleTextStyle: kBodyText1Style,
   ),
   textTheme: TextTheme(
-      headline1: kHeadline1TextStyle,
-      headline2: kHeadline2TextStyle,
-      headline3: kHeadline3TextStyle,
-      headline4: kHeadline4TextStyle,
-      bodyText1: kBodyText1Style,
-      bodyText2: kBodyText2Style,
-      subtitle1: kSubtitle1Style,
-      subtitle2: kSubtitle2Style,
-      headline5: kHeadline5Style,
-      headline6: kHeadline6Style),
+    headline1: kHeadline1TextStyle,
+    headline2: kHeadline2TextStyle,
+    headline3: kHeadline3TextStyle,
+    headline4: kHeadline4TextStyle,
+    bodyText1: kBodyText1Style,
+    bodyText2: kBodyText2Style,
+    subtitle1: kSubtitle1Style,
+    subtitle2: kSubtitle2Style,
+    headline5: kHeadline5Style,
+    headline6: kHeadline6Style,
+  ),
 );
 
 ThemeData kThemeDataDark = ThemeData.dark().copyWith(
@@ -273,5 +284,5 @@ ThemeData kThemeDataDark = ThemeData.dark().copyWith(
       subtitle1: kSubtitle1Style.copyWith(color: kPrimaryWhite),
       subtitle2: kSubtitle2Style.copyWith(color: kPrimaryWhite),
       headline5: kHeadline5Style,
-      headline6: kHeadline6Style),
-);
+      headline6: kHeadline6Style,
+  ));

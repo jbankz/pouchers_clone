@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/constants.dart';
+import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';
 
 class LargeButton extends StatelessWidget {
   final String title;
   final VoidCallback onPressed;
   final bool whiteButton;
-  final bool outlineButton, isLoading;
+  final Color? disableColor;
+  final bool outlineButton, isLoading, customColor;
 
-  LargeButton({required this.title,
+  LargeButton(
+      {required this.title,
       required this.onPressed,
+      this.disableColor,
       this.outlineButton = false,
+      this.customColor = false,
       this.isLoading = false,
       this.whiteButton = false});
 
@@ -25,13 +30,22 @@ class LargeButton extends StatelessWidget {
       child: ElevatedButton(
         style: ButtonStyle(
           elevation: MaterialStateProperty.all<double>(0.0),
-          backgroundColor: MaterialStateProperty.all<Color>(
-              whiteButton ? kPrimaryWhite : kPrimaryColor),
+          backgroundColor: MaterialStateProperty.all<Color>(whiteButton
+              ? kPrimaryWhite
+              : customColor
+                  ? kPurpleColor
+                  : disableColor != null
+                      ? disableColor!
+                      : kPrimaryColor),
           shape: MaterialStateProperty.all<OutlinedBorder>(
             RoundedRectangleBorder(
               borderRadius: kBorderSmallRadius,
               side: BorderSide(
-                  color: outlineButton ? kPrimaryColor : kPrimaryColor),
+                  color: outlineButton
+                      ? kPrimaryColor
+                      : disableColor != null
+                          ? disableColor!
+                          : kPrimaryColor),
             ),
           ),
           padding: MaterialStateProperty.all(
@@ -46,7 +60,7 @@ class LargeButton extends StatelessWidget {
               )
             : Text(
                 title,
-                style: textTheme.subtitle1!.copyWith(
+                style:  textTheme.subtitle1!.copyWith(
                     fontWeight: FontWeight.w500,
                     color: whiteButton ? kPrimaryTextColor : kPrimaryWhite),
               ),
@@ -93,22 +107,35 @@ class LargeLoadingButton extends StatelessWidget {
 class InitialPage extends StatelessWidget {
   final Widget child;
   final bool noBackButton;
+  final Function()? onTap;
+  final String? title;
 
-  const InitialPage({
-    Key? key,
-    required this.child,
-    this.noBackButton = false
-  }) : super(key: key);
+  const InitialPage(
+      {Key? key,
+      required this.child,
+      this.title,
+      this.onTap,
+      this.noBackButton = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kTransparent,
-        leading: noBackButton ? SizedBox() : IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          onPressed: () => Navigator.pop(context),
+        title: Text(
+          title == null ? "" : title!,
+          style: textTheme.headline4!
+              .copyWith(fontWeight: FontWeight.w500, fontSize: 16),
         ),
+        centerTitle: title != null ? true : false,
+        backgroundColor: kTransparent,
+        leading: noBackButton
+            ? SizedBox()
+            : IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: onTap == null ? () => Navigator.pop(context) : onTap,
+              ),
       ),
       body: SafeArea(
         child: Container(
@@ -147,7 +174,8 @@ class OnBoardingWidget extends StatelessWidget {
                   horizontal: 15,
                   vertical: kPadding,
                 ),
-                margin: EdgeInsets.only(left: kLargePadding, right: kSmallPadding),
+                margin:
+                    EdgeInsets.only(left: kLargePadding, right: kSmallPadding),
                 height: MediaQuery.of(context).size.height / 10,
                 decoration: BoxDecoration(
                   color: kPrimaryWhite,
@@ -163,15 +191,14 @@ class OnBoardingWidget extends StatelessWidget {
                   children: [
                     RichText(
                         text: TextSpan(
-                            text: "₦", style: TextStyle(
+                            text: "₦",
+                            style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: kPrimaryColor,
                               fontSize: 16,
                             ),
                             children: [
-                          TextSpan(
-                            text: text, style: textTheme.subtitle2
-                          )
+                          TextSpan(text: text, style: textTheme.subtitle2)
                         ])),
                     SizedBox(
                       height: kPadding,
@@ -210,9 +237,7 @@ class OnBoardingWidget extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Color(0xff029650),
                   ),
-                  child: Icon(Icons.check,
-                    color: kPrimaryWhite,
-                    size: 12),
+                  child: Icon(Icons.check, color: kPrimaryWhite, size: 12),
                 ),
               )
             ],
@@ -236,6 +261,7 @@ class OnBoardingWidget2 extends StatelessWidget {
       required this.path,
       required this.color})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -255,11 +281,12 @@ class OnBoardingWidget2 extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Image.asset(path),
+              SvgPicture.asset(path),
               RichText(
                   text: TextSpan(
                       text: "₦",
-                      style: TextStyle( fontWeight: FontWeight.w500,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
                         color: kPrimaryColor,
                         fontSize: 18,
                       ),
@@ -292,8 +319,95 @@ class NavBarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      "${imgPath}$icon", height: 40,
+      "${imgPath}$icon",
+      height: 40,
       color: isActive ? kPrimaryColor : kDarkGrey,
     );
   }
 }
+
+class SpinKitDemo extends StatelessWidget {
+  final double? size;
+  final Color? color;
+
+  const SpinKitDemo({Key? key, this.size, this.color}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SpinKitCircle(
+      color: color ?? kPrimaryColor,
+      size: size ?? 50.0,
+    );
+  }
+}
+
+Future<dynamic> buildShowModalBottomSheet(BuildContext context, Widget widget) {
+  return showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(51),
+          topRight: Radius.circular(51),
+        ),
+      ),
+      context: context,
+      builder: (ctx) => widget);
+}
+
+class SuccessMessage extends StatelessWidget {
+  final String text, subText;
+  final Function() onTap;
+  const SuccessMessage({Key? key, required this.text, required this.subText, required this.onTap}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+    return InitialPage(child: Column(
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(AssetPaths.resetSuccess),
+              SizedBox(
+                height: kMacroPadding,
+              ),
+              Text(
+                text,
+                style: textTheme.headline1,
+              ),
+              SizedBox(
+                height: kPadding,
+              ),
+              Text(
+                subText,
+                textAlign: TextAlign.center,
+                style: textTheme.bodyText1!
+                    .copyWith(fontWeight: FontWeight.normal, height: 1.6),
+              ),
+            ],
+          ),
+        ),
+        LargeButton(
+            title: continueText,
+            disableColor: kPurpleColor,
+            onPressed: onTap
+        ),
+        SizedBox(
+          height: kMediumPadding,
+        ),
+      ],
+    ));
+  }
+}
+
+Widget makeDismissible({required Widget child, required BuildContext context}) => GestureDetector(
+  behavior: HitTestBehavior.opaque,
+  onTap: () => Navigator.pop(context),
+  child: GestureDetector(
+    onTap: () {},
+    child: child,
+  ),
+);
+

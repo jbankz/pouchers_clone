@@ -24,6 +24,15 @@ Future<T> pushReplacementTo<T>(
   );
 }
 
+
+Future<T?> pushToAndClearUntil<T>(BuildContext context, Widget page,
+    {required String routeName, RouteSettings? settings}) =>
+
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => page, settings: settings),
+          (route) => route.settings.name == routeName,
+    );
+
 Future<T?> pushToAndClearStack<T>(BuildContext context, Widget page) {
   return Navigator.of(context).pushAndRemoveUntil(
     MaterialPageRoute(builder: (context) => page),

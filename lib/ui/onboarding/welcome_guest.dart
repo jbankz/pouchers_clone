@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/create_account/screens/create_account.dart';
 import 'package:pouchers/ui/login/screens/login.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/constants.dart';
+import 'package:pouchers/utils/constant/theme_color_constants.dart';
+import 'package:pouchers/utils/constant/ui_constants.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
@@ -35,17 +36,18 @@ class WelcomeGuest extends StatelessWidget {
                     Text(
                       welcomeGuest,
                       style: textTheme.headline1!.copyWith(
-                        fontSize: 26,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: kIconGrey,
                       ),
                     ),
                     SizedBox(
-                      height: kLargePadding,
+                      height: kMacroPadding,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: kMediumPadding),
-                      child: Text(selectPayment, style: textTheme.subtitle1),
-                    ),
+                    Text(selectPayment,
+                        style: textTheme.subtitle1!.copyWith(
+                          fontWeight: FontWeight.w700,
+                        )),
                     SizedBox(
                       height: kMediumPadding,
                     ),
@@ -61,13 +63,14 @@ class WelcomeGuest extends StatelessWidget {
                         (index) => Column(
                           children: [
                             Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: kColorBackgroundLight,
-                              ),
-                              padding: EdgeInsets.all(kMediumPadding),
-                              child: Image.asset(guestClass[index].icon),
-                            ),
+                                height: 70,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: kColorBackgroundLight,
+                                ),
+                                padding: EdgeInsets.all(kMediumPadding),
+                                child:
+                                    SvgPicture.asset(guestClass[index].icon)),
                             SizedBox(
                               height: kRegularPadding,
                             ),
@@ -85,30 +88,44 @@ class WelcomeGuest extends StatelessWidget {
               Expanded(
                 child: Container(
                   color: kColorBackgroundLight100,
-                  padding: EdgeInsets.symmetric(horizontal: kMediumPadding),
-                  child: Row(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: kMediumPadding, vertical: kMediumPadding),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: LargeButton(
-                          title: logIn,
-                          outlineButton: true,
-                          whiteButton: true,
-                          onPressed: () {
-                            pushTo(context, LogInAccount());
-                          },
+                      Text(
+                        onBoardingTitle,
+                        style: textTheme.headline1!.copyWith(
+                          fontSize: 26,
                         ),
                       ),
-                      SizedBox(
-                        width: kMediumPadding,
-                      ),
-                      Expanded(
-                        child: LargeButton(
-                          title: register,
-                          onPressed: () {
-                            pushTo(context, CreateAccount());
-                          },
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: LargeButton(
+                              title: logIn,
+                              outlineButton: true,
+                              whiteButton: true,
+                              onPressed: () {
+                                pushTo(context, LogInAccount());
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: kMediumPadding,
+                          ),
+                          Expanded(
+                            child: LargeButton(
+                              title: register,
+                              onPressed: () {
+                                pushTo(context, CreateAccount());
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -120,23 +137,4 @@ class WelcomeGuest extends StatelessWidget {
       ),
     );
   }
-
-  final List<GuestClass> guestClass = [
-    GuestClass("Airtime/Data", AssetPaths.airtime),
-    GuestClass("CableTV", AssetPaths.television),
-    GuestClass("Water Bill", AssetPaths.waterTap),
-    GuestClass("Electricity", AssetPaths.electricity),
-    GuestClass("Education", AssetPaths.education),
-    GuestClass("Internet", AssetPaths.internet),
-    GuestClass("Tickets", AssetPaths.airplane),
-    GuestClass("Vouchers", AssetPaths.voucher),
-    GuestClass("Betting", AssetPaths.betting),
-  ];
-}
-
-class GuestClass {
-  final String title;
-  final String icon;
-
-  GuestClass(this.title, this.icon);
 }

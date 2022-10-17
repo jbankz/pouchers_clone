@@ -1,76 +1,58 @@
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pouchers/app/helpers/service_response.dart';
+import 'package:pouchers/utils/logger.dart';
+import 'package:pouchers/utils/utils.dart';
+import 'package:http/http.dart' as http;
+
+
 bool noAuth(Failure error) {
-  return error.statusCode! == 401 ||
-          error.statusCode! == 403 ||
-          error.errors!.first.msg!.contains("not authenticated")
+  return error.code! == 401 ||
+          error.code! == 403
       ? true
       : false;
 }
 
 class Failure {
   Failure({
-    this.errors,
-    this.statusCode,
+    this.status,
+    this.error,
+    this.message,
+    this.code,
   });
 
-  List<Error>? errors;
-  int? statusCode;
+  String? status;
+  String? error;
+  String? message;
+  int? code;
 
-  factory Failure.fromJson(Map<String, dynamic> json) {
-    if (json["errors"] != null) {
-      return Failure(
-        errors: List<Error>.from(json["errors"].map((x) => Error.fromJson(x))),
-        statusCode: json["status_code"],
-      );
-    } else if (json["message"] != null) {
-      return Failure(
-        errors: [Error.fromJson(json["message"])],
-        statusCode: json["status_code"],
-      );
-    } else {
-      return Failure(
-        errors: [Error.fromJson(json)],
-        statusCode: json["status_code"],
-      );
-    }
-  }
+  factory Failure.fromJson(Map<String, dynamic> json) => Failure(
+    status: json["status"],
+    error: json["error"],
+    message: json["message"],
+    code: json["code"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "errors": List<dynamic>.from(errors!.map((x) => x.toJson())),
-        "status_code": statusCode,
-      };
+    "status": status,
+    "error": error,
+    "message": message,
+    "code": code,
+  };
+}
+final phoneProvider = StateProvider<int>((ref) => 0);
 
-  @override
-  String toString() {
-    return 'Failure{errors: $errors, statusCode: $statusCode}';
+
+ServiceResponse<T> processServiceError<T>(error, stack) {
+  logger.i("$error\n$stack");
+  if (error is Failure) {
+    return serveError<T>(
+      error: error.message!,
+    );
   }
+  if (error is Exception) {
+    return serveError<T>(error: Utils.handleRequestError(error));
+  }
+  return serveError<T>(error: error.toString());
 }
 
-class Error {
-  Error({
-    this.loc,
-    this.msg,
-    this.type,
-  });
-
-  List<String>? loc;
-  String? msg;
-  String? type;
-
-  factory Error.fromJson(dynamic json) {
-    if (json is String) {
-      return Error(msg: json);
-    } else {
-      return Error(
-        loc: List<String>.from(json["loc"].map((x) => x)),
-        msg: json["msg"],
-        type: json["type"],
-      );
-    }
-  }
-
-  Map<String, dynamic> toJson() => {
-        "loc": List<dynamic>.from(loc!.map((x) => x)),
-        "msg": msg,
-        "type": type,
-      };
-}

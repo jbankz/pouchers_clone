@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pouchers/ui/tab_layout/homepage/homepage.dart';
-import 'package:pouchers/utils/constants.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/homepage.dart';
+import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/widgets.dart';
 
