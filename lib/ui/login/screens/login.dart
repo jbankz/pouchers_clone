@@ -1,14 +1,21 @@
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/create_account/models/create_account_response.dart';
 import 'package:pouchers/ui/create_account/screens/create_account.dart';
+import 'package:pouchers/ui/create_account/screens/create_pin.dart';
+import 'package:pouchers/ui/create_account/screens/poucher_tag.dart';
+import 'package:pouchers/ui/create_account/screens/verify_account.dart';
 import 'package:pouchers/ui/login/providers/log_in_provider.dart';
 import 'package:pouchers/ui/login/screens/forgot_password.dart';
+import 'package:pouchers/ui/tab_layout/screens/account/two_factor_auth/security_modal.dart';
 import 'package:pouchers/ui/tab_layout/screens/tab_layout.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
@@ -21,8 +28,9 @@ import 'package:pouchers/utils/widgets.dart';
 
 class LogInAccount extends StatefulWidget {
   static const String routeName = "logIn";
+  final bool? disabled;
 
-  const LogInAccount({Key? key}) : super(key: key);
+  const LogInAccount({Key? key, this.disabled = false}) : super(key: key);
 
   @override
   State<LogInAccount> createState() => _LogInAccountState();
@@ -38,6 +46,28 @@ class _LogInAccountState extends State<LogInAccount> {
   bool isAuth = false;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Hive.openBox(kBiometricsBox);
+      setState(() {});
+      if (widget.disabled!) {
+        Future.delayed(Duration(seconds: 1)).then((value) => showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (ctx) {
+              return SecurityModal(
+                textTheme: Theme.of(context).textTheme,
+                title: accountDisabled,
+                message: accountDisabledSub,
+                button: contactSupport,
+              );
+            }));
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
@@ -48,7 +78,9 @@ class _LogInAccountState extends State<LogInAccount> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(AssetPaths.poucherLogo),
-              SizedBox(height: kMicroPadding,),
+              SizedBox(
+                height: kMicroPadding,
+              ),
               Text(
                 logInPoucher,
                 style: textTheme.headline1,
@@ -80,6 +112,7 @@ class _LogInAccountState extends State<LogInAccount> {
               TextInputNoIcon(
                 textTheme: textTheme,
                 text: passwordText,
+                hintText: enterPassword,
                 obscure: obscure,
                 validator: (val) {
                   if (val!.isEmpty) {
@@ -111,7 +144,9 @@ class _LogInAccountState extends State<LogInAccount> {
               ),
               inkWell(
                 onTap: () {
-                  pushTo(context, ForgotPassword());
+                  pushTo(context, ForgotPassword(),
+                      settings:
+                          const RouteSettings(name: ForgotPassword.routeName));
                 },
                 child: Align(
                   alignment: Alignment.centerRight,
@@ -129,19 +164,54 @@ class _LogInAccountState extends State<LogInAccount> {
                 ref.listen(logInProvider,
                     (previous, NotifierState<VerifyEmailResponse> next) {
                   if (next.status == NotifierStatus.done) {
-                    pushToAndClearStack(context, TabLayout());
+                    if (next.data!.data!.tag == null) {
+                      pushTo(
+                          context,
+                          PoucherTag(
+                            fromLogin: true,
+                          ),
+                          settings:
+                              const RouteSettings(name: PoucherTag.routeName));
+                    } else if (!next.data!.data!.isCreatedPin!) {
+                      pushTo(
+                          context,
+                          CreatePin(
+                            fromLogin: true,
+                          ),
+                          settings:
+                              const RouteSettings(name: CreatePin.routeName));
+                    } else {
+                      pushToAndClearStack(
+                        context,
+                        TabLayout(),
+                      );
+                    }
                   } else if (next.status == NotifierStatus.error) {
+                    if (next.message == "User is not verified") {
+                      showErrorBar(context, next.message!);
+                      Future.delayed(Duration(seconds: 2)).then(
+                        (value) => pushTo(
+                            context,
+                            VerifyAccount(
+                              email: _email!,
+                              fromLogin: true,
+                            ),
+                            settings: const RouteSettings(
+                                name: VerifyAccount.routeName)),
+                      );
+                    }
                     showErrorBar(context, next.message!);
                   }
                 });
                 var _widget = LargeButton(
                   title: logIn,
                   onPressed: () {
+                    FocusScope.of(context).unfocus();
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       ref.read(logInProvider.notifier).logIn(
-                            phoneNumber: _email!,
-                            password: _password!,
+                            phoneNumber: _email!.trim(),
+                            password: _password!.trim(),
                             isEmail: _email!.startsWith(
                               RegExp(r'[a-zA-Z]'),
                             ),
@@ -180,24 +250,28 @@ class _LogInAccountState extends State<LogInAccount> {
               SizedBox(
                 height: kLargePadding,
               ),
-              inkWell(
-                onTap: () {
-                  checkBiometric(context);
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.all(kRegularPadding),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: kBackgroundColor,
-                  ),
-                  child: Image.asset(
-                    AssetPaths.faceId,
-                    fit: BoxFit.scaleDown,
-                    color: kPrimaryColor,
-                  ),
-                ),
-              )
+              Hive.box(kBiometricsBox).get(kBiometricsKey) == null
+                  ? SizedBox()
+                  : inkWell(
+                      onTap: () {
+                        checkBiometric(context);
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(kRegularPadding),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: kBackgroundColor,
+                        ),
+                        child: Image.asset(
+                          Platform.isAndroid
+                              ? AssetPaths.fingerprint
+                              : AssetPaths.faceId,
+                          fit: BoxFit.scaleDown,
+                          color: kPrimaryColor,
+                        ),
+                      ),
+                    )
             ],
           ),
         ),
@@ -231,7 +305,7 @@ class _LogInAccountState extends State<LogInAccount> {
       });
     } else {
       showErrorBar(context,
-          "No biometrics are available, Please input your credentials");
+          "No biometrics available for this device, Please input your credentials");
     }
 
     bool authenticated = false;
@@ -250,10 +324,7 @@ class _LogInAccountState extends State<LogInAccount> {
                 cancelButton: "Cancel"),
             IOSAuthMessages()
           ]);
-    } catch (e) {
-      showErrorBar(context, "Error using Biometric Auth");
-      print("error using biometric auth: $e");
-    }
+    } catch (e) {}
 
     setState(() {
       isAuth = authenticated ? true : false;

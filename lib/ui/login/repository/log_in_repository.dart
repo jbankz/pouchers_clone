@@ -1,7 +1,15 @@
+import 'dart:ffi';
+
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pouchers/app/helpers/network_helpers.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
+import 'package:pouchers/app/helpers/service_response.dart';
+import 'package:pouchers/data/hive_data.dart';
 import 'package:pouchers/ui/create_account/models/create_account_response.dart';
+import 'package:pouchers/ui/login/models/login_response.dart';
 import 'package:pouchers/ui/login/service/log_in_service.dart';
+import 'package:pouchers/utils/extras.dart';
+import 'package:pouchers/utils/strings.dart';
 import 'package:riverpod/riverpod.dart';
 
 final logInRepoProvider =
@@ -17,42 +25,55 @@ class LogInRepository {
     required String password,
     required bool isEmail,
   }) async {
-    return (await LogInService.logIn(
-            phoneNumber: phoneNumber,
-            password: password,
-            isEmail: isEmail))
-        .toNotifierState();
+    final result = await LogInService.logIn(
+        phoneNumber: phoneNumber, password: password, isEmail: isEmail);
+    print(result);
+
+    if (result.data != null) {
+      print("resultmm${result.data!.data!.profilePicture}");
+      await cacheUserProfile(
+          HiveStoreResponseData.fromJson(result.data!.data!.toJson()));
+    }
+    ;
+    return result.toNotifierState();
   }
 
   Future<NotifierState<String>> forgotPassword({
     required String email,
   }) async {
-    final accessToken = await getAccessToken();
-    return (await LogInService.forgotPassword(
-            token: accessToken!, email: email))
-        .toNotifierState();
+
+    try{
+      return (await LogInService.forgotPassword(
+           email: email))
+          .toNotifierState();
+    }catch(e){
+      NotifierState<String> state = NotifierState(
+          message: "Please login first to access this feature",
+        status: NotifierStatus.error,
+        data: "error",
+        noAuth: false
+      );
+      return state;
+    }
+
   }
 
   Future<NotifierState<String>> validateForgotPassword({
     required String email,
     required String resetCode,
   }) async {
-    final accessToken = await getAccessToken();
-    return (await LogInService.validateForgotPassword(
-      token: accessToken!,
-      email: email,
-      resetCode: resetCode,
-    ))
-        .toNotifierState();
+      return (await LogInService.validateForgotPassword(
+        email: email,
+        resetCode: resetCode,
+      ))
+          .toNotifierState();
   }
 
   Future<NotifierState<String>> resetPassword({
     required String email,
     required String password,
   }) async {
-    final accessToken = await getAccessToken();
     return (await LogInService.resetPassword(
-      token: accessToken!,
       email: email,
       password: password,
     ))

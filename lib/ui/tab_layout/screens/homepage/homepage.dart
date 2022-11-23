@@ -1,29 +1,51 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/login/models/login_response.dart';
+import 'package:pouchers/ui/tab_layout/models/profile_model.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
+import 'package:pouchers/ui/tab_layout/providers/account_provider.dart';
+import 'package:pouchers/ui/tab_layout/screens/profile/profile_account_verification.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/constant/ui_constants.dart';
 import 'package:pouchers/utils/strings.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
+  static const String routeName = "homePage";
+
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   bool obscure = true;
   PageController _controller = PageController(viewportFraction: 0.8);
   int _currentPage = 0;
+  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
 
   _onChanged(int index) {
     setState(() {
       _currentPage = index;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (ref.watch(editProfileInHouseProvider).profilePicture == null) {
+        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData()
+            .copyWith(profilePicture: userProfile.profilePicture);
+      }
     });
   }
 
@@ -36,6 +58,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
+    SizeConfig().init(context);
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(
@@ -44,61 +67,180 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      welcome,
-                      style: textTheme.headline3!.copyWith(
-                        color: kDarkFill,
-                      ),
-                    ),
-                    Text(
-                      "Munachi",
-                      style: textTheme.headline3!.copyWith(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20,
-                          color: kDarkFill),
-                    )
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: kPadding),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircularPercentIndicator(
-                        radius: 20.0,
-                        lineWidth: 4.0,
-                        percent: 0.15,
-                        backgroundColor: kPurple300,
-                        center: Text(
-                          "25%",
-                          style: textTheme.headline2!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(116),
+                  child: CachedNetworkImage(
+                      height: 50,
+                      width: 50,
+                      imageUrl:
+                          "https://photow-profile-images.s3.us-west-2.amazonaws.com/${ref.watch(editProfileInHouseProvider).profilePicture ?? ""}",
+                      placeholder: (context, url) => Container(
+                            color: Colors.transparent,
+                            height: 50,
+                            width: 50,
+                            child: const Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    kPrimaryColor),
+                              ),
+                            ),
                           ),
-                        ),
-                        progressColor: kPurpleColor,
+                      fit: BoxFit.cover,
+                      errorWidget: (context, url, error) => Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: kPrimaryColor),
+                            child: Text(
+                                ref
+                                                .watch(
+                                                    editProfileInHouseProvider)
+                                                .firstName ==
+                                            null ||
+                                        ref
+                                                .watch(
+                                                    editProfileInHouseProvider)
+                                                .lastName ==
+                                            null
+                                    ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
+                                    : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
+                                style: textTheme.bodyText2!.copyWith(fontSize: 22)),
+                          )
+                      //     Column(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     Container(
+                      //       height: kRegularPadding,
+                      //       width: kRegularPadding,
+                      //       decoration: BoxDecoration(
+                      //           shape: BoxShape.circle, color: kPurpleColor),
+                      //     ),
+                      //     SizedBox(
+                      //       height: kPadding,
+                      //     ),
+                      //     Container(
+                      //       height: kRegularPadding,
+                      //       width: 35,
+                      //       decoration: BoxDecoration(
+                      //           borderRadius: BorderRadius.only(
+                      //               topLeft: Radius.circular(kSmallPadding),
+                      //               bottomLeft: Radius.circular(kPadding),
+                      //               topRight: Radius.circular(kSmallPadding),
+                      //               bottomRight: Radius.circular(kPadding)),
+                      //           color: kPurpleColor500),
+                      //     )
+                      //   ],
+                      // ),
                       ),
-                      SizedBox(
-                        width: kMediumPadding,
-                      ),
+                ),
+                SizedBox(
+                  width: kSmallPadding,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                          text: TextSpan(
+                              text: "$welcome ",
+                              style: textTheme.headline3!.copyWith(
+                                color: kDarkFill,
+                              ),
+                              children: [
+                            TextSpan(
+                              text: ref
+                                          .watch(editProfileInHouseProvider)
+                                          .firstName ==
+                                      null
+                                  ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.firstName!.substring(1).toLowerCase()}"
+                                  : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).firstName!.substring(1).toLowerCase()}",
+                              style: textTheme.headline3!.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: kDarkFill),
+                            )
+                          ])),
                       Container(
-                        padding: EdgeInsets.all(12),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: kSmallPadding, vertical: 2),
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: kBackgroundColor),
-                        child: SvgPicture.asset(
-                          AssetPaths.notification,
-                          fit: BoxFit.scaleDown,
-                        ),
+                            color: kColorBackgroundLight,
+                            border:
+                                Border.all(color: kPurpleColor700, width: 0.7),
+                            borderRadius: BorderRadius.circular(kSmallPadding)),
+                        child:
+                            ref.watch(editProfileInHouseProvider).tierLevels ==
+                                    null
+                                ? Text(
+                                    "$tier ${userProfile.tierLevels}",
+                                    style: textTheme.headline4!.copyWith(
+                                      color: kSecondaryPurple,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  )
+                                : Text(
+                                    "$tier ${ref.watch(editProfileInHouseProvider).tierLevels}",
+                                    style: textTheme.headline4!.copyWith(
+                                      color: kSecondaryPurple,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
                       ),
                     ],
                   ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: kPadding),
+                  child: Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: kBackgroundColor),
+                    child: SvgPicture.asset(
+                      AssetPaths.notification,
+                      fit: BoxFit.scaleDown,
+                    ),
+                  ),
                 )
               ],
+            ),
+            SizedBox(
+              height: kMediumPadding,
+            ),
+            inkWell(
+              onTap: () {
+                pushTo(
+                  context,
+                  AccountVerificationStatus(from: "homepage"),
+                  settings: const RouteSettings(
+                      name: AccountVerificationStatus.routeName),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: kRegularPadding, vertical: kSmallPadding),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(kSmallPadding),
+                    color: kLightOrange100,
+                    border: Border.all(color: kLightOrange200, width: 1)),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(AssetPaths.shieldIcon),
+                    SizedBox(
+                      width: kPadding,
+                    ),
+                    Expanded(
+                      child: Text(
+                        completeSetUp,
+                        style: textTheme.headline2!.copyWith(
+                          color: kLightOrange300,
+                        ),
+                      ),
+                    ),
+                    Icon(Icons.arrow_forward_ios,
+                        color: kLightOrange200, size: 18)
+                  ],
+                ),
+              ),
             ),
             SizedBox(
               height: kMediumPadding,
@@ -203,7 +345,10 @@ class _HomePageState extends State<HomePage> {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 crossAxisCount: 4,
-                childAspectRatio: 0.8,
+                // mainAxisSpacing: 10,
+                childAspectRatio: SizeConfig.blockSizeHorizontal! / 5.2,
+
+                // childAspectRatio: MediaQuery.of(context).devicePixelRatio / 3.5,
                 children: List.generate(
                   guestHomeClass.length,
                   (index) => Column(
@@ -240,7 +385,10 @@ class _HomePageState extends State<HomePage> {
               height: kSmallPadding,
             ),
             Container(
-              height: 160,
+              height: SizeConfig.blockSizeVertical! * 24,
+              // MediaQuery.of(context).size.height /
+              //     MediaQuery.of(context).size.width *
+              //     90,
               width: double.infinity,
               alignment: Alignment.bottomLeft,
               child: PageView(
@@ -264,7 +412,7 @@ class _HomePageState extends State<HomePage> {
                           homePageText,
                           softWrap: true,
                           style: textTheme.bodyText1!.copyWith(
-                              fontSize: 20,
+                              fontSize: SizeConfig.blockSizeVertical! * 3,
                               color: kOffWhite,
                               fontWeight: FontWeight.w700),
                         ),
@@ -286,10 +434,6 @@ class _HomePageState extends State<HomePage> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(kSmallPadding),
                       color: Colors.green,
-                      // image: DecorationImage(
-                      //   image: AssetImage(AssetPaths.pageImage),
-                      //   fit: BoxFit.cover,
-                      // ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -298,7 +442,7 @@ class _HomePageState extends State<HomePage> {
                           homePageText,
                           softWrap: true,
                           style: textTheme.bodyText1!.copyWith(
-                              fontSize: 20,
+                              fontSize: SizeConfig.blockSizeVertical! * 3,
                               color: kOffWhite,
                               fontWeight: FontWeight.w700),
                         ),

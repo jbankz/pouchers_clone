@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:pouchers/ui/onboarding/model/onboarding_model.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
-import 'package:pouchers/ui/tab_layout/screens/betting.dart';
-import 'package:pouchers/ui/tab_layout/screens/buy_airtime.dart';
-import 'package:pouchers/ui/tab_layout/screens/buy_cable.dart';
-import 'package:pouchers/ui/tab_layout/screens/buy_data.dart';
-import 'package:pouchers/ui/tab_layout/screens/buy_electricity.dart';
-import 'package:pouchers/ui/tab_layout/screens/buy_internet.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/betting.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/buy_airtime.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/buy_cable.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/buy_data.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/buy_electricity.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/buy_internet.dart';
 import 'package:pouchers/utils/assets_path.dart';
 
 final List<GuestClass> guestClass = [
-  GuestClass("Airtime/Data", AssetPaths.airtimeIcon, page: BuyAirtime()),
-  GuestClass("CableTV", AssetPaths.televisionIcon, page: BuyCable()),
-  GuestClass("Water Bill", AssetPaths.waterTapIcon, page: Container()),
-  GuestClass("Electricity", AssetPaths.electricityIcon, page: BuyElectricity()),
+  GuestClass("Airtime/Data", AssetPaths.airtimeIcon, page: SizedBox()),
+  GuestClass("CableTV", AssetPaths.televisionIcon, page: SizedBox()),
+  GuestClass("Water Bill", AssetPaths.waterTapIcon, page: SizedBox()),
+  GuestClass("Electricity", AssetPaths.electricityIcon, page: SizedBox()),
   GuestClass("Education", AssetPaths.educationIcon, page: Container()),
-  GuestClass("Internet", AssetPaths.wifiIcon, page: BuyInternet()),
+  GuestClass("Internet", AssetPaths.wifiIcon, page: SizedBox()),
   GuestClass("Tickets", AssetPaths.ticketIcon, page: Container()),
   GuestClass("Vouchers", AssetPaths.voucherIcon, page: Container()),
-  GuestClass("Betting", AssetPaths.bettingIcon, page: Betting()),
+  GuestClass("Betting", AssetPaths.bettingIcon, page: SizedBox()),
 ];
 
 List<GuestClass> guestList = [
@@ -80,13 +80,28 @@ List<GuestClass> guestNumber = [
   GuestClass("0", "", page: SizedBox()),
 ];
 
+List<GuestClass> guestNumberDot = [
+  GuestClass("3", "", page: SizedBox()),
+  GuestClass("2", "", page: SizedBox()),
+  GuestClass("1", "", page: SizedBox()),
+  GuestClass("6", "", page: SizedBox()),
+  GuestClass("5", "", page: SizedBox()),
+  GuestClass("4", "", page: SizedBox()),
+  GuestClass("9", "", page: SizedBox()),
+  GuestClass("8", "", page: SizedBox()),
+  GuestClass("7", "", page: SizedBox()),
+  GuestClass("Delete", "", page: SizedBox()),
+  GuestClass("0", "", page: SizedBox()),
+  GuestClass(".", "", page: SizedBox()),
+];
+
 final List<GuestClass> guestHomeClass = [
-  GuestClass("Airtime", AssetPaths.airtimeIcon, page: BuyAirtime()),
-  GuestClass("Data", AssetPaths.dataIcon, page: BuyData()),
-  GuestClass("CableTV", AssetPaths.televisionIcon, page: BuyCable()),
-  GuestClass("Electricity", AssetPaths.electricityIcon, page: BuyElectricity()),
-  GuestClass("Internet", AssetPaths.wifiIcon, page: BuyInternet()),
-  GuestClass("Betting", AssetPaths.bettingIcon, page: Betting()),
-  GuestClass("Vouchers", AssetPaths.voucherIcon, page: Container()),
+  GuestClass("Airtime", AssetPaths.airtimeIcon, page: BuyAirtime(), days: BuyAirtime.routeName),
+  GuestClass("Data", AssetPaths.dataIcon, page: BuyData(),  days: BuyData.routeName),
+  GuestClass("CableTV", AssetPaths.televisionIcon, page: BuyCable(),  days: BuyCable.routeName),
+  GuestClass("Electricity", AssetPaths.electricityIcon, page: BuyElectricity(),  days: BuyElectricity.routeName),
+  GuestClass("Internet", AssetPaths.wifiIcon, page: BuyInternet(),  days: BuyInternet.routeName),
+  GuestClass("Betting", AssetPaths.bettingIcon, page: Betting(),  days: Betting.routeName),
+  GuestClass("Vouchers", AssetPaths.voucherIcon, page: Container(), ),
   GuestClass("More", AssetPaths.moreIcon, page: Container()),
 ];

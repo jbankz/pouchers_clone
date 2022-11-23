@@ -49,4 +49,12 @@ class CreateAccountRepository {
     return (await CreateAccountService.resendVerificationEmail(email: email))
         .toNotifierState();
   }
+
+  Future<NotifierState<TagResponse>> createPin({
+    required String pin,
+  }) async {
+    final accessToken = await getAccessToken();
+    return (await CreateAccountService.createPin(pin: pin, token: accessToken!))
+        .toNotifierState();
+  }
 }

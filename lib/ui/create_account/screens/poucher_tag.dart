@@ -5,15 +5,18 @@ import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/create_account/models/create_account_response.dart';
 import 'package:pouchers/ui/create_account/providers/create_account_provider.dart';
 import 'package:pouchers/ui/create_account/screens/biometrics_page.dart';
+import 'package:pouchers/ui/create_account/screens/create_pin.dart';
 import 'package:pouchers/ui/login/screens/login.dart';
-import 'package:pouchers/ui/tab_layout/screens/tab_layout.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
 class PoucherTag extends StatefulWidget {
-  const PoucherTag({Key? key}) : super(key: key);
+
+  const PoucherTag({Key? key, this.fromLogin = false}) : super(key: key);
+  static const String routeName = "poucherTag";
+  final bool? fromLogin;
 
   @override
   State<PoucherTag> createState() => _PoucherTagState();
@@ -28,6 +31,12 @@ class _PoucherTagState extends State<PoucherTag> {
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return InitialPage(
+      onTap: () {
+        widget.fromLogin!
+            ? Navigator.popUntil(context,
+                (route) => route.settings.name == LogInAccount.routeName)
+            : Navigator.pop(context);
+      },
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,11 +109,8 @@ class _PoucherTagState extends State<PoucherTag> {
               ref.listen(createTagProvider,
                   (previous, NotifierState<TagResponse> next) {
                 if (next.status == NotifierStatus.done) {
-                  pushToAndClearUntil(
-                    context,
-                    BiometricsPage(),
-                    routeName: LogInAccount.routeName,
-                  );
+                  pushTo(context, CreatePin(), settings: const RouteSettings(
+                      name: CreatePin.routeName));
                 } else if (next.status == NotifierStatus.error) {
                   showErrorBar(context, next.message!);
                 }
@@ -113,6 +119,7 @@ class _PoucherTagState extends State<PoucherTag> {
               var _widget = LargeButton(
                 title: createTag,
                 onPressed: () {
+                  FocusScope.of(context).unfocus();
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     ref.read(createTagProvider.notifier).createTag(

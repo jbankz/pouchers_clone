@@ -1,13 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/tab_layout/providers/account_provider.dart';
+import 'package:pouchers/ui/tab_layout/screens/account/account_settings.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/fund_wallet.dart';
 import 'package:pouchers/ui/tab_layout/screens/tab_layout.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/constant/ui_constants.dart';
 import 'package:pouchers/utils/extras.dart';
+import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
@@ -79,10 +86,18 @@ class HomeIcons extends StatelessWidget {
 }
 
 class TransactionPinContainer extends ConsumerStatefulWidget {
-  final bool isData, isCable;
+  final bool isData, isCable, isBiometric, is2FA, isCard, isFundCard;
+  final Function()? doBiom;
 
   const TransactionPinContainer(
-      {Key? key, required this.isData, this.isCable = false})
+      {Key? key,
+      required this.isData,
+      this.isCable = false,
+      this.isBiometric = false,
+        this.doBiom,
+      required this.isCard,
+      required this.isFundCard,
+      this.is2FA = false})
       : super(key: key);
 
   @override
@@ -97,7 +112,6 @@ class _TransactionPinContainerState
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     containerBoolean = List.generate(containerIndex.length, (index) => false);
   }
@@ -141,24 +155,83 @@ class _TransactionPinContainerState
           SizedBox(
             height: kMacroPadding,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ...List.generate(
-                containerIndex.length,
-                (index) => Container(
-                  margin: EdgeInsets.symmetric(horizontal: kRegularPadding),
-                  height: kMediumPadding,
-                  width: kMediumPadding,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: containerBoolean[index] == true
-                          ? kPrimaryColor
-                          : kPurpleColor300),
+          Consumer(builder: (context, ref, _) {
+            ref.listen(
+              validatePinProvider,
+                  (previous, NotifierState<String> next) {
+                if (next.status == NotifierStatus.done) {
+                  if(widget.isBiometric){
+                    Navigator.pop(context, pinPicked);
+                    widget.doBiom!();
+                  }else {
+                    widget.is2FA
+                        ? Navigator.pop(context, pinPicked)
+                        : pushTo(
+                      context,
+                      SuccessMessage(
+                          text: widget.isData
+                              ? dataSuccess
+                              : widget.isCard
+                              ? dataSuccess
+                              : widget.isCable
+                              ? dataSuccess
+                              : rechargeSuccessful,
+                          subText: widget.isData
+                              ? dataSubSuccess
+                              : widget.isCard
+                              ? virtualCardSuccess
+                              : widget.isFundCard
+                              ? virtualSuccess
+                              : widget.isCable
+                              ? deliveredPurchase
+                              : rechargeSuccessfulSub,
+                          onTap: () {
+                            widget.isCard
+                                ? pushToAndClearStack(
+                              context,
+                              TabLayout(
+                                gottenIndex: 1,
+                              ),
+                            )
+                                : pushToAndClearStack(
+                              context,
+                              TabLayout(
+                                gottenIndex: 0,
+                              ),
+                            );
+                          }),
+                    );
+                  }
+                } else if (next.status == NotifierStatus.error) {
+                  showErrorBar(context, next.message ?? next.data!);
+                }
+              },
+            );
+            var _widget = Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ...List.generate(
+                  containerIndex.length,
+                      (index) => Container(
+                    margin: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                    height: kMediumPadding,
+                    width: kMediumPadding,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: containerBoolean[index] == true
+                            ? kPrimaryColor
+                            : kPurpleColor300),
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            );
+            return ref.watch(validatePinProvider).when(
+              done: (done) => _widget,
+              loading: () => SpinKitDemo(),
+              error: (val) => _widget,
+            );
+          }),
+
           SizedBox(
             height: kMacroPadding,
           ),
@@ -212,33 +285,11 @@ class _TransactionPinContainerState
                                 ref.read(phoneProvider.notifier).state =
                                     pinPicked.length;
                                 if (ref.watch(phoneProvider) == 4) {
-                                  // Navigator.pop(context, pinPicked);
-
-                                  pushTo(
-                                    context,
-                                    SuccessMessage(
-                                        text: widget.isData
-                                            ? dataSuccess
-                                            : widget.isCable
-                                                ? dataSuccess
-                                                : rechargeSuccessful,
-                                        subText: widget.isData
-                                            ? dataSubSuccess
-                                            : widget.isCable
-                                                ? deliveredPurchase
-                                                : rechargeSuccessfulSub,
-                                        onTap: () {
-                                          pushToAndClearStack(
-                                            context,
-                                            TabLayout(
-                                              gottenIndex: 0,
-                                            ),
-                                          );
-                                        }),
-                                  );
+                                  ref
+                                      .read(validatePinProvider.notifier)
+                                      .validatePin(pin: pinPicked.join(""));
                                 }
                               }
-                              print(pinPicked);
                             },
                       child: guestNumber[index].title == "Delete"
                           ? SvgPicture.asset(AssetPaths.backSpaceIcon)
@@ -274,29 +325,33 @@ class AirtimeRow extends StatelessWidget {
       required this.subText,
       this.isNaira = false,
       this.isBold = false,
+      required this.isCopyIcon,
+      required this.noSymbol,
       required this.style})
       : super(key: key);
 
   final TextTheme textTheme;
   final String text, subText;
   final TextStyle style;
-  final bool isNaira, isBold;
+  final bool isNaira, isBold, isCopyIcon, noSymbol;
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          text,
-          style: textTheme.headline3!.copyWith(
-            color: kIconGrey,
+        Expanded(
+          child: Text(
+            text,
+            style: textTheme.headline3!.copyWith(
+              color: kIconGrey,
+            ),
           ),
         ),
-        isNaira
+        !noSymbol
             ? RichText(
                 text: TextSpan(
-                  text: "₦",
+                  text: isNaira ? "₦" : "\$",
                   style: TextStyle(
                     color: kPrimaryTextColor,
                     fontWeight: isBold ? FontWeight.w700 : FontWeight.normal,
@@ -314,6 +369,10 @@ class AirtimeRow extends StatelessWidget {
                 subText,
                 style: style,
               ),
+        SizedBox(
+          width: kSmallPadding,
+        ),
+        isCopyIcon ? SvgPicture.asset(AssetPaths.copyIcon) : SizedBox()
       ],
     );
   }
@@ -393,6 +452,8 @@ class RechargeSummary extends StatelessWidget {
                   textTheme: textTheme,
                   text: recipient,
                   subText: "08031234567",
+                  isCopyIcon: false,
+                  noSymbol: true,
                   style: textTheme.headline3!.copyWith(
                       color: kPurpleColor, fontWeight: FontWeight.w700),
                 ),
@@ -403,8 +464,10 @@ class RechargeSummary extends StatelessWidget {
                   textTheme: textTheme,
                   text: amountText,
                   subText: "4,000.00",
+                  isCopyIcon: false,
                   isNaira: true,
                   isBold: true,
+                  noSymbol: false,
                   style: textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w700),
                 ),
@@ -416,6 +479,8 @@ class RechargeSummary extends StatelessWidget {
                   text: fee,
                   subText: "0.00",
                   isNaira: true,
+                  isCopyIcon: false,
+                  noSymbol: false,
                   style: textTheme.headline4!.copyWith(
                     fontSize: 16,
                   ),
@@ -427,6 +492,8 @@ class RechargeSummary extends StatelessWidget {
                   textTheme: textTheme,
                   text: cashBack,
                   subText: "0.00",
+                  isCopyIcon: false,
+                  noSymbol: false,
                   isNaira: true,
                   style: textTheme.headline4!.copyWith(
                     fontSize: 16,
@@ -438,63 +505,9 @@ class RechargeSummary extends StatelessWidget {
           SizedBox(
             height: kLargePadding,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                      child: SvgPicture.asset(
-                        AssetPaths.walletIcon,
-                        height: 22,
-                        width: 22,
-                      ),
-                      decoration: BoxDecoration(
-                          color: kLightPurple, shape: BoxShape.circle),
-                      padding: EdgeInsets.all(kSmallPadding)),
-                  Text(
-                    "  $balance - ",
-                    style: textTheme.headline4!
-                        .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      text: "₦",
-                      style: TextStyle(
-                        color: kPrimaryTextColor,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: "6,945.04",
-                          style: textTheme.headline4!.copyWith(
-                              fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              inkWell(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kRegularPadding, vertical: kSmallPadding),
-                  decoration: BoxDecoration(
-                      color: kPurpleColor,
-                      borderRadius: BorderRadius.circular(kSmallPadding)),
-                  child: Text(
-                    fundWallet,
-                    style: textTheme.headline4!.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: kPrimaryWhite,
-                    ),
-                  ),
-                ),
-              )
-            ],
+          BalanceWidget(
+            textTheme: textTheme,
+            text: "6,945.04",
           ),
           SizedBox(
             height: kPadding,
@@ -530,6 +543,8 @@ class RechargeSummary extends StatelessWidget {
                     TransactionPinContainer(
                       isData: isData,
                       isCable: isCable,
+                      isCard: false,
+                      isFundCard: false,
                     ));
                 print("result$result");
               },
@@ -565,6 +580,80 @@ class RechargeSummary extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class BalanceWidget extends StatelessWidget {
+  final String text;
+
+  const BalanceWidget({Key? key, required this.textTheme, required this.text})
+      : super(key: key);
+
+  final TextTheme textTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+                child: SvgPicture.asset(
+                  AssetPaths.walletIcon,
+                  height: 22,
+                  width: 22,
+                ),
+                decoration:
+                    BoxDecoration(color: kLightPurple, shape: BoxShape.circle),
+                padding: EdgeInsets.all(kSmallPadding)),
+            Text(
+              "  $balance - ",
+              style: textTheme.headline4!
+                  .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            RichText(
+              text: TextSpan(
+                text: "₦",
+                style: TextStyle(
+                  color: kPrimaryTextColor,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+                children: [
+                  TextSpan(
+                    text: text,
+                    style: textTheme.headline4!
+                        .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        inkWell(
+          onTap: () {
+            pushTo(context, FundWallet(),
+                settings: const RouteSettings(name: FundWallet.routeName));
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: kRegularPadding, vertical: kSmallPadding),
+            decoration: BoxDecoration(
+                color: kPurpleColor,
+                borderRadius: BorderRadius.circular(kSmallPadding)),
+            child: Text(
+              fundWallet,
+              style: textTheme.headline4!.copyWith(
+                fontWeight: FontWeight.w700,
+                color: kPrimaryWhite,
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 }

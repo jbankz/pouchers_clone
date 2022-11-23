@@ -2,28 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
-import 'package:pouchers/ui/tab_layout/models/buy_cable_class.dart';
+import 'package:pouchers/ui/tab_layout/models/buy_electricity_class.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/constant/ui_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
-class Betting extends StatefulWidget {
-  const Betting({Key? key}) : super(key: key);
+class BuyElectricity extends StatefulWidget {
+  static const String routeName = "buyElectricity";
+
+  const BuyElectricity({Key? key}) : super(key: key);
 
   @override
-  State<Betting> createState() => _BettingState();
+  State<BuyElectricity> createState() => _BuyElectricityState();
 }
 
-class _BettingState extends State<Betting> {
+class _BuyElectricityState extends State<BuyElectricity> {
   bool _saveBeneficiary = false;
   TextEditingController contactController = TextEditingController();
   TextEditingController amountController = TextEditingController();
-  String _amount = "";
+  String _meterType = prepaid;
+
   Widget prefixIcon = Padding(
     padding: EdgeInsets.symmetric(vertical: kMediumPadding),
     child: Text(selectProvider,
@@ -34,11 +36,12 @@ class _BettingState extends State<Betting> {
           fontSize: 18,
         )),
   );
+
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
-      title: betting,
+      title: electricity,
       child: Column(
         children: [
           Expanded(
@@ -56,7 +59,7 @@ class _BettingState extends State<Betting> {
                       inkWell(
                           onTap: () async {
                             final result = await buildShowModalBottomSheet(
-                                context, CableModal());
+                                context, ElectricityModal());
                             if (result != SizedBox()) {
                               setState(() => prefixIcon = result);
                             }
@@ -72,19 +75,127 @@ class _BettingState extends State<Betting> {
                 SizedBox(
                   height: kMicroPadding,
                 ),
-
+                Text(
+                  meterType,
+                  style: textTheme.headline6,
+                ),
+                SizedBox(
+                  height: kSmallPadding,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    inkWell(
+                      onTap: (){
+                        setState(()=> _meterType = prepaid);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: kMediumPadding,
+                            vertical: kRegularPadding),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(kSmallPadding),
+                          border: Border.all(
+                            color: _meterType == prepaid ? kPrimaryColor : kLightPurple,
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: _meterType == prepaid ? kPrimaryColor : kPurpleColor400,
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: _meterType == prepaid ? Container(
+                                height: kSmallPadding,
+                                width: kSmallPadding,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color:  kPrimaryColor,
+                                ),
+                              ) : SizedBox(height: kSmallPadding, width: kSmallPadding,),
+                            ),
+                            SizedBox(
+                              width: kMediumPadding,
+                            ),
+                            Text(
+                              prepaid,
+                              style: textTheme.subtitle1!
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    inkWell(
+                      onTap: (){
+                        setState(()=> _meterType = postpaid);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: kMediumPadding,
+                            vertical: kRegularPadding),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(kSmallPadding),
+                          border: Border.all(
+                            color: _meterType == postpaid ? kPrimaryColor : kLightPurple,
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: _meterType == postpaid ? kPrimaryColor : kLightPurple,
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: _meterType == postpaid ? Container(
+                                height: kSmallPadding,
+                                width: kSmallPadding,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: kPrimaryColor,
+                                ),
+                              ) : SizedBox(height: kSmallPadding,width: kSmallPadding,),
+                            ),
+                            SizedBox(
+                              width: kMediumPadding,
+                            ),
+                            Text(
+                              postpaid,
+                              style: textTheme.subtitle1!
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: kMicroPadding,
+                ),
                 TextInputNoIcon(
                   textTheme: textTheme,
-                  text: accountId,
+                  text: meterNo,
                   controller: contactController,
-                  hintText: "Enter $accountId",
+                  hintText: enterMeterNo,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                   ],
                   icon: inkWell(
                     onTap: () async {
                       final PhoneContact contact =
-                      await FlutterContactPicker.pickPhoneContact();
+                          await FlutterContactPicker.pickPhoneContact();
                       setState(() {
                         contactController.text = contact.phoneNumber!.number!;
                       });
@@ -92,99 +203,6 @@ class _BettingState extends State<Betting> {
                     child: SvgPicture.asset(
                       AssetPaths.contactBook,
                       fit: BoxFit.scaleDown,
-                    ),
-                  ),
-                ),
-                Text(
-                  topDeal, style: textTheme.headline3,
-                ),
-                SizedBox(
-                  height: kSmallPadding,
-                ),
-                GridView.count(
-                  primary: false,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 1.15,
-                  children: List.generate(
-                    guestList.length,
-                        (index) => Column(
-                      children: [
-                        inkWell(
-                          onTap: () {
-                            setState(() {
-                              amountController.text = guestList[index].icon;
-                              _amount = guestList[index].icon;
-                            });
-                            amountController.selection =
-                                TextSelection.fromPosition(TextPosition(
-                                    offset: amountController.text.length));
-                          },
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: kLightPurple),
-                                  borderRadius:
-                                  BorderRadius.circular(kSmallPadding)),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(kPadding),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(kSmallPadding),
-                                        topLeft: Radius.circular(kSmallPadding),
-                                      ),
-                                      color: kPurpleColor,
-                                    ),
-                                    child: RichText(
-                                      text: TextSpan(
-                                        text: "₦",
-                                        style: TextStyle(
-                                          color: kPrimaryWhite,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 14,
-                                        ),
-                                        children: [
-                                          TextSpan(
-                                            text: guestList[index].title,
-                                            style: textTheme.headline4!.copyWith(
-                                              color: kLightPurple,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: kSmallPadding,
-                                  ),
-                                  RichText(
-                                    text: TextSpan(
-                                      text: "₦",
-                                      style: TextStyle(
-                                        color: kPrimaryTextColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14,
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: guestList[index].icon,
-                                          style: textTheme.subtitle1!.copyWith(
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: kRegularPadding,
-                                  ),
-                                ],
-                              )),
-                        ),
-                      ],
                     ),
                   ),
                 ),

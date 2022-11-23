@@ -35,23 +35,21 @@ void showSuccessBar(BuildContext context, String? value) {
   if (value != null) {
     Flushbar(
       message: value,
-      messageColor: kColorGreen,
+      messageColor: kPrimaryWhite,
       flushbarPosition: FlushbarPosition.TOP,
-      backgroundColor: kColorBackgroundGreen,
+      backgroundColor: kPrimaryTextColor,
       borderRadius: kBorderSmallRadius,
       icon: const Icon(
         Icons.check_circle_rounded,
-        color: kColorGreen,
+        color: kPrimaryWhite,
       ),
       mainButton: InkWell(
         onTap: () => Navigator.pop(context),
         child: const Icon(
           Icons.close_rounded,
-          color: kColorGreen,
+          color: kPrimaryWhite,
         ),
       ),
-      borderWidth: 1,
-      borderColor: kColorGreen,
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.only(left: 15, right: 20, top: 15, bottom: 15),
       duration: const Duration(seconds: 3),
@@ -64,17 +62,18 @@ class FlutterSwitchClass extends StatelessWidget {
   final Function(bool) onToggle;
 
   const FlutterSwitchClass(
-      {Key? key, required this.saveBeneficiary, required this.onToggle})
+      {Key? key, required this.saveBeneficiary, required this.onToggle,})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FlutterSwitch(
-        width: 75.0,
-        height: 45.0,
+        width:  65.0,
+        height: 40.0,
         valueFontSize: 25.0,
-        toggleSize: 35.0,
-        activeColor: kGreenColor,
+        toggleSize: 30.0,
+        activeColor: kPrimaryColor,
+        inactiveColor: kLightColor500,
         value: saveBeneficiary,
         borderRadius: 30.0,
         padding: 5.0,

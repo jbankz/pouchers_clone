@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
@@ -13,7 +14,7 @@ import 'package:pouchers/utils/widgets.dart';
 import 'package:collection/collection.dart';
 
 class BuyAirtime extends ConsumerStatefulWidget {
-  static const String routeName = "BuyAirtime";
+  static const String routeName = "buyAirtime";
 
   const BuyAirtime({Key? key}) : super(key: key);
 
@@ -121,8 +122,10 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   crossAxisCount: 3,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 1.15,
+                  // crossAxisSpacing: 10,
+                  // mainAxisSpacing: 10,
+                  childAspectRatio: SizeConfig.blockSizeHorizontal! / 3.3,
+                  // childAspectRatio: MediaQuery.of(context).devicePixelRatio / 2.2,
                   children: List.generate(
                     guestList.length,
                     (index) => Column(

@@ -7,21 +7,27 @@ import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/create_account/models/create_account_response.dart';
 import 'package:pouchers/ui/create_account/providers/create_account_provider.dart';
 import 'package:pouchers/ui/create_account/screens/poucher_tag.dart';
+import 'package:pouchers/ui/login/screens/login.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
-class VerifyAccount extends StatefulWidget {
-  final String email;
-  const VerifyAccount({Key? key, required this.email}) : super(key: key);
+class VerifyAccount extends ConsumerStatefulWidget {
+  static const String routeName = "verifyAccount";
+
+  final String? email;
+  final bool? fromLogin;
+
+  const VerifyAccount({Key? key, this.email, this.fromLogin = false})
+      : super(key: key);
 
   @override
-  State<VerifyAccount> createState() => _VerifyAccountState();
+  ConsumerState<VerifyAccount> createState() => _VerifyAccountState();
 }
 
-class _VerifyAccountState extends State<VerifyAccount> {
+class _VerifyAccountState extends ConsumerState<VerifyAccount> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _pin;
 
@@ -30,6 +36,12 @@ class _VerifyAccountState extends State<VerifyAccount> {
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return InitialPage(
+      onTap: () {
+        widget.fromLogin!
+            ? Navigator.popUntil(context,
+                (route) => route.settings.name == LogInAccount.routeName)
+            : Navigator.pop(context);
+      },
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,59 +63,37 @@ class _VerifyAccountState extends State<VerifyAccount> {
                           .copyWith(fontWeight: FontWeight.bold),
                     )
                   ],
-                  style: textTheme.bodyText1!),
+                  style: textTheme.bodyText1),
             ),
             SizedBox(
               height: kMacroPadding,
             ),
             Form(
               key: _formKey,
-              child: PinCodeTextField(
-                keyboardType: TextInputType.number,
-                enableActiveFill: true,
-                animationDuration: const Duration(milliseconds: 300),
-                cursorColor: kPrimaryColor,
-                errorTextSpace: 25,
-                validator: (val) {
-                  if (val!.isEmpty) {
-                    return emptyField;
-                  } else {
-                    return null;
+              child: PinCodeTextFieldWidget(
+                align: MainAxisAlignment.spaceBetween,
+                pinLength: 6,
+                onSaved: (val) => setState(() => _pin = val),
+                onChanged: (val) {
+                  if (val.length == 6) {
+                    ref.read(verifyEmailProvider.notifier).verifyEmail(
+                          otp: val,
+                        );
                   }
                 },
-                onSaved: (val) => setState(() => _pin = val),
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(11),
-                ],
-                textStyle: textTheme.subtitle1,
-                hintStyle: TextStyle(fontWeight: FontWeight.bold),
-                pinTheme: PinTheme(
-                  fieldWidth: 48,
-                  shape: PinCodeFieldShape.box,
-                  borderWidth: 1.5,
-                  selectedColor: kPrimaryColor,
-                  inactiveColor: kTransparent,
-                  activeColor: kTransparent,
-                  selectedFillColor: kBackgroundColor,
-                  activeFillColor: kBackgroundColor,
-                  inactiveFillColor: kBackgroundColor,
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                appContext: context,
-                length: 6,
-                onChanged: (val) {},
               ),
             ),
             SizedBox(
-              height: kFullPadding,
+              height: kLargePadding,
             ),
             Consumer(builder: (context, ref, _) {
               ref.listen(verifyEmailProvider,
                   (previous, NotifierState<VerifyEmailResponse> next) {
                 if (next.status == NotifierStatus.done) {
-                  pushTo(context, PoucherTag());
-                } else if(next.status == NotifierStatus.error) {
+                  pushTo(context, PoucherTag(),
+                      settings:
+                          const RouteSettings(name: PoucherTag.routeName));
+                } else if (next.status == NotifierStatus.error) {
                   showErrorBar(context, next.message!);
                 }
               });
@@ -127,7 +117,7 @@ class _VerifyAccountState extends State<VerifyAccount> {
             SizedBox(
               height: kMicroPadding,
             ),
-            CodeResendTimer(email: widget.email)
+            CodeResendTimer(email: widget.email, change: false,)
           ],
         ),
       ),

@@ -5,6 +5,7 @@ import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/login/providers/log_in_provider.dart';
 import 'package:pouchers/ui/login/screens/reset_successful.dart';
+import 'package:pouchers/ui/tab_layout/screens/account/change_password/change_password.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
@@ -12,9 +13,13 @@ import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
 class SetPassword extends StatefulWidget {
-  final String email;
+  static const String routeName = "setPassword";
 
-  const SetPassword({Key? key, required this.email}) : super(key: key);
+  final String? email;
+  final bool? isChangePassword;
+
+  const SetPassword({Key? key, this.email, this.isChangePassword})
+      : super(key: key);
 
   @override
   State<SetPassword> createState() => _SetPasswordState();
@@ -29,6 +34,12 @@ class _SetPasswordState extends State<SetPassword> {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
+      onTap: () {
+        widget.isChangePassword!
+            ? Navigator.popUntil(context,
+                (route) => route.settings.name == ChangePassword.routeName)
+            : Navigator.pop(context);
+      },
       child: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -53,7 +64,7 @@ class _SetPasswordState extends State<SetPassword> {
               TextInputNoIcon(
                 textTheme: textTheme,
                 text: newPassword,
-                hintText: newPasswordLow,
+                hintText: enterPassword,
                 obscure: obscure,
                 inputFormatters: [FilteringTextInputFormatter.deny(" ")],
                 validator: (val) {
@@ -92,7 +103,16 @@ class _SetPasswordState extends State<SetPassword> {
                 ref.listen(resetPasswordProvider,
                     (previous, NotifierState<String> next) {
                   if (next.status == NotifierStatus.done) {
-                    pushTo(context, ResetSuccessful(message: next.message!));
+                    print(widget.isChangePassword);
+                    pushTo(
+                        context,
+                        ResetSuccessful(
+                          message: successResetPassword,
+                          isChangePassword: widget.isChangePassword,
+                          isResetPin: false,
+                        ),
+                        settings: const RouteSettings(
+                            name: ResetSuccessful.routeName));
                   } else if (next.status == NotifierStatus.error) {
                     showErrorBar(context, next.message!);
                   }
@@ -101,10 +121,11 @@ class _SetPasswordState extends State<SetPassword> {
                 var _widget = LargeButton(
                   title: setPasswordText,
                   onPressed: () {
+                    FocusScope.of(context).unfocus();
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       ref.read(resetPasswordProvider.notifier).resetPassword(
-                            email: widget.email,
+                            email: widget.email!,
                             password: _password!,
                           );
                     }

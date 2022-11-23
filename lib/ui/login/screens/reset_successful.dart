@@ -1,34 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/login/screens/login.dart';
-import 'package:pouchers/ui/onboarding/onboarding.dart';
+import 'package:pouchers/ui/tab_layout/screens/account/account_settings.dart';
+import 'package:pouchers/ui/tab_layout/screens/tab_layout.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
 class ResetSuccessful extends StatelessWidget {
-  final String message;
+  static const String routeName = "resetSuccessful";
 
-  const ResetSuccessful({Key? key, required this.message}) : super(key: key);
+  final String? message;
+  final bool? isChangePassword;
+  final bool? isResetPin;
+
+  const ResetSuccessful(
+      {Key? key, this.message, this.isChangePassword, this.isResetPin = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
         onTap: () {
-          // pushToAndClearUntil(
-          //   context,
-          //   LogInAccount(),
-          //   routeName: OnBoardingPage.routeName,
-          // );
-          Navigator.popUntil(context,
-              (route) => route.settings.name == LogInAccount.routeName);
+          print(isChangePassword);
+          isResetPin!
+              ? Navigator.popUntil(context,
+                  (route) => route.settings.name == AccountSettings.routeName)
+              : isChangePassword!
+                  ? Navigator.popUntil(
+                      context,
+                      (route) =>
+                          route.settings.name == AccountSettings.routeName)
+                  : pushToAndClearStack(context, LogInAccount());
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(AssetPaths.resetSuccess),
+            Lottie.asset(AssetPaths.success, height: 200, width: 200),
             SizedBox(
               height: kMacroPadding,
             ),
@@ -40,7 +51,7 @@ class ResetSuccessful extends StatelessWidget {
               height: kPadding,
             ),
             Text(
-              message,
+              message!,
               // resetSuccessfulSub,
               textAlign: TextAlign.center,
               style: textTheme.bodyText1!
@@ -50,9 +61,24 @@ class ResetSuccessful extends StatelessWidget {
               height: kMacroPadding,
             ),
             LargeButton(
-              title: signIn,
+              title: isChangePassword!
+                  ? goBack
+                  : isResetPin!
+                      ? goBack
+                      : signIn,
               onPressed: () {
-                pushTo(context, LogInAccount());
+                isResetPin!
+                    ? Navigator.popUntil(
+                        context,
+                        (route) =>
+                            route.settings.name == AccountSettings.routeName)
+                    : isChangePassword!
+                        ? Navigator.popUntil(
+                            context,
+                            (route) =>
+                                route.settings.name ==
+                                AccountSettings.routeName)
+                        : pushToAndClearStack(context, LogInAccount());
               },
             )
           ],

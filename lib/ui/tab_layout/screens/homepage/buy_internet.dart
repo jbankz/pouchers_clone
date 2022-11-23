@@ -11,14 +11,16 @@ import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
-class BuyCable extends StatefulWidget {
-  const BuyCable({Key? key}) : super(key: key);
+class BuyInternet extends StatefulWidget {
+  static const String routeName = "buyInternet";
+
+  const BuyInternet({Key? key}) : super(key: key);
 
   @override
-  State<BuyCable> createState() => _BuyCableState();
+  State<BuyInternet> createState() => _BuyInternetState();
 }
 
-class _BuyCableState extends State<BuyCable> {
+class _BuyInternetState extends State<BuyInternet> {
   TextEditingController contactController = TextEditingController();
   bool _saveBeneficiary = false;
   Widget prefixIcon = Padding(
@@ -42,17 +44,15 @@ class _BuyCableState extends State<BuyCable> {
           fontSize: 18,
         )),
   );
-
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
-      title: cable,
+      title: internet,
       child: Column(
         children: [
           Expanded(
             child: ListView(
-              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
@@ -84,15 +84,16 @@ class _BuyCableState extends State<BuyCable> {
                 ),
                 TextInputNoIcon(
                   textTheme: textTheme,
-                  text: cardNumber,
+                  text: accountId,
                   controller: contactController,
+                  hintText: "Enter $accountId",
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                   ],
                   icon: inkWell(
                     onTap: () async {
                       final PhoneContact contact =
-                          await FlutterContactPicker.pickPhoneContact();
+                      await FlutterContactPicker.pickPhoneContact();
                       setState(() {
                         contactController.text = contact.phoneNumber!.number!;
                       });

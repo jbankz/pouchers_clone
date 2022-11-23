@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/ui/create_account/providers/create_account_provider.dart';
+import 'package:pouchers/ui/login/providers/log_in_provider.dart';
+import 'package:pouchers/ui/tab_layout/providers/account_provider.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
@@ -25,6 +27,7 @@ class TextInputNoIcon extends StatelessWidget {
       this.widget,
       this.textCapitalize,
         this.prefixIcon,
+        this.maxLine,
       this.obscure,
       this.hintText,
       this.focusNode});
@@ -36,6 +39,7 @@ class TextInputNoIcon extends StatelessWidget {
   final Widget? prefixIcon;
   final bool? obscure;
   final bool? read;
+  final int? maxLine;
   final Function(String?)? onSaved;
   final Function(String?)? onChanged;
   final TextInputType? inputType;
@@ -79,6 +83,7 @@ class TextInputNoIcon extends StatelessWidget {
             onChanged: onChanged,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             inputFormatters: inputFormatters,
+            maxLines: maxLine ?? 1 ,
             decoration: InputDecoration(
               filled: true,
               hintText: hintText,
@@ -88,6 +93,8 @@ class TextInputNoIcon extends StatelessWidget {
               fillColor: kBackgroundColor,
               border: OutlineInputBorder(),
               prefix: prefixIcon ?? SizedBox(),
+              errorMaxLines: 2,
+              errorStyle: textTheme.headline5!.copyWith(color: kColorRed, fontSize: 12, overflow: TextOverflow.visible),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(style: BorderStyle.none),
                 borderRadius: BorderRadius.circular(kSmallPadding),
@@ -118,8 +125,9 @@ class TextInputNoIcon extends StatelessWidget {
 
 class CodeResendTimer extends StatefulWidget {
   final String? email;
+  final bool change;
 
-  const CodeResendTimer({this.email});
+  const CodeResendTimer({this.email, required this.change});
 
   @override
   _CodeResendTimerState createState() => _CodeResendTimerState();
@@ -169,17 +177,17 @@ class _CodeResendTimerState extends State<CodeResendTimer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Consumer(
+         !widget.change ? Consumer(
             builder: (context, ref, _) {
-              ref.listen(resendEmailProvider,
+              ref.listen(resendOtpProvider,
                       (previous, NotifierState<String> next) {
                     if (next.status == NotifierStatus.done) {
                       showSuccessBar(context, next.data);
                       refreshTime = 60;
+                      ref.read(checkResendProvider.notifier).state = 1;
                       activateTimer();
-
-                    } else {
-                      showErrorBar(context, next.data!);
+                    } else if(next.status == NotifierStatus.error) {
+                      showErrorBar(context, next.message!);
                     }
                   });
               var _widget = Row(
@@ -192,11 +200,74 @@ class _CodeResendTimerState extends State<CodeResendTimer> {
                   inkWell(
                     onTap: refreshTime == 0
                         ? () {
-                            ref
-                                .read(resendEmailProvider.notifier)
-                                .resendVerificationEmail(
-                                  email: widget.email!,
-                                );
+                      ref
+                          .read(resendOtpProvider.notifier)
+                          .resendOtp(
+                        email: widget.email!,
+                      );
+                    }
+                        : null,
+                    child: Container(
+                      child: refreshTime == 0
+                          ? Text(
+                        resend,
+                        style: textTheme.headline6!.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: kPrimaryColor,
+                        ),
+                        textAlign: TextAlign.center,
+                      )
+                          : Text(
+                        "$resend in ${timeCheck()}",
+                        style: textTheme.headline6!.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: kRegularPadding,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(kMediumPadding),
+                          color: refreshTime == 0
+                              ? kLightPurple
+                              : kBackgroundColor),
+                    ),
+                  )
+                ],
+              );
+              return ref.watch(resendOtpProvider).when(
+                  done: (done) => _widget,
+                  loading: () => SpinKitDemo(),
+                  error: (val) => _widget);
+            },
+          ) :
+          Consumer(
+            builder: (context, ref, _) {
+              ref.listen(forgotPasswordProvider,
+                      (previous, NotifierState<String> next) {
+                    if (next.status == NotifierStatus.done) {
+                      showSuccessBar(context, next.data);
+                      refreshTime = 60;
+                      activateTimer();
+
+                    } else if(next.status == NotifierStatus.error) {
+                      showErrorBar(context, next.message!);
+                    }
+                  });
+              var _widget = Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    noCode,
+                    style: textTheme.headline3,
+                  ),
+                  inkWell(
+                    onTap: refreshTime == 0
+                        ? () {
+                      ref.read(forgotPasswordProvider.notifier).forgotPassword(
+                        email: widget.email!,
+                      );
                           }
                         : null,
                     child: Container(
@@ -228,7 +299,7 @@ class _CodeResendTimerState extends State<CodeResendTimer> {
                   )
                 ],
               );
-              return ref.watch(resendEmailProvider).when(
+              return ref.watch(forgotPasswordProvider).when(
                   done: (done) => _widget,
                   loading: () => SpinKitDemo(),
                   error: (val) => _widget);

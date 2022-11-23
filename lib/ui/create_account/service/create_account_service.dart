@@ -61,6 +61,8 @@ class CreateAccountService {
   static Future<ServiceResponse<VerifyEmailResponse>> verifyEmail({
     required String otp,
   }) async {
+    await Hive.openBox(kTokenBox);
+
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
@@ -171,4 +173,41 @@ class CreateAccountService {
       return processServiceError<String>(error, stack);
     }
   }
+
+  static Future<ServiceResponse<TagResponse>> createPin(
+      {required String pin, required String token}) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    };
+
+    String url = "${baseUrl()}/auth/create-pin";
+
+    log(url);
+
+    log("what is body $pin");
+
+    try {
+      http.Response response = await http.post(
+        Uri.parse(url),
+        headers: _authHeaders,
+        body: jsonEncode({"pin": pin}),
+      );
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<TagResponse>(
+            data: TagResponse.fromJson(responseBody),
+            message: responseBody["message"]);
+      }
+    } catch (error, stack) {
+      log(error);
+      log(stack);
+      return processServiceError<TagResponse>(error, stack);
+    }
+  }
+
 }

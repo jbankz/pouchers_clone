@@ -19,10 +19,17 @@ final createTagProvider = StateNotifierProvider.autoDispose<CreateTagNotifier,
   return CreateTagNotifier(ref.read(createAccountRepoProvider));
 });
 
+final createPinProvider = StateNotifierProvider.autoDispose<CreatePinNotifier,
+    NotifierState<TagResponse>>((ref) {
+  return CreatePinNotifier(ref.read(createAccountRepoProvider));
+});
+
 final resendEmailProvider = StateNotifierProvider.autoDispose<
     ResendEmailNotifier, NotifierState<String>>((ref) {
   return ResendEmailNotifier(ref.read(createAccountRepoProvider));
 });
+
+
 
 class CreateAccountNotifier
     extends StateNotifier<NotifierState<CreateAccountResponse>>
@@ -82,6 +89,23 @@ class CreateTagNotifier extends StateNotifier<NotifierState<TagResponse>>
     }
   }
 }
+
+class CreatePinNotifier extends StateNotifier<NotifierState<TagResponse>>
+    with ResponseHandler {
+  final CreateAccountRepository _repo;
+
+  CreatePinNotifier(this._repo) : super(NotifierState());
+
+  void createPin({required String pin, Function()? then}) async {
+    state = notifyLoading();
+    state = await _repo.createPin(pin: pin);
+    if (state.status == NotifierStatus.done) {
+      if (then != null) then();
+    }
+  }
+}
+
+
 
 class ResendEmailNotifier extends StateNotifier<NotifierState<String>>
     with ResponseHandler {

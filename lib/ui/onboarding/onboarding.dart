@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/ui/create_account/screens/biometrics_page.dart';
 import 'package:pouchers/ui/create_account/screens/create_account.dart';
 import 'package:pouchers/ui/login/screens/login.dart';
 import 'package:pouchers/ui/onboarding/welcome_guest.dart';
@@ -103,6 +103,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: SafeArea(
@@ -136,12 +137,12 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(onBoardingTitle,
-                          style: textTheme.headline1!.copyWith(height: 1.4)),
+                          style: textTheme.headline1!.copyWith(height: 1.3, fontSize: SizeConfig.blockSizeVertical! *  3)),
                       // SizedBox(
                       //   height: kPadding,
                       // ),
                       Text(onBoardingSubTitle,
-                          style: textTheme.bodyText1!.copyWith(height: 1.5)),
+                          style: textTheme.bodyText1!.copyWith(height: 1.5, fontSize: SizeConfig.blockSizeVertical! *  2.5)),
                       // SizedBox(
                       //   height: kFullPadding,
                       // ),
@@ -170,7 +171,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             child: LargeButton(
                               title: register,
                               onPressed: () {
-                                pushTo(context, CreateAccount());
+                                pushTo(context, CreateAccount(), settings: const RouteSettings(
+                                    name: CreateAccount.routeName));
                               },
                             ),
                           ),
@@ -184,6 +186,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           pushTo(
                             context,
                             WelcomeGuest(),
+                               settings: const RouteSettings(
+                          name: WelcomeGuest.routeName)
                           );
                         },
                         child: Row(

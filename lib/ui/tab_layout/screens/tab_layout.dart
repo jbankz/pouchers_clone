@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:pouchers/ui/tab_layout/screens/cards/card_home.dart';
+import 'package:pouchers/ui/tab_layout/screens/cards/create_card.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/homepage.dart';
+import 'package:pouchers/ui/tab_layout/screens/profile/profile_page.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/widgets.dart';
 
 class TabLayout extends StatefulWidget {
+  static const String routeName = "tabLayout";
+
   final int? gottenIndex;
 
   TabLayout({this.gottenIndex});
@@ -26,9 +31,10 @@ class _TabLayoutState extends State<TabLayout> {
 
   List<Widget> items = [
     HomePage(),
+    CardHome(),
+    // CreateCard(),
     Container(),
-    Container(),
-    Container(),
+    ProfilePage(),
   ];
 
   @override
@@ -76,33 +82,29 @@ class _TabLayoutState extends State<TabLayout> {
           unselectedFontSize: 12,
           selectedItemColor: kPrimaryColor,
           unselectedItemColor: kDarkGrey,
-          unselectedLabelStyle: textTheme.headline2!.copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 12
-          ),
-          selectedLabelStyle: textTheme.headline2!.copyWith(
-            fontWeight: FontWeight.w500,
-            fontSize: 12
-          ),
+          unselectedLabelStyle: textTheme.headline2!
+              .copyWith(fontWeight: FontWeight.w500, fontSize: 12),
+          selectedLabelStyle: textTheme.headline2!
+              .copyWith(fontWeight: FontWeight.w500, fontSize: 12),
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: NavBarItem("nav_home.png", false),
-              activeIcon: NavBarItem("nav_home.png", true),
+              icon: NavBarItem("nav_home.svg", false),
+              activeIcon: NavBarItem("nav_home.svg", true),
               label: "Home",
             ),
             BottomNavigationBarItem(
-              icon: NavBarItem("nav_card.png", false),
-              activeIcon: NavBarItem("nav_card.png", true),
+              icon: NavBarItem("nav_card.svg", false),
+              activeIcon: NavBarItem("nav_card.svg", true),
               label: "Cards",
             ),
             BottomNavigationBarItem(
-              icon: NavBarItem("nav_swap.png", false),
-              activeIcon: NavBarItem("nav_swap.png", true),
+              icon: NavBarItem("nav_swap.svg", false),
+              activeIcon: NavBarItem("nav_swap.svg", true),
               label: "Transactions",
             ),
             BottomNavigationBarItem(
-              icon: NavBarItem("nav_account.png", false),
-              activeIcon: NavBarItem("nav_account.png", true),
+              icon: NavBarItem("nav_account.svg", false),
+              activeIcon: NavBarItem("nav_account.svg", true),
               label: "Account",
             )
           ],

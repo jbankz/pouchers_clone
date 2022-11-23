@@ -1,31 +1,31 @@
 import 'package:hive/hive.dart';
 import 'package:pouchers/utils/strings.dart';
 
-Future<void> persistAccessToken({required String accessToken, required DateTime tokenExpiry}) async {
+Future<void> persistAccessToken(
+    {required String accessToken, required DateTime tokenExpiry}) async {
   try {
     await Hive.box(kTokenBox).put(kAccessTokenKey, accessToken);
     await Hive.box(kTokenBox).put(kAccessTokenExpiryKey, tokenExpiry);
-
   } catch (e) {
-    throw  "An error occurred.";
+    throw "An error occurred.";
   }
 }
 
 Future<void> persistRefreshToken(String refreshToken) async {
   try {
     await Hive.box(kTokenBox).put(kRefreshTokenKey, refreshToken);
-
   } catch (e) {
     throw "An error occurred.";
   }
 }
 
 Future<String?> getAccessToken() async {
-var expiredToken =   await Hive.box(kTokenBox).get(kAccessTokenExpiryKey);
+  await Hive.openBox(kTokenBox);
+  var expiredToken = await Hive.box(kTokenBox).get(kAccessTokenExpiryKey);
 
-  if (Hive.box(kTokenBox).get("session_start") != null && DateTime.now()
-      .isAfter(Hive.box(kTokenBox).get("session_start").add(Duration(hours: expiredToken.hour, minutes: expiredToken.minute)))) {
-
+  if (Hive.box(kTokenBox).get("session_start") != null &&
+      DateTime.now().isAfter(Hive.box(kTokenBox).get("session_start").add(
+          Duration(hours: expiredToken.hour, minutes: expiredToken.minute)))) {
     try {
       // await AuthRepositoryImpl().refreshToken();
       String? token = Hive.box(kTokenBox).get(kAccessTokenKey);
@@ -39,7 +39,6 @@ var expiredToken =   await Hive.box(kTokenBox).get(kAccessTokenExpiryKey);
       print(e);
       print(s);
       throw "Something went wrong.";
-
     }
   } else {
     String? token = Hive.box(kTokenBox).get(kAccessTokenKey);

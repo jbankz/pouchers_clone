@@ -14,6 +14,15 @@ Future<T?> pushTo<T>(
   );
 }
 
+Future<T?> pushNamedTo<T>(
+    BuildContext context,
+    String routeName, {
+      RouteSettings? settings,
+      dynamic args,
+    }) async {
+  return await Navigator.pushNamed(context, routeName, arguments: args);
+}
+
 Future<T> pushReplacementTo<T>(
   BuildContext context,
   Widget page,

@@ -9,10 +9,9 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:pouchers/app/helpers/service_constants.dart';
 import 'package:pouchers/app/helpers/session_manager.dart';
-import 'package:pouchers/ui/login/screens/login.dart';
+import 'package:pouchers/routes.dart';
+import 'package:pouchers/ui/login/models/login_response.dart';
 import 'package:pouchers/ui/onboarding/onboarding.dart';
-import 'package:pouchers/ui/tab_layout/screens/buy_airtime.dart';
-import 'package:pouchers/ui/tab_layout/screens/tab_layout.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/logger.dart';
 import 'package:pouchers/utils/strings.dart';
@@ -21,22 +20,34 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Env.setEnvironment(EnvState.test);
   Directory directory = await path.getApplicationDocumentsDirectory();
-  Hive..init(directory.path);
+  Hive
+    ..init(directory.path)
+    ..registerAdapter(HiveStoreResponseDataAdapter());
+
   const secureStorage = FlutterSecureStorage();
-  final eKey = await secureStorage.read(key: kHiveEncryptionKey);
-  if (eKey == null) {
-    final key = Hive.generateSecureKey();
-    await secureStorage.write(
-      key: kHiveEncryptionKey,
-      value: base64UrlEncode(key),
-    );
+  try {
+    final eKey = await secureStorage.read(key: kHiveEncryptionKey);
+    if (eKey == null) {
+      final key = Hive.generateSecureKey();
+      await secureStorage.write(
+        key: kHiveEncryptionKey,
+        value: base64UrlEncode(key),
+      );
+    }
+  } on PlatformException catch (e) {
+    await secureStorage.deleteAll();
   }
 
   final key = await secureStorage.read(key: kHiveEncryptionKey);
-  final hiveEncryptionKey = base64Url.decode(key!);
-  await Hive.openBox(kTokenBox,
-      encryptionCipher: HiveAesCipher(hiveEncryptionKey));
+  if (key != null) {
+    final hiveEncryptionKey = base64Url.decode(key);
+    await Hive.openBox(kTokenBox,
+        encryptionCipher: HiveAesCipher(hiveEncryptionKey));
+  }
 
+  await Hive.openBox(kUserBox);
+  await Hive.openBox(k2FACodeBox);
+  await Hive.openBox(kBiometricsBox);
   SessionManager.initSharedPreference().then((value) {
     return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
         .then((_) {
@@ -55,19 +66,13 @@ class MyApp extends StatelessWidget {
         ProviderLogger(),
       ],
       child: MaterialApp(
-        title: "Pouchers",
-        theme: kThemeData,
-        debugShowCheckedModeBanner: false,
-        home:
-        TabLayout(),
-        // OnBoardingPage(),
-        routes: {
-          LogInAccount.routeName: (BuildContext context) =>
-              const LogInAccount(),
-          OnBoardingPage.routeName: (BuildContext context) => OnBoardingPage(),
-          BuyAirtime.routeName: (BuildContext context) => BuyAirtime()
-        },
-      ),
+          title: "Pouchers",
+          theme: kThemeData,
+          debugShowCheckedModeBanner: false,
+          home:
+              // TabLayout(),
+              OnBoardingPage(),
+          routes: appRoutes),
     );
   }
 }

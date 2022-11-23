@@ -16,6 +16,7 @@ import 'package:pouchers/utils/widgets.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({Key? key}) : super(key: key);
+  static const String routeName = "createAccount";
 
   @override
   State<CreateAccount> createState() => _CreateAccountState();
@@ -61,6 +62,8 @@ class _CreateAccountState extends State<CreateAccount> {
                     validator: (val) {
                       if (val!.isEmpty) {
                         return emptyField;
+                      } else if (val.length < 2) {
+                        return lessValueField;
                       } else {
                         return null;
                       }
@@ -79,6 +82,8 @@ class _CreateAccountState extends State<CreateAccount> {
                     validator: (val) {
                       if (val!.isEmpty) {
                         return emptyField;
+                      } else if (val.length < 2) {
+                        return lessValueField;
                       } else {
                         return null;
                       }
@@ -86,6 +91,13 @@ class _CreateAccountState extends State<CreateAccount> {
                   ),
                 ),
               ],
+            ),
+            Text(
+              createAccSub,
+              style: textTheme.headline2!.copyWith(color: kIconGrey),
+            ),
+            SizedBox(
+              height: kRegularPadding,
             ),
             TextInputNoIcon(
               textTheme: textTheme,
@@ -110,6 +122,8 @@ class _CreateAccountState extends State<CreateAccount> {
               validator: (val) {
                 if (val!.isEmpty) {
                   return emptyField;
+                } else if(val.length != 11){
+                  return elevenDigits;
                 } else {
                   return null;
                 }
@@ -168,10 +182,13 @@ class _CreateAccountState extends State<CreateAccount> {
                   (previous, NotifierState<CreateAccountResponse> next) {
                 if (next.status == NotifierStatus.done) {
                   pushTo(
-                      context,
-                      VerifyAccount(
-                        email: _email!,
-                      ));
+                    context,
+                    VerifyAccount(
+                      email: _email!,
+                    ),
+                    settings:
+                        const RouteSettings(name: VerifyAccount.routeName),
+                  );
                 } else if (next.status == NotifierStatus.error) {
                   showErrorBar(context, next.message!);
                 }
@@ -179,6 +196,7 @@ class _CreateAccountState extends State<CreateAccount> {
               var _widget = LargeButton(
                 title: createAccount,
                 onPressed: () {
+                  FocusScope.of(context).unfocus();
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     ref.read(createAccountProvider.notifier).createAccount(
@@ -209,7 +227,9 @@ class _CreateAccountState extends State<CreateAccount> {
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          pushTo(context, LogInAccount());
+                          pushTo(context, LogInAccount(),
+                              settings: const RouteSettings(
+                                  name: LogInAccount.routeName));
                         },
                       text: logIn,
                       style: textTheme.headline6!.copyWith(

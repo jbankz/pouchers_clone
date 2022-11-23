@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
@@ -13,7 +14,7 @@ import 'package:pouchers/utils/widgets.dart';
 import 'package:collection/collection.dart';
 
 class BuyData extends ConsumerStatefulWidget {
-  static const String routeName = "BuyAirtime";
+  static const String routeName = "buyData";
 
   const BuyData({Key? key}) : super(key: key);
 
@@ -172,9 +173,10 @@ class _BuyDataState extends ConsumerState<BuyData>
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   crossAxisCount: 3,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
-                  childAspectRatio: 0.85,
+                  childAspectRatio: SizeConfig.blockSizeHorizontal! / 4.7,
+                  // crossAxisSpacing: 15,
+                  // mainAxisSpacing: 15,
+                  // childAspectRatio: 0.85,
                   children: List.generate(
                     guestListData.length,
                     (index) => Column(

@@ -11,14 +11,15 @@ import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
-class BuyInternet extends StatefulWidget {
-  const BuyInternet({Key? key}) : super(key: key);
+class BuyCable extends StatefulWidget {
+  static const String routeName = "buyCable";
+  const BuyCable({Key? key}) : super(key: key);
 
   @override
-  State<BuyInternet> createState() => _BuyInternetState();
+  State<BuyCable> createState() => _BuyCableState();
 }
 
-class _BuyInternetState extends State<BuyInternet> {
+class _BuyCableState extends State<BuyCable> {
   TextEditingController contactController = TextEditingController();
   bool _saveBeneficiary = false;
   Widget prefixIcon = Padding(
@@ -42,15 +43,17 @@ class _BuyInternetState extends State<BuyInternet> {
           fontSize: 18,
         )),
   );
+
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
-      title: internet,
+      title: cable,
       child: Column(
         children: [
           Expanded(
             child: ListView(
+              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
@@ -82,16 +85,15 @@ class _BuyInternetState extends State<BuyInternet> {
                 ),
                 TextInputNoIcon(
                   textTheme: textTheme,
-                  text: accountId,
+                  text: cardNumber,
                   controller: contactController,
-                  hintText: "Enter $accountId",
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                   ],
                   icon: inkWell(
                     onTap: () async {
                       final PhoneContact contact =
-                      await FlutterContactPicker.pickPhoneContact();
+                          await FlutterContactPicker.pickPhoneContact();
                       setState(() {
                         contactController.text = contact.phoneNumber!.number!;
                       });

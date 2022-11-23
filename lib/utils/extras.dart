@@ -46,6 +46,7 @@ final phoneProvider = StateProvider<int>((ref) => 0);
 ServiceResponse<T> processServiceError<T>(error, stack) {
   logger.i("$error\n$stack");
   if (error is Failure) {
+    print("sdfgh${error.message}");
     return serveError<T>(
       error: error.message!,
     );
@@ -53,6 +54,7 @@ ServiceResponse<T> processServiceError<T>(error, stack) {
   if (error is Exception) {
     return serveError<T>(error: Utils.handleRequestError(error));
   }
+  print("sdfke,gh${error.message}");
   return serveError<T>(error: error.toString());
 }
 

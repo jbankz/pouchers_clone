@@ -65,17 +65,22 @@ double kCalculatedMargin(Size size) => size.width * (1 - kWidthRatio) / 2;
 
 // Colors
 const Color kPrimaryTextColor = Color(0xff060628);
+const Color kPurpleDeep = Color(0xff2C1D6D);
 const Color kSecondaryTextColor = Color(0xFF8F8E9B);
 const Color kPrimaryColor = Color(0xff5034C4);
 const Color kPrimaryGrey = Color(0xff6D7A98);
+const Color kBrightPurple = Color(0xff7F61DB);
 const Color kPrimaryWhite = Colors.white;
 const Color kBackgroundColor = Color(0xFFF4F4FB);
 const Color kIconPink = Color(0xFFFF5FCD);
 const Color kPurpleColor = Color(0xff5034C4);
 const Color kColorGreen = Color(0xff00BB64);
+const Color kLightColorGreen = Color(0xffF4FBF6);
 const Color kColorOrange = Color(0xffFF6414);
+const Color kColorYellow200 = Color(0xffE8A706);
 const Color kColorBackgroundLight = Color(0xffEEEBFA);
 const Color kColorBackgroundLight100 = Color(0xffF8F9FD);
+const Color kColorBackgroundLight200 = Color(0xffF7F9FB);
 const Color kLightPurple = Color(0xffE9E6FD);
 const Color kDarkGrey = Color(0xFF9B9BA5);
 const Color kDarkFill = Color(0xFF160808);
@@ -83,11 +88,15 @@ const Color kPurpleLight = Color(0xffC3C3FE);
 const Color kColorBackgroundRed = Color(0xffFEF2F2);
 const Color kColorBackgroundGreen = Color(0xFFEAFBF1);
 const Color kColorRed = Color(0xFFFF5460);
+const Color kColorLightRed = Color(0xFFFFEEE6);
+const Color kColorLightYellow = Color(0xFFFCF7EB);
 const Color kPurple200 = Color(0xFFDCDCFF);
 const Color kPurple300 = Color(0xffE4E1F5);
 const Color kOffWhite = Color(0xffF4F4F4);
 const Color kTransparent = Colors.transparent;
 const Color kPrimaryBlack = Color(0xff0B2253);
+const Color kDeepPurple = Color(0xff110E2F);
+
 const Color kIconGrey = Color(0xFF6D6D6F);
 const Color kContainerColor = Color(0xFFF7F7F8);
 const Color kPurpleColor100 = Color(0xFFC7C7E1);
@@ -95,7 +104,21 @@ const Color kPurpleColor200 = Color(0xFFD9DBE9);
 const Color kDarkFill100 = Color(0xFF14142B);
 const Color kPurpleColor300 = Color(0xFFEFF0F7);
 const Color kGreenColor = Color(0xff27BE63);
+const Color kGreen100Color = Color(0xff227B41);
 const Color kPurpleColor400 = Color(0xffA5ADC0);
+const Color kLightColor500 = Color(0xffDEE3EB);
+const Color kLightOrange = Color(0xffCE4C09);
+const Color kSecondaryPurple = Color(0xff6463FD);
+const Color kLightOrange100 = Color(0xffFFF5DB);
+const Color kLight100 = Color(0xffF4F4F5);
+const Color kLightOrange200 = Color(0xffF8B64C);
+const Color kLightYellow200 = Color(0xffD8F042);
+const Color kLightOrange300 = Color(0xff996600);
+const Color kPurpleColor500 = Color(0xFFDDDBF5);
+const Color kPurpleColor600 = Color(0xFFE8E8F1);
+const Color kPurpleColor700 = Color(0xFF8A76DB);
+const Color kPurpleColor800 = Color(0xFFF8F7FC);
+const Color kLightColor200 = Color(0xFFC8C8C8);
 
 
 // Border
@@ -163,6 +186,7 @@ TextStyle kHeadline2TextStyle = const TextStyle(
   fontFamily: "DMSans",
   fontSize: 16,
 );
+
 TextStyle kHeadline3TextStyle = const TextStyle(
   fontWeight: FontWeight.normal,
   color: kSecondaryTextColor,
@@ -181,7 +205,7 @@ TextStyle kBodyText1Style = const TextStyle(
   fontWeight: FontWeight.normal,
   color: kSecondaryTextColor,
   fontFamily: "DMSans",
-  fontSize: 18,
+   fontSize: 18,
 );
 
 TextStyle kBodyText2Style = const TextStyle(

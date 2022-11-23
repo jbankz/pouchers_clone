@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/login/screens/login.dart';
 import 'package:pouchers/ui/tab_layout/screens/tab_layout.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
@@ -14,6 +16,7 @@ import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
 class BiometricsPage extends StatefulWidget {
+  static const String routeName = "biometricsPage";
   const BiometricsPage({Key? key}) : super(key: key);
 
   @override
@@ -56,7 +59,6 @@ class _BiometricsPageState extends State<BiometricsPage> {
                           ? AssetPaths.fingerprint
                           : AssetPaths.faceId,
                       color: kPrimaryColor,
-                      scale: 0.7,
                     ),
                   ),
                 ),
@@ -100,7 +102,7 @@ class _BiometricsPageState extends State<BiometricsPage> {
                   onTap: () {
                     pushToAndClearStack(
                       context,
-                      TabLayout(),
+                      LogInAccount()
                     );
                   },
                   child: Text(
@@ -142,8 +144,11 @@ class _BiometricsPageState extends State<BiometricsPage> {
         print("\ttech: $availableBiometrics");
       });
     } else {
-      showErrorBar(context,
-          "No biometrics are available, Please input your credentials");
+      showErrorBar(context, "No biometrics available for this device");
+      Future.delayed(Duration(seconds: 4)).then((value) => pushToAndClearStack(
+            context,
+            LogInAccount(),
+          ));
     }
 
     bool authenticated = false;
@@ -163,7 +168,7 @@ class _BiometricsPageState extends State<BiometricsPage> {
             IOSAuthMessages()
           ]);
     } catch (e) {
-      showErrorBar(context, "Error using Biometric Auth");
+      // showErrorBar(context, "No Biometric available on this Device");
       print("error using biometric auth: $e");
     }
 

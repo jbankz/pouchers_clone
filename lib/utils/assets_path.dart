@@ -7,11 +7,16 @@ class AssetPaths {
    static String faceId = "${imgPath}face-id.png";
    static String send = "${imgPath}send.png";
    static String airplane = "${imgPath}airplane.png";
-   static String resetSuccess = "${imgPath}reset_success.png";
    static String pageImage = "${imgPath}page_image.png";
    static String poucherLogo = "${imgPath}pouchers_logo.png";
    static String fingerprint = "${imgPath}fingerprint.png";
    static String dstv = "${imgPath}dstv.png";
+   static String twoFactor = "${imgPath}two_factor.png";
+   static String success = "${imgPath}success.json";
+   static String frame1 = "${imgPath}frame1.png";
+   static String frame_naira = "${imgPath}frame_naira.png";
+   static String nairaCard = "${imgPath}ooooo.png";
+   static String visaCard = "${imgPath}visa_card.png";
 
    /// ICONS
   /// Add svg filenames and extension from the assets directory e.g ${iconPath}icon.svg here
@@ -37,7 +42,30 @@ class AssetPaths {
    static String airtelIcon = "${iconPath}airtel.svg";
    static String backSpaceIcon = "${iconPath}backspace.svg";
    static String dSTVIcon = "${iconPath}dstv.svg";
-   // static String dstvIcon = "${iconPath}dstv.svg";
-   // static String dstvIcon = "${iconPath}dstv.svg";
+   static String googleAuthIcon = "${iconPath}google_auth_logo.svg";
+   static String authSuccessIcon = "${iconPath}auth_success_icon.svg";
+   static String shieldIcon = "${iconPath}shield.svg";
+   static String verifiedIcon = "${iconPath}verified_icon.svg";
+   static String faIcon = "${iconPath}faicon.svg";
+   static String uploadIcon = "${iconPath}upload.svg";
+   static String tierIcon = "${iconPath}tier_icon.svg";
+   static String accountIcon = "${iconPath}account_icon.svg";
+   static String helpIcon = "${iconPath}help_icon.svg";
+   static String legalIcon = "${iconPath}legal_icon.svg";
+   static String referralIcon = "${iconPath}referral_icon.svg";
+   static String savedCardIcon = "${iconPath}saved_card_icon.svg";
+   static String pouIcon = "${iconPath}pou_logo.svg";
+   static String nairaIcon = "${iconPath}naira.svg";
+   static String dollarIcon = "${iconPath}dollar.svg";
+   static String cardFrameIcon = "${iconPath}card_frame.svg";
+   static String fundCardIcon = "${iconPath}fund_card.svg";
+   static String cardDetailIcon = "${iconPath}card_detail.svg";
+   static String  manageIcon = "${iconPath}manage.svg";
+   static String  visaIcon = "${iconPath}visa_logo.svg";
+   static String  copyIcon = "${iconPath}copy.svg";
+   static String  freezeCardIcon = "${iconPath}freeze_card.svg";
+
+
+
 
 }

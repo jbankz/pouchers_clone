@@ -11,6 +11,8 @@ import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
 class ForgotPassword extends StatefulWidget {
+  static const String routeName = "forgotPassword";
+
   const ForgotPassword({Key? key}) : super(key: key);
 
   @override
@@ -69,11 +71,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             var _widget = LargeButton(
               title: recoverPassword,
               onPressed: () {
+                FocusScope.of(context).unfocus();
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   ref.read(forgotPasswordProvider.notifier).forgotPassword(
-                    email: _email!,
-                  );
+                        email: _email!,
+                      );
                 }
               },
             );
@@ -82,9 +85,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 (previous, NotifierState<String> next) {
               if (next.status == NotifierStatus.done) {
                 pushTo(
-                  context,
-                  ResetPasswordCode(email : _email!),
-                );
+                    context,
+                    ResetPasswordCode(
+                      email: _email!,
+                      isChangePassword: false,
+                      isChangePhone: false,
+                      forgot: true,
+                    ),
+                    settings:
+                        const RouteSettings(name: ResetPasswordCode.routeName));
               } else if (next.status == NotifierStatus.error) {
                 showErrorBar(context, next.message!);
               }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';
@@ -10,7 +13,7 @@ class LargeButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool whiteButton;
   final Color? disableColor;
-  final bool outlineButton, isLoading, customColor;
+  final bool outlineButton, isLoading, customColor, download;
 
   LargeButton(
       {required this.title,
@@ -19,6 +22,7 @@ class LargeButton extends StatelessWidget {
       this.outlineButton = false,
       this.customColor = false,
       this.isLoading = false,
+      this.download = false,
       this.whiteButton = false});
 
   @override
@@ -29,6 +33,7 @@ class LargeButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(kTransparent),
           elevation: MaterialStateProperty.all<double>(0.0),
           backgroundColor: MaterialStateProperty.all<Color>(whiteButton
               ? kPrimaryWhite
@@ -60,9 +65,13 @@ class LargeButton extends StatelessWidget {
               )
             : Text(
                 title,
-                style:  textTheme.subtitle1!.copyWith(
+                style: textTheme.subtitle1!.copyWith(
                     fontWeight: FontWeight.w500,
-                    color: whiteButton ? kPrimaryTextColor : kPrimaryWhite),
+                    color: download
+                        ? kPrimaryColor
+                        : whiteButton
+                            ? kPrimaryTextColor
+                            : kPrimaryWhite),
               ),
       ),
     );
@@ -109,12 +118,15 @@ class InitialPage extends StatelessWidget {
   final bool noBackButton;
   final Function()? onTap;
   final String? title;
+  final Color? color, titleColor;
 
   const InitialPage(
       {Key? key,
       required this.child,
       this.title,
+        this.titleColor,
       this.onTap,
+      this.color,
       this.noBackButton = false})
       : super(key: key);
 
@@ -122,18 +134,19 @@ class InitialPage extends StatelessWidget {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
+      backgroundColor: color ?? kPrimaryWhite,
       appBar: AppBar(
         title: Text(
           title == null ? "" : title!,
           style: textTheme.headline4!
-              .copyWith(fontWeight: FontWeight.w500, fontSize: 16),
+              .copyWith(fontWeight: FontWeight.w500, fontSize: 18, color: titleColor ?? kPrimaryTextColor),
         ),
         centerTitle: title != null ? true : false,
         backgroundColor: kTransparent,
         leading: noBackButton
             ? SizedBox()
             : IconButton(
-                icon: Icon(Icons.arrow_back_ios),
+                icon: Icon(Icons.arrow_back_ios, color: titleColor ?? kPrimaryGrey,),
                 onPressed: onTap == null ? () => Navigator.pop(context) : onTap,
               ),
       ),
@@ -318,9 +331,9 @@ class NavBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      "${imgPath}$icon",
-      height: 40,
+    return SvgPicture.asset(
+      "${iconPath}$icon",
+      height: 24,
       color: isActive ? kPrimaryColor : kDarkGrey,
     );
   }
@@ -358,18 +371,25 @@ Future<dynamic> buildShowModalBottomSheet(BuildContext context, Widget widget) {
 class SuccessMessage extends StatelessWidget {
   final String text, subText;
   final Function() onTap;
-  const SuccessMessage({Key? key, required this.text, required this.subText, required this.onTap}) : super(key: key);
+
+  const SuccessMessage(
+      {Key? key,
+      required this.text,
+      required this.subText,
+      required this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    return InitialPage(child: Column(
+    return InitialPage(
+        child: Column(
       children: [
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(AssetPaths.resetSuccess),
+              Lottie.asset(AssetPaths.success, height: 200, width: 200),
               SizedBox(
                 height: kMacroPadding,
               ),
@@ -390,10 +410,7 @@ class SuccessMessage extends StatelessWidget {
           ),
         ),
         LargeButton(
-            title: continueText,
-            disableColor: kPurpleColor,
-            onPressed: onTap
-        ),
+            title: continueText, disableColor: kPurpleColor, onPressed: onTap),
         SizedBox(
           height: kMediumPadding,
         ),
@@ -402,12 +419,76 @@ class SuccessMessage extends StatelessWidget {
   }
 }
 
-Widget makeDismissible({required Widget child, required BuildContext context}) => GestureDetector(
-  behavior: HitTestBehavior.opaque,
-  onTap: () => Navigator.pop(context),
-  child: GestureDetector(
-    onTap: () {},
-    child: child,
-  ),
-);
+Widget makeDismissible(
+        {required Widget child, required BuildContext context}) =>
+    GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => Navigator.pop(context),
+      child: GestureDetector(
+        onTap: () {},
+        child: child,
+      ),
+    );
 
+class PinCodeTextFieldWidget extends StatelessWidget {
+  final Function(String?) onSaved;
+  final Function(String) onChanged;
+  final MainAxisAlignment align;
+  final int pinLength;
+  final FocusNode? focusNode;
+  final TextEditingController? controller;
+
+  const PinCodeTextFieldWidget({
+    Key? key,
+    required this.onSaved,
+    required this.onChanged,
+    required this.pinLength,
+    this.focusNode,
+    this.controller,
+    required this.align
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+    return PinCodeTextField(
+        keyboardType: TextInputType.number,
+        enableActiveFill: true,
+        mainAxisAlignment: align,
+        animationDuration: const Duration(milliseconds: 300),
+        cursorColor: kPrimaryColor,
+        controller: controller,
+        errorTextSpace: 25,
+        focusNode: focusNode,
+        validator: (val) {
+          if (val!.isEmpty) {
+            return emptyField;
+          } else {
+            return null;
+          }
+        },
+        onSaved: onSaved,
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+          LengthLimitingTextInputFormatter(6),
+        ],
+        textStyle: textTheme.subtitle1,
+        hintStyle: TextStyle(fontWeight: FontWeight.bold),
+        pinTheme: PinTheme(
+          fieldWidth: 48,
+          shape: PinCodeFieldShape.box,
+          fieldOuterPadding: align == MainAxisAlignment.spaceBetween ? null : EdgeInsets.only(right: kSmallPadding),
+          borderWidth: 1.5,
+          selectedColor: kPrimaryColor,
+          inactiveColor: kTransparent,
+          activeColor: kTransparent,
+          selectedFillColor: kBackgroundColor,
+          activeFillColor: kBackgroundColor,
+          inactiveFillColor: kBackgroundColor,
+          borderRadius: BorderRadius.circular(3),
+        ),
+        appContext: context,
+        length: pinLength,
+        onChanged: onChanged);
+  }
+}
