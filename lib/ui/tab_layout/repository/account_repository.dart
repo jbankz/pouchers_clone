@@ -6,7 +6,6 @@ import 'package:pouchers/ui/login/models/login_response.dart';
 import 'package:pouchers/ui/tab_layout/models/profile_model.dart';
 import 'package:pouchers/ui/tab_layout/models/security_question.dart';
 import 'package:pouchers/ui/tab_layout/models/tier_list.dart';
-import 'package:pouchers/ui/tab_layout/providers/account_provider.dart';
 import 'package:pouchers/ui/tab_layout/service/account_service.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:riverpod/riverpod.dart';
@@ -69,6 +68,8 @@ class AccountRepository {
     String? gender,
     String? profilePicture,
     String? utilityBill,
+    bool? isLoginBiometricActive,
+    bool? isPaymentBiometricActive
   }) async {
     final accessToken = await getAccessToken();
     final result = await AccountService.editProfile(
@@ -80,6 +81,8 @@ class AccountRepository {
         gender: gender,
         profilePicture: profilePicture,
         utilityBill: utilityBill,
+        isLoginBiometricActive: isLoginBiometricActive,
+        isPaymentBiometricActive: isPaymentBiometricActive,
         token: accessToken!);
     print("result$result");
     if (result.data != null) {

@@ -11,7 +11,7 @@ import 'package:pouchers/app/helpers/service_constants.dart';
 import 'package:pouchers/app/helpers/session_manager.dart';
 import 'package:pouchers/routes.dart';
 import 'package:pouchers/ui/login/models/login_response.dart';
-import 'package:pouchers/ui/onboarding/onboarding.dart';
+import 'package:pouchers/ui/onboarding/screens/onboarding.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/logger.dart';
 import 'package:pouchers/utils/strings.dart';

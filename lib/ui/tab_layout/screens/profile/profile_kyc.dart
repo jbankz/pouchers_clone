@@ -53,9 +53,6 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
   @override
   void initState() {
     super.initState();
-    print(
-        "https://photow-profile-images.s3.us-west-2.amazonaws.com/${userProfile.profilePicture}");
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       for (int i = minimumSelected.year + 1;
           i < maximumSelected.year + 1;
@@ -131,7 +128,7 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                       showSuccessBar(context, next.data!.message);
                       ref.read(editProfileInHouseProvider.notifier).state =
                           EditProfileData()
-                              .copyWith(profilePicture: selectedImage);
+                              .copyWith(profilePicture: "https://photow-profile-images.s3.us-west-2.amazonaws.com/$selectedImage");
                     }
                   });
 
@@ -157,8 +154,7 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                             child: CachedNetworkImage(
                                 height: 105,
                                 width: 105,
-                                imageUrl:
-                                    "https://photow-profile-images.s3.us-west-2.amazonaws.com/${ref.watch(editProfileInHouseProvider).profilePicture ?? ""}",
+                                imageUrl: ref.watch(editProfileInHouseProvider).profilePicture ?? "",
                                 placeholder: (context, url) => Container(
                                       color: Colors.transparent,
                                       height: 105,
@@ -173,7 +169,35 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                                       ),
                                     ),
                                 fit: BoxFit.cover,
-                                errorWidget: (context, url, error) => Container(
+                                errorWidget: (context, url, error) =>  ref
+                                    .watch(editProfileInHouseProvider)
+                                    .profilePicture !=
+                                    null
+                                    ? Image.network(
+                                  ref
+                                      .watch(editProfileInHouseProvider)
+                                      .profilePicture!,
+                                  fit: BoxFit.fill,
+                                  loadingBuilder: (BuildContext context,
+                                      Widget child,
+                                      ImageChunkEvent? loadingProgress) {
+                                    if (loadingProgress == null)
+                                      return child;
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress
+                                            .expectedTotalBytes !=
+                                            null
+                                            ? loadingProgress
+                                            .cumulativeBytesLoaded /
+                                            loadingProgress
+                                                .expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    );
+                                  },
+                                )
+                                    : Container(
                                     padding: EdgeInsets.all(8),
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
@@ -482,7 +506,7 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
         });
         ref
             .read(editProfileProvider2.notifier)
-            .editProfile(profilePicture: selectedImage);
+            .editProfile(profilePicture: "https://photow-profile-images.s3.us-west-2.amazonaws.com/$selectedImage");
       }
     } catch (e) {
       setState(() {

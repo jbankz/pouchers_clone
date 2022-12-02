@@ -115,7 +115,7 @@ class LargeLoadingButton extends StatelessWidget {
 
 class InitialPage extends StatelessWidget {
   final Widget child;
-  final bool noBackButton;
+  final bool noBackButton, addSpace;
   final Function()? onTap;
   final String? title;
   final Color? color, titleColor;
@@ -124,9 +124,10 @@ class InitialPage extends StatelessWidget {
       {Key? key,
       required this.child,
       this.title,
-        this.titleColor,
+      this.titleColor,
       this.onTap,
       this.color,
+      this.addSpace = true,
       this.noBackButton = false})
       : super(key: key);
 
@@ -138,22 +139,28 @@ class InitialPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           title == null ? "" : title!,
-          style: textTheme.headline4!
-              .copyWith(fontWeight: FontWeight.w500, fontSize: 18, color: titleColor ?? kPrimaryTextColor),
+          style: textTheme.headline4!.copyWith(
+              fontWeight: FontWeight.w500,
+              fontSize: 18,
+              color: titleColor ?? kPrimaryTextColor),
         ),
         centerTitle: title != null ? true : false,
         backgroundColor: kTransparent,
         leading: noBackButton
             ? SizedBox()
             : IconButton(
-                icon: Icon(Icons.arrow_back_ios, color: titleColor ?? kPrimaryGrey,),
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: titleColor ?? kPrimaryGrey,
+                ),
                 onPressed: onTap == null ? () => Navigator.pop(context) : onTap,
               ),
       ),
       body: SafeArea(
         child: Container(
             padding: EdgeInsets.symmetric(
-                horizontal: kMediumPadding, vertical: kSmallPadding),
+                horizontal: addSpace ? kMediumPadding : 0,
+                vertical: addSpace ? kSmallPadding : 0),
             child: child),
       ),
     );
@@ -383,39 +390,42 @@ class SuccessMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
+        onTap: onTap,
         child: Column(
-      children: [
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Lottie.asset(AssetPaths.success, height: 200, width: 200),
-              SizedBox(
-                height: kMacroPadding,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(AssetPaths.success, height: 200, width: 200),
+                  SizedBox(
+                    height: kMacroPadding,
+                  ),
+                  Text(
+                    text,
+                    style: textTheme.headline1,
+                  ),
+                  SizedBox(
+                    height: kPadding,
+                  ),
+                  Text(
+                    subText,
+                    textAlign: TextAlign.center,
+                    style: textTheme.bodyText1!
+                        .copyWith(fontWeight: FontWeight.normal, height: 1.6),
+                  ),
+                ],
               ),
-              Text(
-                text,
-                style: textTheme.headline1,
-              ),
-              SizedBox(
-                height: kPadding,
-              ),
-              Text(
-                subText,
-                textAlign: TextAlign.center,
-                style: textTheme.bodyText1!
-                    .copyWith(fontWeight: FontWeight.normal, height: 1.6),
-              ),
-            ],
-          ),
-        ),
-        LargeButton(
-            title: continueText, disableColor: kPurpleColor, onPressed: onTap),
-        SizedBox(
-          height: kMediumPadding,
-        ),
-      ],
-    ));
+            ),
+            LargeButton(
+                title: continueText,
+                disableColor: kPurpleColor,
+                onPressed: onTap),
+            SizedBox(
+              height: kMediumPadding,
+            ),
+          ],
+        ));
   }
 }
 
@@ -438,15 +448,15 @@ class PinCodeTextFieldWidget extends StatelessWidget {
   final FocusNode? focusNode;
   final TextEditingController? controller;
 
-  const PinCodeTextFieldWidget({
-    Key? key,
-    required this.onSaved,
-    required this.onChanged,
-    required this.pinLength,
-    this.focusNode,
-    this.controller,
-    required this.align
-  }) : super(key: key);
+  const PinCodeTextFieldWidget(
+      {Key? key,
+      required this.onSaved,
+      required this.onChanged,
+      required this.pinLength,
+      this.focusNode,
+      this.controller,
+      required this.align})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -477,7 +487,9 @@ class PinCodeTextFieldWidget extends StatelessWidget {
         pinTheme: PinTheme(
           fieldWidth: 48,
           shape: PinCodeFieldShape.box,
-          fieldOuterPadding: align == MainAxisAlignment.spaceBetween ? null : EdgeInsets.only(right: kSmallPadding),
+          fieldOuterPadding: align == MainAxisAlignment.spaceBetween
+              ? null
+              : EdgeInsets.only(right: kSmallPadding),
           borderWidth: 1.5,
           selectedColor: kPrimaryColor,
           inactiveColor: kTransparent,

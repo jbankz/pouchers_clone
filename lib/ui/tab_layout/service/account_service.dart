@@ -191,6 +191,8 @@ class AccountService {
     String? dob,
     String? profilePicture,
     String? utilityBill,
+    bool? isLoginBiometricActive,
+    isPaymentBiometricActive,
     required String token,
   }) async {
     Map<String, String> _authHeaders = {
@@ -211,6 +213,9 @@ class AccountService {
     if (gender != null) body["gender"] = gender;
     if (profilePicture != null) body["profile_picture"] = profilePicture;
     if (utilityBill != null) body["utility_bill"] = utilityBill;
+    if(isLoginBiometricActive != null) body["is_login_biometric_active"] = isLoginBiometricActive;
+    if(isPaymentBiometricActive != null) body["is_payment_biometric_active"] = isPaymentBiometricActive;
+
     log(url);
     log(body);
 
@@ -506,7 +511,8 @@ class AccountService {
         throw Failure.fromJson(responseBody);
       } else {
         return serveSuccess<EditProfileResponse>(
-            data: EditProfileResponse.fromJson(responseBody), message: responseBody["message"]);
+            data: EditProfileResponse.fromJson(responseBody),
+            message: responseBody["message"]);
       }
     } catch (error, stack) {
       log(error);
@@ -516,7 +522,9 @@ class AccountService {
   }
 
   static Future<ServiceResponse<EditProfileResponse>> validateId(
-      {required String idType, required String idNumber, required String token}) async {
+      {required String idType,
+      required String idNumber,
+      required String token}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
@@ -524,10 +532,7 @@ class AccountService {
     };
 
     String url = "${baseUrl()}/user/validate-id";
-    Map<String, dynamic> body = {
-      "id_type" : idType,
-      "id_number" : idNumber
-    };
+    Map<String, dynamic> body = {"id_type": idType, "id_number": idNumber};
 
     log(url);
     log("what is body $body");
@@ -544,7 +549,8 @@ class AccountService {
         throw Failure.fromJson(responseBody);
       } else {
         return serveSuccess<EditProfileResponse>(
-            data: EditProfileResponse.fromJson(responseBody), message: responseBody["message"]);
+            data: EditProfileResponse.fromJson(responseBody),
+            message: responseBody["message"]);
       }
     } catch (error, stack) {
       log(error);
@@ -552,7 +558,6 @@ class AccountService {
       return processServiceError<EditProfileResponse>(error, stack);
     }
   }
-
 
   static Future<ServiceResponse<TierListResponse>> getTierList(
       {required String token}) async {
@@ -588,7 +593,9 @@ class AccountService {
   }
 
   static Future<ServiceResponse<String>> getSignedUrl(
-      {required String token, required String fileName, required bool isPhoto}) async {
+      {required String token,
+      required String fileName,
+      required bool isPhoto}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
@@ -599,27 +606,20 @@ class AccountService {
 
     log(url);
 
-    Map<String, dynamic> photoBody = {
-      "profile_picture" : fileName
-    };
-    Map<String, dynamic> utilityBody = {
-      "utility_bill" : fileName
-    };
+    Map<String, dynamic> photoBody = {"profile_picture": fileName};
+    Map<String, dynamic> utilityBody = {"utility_bill": fileName};
 
     try {
-      http.Response response = await http.patch(
-        Uri.parse(url),
-        headers: _authHeaders,
-        body: jsonEncode(isPhoto ? photoBody : utilityBody)
-      );
+      http.Response response = await http.patch(Uri.parse(url),
+          headers: _authHeaders,
+          body: jsonEncode(isPhoto ? photoBody : utilityBody));
       logResponse(response);
       var responseBody = jsonDecode(response.body);
       if (response.statusCode >= 300 && response.statusCode <= 520) {
         throw Failure.fromJson(responseBody);
       } else {
         return serveSuccess<String>(
-            data: responseBody["data"],
-            message: responseBody["message"]);
+            data: responseBody["data"], message: responseBody["message"]);
       }
     } catch (error, stack) {
       log(error);
@@ -628,8 +628,9 @@ class AccountService {
     }
   }
 
-  static Future<ServiceResponse<String>> generate2FAToken(
-      {required String token,}) async {
+  static Future<ServiceResponse<String>> generate2FAToken({
+    required String token,
+  }) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
@@ -642,8 +643,8 @@ class AccountService {
 
     try {
       http.Response response = await http.post(
-          Uri.parse(url),
-          headers: _authHeaders,
+        Uri.parse(url),
+        headers: _authHeaders,
       );
       logResponse(response);
       var responseBody = jsonDecode(response.body);
@@ -674,11 +675,8 @@ class AccountService {
     log(url);
 
     try {
-      http.Response response = await http.post(
-        Uri.parse(url),
-        headers: _authHeaders,
-        body: jsonEncode({"user2faToken" : userToken})
-      );
+      http.Response response = await http.post(Uri.parse(url),
+          headers: _authHeaders, body: jsonEncode({"user2faToken": userToken}));
       logResponse(response);
       var responseBody = jsonDecode(response.body);
       if (response.statusCode >= 300 && response.statusCode <= 520) {
@@ -686,7 +684,7 @@ class AccountService {
       } else {
         return serveSuccess<bool>(
             data: responseBody["data"]["is_2fa_active"],
-            message:  responseBody["message"]);
+            message: responseBody["message"]);
       }
     } catch (error, stack) {
       log(error);
@@ -695,8 +693,9 @@ class AccountService {
     }
   }
 
-  static Future<ServiceResponse<bool>> disable2FA(
-      {required String token,}) async {
+  static Future<ServiceResponse<bool>> disable2FA({
+    required String token,
+  }) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
@@ -727,8 +726,4 @@ class AccountService {
       return processServiceError<bool>(error, stack);
     }
   }
-
-
 }
-
-

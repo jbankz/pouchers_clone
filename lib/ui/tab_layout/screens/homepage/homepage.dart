@@ -6,15 +6,20 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/login/models/login_response.dart';
+import 'package:pouchers/ui/make_payment/screens/transfer_poucher_friend.dart';
 import 'package:pouchers/ui/tab_layout/models/profile_model.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/ui/tab_layout/providers/account_provider.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/fund_wallet.dart';
 import 'package:pouchers/ui/tab_layout/screens/profile/profile_account_verification.dart';
+import 'package:pouchers/ui/tab_layout/screens/tab_layout.dart';
+import 'package:pouchers/ui/tab_layout/widgets/home_widget.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/constant/ui_constants.dart';
 import 'package:pouchers/utils/strings.dart';
+import 'package:pouchers/utils/widgets.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   static const String routeName = "homePage";
@@ -39,13 +44,17 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    print(userProfile.profilePicture);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if (ref.watch(editProfileInHouseProvider).profilePicture == null) {
-        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData()
-            .copyWith(profilePicture: userProfile.profilePicture);
+        ref.read(editProfileInHouseProvider.notifier).state =
+            await EditProfileData()
+                .copyWith(profilePicture: userProfile.profilePicture);
+        setState(() {});
       }
+
+      print("refthings${ref.watch(editProfileInHouseProvider).profilePicture}");
     });
   }
 
@@ -66,142 +75,163 @@ class _HomePageState extends ConsumerState<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(116),
-                  child: CachedNetworkImage(
-                      height: 50,
-                      width: 50,
-                      imageUrl:
-                          "https://photow-profile-images.s3.us-west-2.amazonaws.com/${ref.watch(editProfileInHouseProvider).profilePicture ?? ""}",
-                      placeholder: (context, url) => Container(
-                            color: Colors.transparent,
-                            height: 50,
-                            width: 50,
-                            child: const Center(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    kPrimaryColor),
+            inkWell(
+              onTap: () {
+                pushTo(
+                    context,
+                    TabLayout(
+                      gottenIndex: 3,
+                    ),
+                    settings: const RouteSettings(name: TabLayout.routeName));
+              },
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(116),
+                    child: CachedNetworkImage(
+                        height: 50,
+                        width: 50,
+                        imageUrl: ref
+                                .watch(editProfileInHouseProvider)
+                                .profilePicture ??
+                            "",
+                        placeholder: (context, url) => Container(
+                              color: Colors.transparent,
+                              height: 50,
+                              width: 50,
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      kPrimaryColor),
+                                ),
                               ),
                             ),
-                          ),
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) => Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: kPrimaryColor),
-                            child: Text(
-                                ref
-                                                .watch(
-                                                    editProfileInHouseProvider)
-                                                .firstName ==
-                                            null ||
-                                        ref
-                                                .watch(
-                                                    editProfileInHouseProvider)
-                                                .lastName ==
-                                            null
-                                    ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
-                                    : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
-                                style: textTheme.bodyText2!.copyWith(fontSize: 22)),
-                          )
-                      //     Column(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     Container(
-                      //       height: kRegularPadding,
-                      //       width: kRegularPadding,
-                      //       decoration: BoxDecoration(
-                      //           shape: BoxShape.circle, color: kPurpleColor),
-                      //     ),
-                      //     SizedBox(
-                      //       height: kPadding,
-                      //     ),
-                      //     Container(
-                      //       height: kRegularPadding,
-                      //       width: 35,
-                      //       decoration: BoxDecoration(
-                      //           borderRadius: BorderRadius.only(
-                      //               topLeft: Radius.circular(kSmallPadding),
-                      //               bottomLeft: Radius.circular(kPadding),
-                      //               topRight: Radius.circular(kSmallPadding),
-                      //               bottomRight: Radius.circular(kPadding)),
-                      //           color: kPurpleColor500),
-                      //     )
-                      //   ],
-                      // ),
-                      ),
-                ),
-                SizedBox(
-                  width: kSmallPadding,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RichText(
-                          text: TextSpan(
-                              text: "$welcome ",
-                              style: textTheme.headline3!.copyWith(
-                                color: kDarkFill,
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) => Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: kPrimaryColor,
                               ),
-                              children: [
-                            TextSpan(
-                              text: ref
+                              child: ref
                                           .watch(editProfileInHouseProvider)
-                                          .firstName ==
+                                          .profilePicture !=
                                       null
-                                  ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.firstName!.substring(1).toLowerCase()}"
-                                  : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).firstName!.substring(1).toLowerCase()}",
-                              style: textTheme.headline3!.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: kDarkFill),
-                            )
-                          ])),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: kSmallPadding, vertical: 2),
-                        decoration: BoxDecoration(
-                            color: kColorBackgroundLight,
-                            border:
-                                Border.all(color: kPurpleColor700, width: 0.7),
-                            borderRadius: BorderRadius.circular(kSmallPadding)),
-                        child:
-                            ref.watch(editProfileInHouseProvider).tierLevels ==
-                                    null
-                                ? Text(
-                                    "$tier ${userProfile.tierLevels}",
-                                    style: textTheme.headline4!.copyWith(
-                                      color: kSecondaryPurple,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  )
-                                : Text(
-                                    "$tier ${ref.watch(editProfileInHouseProvider).tierLevels}",
-                                    style: textTheme.headline4!.copyWith(
-                                      color: kSecondaryPurple,
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                                  ? Image.network(
+                                      ref
+                                          .watch(editProfileInHouseProvider)
+                                          .profilePicture!,
+                                      fit: BoxFit.fill,
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent? loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes!
+                                                : null,
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  :
+                                  Center(
+                                    child: Text(
+                                        ref
+                                                        .watch(
+                                                            editProfileInHouseProvider)
+                                                        .firstName ==
+                                                    null ||
+                                                ref
+                                                        .watch(
+                                                            editProfileInHouseProvider)
+                                                        .lastName ==
+                                                    null
+                                            ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
+                                            : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
+                                        style: textTheme.bodyText2!
+                                            .copyWith(fontSize: 22)),
                                   ),
-                      ),
-                    ],
+                            )),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: kPadding),
-                  child: Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: kBackgroundColor),
-                    child: SvgPicture.asset(
-                      AssetPaths.notification,
-                      fit: BoxFit.scaleDown,
+                  SizedBox(
+                    width: kSmallPadding,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                            text: TextSpan(
+                                text: "$welcome ",
+                                style: textTheme.headline3!.copyWith(
+                                  color: kDarkFill,
+                                ),
+                                children: [
+                              TextSpan(
+                                text: ref
+                                            .watch(editProfileInHouseProvider)
+                                            .firstName ==
+                                        null
+                                    ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.firstName!.substring(1).toLowerCase()}"
+                                    : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).firstName!.substring(1).toLowerCase()}",
+                                style: textTheme.headline3!.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: kDarkFill),
+                              )
+                            ])),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: kSmallPadding, vertical: 2),
+                          decoration: BoxDecoration(
+                              color: kColorBackgroundLight,
+                              border: Border.all(
+                                  color: kPurpleColor700, width: 0.7),
+                              borderRadius:
+                                  BorderRadius.circular(kSmallPadding)),
+                          child: ref
+                                      .watch(editProfileInHouseProvider)
+                                      .tierLevels ==
+                                  null
+                              ? Text(
+                                  "$tier ${userProfile.tierLevels}",
+                                  style: textTheme.headline4!.copyWith(
+                                    color: kSecondaryPurple,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                )
+                              : Text(
+                                  "$tier ${ref.watch(editProfileInHouseProvider).tierLevels}",
+                                  style: textTheme.headline4!.copyWith(
+                                    color: kSecondaryPurple,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                        ),
+                      ],
                     ),
                   ),
-                )
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(right: kPadding),
+                    child: Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: kBackgroundColor),
+                      child: SvgPicture.asset(
+                        AssetPaths.notification,
+                        fit: BoxFit.scaleDown,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
             SizedBox(
               height: kMediumPadding,
@@ -312,17 +342,35 @@ class _HomePageState extends ConsumerState<HomePage> {
                     children: [
                       HomeIcons(
                         icon: AssetPaths.walletIcon,
-                        onTap: () {},
+                        onTap: () {
+                          pushTo(context, FundWallet(),
+                              settings: const RouteSettings(
+                                  name: FundWallet.routeName));
+                        },
                         text: fundWallet,
                       ),
                       HomeIcons(
                         icon: AssetPaths.swapIcon,
-                        onTap: () {},
+                        onTap: () {
+                          buildShowModalBottomSheet(
+                            context,
+                            HomeModal(),
+                          );
+                        },
                         text: transfer,
                       ),
                       HomeIcons(
                         icon: AssetPaths.moneyBagIcon,
-                        onTap: () {},
+                        onTap: () {
+                          pushTo(
+                            context,
+                            TransferPoucherFriend(
+                              isRequestMoney: true,
+                            ),
+                            settings: const RouteSettings(
+                                name: TransferPoucherFriend.routeName),
+                          );
+                        },
                         text: request,
                       ),
                     ],
@@ -345,10 +393,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 crossAxisCount: 4,
-                // mainAxisSpacing: 10,
                 childAspectRatio: SizeConfig.blockSizeHorizontal! / 5.2,
-
-                // childAspectRatio: MediaQuery.of(context).devicePixelRatio / 3.5,
                 children: List.generate(
                   guestHomeClass.length,
                   (index) => Column(
@@ -386,9 +431,6 @@ class _HomePageState extends ConsumerState<HomePage> {
             ),
             Container(
               height: SizeConfig.blockSizeVertical! * 24,
-              // MediaQuery.of(context).size.height /
-              //     MediaQuery.of(context).size.width *
-              //     90,
               width: double.infinity,
               alignment: Alignment.bottomLeft,
               child: PageView(

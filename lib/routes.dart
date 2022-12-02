@@ -1,8 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:pouchers/ui/login/screens/reset_password_code.dart';
-import 'package:pouchers/ui/onboarding/onboarding.dart';
+import 'package:pouchers/ui/onboarding/screens/onboarding.dart';
+import 'package:pouchers/ui/onboarding/screens/pay_ussd.dart';
 import 'package:pouchers/ui/tab_layout/screens/account/two_factor_auth/disable_auth_question2.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/voucher.dart';
 import 'ui/create_account/screens/biometrics_page.dart';
 import 'ui/create_account/screens/create_account.dart';
 
@@ -13,7 +15,11 @@ import 'ui/login/screens/forgot_password.dart';
 import 'ui/login/screens/login.dart';
 import 'ui/login/screens/reset_successful.dart';
 import 'ui/login/screens/set_password.dart';
-import 'ui/onboarding/welcome_guest.dart';
+import 'ui/make_payment/screens/transfer_poucher_friend.dart';
+import 'ui/make_payment/screens/transfer_summary.dart';
+import 'ui/onboarding/screens/guest_email.dart';
+import 'ui/onboarding/screens/pay_card.dart';
+import 'ui/onboarding/screens/welcome_guest.dart';
 import 'ui/tab_layout/screens/account/account_settings.dart';
 import 'ui/tab_layout/screens/account/biometric_settings.dart';
 import 'ui/tab_layout/screens/account/change_password/change_password.dart';
@@ -109,5 +115,11 @@ Map<String, WidgetBuilder> appRoutes = {
   CreateVirtualCard.routeName: (context) => CreateVirtualCard(),
   CardSummary.routeName: (context) => CardSummary(),
   CardHome.routeName: (context) => CardHome(),
-  FundWallet.routeName: (context) => FundWallet()
+  FundWallet.routeName: (context) => FundWallet(),
+  TransferPoucherFriend.routeName: (context) =>TransferPoucherFriend(),
+  TransferSummary.routeName: (context) => TransferSummary(),
+  GetGuestEmail.routeName: (context) => GetGuestEmail(),
+  PayWithCard.routeName: (context) => PayWithCard(),
+  PayWithUssd.routeName: (context) => PayWithUssd(),
+  Vouchers.routeName: (context) => Vouchers()
 };

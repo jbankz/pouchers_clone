@@ -40,7 +40,9 @@ class HiveStoreResponseDataAdapter extends TypeAdapter<HiveStoreResponseData> {
         gender: fields[20] as String?,
         address: fields[21] as String?,
         profilePicture: fields[22] as String?,
-        is2faActive: fields[23] as bool?);
+        is2faActive: fields[23] as bool?,
+        isLoginBiometricActive: fields[24] as bool?,
+        isPaymentBiometricActive: fields[25] as bool?);
   }
 
   @override
@@ -93,7 +95,11 @@ class HiveStoreResponseDataAdapter extends TypeAdapter<HiveStoreResponseData> {
       ..writeByte(22)
       ..write(obj.profilePicture)
       ..writeByte(23)
-      ..write(obj.is2faActive);
+      ..write(obj.is2faActive)
+      ..writeByte(24)
+      ..write(obj.isLoginBiometricActive)
+      ..writeByte(25)
+      ..write(obj.isPaymentBiometricActive);
   }
 
   @override

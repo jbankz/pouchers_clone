@@ -13,6 +13,7 @@ import 'package:pouchers/ui/create_account/screens/create_account.dart';
 import 'package:pouchers/ui/create_account/screens/create_pin.dart';
 import 'package:pouchers/ui/create_account/screens/poucher_tag.dart';
 import 'package:pouchers/ui/create_account/screens/verify_account.dart';
+import 'package:pouchers/ui/login/models/login_response.dart';
 import 'package:pouchers/ui/login/providers/log_in_provider.dart';
 import 'package:pouchers/ui/login/screens/forgot_password.dart';
 import 'package:pouchers/ui/tab_layout/screens/account/two_factor_auth/security_modal.dart';
@@ -26,17 +27,19 @@ import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
-class LogInAccount extends StatefulWidget {
+import '../../tab_layout/providers/account_provider.dart';
+
+class LogInAccount extends ConsumerStatefulWidget {
   static const String routeName = "logIn";
   final bool? disabled;
 
   const LogInAccount({Key? key, this.disabled = false}) : super(key: key);
 
   @override
-  State<LogInAccount> createState() => _LogInAccountState();
+  ConsumerState<LogInAccount> createState() => _LogInAccountState();
 }
 
-class _LogInAccountState extends State<LogInAccount> {
+class _LogInAccountState extends ConsumerState<LogInAccount> {
   bool obscure = true;
   TextEditingController controller = TextEditingController();
   String? _password;
@@ -44,12 +47,18 @@ class _LogInAccountState extends State<LogInAccount> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool? _canCheckBiometrics;
   bool isAuth = false;
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Hive.openBox(kBiometricsBox);
+      // if(userProfile.isLoginBiometricActive!){
+      //   await Hive.box(kBiometricsBox).put(kBiometricsKey, 1);
+      // }else{
+      //   await Hive.box(kBiometricsBox).put(kBiometricsKey, 0);
+      // }
       setState(() {});
       if (widget.disabled!) {
         Future.delayed(Duration(seconds: 1)).then((value) => showDialog(
@@ -252,7 +261,9 @@ class _LogInAccountState extends State<LogInAccount> {
               ),
               Hive.box(kBiometricsBox).get(kBiometricsKey) == null
                   ? SizedBox()
-                  : inkWell(
+                  : ref.watch(editProfileInHouseProvider).isLoginBiometricActive!
+
+                  ? inkWell(
                       onTap: () {
                         checkBiometric(context);
                       },
@@ -267,11 +278,12 @@ class _LogInAccountState extends State<LogInAccount> {
                           Platform.isAndroid
                               ? AssetPaths.fingerprint
                               : AssetPaths.faceId,
+                          height: 60,
                           fit: BoxFit.scaleDown,
                           color: kPrimaryColor,
                         ),
                       ),
-                    )
+                    ) : SizedBox()
             ],
           ),
         ),

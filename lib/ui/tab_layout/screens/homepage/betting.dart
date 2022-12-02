@@ -9,7 +9,6 @@ import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/constant/ui_constants.dart';
-import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 

@@ -4,6 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/create_account/screens/create_account.dart';
+import 'package:pouchers/ui/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
@@ -15,8 +18,9 @@ import 'package:collection/collection.dart';
 
 class BuyAirtime extends ConsumerStatefulWidget {
   static const String routeName = "buyAirtime";
+  final bool? isGuest;
 
-  const BuyAirtime({Key? key}) : super(key: key);
+  const BuyAirtime({Key? key, this.isGuest}) : super(key: key);
 
   @override
   ConsumerState<BuyAirtime> createState() => _BuyAirtimeState();
@@ -44,7 +48,8 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                   controller: contactController,
                   icon: inkWell(
                     onTap: () async {
-                      final PhoneContact contact = await FlutterContactPicker.pickPhoneContact();
+                      final PhoneContact contact =
+                          await FlutterContactPicker.pickPhoneContact();
                       setState(() {
                         contactController.text = contact.phoneNumber!.number!;
                       });
@@ -68,7 +73,8 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                 Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: provider.mapIndexed(
+                    children: provider
+                        .mapIndexed(
                           (index, element) => inkWell(
                             onTap: () {
                               setState(() {
@@ -92,7 +98,8 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                                 ),
                                 currentIndex == index
                                     ? Positioned(
-                                        bottom: 0, right: 0,
+                                        bottom: 0,
+                                        right: 0,
                                         child: Container(
                                             padding: EdgeInsets.all(3),
                                             decoration: BoxDecoration(
@@ -103,16 +110,19 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                                               color: kPrimaryWhite,
                                               size: 15,
                                             )),
-                                      ) : SizedBox(),
+                                      )
+                                    : SizedBox(),
                               ],
                             ),
                           ),
-                        ).toList()),
+                        )
+                        .toList()),
                 SizedBox(
                   height: kMicroPadding,
                 ),
                 Text(
-                  topDeal, style: textTheme.headline3,
+                  topDeal,
+                  style: textTheme.headline3,
                 ),
                 SizedBox(
                   height: kSmallPadding,
@@ -122,20 +132,21 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   crossAxisCount: 3,
-                  // crossAxisSpacing: 10,
-                  // mainAxisSpacing: 10,
                   childAspectRatio: SizeConfig.blockSizeHorizontal! / 3.3,
-                  // childAspectRatio: MediaQuery.of(context).devicePixelRatio / 2.2,
                   children: List.generate(
                     guestList.length,
                     (index) => Column(
                       children: [
                         inkWell(
                           onTap: () {
-                            setState(() {
-                              amountController.text = guestList[index].icon;
-                              _amount = guestList[index].icon;
-                            });
+                            widget.isGuest!
+                                ? buildShowModalBottomSheet(
+                                    context, GuestDiscountModal())
+                                : setState(() {
+                                    amountController.text =
+                                        guestList[index].icon;
+                                    _amount = guestList[index].icon;
+                                  });
                             amountController.selection =
                                 TextSelection.fromPosition(TextPosition(
                                     offset: amountController.text.length));
@@ -151,7 +162,8 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                                     padding: EdgeInsets.all(kPadding),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(kSmallPadding),
+                                        topRight:
+                                            Radius.circular(kSmallPadding),
                                         topLeft: Radius.circular(kSmallPadding),
                                       ),
                                       color: kPurpleColor,
@@ -167,7 +179,8 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                                         children: [
                                           TextSpan(
                                             text: guestList[index].title,
-                                            style: textTheme.headline4!.copyWith(
+                                            style:
+                                                textTheme.headline4!.copyWith(
                                               color: kLightPurple,
                                             ),
                                           )
@@ -210,7 +223,8 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                   height: kSmallPadding,
                 ),
                 Text(
-                  enterAmount, style: textTheme.headline6,
+                  enterAmount,
+                  style: textTheme.headline6,
                 ),
                 SizedBox(
                   height: kSmallPadding,
@@ -275,13 +289,16 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                     ),
                   ),
                 ),
-                SizedBox(height: kMicroPadding,)
+                SizedBox(
+                  height: kMicroPadding,
+                )
               ],
             ),
           ),
           LargeButton(
             title: continueText,
-            disableColor: (amountController.text.isEmpty || _amount.isEmpty ||
+            disableColor: (amountController.text.isEmpty ||
+                    _amount.isEmpty ||
                     _amount.startsWith("0"))
                 ? kPurpleColor100
                 : kPrimaryColor,
@@ -291,9 +308,22 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                     _amount.startsWith("0")
                 ? () {}
                 : () {
-                    buildShowModalBottomSheet(
-                        context,
-                        RechargeSummary(textTheme: textTheme,isData: false,));
+                    if (double.parse(amountController.text) > 10000 &&
+                        widget.isGuest!) {
+                      buildShowModalBottomSheet(
+                          context, GuestMaximumAmountModal());
+                    } else {
+                      buildShowModalBottomSheet(
+                          context,
+                          widget.isGuest!
+                              ? GuestRechargeSummary(
+                                  textTheme: textTheme,
+                                )
+                              : RechargeSummary(
+                                  textTheme: textTheme,
+                                  isData: false,
+                                ));
+                    }
                   },
           )
         ],

@@ -25,26 +25,27 @@ class TextInputNoIcon extends StatelessWidget {
       this.read = false,
       this.validator,
       this.widget,
+        this.suffixIcon,
       this.textCapitalize,
         this.prefixIcon,
         this.maxLine,
       this.obscure,
       this.hintText,
+        this.addSpace = true,
       this.focusNode});
 
   final TextTheme textTheme;
   final String? text;
   final String? hintText;
   final Widget? icon;
-  final Widget? prefixIcon;
+  final Widget? prefixIcon, suffixIcon;
   final bool? obscure;
-  final bool? read;
+  final bool? read, addSpace;
   final int? maxLine;
   final Function(String?)? onSaved;
   final Function(String?)? onChanged;
   final TextInputType? inputType;
   final TextEditingController? controller;
-
   final List<TextInputFormatter>? inputFormatters;
   final String? Function(String?)? validator;
   final Widget? widget;
@@ -86,6 +87,7 @@ class TextInputNoIcon extends StatelessWidget {
             maxLines: maxLine ?? 1 ,
             decoration: InputDecoration(
               filled: true,
+              suffix: suffixIcon,
               hintText: hintText,
               hintStyle: textTheme.headline6!.copyWith(
                   color: kSecondaryTextColor.withOpacity(0.7), fontSize: 18),
@@ -116,7 +118,7 @@ class TextInputNoIcon extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: kRegularPadding,
+          height: addSpace! ? kRegularPadding : 0,
         ),
       ],
     );
@@ -325,3 +327,80 @@ InkWell inkWell({Function()? onTap, required Widget child}) {
     child: child,
   );
 }
+
+class FormDropdown extends StatelessWidget {
+  final String? hint;
+  final Color borderColor;
+  final bool requiredField, enableIcon, enable, hasInfo;
+  final String? value;
+  final Function(dynamic)? onChanged;
+  final Widget? selectedItemWidget;
+  final List<DropdownMenuItem> items;
+
+  const FormDropdown({
+    Key? key,
+    required this.value,
+    required this.onChanged,
+    this.enable = true,
+    this.borderColor = kTransparent,
+    this.requiredField = false,
+    this.enableIcon = true,
+    required this.items,
+    this.hint,
+    this.selectedItemWidget,
+    this.hasInfo = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+
+    return DropdownButtonFormField(
+      value: value,
+      // itemHeight: 60,
+      isExpanded: true,
+      isDense: true,
+      selectedItemBuilder: selectedItemWidget == null
+          ? null
+          : (ctx) => [selectedItemWidget!],
+      alignment: Alignment.center,
+      style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
+      icon: enableIcon
+          ? const Icon(Icons.keyboard_arrow_down_rounded,
+          color: kSecondaryTextColor)
+          : const SizedBox(),
+      decoration: InputDecoration(
+        filled: true,
+        hintText: hint,
+        isDense: true,
+        hintStyle: textTheme.subtitle1,
+        fillColor: kBackgroundColor,
+        border: OutlineInputBorder(),
+        errorMaxLines: 2,
+        errorStyle: textTheme.headline5!.copyWith(color: kColorRed, fontSize: 12, overflow: TextOverflow.visible),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(style: BorderStyle.none),
+          borderRadius: BorderRadius.circular(kSmallPadding),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              color:  kPrimaryColor),
+          borderRadius: BorderRadius.circular(kSmallPadding),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(kSmallPadding),
+          borderSide: BorderSide(color: kColorRed),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(kSmallPadding),
+          borderSide: BorderSide(color: kColorRed),
+        ),
+      ),
+
+      menuMaxHeight: MediaQuery.of(context).size.height / 2,
+      onChanged: onChanged,
+      items: items,
+    );
+  }
+}
+

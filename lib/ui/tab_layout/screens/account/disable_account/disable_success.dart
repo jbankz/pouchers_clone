@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/login/screens/login.dart';
-import 'package:pouchers/ui/onboarding/onboarding.dart';
+import 'package:pouchers/ui/onboarding/screens/onboarding.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';

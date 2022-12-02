@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pouchers/ui/onboarding/model/onboarding_model.dart';
+import 'package:pouchers/ui/onboarding/screens/guest_email.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/betting.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/buy_airtime.dart';
@@ -7,12 +8,19 @@ import 'package:pouchers/ui/tab_layout/screens/homepage/buy_cable.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/buy_data.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/buy_electricity.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/buy_internet.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/voucher.dart';
 import 'package:pouchers/utils/assets_path.dart';
 
 final List<GuestClass> guestClass = [
-  GuestClass("Airtime/Data", AssetPaths.airtimeIcon, page: SizedBox()),
-  GuestClass("CableTV", AssetPaths.televisionIcon, page: SizedBox()),
-  GuestClass("Water Bill", AssetPaths.waterTapIcon, page: SizedBox()),
+  GuestClass("Airtime/Data", AssetPaths.airtimeIcon,
+      page: GetGuestEmail(
+        name: BuyAirtime.routeName,
+      )),
+  GuestClass("CableTV", AssetPaths.televisionIcon,
+      page: GetGuestEmail(
+        name: BuyCable.routeName,
+      )),
+  GuestClass("Water Bill", AssetPaths.waterTapIcon, page: GetGuestEmail()),
   GuestClass("Electricity", AssetPaths.electricityIcon, page: SizedBox()),
   GuestClass("Education", AssetPaths.educationIcon, page: Container()),
   GuestClass("Internet", AssetPaths.wifiIcon, page: SizedBox()),
@@ -96,12 +104,48 @@ List<GuestClass> guestNumberDot = [
 ];
 
 final List<GuestClass> guestHomeClass = [
-  GuestClass("Airtime", AssetPaths.airtimeIcon, page: BuyAirtime(), days: BuyAirtime.routeName),
-  GuestClass("Data", AssetPaths.dataIcon, page: BuyData(),  days: BuyData.routeName),
-  GuestClass("CableTV", AssetPaths.televisionIcon, page: BuyCable(),  days: BuyCable.routeName),
-  GuestClass("Electricity", AssetPaths.electricityIcon, page: BuyElectricity(),  days: BuyElectricity.routeName),
-  GuestClass("Internet", AssetPaths.wifiIcon, page: BuyInternet(),  days: BuyInternet.routeName),
-  GuestClass("Betting", AssetPaths.bettingIcon, page: Betting(),  days: Betting.routeName),
-  GuestClass("Vouchers", AssetPaths.voucherIcon, page: Container(), ),
+  GuestClass("Airtime", AssetPaths.airtimeIcon,
+      page: BuyAirtime(
+        isGuest: false,
+      ),
+      days: BuyAirtime.routeName),
+  GuestClass("Data", AssetPaths.dataIcon,
+      page: BuyData(), days: BuyData.routeName),
+  GuestClass("CableTV", AssetPaths.televisionIcon,
+      page: BuyCable(), days: BuyCable.routeName),
+  GuestClass("Electricity", AssetPaths.electricityIcon,
+      page: BuyElectricity(), days: BuyElectricity.routeName),
+  GuestClass("Internet", AssetPaths.wifiIcon,
+      page: BuyInternet(), days: BuyInternet.routeName),
+  GuestClass("Betting", AssetPaths.bettingIcon,
+      page: Betting(), days: Betting.routeName),
+  GuestClass(
+    "Vouchers",
+    AssetPaths.voucherIcon,
+    page: Vouchers(),
+  ),
   GuestClass("More", AssetPaths.moreIcon, page: Container()),
+];
+
+final List<GuestClass> voucherClass = [
+  GuestClass("Buy Voucher", AssetPaths.buyVoucher,
+      page: BuyAirtime(
+        isGuest: false,
+      ),
+      days: BuyAirtime.routeName),
+  GuestClass("Gift Voucher", AssetPaths.giftVoucher,
+      page: BuyAirtime(
+        isGuest: false,
+      ),
+      days: BuyAirtime.routeName),
+  GuestClass("Redeem Voucher", AssetPaths.redeemVoucher,
+      page: BuyAirtime(
+        isGuest: false,
+      ),
+      days: BuyAirtime.routeName),
+  GuestClass("View History", AssetPaths.voucherHistory,
+      page: BuyAirtime(
+        isGuest: false,
+      ),
+      days: BuyAirtime.routeName),
 ];

@@ -6,7 +6,7 @@ import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/create_account/screens/create_account.dart';
 import 'package:pouchers/ui/login/screens/login.dart';
-import 'package:pouchers/ui/onboarding/welcome_guest.dart';
+import 'package:pouchers/ui/onboarding/screens/welcome_guest.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';

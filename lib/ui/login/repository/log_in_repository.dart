@@ -30,7 +30,6 @@ class LogInRepository {
     print(result);
 
     if (result.data != null) {
-      print("resultmm${result.data!.data!.profilePicture}");
       await cacheUserProfile(
           HiveStoreResponseData.fromJson(result.data!.data!.toJson()));
     }

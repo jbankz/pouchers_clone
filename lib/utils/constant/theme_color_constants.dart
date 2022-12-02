@@ -66,6 +66,8 @@ double kCalculatedMargin(Size size) => size.width * (1 - kWidthRatio) / 2;
 // Colors
 const Color kPrimaryTextColor = Color(0xff060628);
 const Color kPurpleDeep = Color(0xff2C1D6D);
+const Color kPurpleDeep200 = Color(0xff130F26);
+
 const Color kSecondaryTextColor = Color(0xFF8F8E9B);
 const Color kPrimaryColor = Color(0xff5034C4);
 const Color kPrimaryGrey = Color(0xff6D7A98);
@@ -119,7 +121,7 @@ const Color kPurpleColor600 = Color(0xFFE8E8F1);
 const Color kPurpleColor700 = Color(0xFF8A76DB);
 const Color kPurpleColor800 = Color(0xFFF8F7FC);
 const Color kLightColor200 = Color(0xFFC8C8C8);
-
+const Color kLightColor300 = Color(0xFFE6E9F0);
 
 // Border
 const double kBorderWidth = 1;

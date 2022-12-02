@@ -55,9 +55,6 @@ class _AccountSettingsState extends ConsumerState<AccountSettings> {
 
   @override
   Widget build(BuildContext context) {
-    TextTheme textTheme = Theme.of(context).textTheme;
-    print(isAuthDisabled);
-    print(ref.watch(authFactorProvider));
     SizeConfig().init(context);
     return InitialPage(
       title: settings,

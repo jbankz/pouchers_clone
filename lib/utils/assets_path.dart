@@ -17,6 +17,17 @@ class AssetPaths {
    static String frame_naira = "${imgPath}frame_naira.png";
    static String nairaCard = "${imgPath}ooooo.png";
    static String visaCard = "${imgPath}visa_card.png";
+   static String chooseContact = "${imgPath}choose_contacts.png";
+   static String bagImage = "${imgPath}bag.png";
+   static String carImage = "${imgPath}car.png";
+   static String smileImage = "${imgPath}smile.png";
+   static String bookImage = "${imgPath}book.png";
+   static String pizzaImage = "${imgPath}pizza.png";
+   static String messageImage = "${imgPath}message.png";
+   static String micImage = "${imgPath}mic_image.png";
+   static String ussdImage = "${imgPath}ussd_image.png";
+
+
 
    /// ICONS
   /// Add svg filenames and extension from the assets directory e.g ${iconPath}icon.svg here
@@ -64,8 +75,11 @@ class AssetPaths {
    static String  visaIcon = "${iconPath}visa_logo.svg";
    static String  copyIcon = "${iconPath}copy.svg";
    static String  freezeCardIcon = "${iconPath}freeze_card.svg";
-
-
-
-
+   static String cardFrame = "${iconPath}cardframe.svg";
+   static String dollarSign = "${iconPath}dollar_sign.svg";
+   static String nairaSign = "${iconPath}naira_sign.svg";
+   static String buyVoucher = "${iconPath}buy_voucher.svg";
+   static String giftVoucher = "${iconPath}gift_voucher.svg";
+   static String redeemVoucher = "${iconPath}redeem_voucher.svg";
+   static String voucherHistory = "${iconPath}voucher_history.svg";
 }

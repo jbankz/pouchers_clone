@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/ui/tab_layout/providers/account_provider.dart';
 import 'package:pouchers/ui/tab_layout/screens/account/account_settings.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/fund_wallet.dart';
@@ -58,7 +59,7 @@ class HomeIcons extends StatelessWidget {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return inkWell(
-      onTap: () {},
+      onTap: onTap,
       child: Column(
         children: [
           Container(
@@ -94,7 +95,7 @@ class TransactionPinContainer extends ConsumerStatefulWidget {
       required this.isData,
       this.isCable = false,
       this.isBiometric = false,
-        this.doBiom,
+      this.doBiom,
       required this.isCard,
       required this.isFundCard,
       this.is2FA = false})
@@ -158,49 +159,49 @@ class _TransactionPinContainerState
           Consumer(builder: (context, ref, _) {
             ref.listen(
               validatePinProvider,
-                  (previous, NotifierState<String> next) {
+              (previous, NotifierState<String> next) {
                 if (next.status == NotifierStatus.done) {
-                  if(widget.isBiometric){
+                  if (widget.isBiometric) {
                     Navigator.pop(context, pinPicked);
                     widget.doBiom!();
-                  }else {
+                  } else {
                     widget.is2FA
                         ? Navigator.pop(context, pinPicked)
                         : pushTo(
-                      context,
-                      SuccessMessage(
-                          text: widget.isData
-                              ? dataSuccess
-                              : widget.isCard
-                              ? dataSuccess
-                              : widget.isCable
-                              ? dataSuccess
-                              : rechargeSuccessful,
-                          subText: widget.isData
-                              ? dataSubSuccess
-                              : widget.isCard
-                              ? virtualCardSuccess
-                              : widget.isFundCard
-                              ? virtualSuccess
-                              : widget.isCable
-                              ? deliveredPurchase
-                              : rechargeSuccessfulSub,
-                          onTap: () {
-                            widget.isCard
-                                ? pushToAndClearStack(
-                              context,
-                              TabLayout(
-                                gottenIndex: 1,
-                              ),
-                            )
-                                : pushToAndClearStack(
-                              context,
-                              TabLayout(
-                                gottenIndex: 0,
-                              ),
-                            );
-                          }),
-                    );
+                            context,
+                            SuccessMessage(
+                                text: widget.isData
+                                    ? dataSuccess
+                                    : widget.isCard
+                                        ? dataSuccess
+                                        : widget.isCable
+                                            ? dataSuccess
+                                            : rechargeSuccessful,
+                                subText: widget.isData
+                                    ? dataSubSuccess
+                                    : widget.isCard
+                                        ? virtualCardSuccess
+                                        : widget.isFundCard
+                                            ? virtualSuccess
+                                            : widget.isCable
+                                                ? deliveredPurchase
+                                                : rechargeSuccessfulSub,
+                                onTap: () {
+                                  widget.isCard
+                                      ? pushToAndClearStack(
+                                          context,
+                                          TabLayout(
+                                            gottenIndex: 1,
+                                          ),
+                                        )
+                                      : pushToAndClearStack(
+                                          context,
+                                          TabLayout(
+                                            gottenIndex: 0,
+                                          ),
+                                        );
+                                }),
+                          );
                   }
                 } else if (next.status == NotifierStatus.error) {
                   showErrorBar(context, next.message ?? next.data!);
@@ -212,7 +213,7 @@ class _TransactionPinContainerState
               children: [
                 ...List.generate(
                   containerIndex.length,
-                      (index) => Container(
+                  (index) => Container(
                     margin: EdgeInsets.symmetric(horizontal: kRegularPadding),
                     height: kMediumPadding,
                     width: kMediumPadding,
@@ -226,12 +227,11 @@ class _TransactionPinContainerState
               ],
             );
             return ref.watch(validatePinProvider).when(
-              done: (done) => _widget,
-              loading: () => SpinKitDemo(),
-              error: (val) => _widget,
-            );
+                  done: (done) => _widget,
+                  loading: () => SpinKitDemo(),
+                  error: (val) => _widget,
+                );
           }),
-
           SizedBox(
             height: kMacroPadding,
           ),
@@ -506,77 +506,26 @@ class RechargeSummary extends StatelessWidget {
             height: kLargePadding,
           ),
           BalanceWidget(
+            hasBalance: false,
             textTheme: textTheme,
             text: "6,945.04",
           ),
           SizedBox(
-            height: kPadding,
-          ),
-          Text(
-            insufficient,
-            style: textTheme.headline4!.copyWith(
-              color: kColorOrange,
-            ),
-          ),
-          SizedBox(
             height: kFullPadding,
           ),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                elevation: MaterialStateProperty.all<double>(0.0),
-                backgroundColor: MaterialStateProperty.all<Color>(kPurpleColor),
-                shape: MaterialStateProperty.all<OutlinedBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: kBorderSmallRadius,
-                    side: BorderSide(color: kPrimaryColor),
-                  ),
-                ),
-                padding: MaterialStateProperty.all(
-                  const EdgeInsets.all(kMediumPadding),
-                ),
-              ),
-              onPressed: () async {
-                final result = await buildShowModalBottomSheet(
-                    context,
-                    TransactionPinContainer(
-                      isData: isData,
-                      isCable: isCable,
-                      isCard: false,
-                      isFundCard: false,
-                    ));
-                print("result$result");
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "$pay ",
-                    style: textTheme.subtitle1!.copyWith(
-                        fontWeight: FontWeight.w700, color: kPrimaryWhite),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      text: "₦",
-                      style: TextStyle(
-                        color: kPrimaryWhite,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: "4,000",
-                          style: textTheme.subtitle1!.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: kPrimaryWhite),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          PayWithAmount(
+            amount: "4,000",
+            text: "$pay ",
+            onTap: () async {
+              final result = await buildShowModalBottomSheet(
+                  context,
+                  TransactionPinContainer(
+                    isData: isData,
+                    isCable: isCable,
+                    isCard: false,
+                    isFundCard: false,
+                  ));
+            },
           ),
         ],
       ),
@@ -586,74 +535,133 @@ class RechargeSummary extends StatelessWidget {
 
 class BalanceWidget extends StatelessWidget {
   final String text;
+  final bool hasBalance;
 
-  const BalanceWidget({Key? key, required this.textTheme, required this.text})
+  const BalanceWidget(
+      {Key? key,
+      required this.textTheme,
+      required this.text,
+      required this.hasBalance})
       : super(key: key);
 
   final TextTheme textTheme;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-                child: SvgPicture.asset(
-                  AssetPaths.walletIcon,
-                  height: 22,
-                  width: 22,
-                ),
-                decoration:
-                    BoxDecoration(color: kLightPurple, shape: BoxShape.circle),
-                padding: EdgeInsets.all(kSmallPadding)),
-            Text(
-              "  $balance - ",
-              style: textTheme.headline4!
-                  .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            RichText(
-              text: TextSpan(
-                text: "₦",
-                style: TextStyle(
-                  color: kPrimaryTextColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
-                children: [
-                  TextSpan(
-                    text: text,
-                    style: textTheme.headline4!
-                        .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+    return hasBalance
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                  child: SvgPicture.asset(
+                    AssetPaths.walletIcon,
+                    height: kRegularPadding,
+                    width: kRegularPadding,
                   ),
+                  decoration: BoxDecoration(
+                      color: kLightPurple, shape: BoxShape.circle),
+                  padding: EdgeInsets.all(kSmallPadding)),
+              Text(
+                "  $balance - ",
+                style: textTheme.subtitle1!.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              RichText(
+                text: TextSpan(
+                  text: "₦",
+                  style: TextStyle(
+                    color: kPrimaryTextColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "26,945",
+                      style: textTheme.subtitle1!.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          child: SvgPicture.asset(
+                            AssetPaths.walletIcon,
+                            height: 22,
+                            width: 22,
+                          ),
+                          decoration: BoxDecoration(
+                              color: kLightPurple, shape: BoxShape.circle),
+                          padding: EdgeInsets.all(kSmallPadding)),
+                      Text(
+                        "  $balance - ",
+                        style: textTheme.headline4!.copyWith(
+                            fontSize: 16, fontWeight: FontWeight.w500),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          text: "₦",
+                          style: TextStyle(
+                            color: kPrimaryTextColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: text,
+                              style: textTheme.headline4!.copyWith(
+                                  fontSize: 16, fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  inkWell(
+                    onTap: () {
+                      pushTo(context, FundWallet(),
+                          settings:
+                              const RouteSettings(name: FundWallet.routeName));
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: kRegularPadding, vertical: kSmallPadding),
+                      decoration: BoxDecoration(
+                          color: kPurpleColor,
+                          borderRadius: BorderRadius.circular(kSmallPadding)),
+                      child: Text(
+                        fundWallet,
+                        style: textTheme.headline4!.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: kPrimaryWhite,
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
-            ),
-          ],
-        ),
-        inkWell(
-          onTap: () {
-            pushTo(context, FundWallet(),
-                settings: const RouteSettings(name: FundWallet.routeName));
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: kRegularPadding, vertical: kSmallPadding),
-            decoration: BoxDecoration(
-                color: kPurpleColor,
-                borderRadius: BorderRadius.circular(kSmallPadding)),
-            child: Text(
-              fundWallet,
-              style: textTheme.headline4!.copyWith(
-                fontWeight: FontWeight.w700,
-                color: kPrimaryWhite,
+              SizedBox(
+                height: kPadding,
               ),
-            ),
-          ),
-        )
-      ],
-    );
+              Text(
+                insufficient,
+                style: textTheme.headline4!.copyWith(
+                  color: kColorOrange,
+                ),
+              ),
+            ],
+          );
   }
 }

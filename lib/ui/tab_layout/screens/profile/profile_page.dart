@@ -82,7 +82,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         child: CachedNetworkImage(
                           height: 105,
                           width: 105,
-                          imageUrl: "https://photow-profile-images.s3.us-west-2.amazonaws.com/${ref.watch(editProfileInHouseProvider).profilePicture ?? ""}",
+                          imageUrl: ref.watch(editProfileInHouseProvider).profilePicture ?? "",
                           placeholder: (context, url) => Container(
                             color: Colors.transparent,
                             height: 105,
@@ -96,7 +96,35 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             ),
                           ),
                           fit: BoxFit.cover,
-                          errorWidget: (context, url, error) => Column(
+                          errorWidget: (context, url, error) =>  ref
+                              .watch(editProfileInHouseProvider)
+                              .profilePicture !=
+                              null
+                              ? Image.network(
+                            ref
+                                .watch(editProfileInHouseProvider)
+                                .profilePicture!,
+                            fit: BoxFit.fill,
+                            loadingBuilder: (BuildContext context,
+                                Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null)
+                                return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress
+                                      .expectedTotalBytes !=
+                                      null
+                                      ? loadingProgress
+                                      .cumulativeBytesLoaded /
+                                      loadingProgress
+                                          .expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
+                          )
+                              : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(

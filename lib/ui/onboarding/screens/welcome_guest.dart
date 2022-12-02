@@ -61,13 +61,13 @@ class WelcomeGuest extends StatelessWidget {
                       shrinkWrap: true,
                       crossAxisCount: 3,
                       childAspectRatio: SizeConfig.blockSizeHorizontal! / 4,
-
-                      // childAspectRatio: MediaQuery.of(context).devicePixelRatio / 2.5,
-                      // mainAxisSpacing: 10,
                       children: List.generate(
                         guestClass.length,
                         (index) => inkWell(
-                          onTap: ()=> pushTo(context, guestClass[index].page,),
+                          onTap: () => pushTo(
+                            context,
+                            guestClass[index].page,
+                          ),
                           child: Column(
                             children: [
                               Container(
@@ -85,7 +85,8 @@ class WelcomeGuest extends StatelessWidget {
                               Text(
                                 guestClass[index].title,
                                 style: textTheme.headline4!,
-                                textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                                textScaleFactor:
+                                    MediaQuery.of(context).textScaleFactor,
                               )
                             ],
                           ),
@@ -111,7 +112,9 @@ class WelcomeGuest extends StatelessWidget {
                           fontSize: 26,
                         ),
                       ),
-                      SizedBox(height: kRegularPadding,),
+                      SizedBox(
+                        height: kRegularPadding,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -122,8 +125,9 @@ class WelcomeGuest extends StatelessWidget {
                               outlineButton: true,
                               whiteButton: true,
                               onPressed: () {
-                                pushTo(context, LogInAccount(),  settings: const RouteSettings(
-                                    name: LogInAccount.routeName));
+                                pushTo(context, LogInAccount(),
+                                    settings: const RouteSettings(
+                                        name: LogInAccount.routeName));
                               },
                             ),
                           ),
@@ -134,8 +138,9 @@ class WelcomeGuest extends StatelessWidget {
                             child: LargeButton(
                               title: register,
                               onPressed: () {
-                                pushTo(context, CreateAccount(),  settings: const RouteSettings(
-                                name: CreateAccount.routeName));
+                                pushTo(context, CreateAccount(),
+                                    settings: const RouteSettings(
+                                        name: CreateAccount.routeName));
                               },
                             ),
                           ),

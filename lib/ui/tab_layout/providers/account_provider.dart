@@ -27,13 +27,13 @@ final authFactorProvider = StateProvider<bool>((ref) => false);
 final editProfileInHouseProvider =
     StateProvider<EditProfileData>((ref) => EditProfileData());
 
-final editProfileProvider = StateNotifierProvider<
-    EditProfileNotifier, NotifierState<EditProfileResponse>>((ref) {
+final editProfileProvider = StateNotifierProvider<EditProfileNotifier,
+    NotifierState<EditProfileResponse>>((ref) {
   return EditProfileNotifier(ref.read(accountRepoProvider));
 });
 
-final editProfileProvider2 = StateNotifierProvider<
-    EditProfileNotifier, NotifierState<EditProfileResponse>>((ref) {
+final editProfileProvider2 = StateNotifierProvider<EditProfileNotifier,
+    NotifierState<EditProfileResponse>>((ref) {
   return EditProfileNotifier(ref.read(accountRepoProvider));
 });
 
@@ -122,13 +122,15 @@ final generate2FAProvider = StateNotifierProvider.autoDispose<
   return Generate2FANotifier(ref.read(accountRepoProvider));
 });
 
-final validate2FAProvider = StateNotifierProvider.autoDispose<
-    Validate2FANotifier, NotifierState<bool>>((ref) {
+final validate2FAProvider =
+    StateNotifierProvider.autoDispose<Validate2FANotifier, NotifierState<bool>>(
+        (ref) {
   return Validate2FANotifier(ref.read(accountRepoProvider));
 });
 
-final disable2FAProvider = StateNotifierProvider.autoDispose<
-    Disable2FANotifier, NotifierState<bool>>((ref) {
+final disable2FAProvider =
+    StateNotifierProvider.autoDispose<Disable2FANotifier, NotifierState<bool>>(
+        (ref) {
   return Disable2FANotifier(ref.read(accountRepoProvider));
 });
 
@@ -227,6 +229,8 @@ class EditProfileNotifier
       String? gender,
       String? profilePicture,
       String? utilityBill,
+      bool? isLoginBiometricActive,
+      bool? isPaymentBiometricActive,
       Function()? then}) async {
     state = notifyLoading();
     state = await _repo.editProfile(
@@ -237,7 +241,9 @@ class EditProfileNotifier
         address: address,
         gender: gender,
         profilePicture: profilePicture,
-        utilityBill: utilityBill);
+        utilityBill: utilityBill,
+        isLoginBiometricActive: isLoginBiometricActive,
+        isPaymentBiometricActive: isPaymentBiometricActive);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }
@@ -450,8 +456,9 @@ class Generate2FANotifier extends StateNotifier<NotifierState<String>>
 
   Generate2FANotifier(this._repo) : super(NotifierState());
 
-  void generate2FA(
-      {Function()? then,}) async {
+  void generate2FA({
+    Function()? then,
+  }) async {
     state = notifyLoading();
     state = await _repo.generate2FA();
     if (state.status == NotifierStatus.done) {
@@ -466,8 +473,7 @@ class Validate2FANotifier extends StateNotifier<NotifierState<bool>>
 
   Validate2FANotifier(this._repo) : super(NotifierState());
 
-  void validate2FA(
-      {Function()? then, required String userToken}) async {
+  void validate2FA({Function()? then, required String userToken}) async {
     state = notifyLoading();
     state = await _repo.validate2FA(userToken: userToken);
     if (state.status == NotifierStatus.done) {
@@ -482,8 +488,9 @@ class Disable2FANotifier extends StateNotifier<NotifierState<bool>>
 
   Disable2FANotifier(this._repo) : super(NotifierState());
 
-  void disable2FA(
-      {Function()? then,}) async {
+  void disable2FA({
+    Function()? then,
+  }) async {
     state = notifyLoading();
     state = await _repo.disable2FA();
     if (state.status == NotifierStatus.done) {

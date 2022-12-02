@@ -135,37 +135,38 @@ class VerifyEmailResponse {
 }
 
 class VerifyEmailResponseData {
-  VerifyEmailResponseData({
-    this.id,
-    this.phoneNumber,
-    this.userId,
-    this.email,
-    this.firstName,
-    this.lastName,
-    this.verificationToken,
-    this.verificationTokenExpires,
-    this.tierLevels,
-    this.passwordResetToken,
-    this.passwordResetTokenExpires,
-    this.pinResetToken,
-    this.pinResetTokenExpires,
-    this.status,
-    this.deviceToken,
-    this.fcmToken,
-    this.isUploadedIdentityCard,
-    this.isDeleted,
-    this.referralCode,
-    this.tag,
-    this.token,
-    this.refreshToken,
-    this.tokenExpireAt,
-    this.dob,
-    this.address,
-    this.profilePicture,
-    this.gender,
-    this.isCreatedPin,
-    this.is2faActive
-  });
+  VerifyEmailResponseData(
+      {this.id,
+      this.phoneNumber,
+      this.userId,
+      this.email,
+      this.firstName,
+      this.lastName,
+      this.verificationToken,
+      this.verificationTokenExpires,
+      this.tierLevels,
+      this.passwordResetToken,
+      this.passwordResetTokenExpires,
+      this.pinResetToken,
+      this.pinResetTokenExpires,
+      this.status,
+      this.deviceToken,
+      this.fcmToken,
+      this.isUploadedIdentityCard,
+      this.isDeleted,
+      this.referralCode,
+      this.tag,
+      this.token,
+      this.refreshToken,
+      this.tokenExpireAt,
+      this.dob,
+      this.address,
+      this.profilePicture,
+      this.gender,
+      this.isCreatedPin,
+      this.is2faActive,
+      this.isLoginBiometricActive,
+      this.isPaymentBiometricActive});
 
   int? id;
   String? phoneNumber;
@@ -196,6 +197,8 @@ class VerifyEmailResponseData {
   String? gender;
   bool? isCreatedPin;
   bool? is2faActive;
+  bool? isLoginBiometricActive;
+  bool? isPaymentBiometricActive;
 
   factory VerifyEmailResponseData.fromJson(Map<String, dynamic> json) =>
       VerifyEmailResponseData(
@@ -226,7 +229,10 @@ class VerifyEmailResponseData {
           address: json["address"],
           profilePicture: json["profile_picture"],
           gender: json["gender"],
-          isCreatedPin: json["iscreatedpin"], is2faActive: json["is_2fa_active"]);
+          isCreatedPin: json["iscreatedpin"],
+          is2faActive: json["is_2fa_active"],
+          isLoginBiometricActive: json["is_login_biometric_active"],
+          isPaymentBiometricActive: json["is_payment_biometric_active"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -256,12 +262,14 @@ class VerifyEmailResponseData {
         "iscreatedpin": isCreatedPin,
         "dob": dob,
         "profile_picture": profilePicture,
-    "is_2fa_active" : is2faActive
+        "is_2fa_active": is2faActive,
+        "is_login_biometric_active": isLoginBiometricActive,
+        "is_payment_biometric_active": isPaymentBiometricActive
       };
 
   @override
   String toString() {
-    return 'VerifyEmailResponseData{id: $id, phoneNumber: $phoneNumber, userId: $userId, email: $email, firstName: $firstName, lastName: $lastName, verificationToken: $verificationToken, verificationTokenExpires: $verificationTokenExpires, tierLevels: $tierLevels, passwordResetToken: $passwordResetToken, passwordResetTokenExpires: $passwordResetTokenExpires, pinResetToken: $pinResetToken, pinResetTokenExpires: $pinResetTokenExpires, status: $status, deviceToken: $deviceToken, fcmToken: $fcmToken, isUploadedIdentityCard: $isUploadedIdentityCard, isDeleted: $isDeleted, referralCode: $referralCode, tag: $tag, token: $token, refreshToken: $refreshToken, tokenExpireAt: $tokenExpireAt, dob: $dob, profilePicture: $profilePicture, address: $address, gender: $gender, isCreatedPin: $isCreatedPin}';
+    return 'VerifyEmailResponseData{id: $id, phoneNumber: $phoneNumber, userId: $userId, email: $email, firstName: $firstName, lastName: $lastName, verificationToken: $verificationToken, verificationTokenExpires: $verificationTokenExpires, tierLevels: $tierLevels, passwordResetToken: $passwordResetToken, passwordResetTokenExpires: $passwordResetTokenExpires, pinResetToken: $pinResetToken, pinResetTokenExpires: $pinResetTokenExpires, status: $status, deviceToken: $deviceToken, fcmToken: $fcmToken, isUploadedIdentityCard: $isUploadedIdentityCard, isDeleted: $isDeleted, referralCode: $referralCode, tag: $tag, token: $token, refreshToken: $refreshToken, tokenExpireAt: $tokenExpireAt, dob: $dob, profilePicture: $profilePicture, address: $address, gender: $gender, isCreatedPin: $isCreatedPin, is2faActive: $is2faActive, isLoginBiometricActive: $isLoginBiometricActive, isPaymentBiometricActive: $isPaymentBiometricActive}';
   }
 }
 

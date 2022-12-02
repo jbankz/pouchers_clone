@@ -55,7 +55,9 @@ class HiveStoreResponseData {
     this.gender,
     this.address,
     this.profilePicture,
-    this.is2faActive
+    this.is2faActive,
+    this.isLoginBiometricActive,
+    this.isPaymentBiometricActive
   });
 
   @HiveField(0)
@@ -106,6 +108,10 @@ class HiveStoreResponseData {
   String? profilePicture;
   @HiveField(23)
   bool? is2faActive;
+  @HiveField(24)
+  bool? isLoginBiometricActive;
+  @HiveField(25)
+  bool? isPaymentBiometricActive;
 
   factory HiveStoreResponseData.fromJson(Map<String, dynamic> json) => HiveStoreResponseData(
     id: json["id"],
@@ -131,7 +137,9 @@ class HiveStoreResponseData {
     gender: json["gender"],
     address: json["address"],
     profilePicture: json["profile_picture"],
-    is2faActive: json["is_2fa_active"]
+    is2faActive: json["is_2fa_active"],
+    isLoginBiometricActive: json["is_login_biometric_active"],
+    isPaymentBiometricActive: json["is_payment_biometric_active"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -158,11 +166,13 @@ class HiveStoreResponseData {
     "gender" : gender,
     "address" : address,
     "profile_picture" : profilePicture,
-    "is_2fa_active" : is2faActive
+    "is_2fa_active" : is2faActive,
+    "is_login_biometric_active" : isLoginBiometricActive,
+    "is_payment_biometric_active" : isPaymentBiometricActive
   };
 
   @override
   String toString() {
-    return 'HiveStoreResponseData{id: $id, phoneNumber: $phoneNumber, userId: $userId, email: $email, firstName: $firstName, lastName: $lastName, verificationToken: $verificationToken, verificationTokenExpires: $verificationTokenExpires, tierLevels: $tierLevels, status: $status, deviceToken: $deviceToken, fcmToken: $fcmToken, isUploadedIdentityCard: $isUploadedIdentityCard, isDeleted: $isDeleted, referralCode: $referralCode, tag: $tag, token: $token, refreshToken: $refreshToken, tokenExpireAt: $tokenExpireAt, dob: $dob, gender: $gender, address: $address, profilePicture: $profilePicture, is2faActive: $is2faActive}';
+    return 'HiveStoreResponseData{id: $id, phoneNumber: $phoneNumber, userId: $userId, email: $email, firstName: $firstName, lastName: $lastName, verificationToken: $verificationToken, verificationTokenExpires: $verificationTokenExpires, tierLevels: $tierLevels, status: $status, deviceToken: $deviceToken, fcmToken: $fcmToken, isUploadedIdentityCard: $isUploadedIdentityCard, isDeleted: $isDeleted, referralCode: $referralCode, tag: $tag, token: $token, refreshToken: $refreshToken, tokenExpireAt: $tokenExpireAt, dob: $dob, gender: $gender, address: $address, profilePicture: $profilePicture, is2faActive: $is2faActive, isLoginBiometricActive: $isLoginBiometricActive, isPaymentBiometricActive: $isPaymentBiometricActive}';
   }
 }

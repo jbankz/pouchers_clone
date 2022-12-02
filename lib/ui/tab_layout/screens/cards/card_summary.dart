@@ -39,7 +39,7 @@ class CardSummary extends StatelessWidget {
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(
-                      horizontal: kRegularPadding, vertical: kSmallPadding),
+                      horizontal: kRegularPadding, vertical: kMacroPadding),
                   decoration: BoxDecoration(
                     color: kContainerColor,
                     borderRadius: BorderRadius.circular(kSmallPadding),
@@ -171,15 +171,7 @@ class CardSummary extends StatelessWidget {
                 BalanceWidget(
                   textTheme: textTheme,
                   text: "945.04",
-                ),
-                SizedBox(
-                  height: kSmallPadding,
-                ),
-                Text(
-                  insufficient,
-                  style: textTheme.headline4!.copyWith(
-                    color: kColorOrange,
-                  ),
+                  hasBalance: false,
                 ),
               ],
             ),
