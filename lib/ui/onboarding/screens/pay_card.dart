@@ -10,8 +10,12 @@ import 'package:pouchers/utils/widgets.dart';
 
 class PayWithCard extends StatefulWidget {
   static const String routeName = "payWithCard";
+  final bool? isCable;
 
-  const PayWithCard({Key? key}) : super(key: key);
+  const PayWithCard({
+    Key? key,
+    this.isCable = false,
+  }) : super(key: key);
 
   @override
   State<PayWithCard> createState() => _PayWithCardState();
@@ -105,20 +109,25 @@ class _PayWithCardState extends State<PayWithCard> {
               ],
             ),
           ),
-          PayWithAmount( amount: "4,000", text: "$pay ", onTap: (){
-            pushTo(
-                context,
-                SuccessMessage(
-                    text: rechargeSuccessful,
-                    subText: rechargeSuccessfulSub,
-                    onTap: () {
-                      Navigator.popUntil(
-                          context,
-                              (route) =>
-                          route.settings.name ==
-                              WelcomeGuest.routeName);
-                    }));
-          },),
+          PayWithAmount(
+            amount: "4,000",
+            text: "$pay ",
+            onTap: () {
+              pushTo(
+                  context,
+                  SuccessMessage(
+                      text: widget.isCable! ? dataSuccess : rechargeSuccessful,
+                      subText: widget.isCable!
+                          ? deliveredPurchase
+                          : rechargeSuccessfulSub,
+                      onTap: () {
+                        Navigator.popUntil(
+                            context,
+                            (route) =>
+                                route.settings.name == WelcomeGuest.routeName);
+                      }));
+            },
+          ),
           SizedBox(
             height: kMediumPadding,
           ),

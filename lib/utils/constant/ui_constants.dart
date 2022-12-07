@@ -8,6 +8,10 @@ import 'package:pouchers/ui/tab_layout/screens/homepage/buy_cable.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/buy_data.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/buy_electricity.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/buy_internet.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/buy_voucher.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/gift_voucher.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/redeem_voucher.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/view_voucher_history.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/voucher.dart';
 import 'package:pouchers/utils/assets_path.dart';
 
@@ -21,12 +25,22 @@ final List<GuestClass> guestClass = [
         name: BuyCable.routeName,
       )),
   GuestClass("Water Bill", AssetPaths.waterTapIcon, page: GetGuestEmail()),
-  GuestClass("Electricity", AssetPaths.electricityIcon, page: SizedBox()),
+  GuestClass("Electricity", AssetPaths.electricityIcon,
+      page: GetGuestEmail(
+        name: BuyElectricity.routeName,
+      )),
   GuestClass("Education", AssetPaths.educationIcon, page: Container()),
-  GuestClass("Internet", AssetPaths.wifiIcon, page: SizedBox()),
+  GuestClass("Internet", AssetPaths.wifiIcon,
+      page: GetGuestEmail(
+        name: BuyInternet.routeName,
+      )),
   GuestClass("Tickets", AssetPaths.ticketIcon, page: Container()),
-  GuestClass("Vouchers", AssetPaths.voucherIcon, page: Container()),
-  GuestClass("Betting", AssetPaths.bettingIcon, page: SizedBox()),
+  GuestClass("Vouchers", AssetPaths.voucherIcon, page: GetGuestEmail(
+    name: Vouchers.routeName,
+  )),
+  GuestClass("Betting", AssetPaths.bettingIcon, page: GetGuestEmail(
+    name: Betting.routeName,
+  )),
 ];
 
 List<GuestClass> guestList = [
@@ -129,23 +143,20 @@ final List<GuestClass> guestHomeClass = [
 
 final List<GuestClass> voucherClass = [
   GuestClass("Buy Voucher", AssetPaths.buyVoucher,
-      page: BuyAirtime(
-        isGuest: false,
-      ),
-      days: BuyAirtime.routeName),
+      page: BuyVouchers(), days: BuyVouchers.routeName),
   GuestClass("Gift Voucher", AssetPaths.giftVoucher,
-      page: BuyAirtime(
-        isGuest: false,
-      ),
-      days: BuyAirtime.routeName),
+      page: GiftVoucher(), days: GiftVoucher.routeName),
   GuestClass("Redeem Voucher", AssetPaths.redeemVoucher,
-      page: BuyAirtime(
-        isGuest: false,
-      ),
-      days: BuyAirtime.routeName),
+      page: RedeemVoucher(), days: RedeemVoucher.routeName),
   GuestClass("View History", AssetPaths.voucherHistory,
-      page: BuyAirtime(
-        isGuest: false,
-      ),
-      days: BuyAirtime.routeName),
+      page: VoucherHistory(), days: VoucherHistory.routeName),
+];
+
+List<String> buyVoucherList = [
+  "5,000",
+  "15,000",
+  "20,000",
+  "40,000",
+  "50,000",
+  "100,000"
 ];

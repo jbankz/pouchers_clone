@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+import 'package:pouchers/ui/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/ui/tab_layout/models/buy_cable_class.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
@@ -13,7 +14,8 @@ import 'package:pouchers/utils/widgets.dart';
 
 class BuyCable extends StatefulWidget {
   static const String routeName = "buyCable";
-  const BuyCable({Key? key}) : super(key: key);
+  final bool? isGuest;
+  const BuyCable({Key? key, this.isGuest}) : super(key: key);
 
   @override
   State<BuyCable> createState() => _BuyCableState();
@@ -147,7 +149,7 @@ class _BuyCableState extends State<BuyCable> {
           SizedBox(
             height: kRegularPadding,
           ),
-          Row(
+        widget.isGuest! ? SizedBox() :  Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
@@ -174,6 +176,12 @@ class _BuyCableState extends State<BuyCable> {
             onPressed: () {
               buildShowModalBottomSheet(
                 context,
+                widget.isGuest!
+                    ? GuestRechargeSummary(
+                  textTheme: textTheme,
+                  purchaseDelivered: true,
+                )
+                    :
                 RechargeSummary(
                   isData: false,
                   isCable: true,

@@ -217,7 +217,7 @@ class AccountService {
     if(isPaymentBiometricActive != null) body["is_payment_biometric_active"] = isPaymentBiometricActive;
 
     log(url);
-    log(body);
+    log("body$body");
 
     try {
       http.Response response = await http.patch(Uri.parse(url),
@@ -227,7 +227,7 @@ class AccountService {
       if (response.statusCode >= 300 && response.statusCode <= 520) {
         throw Failure.fromJson(responseBody);
       } else {
-        print(responseBody);
+        print("response body ${responseBody["is_login_biometric_active"]}");
         return serveSuccess<EditProfileResponse>(
             data: EditProfileResponse.fromJson(responseBody),
             message: responseBody["message"]);

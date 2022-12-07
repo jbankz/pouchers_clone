@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/betting.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/buy_airtime.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/buy_cable.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/buy_electricity.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/buy_internet.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/voucher.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
@@ -91,6 +96,36 @@ class _GetGuestEmailState extends State<GetGuestEmail> {
                     context,
                     BuyAirtime(isGuest: true,),
                     settings: const RouteSettings(name: BuyAirtime.routeName),
+                  );
+                }else if(widget.name == BuyCable.routeName){
+                  pushTo(
+                    context,
+                    BuyCable(isGuest: true,),
+                    settings: const RouteSettings(name: BuyCable.routeName),
+                  );
+                }else if(widget.name == BuyElectricity.routeName){
+                  pushTo(
+                    context,
+                    BuyElectricity(isGuest: true,),
+                    settings: const RouteSettings(name: BuyElectricity.routeName),
+                  );
+                }else if(widget.name == BuyInternet.routeName){
+                  pushTo(
+                    context,
+                    BuyInternet(isGuest: true,),
+                    settings: const RouteSettings(name: BuyInternet.routeName),
+                  );
+                }else if(widget.name == Betting.routeName){
+                  pushTo(
+                    context,
+                    Betting(isGuest: true,),
+                    settings: const RouteSettings(name: Betting.routeName),
+                  );
+                }else if(widget.name == Vouchers.routeName){
+                  pushTo(
+                    context,
+                    Vouchers(isGuest: true,),
+                    settings: const RouteSettings(name: Vouchers.routeName),
                   );
                 }
               }

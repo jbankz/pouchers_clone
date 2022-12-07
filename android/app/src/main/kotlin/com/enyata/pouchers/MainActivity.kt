@@ -1,4 +1,4 @@
-package com.enyata.flutter.flutter_boilerplate
+package com.enyata.pouchers
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

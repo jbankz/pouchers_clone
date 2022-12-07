@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+import 'package:pouchers/ui/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/ui/tab_layout/models/buy_electricity_class.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
@@ -13,8 +14,9 @@ import 'package:pouchers/utils/widgets.dart';
 
 class BuyElectricity extends StatefulWidget {
   static const String routeName = "buyElectricity";
+  final bool? isGuest;
 
-  const BuyElectricity({Key? key}) : super(key: key);
+  const BuyElectricity({Key? key, this.isGuest}) : super(key: key);
 
   @override
   State<BuyElectricity> createState() => _BuyElectricityState();
@@ -86,8 +88,8 @@ class _BuyElectricityState extends State<BuyElectricity> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     inkWell(
-                      onTap: (){
-                        setState(()=> _meterType = prepaid);
+                      onTap: () {
+                        setState(() => _meterType = prepaid);
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(
@@ -96,7 +98,9 @@ class _BuyElectricityState extends State<BuyElectricity> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(kSmallPadding),
                           border: Border.all(
-                            color: _meterType == prepaid ? kPrimaryColor : kLightPurple,
+                            color: _meterType == prepaid
+                                ? kPrimaryColor
+                                : kLightPurple,
                             width: 1,
                           ),
                         ),
@@ -107,18 +111,25 @@ class _BuyElectricityState extends State<BuyElectricity> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: _meterType == prepaid ? kPrimaryColor : kPurpleColor400,
+                                  color: _meterType == prepaid
+                                      ? kPrimaryColor
+                                      : kPurpleColor400,
                                   width: 1.5,
                                 ),
                               ),
-                              child: _meterType == prepaid ? Container(
-                                height: kSmallPadding,
-                                width: kSmallPadding,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color:  kPrimaryColor,
-                                ),
-                              ) : SizedBox(height: kSmallPadding, width: kSmallPadding,),
+                              child: _meterType == prepaid
+                                  ? Container(
+                                      height: kSmallPadding,
+                                      width: kSmallPadding,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: kPrimaryColor,
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      height: kSmallPadding,
+                                      width: kSmallPadding,
+                                    ),
                             ),
                             SizedBox(
                               width: kMediumPadding,
@@ -133,8 +144,8 @@ class _BuyElectricityState extends State<BuyElectricity> {
                       ),
                     ),
                     inkWell(
-                      onTap: (){
-                        setState(()=> _meterType = postpaid);
+                      onTap: () {
+                        setState(() => _meterType = postpaid);
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(
@@ -143,7 +154,9 @@ class _BuyElectricityState extends State<BuyElectricity> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(kSmallPadding),
                           border: Border.all(
-                            color: _meterType == postpaid ? kPrimaryColor : kLightPurple,
+                            color: _meterType == postpaid
+                                ? kPrimaryColor
+                                : kLightPurple,
                             width: 1,
                           ),
                         ),
@@ -154,18 +167,25 @@ class _BuyElectricityState extends State<BuyElectricity> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: _meterType == postpaid ? kPrimaryColor : kLightPurple,
+                                  color: _meterType == postpaid
+                                      ? kPrimaryColor
+                                      : kLightPurple,
                                   width: 1.5,
                                 ),
                               ),
-                              child: _meterType == postpaid ? Container(
-                                height: kSmallPadding,
-                                width: kSmallPadding,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: kPrimaryColor,
-                                ),
-                              ) : SizedBox(height: kSmallPadding,width: kSmallPadding,),
+                              child: _meterType == postpaid
+                                  ? Container(
+                                      height: kSmallPadding,
+                                      width: kSmallPadding,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: kPrimaryColor,
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      height: kSmallPadding,
+                                      width: kSmallPadding,
+                                    ),
                             ),
                             SizedBox(
                               width: kMediumPadding,
@@ -238,7 +258,8 @@ class _BuyElectricityState extends State<BuyElectricity> {
                       isDense: true,
                       hintText: enterAmount,
                       hintStyle: textTheme.headline6!.copyWith(
-                          color: kSecondaryTextColor.withOpacity(0.7), fontSize: 18),
+                          color: kSecondaryTextColor.withOpacity(0.7),
+                          fontSize: 18),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.only(left: kSmallPadding),
                         child: Align(
@@ -284,7 +305,8 @@ class _BuyElectricityState extends State<BuyElectricity> {
           SizedBox(
             height: kRegularPadding,
           ),
-          Row(
+
+          widget.isGuest! ? SizedBox() :  Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
@@ -309,14 +331,24 @@ class _BuyElectricityState extends State<BuyElectricity> {
           LargeButton(
             title: continueText,
             onPressed: () {
-              buildShowModalBottomSheet(
-                context,
-                RechargeSummary(
-                  isData: false,
-                  isCable: true,
-                  textTheme: textTheme,
-                ),
-              );
+              if (double.parse(amountController.text) > 10000 &&
+                  widget.isGuest!) {
+                buildShowModalBottomSheet(context, GuestMaximumAmountModal());
+              } else {
+                buildShowModalBottomSheet(
+                  context,
+                  widget.isGuest!
+                      ? GuestRechargeSummary(
+                          textTheme: textTheme,
+                    purchaseDelivered: true,
+                        )
+                      : RechargeSummary(
+                          isData: false,
+                          isCable: true,
+                          textTheme: textTheme,
+                        ),
+                );
+              }
             },
           )
         ],

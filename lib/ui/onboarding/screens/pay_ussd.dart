@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pouchers/ui/onboarding/screens/guest_widget.dart';
+import 'package:pouchers/ui/onboarding/screens/welcome_guest.dart';
 import 'package:pouchers/ui/tab_layout/screens/account/two_factor_auth/copy_code.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
@@ -107,7 +108,12 @@ class PayWithUssd extends StatelessWidget {
               ],
             ),
           ),
-          PayWithAmount(onTap: () {}, text: "$havePaid ", amount: "4,000"),
+          PayWithAmount(onTap: () {
+            Navigator.popUntil(
+                context,
+                    (route) =>
+                route.settings.name == WelcomeGuest.routeName);
+          }, text: "$havePaid ", amount: "4,000"),
 
         ],
       ),

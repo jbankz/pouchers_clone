@@ -63,8 +63,6 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
         ref.read(editProfileInHouseProvider.notifier).state = EditProfileData()
             .copyWith(profilePicture: userProfile.profilePicture);
       }
-      print(ref.watch(editProfileInHouseProvider).profilePicture);
-
       await checkTierLevel();
       setState(() {});
     });

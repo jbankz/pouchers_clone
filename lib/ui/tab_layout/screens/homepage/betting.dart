@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
+import 'package:pouchers/ui/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/ui/tab_layout/models/buy_cable_class.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
@@ -14,8 +15,9 @@ import 'package:pouchers/utils/widgets.dart';
 
 class Betting extends StatefulWidget {
   static const String routeName = "betting";
+  final bool? isGuest;
 
-  const Betting({Key? key}) : super(key: key);
+  const Betting({Key? key, this.isGuest}) : super(key: key);
 
   @override
   State<Betting> createState() => _BettingState();
@@ -109,14 +111,16 @@ class _BettingState extends State<Betting> {
                   shrinkWrap: true,
                   crossAxisCount: 3,
                   childAspectRatio: SizeConfig.blockSizeHorizontal! / 3.3,
-                  // crossAxisSpacing: 10,
-                  // childAspectRatio: 1.15,
                   children: List.generate(
                     guestList.length,
                         (index) => Column(
                       children: [
                         inkWell(
                           onTap: () {
+                            widget.isGuest!
+                                ? buildShowModalBottomSheet(
+                                context, GuestDiscountModal())
+                                :
                             setState(() {
                               amountController.text = guestList[index].icon;
                               _amount = guestList[index].icon;
@@ -218,6 +222,15 @@ class _BettingState extends State<Betting> {
                       } else
                         return null;
                     },
+                    onChanged: (val) {
+                      setState(() {
+                        _amount = val;
+                        amountController.text = val;
+                      });
+                      amountController.selection = TextSelection.fromPosition(
+                        TextPosition(offset: amountController.text.length),
+                      );
+                    },
                     decoration: InputDecoration(
                       filled: true,
                       isDense: true,
@@ -271,15 +284,38 @@ class _BettingState extends State<Betting> {
           ),
           LargeButton(
             title: continueText,
-            onPressed: () {
-              buildShowModalBottomSheet(
-                context,
-                RechargeSummary(
-                  isData: false,
-                  isCable: true,
-                  textTheme: textTheme,
-                ),
-              );
+            disableColor: (amountController.text.isEmpty ||
+                _amount.isEmpty ||
+                _amount.startsWith("0"))
+                ? kPurpleColor100
+                : kPrimaryColor,
+            outlineButton: false,
+            onPressed:amountController.text.isEmpty ||
+                _amount.isEmpty ||
+                _amount.startsWith("0")
+                ? () {}
+                : () {
+              if (double.parse(amountController.text) > 10000 &&
+                  widget.isGuest!) {
+                buildShowModalBottomSheet(
+                    context, GuestMaximumAmountModal());
+              }else{
+                buildShowModalBottomSheet(
+                  context,
+                  widget.isGuest!
+                      ? GuestRechargeSummary(
+                    textTheme: textTheme,
+                    purchaseDelivered: true,
+                  )
+                      :
+                  RechargeSummary(
+                    isData: false,
+                    isCable: true,
+                    textTheme: textTheme,
+                  ),
+                );
+              }
+
             },
           )
         ],

@@ -13,7 +13,6 @@ import 'package:pouchers/ui/create_account/screens/create_account.dart';
 import 'package:pouchers/ui/create_account/screens/create_pin.dart';
 import 'package:pouchers/ui/create_account/screens/poucher_tag.dart';
 import 'package:pouchers/ui/create_account/screens/verify_account.dart';
-import 'package:pouchers/ui/login/models/login_response.dart';
 import 'package:pouchers/ui/login/providers/log_in_provider.dart';
 import 'package:pouchers/ui/login/screens/forgot_password.dart';
 import 'package:pouchers/ui/tab_layout/screens/account/two_factor_auth/security_modal.dart';
@@ -47,6 +46,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool? _canCheckBiometrics;
   bool isAuth = false;
+
   // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
 
   @override
@@ -80,6 +80,13 @@ class _LogInAccountState extends ConsumerState<LogInAccount> {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
+      onTap: (){
+        if(Navigator.canPop(context)){
+          Navigator.pop(context);
+        }else{
+          exit(0);
+        }
+      },
       child: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -259,31 +266,35 @@ class _LogInAccountState extends ConsumerState<LogInAccount> {
               SizedBox(
                 height: kLargePadding,
               ),
-              Hive.box(kBiometricsBox).get(kBiometricsKey) == null
+              ref
+                  .watch(editProfileInHouseProvider).isLoginBiometricActive == null
                   ? SizedBox()
-                  : ref.watch(editProfileInHouseProvider).isLoginBiometricActive!
-
-                  ? inkWell(
-                      onTap: () {
-                        checkBiometric(context);
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.all(kRegularPadding),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: kBackgroundColor,
-                        ),
-                        child: Image.asset(
-                          Platform.isAndroid
-                              ? AssetPaths.fingerprint
-                              : AssetPaths.faceId,
-                          height: 60,
-                          fit: BoxFit.scaleDown,
-                          color: kPrimaryColor,
-                        ),
-                      ),
-                    ) : SizedBox()
+                  : ref
+                          .watch(editProfileInHouseProvider)
+                          .isLoginBiometricActive!
+                      ?
+              inkWell(
+                          onTap: () {
+                            checkBiometric(context);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(kRegularPadding),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: kBackgroundColor,
+                            ),
+                            child: Image.asset(
+                              Platform.isAndroid
+                                  ? AssetPaths.fingerprint
+                                  : AssetPaths.faceId,
+                              height: 60,
+                              fit: BoxFit.scaleDown,
+                              color: kPrimaryColor,
+                            ),
+                          ),
+                        )
+                      : SizedBox()
             ],
           ),
         ),

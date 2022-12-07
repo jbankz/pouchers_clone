@@ -84,20 +84,6 @@ class AccountRepository {
         isLoginBiometricActive: isLoginBiometricActive,
         isPaymentBiometricActive: isPaymentBiometricActive,
         token: accessToken!);
-    print("result$result");
-    if (result.data != null) {
-      await cacheUserProfile(
-        HiveStoreResponseData.fromJson(
-          result.data!.data!
-              .copyWith(
-              firstName: result.data!.data!.firstName,
-              lastName: result.data!.data!.lastName)
-              .toJson(),
-        ),
-      );
-    }
-    print("hive user key${Hive.box(kUserBox).get(kUserInfoKey)}")
-    ;
     return result.toNotifierState();
   }
 

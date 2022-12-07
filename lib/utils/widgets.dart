@@ -504,3 +504,37 @@ class PinCodeTextFieldWidget extends StatelessWidget {
         onChanged: onChanged);
   }
 }
+
+class SlideBar extends StatelessWidget {
+  final int index;
+  final int currentPage;
+
+  SlideBar({required this.index, required this.currentPage});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      height: 8,
+      width: 8,
+      margin: EdgeInsets.symmetric(vertical: 15, horizontal: 3),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: _colorPage(index, currentPage),
+      ),
+    );
+  }
+
+  Color _colorPage(int index, int currentPage) {
+    if (index == 0 && currentPage == 0) {
+      return kPrimaryColor;
+    } else if (index == 1 && currentPage == 1) {
+      return kPrimaryColor;
+    } else if (index == 2 && currentPage == 2) {
+      return kPrimaryColor;
+    } else {
+      return kLightPurple;
+    }
+  }
+}
+

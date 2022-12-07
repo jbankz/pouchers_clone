@@ -9,6 +9,7 @@ import 'package:pouchers/ui/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/ui/tab_layout/providers/account_provider.dart';
 import 'package:pouchers/ui/tab_layout/screens/account/account_settings.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/fund_wallet.dart';
+import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/voucher.dart';
 import 'package:pouchers/ui/tab_layout/screens/tab_layout.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
@@ -18,6 +19,8 @@ import 'package:pouchers/utils/extras.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
+
+import '../screens/homepage/voucher/buy_voucher.dart';
 
 class GetProviderClass {
   final String title;
@@ -87,7 +90,13 @@ class HomeIcons extends StatelessWidget {
 }
 
 class TransactionPinContainer extends ConsumerStatefulWidget {
-  final bool isData, isCable, isBiometric, is2FA, isCard, isFundCard;
+  final bool isData,
+      isCable,
+      isBiometric,
+      is2FA,
+      isCard,
+      isFundCard,
+      isBuyVoucher, isGiftVoucher;
   final Function()? doBiom;
 
   const TransactionPinContainer(
@@ -95,6 +104,8 @@ class TransactionPinContainer extends ConsumerStatefulWidget {
       required this.isData,
       this.isCable = false,
       this.isBiometric = false,
+      this.isBuyVoucher = false,
+        this.isGiftVoucher = false,
       this.doBiom,
       required this.isCard,
       required this.isFundCard,
@@ -176,7 +187,9 @@ class _TransactionPinContainerState
                                         ? dataSuccess
                                         : widget.isCable
                                             ? dataSuccess
-                                            : rechargeSuccessful,
+                                            : widget.isBuyVoucher
+                                                ? dataSuccess
+                                                : rechargeSuccessful,
                                 subText: widget.isData
                                     ? dataSubSuccess
                                     : widget.isCard
@@ -185,7 +198,11 @@ class _TransactionPinContainerState
                                             ? virtualSuccess
                                             : widget.isCable
                                                 ? deliveredPurchase
-                                                : rechargeSuccessfulSub,
+                                                : widget.isBuyVoucher
+                                                    ? voucherSuccessful
+                                                    : widget.isGiftVoucher
+                                                        ? giftVoucherSuccessful
+                                                        : rechargeSuccessfulSub,
                                 onTap: () {
                                   widget.isCard
                                       ? pushToAndClearStack(

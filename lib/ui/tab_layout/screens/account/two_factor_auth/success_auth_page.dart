@@ -55,10 +55,6 @@ class SuccessAuthPage extends StatelessWidget {
               title: dataSuccess,
               onPressed: () {
                 Navigator.popUntil(context, (route) => route.settings.name == AccountSettings.routeName);
-
-                // pushTo(context, AccountSettings(),
-                //     settings:
-                //         const RouteSettings(name: AccountSettings.routeName));
               },
             )
           ],

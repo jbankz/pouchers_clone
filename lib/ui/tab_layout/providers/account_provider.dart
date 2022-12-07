@@ -24,8 +24,8 @@ final changePhoneProvider = StateNotifierProvider.autoDispose<
 
 final authFactorProvider = StateProvider<bool>((ref) => false);
 
-final editProfileInHouseProvider =
-    StateProvider<EditProfileData>((ref) => EditProfileData());
+final editProfileInHouseProvider = StateProvider<EditProfileData>((ref) => EditProfileData());
+
 
 final editProfileProvider = StateNotifierProvider<EditProfileNotifier,
     NotifierState<EditProfileResponse>>((ref) {

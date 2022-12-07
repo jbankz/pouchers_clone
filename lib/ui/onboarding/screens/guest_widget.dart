@@ -321,9 +321,11 @@ class GuestRechargeSummary extends StatefulWidget {
   const GuestRechargeSummary({
     Key? key,
     required this.textTheme,
+    this.purchaseDelivered = false,
   }) : super(key: key);
 
   final TextTheme textTheme;
+  final bool? purchaseDelivered;
 
   @override
   State<GuestRechargeSummary> createState() => _GuestRechargeSummaryState();
@@ -567,9 +569,12 @@ class _GuestRechargeSummaryState extends State<GuestRechargeSummary> {
             title: continueText,
             onPressed: () {
               _payWith == payWithCard
-                  ? pushTo(context, PayWithCard(),
+                  ? pushTo(context, PayWithCard(
+                isCable: true,
+              ),
                       settings: RouteSettings(name: PayWithCard.routeName))
-                  : pushTo(context, PayWithUssd(),
+                  : pushTo(context, PayWithUssd(
+              ),
                       settings: RouteSettings(name: PayWithUssd.routeName));
             },
           )
@@ -580,12 +585,9 @@ class _GuestRechargeSummaryState extends State<GuestRechargeSummary> {
 }
 
 class PayWithAmount extends StatelessWidget {
-  const PayWithAmount({
-    Key? key,
-    required this.onTap,
-    required this.text,
-    required this.amount
-  }) : super(key: key);
+  const PayWithAmount(
+      {Key? key, required this.onTap, required this.text, required this.amount})
+      : super(key: key);
 
   final Function() onTap;
   final String text, amount;
@@ -615,8 +617,8 @@ class PayWithAmount extends StatelessWidget {
           children: [
             Text(
               text,
-              style: textTheme.subtitle1!.copyWith(
-                  fontWeight: FontWeight.w700, color: kPrimaryWhite),
+              style: textTheme.subtitle1!
+                  .copyWith(fontWeight: FontWeight.w700, color: kPrimaryWhite),
             ),
             RichText(
               text: TextSpan(
@@ -630,8 +632,7 @@ class PayWithAmount extends StatelessWidget {
                   TextSpan(
                     text: amount,
                     style: textTheme.subtitle1!.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: kPrimaryWhite),
+                        fontWeight: FontWeight.w700, color: kPrimaryWhite),
                   ),
                 ],
               ),
@@ -642,4 +643,3 @@ class PayWithAmount extends StatelessWidget {
     );
   }
 }
-

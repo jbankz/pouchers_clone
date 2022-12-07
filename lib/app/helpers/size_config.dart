@@ -29,3 +29,29 @@ class SizeConfig {
         _safeAreaVertical!) / 100;
   }
 }
+
+class NairaWidget extends StatelessWidget {
+  const NairaWidget({Key? key,
+    required this.text,
+    required this.textStyle1,
+    required this.textStyle2,
+   })
+      : super(key: key);
+
+  final String text;
+  final TextStyle textStyle1, textStyle2;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        text: "₦",
+        children: [
+          TextSpan(text: text, style: textStyle2),
+        ],
+        style: textStyle1
+      ),
+    );
+  }
+}

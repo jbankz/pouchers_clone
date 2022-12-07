@@ -50,6 +50,10 @@ import 'ui/tab_layout/screens/homepage/buy_electricity.dart';
 import 'ui/tab_layout/screens/homepage/buy_internet.dart';
 import 'ui/tab_layout/screens/homepage/fund_wallet.dart';
 import 'ui/tab_layout/screens/homepage/homepage.dart';
+import 'ui/tab_layout/screens/homepage/voucher/buy_voucher.dart';
+import 'ui/tab_layout/screens/homepage/voucher/gift_voucher.dart';
+import 'ui/tab_layout/screens/homepage/voucher/redeem_voucher.dart';
+import 'ui/tab_layout/screens/homepage/voucher/view_voucher_history.dart';
 import 'ui/tab_layout/screens/profile/profile_account_verification.dart';
 import 'ui/tab_layout/screens/profile/profile_bvn.dart';
 import 'ui/tab_layout/screens/profile/profile_change_number.dart';
@@ -121,5 +125,9 @@ Map<String, WidgetBuilder> appRoutes = {
   GetGuestEmail.routeName: (context) => GetGuestEmail(),
   PayWithCard.routeName: (context) => PayWithCard(),
   PayWithUssd.routeName: (context) => PayWithUssd(),
-  Vouchers.routeName: (context) => Vouchers()
+  Vouchers.routeName: (context) => Vouchers(),
+  BuyVouchers.routeName: (context) => BuyVouchers(),
+  RedeemVoucher.routeName: (context) => RedeemVoucher(),
+  GiftVoucher.routeName: (context) => GiftVoucher(),
+  VoucherHistory.routeName: (context) => VoucherHistory()
 };

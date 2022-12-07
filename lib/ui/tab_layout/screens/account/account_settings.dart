@@ -119,7 +119,6 @@ class _AccountSettingsState extends ConsumerState<AccountSettings> {
               await Hive.box(kUserBox).clear();
               await Hive.box(kTokenBox).clear();
               await Hive.box(k2FACodeBox).clear();
-             // await Hive.deleteFromDisk();
               pushToAndClearStack(
                 context,
                 LogInAccount(),

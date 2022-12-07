@@ -4,8 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/ui/create_account/screens/create_account.dart';
 import 'package:pouchers/ui/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
