@@ -4,6 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/schedule_purchase/schedule_widget_constants.dart';
+import 'package:pouchers/ui/schedule_purchase/screens/schedule_data_topup.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
@@ -174,9 +177,6 @@ class _BuyDataState extends ConsumerState<BuyData>
                   shrinkWrap: true,
                   crossAxisCount: 3,
                   childAspectRatio: SizeConfig.blockSizeHorizontal! / 4.7,
-                  // crossAxisSpacing: 15,
-                  // mainAxisSpacing: 15,
-                  // childAspectRatio: 0.85,
                   children: List.generate(
                     guestListData.length,
                     (index) => Column(
@@ -269,6 +269,15 @@ class _BuyDataState extends ConsumerState<BuyData>
                         ),
                       ],
                     ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: kPadding),
+                  child: Scheduling(
+                    text: scheduleData,
+                    subtext: scheduleDataSub,
+                    onTap: ()=> pushTo(context, ScheduleDataTopUp(),settings:
+                        RouteSettings(name: ScheduleDataTopUp.routeName)),
                   ),
                 ),
               ],

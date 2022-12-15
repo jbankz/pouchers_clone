@@ -115,6 +115,7 @@ class LargeLoadingButton extends StatelessWidget {
 
 class InitialPage extends StatelessWidget {
   final Widget child;
+  final Widget? bottomSheet;
   final bool noBackButton, addSpace;
   final Function()? onTap;
   final String? title;
@@ -127,6 +128,7 @@ class InitialPage extends StatelessWidget {
       this.titleColor,
       this.onTap,
       this.color,
+        this.bottomSheet,
       this.addSpace = true,
       this.noBackButton = false})
       : super(key: key);
@@ -136,6 +138,7 @@ class InitialPage extends StatelessWidget {
     TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
       backgroundColor: color ?? kPrimaryWhite,
+      bottomSheet: bottomSheet,
       appBar: AppBar(
         title: Text(
           title == null ? "" : title!,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pouchers/ui/account/two_factor_auth/copy_code.dart';
 import 'package:pouchers/ui/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/ui/onboarding/screens/welcome_guest.dart';
-import 'package:pouchers/ui/tab_layout/screens/account/two_factor_auth/copy_code.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';

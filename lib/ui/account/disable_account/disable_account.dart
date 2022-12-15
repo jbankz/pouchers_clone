@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/account/disable_account/disable_account_confirmation.dart';
+import 'package:pouchers/ui/account/two_factor_auth/question_modal.dart';
 import 'package:pouchers/ui/tab_layout/models/question_model.dart';
-import 'package:pouchers/ui/tab_layout/screens/account/disable_account/disable_account_confirmation.dart';
-import 'package:pouchers/ui/tab_layout/screens/account/disable_account/disable_modal.dart';
-import 'package:pouchers/ui/tab_layout/screens/account/two_factor_auth/question_modal.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';

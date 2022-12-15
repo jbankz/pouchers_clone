@@ -4,7 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/onboarding/screens/guest_widget.dart';
+import 'package:pouchers/ui/schedule_purchase/screens/schedule_airtime_topup.dart';
+import 'package:pouchers/ui/schedule_purchase/schedule_widget_constants.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
@@ -227,65 +230,73 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                 SizedBox(
                   height: kSmallPadding,
                 ),
-                Container(
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
-                    cursorColor: kPrimaryColor,
-                    controller: amountController,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (val) {
-                      if (val != null || val!.isNotEmpty) if (val
-                          .startsWith("0")) {
-                        return "Amount cannot start with zero";
-                      } else
-                        return null;
-                    },
-                    onChanged: (val) {
-                      setState(() {
-                        _amount = val;
-                        amountController.text = val;
-                      });
-                      amountController.selection = TextSelection.fromPosition(
-                        TextPosition(offset: amountController.text.length),
-                      );
-                    },
-                    decoration: InputDecoration(
-                      filled: true,
-                      isDense: true,
-                      prefix: RichText(
-                        text: TextSpan(
-                          text: "₦  ",
-                          style: TextStyle(
-                            color: kPrimaryTextColor,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
+                  cursorColor: kPrimaryColor,
+                  controller: amountController,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (val) {
+                    if (val != null || val!.isNotEmpty) if (val
+                        .startsWith("0")) {
+                      return "Amount cannot start with zero";
+                    } else
+                      return null;
+                  },
+                  onChanged: (val) {
+                    setState(() {
+                      _amount = val;
+                      amountController.text = val;
+                    });
+                    amountController.selection = TextSelection.fromPosition(
+                      TextPosition(offset: amountController.text.length),
+                    );
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    isDense: true,
+                    prefix: RichText(
+                      text: TextSpan(
+                        text: "₦  ",
+                        style: TextStyle(
+                          color: kPrimaryTextColor,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
                         ),
                       ),
-                      fillColor: kBackgroundColor,
-                      border: OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(style: BorderStyle.none),
-                        borderRadius: BorderRadius.circular(kSmallPadding),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: kPrimaryColor),
-                        borderRadius: BorderRadius.circular(kSmallPadding),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(kSmallPadding),
-                        borderSide: BorderSide(color: kColorRed),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(kSmallPadding),
-                        borderSide: BorderSide(color: kColorRed),
-                      ),
+                    ),
+                    fillColor: kBackgroundColor,
+                    border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(style: BorderStyle.none),
+                      borderRadius: BorderRadius.circular(kSmallPadding),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: kPrimaryColor),
+                      borderRadius: BorderRadius.circular(kSmallPadding),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(kSmallPadding),
+                      borderSide: BorderSide(color: kColorRed),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(kSmallPadding),
+                      borderSide: BorderSide(color: kColorRed),
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: kMicroPadding,
+                ),
+                Scheduling(
+                  text: scheduleAirtime,
+                  subtext: scheduleAirtimeSub,
+                  onTap: () => pushTo(context, ScheduleAirtimeTopUp(),
+                      settings:
+                          RouteSettings(name: ScheduleAirtimeTopUp.routeName)),
                 ),
                 SizedBox(
                   height: kMicroPadding,

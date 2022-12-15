@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/ui/tab_layout/screens/account/disable_account/disable_modal.dart';
+import 'package:pouchers/ui/account/disable_account/disable_modal.dart';
 import 'package:pouchers/ui/tab_layout/screens/cards/create_virtual_card.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
-
-import '../../../../utils/flushbar.dart';
 import '../../models/ui_models_class.dart';
 
 String headerText(bool isFundCard, bool isFundNaira, bool isNaira) {

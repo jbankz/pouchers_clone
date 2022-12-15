@@ -32,7 +32,7 @@ class TextInputNoIcon extends StatelessWidget {
       this.obscure,
       this.hintText,
         this.addSpace = true,
-      this.focusNode});
+      this.focusNode, this.onTap});
 
   final TextTheme textTheme;
   final String? text;
@@ -51,6 +51,7 @@ class TextInputNoIcon extends StatelessWidget {
   final Widget? widget;
   final TextCapitalization? textCapitalize;
   final FocusNode? focusNode;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +116,7 @@ class TextInputNoIcon extends StatelessWidget {
                 borderSide: BorderSide(color: kColorRed),
               ),
             ),
+            onTap: onTap,
           ),
         ),
         SizedBox(

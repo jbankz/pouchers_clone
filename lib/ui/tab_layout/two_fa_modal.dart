@@ -4,8 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/account/account_settings.dart';
+import 'package:pouchers/ui/account/two_factor_auth/google_authenticator_download.dart';
+import 'package:pouchers/ui/account/two_factor_auth/second_security_question.dart';
+import 'package:pouchers/ui/account/two_factor_auth/security_question.dart';
 import 'package:pouchers/ui/tab_layout/providers/account_provider.dart';
-import 'package:pouchers/ui/tab_layout/screens/account/account_settings.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
@@ -14,10 +17,6 @@ import 'package:pouchers/utils/extras.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
-
-import 'screens/account/two_factor_auth/google_authenticator_download.dart';
-import 'screens/account/two_factor_auth/second_security_question.dart';
-import 'screens/account/two_factor_auth/security_question.dart';
 
 class TwoFactorPinModal extends ConsumerStatefulWidget {
   final bool? isDisable;

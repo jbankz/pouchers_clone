@@ -217,7 +217,7 @@ class AccountService {
     if(isPaymentBiometricActive != null) body["is_payment_biometric_active"] = isPaymentBiometricActive;
 
     log(url);
-    log("body$body");
+    log("bomkmkmkdy$body");
 
     try {
       http.Response response = await http.patch(Uri.parse(url),

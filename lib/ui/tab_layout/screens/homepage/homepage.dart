@@ -45,7 +45,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
-    print(userProfile.profilePicture);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if (ref.watch(editProfileInHouseProvider).profilePicture == null) {
         ref.read(editProfileInHouseProvider.notifier).state =
@@ -53,8 +52,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                 .copyWith(profilePicture: userProfile.profilePicture);
         setState(() {});
       }
-
-      print("refthings${ref.watch(editProfileInHouseProvider).profilePicture}");
     });
   }
 

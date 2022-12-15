@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/ui/tab_layout/screens/account/two_factor_auth/disable_auth_question.dart';
+import 'package:pouchers/ui/account/two_factor_auth/disable_auth_question.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';

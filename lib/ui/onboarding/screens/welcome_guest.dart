@@ -4,6 +4,7 @@ import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/create_account/screens/create_account.dart';
 import 'package:pouchers/ui/login/screens/login.dart';
+import 'package:pouchers/ui/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/constant/ui_constants.dart';
@@ -64,10 +65,16 @@ class WelcomeGuest extends StatelessWidget {
                       children: List.generate(
                         guestClass.length,
                         (index) => inkWell(
-                          onTap: () => pushTo(
-                            context,
-                            guestClass[index].page,
-                          ),
+                          onTap: () {
+                            (guestClass[index].title == "Vouchers" ||
+                                    guestClass[index].title == "Tickets")
+                                ? buildShowModalBottomSheet(
+                                    context, GuestDiscountModal())
+                                : pushTo(
+                                    context,
+                                    guestClass[index].page,
+                                  );
+                          },
                           child: Column(
                             children: [
                               Container(

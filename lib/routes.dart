@@ -3,11 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:pouchers/ui/login/screens/reset_password_code.dart';
 import 'package:pouchers/ui/onboarding/screens/onboarding.dart';
 import 'package:pouchers/ui/onboarding/screens/pay_ussd.dart';
-import 'package:pouchers/ui/tab_layout/screens/account/two_factor_auth/disable_auth_question2.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/voucher.dart';
+import 'ui/account/account_settings.dart';
+import 'ui/account/biometric_settings.dart';
+import 'ui/account/change_password/change_password.dart';
+import 'ui/account/change_pin.dart';
+import 'ui/account/delete_account/delete_account.dart';
+import 'ui/account/disable_account/disable_account.dart';
+import 'ui/account/disable_account/disable_account_confirmation.dart';
+import 'ui/account/disable_account/disable_success.dart';
+import 'ui/account/reset_pin.dart';
+import 'ui/account/two_factor_auth/confirm_auth_pin.dart';
+import 'ui/account/two_factor_auth/copy_code.dart';
+import 'ui/account/two_factor_auth/disable_auth_question.dart';
+import 'ui/account/two_factor_auth/disable_auth_question2.dart';
+import 'ui/account/two_factor_auth/google_authenticator_download.dart';
+import 'ui/account/two_factor_auth/second_security_question.dart';
+import 'ui/account/two_factor_auth/security_question.dart';
+import 'ui/account/two_factor_auth/success_auth_page.dart';
+import 'ui/account/two_factor_auth/two_factor.dart';
+import 'ui/account/two_factor_auth/two_factor_disable.dart';
 import 'ui/create_account/screens/biometrics_page.dart';
 import 'ui/create_account/screens/create_account.dart';
-
 import 'ui/create_account/screens/create_pin.dart';
 import 'ui/create_account/screens/poucher_tag.dart';
 import 'ui/create_account/screens/verify_account.dart';
@@ -20,24 +37,8 @@ import 'ui/make_payment/screens/transfer_summary.dart';
 import 'ui/onboarding/screens/guest_email.dart';
 import 'ui/onboarding/screens/pay_card.dart';
 import 'ui/onboarding/screens/welcome_guest.dart';
-import 'ui/tab_layout/screens/account/account_settings.dart';
-import 'ui/tab_layout/screens/account/biometric_settings.dart';
-import 'ui/tab_layout/screens/account/change_password/change_password.dart';
-import 'ui/tab_layout/screens/account/change_pin.dart';
-import 'ui/tab_layout/screens/account/delete_account/delete_account.dart';
-import 'ui/tab_layout/screens/account/disable_account/disable_account.dart';
-import 'ui/tab_layout/screens/account/disable_account/disable_account_confirmation.dart';
-import 'ui/tab_layout/screens/account/disable_account/disable_success.dart';
-import 'ui/tab_layout/screens/account/reset_pin.dart';
-import 'ui/tab_layout/screens/account/two_factor_auth/confirm_auth_pin.dart';
-import 'ui/tab_layout/screens/account/two_factor_auth/copy_code.dart';
-import 'ui/tab_layout/screens/account/two_factor_auth/disable_auth_question.dart';
-import 'ui/tab_layout/screens/account/two_factor_auth/google_authenticator_download.dart';
-import 'ui/tab_layout/screens/account/two_factor_auth/second_security_question.dart';
-import 'ui/tab_layout/screens/account/two_factor_auth/security_question.dart';
-import 'ui/tab_layout/screens/account/two_factor_auth/success_auth_page.dart';
-import 'ui/tab_layout/screens/account/two_factor_auth/two_factor.dart';
-import 'ui/tab_layout/screens/account/two_factor_auth/two_factor_disable.dart';
+import 'ui/schedule_purchase/screens/schedule_airtime_topup.dart';
+import 'ui/schedule_purchase/screens/schedule_data_topup.dart';
 import 'ui/tab_layout/screens/cards/card_home.dart';
 import 'ui/tab_layout/screens/cards/card_summary.dart';
 import 'ui/tab_layout/screens/cards/create_card.dart';
@@ -85,8 +86,7 @@ Map<String, WidgetBuilder> appRoutes = {
   ConfirmAuthPin.routeName: (context) => ConfirmAuthPin(),
   CopyCode.routeName: (context) => CopyCode(),
   DisableAuthQuestion.routeName: (context) => DisableAuthQuestion(),
-  GoogleAuthenticatorDownload.routeName: (context) =>
-      GoogleAuthenticatorDownload(),
+  GoogleAuthenticatorDownload.routeName: (context) => GoogleAuthenticatorDownload(),
   SecurityQuestion.routeName: (context) => SecurityQuestion(),
   SuccessAuthPage.routeName: (context) => SuccessAuthPage(),
   TwoFactor.routeName: (context) => TwoFactor(),
@@ -129,5 +129,7 @@ Map<String, WidgetBuilder> appRoutes = {
   BuyVouchers.routeName: (context) => BuyVouchers(),
   RedeemVoucher.routeName: (context) => RedeemVoucher(),
   GiftVoucher.routeName: (context) => GiftVoucher(),
-  VoucherHistory.routeName: (context) => VoucherHistory()
+  VoucherHistory.routeName: (context) => VoucherHistory(),
+  ScheduleAirtimeTopUp.routeName: (context) => ScheduleAirtimeTopUp(),
+  ScheduleDataTopUp.routeName: (context) => ScheduleDataTopUp(),
 };

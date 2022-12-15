@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/ui/login/screens/login.dart';
-import 'package:pouchers/ui/tab_layout/screens/account/account_settings.dart';
-import 'package:pouchers/ui/tab_layout/screens/profile/profile_account_verification.dart';
-import 'package:pouchers/ui/tab_layout/screens/profile/profile_bvn.dart';
 import 'package:pouchers/ui/tab_layout/screens/profile/profile_kyc.dart';
-import 'package:pouchers/ui/tab_layout/screens/profile/profile_page.dart';
 import 'package:pouchers/ui/tab_layout/screens/profile/profile_tier_list.dart';
 import 'package:pouchers/ui/tab_layout/screens/tab_layout.dart';
 import 'package:pouchers/utils/assets_path.dart';

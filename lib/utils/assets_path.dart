@@ -87,4 +87,6 @@ class AssetPaths {
    static String facebookIcon = "${iconPath}facebook.svg";
    static String instagramIcon = "${iconPath}instagramo.svg";
    static String whatsappIcon = "${iconPath}whatsapp.svg";
+   static String editIcon = "${iconPath}edit.svg";
+   static String deleteIcon = "${iconPath}delete.svg";
 }

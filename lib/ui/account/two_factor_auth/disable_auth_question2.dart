@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/tab_layout/models/security_question.dart';
-import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
-import 'package:pouchers/ui/tab_layout/screens/account/account_settings.dart';
-import 'package:pouchers/ui/tab_layout/screens/tab_layout.dart';
+import 'package:pouchers/ui/tab_layout/providers/account_provider.dart';
 import 'package:pouchers/ui/tab_layout/two_fa_modal.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
-
-import '../../../providers/account_provider.dart';
 
 class DisableAuthQuestion2 extends ConsumerStatefulWidget {
   static const String routeName = "disableAuthQuestion2";

@@ -81,6 +81,7 @@ const Color kPurpleColor = Color(0xff5034C4);
 const Color kColorGreen = Color(0xff00BB64);
 const Color kLightColorGreen = Color(0xffF4FBF6);
 const Color kColorOrange = Color(0xffFF6414);
+const Color kColorOrange100 = Color(0xffFF8264);
 const Color kColorYellow200 = Color(0xffE8A706);
 const Color kColorBackgroundLight = Color(0xffEEEBFA);
 const Color kColorBackgroundLight100 = Color(0xffF8F9FD);

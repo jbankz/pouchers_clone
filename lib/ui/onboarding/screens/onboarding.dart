@@ -90,9 +90,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) => _animateSlider());
+    setState(() {});
   }
 
   @override

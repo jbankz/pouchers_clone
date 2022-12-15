@@ -8,7 +8,6 @@ import 'package:pouchers/ui/login/models/login_response.dart';
 import 'package:pouchers/ui/tab_layout/models/profile_model.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/ui/tab_layout/providers/account_provider.dart';
-import 'package:pouchers/ui/tab_layout/screens/account/account_widget.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';

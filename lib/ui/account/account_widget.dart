@@ -1,13 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:local_auth/local_auth.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/ui/tab_layout/screens/tab_layout.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 
 

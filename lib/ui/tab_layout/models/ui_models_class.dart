@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,9 +5,7 @@ import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/ui/tab_layout/providers/account_provider.dart';
-import 'package:pouchers/ui/tab_layout/screens/account/account_settings.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/fund_wallet.dart';
-import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/voucher.dart';
 import 'package:pouchers/ui/tab_layout/screens/tab_layout.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
@@ -19,8 +15,6 @@ import 'package:pouchers/utils/extras.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
-
-import '../screens/homepage/voucher/buy_voucher.dart';
 
 class GetProviderClass {
   final String title;
@@ -96,8 +90,9 @@ class TransactionPinContainer extends ConsumerStatefulWidget {
       is2FA,
       isCard,
       isFundCard,
-      isBuyVoucher, isGiftVoucher;
-  final Function()? doBiom;
+      isBuyVoucher,
+      isGiftVoucher, isSchedule;
+  final Function()? doBiom, doSchedule;
 
   const TransactionPinContainer(
       {Key? key,
@@ -105,8 +100,10 @@ class TransactionPinContainer extends ConsumerStatefulWidget {
       this.isCable = false,
       this.isBiometric = false,
       this.isBuyVoucher = false,
-        this.isGiftVoucher = false,
+      this.isGiftVoucher = false,
+        this.isSchedule = false,
       this.doBiom,
+        this.doSchedule,
       required this.isCard,
       required this.isFundCard,
       this.is2FA = false})
@@ -175,7 +172,11 @@ class _TransactionPinContainerState
                   if (widget.isBiometric) {
                     Navigator.pop(context, pinPicked);
                     widget.doBiom!();
-                  } else {
+                  } else if(widget.isSchedule){
+                    Navigator.pop(context);
+                    widget.doSchedule!();
+                  }
+                  else {
                     widget.is2FA
                         ? Navigator.pop(context, pinPicked)
                         : pushTo(

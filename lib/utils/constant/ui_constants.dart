@@ -124,21 +124,26 @@ final List<GuestClass> guestHomeClass = [
       ),
       days: BuyAirtime.routeName),
   GuestClass("Data", AssetPaths.dataIcon,
-      page: BuyData(), days: BuyData.routeName),
+      page: BuyData(
+      ), days: BuyData.routeName),
   GuestClass("CableTV", AssetPaths.televisionIcon,
-      page: BuyCable(), days: BuyCable.routeName),
+      page: BuyCable(
+        isGuest: false,
+      ), days: BuyCable.routeName),
   GuestClass("Electricity", AssetPaths.electricityIcon,
-      page: BuyElectricity(), days: BuyElectricity.routeName),
+      page: BuyElectricity(isGuest: false,), days: BuyElectricity.routeName),
   GuestClass("Internet", AssetPaths.wifiIcon,
-      page: BuyInternet(), days: BuyInternet.routeName),
+      page: BuyInternet(isGuest: false,), days: BuyInternet.routeName),
   GuestClass("Betting", AssetPaths.bettingIcon,
-      page: Betting(), days: Betting.routeName),
+      page: Betting(isGuest: false,), days: Betting.routeName),
   GuestClass(
     "Vouchers",
     AssetPaths.voucherIcon,
-    page: Vouchers(),
+    page: Vouchers(isGuest: false,),
   ),
-  GuestClass("More", AssetPaths.moreIcon, page: Container()),
+  GuestClass("More", AssetPaths.moreIcon, page: Container(
+    color: Colors.white,
+  )),
 ];
 
 final List<GuestClass> voucherClass = [

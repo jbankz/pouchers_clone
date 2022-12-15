@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pouchers/ui/account/disable_account/disable_modal.dart';
 import 'package:pouchers/ui/make_payment/screens/make_payment_widgets.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
-import 'package:pouchers/ui/tab_layout/screens/account/disable_account/disable_modal.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
