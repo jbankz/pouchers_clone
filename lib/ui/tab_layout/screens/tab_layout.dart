@@ -43,7 +43,6 @@ class _TabLayoutState extends State<TabLayout> {
     super.initState();
     if (widget.gottenIndex == null) {
       _selectedIndex = 0;
-      print(_selectedIndex);
     } else {
       _selectedIndex = widget.gottenIndex!;
     }

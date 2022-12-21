@@ -6,7 +6,6 @@ import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/ui/schedule_purchase/provider/schedule_provider.dart';
 import 'package:pouchers/ui/schedule_purchase/schedule_modal.dart';
 import 'package:pouchers/ui/schedule_purchase/schedule_widget_constants.dart';
-import 'package:pouchers/ui/schedule_purchase/screens/schedule_airtime_topup.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';

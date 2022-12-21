@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/ui/onboarding/screens/guest_widget.dart';
+import 'package:pouchers/ui/schedule_purchase/provider/schedule_provider.dart';
+import 'package:pouchers/ui/schedule_purchase/schedule_modal.dart';
 import 'package:pouchers/ui/schedule_purchase/schedule_widget_constants.dart';
-import 'package:pouchers/ui/schedule_purchase/screens/schedule_electricity_topup.dart';
 import 'package:pouchers/ui/tab_layout/models/buy_electricity_class.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
@@ -15,21 +15,21 @@ import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
-class BuyElectricity extends StatefulWidget {
-  static const String routeName = "buyElectricity";
-  final bool? isGuest;
+class ScheduleElectricity extends ConsumerStatefulWidget {
+  static const String routeName = "scheduleElectricity";
 
-  const BuyElectricity({Key? key, this.isGuest}) : super(key: key);
+  const ScheduleElectricity({Key? key}) : super(key: key);
 
   @override
-  State<BuyElectricity> createState() => _BuyElectricityState();
+  ConsumerState<ScheduleElectricity> createState() => _ScheduleElectricityState();
 }
 
-class _BuyElectricityState extends State<BuyElectricity> {
+class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
   bool _saveBeneficiary = false;
   TextEditingController contactController = TextEditingController();
   TextEditingController amountController = TextEditingController();
   String _meterType = prepaid;
+  String frequency = "";
 
   Widget prefixIcon = Padding(
     padding: EdgeInsets.symmetric(vertical: kMediumPadding),
@@ -41,13 +41,21 @@ class _BuyElectricityState extends State<BuyElectricity> {
           fontSize: 18,
         )),
   );
-
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
-      title: electricity,
-      child: Column(
+      title: scheduleElectricity,
+      bottomSheet: ref.watch(scheduleElectricityProvider)
+          ? ScheduleBottomWidget(
+        onTap: () {
+          ref.read(scheduleElectricityProvider.notifier).state = false;
+        },
+      )
+          : SizedBox(),
+      child: ref.watch(scheduleElectricityProvider)
+          ? ScheduleList(scheduleDummy: scheduleDummy, textTheme: textTheme)
+          : Column(
         children: [
           Expanded(
             child: ListView(
@@ -122,17 +130,17 @@ class _BuyElectricityState extends State<BuyElectricity> {
                               ),
                               child: _meterType == prepaid
                                   ? Container(
-                                      height: kSmallPadding,
-                                      width: kSmallPadding,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: kPrimaryColor,
-                                      ),
-                                    )
+                                height: kSmallPadding,
+                                width: kSmallPadding,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: kPrimaryColor,
+                                ),
+                              )
                                   : SizedBox(
-                                      height: kSmallPadding,
-                                      width: kSmallPadding,
-                                    ),
+                                height: kSmallPadding,
+                                width: kSmallPadding,
+                              ),
                             ),
                             SizedBox(
                               width: kMediumPadding,
@@ -178,17 +186,17 @@ class _BuyElectricityState extends State<BuyElectricity> {
                               ),
                               child: _meterType == postpaid
                                   ? Container(
-                                      height: kSmallPadding,
-                                      width: kSmallPadding,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: kPrimaryColor,
-                                      ),
-                                    )
+                                height: kSmallPadding,
+                                width: kSmallPadding,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: kPrimaryColor,
+                                ),
+                              )
                                   : SizedBox(
-                                      height: kSmallPadding,
-                                      width: kSmallPadding,
-                                    ),
+                                height: kSmallPadding,
+                                width: kSmallPadding,
+                              ),
                             ),
                             SizedBox(
                               width: kMediumPadding,
@@ -218,7 +226,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
                   icon: inkWell(
                     onTap: () async {
                       final PhoneContact contact =
-                          await FlutterContactPicker.pickPhoneContact();
+                      await FlutterContactPicker.pickPhoneContact();
                       setState(() {
                         contactController.text = contact.phoneNumber!.number!;
                       });
@@ -239,132 +247,135 @@ class _BuyElectricityState extends State<BuyElectricity> {
                 SizedBox(
                   height: kSmallPadding,
                 ),
-                Container(
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
-                    cursorColor: kPrimaryColor,
-                    controller: amountController,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (val) {
-                      if (val != null || val!.isNotEmpty) if (val
-                          .startsWith("0")) {
-                        return "Amount cannot start with zero";
-                      } else
-                        return null;
-                    },
-                    decoration: InputDecoration(
-                      filled: true,
-                      isDense: true,
-                      hintText: enterAmount,
-                      hintStyle: textTheme.headline6!.copyWith(
-                          color: kSecondaryTextColor.withOpacity(0.7),
-                          fontSize: 18),
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.only(left: kSmallPadding),
-                        child: Align(
-                          widthFactor: 0,
-                          alignment: Alignment.centerLeft,
-                          child: RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              text: "₦  ",
-                              style: TextStyle(
-                                color: kPrimaryTextColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                              ),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
+                  cursorColor: kPrimaryColor,
+                  controller: amountController,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (val) {
+                    if (val != null || val!.isNotEmpty) if (val
+                        .startsWith("0")) {
+                      return "Amount cannot start with zero";
+                    } else
+                      return null;
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    isDense: true,
+                    hintText: enterAmount,
+                    hintStyle: textTheme.headline6!.copyWith(
+                        color: kSecondaryTextColor.withOpacity(0.7),
+                        fontSize: 18),
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.only(left: kSmallPadding),
+                      child: Align(
+                        widthFactor: 0,
+                        alignment: Alignment.centerLeft,
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text: "₦  ",
+                            style: TextStyle(
+                              color: kPrimaryTextColor,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
                             ),
                           ),
                         ),
                       ),
-                      fillColor: kBackgroundColor,
-                      border: OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(style: BorderStyle.none),
-                        borderRadius: BorderRadius.circular(kSmallPadding),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: kPrimaryColor),
-                        borderRadius: BorderRadius.circular(kSmallPadding),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(kSmallPadding),
-                        borderSide: BorderSide(color: kColorRed),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(kSmallPadding),
-                        borderSide: BorderSide(color: kColorRed),
-                      ),
+                    ),
+                    fillColor: kBackgroundColor,
+                    border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(style: BorderStyle.none),
+                      borderRadius: BorderRadius.circular(kSmallPadding),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: kPrimaryColor),
+                      borderRadius: BorderRadius.circular(kSmallPadding),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(kSmallPadding),
+                      borderSide: BorderSide(color: kColorRed),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(kSmallPadding),
+                      borderSide: BorderSide(color: kColorRed),
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: kMediumPadding,
+                  height: kMicroPadding,
                 ),
-                Scheduling(
-                  text: scheduleElectricity,
-                  subtext: scheduleElectricitySub,
-                  onTap: ()=> pushTo(context, ScheduleElectricity(),settings:
-                  RouteSettings(name: ScheduleElectricity.routeName)),
+                TextInputNoIcon(
+                  textTheme: textTheme,
+                  text: choosePeriod,
+                  hintText: selectFrequency,
+                  read: true,
+                  suffixIcon: frequency == ""
+                      ? SizedBox()
+                      : Container(
+                    width: 200,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "Every $frequency",
+                          style: textTheme.headline2!.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          color: kSecondaryTextColor,
+                        )
+                      ],
+                    ),
+                  ),
+                  onTap: () async {
+                    final result = await buildShowModalBottomSheet(
+                        context, ScheduleModal());
+                    setState(() => frequency = result);
+                  },
                 ),
               ],
             ),
           ),
-          SizedBox(
-            height: kRegularPadding,
-          ),
 
-          widget.isGuest! ? SizedBox() :  Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                saveBeneficiary,
-                style: textTheme.headline2!.copyWith(
-                  color: kIconGrey,
-                ),
-              ),
-              FlutterSwitchClass(
-                saveBeneficiary: _saveBeneficiary,
-                onToggle: (val) {
-                  setState(() {
-                    _saveBeneficiary = val;
-                  });
-                },
-              )
-            ],
-          ),
           SizedBox(
             height: kLargePadding,
           ),
           LargeButton(
-            title: continueText,
-            onPressed: () {
-              if (double.parse(amountController.text) > 10000 &&
-                  widget.isGuest!) {
-                buildShowModalBottomSheet(context, GuestMaximumAmountModal());
-              } else {
+              title: confirm,
+              onPressed: frequency == ""
+                  ? () {}
+                  : () {
                 buildShowModalBottomSheet(
                   context,
-                  widget.isGuest!
-                      ? GuestRechargeSummary(
-                          textTheme: textTheme,
-                    purchaseDelivered: true,
-                        )
-                      : RechargeSummary(
-                          isData: false,
-                          isCable: true,
-                          textTheme: textTheme,
-                        ),
+                  TransactionPinContainer(
+                    isSchedule: true,
+                    isData: false,
+                    isCard: false,
+                    isFundCard: false,
+                    doSchedule: () {
+                      showSuccessBar(context,
+                          "Auto top-up successfully created");
+                      ref
+                          .read(scheduleElectricityProvider.notifier)
+                          .state = true;
+                    },
+                  ),
                 );
-              }
-            },
-          )
+              })
+
         ],
       ),
     );
+
   }
 }

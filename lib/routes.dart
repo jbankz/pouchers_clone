@@ -39,6 +39,7 @@ import 'ui/onboarding/screens/pay_card.dart';
 import 'ui/onboarding/screens/welcome_guest.dart';
 import 'ui/schedule_purchase/screens/schedule_airtime_topup.dart';
 import 'ui/schedule_purchase/screens/schedule_data_topup.dart';
+import 'ui/schedule_purchase/screens/schedule_electricity_topup.dart';
 import 'ui/tab_layout/screens/cards/card_home.dart';
 import 'ui/tab_layout/screens/cards/card_summary.dart';
 import 'ui/tab_layout/screens/cards/create_card.dart';
@@ -132,4 +133,5 @@ Map<String, WidgetBuilder> appRoutes = {
   VoucherHistory.routeName: (context) => VoucherHistory(),
   ScheduleAirtimeTopUp.routeName: (context) => ScheduleAirtimeTopUp(),
   ScheduleDataTopUp.routeName: (context) => ScheduleDataTopUp(),
+  ScheduleElectricity.routeName: (context) =>  ScheduleElectricity()
 };
