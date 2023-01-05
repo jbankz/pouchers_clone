@@ -522,7 +522,8 @@ class _EditPhoneModalState extends State<EditPhoneModal> {
 }
 
 class ProfileRoleWidget extends StatelessWidget {
-  final String text, subText, icon;
+  final String text, subText;
+  final Widget icon;
   final Function() onTap;
 
   const ProfileRoleWidget(
@@ -550,9 +551,7 @@ class ProfileRoleWidget extends StatelessWidget {
               padding: EdgeInsets.all(kRegularPadding),
               decoration: BoxDecoration(
                   shape: BoxShape.circle, color: kBackgroundColor),
-              child: SvgPicture.asset(
-                icon,
-              ),
+              child: icon
             ),
             SizedBox(
               width: kSmallPadding,

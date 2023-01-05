@@ -29,6 +29,8 @@ String onBoardingSubText6 = "  for Electricity";
 String onBoardingSubText7 = "   for airtime";
 String heroAppBarTitle = "heroAppBarTitle";
 String onBoardingTitle = "Your one stop for all things payments";
+String allText = "All";
+String transfer = "Transfers";
 String onBoardingSubTitle =
     "Service your bills, transfer money to friends, top-up your phone and many more have never been easier and faster.";
 String logIn = "Login";
@@ -133,7 +135,6 @@ String accName = "Account name";
 String bankName = "Bank name";
 String fundNairaCard = "Fund Naira card";
 String fundAccount = "How to fund your Pouchers account";
-String transfer = "Transfer";
 String request = "Request";
 String quickLink = "Quick Links";
 String dayText = "Day";
@@ -148,6 +149,7 @@ String sixDigits = "Code must be six digits";
 String elevenDigits = "Phone Number must be eleven digits";
 String bvnElevenDigits = "BVN must be eleven digits";
 String lessValueField = "Name cannot be less than 2 characters";
+String lessAddressValueField = "Field cannot be less than 2 characters";
 String value = "Value";
 String accNumberValidation = "Number must be 10 digits";
 String invalidEmail = "Invalid Email";
@@ -174,6 +176,9 @@ String havePaid = "I have paid";
 String tapCode = "Tap to dial the code ";
 String rechargeSuccessfulSub = "Your airtime has been delivered";
 String data = "Data";
+String cableTv = "Cable TV";
+
+String scheduleTransferSuccess = "Transfer schedule successfully created";
 String insufficient = "Insufficient fund to carry out this transaction.";
 String dataSuccess = "Completed";
 String dataSubSuccess = "Your data has been delivered";
@@ -197,6 +202,11 @@ String expiry = "Expiry date";
 String validTill = "Valid still ";
 String cardName = "Card name";
 String billingAddress = "Billing address";
+String address = "Address";
+String enterAddress = "Enter address";
+String selectState = "Select state";
+String postalCode = "Postal Code";
+String enterPostalCode = "Enter postal code";
 String zipCode = "Zip code";
 String subType = "Subscription type";
 String type = "type";
@@ -207,19 +217,29 @@ String meterNo = "Meter number";
 String enterMeterNo = "Enter meter number";
 String scheduleAirtime = "Schedule airtime";
 String scheduleData = "Schedule data";
-String scheduleElectricity = "Schedule Electricity";
+String scheduleElectricity = "Schedule electricity";
+String scheduleCable = "Schedule cable";
 String scheduleElectricitySub = "Auto top electricity at regular intervals";
 String scheduleAirtimeSub = "Auto top airtime at regular intervals";
 String scheduleDataSub = "Auto top data at regular intervals";
+String scheduleCableSub = "Auto top cable at regular intervals";
 String scheduleTopUp = "Schedule top-up";
 String deleteTopUp = "Delete Top-up";
 String deleteTopUpSub = "Deleting this automatic top up means you may run out of airtime.\n\nAre you sure you want to continue ?";
 String choosePeriod = "Choose top-up period";
 String selectFrequency = "Select frequency";
 String prepaid = "Prepaid";
+String residentialAddress = "Residential address";
+String residentialAddressSub = "Please enter your current address. This is a mandatory requirement before creating your card";
+String delSchedule = "Delete schedule";
 String postpaid = "Postpaid";
 String meterType = "Meter Type";
 String internet = "Internet";
+String transferCompleted = "Transfer completed";
+String shareReceipt = "Share receipt";
+String schedule = "Schedule";
+String scheduleTransfer = "Schedule transfer";
+String transferCompletedSub = "Your money has been successfully delivered!";
 String accountId = "Account ID";
 String betting = "Betting";
 String settings = "Settings";
@@ -428,6 +448,8 @@ String savedCard = "Saved cards";
 String selectPaymentOption = "Select payment option";
 String savedCardSub = "Managed linked cards";
 String accountSetting = "Account settings ";
+String scheduledPayment = "Scheduled payments";
+String scheduledPaymentSub ="Manage weekly and monthly recurring payments";
 String accountSettingSub = "Manage your account and security";
 String helpSupport = "Help & support";
 String helpSupportSub = "Send feedback or get support";
@@ -477,6 +499,46 @@ String cardDetails = "Card details";
 String manage = "Manage";
 String transHistory = "Transaction history";
 String noTransaction = "No transactions yet";
+
+List<String> nigeriaStates = [
+  "Abuja",
+  "Abia",
+  "Adamawa",
+  "Akwa Ibom",
+  "Anambra",
+  "Bauchi",
+  "Bayelsa",
+  "Benue",
+  "Borno",
+  "Cross River",
+  "Delta",
+  "Ebonyi",
+  "Edo",
+  "Ekiti",
+  "Enugu",
+  "Gombe",
+  "Imo",
+  "Jigawa",
+  "Kaduna",
+  "Kano",
+  "Katsina",
+  "Kebbi",
+  "Kogi",
+  "Kwara",
+  "Lagos",
+  "Nasarawa",
+  "Niger",
+  "Ogun",
+  "Ondo",
+  "Osun",
+  "Oyo",
+  "Plateau",
+  "Rivers",
+  "Sokoto",
+  "Taraba",
+  "Yobe",
+  "Zamfara"
+];
 
 Map<String, String> usStates = {
   "AL": "Alabama",

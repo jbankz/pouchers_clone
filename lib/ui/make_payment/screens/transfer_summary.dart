@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/ui/make_payment/screens/transfer_success.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
@@ -151,10 +153,16 @@ class TransferSummary extends StatelessWidget {
                 title: fundCard,
                 onPressed: () {
                   buildShowModalBottomSheet(
-                    context,
-                    TransactionPinContainer(
-                        isData: false, isCard: false, isFundCard: true),
-                  );
+                      context,
+                      TransactionPinContainer(
+                        isData: false,
+                        isCard: false,
+                        isFundCard: false,
+                        isTransfer: true,
+                        doTransfer: () {
+                          pushTo(context, TransferSuccess(text: "bank",));
+                        },
+                      ));
                 })
           ],
         ));

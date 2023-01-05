@@ -13,6 +13,7 @@ import 'ui/account/disable_account/disable_account.dart';
 import 'ui/account/disable_account/disable_account_confirmation.dart';
 import 'ui/account/disable_account/disable_success.dart';
 import 'ui/account/reset_pin.dart';
+import 'ui/account/schedule_payments.dart';
 import 'ui/account/two_factor_auth/confirm_auth_pin.dart';
 import 'ui/account/two_factor_auth/copy_code.dart';
 import 'ui/account/two_factor_auth/disable_auth_question.dart';
@@ -23,6 +24,11 @@ import 'ui/account/two_factor_auth/security_question.dart';
 import 'ui/account/two_factor_auth/success_auth_page.dart';
 import 'ui/account/two_factor_auth/two_factor.dart';
 import 'ui/account/two_factor_auth/two_factor_disable.dart';
+import 'ui/cards/screens/card_home.dart';
+import 'ui/cards/screens/card_residential_address.dart';
+import 'ui/cards/screens/card_summary.dart';
+import 'ui/cards/screens/create_card.dart';
+import 'ui/cards/screens/create_virtual_card.dart';
 import 'ui/create_account/screens/biometrics_page.dart';
 import 'ui/create_account/screens/create_account.dart';
 import 'ui/create_account/screens/create_pin.dart';
@@ -38,12 +44,10 @@ import 'ui/onboarding/screens/guest_email.dart';
 import 'ui/onboarding/screens/pay_card.dart';
 import 'ui/onboarding/screens/welcome_guest.dart';
 import 'ui/schedule_purchase/screens/schedule_airtime_topup.dart';
+import 'ui/schedule_purchase/screens/schedule_cable_topup.dart';
 import 'ui/schedule_purchase/screens/schedule_data_topup.dart';
 import 'ui/schedule_purchase/screens/schedule_electricity_topup.dart';
-import 'ui/tab_layout/screens/cards/card_home.dart';
-import 'ui/tab_layout/screens/cards/card_summary.dart';
-import 'ui/tab_layout/screens/cards/create_card.dart';
-import 'ui/tab_layout/screens/cards/create_virtual_card.dart';
+import 'ui/schedule_purchase/screens/schedule_transfer.dart';
 import 'ui/tab_layout/screens/homepage/betting.dart';
 import 'ui/tab_layout/screens/homepage/buy_airtime.dart';
 import 'ui/tab_layout/screens/homepage/buy_cable.dart';
@@ -133,5 +137,9 @@ Map<String, WidgetBuilder> appRoutes = {
   VoucherHistory.routeName: (context) => VoucherHistory(),
   ScheduleAirtimeTopUp.routeName: (context) => ScheduleAirtimeTopUp(),
   ScheduleDataTopUp.routeName: (context) => ScheduleDataTopUp(),
-  ScheduleElectricity.routeName: (context) =>  ScheduleElectricity()
+  ScheduleElectricity.routeName: (context) =>  ScheduleElectricity(),
+  ScheduleCableTopUp.routeName: (context) => ScheduleCableTopUp(),
+  ScheduleTransfer.routeName: (context) => ScheduleTransfer(),
+  SchedulePayments.routeName: (context) => SchedulePayments(),
+  ResidentialAddress.routeName: (context) => ResidentialAddress(),
 };

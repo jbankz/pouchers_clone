@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
-import 'package:pouchers/ui/schedule_purchase/provider/schedule_provider.dart';
+import 'package:pouchers/ui/account/disable_account/disable_modal.dart';
 import 'package:pouchers/ui/schedule_purchase/schedule_modal.dart';
 import 'package:pouchers/ui/schedule_purchase/schedule_widget_constants.dart';
 import 'package:pouchers/ui/tab_layout/models/buy_electricity_class.dart';
@@ -17,11 +17,13 @@ import 'package:pouchers/utils/widgets.dart';
 
 class ScheduleElectricity extends ConsumerStatefulWidget {
   static const String routeName = "scheduleElectricity";
+  final String? text;
 
-  const ScheduleElectricity({Key? key}) : super(key: key);
+  const ScheduleElectricity({Key? key, this.text}) : super(key: key);
 
   @override
-  ConsumerState<ScheduleElectricity> createState() => _ScheduleElectricityState();
+  ConsumerState<ScheduleElectricity> createState() =>
+      _ScheduleElectricityState();
 }
 
 class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
@@ -41,21 +43,13 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
           fontSize: 18,
         )),
   );
+
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: scheduleElectricity,
-      bottomSheet: ref.watch(scheduleElectricityProvider)
-          ? ScheduleBottomWidget(
-        onTap: () {
-          ref.read(scheduleElectricityProvider.notifier).state = false;
-        },
-      )
-          : SizedBox(),
-      child: ref.watch(scheduleElectricityProvider)
-          ? ScheduleList(scheduleDummy: scheduleDummy, textTheme: textTheme)
-          : Column(
+      child: Column(
         children: [
           Expanded(
             child: ListView(
@@ -98,115 +92,122 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    inkWell(
-                      onTap: () {
-                        setState(() => _meterType = prepaid);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: kMediumPadding,
-                            vertical: kRegularPadding),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(kSmallPadding),
-                          border: Border.all(
-                            color: _meterType == prepaid
-                                ? kPrimaryColor
-                                : kLightPurple,
-                            width: 1,
+                    Expanded(
+                      child: inkWell(
+                        onTap: () {
+                          setState(() => _meterType = prepaid);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: kMediumPadding,
+                              vertical: kRegularPadding),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(kSmallPadding),
+                            border: Border.all(
+                              color: _meterType == prepaid
+                                  ? kPrimaryColor
+                                  : kLightPurple,
+                              width: 1,
+                            ),
                           ),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: _meterType == prepaid
-                                      ? kPrimaryColor
-                                      : kPurpleColor400,
-                                  width: 1.5,
-                                ),
-                              ),
-                              child: _meterType == prepaid
-                                  ? Container(
-                                height: kSmallPadding,
-                                width: kSmallPadding,
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(4),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: kPrimaryColor,
+                                  border: Border.all(
+                                    color: _meterType == prepaid
+                                        ? kPrimaryColor
+                                        : kPurpleColor400,
+                                    width: 1.5,
+                                  ),
                                 ),
-                              )
-                                  : SizedBox(
-                                height: kSmallPadding,
-                                width: kSmallPadding,
+                                child: _meterType == prepaid
+                                    ? Container(
+                                        height: kSmallPadding,
+                                        width: kSmallPadding,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: kPrimaryColor,
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: kSmallPadding,
+                                        width: kSmallPadding,
+                                      ),
                               ),
-                            ),
-                            SizedBox(
-                              width: kMediumPadding,
-                            ),
-                            Text(
-                              prepaid,
-                              style: textTheme.subtitle1!
-                                  .copyWith(fontWeight: FontWeight.w500),
-                            )
-                          ],
+                              SizedBox(
+                                width: kMediumPadding,
+                              ),
+                              Text(
+                                prepaid,
+                                style: textTheme.subtitle1!
+                                    .copyWith(fontWeight: FontWeight.w500),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    inkWell(
-                      onTap: () {
-                        setState(() => _meterType = postpaid);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: kMediumPadding,
-                            vertical: kRegularPadding),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(kSmallPadding),
-                          border: Border.all(
-                            color: _meterType == postpaid
-                                ? kPrimaryColor
-                                : kLightPurple,
-                            width: 1,
+                    SizedBox(
+                      width: kMicroPadding,
+                    ),
+                    Expanded(
+                      child: inkWell(
+                        onTap: () {
+                          setState(() => _meterType = postpaid);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: kMediumPadding,
+                              vertical: kRegularPadding),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(kSmallPadding),
+                            border: Border.all(
+                              color: _meterType == postpaid
+                                  ? kPrimaryColor
+                                  : kLightPurple,
+                              width: 1,
+                            ),
                           ),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: _meterType == postpaid
-                                      ? kPrimaryColor
-                                      : kLightPurple,
-                                  width: 1.5,
-                                ),
-                              ),
-                              child: _meterType == postpaid
-                                  ? Container(
-                                height: kSmallPadding,
-                                width: kSmallPadding,
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(4),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: kPrimaryColor,
+                                  border: Border.all(
+                                    color: _meterType == postpaid
+                                        ? kPrimaryColor
+                                        : kLightPurple,
+                                    width: 1.5,
+                                  ),
                                 ),
-                              )
-                                  : SizedBox(
-                                height: kSmallPadding,
-                                width: kSmallPadding,
+                                child: _meterType == postpaid
+                                    ? Container(
+                                        height: kSmallPadding,
+                                        width: kSmallPadding,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: kPrimaryColor,
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: kSmallPadding,
+                                        width: kSmallPadding,
+                                      ),
                               ),
-                            ),
-                            SizedBox(
-                              width: kMediumPadding,
-                            ),
-                            Text(
-                              postpaid,
-                              style: textTheme.subtitle1!
-                                  .copyWith(fontWeight: FontWeight.w500),
-                            )
-                          ],
+                              SizedBox(
+                                width: kMediumPadding,
+                              ),
+                              Text(
+                                postpaid,
+                                style: textTheme.subtitle1!
+                                    .copyWith(fontWeight: FontWeight.w500),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     )
@@ -226,7 +227,7 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
                   icon: inkWell(
                     onTap: () async {
                       final PhoneContact contact =
-                      await FlutterContactPicker.pickPhoneContact();
+                          await FlutterContactPicker.pickPhoneContact();
                       setState(() {
                         contactController.text = contact.phoneNumber!.number!;
                       });
@@ -319,63 +320,82 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
                   suffixIcon: frequency == ""
                       ? SizedBox()
                       : Container(
-                    width: 200,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          "Every $frequency",
-                          style: textTheme.headline2!.copyWith(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
+                          width: 200,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                "Every $frequency",
+                                style: textTheme.headline2!.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              Icon(
+                                Icons.keyboard_arrow_down,
+                                color: kSecondaryTextColor,
+                              )
+                            ],
                           ),
                         ),
-                        Icon(
-                          Icons.keyboard_arrow_down,
-                          color: kSecondaryTextColor,
-                        )
-                      ],
-                    ),
-                  ),
                   onTap: () async {
                     final result = await buildShowModalBottomSheet(
                         context, ScheduleModal());
                     setState(() => frequency = result);
                   },
                 ),
+                widget.text == "viewSchedule"
+                    ? NextUpdateContainer(
+                        textTheme: textTheme,
+                        text: "Next top-up date is 12:00pm, Dec 5, 2022 ",
+                      )
+                    : SizedBox(),
+                SizedBox(
+                  height: kMicroPadding,
+                )
               ],
             ),
           ),
-
-          SizedBox(
-            height: kLargePadding,
-          ),
           LargeButton(
-              title: confirm,
+              title: widget.text == "viewSchedule" ? save : confirm,
               onPressed: frequency == ""
                   ? () {}
                   : () {
-                buildShowModalBottomSheet(
-                  context,
-                  TransactionPinContainer(
-                    isSchedule: true,
-                    isData: false,
-                    isCard: false,
-                    isFundCard: false,
-                    doSchedule: () {
-                      showSuccessBar(context,
-                          "Auto top-up successfully created");
-                      ref
-                          .read(scheduleElectricityProvider.notifier)
-                          .state = true;
-                    },
-                  ),
-                );
-              })
-
+                      buildShowModalBottomSheet(
+                        context,
+                        TransactionPinContainer(
+                          isSchedule: true,
+                          isData: false,
+                          isCard: false,
+                          isFundCard: false,
+                          doSchedule: () {
+                            showSuccessBar(
+                                context, "Auto top-up successfully created");
+                          },
+                        ),
+                      );
+                    }),
+          SizedBox(
+            height: kMicroPadding,
+          ),
+          widget.text == "viewSchedule"
+              ? DeleteScheduleText(
+                  textTheme: textTheme,
+                  onTap: () {
+                    buildShowModalBottomSheet(
+                      context,
+                      DisableModal(
+                          textTheme: textTheme,
+                          buttonText: yesDelete,
+                          title: deleteTopUp,
+                          subTitle: deleteTopUpSub,
+                          color: kLightOrange),
+                    );
+                  },
+                )
+              : SizedBox()
         ],
       ),
     );
-
   }
 }

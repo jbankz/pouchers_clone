@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/ui/onboarding/screens/guest_widget.dart';
+import 'package:pouchers/ui/account/disable_account/disable_modal.dart';
+import 'package:pouchers/ui/schedule_purchase/schedule_modal.dart';
 import 'package:pouchers/ui/schedule_purchase/schedule_widget_constants.dart';
-import 'package:pouchers/ui/schedule_purchase/screens/schedule_cable_topup.dart';
 import 'package:pouchers/ui/tab_layout/models/buy_cable_class.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
@@ -15,18 +14,18 @@ import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
-class BuyCable extends StatefulWidget {
-  static const String routeName = "buyCable";
-  final bool? isGuest;
-  const BuyCable({Key? key, this.isGuest}) : super(key: key);
+class ScheduleCableTopUp extends StatefulWidget {
+  static const String routeName = "scheduleCableTopUp";
+  final String? text;
+  const ScheduleCableTopUp({Key? key, this.text}) : super(key: key);
 
   @override
-  State<BuyCable> createState() => _BuyCableState();
+  State<ScheduleCableTopUp> createState() => _ScheduleCableTopUpState();
 }
 
-class _BuyCableState extends State<BuyCable> {
+class _ScheduleCableTopUpState extends State<ScheduleCableTopUp> {
   TextEditingController contactController = TextEditingController();
-  bool _saveBeneficiary = false;
+  String frequency = "";
   Widget prefixIcon = Padding(
     padding: EdgeInsets.symmetric(vertical: kMediumPadding),
     child: Text(selectProvider,
@@ -58,7 +57,6 @@ class _BuyCableState extends State<BuyCable> {
         children: [
           Expanded(
             child: ListView(
-              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
@@ -98,7 +96,7 @@ class _BuyCableState extends State<BuyCable> {
                   icon: inkWell(
                     onTap: () async {
                       final PhoneContact contact =
-                          await FlutterContactPicker.pickPhoneContact();
+                      await FlutterContactPicker.pickPhoneContact();
                       setState(() {
                         contactController.text = contact.phoneNumber!.number!;
                       });
@@ -149,61 +147,87 @@ class _BuyCableState extends State<BuyCable> {
                 SizedBox(
                   height: kMicroPadding,
                 ),
-                Scheduling(
-                  text: scheduleCable,
-                  subtext: scheduleCableSub,
-                  onTap: () => pushTo(context, ScheduleCableTopUp(
+                TextInputNoIcon(
+                  textTheme: textTheme,
+                  text: choosePeriod,
+                  hintText: selectFrequency,
+                  read: true,
+                  suffixIcon: frequency == ""
+                      ? SizedBox()
+                      : Container(
+                    width: 200,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "Every $frequency",
+                          style: textTheme.headline2!.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          color: kSecondaryTextColor,
+                        )
+                      ],
+                    ),
                   ),
-                      settings:
-                      RouteSettings(name: ScheduleCableTopUp.routeName)),
+                  onTap: () async {
+                    final result = await buildShowModalBottomSheet(
+                        context, ScheduleOnlyMonth());
+                    setState(() => frequency = result);
+                  },
                 ),
+                widget.text == "viewSchedule" ? NextUpdateContainer(
+                  textTheme: textTheme,
+                  text: "Next top-up date is 12:00pm, Dec 5, 2022 ",
+                ) : SizedBox(),
+                SizedBox(
+                  height: kMicroPadding,
+                )
               ],
             ),
           ),
-          SizedBox(
-            height: kRegularPadding,
-          ),
-        widget.isGuest! ? SizedBox() :  Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                saveBeneficiary,
-                style: textTheme.headline2!.copyWith(
-                  color: kIconGrey,
-                ),
-              ),
-              FlutterSwitchClass(
-                saveBeneficiary: _saveBeneficiary,
-                onToggle: (val) {
-                  setState(() {
-                    _saveBeneficiary = val;
-                  });
-                },
-              )
-            ],
-          ),
+
           SizedBox(
             height: kLargePadding,
           ),
           LargeButton(
-            title: continueText,
-            onPressed: () {
-              buildShowModalBottomSheet(
-                context,
-                widget.isGuest!
-                    ? GuestRechargeSummary(
+              title: widget.text == "viewSchedule" ? save : confirm,
+              onPressed: frequency == ""
+                  ? () {}
+                  : () {
+                buildShowModalBottomSheet(
+                  context,
+                  TransactionPinContainer(
+                    isSchedule: true,
+                    isData: false,
+                    isCard: false,
+                    isFundCard: false,
+                    doSchedule: () {
+                      showSuccessBar(context,
+                          "Auto top-up successfully created");
+                    },
+                  ),
+                );
+              }),
+          SizedBox(
+            height: kMicroPadding,
+          ),
+          widget.text == "viewSchedule"
+              ? DeleteScheduleText(textTheme: textTheme, onTap: (){
+            buildShowModalBottomSheet(
+              context,
+              DisableModal(
                   textTheme: textTheme,
-                  purchaseDelivered: true,
-                )
-                    :
-                RechargeSummary(
-                  isData: false,
-                  isCable: true,
-                  textTheme: textTheme,
-                ),
-              );
-            },
-          )
+                  buttonText: yesDelete,
+                  title: deleteTopUp,
+                  subTitle: deleteTopUpSub,
+                  color: kLightOrange),
+            );
+          },)
+              : SizedBox()
         ],
       ),
     );

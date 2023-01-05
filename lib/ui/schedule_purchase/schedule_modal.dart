@@ -267,3 +267,137 @@ class _ScheduleModalState extends State<ScheduleModal>
     );
   }
 }
+
+class ScheduleOnlyMonth extends StatefulWidget {
+  const ScheduleOnlyMonth({Key? key}) : super(key: key);
+
+  @override
+  State<ScheduleOnlyMonth> createState() => _ScheduleOnlyMonthState();
+}
+
+class _ScheduleOnlyMonthState extends State<ScheduleOnlyMonth> {
+  int monthIndex = -1;
+
+  @override
+  Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+    return makeDismissible(
+      context: context,
+      child: DraggableScrollableSheet(
+        initialChildSize: 0.67,
+        maxChildSize: 0.67,
+        builder: (_, controller) => Container(
+          padding: const EdgeInsets.only(top: 10, bottom: 20),
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(kMicroPadding),
+                topRight: Radius.circular(kMicroPadding),
+              ),
+              color: kPrimaryWhite),
+          child: ListView(
+            controller: controller,
+            children: [
+              Center(
+                child: Container(
+                  alignment: Alignment.center,
+                  width: kMacroPadding,
+                  height: 3,
+                  decoration: BoxDecoration(
+                    color: kPurpleColor200,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: kMediumPadding,
+              ),
+              Text(
+                selectFrequency,
+                style: textTheme.headline4!.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: kMicroPadding,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: kMediumPadding, vertical: kMediumPadding),
+                child: GridView.count(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  crossAxisCount: 7,
+                  childAspectRatio: SizeConfig.blockSizeHorizontal! / 3.8,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 15,
+                  children: List.generate(
+                    generateNumbers().length,
+                        (index) => inkWell(
+                      onTap: () {
+                        setState(() {
+                          monthIndex = index;
+                        });
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(kPadding),
+                            border: Border.all(
+                                color: monthIndex == index
+                                    ? kPrimaryColor
+                                    : kTransparent,
+                                width: 2)),
+                        child: Text(
+                          generateNumbers()[index].toString(),
+                          style: textTheme.bodyText1!.copyWith(
+                            color: kDarkFill100,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: kSmallPadding,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: kMediumPadding),
+                child:  monthIndex == -1
+                    ? SizedBox()
+                    : Text(
+                  "$topUp2${ordinal_suffix_of(generateNumbers()[monthIndex])} $topUp3",
+                  style: textTheme.headline4,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(
+                height: kRegularPadding,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: kMediumPadding),
+                child: LargeButton(
+                  title: continueText,
+                  onPressed: (monthIndex == -1)
+                      ? () {}
+                      : () {
+                    Navigator.pop(
+                        context,
+                       ordinal_suffix_of(generateNumbers()[monthIndex]));
+                  },
+                  disableColor:  monthIndex == -1
+                      ? kPurpleColor100
+                      : kPrimaryColor,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+

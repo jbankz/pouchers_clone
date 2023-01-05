@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pouchers/ui/schedule_purchase/provider/schedule_provider.dart';
+import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+import 'package:pouchers/ui/account/disable_account/disable_modal.dart';
 import 'package:pouchers/ui/schedule_purchase/schedule_modal.dart';
 import 'package:pouchers/ui/schedule_purchase/schedule_widget_constants.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
@@ -16,8 +17,9 @@ import 'package:collection/collection.dart';
 
 class ScheduleAirtimeTopUp extends ConsumerStatefulWidget {
   static const String routeName = "scheduleTopUp";
+  final String? text;
 
-  ScheduleAirtimeTopUp({Key? key}) : super(key: key);
+  ScheduleAirtimeTopUp({Key? key, this.text }) : super(key: key);
 
   @override
   ConsumerState<ScheduleAirtimeTopUp> createState() => _ScheduleTopUpState();
@@ -28,22 +30,14 @@ class _ScheduleTopUpState extends ConsumerState<ScheduleAirtimeTopUp> {
 
   TextEditingController amountController = TextEditingController();
   String frequency = "";
+  int currentIndex = -1;
 
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: scheduleTopUp,
-      bottomSheet: ref.watch(scheduleProvider)
-          ? ScheduleBottomWidget(
-              onTap: () {
-                ref.read(scheduleProvider.notifier).state = false;
-              },
-            )
-          : SizedBox(),
-      child: ref.watch(scheduleProvider)
-          ? ScheduleList(scheduleDummy: scheduleDummy, textTheme: textTheme)
-          : Column(
+      child:  Column(
               children: [
                 Expanded(
                   child: ListView(
@@ -51,11 +45,19 @@ class _ScheduleTopUpState extends ConsumerState<ScheduleAirtimeTopUp> {
                       TextInputNoIcon(
                         textTheme: textTheme,
                         text: mobileNumber,
-                        read: true,
                         controller: contactController,
-                        icon: SvgPicture.asset(
-                          AssetPaths.contactBook,
-                          fit: BoxFit.scaleDown,
+                        icon: inkWell(
+                          onTap: () async {
+                            final PhoneContact contact =
+                            await FlutterContactPicker.pickPhoneContact();
+                            setState(() {
+                              contactController.text = contact.phoneNumber!.number!;
+                            });
+                          },
+                          child: SvgPicture.asset(
+                            AssetPaths.contactBook,
+                            fit: BoxFit.scaleDown,
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -73,22 +75,47 @@ class _ScheduleTopUpState extends ConsumerState<ScheduleAirtimeTopUp> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: provider
                               .mapIndexed(
-                                (index, element) => Stack(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(kRegularPadding),
-                                      height: 70,
-                                      width: 70,
-                                      decoration: BoxDecoration(
-                                          color: kContainerColor,
-                                          shape: BoxShape.circle),
-                                      child: SvgPicture.asset(
-                                        provider[index].icon,
-                                      ),
+                                (index, element) => inkWell(
+                              onTap: () {
+                                setState(() {
+                                  currentIndex = index;
+                                });
+                              },
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(kRegularPadding),
+                                    height: 70,
+                                    width: 70,
+                                    decoration: BoxDecoration(
+                                        color: currentIndex == index
+                                            ? kLightPurple
+                                            : kContainerColor,
+                                        shape: BoxShape.circle),
+                                    child: SvgPicture.asset(
+                                      provider[index].icon,
                                     ),
-                                  ],
-                                ),
-                              )
+                                  ),
+                                  currentIndex == index
+                                      ? Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: Container(
+                                        padding: EdgeInsets.all(3),
+                                        decoration: BoxDecoration(
+                                            color: kPurpleColor,
+                                            shape: BoxShape.circle),
+                                        child: Icon(
+                                          Icons.check,
+                                          color: kPrimaryWhite,
+                                          size: 15,
+                                        )),
+                                  )
+                                      : SizedBox(),
+                                ],
+                              ),
+                            ),
+                          )
                               .toList()),
                       SizedBox(
                         height: kMicroPadding,
@@ -185,6 +212,10 @@ class _ScheduleTopUpState extends ConsumerState<ScheduleAirtimeTopUp> {
                           setState(() => frequency = result);
                         },
                       ),
+                     widget.text == "viewSchedule" ? NextUpdateContainer(
+                        textTheme: textTheme,
+                        text: "Next top-up date is 12:00pm, Dec 5, 2022 ",
+                      ) : SizedBox(),
                       SizedBox(
                         height: kMicroPadding,
                       )
@@ -192,11 +223,11 @@ class _ScheduleTopUpState extends ConsumerState<ScheduleAirtimeTopUp> {
                   ),
                 ),
                 LargeButton(
-                    title: confirm,
+                    title: widget.text == "viewSchedule" ? save : confirm,
                     onPressed: frequency == ""
                         ? () {}
                         : () {
-                            buildShowModalBottomSheet(
+                      buildShowModalBottomSheet(
                               context,
                               TransactionPinContainer(
                                 isSchedule: true,
@@ -206,12 +237,26 @@ class _ScheduleTopUpState extends ConsumerState<ScheduleAirtimeTopUp> {
                                 doSchedule: () {
                                   showSuccessBar(context,
                                       "Auto top-up successfully created");
-                                  ref.read(scheduleProvider.notifier).state =
-                                      true;
                                 },
                               ),
                             );
-                          })
+                          }),
+                SizedBox(
+                  height: kMicroPadding,
+                ),
+                widget.text == "viewSchedule"
+                    ? DeleteScheduleText(textTheme: textTheme, onTap: (){
+                  buildShowModalBottomSheet(
+                    context,
+                    DisableModal(
+                        textTheme: textTheme,
+                        buttonText: yesDelete,
+                        title: deleteTopUp,
+                        subTitle: deleteTopUpSub,
+                        color: kLightOrange),
+                  );
+                },)
+                    : SizedBox()
               ],
             ),
     );

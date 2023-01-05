@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/account/account_settings.dart';
+import 'package:pouchers/ui/account/schedule_payments.dart';
 import 'package:pouchers/ui/login/models/login_response.dart';
 import 'package:pouchers/ui/tab_layout/models/profile_model.dart';
 import 'package:pouchers/ui/tab_layout/screens/profile/profile_kyc.dart';
@@ -15,6 +17,7 @@ import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';
 import '../../providers/account_provider.dart';
+import 'dart:math' as math;
 
 class ProfilePage extends ConsumerStatefulWidget {
   static const String routeName = "profilePage";
@@ -247,7 +250,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ProfileRoleWidget(
                 text: referralText,
                 subText: referralSub,
-                icon: AssetPaths.referralIcon,
+                icon: SvgPicture.asset(
+                  AssetPaths.referralIcon,
+                ),
                 textTheme: textTheme,
                 onTap: () {},
               ),
@@ -255,14 +260,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 text: savedCard,
                 subText: savedCardSub,
                 textTheme: textTheme,
-                icon: AssetPaths.savedCardIcon,
+                icon: SvgPicture.asset(AssetPaths.savedCardIcon),
                 onTap: () {},
               ),
               ProfileRoleWidget(
                 text: accountSetting,
                 subText: accountSettingSub,
                 textTheme: textTheme,
-                icon: AssetPaths.accountIcon,
+                icon: SvgPicture.asset(AssetPaths.accountIcon),
                 onTap: () {
                   pushTo(
                     context,
@@ -274,23 +279,65 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 },
               ),
               ProfileRoleWidget(
+                text: scheduledPayment,
+                subText: scheduledPaymentSub,
+                textTheme: textTheme,
+                icon:  Transform(
+                  transform: Matrix4(
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                  )..rotateX(math.pi),
+                  alignment: Alignment.center,
+                  child: RotationTransition(
+                    turns: AlwaysStoppedAnimation(0.87),
+                    child: Icon(
+                      Icons.sync,
+                      color: kPrimaryColor,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  pushTo(
+                    context,
+                    SchedulePayments(),
+                    settings: const RouteSettings(
+                      name: SchedulePayments.routeName,
+                    ),
+                  );
+                },
+              ),
+              ProfileRoleWidget(
                 text: helpSupport,
                 subText: helpSupportSub,
                 textTheme: textTheme,
-                icon: AssetPaths.helpIcon,
+                icon: SvgPicture.asset(AssetPaths.helpIcon),
                 onTap: () {},
               ),
               ProfileRoleWidget(
                 text: legal,
                 subText: legalSub,
                 textTheme: textTheme,
-                icon: AssetPaths.legalIcon,
+                icon: SvgPicture.asset(AssetPaths.legalIcon),
                 onTap: () {},
               ),
               ProfileRoleWidget(
                 text: aboutPouchers,
                 subText: aboutPouchersSub,
-                icon: AssetPaths.pouIcon,
+                icon: SvgPicture.asset(AssetPaths.pouIcon),
                 textTheme: textTheme,
                 onTap: () {},
               ),

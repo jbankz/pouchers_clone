@@ -76,6 +76,7 @@ const Color kPrimaryWhite = Colors.white;
 const Color kPurple100 = Color(0xff6248CA);
 const Color kBackgroundColor = Color(0xFFF4F4FB);
 const Color kBlueColor = Color(0xFF4680FB);
+const Color kBlueColor200 = Color(0xFF1E65FA);
 const Color kIconPink = Color(0xFFFF5FCD);
 const Color kPurpleColor = Color(0xff5034C4);
 const Color kColorGreen = Color(0xff00BB64);

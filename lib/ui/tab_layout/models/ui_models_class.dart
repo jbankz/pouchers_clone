@@ -91,8 +91,8 @@ class TransactionPinContainer extends ConsumerStatefulWidget {
       isCard,
       isFundCard,
       isBuyVoucher,
-      isGiftVoucher, isSchedule;
-  final Function()? doBiom, doSchedule;
+      isGiftVoucher, isSchedule, isTransfer;
+  final Function()? doBiom, doSchedule, doTransfer;
 
   const TransactionPinContainer(
       {Key? key,
@@ -102,8 +102,10 @@ class TransactionPinContainer extends ConsumerStatefulWidget {
       this.isBuyVoucher = false,
       this.isGiftVoucher = false,
         this.isSchedule = false,
+        this.isTransfer = false,
       this.doBiom,
         this.doSchedule,
+        this.doTransfer,
       required this.isCard,
       required this.isFundCard,
       this.is2FA = false})
@@ -175,6 +177,9 @@ class _TransactionPinContainerState
                   } else if(widget.isSchedule){
                     Navigator.pop(context);
                     widget.doSchedule!();
+                  }else if(widget.isTransfer){
+                    Navigator.pop(context);
+                    widget.doTransfer!();
                   }
                   else {
                     widget.is2FA

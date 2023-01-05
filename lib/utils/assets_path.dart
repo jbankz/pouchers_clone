@@ -61,6 +61,7 @@ class AssetPaths {
    static String verifiedIcon = "${iconPath}verified_icon.svg";
    static String faIcon = "${iconPath}faicon.svg";
    static String uploadIcon = "${iconPath}upload.svg";
+   static String uploadOutlineIcon = "${iconPath}upload_outline.svg";
    static String tierIcon = "${iconPath}tier_icon.svg";
    static String accountIcon = "${iconPath}account_icon.svg";
    static String helpIcon = "${iconPath}help_icon.svg";

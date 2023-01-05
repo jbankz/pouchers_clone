@@ -333,6 +333,7 @@ InkWell inkWell({Function()? onTap, required Widget child}) {
 class FormDropdown extends StatelessWidget {
   final String? hint;
   final Color borderColor;
+  final Color? hintColor;
   final bool requiredField, enableIcon, enable, hasInfo;
   final String? value;
   final Function(dynamic)? onChanged;
@@ -343,6 +344,7 @@ class FormDropdown extends StatelessWidget {
     Key? key,
     required this.value,
     required this.onChanged,
+    this.hintColor,
     this.enable = true,
     this.borderColor = kTransparent,
     this.requiredField = false,
@@ -375,7 +377,7 @@ class FormDropdown extends StatelessWidget {
         filled: true,
         hintText: hint,
         isDense: true,
-        hintStyle: textTheme.subtitle1,
+        hintStyle: textTheme.subtitle1!.copyWith(color: hintColor ?? kPrimaryTextColor ),
         fillColor: kBackgroundColor,
         border: OutlineInputBorder(),
         errorMaxLines: 2,

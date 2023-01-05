@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/ui/tab_layout/screens/cards/card_summary.dart';
-import 'package:pouchers/ui/tab_layout/screens/cards/card_widgets.dart';
+import 'package:pouchers/ui/cards/screens/card_summary.dart';
+import 'package:pouchers/ui/cards/screens/card_widgets.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';

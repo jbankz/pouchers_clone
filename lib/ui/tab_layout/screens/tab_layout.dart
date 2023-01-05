@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pouchers/ui/tab_layout/screens/cards/card_home.dart';
-import 'package:pouchers/ui/tab_layout/screens/cards/create_card.dart';
+import 'package:pouchers/ui/cards/screens/card_home.dart';
+import 'package:pouchers/ui/cards/screens/create_card.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/homepage.dart';
 import 'package:pouchers/ui/tab_layout/screens/profile/profile_page.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
@@ -31,8 +31,8 @@ class _TabLayoutState extends State<TabLayout> {
 
   List<Widget> items = [
     HomePage(),
-    CardHome(),
-    // CreateCard(),
+    // CardHome(),
+    CreateCard(),
     Container(),
     ProfilePage(),
   ];

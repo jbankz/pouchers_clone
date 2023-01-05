@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
-import 'package:pouchers/ui/schedule_purchase/provider/schedule_provider.dart';
+import 'package:pouchers/ui/account/disable_account/disable_modal.dart';
 import 'package:pouchers/ui/schedule_purchase/schedule_modal.dart';
 import 'package:pouchers/ui/schedule_purchase/schedule_widget_constants.dart';
 import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
@@ -18,8 +18,9 @@ import 'package:collection/collection.dart';
 
 class ScheduleDataTopUp extends ConsumerStatefulWidget {
   static const String routeName = "scheduleDataTopUp";
+  final String? text;
 
-  const ScheduleDataTopUp({Key? key}) : super(key: key);
+  const ScheduleDataTopUp({Key? key, this.text}) : super(key: key);
 
   @override
   ConsumerState<ScheduleDataTopUp> createState() => _ScheduleDataTopUpState();
@@ -58,16 +59,7 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: scheduleData,
-      bottomSheet: ref.watch(scheduleDataProvider)
-          ? ScheduleBottomWidget(
-              onTap: () {
-                ref.read(scheduleDataProvider.notifier).state = false;
-              },
-            )
-          : SizedBox(),
-      child: ref.watch(scheduleDataProvider)
-          ? ScheduleList(scheduleDummy: scheduleDummy, textTheme: textTheme)
-          : Column(
+      child: Column(
               children: [
                 Expanded(
                   child: ListView(
@@ -288,6 +280,10 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                           setState(() => frequency = result);
                         },
                       ),
+                      widget.text == "viewSchedule" ? NextUpdateContainer(
+                        textTheme: textTheme,
+                        text: "Next top-up date is 12:00pm, Dec 5, 2022 ",
+                      ) : SizedBox(),
                       SizedBox(
                         height: kMicroPadding,
                       )
@@ -295,7 +291,7 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                   ),
                 ),
                 LargeButton(
-                    title: confirm,
+                    title:  widget.text == "viewSchedule" ? save :  confirm,
                     onPressed: frequency == ""
                         ? () {}
                         : () {
@@ -309,13 +305,26 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                                 doSchedule: () {
                                   showSuccessBar(context,
                                       "Auto top-up successfully created");
-                                  ref
-                                      .read(scheduleDataProvider.notifier)
-                                      .state = true;
                                 },
                               ),
                             );
-                          })
+                          }),
+                SizedBox(
+                  height: kMicroPadding,
+                ),
+                widget.text == "viewSchedule"
+                    ? DeleteScheduleText(textTheme: textTheme, onTap: (){
+                  buildShowModalBottomSheet(
+                    context,
+                    DisableModal(
+                        textTheme: textTheme,
+                        buttonText: yesDelete,
+                        title: deleteTopUp,
+                        subTitle: deleteTopUpSub,
+                        color: kLightOrange),
+                  );
+                },)
+                    : SizedBox()
               ],
             ),
     );

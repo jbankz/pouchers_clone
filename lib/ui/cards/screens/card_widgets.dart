@@ -3,13 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/account/disable_account/disable_modal.dart';
-import 'package:pouchers/ui/tab_layout/screens/cards/create_virtual_card.dart';
+import 'package:pouchers/ui/cards/screens/card_residential_address.dart';
+import 'package:pouchers/ui/cards/screens/create_virtual_card.dart';
+import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
-import '../../models/ui_models_class.dart';
 
 String headerText(bool isFundCard, bool isFundNaira, bool isNaira) {
   if (isFundCard && !isFundNaira) {
@@ -77,15 +78,9 @@ class CreateCardWidget extends StatelessWidget {
             isNaira: true,
             onTap: () {
               Navigator.pop(context);
-              pushTo(
-                  context,
-                  CreateVirtualCard(
-                    isNaira: true,
-                    isFundNaira: false,
-                    isFundCard: false,
-                  ),
+              pushTo(context, ResidentialAddress(),
                   settings:
-                      const RouteSettings(name: CreateVirtualCard.routeName));
+                      const RouteSettings(name: ResidentialAddress.routeName));
             },
           ),
           SizedBox(
@@ -483,9 +478,17 @@ class _ManageCardState extends State<ManageCard> {
                           widget: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              FreezeCardWidget(textTheme: textTheme, text: freezeCardSub1,),
-                              SizedBox(height: kSmallPadding,),
-                              FreezeCardWidget(textTheme: textTheme, text: freezeCardSub2,),
+                              FreezeCardWidget(
+                                textTheme: textTheme,
+                                text: freezeCardSub1,
+                              ),
+                              SizedBox(
+                                height: kSmallPadding,
+                              ),
+                              FreezeCardWidget(
+                                textTheme: textTheme,
+                                text: freezeCardSub2,
+                              ),
                             ],
                           ),
                           buttonText: freezeCard,
@@ -504,6 +507,7 @@ class _ManageCardState extends State<ManageCard> {
 
 class FreezeCardWidget extends StatelessWidget {
   final String text;
+
   const FreezeCardWidget({
     Key? key,
     required this.text,
@@ -521,17 +525,15 @@ class FreezeCardWidget extends StatelessWidget {
           height: 4,
           width: 4,
           margin: EdgeInsets.only(top: kSmallPadding),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: kIconGrey
-          ),
+          decoration: BoxDecoration(shape: BoxShape.circle, color: kIconGrey),
         ),
-        SizedBox(width: kPadding,),
+        SizedBox(
+          width: kPadding,
+        ),
         Expanded(
           child: Text(
             text,
-            style: textTheme.headline2!
-                .copyWith(color: kIconGrey, height: 1.5),
+            style: textTheme.headline2!.copyWith(color: kIconGrey, height: 1.5),
           ),
         ),
       ],
