@@ -137,13 +137,13 @@ class _CreateVirtualCardState extends State<CreateVirtualCard> {
                       Text(
                         "$creationFeeText: + ",
                         style: textTheme.headline3!
-                            .copyWith(color: kBackgroundColor.withOpacity(0.8)),
+                            .copyWith(color: kPrimaryTextColor.withOpacity(0.8)),
                       ),
                       RichText(
                         text: TextSpan(
                             text: widget.isNaira! ? "₦" : "\$",
                             style: TextStyle(
-                              color: kBackgroundColor.withOpacity(0.8),
+                              color: kPrimaryTextColor.withOpacity(0.8),
                               fontWeight: FontWeight.w700,
                               fontSize: 14,
                             ),
@@ -151,7 +151,7 @@ class _CreateVirtualCardState extends State<CreateVirtualCard> {
                               TextSpan(
                                 text: "2,000.00",
                                 style: textTheme.headline3!.copyWith(
-                                    color: kBackgroundColor.withOpacity(0.8)),
+                                    color: kPrimaryTextColor.withOpacity(0.8)),
                               ),
                             ]),
                       ),

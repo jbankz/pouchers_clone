@@ -3,6 +3,7 @@ import 'package:pouchers/ui/cards/screens/card_home.dart';
 import 'package:pouchers/ui/cards/screens/create_card.dart';
 import 'package:pouchers/ui/tab_layout/screens/homepage/homepage.dart';
 import 'package:pouchers/ui/tab_layout/screens/profile/profile_page.dart';
+import 'package:pouchers/ui/transactions/screens/transactions.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/widgets.dart';
@@ -31,9 +32,9 @@ class _TabLayoutState extends State<TabLayout> {
 
   List<Widget> items = [
     HomePage(),
-    // CardHome(),
-    CreateCard(),
-    Container(),
+    CardHome(),
+    // CreateCard(),
+    Transactions(),
     ProfilePage(),
   ];
 

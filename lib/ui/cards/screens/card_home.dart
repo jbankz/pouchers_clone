@@ -4,9 +4,11 @@ import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/ui/cards/screens/card_widgets.dart';
 import 'package:pouchers/ui/cards/screens/create_virtual_card.dart';
 import 'package:pouchers/utils/assets_path.dart';
+import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
+import 'dart:math';
 
 class CardHome extends StatefulWidget {
   static const String routeName = "cardHome";
@@ -18,118 +20,88 @@ class CardHome extends StatefulWidget {
 }
 
 class _CardHomeState extends State<CardHome> {
+  bool _switchSides = false;
+  bool _flipXAxis = false;
+
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-
     return InitialPage(
       title: dollarVirtualCard,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Stack(
-            children: [
-              Stack(
-                children: [
-                  Container(
-                    child: SvgPicture.asset(
-                      AssetPaths.cardFrameIcon,
-                      fit: BoxFit.fill,
-                    ),
-                    width: double.infinity,
-                  ),
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: kSmallPadding, horizontal: kMediumPadding),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            balance,
-                            style: textTheme.headline6!.copyWith(
-                              color: kPrimaryWhite,
-                            ),
-                          ),
-                          RichText(
-                            text: TextSpan(
-                              text: "₦",
-                              style: TextStyle(
-                                color: kPrimaryWhite,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 26,
-                              ),
-                              children: [
-                                TextSpan(
-                                    text: "400,000.00 ",
-                                    style: textTheme.bodyText2!.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 26,
-                                    ))
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+          Text(
+            balance,
+            style: textTheme.headline6!.copyWith(
+              color: kIconGrey,
+            ),
+          ),
+          RichText(
+            text: TextSpan(
+              text: "\$",
+              style: TextStyle(
+                color: kPrimaryTextColor,
+                fontWeight: FontWeight.w700,
+                fontSize: 26,
               ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                      vertical: kSmallPadding, horizontal: kMediumPadding),
-                  width: double.infinity,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: kDeepPurple,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(
-                        15,
-                      ),
-                      bottomRight: Radius.circular(
-                        15,
-                      ),
-                    ),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              "Munachi  Abi",
-                              style: textTheme.bodyText2!.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(
-                              height: kPadding,
-                            ),
-                            Text(
-                              "**** **** 6799",
-                              style: textTheme.bodyText2!.copyWith(
-                                color: Color.fromRGBO(255, 255, 255, 0.8),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      SvgPicture.asset(AssetPaths.visaIcon)
-                    ],
-                  ),
-                ),
+              children: [
+                TextSpan(
+                    text: "400,000.00 ",
+                    style: textTheme.headline1)
+              ],
+            ),
+          ),
+          SizedBox(height: kSmallPadding,),
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 800),
+            layoutBuilder: (widget, list) =>
+                Stack(children: [widget!, ...list]),
+            transitionBuilder: (Widget widget, Animation<double> animation) {
+              final rotateAnim = Tween(begin: pi, end: 0.0).animate(animation);
+              return AnimatedBuilder(
+                animation: rotateAnim,
+                child: widget,
+                builder: (context, widget) {
+                  final isUnder =
+                      (ValueKey(frontCard(textTheme)) != widget!.key);
+                  var tilt = ((animation.value - 0.5).abs() - 0.5) * 0.003;
+                  tilt *= isUnder ? 1.0 : -1.0;
+                  final value = isUnder
+                      ? min(rotateAnim.value, pi / 2)
+                      : rotateAnim.value;
+                  return Transform(
+                    transform:
+                        // _flipXAxis
+                        //     ?
+                        (Matrix4.rotationY(value)..setEntry(3, 0, tilt)),
+                    // (Matrix4.rotationX(value)..setEntry(3, 1, tilt)),
+                    child: widget,
+                    alignment: Alignment.center,
+                  );
+                },
+              );
+            },
+            switchInCurve: Curves.easeInBack,
+            switchOutCurve: Curves.easeInBack.flipped,
+            child: _switchSides ? rearCard(textTheme) : frontCard(textTheme),
+          ),
+          SizedBox(
+            height: kSmallPadding,
+          ),
+          inkWell(
+            onTap: () => setState(() {
+              _switchSides = !_switchSides;
+              // _flipXAxis = !_flipXAxis;
+            }),
+            child: Text(
+              flipCard,
+              style: textTheme.headline3!.copyWith(
+                fontWeight: FontWeight.w500,
+                color: kIconGrey,
               ),
-            ],
+              textAlign: TextAlign.center,
+            ),
           ),
           SizedBox(
             height: kMacroPadding,
@@ -362,6 +334,178 @@ class _CardHomeState extends State<CardHome> {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Stack frontCard(TextTheme textTheme) {
+    return Stack(
+      children: [
+        Stack(
+          children: [
+            Container(
+              child: SvgPicture.asset(
+                AssetPaths.cardFrameIcon,
+                fit: BoxFit.fill,
+              ),
+              width: double.infinity,
+            ),
+            // Positioned(
+            //   left: 0,
+            //   right: 0,
+            //   child: Container(
+            //     padding: EdgeInsets.symmetric(
+            //         vertical: kSmallPadding, horizontal: kMediumPadding),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       mainAxisAlignment: MainAxisAlignment.end,
+            //       children: [
+            //         Text(
+            //           balance,
+            //           style: textTheme.headline6!.copyWith(
+            //             color: kPrimaryWhite,
+            //           ),
+            //         ),
+            //         RichText(
+            //           text: TextSpan(
+            //             text: "₦",
+            //             style: TextStyle(
+            //               color: kPrimaryWhite,
+            //               fontWeight: FontWeight.w700,
+            //               fontSize: 26,
+            //             ),
+            //             children: [
+            //               TextSpan(
+            //                   text: "400,000.00 ",
+            //                   style: textTheme.bodyText2!.copyWith(
+            //                     fontWeight: FontWeight.w700,
+            //                     fontSize: 26,
+            //                   ))
+            //             ],
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+          ],
+        ),
+        Positioned(
+          top: kRegularPadding,
+          right: kRegularPadding,
+          child: SvgPicture.asset(
+            AssetPaths.visaIcon,
+            height: 30,
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+                vertical: kSmallPadding, horizontal: kMediumPadding),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        "1234 5566 4455 6799",
+                        style: textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w600, fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: kPadding,
+                      ),
+                      Text(
+                        "Munachi Abi",
+                        style: textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.normal,
+                            color: Color.fromRGBO(255, 255, 255, 0.8)),
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  "Exp: 08/25",
+                  style: textTheme.bodyText2!.copyWith(
+                      fontWeight: FontWeight.normal,
+                      color: Color.fromRGBO(255, 255, 255, 0.8)),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Container rearCard(TextTheme textTheme) {
+    return Container(
+      padding: EdgeInsets.only(top: kRegularPadding, bottom: 85),
+      decoration: BoxDecoration(
+        color: kPurple400,
+        borderRadius: BorderRadius.circular(kRegularPadding),
+      ),
+      child: Column(
+        children: [
+          Container(
+            height: 40,
+            decoration: BoxDecoration(
+              color: kPrimaryTextColor,
+            ),
+          ),
+          SizedBox(
+            height: kMediumPadding,
+          ),
+          Row(
+            children: [
+              Container(
+                width: 170,
+                margin: EdgeInsets.symmetric(horizontal: kSmallPadding),
+                padding: EdgeInsets.only(
+                    left: kPadding,
+                    right: kMediumPadding,
+                    top: kPadding,
+                    bottom: kPadding),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(2),
+                    color: kPrimaryWhite),
+                child: Wrap(
+                  children: List.generate(
+                      144,
+                      (index) => Container(
+                            margin: EdgeInsets.only(
+                                left: 2, top: 2, bottom: 2, right: 2),
+                            padding: EdgeInsets.only(right: kMacroPadding),
+                            height: 2,
+                            width: 2,
+                            decoration:
+                                BoxDecoration(color: kColorBackgroundLight300),
+                          )),
+                ),
+              ),
+              SizedBox(
+                width: kMediumPadding,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: kRegularPadding),
+                child: Text(
+                  "708",
+                  style: textTheme.bodyText2!.copyWith(
+                    fontStyle: FontStyle.italic,
+                    letterSpacing: 1,
+                    fontFamily: "DMSans",
+                  ),
+                ),
+              )
+            ],
+          )
         ],
       ),
     );

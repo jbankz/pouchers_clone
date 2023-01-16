@@ -21,7 +21,7 @@ class OnBoardingPage extends StatefulWidget {
 }
 
 class _OnBoardingPageState extends State<OnBoardingPage> {
-  late PageController _controller = PageController();
+  late PageController _controller;
   int _currentPage = 0;
 
   List<Widget> _pages = [
@@ -90,9 +90,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   @override
   void initState() {
+    _controller = PageController();
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) => _animateSlider());
-    setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) => _animateSlider());
   }
 
   @override

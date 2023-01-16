@@ -61,7 +61,7 @@ class _ScheduleCableTopUpState extends State<ScheduleCableTopUp> {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
                   decoration: BoxDecoration(
-                      color: kBackgroundColor,
+                      color: kPrimaryTextColor,
                       borderRadius: BorderRadius.circular(kSmallPadding)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

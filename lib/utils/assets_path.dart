@@ -78,7 +78,6 @@ class AssetPaths {
    static String  visaIcon = "${iconPath}visa_logo.svg";
    static String  copyIcon = "${iconPath}copy.svg";
    static String  freezeCardIcon = "${iconPath}freeze_card.svg";
-   static String cardFrame = "${iconPath}cardframe.svg";
    static String dollarSign = "${iconPath}dollar_sign.svg";
    static String nairaSign = "${iconPath}naira_sign.svg";
    static String buyVoucher = "${iconPath}buy_voucher.svg";

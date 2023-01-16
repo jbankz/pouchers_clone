@@ -235,7 +235,7 @@ class _CodeResendTimerState extends State<CodeResendTimer> {
                           borderRadius: BorderRadius.circular(kMediumPadding),
                           color: refreshTime == 0
                               ? kLightPurple
-                              : kBackgroundColor),
+                              : kPrimaryTextColor),
                     ),
                   )
                 ],
@@ -298,7 +298,7 @@ class _CodeResendTimerState extends State<CodeResendTimer> {
                           borderRadius: BorderRadius.circular(kMediumPadding),
                           color: refreshTime == 0
                               ? kLightPurple
-                              : kBackgroundColor),
+                              : kPrimaryTextColor),
                     ),
                   )
                 ],
@@ -378,7 +378,7 @@ class FormDropdown extends StatelessWidget {
         hintText: hint,
         isDense: true,
         hintStyle: textTheme.subtitle1!.copyWith(color: hintColor ?? kPrimaryTextColor ),
-        fillColor: kBackgroundColor,
+        fillColor: kPrimaryTextColor,
         border: OutlineInputBorder(),
         errorMaxLines: 2,
         errorStyle: textTheme.headline5!.copyWith(color: kColorRed, fontSize: 12, overflow: TextOverflow.visible),

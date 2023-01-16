@@ -35,10 +35,14 @@ class NairaWidget extends StatelessWidget {
     required this.text,
     required this.textStyle1,
     required this.textStyle2,
+    this.addSign = false,
+    this.sign
    })
       : super(key: key);
 
   final String text;
+      final String? sign;
+  final bool addSign;
   final TextStyle textStyle1, textStyle2;
 
 
@@ -46,7 +50,7 @@ class NairaWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
       text: TextSpan(
-        text: "₦",
+        text: addSign ? "$sign ₦" : "₦",
         children: [
           TextSpan(text: text, style: textStyle2),
         ],

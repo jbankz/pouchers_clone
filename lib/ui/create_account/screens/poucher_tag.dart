@@ -80,7 +80,7 @@ class _PoucherTagState extends State<PoucherTag> {
                     prefixStyle: textTheme.subtitle1!.copyWith(
                       color: kPrimaryTextColor.withOpacity(0.7),
                     ),
-                    fillColor: kBackgroundColor,
+                    fillColor: kPrimaryTextColor,
                     border: OutlineInputBorder(),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(style: BorderStyle.none),

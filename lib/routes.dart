@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:pouchers/ui/login/screens/reset_password_code.dart';
 import 'package:pouchers/ui/onboarding/screens/onboarding.dart';
@@ -70,6 +69,9 @@ import 'ui/tab_layout/screens/profile/profile_tier_list.dart';
 import 'ui/tab_layout/screens/profile/profile_utility_bill.dart';
 import 'ui/tab_layout/screens/profile/profile_valid_id.dart';
 import 'ui/tab_layout/screens/tab_layout.dart';
+import 'ui/transactions/screens/history.dart';
+import 'ui/transactions/screens/history_detail.dart';
+import 'ui/transactions/screens/transactions.dart';
 
 Map<String, WidgetBuilder> appRoutes = {
   BiometricsPage.routeName: (context) => BiometricsPage(),
@@ -91,7 +93,8 @@ Map<String, WidgetBuilder> appRoutes = {
   ConfirmAuthPin.routeName: (context) => ConfirmAuthPin(),
   CopyCode.routeName: (context) => CopyCode(),
   DisableAuthQuestion.routeName: (context) => DisableAuthQuestion(),
-  GoogleAuthenticatorDownload.routeName: (context) => GoogleAuthenticatorDownload(),
+  GoogleAuthenticatorDownload.routeName: (context) =>
+      GoogleAuthenticatorDownload(),
   SecurityQuestion.routeName: (context) => SecurityQuestion(),
   SuccessAuthPage.routeName: (context) => SuccessAuthPage(),
   TwoFactor.routeName: (context) => TwoFactor(),
@@ -125,7 +128,7 @@ Map<String, WidgetBuilder> appRoutes = {
   CardSummary.routeName: (context) => CardSummary(),
   CardHome.routeName: (context) => CardHome(),
   FundWallet.routeName: (context) => FundWallet(),
-  TransferPoucherFriend.routeName: (context) =>TransferPoucherFriend(),
+  TransferPoucherFriend.routeName: (context) => TransferPoucherFriend(),
   TransferSummary.routeName: (context) => TransferSummary(),
   GetGuestEmail.routeName: (context) => GetGuestEmail(),
   PayWithCard.routeName: (context) => PayWithCard(),
@@ -137,9 +140,12 @@ Map<String, WidgetBuilder> appRoutes = {
   VoucherHistory.routeName: (context) => VoucherHistory(),
   ScheduleAirtimeTopUp.routeName: (context) => ScheduleAirtimeTopUp(),
   ScheduleDataTopUp.routeName: (context) => ScheduleDataTopUp(),
-  ScheduleElectricity.routeName: (context) =>  ScheduleElectricity(),
+  ScheduleElectricity.routeName: (context) => ScheduleElectricity(),
   ScheduleCableTopUp.routeName: (context) => ScheduleCableTopUp(),
   ScheduleTransfer.routeName: (context) => ScheduleTransfer(),
   SchedulePayments.routeName: (context) => SchedulePayments(),
   ResidentialAddress.routeName: (context) => ResidentialAddress(),
+  Transactions.routeName: (context) => Transactions(),
+  History.routeName: (context) => History(),
+  HistoryDetail.routeName: (context) => HistoryDetail()
 };
