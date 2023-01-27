@@ -90,6 +90,7 @@ const Color kColorBackgroundLight = Color(0xffEEEBFA);
 const Color kColorBackgroundLight100 = Color(0xffF8F9FD);
 const Color kColorBackgroundLight200 = Color(0xffF7F9FB);
 const Color kColorBackgroundLight300 =Color(0xffD9D9D9);
+const Color kPurpleLight300 =Color(0xffD3BCFF);
 const Color kLightPurple = Color(0xffE9E6FD);
 const Color kDarkGrey = Color(0xFF9B9BA5);
 const Color kDarkGrey100 = Color(0xFFA2A7B1);

@@ -39,14 +39,16 @@ class ClientException implements Exception {
   String toString() => message;
 }
 
-const String dateFormatter = 'MMM, dd, yyy';
+String dateFormatter2 = 'dd MMM yyy';
+
 
 extension DateHelper on DateTime {
 
-  String formatDate() {
-    final formatter = DateFormat(dateFormatter);
+  String formatDate(String format) {
+    final formatter = DateFormat(format);
     return formatter.format(this);
   }
+
   bool isSameDate(DateTime other) {
     return this.year == other.year &&
         this.month == other.month &&

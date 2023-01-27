@@ -13,29 +13,29 @@ class AssetPaths {
    static String dstv = "${imgPath}dstv.png";
    static String twoFactor = "${imgPath}two_factor.png";
    static String success = "${imgPath}success.json";
-   static String frame1 = "${imgPath}frame1.png";
    static String frame_naira = "${imgPath}frame_naira.png";
    static String nairaCard = "${imgPath}ooooo.png";
    static String visaCard = "${imgPath}visa_card.png";
    static String chooseContact = "${imgPath}choose_contacts.png";
-   static String bagImage = "${imgPath}bag.png";
-   static String carImage = "${imgPath}car.png";
-   static String smileImage = "${imgPath}smile.png";
-   static String bookImage = "${imgPath}book.png";
-   static String pizzaImage = "${imgPath}pizza.png";
    static String messageImage = "${imgPath}message.png";
    static String micImage = "${imgPath}mic_image.png";
    static String ussdImage = "${imgPath}ussd_image.png";
    static String voucherImage = "${imgPath}voucher.png";
    static String poucherTextImage = "${imgPath}poucher_logo.png";
    static String voucher1Image = "${imgPath}voucher1.png";
+   static String referralImage = "${imgPath}referral_image.png";
+
+
+
+   ///UNUSED ICON N IMAGE BUT COMMENTED
+   //delete.svg, edit.svg
 
 
    /// ICONS
   /// Add svg filenames and extension from the assets directory e.g ${iconPath}icon.svg here
    static String walletIcon = "${iconPath}wallet.svg";
    static String swapIcon = "${iconPath}swap_icon.svg";
-   static String moneyBagIcon = "${iconPath}money_bag.svg";
+    static String moneyBagIcon = "${iconPath}money_bag.svg";
    static String airtimeIcon = "${iconPath}airtime.svg";
    static String dataIcon = "${iconPath}data.svg";
    static String televisionIcon = "${iconPath}television.svg";
@@ -50,12 +50,12 @@ class AssetPaths {
    static String notification = "${iconPath}notification.svg";
    static String contactBook = "${iconPath}contact-book.svg";
    static String mtnLogoIcon = "${iconPath}mtnlogo.svg";
-   static String mobile9Icon = "${iconPath}9mobile.svg";
+    static String mobile9Icon = "${iconPath}9mobile.svg";
    static String gloIcon = "${iconPath}glo.svg";
    static String airtelIcon = "${iconPath}airtel.svg";
+   static String pdfIcon = "${iconPath}pdf_icon.svg";
    static String backSpaceIcon = "${iconPath}backspace.svg";
-   static String dSTVIcon = "${iconPath}dstv.svg";
-   static String googleAuthIcon = "${iconPath}google_auth_logo.svg";
+    static String googleAuthIcon = "${iconPath}google_auth_logo.svg";
    static String authSuccessIcon = "${iconPath}auth_success_icon.svg";
    static String shieldIcon = "${iconPath}shield.svg";
    static String verifiedIcon = "${iconPath}verified_icon.svg";
@@ -70,7 +70,7 @@ class AssetPaths {
    static String savedCardIcon = "${iconPath}saved_card_icon.svg";
    static String pouIcon = "${iconPath}pou_logo.svg";
    static String nairaIcon = "${iconPath}naira.svg";
-   static String dollarIcon = "${iconPath}dollar.svg";
+    static String dollarIcon = "${iconPath}dollar.svg";
    static String cardFrameIcon = "${iconPath}card_frame.svg";
    static String fundCardIcon = "${iconPath}fund_card.svg";
    static String cardDetailIcon = "${iconPath}card_detail.svg";
@@ -78,8 +78,6 @@ class AssetPaths {
    static String  visaIcon = "${iconPath}visa_logo.svg";
    static String  copyIcon = "${iconPath}copy.svg";
    static String  freezeCardIcon = "${iconPath}freeze_card.svg";
-   static String dollarSign = "${iconPath}dollar_sign.svg";
-   static String nairaSign = "${iconPath}naira_sign.svg";
    static String buyVoucher = "${iconPath}buy_voucher.svg";
    static String giftVoucher = "${iconPath}gift_voucher.svg";
    static String redeemVoucher = "${iconPath}redeem_voucher.svg";
@@ -87,6 +85,10 @@ class AssetPaths {
    static String facebookIcon = "${iconPath}facebook.svg";
    static String instagramIcon = "${iconPath}instagramo.svg";
    static String whatsappIcon = "${iconPath}whatsapp.svg";
-   static String editIcon = "${iconPath}edit.svg";
-   static String deleteIcon = "${iconPath}delete.svg";
+    static String editIcon = "${iconPath}edit.svg";
+    static String deleteIcon = "${iconPath}delete.svg";
+   static String incomeArrowIcon = "${iconPath}input_arrow.svg";
+   static String outputArrowIcon = "${iconPath}output_arrow.svg";
+   static String earnIcon = "${iconPath}earn.svg";
+   static String reminderIcon = "${iconPath}reminder.svg";
 }

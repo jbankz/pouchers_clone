@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:pouchers/ui/onboarding/model/onboarding_model.dart';
-import 'package:pouchers/ui/onboarding/screens/guest_email.dart';
-import 'package:pouchers/ui/tab_layout/models/ui_models_class.dart';
-import 'package:pouchers/ui/tab_layout/screens/homepage/betting.dart';
-import 'package:pouchers/ui/tab_layout/screens/homepage/buy_airtime.dart';
-import 'package:pouchers/ui/tab_layout/screens/homepage/buy_cable.dart';
-import 'package:pouchers/ui/tab_layout/screens/homepage/buy_data.dart';
-import 'package:pouchers/ui/tab_layout/screens/homepage/buy_electricity.dart';
-import 'package:pouchers/ui/tab_layout/screens/homepage/buy_internet.dart';
-import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/buy_voucher.dart';
-import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/gift_voucher.dart';
-import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/redeem_voucher.dart';
-import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/view_voucher_history.dart';
-import 'package:pouchers/ui/tab_layout/screens/homepage/voucher/voucher.dart';
+import 'package:pouchers/modules/onboarding/model/onboarding_model.dart';
+import 'package:pouchers/modules/onboarding/screens/guest_email.dart';
+import 'package:pouchers/modules/tab_layout/models/ui_models_class.dart';
+import 'package:pouchers/modules/tab_layout/screens/homepage/betting.dart';
+import 'package:pouchers/modules/tab_layout/screens/homepage/buy_airtime.dart';
+import 'package:pouchers/modules/tab_layout/screens/homepage/buy_cable.dart';
+import 'package:pouchers/modules/tab_layout/screens/homepage/buy_data.dart';
+import 'package:pouchers/modules/tab_layout/screens/homepage/buy_electricity.dart';
+import 'package:pouchers/modules/tab_layout/screens/homepage/buy_internet.dart';
+import 'package:pouchers/modules/tab_layout/screens/homepage/voucher/buy_voucher.dart';
+import 'package:pouchers/modules/tab_layout/screens/homepage/voucher/gift_voucher.dart';
+import 'package:pouchers/modules/tab_layout/screens/homepage/voucher/redeem_voucher.dart';
+import 'package:pouchers/modules/tab_layout/screens/homepage/voucher/view_voucher_history.dart';
+import 'package:pouchers/modules/tab_layout/screens/homepage/voucher/voucher.dart';
 import 'package:pouchers/utils/assets_path.dart';
 
 final List<GuestClass> guestClass = [

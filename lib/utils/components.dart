@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/ui/create_account/providers/create_account_provider.dart';
-import 'package:pouchers/ui/login/providers/log_in_provider.dart';
-import 'package:pouchers/ui/tab_layout/providers/account_provider.dart';
+import 'package:pouchers/modules/login/providers/log_in_provider.dart';
+import 'package:pouchers/modules/tab_layout/providers/account_provider.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
@@ -330,15 +329,15 @@ InkWell inkWell({Function()? onTap, required Widget child}) {
   );
 }
 
-class FormDropdown extends StatelessWidget {
+class FormDropdown<T> extends StatelessWidget {
   final String? hint;
   final Color borderColor;
   final Color? hintColor;
   final bool requiredField, enableIcon, enable, hasInfo;
-  final String? value;
-  final Function(dynamic)? onChanged;
+  final T? value;
+  final Function(T?)? onChanged;
   final Widget? selectedItemWidget;
-  final List<DropdownMenuItem> items;
+  final List<DropdownMenuItem<T>> items;
 
   const FormDropdown({
     Key? key,
@@ -359,7 +358,7 @@ class FormDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
 
-    return DropdownButtonFormField(
+    return DropdownButtonFormField<T>(
       value: value,
       // itemHeight: 60,
       isExpanded: true,
@@ -378,7 +377,7 @@ class FormDropdown extends StatelessWidget {
         hintText: hint,
         isDense: true,
         hintStyle: textTheme.subtitle1!.copyWith(color: hintColor ?? kPrimaryTextColor ),
-        fillColor: kPrimaryTextColor,
+        fillColor: kBackgroundColor,
         border: OutlineInputBorder(),
         errorMaxLines: 2,
         errorStyle: textTheme.headline5!.copyWith(color: kColorRed, fontSize: 12, overflow: TextOverflow.visible),
