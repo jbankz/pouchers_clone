@@ -108,7 +108,7 @@ class AccountRepository {
         questionId: questionId,
         answer: answer,
         token: accessToken!,
-        isValidate: isValidate))
+        isValidate: isValidate,))
         .toNotifierState();
   }
 
@@ -185,10 +185,10 @@ class AccountRepository {
         .toNotifierState();
   }
 
-  Future<NotifierState<bool>> disable2FA() async {
+  Future<NotifierState<bool>> disable2FA({required String transactionPin}) async {
     final accessToken = await getAccessToken();
     return (await AccountService.disable2FA(
-      token: accessToken!,))
+      token: accessToken!, transactionPin: transactionPin))
         .toNotifierState();
   }
 }

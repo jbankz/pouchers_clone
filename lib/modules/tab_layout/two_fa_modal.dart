@@ -51,7 +51,6 @@ class _TwoFactorPinModalState extends ConsumerState<TwoFactorPinModal> {
       setState(() {
         ref.read(calculateQuestionProvider.notifier).state = noOfQuestion;
       });
-      print(ref.watch(calculateQuestionProvider));
     } else {
       setState(() {
         ref.read(calculateQuestionProvider.notifier).state = 0;
@@ -98,117 +97,51 @@ class _TwoFactorPinModalState extends ConsumerState<TwoFactorPinModal> {
           SizedBox(
             height: kMacroPadding,
           ),
-          widget.isDisable!
-              ? Consumer(
-                  builder: (context, ref, _) {
-                    ref.listen(
-                      disable2FAProvider,
-                      (previous, NotifierState<bool> next) {
-                        if (next.status == NotifierStatus.done) {
-                          Hive.deleteBoxFromDisk(k2FACodeBox);
-                          ref.read(authFactorProvider.notifier).state =
-                              next.data!;
-                          Navigator.popUntil(
-                              context,
-                              (route) =>
-                                  route.settings.name ==
-                                  AccountSettings.routeName);
-                        } else if (next.status == NotifierStatus.error) {
-                          showErrorBar(
-                              context, next.message ?? "Error Disabling 2FA");
-                        }
-                      },
-                    );
-                    var _widget = Consumer(builder: (context, ref, _) {
-                      ref.listen(
-                        validatePinProvider,
-                        (previous, NotifierState<String> next) {
-                          if (next.status == NotifierStatus.done) {
-                            ref.read(disable2FAProvider.notifier).disable2FA();
-                          } else if (next.status == NotifierStatus.error) {
-                            showErrorBar(context, next.message ?? next.data!);
-                          }
-                        },
-                      );
-                      var _widget = Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ...List.generate(
-                            containerIndex.length,
-                            (index) => Container(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: kRegularPadding),
-                              height: kMediumPadding,
-                              width: kMediumPadding,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: containerBoolean[index] == true
-                                      ? kPrimaryColor
-                                      : kPurpleColor300),
-                            ),
-                          ),
-                        ],
-                      );
-                      return ref.watch(validatePinProvider).when(
-                            done: (done) => _widget,
-                            loading: () => SpinKitDemo(),
-                            error: (val) => _widget,
-                          );
-                    });
-                    return ref.watch(disable2FAProvider).when(
-                          done: (done) => _widget,
-                          loading: () => SpinKitDemo(),
-                          error: (val) => _widget,
-                        );
-                  },
-                )
-              : Consumer(builder: (context, ref, _) {
-                  ref.listen(
-                    validatePinProvider,
-                    (previous, NotifierState<String> next) {
-                      if (next.status == NotifierStatus.done) {
-                        ref.watch(calculateQuestionProvider) == 0
-                            ? pushTo(context, SecurityQuestion(),
-                                settings: const RouteSettings(
-                                    name: SecurityQuestion.routeName))
-                            : ref.watch(calculateQuestionProvider) == 1
-                                ? pushTo(context, SecondSecurityQuestion(),
-                                    settings: const RouteSettings(
-                                        name: SecondSecurityQuestion.routeName))
-                                : pushTo(context, GoogleAuthenticatorDownload(),
-                                    settings: const RouteSettings(
-                                        name: GoogleAuthenticatorDownload
-                                            .routeName));
-                      } else if (next.status == NotifierStatus.error) {
-                        showErrorBar(context, next.message ?? next.data!);
-                      }
-                    },
-                  );
-                  var _widget = Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ...List.generate(
-                        containerIndex.length,
-                        (index) => Container(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: kRegularPadding),
-                          height: kMediumPadding,
-                          width: kMediumPadding,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: containerBoolean[index] == true
-                                  ? kPrimaryColor
-                                  : kPurpleColor300),
-                        ),
-                      ),
-                    ],
-                  );
-                  return ref.watch(validatePinProvider).when(
-                        done: (done) => _widget,
-                        loading: () => SpinKitDemo(),
-                        error: (val) => _widget,
-                      );
-                }),
+          Consumer(builder: (context, ref, _) {
+            ref.listen(
+              validatePinProvider,
+              (previous, NotifierState<String> next) {
+                if (next.status == NotifierStatus.done) {
+                  ref.watch(calculateQuestionProvider) == 0
+                      ? pushTo(context, SecurityQuestion(),
+                          settings: const RouteSettings(
+                              name: SecurityQuestion.routeName))
+                      : ref.watch(calculateQuestionProvider) == 1
+                          ? pushTo(context, SecondSecurityQuestion(),
+                              settings: const RouteSettings(
+                                  name: SecondSecurityQuestion.routeName))
+                          : pushTo(context, GoogleAuthenticatorDownload(),
+                              settings: const RouteSettings(
+                                  name: GoogleAuthenticatorDownload.routeName));
+                } else if (next.status == NotifierStatus.error) {
+                  showErrorBar(context, next.message ?? next.data!);
+                }
+              },
+            );
+            var _widget = Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ...List.generate(
+                  containerIndex.length,
+                  (index) => Container(
+                    margin: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                    height: kMediumPadding,
+                    width: kMediumPadding,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: containerBoolean[index] == true
+                            ? kPrimaryColor
+                            : kPurpleColor300),
+                  ),
+                ),
+              ],
+            );
+            return ref.watch(validatePinProvider).when(
+                  done: (done) => _widget,
+                  loading: () => SpinKitDemo(),
+                  error: (val) => _widget,
+                );
+          }),
           SizedBox(
             height: kMacroPadding,
           ),

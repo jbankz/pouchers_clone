@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/modules/account/models/security_question.dart';
+import 'package:pouchers/modules/account/models/ui_models_class.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
-import 'package:pouchers/modules/tab_layout/two_fa_modal.dart';
+import 'package:pouchers/modules/account/screens/account_settings/account_settings.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
@@ -80,37 +82,70 @@ class _DisableAuthQuestion2State extends ConsumerState<DisableAuthQuestion2> {
               ),
             ),
             Consumer(builder: (context, ref, _) {
-              ref.listen(set2QuestionProvider,
-                  (previous, NotifierState<String> next) {
-                if (next.status == NotifierStatus.done) {
-                  buildShowModalBottomSheet(
-                    context,
-                    TwoFactorPinModal(
-                      isDisable: true,
-                    ),
-                  );
-                } else if (next.status == NotifierStatus.error) {
-                  showErrorBar(context, next.message!);
-                }
-              });
-              var _widget = LargeButton(
-                title: confirm,
-                onPressed: () async {
-                  FocusScope.of(context).unfocus();
-                  if (answerController.text.isNotEmpty) {
-                    ref.read(set2QuestionProvider.notifier).setSecurityQuestion(
-                        questionId: widget.questionData!.questionId!,
-                        answer: answerController.text,
-                        isValidate: true);
-                  } else {
-                    showErrorBar(context, emptyField);
+              ref.listen(
+                disable2FAProvider,
+                (previous, NotifierState<bool> next) {
+                  if (next.status == NotifierStatus.done) {
+                    Hive.deleteBoxFromDisk(k2FACodeBox);
+                    ref.read(authFactorProvider.notifier).state = next.data!;
+                    Navigator.popUntil(
+                        context,
+                        (route) =>
+                            route.settings.name == AccountSettings.routeName);
+                  } else if (next.status == NotifierStatus.error) {
+                    showErrorBar(
+                        context, next.message ?? "Error Disabling 2FA");
                   }
                 },
               );
-              return ref.watch(set2QuestionProvider).when(
-                  done: (done) => _widget,
-                  loading: () => SpinKitDemo(),
-                  error: (val) => _widget);
+              var _widget = Consumer(builder: (context, ref, _) {
+                ref.listen(set2QuestionProvider,
+                    (previous, NotifierState<String> next) async {
+                  if (next.status == NotifierStatus.done) {
+                    final result = await buildShowModalBottomSheet(
+                      context,
+                      TransactionPinContainer(
+                        isData: false,
+                        isCard: false,
+                        isFundCard: false,
+                      ),
+                    );
+                    if (result != null) {
+                      ref
+                          .read(disable2FAProvider.notifier)
+                          .disable2FA(transactionPin: result);
+                    }
+                  } else if (next.status == NotifierStatus.error) {
+                    showErrorBar(context, next.message!);
+                  }
+                });
+                var _widget = LargeButton(
+                  title: confirm,
+                  onPressed: () async {
+                    FocusScope.of(context).unfocus();
+                    if (answerController.text.isNotEmpty) {
+                      ref
+                          .read(set2QuestionProvider.notifier)
+                          .setSecurityQuestion(
+                            questionId: widget.questionData!.questionId!,
+                            answer: answerController.text,
+                            isValidate: true,
+                          );
+                    } else {
+                      showErrorBar(context, emptyField);
+                    }
+                  },
+                );
+                return ref.watch(set2QuestionProvider).when(
+                    done: (done) => _widget,
+                    loading: () => SpinKitDemo(),
+                    error: (val) => _widget);
+              });
+              return ref.watch(disable2FAProvider).when(
+                    done: (done) => _widget,
+                    loading: () => SpinKitDemo(),
+                    error: (val) => _widget,
+                  );
             })
           ],
         ));

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/helpers/response_handler.dart';
@@ -295,7 +296,7 @@ class SetQuestionNotifier extends StateNotifier<NotifierState<String>>
       Function()? then}) async {
     state = notifyLoading();
     state = await _repo.setSecurityQuestion(
-        questionId: questionId, answer: answer, isValidate: isValidate);
+        questionId: questionId, answer: answer, isValidate: isValidate, );
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }
@@ -489,10 +490,11 @@ class Disable2FANotifier extends StateNotifier<NotifierState<bool>>
   Disable2FANotifier(this._repo) : super(NotifierState());
 
   void disable2FA({
+  required String transactionPin,
     Function()? then,
   }) async {
     state = notifyLoading();
-    state = await _repo.disable2FA();
+    state = await _repo.disable2FA(transactionPin: transactionPin);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }

@@ -213,8 +213,10 @@ class AccountService {
     if (gender != null) body["gender"] = gender;
     if (profilePicture != null) body["profile_picture"] = profilePicture;
     if (utilityBill != null) body["utility_bill"] = utilityBill;
-    if(isLoginBiometricActive != null) body["is_login_biometric_active"] = isLoginBiometricActive;
-    if(isPaymentBiometricActive != null) body["is_payment_biometric_active"] = isPaymentBiometricActive;
+    if (isLoginBiometricActive != null)
+      body["is_login_biometric_active"] = isLoginBiometricActive;
+    if (isPaymentBiometricActive != null)
+      body["is_payment_biometric_active"] = isPaymentBiometricActive;
 
     log(url);
     log("bomkmkmkdy$body");
@@ -277,7 +279,8 @@ class AccountService {
       {required String questionId,
       required String answer,
       required String token,
-      required bool isValidate}) async {
+      required bool isValidate,
+    }) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
@@ -288,14 +291,21 @@ class AccountService {
         ? "${baseUrl()}/auth/validate-2fa"
         : "${baseUrl()}/auth/set-questions";
 
+    Map<String, dynamic> body =  {
+            "question_id": questionId,
+            "answer": answer,
+          };
+
     log(url);
     log(questionId);
     log(answer);
 
     try {
-      http.Response response = await http.post(Uri.parse(url),
-          headers: _authHeaders,
-          body: jsonEncode({"question_id": questionId, "answer": answer}));
+      http.Response response = await http.post(
+        Uri.parse(url),
+        headers: _authHeaders,
+        body: jsonEncode(body),
+      );
       logResponse(response);
       var responseBody = jsonDecode(response.body);
       if (response.statusCode >= 300 && response.statusCode <= 520) {
@@ -695,6 +705,7 @@ class AccountService {
 
   static Future<ServiceResponse<bool>> disable2FA({
     required String token,
+    required String transactionPin
   }) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
@@ -710,6 +721,7 @@ class AccountService {
       http.Response response = await http.patch(
         Uri.parse(url),
         headers: _authHeaders,
+        body: jsonEncode({"transactionPin" : transactionPin})
       );
       logResponse(response);
       var responseBody = jsonDecode(response.body);
