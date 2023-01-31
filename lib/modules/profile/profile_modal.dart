@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pouchers/modules/tab_layout/models/security_question.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';

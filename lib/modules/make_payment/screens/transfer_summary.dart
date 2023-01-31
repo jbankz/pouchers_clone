@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/modules/account/models/ui_models_class.dart';
 import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
 import 'package:pouchers/modules/make_payment/screens/transfer_success.dart';
-import 'package:pouchers/modules/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
@@ -15,9 +15,15 @@ import 'package:pouchers/utils/widgets.dart';
 class TransferSummary extends StatelessWidget {
   static const String routeName = "transferSummary";
   final String? transferName, accNo, amount, beneficiary;
+  final double? fee;
 
   const TransferSummary(
-      {Key? key, this.amount, this.accNo, this.transferName, this.beneficiary})
+      {Key? key,
+      this.fee,
+      this.amount,
+      this.accNo,
+      this.transferName,
+      this.beneficiary})
       : super(key: key);
 
   @override
@@ -64,7 +70,7 @@ class TransferSummary extends StatelessWidget {
                         AirtimeRow(
                           textTheme: textTheme,
                           text: transferFee,
-                          subText: "53.75",
+                          subText: "$fee",
                           isCopyIcon: false,
                           noSymbol: false,
                           isNaira: true,
@@ -149,8 +155,9 @@ class TransferSummary extends StatelessWidget {
               height: kMediumPadding,
             ),
             Consumer(builder: (context, ref, _) {
-              ref.listen(localBankTransferProvider, (previous, NotifierState next) {
-                if(next.status == NotifierStatus.done){
+              ref.listen(localBankTransferProvider,
+                  (previous, NotifierState next) {
+                if (next.status == NotifierStatus.done) {
                   pushTo(
                       context,
                       TransferSuccess(
@@ -161,40 +168,30 @@ class TransferSummary extends StatelessWidget {
                           accNo: accNo,
                           transferName: transferName,
                           beneficiary: beneficiary));
-                }else if(next.status == NotifierStatus.error){
+                } else if (next.status == NotifierStatus.error) {
                   showErrorBar(context, next.message ?? "Error");
                 }
               });
               var _widget = LargeButton(
                   title: transfer.substring(0, 8),
-                  onPressed: () {
-                    buildShowModalBottomSheet(
+                  onPressed: () async {
+                    final result = await buildShowModalBottomSheet(
                         context,
                         TransactionPinContainer(
                           isData: false,
                           isCard: false,
                           isFundCard: false,
                           isTransfer: true,
-                          doTransfer: () {
-                            pushTo(
-                                context,
-                                TransferSuccess(
-                                    text: "bank",
-                                    isRequest: false,
-                                    typeOfTransfer: "localBank",
-                                    amount: amount,
-                                    accNo: accNo,
-                                    transferName: transferName,
-                                    beneficiary: beneficiary));
-                            // ref
-                            //     .read(localBankTransferProvider.notifier)
-                            //     .localBankTransfer(
-                            //       accountNumber: accNo!,
-                            //       bankName: transferName!,
-                            //       amount: amount!,
-                            //     );
-                          },
                         ));
+                    if (result != null) {
+                      ref
+                          .read(localBankTransferProvider.notifier)
+                          .localBankTransfer(
+                              accountNumber: accNo!,
+                              bankName: transferName!,
+                              amount: amount!,
+                              transactionPin: result);
+                    }
                   });
               return ref.watch(localBankTransferProvider).when(
                     done: (data) => _widget,

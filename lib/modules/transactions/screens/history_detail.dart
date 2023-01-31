@@ -4,10 +4,11 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:media_storage/media_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
-import 'package:pouchers/modules/tab_layout/screens/homepage/voucher/voucher_widgets.dart';
 import 'package:pouchers/modules/transactions/components/transaction_components.dart';
+import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';
@@ -169,7 +170,7 @@ class HistoryDetail extends StatelessWidget {
             SizedBox(
               height: kRegularPadding,
             ),
-           // File: '/storage/emulated/0/Android/data/com.enyata.pouchers/files/receipt.pdf'
+            // File: '/storage/emulated/0/Android/data/com.enyata.pouchers/files/receipt.pdf'
             LargeButton(
                 title: getReceipt,
                 onPressed: () async {
@@ -194,7 +195,7 @@ class HistoryDetail extends StatelessWidget {
     await savedDir.create(recursive: true).then((value) async {
       String? _taskid = await FlutterDownloader.enqueue(
         url: _url.split(" ")[1],
-        fileName: _url.split(" ")[0],
+        fileName: "receipt",
         savedDir: _localPath,
         showNotification: true,
         openFileFromNotification: true,
@@ -205,17 +206,23 @@ class HistoryDetail extends StatelessWidget {
 }
 
 class pdfApi {
-  static Future<File> saveDocument() async {
+  static  saveDocument() async {
+    bool isPermission = await MediaStorage.getRequestStoragePermission();
+
     final bytes = await DownloadTransactionReceipt.generate();
-    String dir;
-    if (Platform.isIOS) {
-      dir = (await getApplicationDocumentsDirectory()).path;
-    } else {
-      dir = (await getExternalStorageDirectory())!.path;
+    if (isPermission) {
+      var path = await MediaStorage.getExternalStoragePublicDirectory(
+          MediaStorage.DIRECTORY_DOWNLOADS);
+      final file = File('${path}/receipt.pdf');
+      await file.writeAsBytes(bytes);
     }
-    final file = File('${dir}/receipt.pdf');
-    await file.writeAsBytes(bytes);
-    return file;
+    // String dir
+
+    // if (Platform.isIOS) {
+    //   dir = (await getApplicationDocumentsDirectory()).path;
+    // } else {
+    //   dir = (await getExternalStorageDirectory())!.path;
+    // }
   }
 }
 

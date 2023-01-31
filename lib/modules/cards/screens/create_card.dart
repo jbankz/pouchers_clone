@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
-import 'package:pouchers/modules/account/two_factor_auth/copy_code.dart';
+import 'package:pouchers/modules/account/screens/two_factor_auth/copy_code.dart';
 import 'package:pouchers/modules/cards/screens/card_widgets.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';

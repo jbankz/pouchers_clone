@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pouchers/modules/account/models/ui_models_class.dart';
 import 'package:pouchers/modules/cards/screens/card_widgets.dart';
-import 'package:pouchers/modules/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';

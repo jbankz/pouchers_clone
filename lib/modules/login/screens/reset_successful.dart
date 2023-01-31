@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/account_settings.dart';
+import 'package:pouchers/modules/account/screens/account_settings/account_settings.dart';
 import 'package:pouchers/modules/login/screens/login.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';

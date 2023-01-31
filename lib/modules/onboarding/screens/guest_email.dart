@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/tab_layout/screens/homepage/betting.dart';
-import 'package:pouchers/modules/tab_layout/screens/homepage/buy_airtime.dart';
-import 'package:pouchers/modules/tab_layout/screens/homepage/buy_cable.dart';
-import 'package:pouchers/modules/tab_layout/screens/homepage/buy_electricity.dart';
-import 'package:pouchers/modules/tab_layout/screens/homepage/buy_internet.dart';
-import 'package:pouchers/modules/tab_layout/screens/homepage/voucher/voucher.dart';
+import 'package:pouchers/modules/utilities/screens/betting.dart';
+import 'package:pouchers/modules/utilities/screens/buy_airtime.dart';
+import 'package:pouchers/modules/utilities/screens/buy_cable.dart';
+import 'package:pouchers/modules/utilities/screens/buy_electricity.dart';
+import 'package:pouchers/modules/utilities/screens/buy_internet.dart';
+import 'package:pouchers/modules/utilities/screens/voucher/voucher.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';

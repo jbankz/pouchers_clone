@@ -47,6 +47,7 @@ class PaymentRepository {
     required String tag,
     required String amount,
     required String note,
+    required String transactionPin
   }) async {
     final accessToken = await getAccessToken();
     return (await PaymentService.p2p(
@@ -54,6 +55,7 @@ class PaymentRepository {
       amount: amount,
       tag: tag,
       note: note,
+      transactionPin: transactionPin
     ))
         .toNotifierState();
   }
@@ -83,14 +85,23 @@ class PaymentRepository {
 
   Future<NotifierState> localBankTransfer({required String accountNumber,
     required String bankName,
-    required String amount,}) async {
+    required String amount, required String transactionPin}) async {
     final accessToken = await getAccessToken();
     return (await PaymentService.localBankTransfer(
         token: accessToken!,
         accountNumber: accountNumber,
         amount: amount,
-        bankName: bankName
+        bankName: bankName,
+      transactionPin: transactionPin
 
+    ))
+        .toNotifierState();
+  }
+
+  Future<NotifierState<GetWalletResponse>> getWalletDetails() async {
+    final accessToken = await getAccessToken();
+    return (await PaymentService.getWalletDetails(
+        token: accessToken!,
     ))
         .toNotifierState();
   }

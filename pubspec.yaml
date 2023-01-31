@@ -49,6 +49,7 @@ dependencies:
   auto_size_text: ^3.0.0
   fast_contacts: ^1.0.0
   path_provider: ^2.0.9
+  media_storage: ^0.0.1
   url_launcher: ^6.1.6
   hive_flutter: ^1.1.0
   image_picker: ^0.8.6

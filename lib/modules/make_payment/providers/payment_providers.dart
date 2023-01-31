@@ -19,8 +19,8 @@ final requestMoneyProvider = StateNotifierProvider.autoDispose<
   return RequestMoneyNotifier(ref.read(paymentRepoProvider));
 });
 
-final p2pMoneyProvider = StateNotifierProvider.autoDispose<
-    P2PMoneyNotifier, NotifierState<P2PResponse>>((ref) {
+final p2pMoneyProvider = StateNotifierProvider.autoDispose<P2PMoneyNotifier,
+    NotifierState<P2PResponse>>((ref) {
   return P2PMoneyNotifier(ref.read(paymentRepoProvider));
 });
 
@@ -34,9 +34,15 @@ final getAllBanksProvider = StateNotifierProvider.autoDispose<
   return GetAllBanksNotifier(ref.read(paymentRepoProvider));
 });
 
-final localBankTransferProvider = StateNotifierProvider.autoDispose<
-    LocalBankTransferNotifier, NotifierState>((ref) {
+final localBankTransferProvider =
+    StateNotifierProvider.autoDispose<LocalBankTransferNotifier, NotifierState>(
+        (ref) {
   return LocalBankTransferNotifier(ref.read(paymentRepoProvider));
+});
+
+final getWalletProvider = StateNotifierProvider.autoDispose<GetWalletNotifier,
+    NotifierState<GetWalletResponse>>((ref) {
+  return GetWalletNotifier(ref.read(paymentRepoProvider));
 });
 
 class GetContactByPoucherTagNotifier
@@ -99,21 +105,23 @@ class P2PMoneyNotifier extends StateNotifier<NotifierState<P2PResponse>>
 
   P2PMoneyNotifier(this._repo) : super(NotifierState());
 
-  void p2pMoney({
-    Function()? then,
-    required String tag,
-    required String amount,
-    required String note,
-  }) async {
+  void p2pMoney(
+      {Function()? then,
+      required String tag,
+      required String amount,
+      required String note,
+      required String transactionPin}) async {
     state = notifyLoading();
-    state = await _repo.p2pMoney(tag: tag, note: note, amount: amount);
+    state = await _repo.p2pMoney(
+        tag: tag, note: note, amount: amount, transactionPin: transactionPin);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }
   }
 }
 
-class GetAccountDetailsNotifier extends StateNotifier<NotifierState<AccountDetailsResponse>>
+class GetAccountDetailsNotifier
+    extends StateNotifier<NotifierState<AccountDetailsResponse>>
     with ResponseHandler {
   final PaymentRepository _repo;
 
@@ -126,14 +134,16 @@ class GetAccountDetailsNotifier extends StateNotifier<NotifierState<AccountDetai
     required String bankName,
   }) async {
     state = notifyLoading();
-    state = await _repo.accountDetails(accountNumber: accountNumber, amount: amount, bankName: bankName);
+    state = await _repo.accountDetails(
+        accountNumber: accountNumber, amount: amount, bankName: bankName);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }
   }
 }
 
-class GetAllBanksNotifier extends StateNotifier<NotifierState<GetAllBanksResponse>>
+class GetAllBanksNotifier
+    extends StateNotifier<NotifierState<GetAllBanksResponse>>
     with ResponseHandler {
   final PaymentRepository _repo;
 
@@ -160,19 +170,34 @@ class LocalBankTransferNotifier extends StateNotifier<NotifierState>
     required String accountNumber,
     required String bankName,
     required String amount,
+    required String transactionPin,
     Function()? then,
   }) async {
     state = notifyLoading();
     state = await _repo.localBankTransfer(
-      bankName: bankName,
-      amount: amount,
-      accountNumber: accountNumber
-    );
+        bankName: bankName,
+        amount: amount,
+        accountNumber: accountNumber,
+        transactionPin: transactionPin);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }
   }
 }
 
+class GetWalletNotifier extends StateNotifier<NotifierState<GetWalletResponse>>
+    with ResponseHandler {
+  final PaymentRepository _repo;
 
+  GetWalletNotifier(this._repo) : super(NotifierState());
 
+  void getWalletDetails({
+    Function()? then,
+  }) async {
+    state = notifyLoading();
+    state = await _repo.getWalletDetails();
+    if (state.status == NotifierStatus.done) {
+      if (then != null) then();
+    }
+  }
+}

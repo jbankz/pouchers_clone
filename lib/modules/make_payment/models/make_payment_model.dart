@@ -216,26 +216,26 @@ class AccountDetailsResponse {
 
 class AccountDetailsData {
   AccountDetailsData({
-    this.fee,
-    this.vat,
+    this.transactionFee,
+    this.destinationBankUUID,
     this.accountName,
   });
 
-  int? fee;
-  int? vat;
+  double? transactionFee;
+  String? destinationBankUUID;
   String? accountName;
 
   factory AccountDetailsData.fromJson(Map<String, dynamic> json) =>
       AccountDetailsData(
-        fee: json["fee"],
-        vat: json["vat"],
+        transactionFee: json["transactionFee"],
+        destinationBankUUID: json["destinationBankUUID"],
         accountName: json["accountName"],
       );
 
   Map<String, dynamic> toJson() =>
       {
-        "fee": fee,
-        "vat": vat,
+        "transactionFee": transactionFee,
+        "destinationBankUUID": destinationBankUUID,
         "accountName": accountName,
       };
 }
@@ -335,6 +335,84 @@ class TransferModel {
     return 'TransferModel{amount: $amount, bank: $bank, accountNumber: $accountNumber, id: $id}';
   }
 }
+
+
+class GetWalletResponse {
+  GetWalletResponse({
+    required this.status,
+    required this.message,
+    required this.code,
+    required this.data,
+  });
+
+  String status;
+  String message;
+  int code;
+  GetWalletData? data;
+
+  factory GetWalletResponse.fromJson(Map<String, dynamic> json) => GetWalletResponse(
+    status: json["status"],
+    message: json["message"],
+    code: json["code"],
+    data: GetWalletData.fromJson(json["data"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "message": message,
+    "code": code,
+    "data": data!.toJson(),
+  };
+}
+
+class GetWalletData {
+  GetWalletData({
+     this.walletId,
+     this.userId,
+     this.credit,
+     this.debit,
+     this.balance,
+     this.walletType,
+     this.accountName,
+     this.accountNumber,
+     this.bankProvider,
+  });
+
+  String? walletId;
+  String? userId;
+  String? credit;
+  String? debit;
+  String? balance;
+  String? walletType;
+  String? accountName;
+  String? accountNumber;
+  String? bankProvider;
+
+  factory GetWalletData.fromJson(Map<String, dynamic> json) => GetWalletData(
+    walletId: json["wallet_id"],
+    userId: json["user_id"],
+    credit: json["credit"],
+    debit: json["debit"],
+    balance: json["balance"],
+    walletType: json["wallet_type"],
+    accountName: json["account_name"],
+    accountNumber: json["account_number"],
+    bankProvider: json["bank_provider"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "wallet_id": walletId,
+    "user_id": userId,
+    "credit": credit,
+    "debit": debit,
+    "balance": balance,
+    "wallet_type": walletType,
+    "account_name": accountName,
+    "account_number": accountNumber,
+    "bank_provider": bankProvider,
+  };
+}
+
 
 
 

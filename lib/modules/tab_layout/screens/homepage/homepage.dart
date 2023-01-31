@@ -7,12 +7,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/modules/account/models/profile_model.dart';
+import 'package:pouchers/modules/account/models/ui_models_class.dart';
+import 'package:pouchers/modules/account/providers/account_provider.dart';
 import 'package:pouchers/modules/login/models/login_response.dart';
+import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
 import 'package:pouchers/modules/make_payment/screens/transfer_poucher_friend.dart';
 import 'package:pouchers/modules/profile/profile_account_verification.dart';
-import 'package:pouchers/modules/tab_layout/models/profile_model.dart';
-import 'package:pouchers/modules/tab_layout/models/ui_models_class.dart';
-import 'package:pouchers/modules/tab_layout/providers/account_provider.dart';
 import 'package:pouchers/modules/tab_layout/screens/homepage/fund_wallet.dart';
 import 'package:pouchers/modules/tab_layout/screens/tab_layout.dart';
 import 'package:pouchers/modules/tab_layout/widgets/home_widget.dart';
@@ -21,6 +22,7 @@ import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/constant/ui_constants.dart';
 import 'package:pouchers/utils/strings.dart';
+import 'package:pouchers/utils/utils.dart';
 import 'package:pouchers/utils/widgets.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -47,7 +49,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
-    print("mmmf${userProfile.walletDetails}");
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if (ref.watch(editProfileInHouseProvider).profilePicture == null) {
         ref.read(editProfileInHouseProvider.notifier).state =
@@ -55,6 +57,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 .copyWith(profilePicture: userProfile.profilePicture);
         setState(() {});
       }
+      ref.read(getWalletProvider.notifier).getWalletDetails();
     });
   }
 
@@ -141,24 +144,23 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         );
                                       },
                                     )
-                                  :
-                                  Center(
-                                    child: Text(
-                                        ref
-                                                        .watch(
-                                                            editProfileInHouseProvider)
-                                                        .firstName ==
-                                                    null ||
-                                                ref
-                                                        .watch(
-                                                            editProfileInHouseProvider)
-                                                        .lastName ==
-                                                    null
-                                            ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
-                                            : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
-                                        style: textTheme.bodyText2!
-                                            .copyWith(fontSize: 22)),
-                                  ),
+                                  : Center(
+                                      child: Text(
+                                          ref
+                                                          .watch(
+                                                              editProfileInHouseProvider)
+                                                          .firstName ==
+                                                      null ||
+                                                  ref
+                                                          .watch(
+                                                              editProfileInHouseProvider)
+                                                          .lastName ==
+                                                      null
+                                              ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
+                                              : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
+                                          style: textTheme.bodyText2!
+                                              .copyWith(fontSize: 22)),
+                                    ),
                             )),
                   ),
                   SizedBox(
@@ -294,26 +296,42 @@ class _HomePageState extends ConsumerState<HomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      RichText(
-                        text: TextSpan(
-                          text: "₦",
-                          style: TextStyle(
-                            color: kPrimaryWhite,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 30,
+                      ref.watch(getWalletProvider).when(
+                            done: (done) {
+                              if (done != null) {
+                                return RichText(
+                                  text: TextSpan(
+                                    text: "₦",
+                                    style: TextStyle(
+                                      color: kPrimaryWhite,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 30,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                          text: obscure
+                                              ? "****** "
+                                              : kPriceFormatter(double.parse(
+                                                  done!.data!.balance ??
+                                                      "0.00")),
+                                          style: textTheme.bodyText2!.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 32,
+                                            height: 1.5,
+                                            fontFamily: "DMSans",
+                                          ))
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return SizedBox();
+                              }
+                            },
+                            loading: () => SpinKitDemo(
+                              size: kMacroPadding,
+                              color: kPrimaryWhite,
+                            ),
                           ),
-                          children: [
-                            TextSpan(
-                                text: obscure ? "****** " : "${double.parse(userProfile.walletDetails!.balance ?? "0.00").toStringAsFixed(2)}",
-                                style: textTheme.bodyText2!.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 32,
-                                  height: 1.5,
-                                  fontFamily: "DMSans",
-                                ))
-                          ],
-                        ),
-                      ),
                       SizedBox(
                         width: kPadding,
                       ),
@@ -344,8 +362,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                         icon: AssetPaths.walletIcon,
                         onTap: () {
                           pushTo(context, FundWallet(),
-                              settings: const RouteSettings(
-                                  name: FundWallet.routeName));
+                                  settings: const RouteSettings(
+                                      name: FundWallet.routeName))
+                              .then((value) => ref
+                                  .read(getWalletProvider.notifier)
+                                  .getWalletDetails());
                         },
                         text: fundWallet,
                       ),

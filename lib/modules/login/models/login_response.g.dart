@@ -43,14 +43,13 @@ class HiveStoreResponseDataAdapter extends TypeAdapter<HiveStoreResponseData> {
       is2faActive: fields[23] as bool?,
       isLoginBiometricActive: fields[24] as bool?,
       isPaymentBiometricActive: fields[25] as bool?,
-      walletDetails: fields[26] as WalletDetails?,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveStoreResponseData obj) {
     writer
-      ..writeByte(27)
+      ..writeByte(26)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -102,9 +101,7 @@ class HiveStoreResponseDataAdapter extends TypeAdapter<HiveStoreResponseData> {
       ..writeByte(24)
       ..write(obj.isLoginBiometricActive)
       ..writeByte(25)
-      ..write(obj.isPaymentBiometricActive)
-      ..writeByte(26)
-      ..write(obj.walletDetails);
+      ..write(obj.isPaymentBiometricActive);
   }
 
   @override

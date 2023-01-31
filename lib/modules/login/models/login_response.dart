@@ -1,5 +1,4 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pouchers/modules/login/models/wallet_details.dart';
 
 part 'login_response.g.dart';
 
@@ -61,7 +60,6 @@ class HiveStoreResponseData {
     this.is2faActive,
     this.isLoginBiometricActive,
     this.isPaymentBiometricActive,
-    this.walletDetails,
   });
 
   @HiveField(0)
@@ -116,8 +114,6 @@ class HiveStoreResponseData {
   bool? isLoginBiometricActive;
   @HiveField(25)
   bool? isPaymentBiometricActive;
-  @HiveField(26)
-  WalletDetails? walletDetails;
 
   factory HiveStoreResponseData.fromJson(Map<String, dynamic> json) =>
       HiveStoreResponseData(
@@ -149,9 +145,6 @@ class HiveStoreResponseData {
         is2faActive: json["is_2fa_active"],
         isLoginBiometricActive: json["is_login_biometric_active"],
         isPaymentBiometricActive: json["is_payment_biometric_active"],
-        walletDetails: json["walletDetails"] == null
-            ? null
-            : WalletDetails.fromJson(json["walletDetails"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -181,11 +174,10 @@ class HiveStoreResponseData {
         "is_2fa_active": is2faActive,
         "is_login_biometric_active": isLoginBiometricActive,
         "is_payment_biometric_active": isPaymentBiometricActive,
-        "walletDetails": walletDetails!.toJson(),
       };
 
   @override
   String toString() {
-    return 'HiveStoreResponseData{id: $id, phoneNumber: $phoneNumber, userId: $userId, email: $email, firstName: $firstName, lastName: $lastName, verificationToken: $verificationToken, verificationTokenExpires: $verificationTokenExpires, tierLevels: $tierLevels, status: $status, deviceToken: $deviceToken, fcmToken: $fcmToken, isUploadedIdentityCard: $isUploadedIdentityCard, isDeleted: $isDeleted, referralCode: $referralCode, tag: $tag, token: $token, refreshToken: $refreshToken, tokenExpireAt: $tokenExpireAt, dob: $dob, gender: $gender, address: $address, profilePicture: $profilePicture, is2faActive: $is2faActive, isLoginBiometricActive: $isLoginBiometricActive, isPaymentBiometricActive: $isPaymentBiometricActive, walletDetails: $walletDetails}';
+    return 'HiveStoreResponseData{id: $id, phoneNumber: $phoneNumber, userId: $userId, email: $email, firstName: $firstName, lastName: $lastName, verificationToken: $verificationToken, verificationTokenExpires: $verificationTokenExpires, tierLevels: $tierLevels, status: $status, deviceToken: $deviceToken, fcmToken: $fcmToken, isUploadedIdentityCard: $isUploadedIdentityCard, isDeleted: $isDeleted, referralCode: $referralCode, tag: $tag, token: $token, refreshToken: $refreshToken, tokenExpireAt: $tokenExpireAt, dob: $dob, gender: $gender, address: $address, profilePicture: $profilePicture, is2faActive: $is2faActive, isLoginBiometricActive: $isLoginBiometricActive, isPaymentBiometricActive: $isPaymentBiometricActive}';
   }
 }

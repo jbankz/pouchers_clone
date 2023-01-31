@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pouchers/modules/account/disable_account/disable_modal.dart';
-import 'package:pouchers/modules/tab_layout/screens/homepage/voucher/voucher_widgets.dart';
+import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';

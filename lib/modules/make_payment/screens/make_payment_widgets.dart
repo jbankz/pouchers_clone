@@ -20,6 +20,7 @@ import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:flutter/services.dart';
+import 'package:pouchers/utils/utils.dart';
 import 'package:pouchers/utils/widgets.dart';
 
 class TransferModal extends ConsumerStatefulWidget {
@@ -539,6 +540,7 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
   String? accName;
   String _errorText = "";
   String _amountChange = "0";
+  double? fee;
 
   @override
   void initState() {
@@ -693,23 +695,30 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                             ),
                           ),
                         ),
-                  double.parse(_amountChange) >
-                          double.parse(userProfile.walletDetails!.balance!)
-                      ? Center(
-                          child: Column(
-                            children: [
-                              Text(
-                                insufficient,
-                                style: textTheme.headline4!
-                                    .copyWith(color: kColorOrange),
+                  ref.watch(getWalletProvider).data == null
+                      ? SizedBox()
+                      : double.parse(_amountChange) >
+                              double.parse(ref
+                                      .watch(getWalletProvider)
+                                      .data!
+                                      .data!
+                                      .balance ??
+                                  "0")
+                          ? Center(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    insufficient,
+                                    style: textTheme.headline4!
+                                        .copyWith(color: kColorOrange),
+                                  ),
+                                  SizedBox(
+                                    height: kRegularPadding,
+                                  )
+                                ],
                               ),
-                              SizedBox(
-                                height: kRegularPadding,
-                              )
-                            ],
-                          ),
-                        )
-                      : SizedBox(),
+                            )
+                          : SizedBox(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -728,25 +737,38 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      RichText(
-                        text: TextSpan(
-                          text: "₦",
-                          style: TextStyle(
-                            color: kPrimaryTextColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                          ),
-                          children: [
-                            TextSpan(
-                              text:
-                                  "${double.parse(userProfile.walletDetails!.balance ?? "0.00").toStringAsFixed(2)}",
-                              style: textTheme.subtitle1!.copyWith(
+                      ref.watch(getWalletProvider).data == null
+                          ? Text(
+                              "₦0.00",
+                              style: TextStyle(
+                                color: kPrimaryTextColor,
                                 fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                              ),
+                            )
+                          : RichText(
+                              text: TextSpan(
+                                text: "₦",
+                                style: TextStyle(
+                                  color: kPrimaryTextColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: kPriceFormatter(double.parse(ref
+                                            .watch(getWalletProvider)
+                                            .data!
+                                            .data!
+                                            .balance ??
+                                        "0.00")),
+                                    style: textTheme.subtitle1!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ],
@@ -872,6 +894,7 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                 if (next.status == NotifierStatus.done) {
                   setState(() {
                     accName = next.data!.data!.accountName;
+                    fee = next.data!.data!.transactionFee;
                     _errorText = "";
                   });
                 } else if (next.status == NotifierStatus.error) {
@@ -932,25 +955,34 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                     _formKey.currentState!.save();
                     if (_selectedBank != null &&
                         amountController.text.isNotEmpty &&
-                        accNumberController.text.isNotEmpty
-                    //&&
-                        // _errorText.isEmpty && double.parse(_amountChange) <
-                        // double.parse(userProfile.walletDetails!.balance!
-                      //  )
-                      ) {
+                        accNumberController.text.isNotEmpty &&
+                        _errorText.isEmpty &&
+                        double.parse(_amountChange) <
+                            double.parse(ref
+                                    .watch(getWalletProvider)
+                                    .data!
+                                    .data!
+                                    .balance ??
+                                "0")) {
                       pushTo(
                           context,
                           TransferSummary(
                               transferName: _selectedBank!.name,
                               accNo: _accNo,
                               amount: _amount,
+                              fee: fee ?? 0,
                               beneficiary: accName),
                           settings: const RouteSettings(
                               name: TransferSummary.routeName));
                     } else if (_errorText.isNotEmpty) {
                       showErrorBar(context, "The account details is not valid");
                     } else if (double.parse(_amountChange) >
-                        double.parse(userProfile.walletDetails!.balance!)) {
+                        double.parse(ref
+                            .watch(getWalletProvider)
+                            .data!
+                            .data!
+                            .balance ??
+                            "0")) {
                       showErrorBar(context, insufficient);
                     } else {
                       showErrorBar(context, "Please Input all fields");

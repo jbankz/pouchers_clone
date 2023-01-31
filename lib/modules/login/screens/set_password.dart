@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/change_password/change_password.dart';
+import 'package:pouchers/modules/account/screens/change_password/change_password.dart';
 import 'package:pouchers/modules/login/providers/log_in_provider.dart';
 import 'package:pouchers/modules/login/screens/reset_successful.dart';
 import 'package:pouchers/utils/components.dart';

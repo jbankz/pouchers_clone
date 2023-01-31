@@ -8,7 +8,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/two_factor_auth/security_modal.dart';
+import 'package:pouchers/modules/account/providers/account_provider.dart';
+import 'package:pouchers/modules/account/screens/two_factor_auth/security_modal.dart';
 import 'package:pouchers/modules/create_account/models/create_account_response.dart';
 import 'package:pouchers/modules/create_account/screens/create_account.dart';
 import 'package:pouchers/modules/create_account/screens/create_pin.dart';
@@ -25,8 +26,6 @@ import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
-
-import '../../tab_layout/providers/account_provider.dart';
 
 class LogInAccount extends ConsumerStatefulWidget {
   static const String routeName = "logIn";

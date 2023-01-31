@@ -130,6 +130,7 @@ class PaymentService {
     required String tag,
     required String amount,
     required String note,
+    required String transactionPin
   }) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
@@ -148,6 +149,7 @@ class PaymentService {
       "tag": tag,
       "amount": amount,
       "note": note,
+      "transactionPin" : transactionPin
     };
 
     try {
@@ -244,6 +246,7 @@ class PaymentService {
     required String accountNumber,
     required String bankName,
     required String amount,
+    required String transactionPin
   }) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
@@ -257,6 +260,7 @@ class PaymentService {
       "account_number": accountNumber,
       "amount": amount,
       "bank_name": bankName,
+      "transactionPin" : transactionPin
     };
 
     log(url);
@@ -278,6 +282,37 @@ class PaymentService {
       log(error);
       log(stack);
       return processServiceError(error, stack);
+    }
+  }
+
+  static Future<ServiceResponse<GetWalletResponse>> getWalletDetails({
+    required String token,
+  }) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    };
+
+    String url = "${baseUrl()}/payment/wallet";
+
+    log(url);
+    try {
+      http.Response response = await http.get(Uri.parse(url),
+          headers: _authHeaders,);
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<GetWalletResponse>(
+            data: GetWalletResponse.fromJson(responseBody),
+            message: responseBody["message"]);
+      }
+    } catch (error, stack) {
+      log(error);
+      log(stack);
+      return processServiceError<GetWalletResponse>(error, stack);
     }
   }
 }

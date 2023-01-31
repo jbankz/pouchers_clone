@@ -5,19 +5,20 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/disable_account/disable_modal.dart';
+import 'package:pouchers/modules/account/models/ui_models_class.dart';
+import 'package:pouchers/modules/account/screens/disable_account/disable_modal.dart';
 import 'package:pouchers/modules/login/models/login_response.dart';
 import 'package:pouchers/modules/make_payment/models/make_payment_model.dart';
 import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
 import 'package:pouchers/modules/make_payment/screens/make_payment_widgets.dart';
 import 'package:pouchers/modules/make_payment/screens/transfer_success.dart';
-import 'package:pouchers/modules/tab_layout/models/ui_models_class.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/constant/ui_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
+import 'package:pouchers/utils/utils.dart';
 import 'package:pouchers/utils/widgets.dart';
 
 class TransferPoucherFriend extends ConsumerStatefulWidget {
@@ -105,7 +106,15 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                   ),
                                   children: [
                                     TextSpan(
-                                      text: "${double.parse(userProfile.walletDetails!.balance ?? "0.00").toStringAsFixed(2)}",
+                                      text: ref.watch(getWalletProvider).data ==
+                                              null
+                                          ? "0.00"
+                                          : kPriceFormatter(double.parse(ref
+                                                  .watch(getWalletProvider)
+                                                  .data!
+                                                  .data!
+                                                  .balance ??
+                                              "0.00")),
                                       style: textTheme.subtitle2!.copyWith(
                                         fontWeight: FontWeight.w500,
                                         color: kLightPurple,
@@ -329,6 +338,30 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                 )),
                           ]),
                     ),
+                    ref.watch(getWalletProvider).data == null
+                        ? SizedBox()
+                        : double.parse(wholeText) >
+                                double.parse(ref
+                                        .watch(getWalletProvider)
+                                        .data!
+                                        .data!
+                                        .balance ??
+                                    "0")
+                            ? Center(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      insufficient,
+                                      style: textTheme.headline4!
+                                          .copyWith(color: kColorOrange),
+                                    ),
+                                    SizedBox(
+                                      height: kRegularPadding,
+                                    )
+                                  ],
+                                ),
+                              )
+                            : SizedBox(),
                     SizedBox(
                       height: kFullPadding,
                     ),
@@ -464,33 +497,38 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                       typeOfTransfer: "p2p",
                                       tag: next.data!.data!.receiverTag ?? "",
                                       amount: "$wholeText.$decimalText",
-                                      beneficiary: "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["firstName"]!.substring(1).toLowerCase()}${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(1).toLowerCase()}",
+                                      beneficiary:
+                                          "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["firstName"]!.substring(1).toLowerCase()}${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(1).toLowerCase()}",
                                     ));
                               } else if (next.status == NotifierStatus.error) {
-                                print("${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["firstName"]!.substring(1).toLowerCase()}${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(1).toLowerCase()}");
-                                pushTo(
-                                    context,
-                                    TransferSuccess(
-                                      isRequest: false,
-                                      text: "tag",
-                                      response: next.data,
-                                        tag: contactInfo["tag"],
-                                      amount: "$wholeText.$decimalText",
-                                      beneficiary: "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["firstName"]!.substring(1).toLowerCase()} ${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(1).toLowerCase()}",
-                                    ));
+                                print(
+                                    "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["firstName"]!.substring(1).toLowerCase()}${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(1).toLowerCase()}");
+
                                 showErrorBar(
                                     context, next.message ?? "Try Again Later");
                               }
                             });
                       var _widget = LargeButton(
                         disableColor: kPurpleDeep,
-                        title: widget.isRequestMoney! ? request : transfer.substring(0,8),
+                        title: widget.isRequestMoney!
+                            ? request
+                            : transfer.substring(0, 8),
                         onPressed: () {
                           if (wholeText == "0")
                             showErrorBar(context, "Please input an amount");
                           else if (contactInfo.isEmpty)
                             showErrorBar(context,
                                 "Please choose a user to request from");
+                          else if (double.parse(wholeText) >
+                              double.parse(ref
+                                  .watch(getWalletProvider)
+                                  .data!
+                                  .data!
+                                  .balance ??
+                                  "0")){
+                            showErrorBar(context,
+                                insufficient);
+                          }
                           else
                             buildShowModalBottomSheet(
                               context,
@@ -535,34 +573,38 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                   ),
                                   subTitle: "",
                                   color: kPrimaryColor),
-                            ).then((value) {
+                            ).then((value) async{
                               if (value == "yes") {
-                                widget.isRequestMoney!
-                                    ? ref
+                                if(widget.isRequestMoney!)
+                                ref
                                         .read(requestMoneyProvider.notifier)
                                         .requestMoney(
                                           tag: contactInfo["tag"],
                                           amount: "$wholeText.$decimalText",
                                           note: noteText,
-                                        )
-                                    : buildShowModalBottomSheet(
+                                        );
+                                    else{
+                                    final result = await  buildShowModalBottomSheet(
                                         context,
                                         TransactionPinContainer(
                                           isData: false,
                                           isCard: false,
                                           isFundCard: false,
                                           isTransfer: true,
-                                          doTransfer: () {
-                                            ref
-                                                .read(p2pMoneyProvider.notifier)
-                                                .p2pMoney(
-                                                  tag: contactInfo["tag"],
-                                                  amount:
-                                                      "$wholeText.$decimalText",
-                                                  note: noteText,
-                                                );
-                                          },
                                         ));
+                                    if(result != null){
+                                      ref
+                                          .read(p2pMoneyProvider.notifier)
+                                          .p2pMoney(
+                                        tag: contactInfo["tag"],
+                                        amount:
+                                        "$wholeText.$decimalText",
+                                        note: noteText,
+                                        transactionPin: result
+                                      );
+                                    }
+                                }
+
                               }
                             });
                         },

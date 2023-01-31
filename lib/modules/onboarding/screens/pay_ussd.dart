@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pouchers/modules/account/two_factor_auth/copy_code.dart';
+import 'package:pouchers/modules/account/screens/two_factor_auth/copy_code.dart';
 import 'package:pouchers/modules/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/modules/onboarding/screens/welcome_guest.dart';
 import 'package:pouchers/utils/assets_path.dart';

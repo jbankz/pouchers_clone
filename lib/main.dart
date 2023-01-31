@@ -3,13 +3,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:pouchers/app/helpers/service_constants.dart';
 import 'package:pouchers/app/helpers/session_manager.dart';
-import 'package:pouchers/modules/login/models/wallet_details.dart';
 import 'package:pouchers/routes.dart';
 import 'package:pouchers/modules/login/models/login_response.dart';
 import 'package:pouchers/modules/onboarding/screens/onboarding.dart';
@@ -21,10 +21,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Env.setEnvironment(EnvState.test);
   Directory directory = await path.getApplicationDocumentsDirectory();
+  await FlutterDownloader.initialize(
+      debug: true, // optional: set to false to disable printing logs to console (default: true)
+      ignoreSsl: true // option: set to false to disable working with http links (default: false)
+  );
   Hive
     ..init(directory.path)
-    ..registerAdapter(HiveStoreResponseDataAdapter())
-    ..registerAdapter(WalletDetailsAdapter());
+    ..registerAdapter(HiveStoreResponseDataAdapter());
 
   const secureStorage = FlutterSecureStorage();
   try {

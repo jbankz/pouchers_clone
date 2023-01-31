@@ -1,4 +1,4 @@
-import 'package:pouchers/modules/tab_layout/screens/homepage/voucher/voucher_widgets.dart';
+import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
 import 'package:pouchers/utils/assets_path.dart';
 
 List<VoucherItems> analyticsTransactions = [

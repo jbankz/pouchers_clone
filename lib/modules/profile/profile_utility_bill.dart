@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
-import 'package:pouchers/modules/tab_layout/providers/account_provider.dart';
+import 'package:pouchers/modules/account/providers/account_provider.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
