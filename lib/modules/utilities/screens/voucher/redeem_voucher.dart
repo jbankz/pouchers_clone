@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
+import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
 import 'package:pouchers/modules/tab_layout/screens/tab_layout.dart';
 import 'package:pouchers/modules/utilities/model/utilities_model.dart';
 import 'package:pouchers/modules/utilities/providers/utilities_provider.dart';
@@ -136,6 +137,7 @@ class _RedeemVoucherState extends ConsumerState<RedeemVoucher> {
             ref.listen(redeemVoucherProvider,
                 (previous, NotifierState<String> next) {
               if (next.status == NotifierStatus.done) {
+                ref.read(getWalletProvider.notifier).getWalletDetails();
                 pushTo(
                   context,
                   VoucherSuccessful(

@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:media_storage/media_storage.dart';
+// import 'package:media_storage/media_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/modules/transactions/components/transaction_components.dart';
@@ -207,15 +207,15 @@ class HistoryDetail extends StatelessWidget {
 
 class pdfApi {
   static  saveDocument() async {
-    bool isPermission = await MediaStorage.getRequestStoragePermission();
+    // bool isPermission = await MediaStorage.getRequestStoragePermission();
 
     final bytes = await DownloadTransactionReceipt.generate();
-    if (isPermission) {
-      var path = await MediaStorage.getExternalStoragePublicDirectory(
-          MediaStorage.DIRECTORY_DOWNLOADS);
-      final file = File('${path}/receipt.pdf');
-      await file.writeAsBytes(bytes);
-    }
+    // if (isPermission) {
+    //   var path = await MediaStorage.getExternalStoragePublicDirectory(
+    //       MediaStorage.DIRECTORY_DOWNLOADS);
+    //   final file = File('${path}/receipt.pdf');
+    //   await file.writeAsBytes(bytes);
+    // }
     // String dir
 
     // if (Platform.isIOS) {

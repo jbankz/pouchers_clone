@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+ import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/buy_electricity_class.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
@@ -347,19 +347,19 @@ class _BuyElectricityState extends State<BuyElectricity> {
                   widget.isGuest!) {
                 buildShowModalBottomSheet(context, GuestMaximumAmountModal());
               } else {
-                buildShowModalBottomSheet(
-                  context,
-                  widget.isGuest!
-                      ? GuestRechargeSummary(
-                          textTheme: textTheme,
-                    purchaseDelivered: true,
-                        )
-                      : RechargeSummary(
-                          isData: false,
-                          isCable: true,
-                          textTheme: textTheme,
-                        ),
-                );
+                // buildShowModalBottomSheet(
+                //   context,
+                //   widget.isGuest!
+                //       ? GuestRechargeSummary(
+                //           textTheme: textTheme,
+                //     purchaseDelivered: true,
+                //         )
+                //       : RechargeSummary(
+                //           isData: false,
+                //           isCable: true,
+                //           textTheme: textTheme,
+                //         ),
+                // );
               }
             },
           )

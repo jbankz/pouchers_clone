@@ -21,7 +21,6 @@ class AssetPaths {
    static String micImage = "${imgPath}mic_image.png";
    static String ussdImage = "${imgPath}ussd_image.png";
    static String voucherImage = "${imgPath}voucher.png";
-   static String poucherTextImage = "${imgPath}poucher_logo.png";
    static String voucher1Image = "${imgPath}voucher1.png";
    static String referralImage = "${imgPath}referral_image.png";
 
@@ -91,4 +90,6 @@ class AssetPaths {
    static String outputArrowIcon = "${iconPath}output_arrow.svg";
    static String earnIcon = "${iconPath}earn.svg";
    static String reminderIcon = "${iconPath}reminder.svg";
+   static String poucherTextImage = "${iconPath}poucher_logo.svg";
+
 }

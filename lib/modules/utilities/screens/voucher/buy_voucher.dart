@@ -4,6 +4,7 @@ import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
+import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
 import 'package:pouchers/modules/utilities/providers/utilities_provider.dart';
 import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
 import 'package:pouchers/utils/components.dart';
@@ -148,6 +149,7 @@ class _BuyVouchersState extends ConsumerState<BuyVouchers> {
                 ref.listen(buyVoucherProvider,
                     (previous, NotifierState<String> next) {
                   if (next.status == NotifierStatus.done) {
+                    ref.read(getWalletProvider.notifier).getWalletDetails();
                     pushTo(
                       context,
                       VoucherSuccessful(

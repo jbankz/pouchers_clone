@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+ import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:pouchers/modules/account/models/buy_cable_class.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
 import 'package:pouchers/modules/onboarding/screens/guest_widget.dart';
@@ -67,11 +67,11 @@ class _BuyInternetState extends State<BuyInternet> {
                       prefixIcon,
                       inkWell(
                           onTap: () async {
-                            final result = await buildShowModalBottomSheet(
-                                context, CableModal());
-                            if (result != SizedBox()) {
-                              setState(() => prefixIcon = result);
-                            }
+                            // final result = await buildShowModalBottomSheet(
+                            //     context, CableModal());
+                            // if (result != SizedBox()) {
+                            //   setState(() => prefixIcon = result);
+                            // }
                           },
                           child: Icon(
                             Icons.keyboard_arrow_down,
@@ -126,13 +126,13 @@ class _BuyInternetState extends State<BuyInternet> {
                       Expanded(child: prefixTypeIcon),
                       inkWell(
                         onTap: () async {
-                          final result = await buildShowModalBottomSheet(
-                              context, SubscriptionModal());
-                          if (result != null) {
-                            if (result != SizedBox()) {
-                              setState(() => prefixTypeIcon = result);
-                            }
-                          }
+                          // final result = await buildShowModalBottomSheet(
+                          //     context, SubscriptionModal());
+                          // if (result != null) {
+                          //   if (result != SizedBox()) {
+                          //     setState(() => prefixTypeIcon = result);
+                          //   }
+                          // }
                         },
                         child: Icon(
                           Icons.keyboard_arrow_down,
@@ -174,20 +174,20 @@ class _BuyInternetState extends State<BuyInternet> {
           LargeButton(
             title: continueText,
             onPressed: () {
-              buildShowModalBottomSheet(
-                context,
-                widget.isGuest!
-                    ? GuestRechargeSummary(
-                  textTheme: textTheme,
-                  purchaseDelivered: true,
-                )
-                    :
-                RechargeSummary(
-                  isData: false,
-                  isCable: true,
-                  textTheme: textTheme,
-                ),
-              );
+              // buildShowModalBottomSheet(
+              //   context,
+              //   widget.isGuest!
+              //       ? GuestRechargeSummary(
+              //     textTheme: textTheme,
+              //     purchaseDelivered: true,
+              //   )
+              //       :
+              //   RechargeSummary(
+              //     isData: false,
+              //     isCable: true,
+              //     textTheme: textTheme,
+              //   ),
+              // );
             },
           )
         ],

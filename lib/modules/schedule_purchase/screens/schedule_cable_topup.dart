@@ -61,7 +61,7 @@ class _ScheduleCableTopUpState extends State<ScheduleCableTopUp> {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
                   decoration: BoxDecoration(
-                      color: kPrimaryTextColor,
+                      color: kBackgroundColor,
                       borderRadius: BorderRadius.circular(kSmallPadding)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,11 +69,11 @@ class _ScheduleCableTopUpState extends State<ScheduleCableTopUp> {
                       prefixIcon,
                       inkWell(
                           onTap: () async {
-                            final result = await buildShowModalBottomSheet(
-                                context, CableModal());
-                            if (result != SizedBox()) {
-                              setState(() => prefixIcon = result);
-                            }
+                            // final result = await buildShowModalBottomSheet(
+                            //     context, UtilityModal());
+                            // if (result != SizedBox()) {
+                            //   setState(() => prefixIcon = result);
+                            // }
                           },
                           child: Icon(
                             Icons.keyboard_arrow_down,
@@ -127,13 +127,13 @@ class _ScheduleCableTopUpState extends State<ScheduleCableTopUp> {
                       Expanded(child: prefixTypeIcon),
                       inkWell(
                         onTap: () async {
-                          final result = await buildShowModalBottomSheet(
-                              context, SubscriptionModal());
-                          if (result != null) {
-                            if (result != SizedBox()) {
-                              setState(() => prefixTypeIcon = result);
-                            }
-                          }
+                          // final result = await buildShowModalBottomSheet(
+                          //     context, SubscriptionModal());
+                          // if (result != null) {
+                          //   if (result != SizedBox()) {
+                          //     setState(() => prefixTypeIcon = result);
+                          //   }
+                          // }
                         },
                         child: Icon(
                           Icons.keyboard_arrow_down,

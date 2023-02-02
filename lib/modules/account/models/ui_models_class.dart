@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
+import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
 import 'package:pouchers/modules/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/modules/tab_layout/screens/homepage/fund_wallet.dart';
 import 'package:pouchers/modules/tab_layout/screens/tab_layout.dart';
@@ -14,6 +15,7 @@ import 'package:pouchers/utils/constant/ui_constants.dart';
 import 'package:pouchers/utils/extras.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
+import 'package:pouchers/utils/utils.dart';
 import 'package:pouchers/utils/widgets.dart';
 
 class GetProviderClass {
@@ -428,13 +430,14 @@ class RechargeSummary extends StatelessWidget {
   const RechargeSummary({
     Key? key,
     required this.textTheme,
-    required this.isData,
-    this.isCable = false,
+    required this.billerName,
+    required this.billerLogo,
+    required this.recipientNo,
+    required this.amount,
   }) : super(key: key);
 
   final TextTheme textTheme;
-  final bool isData;
-  final bool isCable;
+  final String billerName, billerLogo, recipientNo, amount;
 
   @override
   Widget build(BuildContext context) {
@@ -476,7 +479,7 @@ class RechargeSummary extends StatelessWidget {
             ),
           ),
           Text(
-            isData ? data : airtime,
+            billerName,
             textAlign: TextAlign.center,
             style: textTheme.headline4!.copyWith(
               fontSize: 16,
@@ -497,7 +500,7 @@ class RechargeSummary extends StatelessWidget {
                 AirtimeRow(
                   textTheme: textTheme,
                   text: recipient,
-                  subText: "08031234567",
+                  subText: recipientNo,
                   isCopyIcon: false,
                   noSymbol: true,
                   style: textTheme.headline3!.copyWith(
@@ -509,7 +512,8 @@ class RechargeSummary extends StatelessWidget {
                 AirtimeRow(
                   textTheme: textTheme,
                   text: amountText,
-                  subText: "4,000.00",
+                  subText: kPriceFormatter(double.parse(amount))
+                      .replaceAll(".00", ""),
                   isCopyIcon: false,
                   isNaira: true,
                   isBold: true,
@@ -551,26 +555,28 @@ class RechargeSummary extends StatelessWidget {
           SizedBox(
             height: kLargePadding,
           ),
-          BalanceWidget(
-            hasBalance: false,
-            textTheme: textTheme,
-            text: "6,945.04",
-          ),
+          Consumer(builder: (context, ref, _) {
+            return BalanceWidget(
+              hasBalance: double.parse(
+                          ref.watch(getWalletProvider).data!.data!.balance!) >
+                      double.parse(amount)
+                  ? true
+                  : false,
+              textTheme: textTheme,
+              text: ref.watch(getWalletProvider).data == null
+                  ? ""
+                  : kPriceFormatter(double.parse(
+                      ref.watch(getWalletProvider).data!.data!.balance!)),
+            );
+          }),
           SizedBox(
             height: kFullPadding,
           ),
           PayWithAmount(
-            amount: "4,000",
+            amount: kPriceFormatter(double.parse(amount)).replaceAll(".00", ""),
             text: "$pay ",
             onTap: () async {
-              final result = await buildShowModalBottomSheet(
-                  context,
-                  TransactionPinContainer(
-                    isData: isData,
-                    isCable: isCable,
-                    isCard: false,
-                    isFundCard: false,
-                  ));
+              Navigator.pop(context);
             },
           ),
         ],
@@ -623,7 +629,7 @@ class BalanceWidget extends StatelessWidget {
                   ),
                   children: [
                     TextSpan(
-                      text: "26,945",
+                      text: text.replaceAll(".00", ""),
                       style: textTheme.subtitle1!.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
@@ -666,7 +672,7 @@ class BalanceWidget extends StatelessWidget {
                           ),
                           children: [
                             TextSpan(
-                              text: text,
+                              text: text.replaceAll(".00", ""),
                               style: textTheme.headline4!.copyWith(
                                   fontSize: 16, fontWeight: FontWeight.w500),
                             ),

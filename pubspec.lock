@@ -639,13 +639,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.5"
-  media_storage:
-    dependency: "direct main"
-    description:
-      name: media_storage
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1"
   meta:
     dependency: transitive
     description:

@@ -26,6 +26,21 @@ final redeemVoucherProvider = StateNotifierProvider.autoDispose<
   return RedeemVoucherNotifier(ref.read(utilitiesRepoProvider));
 });
 
+final getUtilitiesProvider = StateNotifierProvider.autoDispose<
+    GetUtilitiesNotifier, NotifierState<GetUtilitiesResponse>>((ref) {
+  return GetUtilitiesNotifier(ref.read(utilitiesRepoProvider));
+});
+
+final getUtilitiesTypeProvider = StateNotifierProvider.autoDispose<
+    GetUtilitiesTypeNotifier, NotifierState<GetUtilitiesTypesResponse>>((ref) {
+  return GetUtilitiesTypeNotifier(ref.read(utilitiesRepoProvider));
+});
+
+final buyUtilitiesProvider = StateNotifierProvider.autoDispose<
+    BuyUtilitiesNotifier, NotifierState<String>>((ref) {
+  return BuyUtilitiesNotifier(ref.read(utilitiesRepoProvider));
+});
+
 class BuyVoucherNotifier extends StateNotifier<NotifierState<String>>
     with ResponseHandler {
   final UtilitiesRepository _repo;
@@ -89,13 +104,77 @@ class RedeemVoucherNotifier extends StateNotifier<NotifierState<String>>
   RedeemVoucherNotifier(this._repo) : super(NotifierState());
 
   void redeemVoucher(
-      {
-        required String transactionPin,
-        required String code,
-        Function()? then}) async {
+      {required String transactionPin,
+      required String code,
+      Function()? then}) async {
     state = notifyLoading();
-    state = await _repo.redeemVoucher(
-    code: code,  transactionPin: transactionPin);
+    state =
+        await _repo.redeemVoucher(code: code, transactionPin: transactionPin);
+    if (state.status == NotifierStatus.done) {
+      if (then != null) then();
+    }
+  }
+}
+
+class GetUtilitiesNotifier
+    extends StateNotifier<NotifierState<GetUtilitiesResponse>>
+    with ResponseHandler {
+  final UtilitiesRepository _repo;
+
+  GetUtilitiesNotifier(this._repo) : super(NotifierState());
+
+  void getUtilities({required String utility, Function()? then}) async {
+    state = notifyLoading();
+    state = await _repo.getUtilities(
+      utility: utility,
+    );
+    if (state.status == NotifierStatus.done) {
+      if (then != null) then();
+    }
+  }
+}
+
+class GetUtilitiesTypeNotifier
+    extends StateNotifier<NotifierState<GetUtilitiesTypesResponse>>
+    with ResponseHandler {
+  final UtilitiesRepository _repo;
+
+  GetUtilitiesTypeNotifier(this._repo) : super(NotifierState());
+
+  void getUtilitiesType({required int categoryId, Function()? then}) async {
+    state = notifyLoading();
+    state = await _repo.getUtilitiesType(
+      categoryId: categoryId,
+    );
+    if (state.status == NotifierStatus.done) {
+      if (then != null) then();
+    }
+  }
+}
+
+class BuyUtilitiesNotifier extends StateNotifier<NotifierState<String>>
+    with ResponseHandler {
+  final UtilitiesRepository _repo;
+
+  BuyUtilitiesNotifier(this._repo) : super(NotifierState());
+
+  void buyUtilities(
+      {required String paymentCode,
+      required String amount,
+      required String customerId,
+      required String transactionPin,
+      required String subCategory,
+      required String category,
+      Function()? then}) async {
+    state = notifyLoading();
+    state = await _repo.buyUtilities(
+      category: category,
+      customerId: customerId,
+      transactionPin: transactionPin,
+      amount: amount,
+      subCategory: subCategory,
+      paymentCode: paymentCode,
+    );
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }

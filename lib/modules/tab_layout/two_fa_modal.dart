@@ -19,11 +19,13 @@ import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
 class TwoFactorPinModal extends ConsumerStatefulWidget {
-  final bool? isDisable;
+  final bool? isDisable, isBiometric;
   final int? lengthOfQuestion;
+  final Function()? doBiom;
+
 
   const TwoFactorPinModal(
-      {Key? key, this.lengthOfQuestion, this.isDisable = false})
+      {Key? key, this.lengthOfQuestion, this.isDisable = false, this.doBiom, this.isBiometric = false})
       : super(key: key);
 
   @override
@@ -102,17 +104,23 @@ class _TwoFactorPinModalState extends ConsumerState<TwoFactorPinModal> {
               validatePinProvider,
               (previous, NotifierState<String> next) {
                 if (next.status == NotifierStatus.done) {
-                  ref.watch(calculateQuestionProvider) == 0
-                      ? pushTo(context, SecurityQuestion(),
-                          settings: const RouteSettings(
-                              name: SecurityQuestion.routeName))
-                      : ref.watch(calculateQuestionProvider) == 1
-                          ? pushTo(context, SecondSecurityQuestion(),
-                              settings: const RouteSettings(
-                                  name: SecondSecurityQuestion.routeName))
-                          : pushTo(context, GoogleAuthenticatorDownload(),
-                              settings: const RouteSettings(
-                                  name: GoogleAuthenticatorDownload.routeName));
+                  if (widget.isBiometric!) {
+                    Navigator.pop(context, pinPicked);
+                    widget.doBiom!();
+                  }else{
+                    ref.watch(calculateQuestionProvider) == 0
+                        ? pushTo(context, SecurityQuestion(),
+                        settings: const RouteSettings(
+                            name: SecurityQuestion.routeName))
+                        : ref.watch(calculateQuestionProvider) == 1
+                        ? pushTo(context, SecondSecurityQuestion(),
+                        settings: const RouteSettings(
+                            name: SecondSecurityQuestion.routeName))
+                        : pushTo(context, GoogleAuthenticatorDownload(),
+                        settings: const RouteSettings(
+                            name: GoogleAuthenticatorDownload.routeName));
+                  }
+
                 } else if (next.status == NotifierStatus.error) {
                   showErrorBar(context, next.message ?? next.data!);
                 }

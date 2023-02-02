@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+ import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
@@ -49,11 +49,15 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                   controller: contactController,
                   icon: inkWell(
                     onTap: () async {
-                      final PhoneContact contact =
-                          await FlutterContactPicker.pickPhoneContact();
-                      setState(() {
-                        contactController.text = contact.phoneNumber!.number!;
-                      });
+                      bool granted = await FlutterContactPicker.requestPermission();
+                      if(granted){
+                        final PhoneContact contact =
+                        await FlutterContactPicker.pickPhoneContact();
+                        setState(() {
+                          contactController.text = contact.phoneNumber!.number!;
+                        });
+                      }
+
                     },
                     child: SvgPicture.asset(
                       AssetPaths.contactBook,
@@ -322,16 +326,16 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                       buildShowModalBottomSheet(
                           context, GuestMaximumAmountModal());
                     } else {
-                      buildShowModalBottomSheet(
-                          context,
-                          widget.isGuest!
-                              ? GuestRechargeSummary(
-                                  textTheme: textTheme,
-                                )
-                              : RechargeSummary(
-                                  textTheme: textTheme,
-                                  isData: false,
-                                ));
+                      // buildShowModalBottomSheet(
+                      //     context,
+                      //     widget.isGuest!
+                      //         ? GuestRechargeSummary(
+                      //             textTheme: textTheme,
+                      //           )
+                      //         : RechargeSummary(
+                      //             textTheme: textTheme,
+                      //             isData: false,
+                      //           ));
                     }
                   },
           )

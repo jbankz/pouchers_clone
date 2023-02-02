@@ -187,14 +187,14 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                   )
                                 : Row(
                                     children: [
-                                      ClipRRect(
+                                      contactInfo["profilePicture"] == null ? SizedBox() :   ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(116),
                                         child: CachedNetworkImage(
                                           height: 40,
                                           width: 40,
                                           imageUrl:
-                                              contactInfo["profilePicture"],
+                                              contactInfo["profilePicture"]  ?? "",
                                           placeholder: (context, url) =>
                                               Container(
                                             color: Colors.transparent,

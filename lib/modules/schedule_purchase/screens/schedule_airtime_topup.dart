@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+ import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
 import 'package:pouchers/modules/account/screens/disable_account/disable_modal.dart';
 import 'package:pouchers/modules/schedule_purchase/schedule_modal.dart';

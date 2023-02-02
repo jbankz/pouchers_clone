@@ -184,9 +184,9 @@ class _BuyDataState extends ConsumerState<BuyData>
                         inkWell(
                           onTap: () {
                             print(guestListData[index].mb);
-                            buildShowModalBottomSheet(
-                                context,
-                                RechargeSummary(textTheme: textTheme, isData: true));
+                            // buildShowModalBottomSheet(
+                            //     context,
+                            //     RechargeSummary(textTheme: textTheme, isData: true));
                           },
                           child: Container(
                             decoration: BoxDecoration(

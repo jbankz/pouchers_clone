@@ -117,7 +117,10 @@ class _VerifyAccountState extends ConsumerState<VerifyAccount> {
             SizedBox(
               height: kMicroPadding,
             ),
-            CodeResendTimer(email: widget.email, change: false,)
+            CodeResendTimer(
+              email: widget.email,
+              change: false,
+            )
           ],
         ),
       ),

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
+import 'package:pouchers/modules/create_account/providers/create_account_provider.dart';
 import 'package:pouchers/modules/login/providers/log_in_provider.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
@@ -24,14 +25,15 @@ class TextInputNoIcon extends StatelessWidget {
       this.read = false,
       this.validator,
       this.widget,
-        this.suffixIcon,
+      this.suffixIcon,
       this.textCapitalize,
-        this.prefixIcon,
-        this.maxLine,
+      this.prefixIcon,
+      this.maxLine,
       this.obscure,
       this.hintText,
-        this.addSpace = true,
-      this.focusNode, this.onTap});
+      this.addSpace = true,
+      this.focusNode,
+      this.onTap});
 
   final TextTheme textTheme;
   final String? text;
@@ -84,7 +86,7 @@ class TextInputNoIcon extends StatelessWidget {
             onChanged: onChanged,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             inputFormatters: inputFormatters,
-            maxLines: maxLine ?? 1 ,
+            maxLines: maxLine ?? 1,
             decoration: InputDecoration(
               filled: true,
               suffix: suffixIcon,
@@ -96,7 +98,10 @@ class TextInputNoIcon extends StatelessWidget {
               border: OutlineInputBorder(),
               prefix: prefixIcon ?? SizedBox(),
               errorMaxLines: 2,
-              errorStyle: textTheme.headline5!.copyWith(color: kColorRed, fontSize: 12, overflow: TextOverflow.visible),
+              errorStyle: textTheme.headline5!.copyWith(
+                  color: kColorRed,
+                  fontSize: 12,
+                  overflow: TextOverflow.visible),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(style: BorderStyle.none),
                 borderRadius: BorderRadius.circular(kSmallPadding),
@@ -180,134 +185,139 @@ class _CodeResendTimerState extends State<CodeResendTimer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-         !widget.change ? Consumer(
-            builder: (context, ref, _) {
-              ref.listen(resendOtpProvider,
-                      (previous, NotifierState<String> next) {
-                    if (next.status == NotifierStatus.done) {
-                      showSuccessBar(context, next.data);
-                      refreshTime = 60;
-                      ref.read(checkResendProvider.notifier).state = 1;
-                      activateTimer();
-                    } else if(next.status == NotifierStatus.error) {
-                      showErrorBar(context, next.message!);
-                    }
-                  });
-              var _widget = Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    noCode,
-                    style: textTheme.headline3,
-                  ),
-                  inkWell(
-                    onTap: refreshTime == 0
-                        ? () {
-                      ref
-                          .read(resendOtpProvider.notifier)
-                          .resendOtp(
-                        email: widget.email!,
-                      );
-                    }
-                        : null,
-                    child: Container(
-                      child: refreshTime == 0
-                          ? Text(
-                        resend,
-                        style: textTheme.headline6!.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: kPrimaryColor,
+          !widget.change
+              ? Consumer(
+                  builder: (context, ref, _) {
+                    ref.listen(resendEmailProvider,
+                        (previous, NotifierState<String> next) {
+                      if (next.status == NotifierStatus.done) {
+                        showSuccessBar(context, next.data);
+                        refreshTime = 60;
+                        ref.read(checkResendProvider.notifier).state = 1;
+                        activateTimer();
+                      } else if (next.status == NotifierStatus.error) {
+                        showErrorBar(context, next.message!);
+                      }
+                    });
+                    var _widget = Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          noCode,
+                          style: textTheme.headline3,
                         ),
-                        textAlign: TextAlign.center,
-                      )
-                          : Text(
-                        "$resend in ${timeCheck()}",
-                        style: textTheme.headline6!.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: kRegularPadding,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(kMediumPadding),
-                          color: refreshTime == 0
-                              ? kLightPurple
-                              : kPrimaryTextColor),
-                    ),
-                  )
-                ],
-              );
-              return ref.watch(resendOtpProvider).when(
-                  done: (done) => _widget,
-                  loading: () => SpinKitDemo(),
-                  error: (val) => _widget);
-            },
-          ) :
-          Consumer(
-            builder: (context, ref, _) {
-              ref.listen(forgotPasswordProvider,
-                      (previous, NotifierState<String> next) {
-                    if (next.status == NotifierStatus.done) {
-                      showSuccessBar(context, next.data);
-                      refreshTime = 60;
-                      activateTimer();
-
-                    } else if(next.status == NotifierStatus.error) {
-                      showErrorBar(context, next.message!);
-                    }
-                  });
-              var _widget = Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    noCode,
-                    style: textTheme.headline3,
-                  ),
-                  inkWell(
-                    onTap: refreshTime == 0
-                        ? () {
-                      ref.read(forgotPasswordProvider.notifier).forgotPassword(
-                        email: widget.email!,
-                      );
-                          }
-                        : null,
-                    child: Container(
-                      child: refreshTime == 0
-                          ? Text(
-                              resend,
-                              style: textTheme.headline6!.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: kPrimaryColor,
-                              ),
-                              textAlign: TextAlign.center,
-                            )
-                          : Text(
-                              "$resend in ${timeCheck()}",
-                              style: textTheme.headline6!.copyWith(
-                                fontWeight: FontWeight.w700,
-                              ),
+                        inkWell(
+                          onTap: refreshTime == 0
+                              ? () {
+                            print("got here");
+                                  ref
+                                      .read(resendEmailProvider.notifier)
+                                      .resendVerificationEmail(
+                                        email: widget.email!,
+                                      );
+                                }
+                              : null,
+                          child: Container(
+                            child: refreshTime == 0
+                                ? Text(
+                                    resend,
+                                    style: textTheme.headline6!.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: kPrimaryColor,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  )
+                                : Text(
+                                    "$resend in ${timeCheck()}",
+                                    style: textTheme.headline6!.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: kRegularPadding,
+                              vertical: 8,
                             ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: kRegularPadding,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(kMediumPadding),
-                          color: refreshTime == 0
-                              ? kLightPurple
-                              : kPrimaryTextColor),
-                    ),
-                  )
-                ],
-              );
-              return ref.watch(forgotPasswordProvider).when(
-                  done: (done) => _widget,
-                  loading: () => SpinKitDemo(),
-                  error: (val) => _widget);
-            },
-          )
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(kMediumPadding),
+                                color: refreshTime == 0
+                                    ? kLightPurple
+                                    : kBackgroundColor),
+                          ),
+                        )
+                      ],
+                    );
+                    return ref.watch(resendEmailProvider).when(
+                        done: (done) => _widget,
+                        loading: () => SpinKitDemo(),
+                        error: (val) => _widget);
+                  },
+                )
+              : Consumer(
+                  builder: (context, ref, _) {
+                    ref.listen(forgotPasswordProvider,
+                        (previous, NotifierState<String> next) {
+                      if (next.status == NotifierStatus.done) {
+                        showSuccessBar(context, next.data);
+                        refreshTime = 60;
+                        activateTimer();
+                      } else if (next.status == NotifierStatus.error) {
+                        showErrorBar(context, next.message!);
+                      }
+                    });
+                    var _widget = Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          noCode,
+                          style: textTheme.headline3,
+                        ),
+                        inkWell(
+                          onTap: refreshTime == 0
+                              ? () {
+                                  ref
+                                      .read(forgotPasswordProvider.notifier)
+                                      .forgotPassword(
+                                        email: widget.email!,
+                                      );
+                                }
+                              : null,
+                          child: Container(
+                            child: refreshTime == 0
+                                ? Text(
+                                    resend,
+                                    style: textTheme.headline6!.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: kPrimaryColor,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  )
+                                : Text(
+                                    "$resend in ${timeCheck()}",
+                                    style: textTheme.headline6!.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: kRegularPadding,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(kMediumPadding),
+                                color: refreshTime == 0
+                                    ? kLightPurple
+                                    : kBackgroundColor),
+                          ),
+                        )
+                      ],
+                    );
+                    return ref.watch(forgotPasswordProvider).when(
+                        done: (done) => _widget,
+                        loading: () => SpinKitDemo(),
+                        error: (val) => _widget);
+                  },
+                )
         ],
       ),
     );
@@ -363,31 +373,31 @@ class FormDropdown<T> extends StatelessWidget {
       // itemHeight: 60,
       isExpanded: true,
       isDense: true,
-      selectedItemBuilder: selectedItemWidget == null
-          ? null
-          : (ctx) => [selectedItemWidget!],
+      selectedItemBuilder:
+          selectedItemWidget == null ? null : (ctx) => [selectedItemWidget!],
       alignment: Alignment.center,
       style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
       icon: enableIcon
           ? const Icon(Icons.keyboard_arrow_down_rounded,
-          color: kSecondaryTextColor)
+              color: kSecondaryTextColor)
           : const SizedBox(),
       decoration: InputDecoration(
         filled: true,
         hintText: hint,
         isDense: true,
-        hintStyle: textTheme.subtitle1!.copyWith(color: hintColor ?? kPrimaryTextColor ),
+        hintStyle: textTheme.subtitle1!
+            .copyWith(color: hintColor ?? kPrimaryTextColor),
         fillColor: kBackgroundColor,
         border: OutlineInputBorder(),
         errorMaxLines: 2,
-        errorStyle: textTheme.headline5!.copyWith(color: kColorRed, fontSize: 12, overflow: TextOverflow.visible),
+        errorStyle: textTheme.headline5!.copyWith(
+            color: kColorRed, fontSize: 12, overflow: TextOverflow.visible),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(style: BorderStyle.none),
           borderRadius: BorderRadius.circular(kSmallPadding),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              color:  kPrimaryColor),
+          borderSide: BorderSide(color: kPrimaryColor),
           borderRadius: BorderRadius.circular(kSmallPadding),
         ),
         errorBorder: OutlineInputBorder(
@@ -406,4 +416,3 @@ class FormDropdown<T> extends StatelessWidget {
     );
   }
 }
-

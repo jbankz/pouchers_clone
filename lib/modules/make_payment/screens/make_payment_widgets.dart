@@ -210,7 +210,7 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                             },
                             child: Row(
                               children: [
-                                ClipRRect(
+                                contactInfo["profilePicture"] == null ? SizedBox() :  ClipRRect(
                                     borderRadius: BorderRadius.circular(116),
                                     child: CachedNetworkImage(
                                       height: 40,

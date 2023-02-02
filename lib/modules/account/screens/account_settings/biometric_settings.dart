@@ -7,7 +7,9 @@ import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/modules/account/models/profile_model.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
+import 'package:pouchers/modules/account/screens/two_factor_auth/two_factor.dart';
 import 'package:pouchers/modules/login/models/login_response.dart';
+import 'package:pouchers/modules/tab_layout/two_fa_modal.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
@@ -91,16 +93,23 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
                   onToggle: (val) {
                     buildShowModalBottomSheet(
                         context,
-                        TransactionPinContainer(
-                          isData: false,
-                          isCable: false,
+                        TwoFactorPinModal(
                           isBiometric: true,
-                          isCard: false,
-                          isFundCard: false,
                           doBiom: () {
                             checkBiometric(context, logInBiometric);
                           },
-                        ));
+                        )
+                        // TransactionPinContainer(
+                        //   isData: false,
+                        //   isCable: false,
+                        //   isBiometric: true,
+                        //   isCard: false,
+                        //   isFundCard: false,
+                        //   doBiom: () {
+                        //     checkBiometric(context, logInBiometric);
+                        //   },
+                        // ),
+                        );
                   })),
           BiometricsWidget(
               textTheme: textTheme,
@@ -122,16 +131,23 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
                   onToggle: (val) {
                     buildShowModalBottomSheet(
                         context,
-                        TransactionPinContainer(
-                          isData: false,
-                          isCable: false,
+                        TwoFactorPinModal(
                           isBiometric: true,
-                          isCard: false,
-                          isFundCard: false,
                           doBiom: () {
                             checkBiometric(context, payBiometric);
                           },
-                        ));
+                        )
+                        // TransactionPinContainer(
+                        //   isData: false,
+                        //   isCable: false,
+                        //   isBiometric: true,
+                        //   isCard: false,
+                        //   isFundCard: false,
+                        //   doBiom: () {
+                        //     checkBiometric(context, payBiometric);
+                        //   },
+                        // ),
+                        );
                   })),
         ],
       ),
@@ -191,14 +207,17 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
     if (isAuth) {
       if (text == payBiometric) {
         ref.read(editProfileProvider2.notifier).editProfile(
-            isPaymentBiometricActive:
-                !ref.watch(editProfileInHouseProvider).isPaymentBiometricActive!, isLoginBiometricActive: ref.watch(editProfileInHouseProvider).isLoginBiometricActive);
+            isPaymentBiometricActive: !ref
+                .watch(editProfileInHouseProvider)
+                .isPaymentBiometricActive!,
+            isLoginBiometricActive:
+                ref.watch(editProfileInHouseProvider).isLoginBiometricActive);
       } else {
         ref.read(editProfileProvider.notifier).editProfile(
-              isLoginBiometricActive:
-                  !ref.watch(editProfileInHouseProvider).isLoginBiometricActive!,
-          isPaymentBiometricActive: ref.watch(editProfileInHouseProvider).isPaymentBiometricActive
-            );
+            isLoginBiometricActive:
+                !ref.watch(editProfileInHouseProvider).isLoginBiometricActive!,
+            isPaymentBiometricActive:
+                ref.watch(editProfileInHouseProvider).isPaymentBiometricActive);
       }
     }
   }

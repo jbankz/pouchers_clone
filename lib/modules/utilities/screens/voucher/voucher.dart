@@ -26,7 +26,7 @@ class Vouchers extends ConsumerStatefulWidget {
 class _VouchersState extends ConsumerState<Vouchers> {
   int _currentPage = 0;
 
-  PageController _controller = PageController(viewportFraction: 0.85);
+  // PageController _controller = PageController(viewportFraction: 0.85);
 
   List<VoucherItems> _pages = [
     VoucherItems(
@@ -53,21 +53,6 @@ class _VouchersState extends ConsumerState<Vouchers> {
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(fetchVoucherProvider.notifier).fetchVoucher(status: "active");
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
@@ -75,241 +60,11 @@ class _VouchersState extends ConsumerState<Vouchers> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ref.watch(fetchVoucherProvider).when(
-                  done: (data) {
-                    if (data != null) {
-                      return Container(
-                        child: data.data!.vouchers.isEmpty
-                            ? NoVoucher(textTheme: textTheme)
-                            : Column(
-                                children: [
-                                  SizedBox(
-                                    height: 150,
-                                    child: PageView.builder(
-                                      padEnds: false,
-                                      itemBuilder: (context, int index) {
-                                        return Container(
-                                          width: double.infinity,
-                                          margin: EdgeInsets.only(right: 20),
-                                          child: LayoutBuilder(
-                                              builder: (context, constraints) {
-                                            return Container(
-                                              width: double.infinity,
-                                              decoration: BoxDecoration(
-                                                  color: kPrimaryWhite,
-                                                  image: DecorationImage(
-                                                      fit: BoxFit.contain,
-                                                      image: AssetImage(
-                                                        _pages[index].image,
-                                                      ))),
-                                              child: Row(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10.0),
-                                                    child: SvgPicture.asset(
-                                                      AssetPaths.pouIcon,
-                                                      color: _pages[index]
-                                                                  .image ==
-                                                              AssetPaths
-                                                                  .voucherImage
-                                                          ? kPurple100
-                                                          : kColorLightGreen,
-                                                      height: constraints
-                                                              .maxHeight /
-                                                          1.5,
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    child: Container(
-                                                      child: Column(
-                                                        children: [
-                                                          Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Image.asset(
-                                                                AssetPaths
-                                                                    .poucherTextImage,
-                                                              ),
-                                                              Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .end,
-                                                                children: [
-                                                                  Text(
-                                                                    value,
-                                                                    style: textTheme
-                                                                        .headline3!
-                                                                        .copyWith(
-                                                                            color:
-                                                                                kLightPurple,
-                                                                            fontSize:
-                                                                                8),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 5,
-                                                                  ),
-                                                                  RichText(
-                                                                      text: TextSpan(
-                                                                          text:
-                                                                              "₦",
-                                                                          style: TextStyle(
-                                                                              fontWeight: FontWeight.w700,
-                                                                              fontSize: 12,
-                                                                              color: kPrimaryWhite),
-                                                                          children: [
-                                                                        TextSpan(
-                                                                          text:
-                                                                              _pages[index].value,
-                                                                          style: textTheme
-                                                                              .bodyText2!
-                                                                              .copyWith(
-                                                                            fontWeight:
-                                                                                FontWeight.w700,
-                                                                            fontFamily:
-                                                                                "DMSans",
-                                                                            fontSize:
-                                                                                12,
-                                                                          ),
-                                                                        )
-                                                                      ])),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text(
-                                                                    code,
-                                                                    style: textTheme
-                                                                        .headline3!
-                                                                        .copyWith(
-                                                                            color:
-                                                                                kLightPurple,
-                                                                            fontSize:
-                                                                                8),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 5,
-                                                                  ),
-                                                                  Text(
-                                                                      _pages[index]
-                                                                          .code,
-                                                                      style: textTheme
-                                                                          .bodyText2!
-                                                                          .copyWith(
-                                                                        fontWeight:
-                                                                            FontWeight.w700,
-                                                                        fontFamily:
-                                                                            "DMSans",
-                                                                        fontSize:
-                                                                            12,
-                                                                      )),
-                                                                ],
-                                                              ),
-                                                              // SizedBox(
-                                                              //   width: kPadding,
-                                                              // ),
-                                                              // Expanded(
-                                                              //   child: Column(
-                                                              //     crossAxisAlignment:
-                                                              //         CrossAxisAlignment
-                                                              //             .end,
-                                                              //     children: [
-                                                              //       Text(
-                                                              //         expiryText,
-                                                              //         style: textTheme.headline3!.copyWith(
-                                                              //             color:
-                                                              //                 kLightPurple,
-                                                              //             fontSize:
-                                                              //                 8),
-                                                              //       ),
-                                                              //       SizedBox(
-                                                              //         height: 5,
-                                                              //       ),
-                                                              //       Text(
-                                                              //           _pages[index]
-                                                              //               .expiry,
-                                                              //           softWrap:
-                                                              //               true,
-                                                              //           overflow:
-                                                              //               TextOverflow
-                                                              //                   .ellipsis,
-                                                              //           style: textTheme
-                                                              //               .bodyText2!
-                                                              //               .copyWith(
-                                                              //             fontWeight:
-                                                              //                 FontWeight.normal,
-                                                              //             fontFamily:
-                                                              //                 "DMSans",
-                                                              //             fontSize:
-                                                              //                 10,
-                                                              //           ))
-                                                              //     ],
-                                                              //   ),
-                                                              // ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                      ),
-                                                      padding: EdgeInsets.only(
-                                                          top: constraints
-                                                                  .maxHeight /
-                                                              5,
-                                                          left: constraints
-                                                                  .maxWidth /
-                                                              12,
-                                                          right: 20,
-                                                          bottom: 20),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          }),
-                                        );
-                                      },
-                                      itemCount: _pages.length,
-                                      controller: _controller,
-                                      onPageChanged: _onChanged,
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      for (int i = 0; i < _pages.length; i++)
-                                        SlideBar(
-                                          index: i,
-                                          currentPage: _currentPage,
-                                        )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                      );
-                    } else {
-                      return SizedBox();
-                    }
-                  },
-                  error: (val) => NoVoucher(textTheme: textTheme),
-                  loading: () => SpinKitDemo()),
+              VoucherImage(
+                textTheme: textTheme,
+                amount: "5000",
+                voucherCode: "#12ABC499J",
+              ),
               SizedBox(
                 height: kLargePadding,
               ),
@@ -358,4 +113,3 @@ class _VouchersState extends ConsumerState<Vouchers> {
         ));
   }
 }
-

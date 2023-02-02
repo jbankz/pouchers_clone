@@ -4,7 +4,6 @@ import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/create_account/models/create_account_response.dart';
 import 'package:pouchers/modules/create_account/providers/create_account_provider.dart';
-import 'package:pouchers/modules/create_account/screens/biometrics_page.dart';
 import 'package:pouchers/modules/create_account/screens/create_pin.dart';
 import 'package:pouchers/modules/login/screens/login.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
@@ -61,6 +60,7 @@ class _PoucherTagState extends State<PoucherTag> {
                   keyboardType: TextInputType.text,
                   style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
                   cursorColor: kPrimaryColor,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (val) {
                     if (val!.isEmpty) {
                       return emptyField;
@@ -81,7 +81,7 @@ class _PoucherTagState extends State<PoucherTag> {
                     prefixStyle: textTheme.subtitle1!.copyWith(
                       color: kPrimaryTextColor.withOpacity(0.7),
                     ),
-                    fillColor: kPrimaryTextColor,
+                    fillColor: kBackgroundColor,
                     border: OutlineInputBorder(),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(style: BorderStyle.none),
