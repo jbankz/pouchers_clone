@@ -102,7 +102,9 @@ class _AccountVerificationStatusState
                 iconColor: hiveTierLevel == 2 && (!hiveIsUploadedIdentityCard!)
                     ? kColorYellow200
                     : kColorGreen,
-                next: hiveTierLevel == 2 ? false : true,
+                next: hiveTierLevel == 2 || hiveTierLevel == 3
+                    ? false
+                        : true,
                 widget: hiveTierLevel == 2 && (!hiveIsUploadedIdentityCard!)
                     ? Text(
                         "i",
@@ -139,7 +141,9 @@ class _AccountVerificationStatusState
                   : kColorGreen,
               next: (hiveTierLevel == 2 && hiveIsUploadedIdentityCard!)
                   ? false
-                  : true,
+                  : (hiveTierLevel == 3 && hiveIsUploadedIdentityCard!)
+                      ? false
+                      : true,
               widget: (hiveTierLevel == 2 && hiveIsUploadedIdentityCard!)
                   ? Text(
                       "i",
@@ -161,11 +165,16 @@ class _AccountVerificationStatusState
                           name: ProfileUtilityBill.routeName,
                         ),
                       );
-                      setState(() {
-                        result = result;
-                      });
+                      if (result != null) {
+                        setState(() {
+                          result = result;
+                        });
+                      }
                     }
-                  : null,
+                  : () {
+                      print("$hiveTierLevel");
+                      print("$hiveIsUploadedIdentityCard");
+                    },
             ),
           ],
         ));

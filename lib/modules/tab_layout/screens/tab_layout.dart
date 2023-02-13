@@ -32,8 +32,8 @@ class _TabLayoutState extends State<TabLayout> {
 
   List<Widget> items = [
     HomePage(),
-    CardHome(),
-    // CreateCard(),
+    //CardHome(),
+     CreateCard(),
     Transactions(),
     ProfilePage(),
   ];

@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
+import 'package:pouchers/modules/account/models/profile_model.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
@@ -136,9 +137,16 @@ class _ProfileUtilityBillState extends ConsumerState<ProfileUtilityBill> {
             ),
           ),
           Consumer(builder: (context, ref, _) {
-            ref.listen(editProfileProvider2, (previous, next) {
-              Navigator.pop(context, "utility");
-            });
+            ref.listen(editProfileProvider,
+                    (previous, NotifierState<EditProfileResponse> next) {
+                  if (next.status == NotifierStatus.done) {
+                    Navigator.pop(context);
+                    showSuccessBar(context, next.data!.message);
+                    ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
+                  } else if (next.status == NotifierStatus.error) {
+                    showErrorBar(context, next.message!);
+                  }
+                });
             var _widget = LargeButton(
                 title: submit,
                 disableColor:
@@ -150,7 +158,7 @@ class _ProfileUtilityBillState extends ConsumerState<ProfileUtilityBill> {
                             .read(editProfileProvider.notifier)
                             .editProfile(utilityBill: selectedImage!);
                       });
-            return ref.watch(editProfileProvider2).when(
+            return ref.watch(editProfileProvider).when(
                 done: (done) => _widget,
                 loading: () => SpinKitDemo(),
                 error: (val) => _widget);

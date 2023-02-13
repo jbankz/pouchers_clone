@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/helpers/response_handler.dart';
 import 'package:pouchers/modules/account/models/profile_model.dart';
+import 'package:pouchers/modules/account/models/referral_model.dart';
 import 'package:pouchers/modules/account/models/security_question.dart';
 import 'package:pouchers/modules/account/models/tier_list.dart';
 import 'package:pouchers/modules/account/repository/account_repository.dart';
@@ -25,7 +26,8 @@ final changePhoneProvider = StateNotifierProvider.autoDispose<
 
 final authFactorProvider = StateProvider<bool>((ref) => false);
 
-final editProfileInHouseProvider = StateProvider<EditProfileData>((ref) => EditProfileData());
+final editProfileInHouseProvider = StateProvider<EditProfileData>((ref) => EditProfileData(
+));
 
 
 final editProfileProvider = StateNotifierProvider<EditProfileNotifier,
@@ -134,6 +136,12 @@ final disable2FAProvider =
         (ref) {
   return Disable2FANotifier(ref.read(accountRepoProvider));
 });
+
+final getReferralProvider =
+StateNotifierProvider.autoDispose<GetReferralNotifier, NotifierState<GetReferralResponse>>(
+        (ref) {
+      return GetReferralNotifier(ref.read(accountRepoProvider));
+    });
 
 class AccountNotifier extends StateNotifier<NotifierState<String>>
     with ResponseHandler {
@@ -495,6 +503,23 @@ class Disable2FANotifier extends StateNotifier<NotifierState<bool>>
   }) async {
     state = notifyLoading();
     state = await _repo.disable2FA(transactionPin: transactionPin);
+    if (state.status == NotifierStatus.done) {
+      if (then != null) then();
+    }
+  }
+}
+
+class GetReferralNotifier extends StateNotifier<NotifierState<GetReferralResponse>>
+    with ResponseHandler {
+  final AccountRepository _repo;
+
+  GetReferralNotifier(this._repo) : super(NotifierState());
+
+  void getReferralTrail({
+    Function()? then,
+  }) async {
+    state = notifyLoading();
+    state = await _repo.getReferralTrail();
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }

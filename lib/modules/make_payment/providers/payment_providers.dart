@@ -40,7 +40,7 @@ final localBankTransferProvider =
   return LocalBankTransferNotifier(ref.read(paymentRepoProvider));
 });
 
-final getWalletProvider = StateNotifierProvider.autoDispose<GetWalletNotifier,
+final getWalletProvider = StateNotifierProvider<GetWalletNotifier,
     NotifierState<GetWalletResponse>>((ref) {
   return GetWalletNotifier(ref.read(paymentRepoProvider));
 });

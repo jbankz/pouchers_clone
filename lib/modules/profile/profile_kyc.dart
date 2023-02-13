@@ -20,6 +20,7 @@ import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
+import 'package:pouchers/utils/logger.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
@@ -59,12 +60,17 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
           i++) {
         dateTest.add(i);
       }
-      if (ref.watch(editProfileInHouseProvider).profilePicture == null) {
-        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData()
-            .copyWith(profilePicture: userProfile.profilePicture);
+      if (ref.watch(editProfileInHouseProvider) == null) {
+        print("null");
+        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(userProfile.toJson());
+        setState(() {});
+      } else {
+        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(ref.watch(editProfileInHouseProvider).toJson());
+        setState(() {});
       }
-      await checkTierLevel();
+       await checkTierLevel();
       setState(() {});
+      logPrint("edit profile in house${ref.watch(editProfileInHouseProvider)}");
     });
   }
 
@@ -76,7 +82,7 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
       title: profile,
       child: ListView(
         children: [
-          inkWell(
+          hiveTierLevel == 3 ? SizedBox() :   inkWell(
             onTap: () {
               pushTo(
                 context,
@@ -124,9 +130,12 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                       (previous, NotifierState<EditProfileResponse> next) {
                     if (next.status == NotifierStatus.done) {
                       showSuccessBar(context, next.data!.message);
-                      ref.read(editProfileInHouseProvider.notifier).state =
-                          EditProfileData()
-                              .copyWith(profilePicture: "https://photow-profile-images.s3.us-west-2.amazonaws.com/$selectedImage");
+                      ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
+                      logPrint("Full name profile ${ref.watch(editProfileInHouseProvider)}");   //next.data!.data!;
+                      // ref.read(editProfileInHouseProvider.notifier).state =
+                      //     EditProfileData().copyWith(
+                      //         profilePicture:
+                      //             "https://photow-profile-images.s3.us-west-2.amazonaws.com/$selectedImage");
                     }
                   });
 
@@ -152,7 +161,10 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                             child: CachedNetworkImage(
                                 height: 105,
                                 width: 105,
-                                imageUrl: ref.watch(editProfileInHouseProvider).profilePicture ?? "",
+                                imageUrl: ref
+                                        .watch(editProfileInHouseProvider)
+                                        .profilePicture ??
+                                    "",
                                 placeholder: (context, url) => Container(
                                       color: Colors.transparent,
                                       height: 105,
@@ -167,92 +179,94 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                                       ),
                                     ),
                                 fit: BoxFit.cover,
-                                errorWidget: (context, url, error) =>  ref
-                                    .watch(editProfileInHouseProvider)
-                                    .profilePicture !=
-                                    null
+                                errorWidget: (context, url, error) => ref
+                                            .watch(editProfileInHouseProvider)
+                                            .profilePicture !=
+                                        null
                                     ? Image.network(
-                                  ref
-                                      .watch(editProfileInHouseProvider)
-                                      .profilePicture!,
-                                  fit: BoxFit.fill,
-                                  loadingBuilder: (BuildContext context,
-                                      Widget child,
-                                      ImageChunkEvent? loadingProgress) {
-                                    if (loadingProgress == null)
-                                      return child;
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        value: loadingProgress
-                                            .expectedTotalBytes !=
-                                            null
-                                            ? loadingProgress
-                                            .cumulativeBytesLoaded /
-                                            loadingProgress
-                                                .expectedTotalBytes!
-                                            : null,
-                                      ),
-                                    );
-                                  },
-                                )
+                                        ref
+                                            .watch(editProfileInHouseProvider)
+                                            .profilePicture!,
+                                        fit: BoxFit.fill,
+                                        loadingBuilder: (BuildContext context,
+                                            Widget child,
+                                            ImageChunkEvent? loadingProgress) {
+                                          if (loadingProgress == null)
+                                            return child;
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      loadingProgress
+                                                          .expectedTotalBytes!
+                                                  : null,
+                                            ),
+                                          );
+                                        },
+                                      )
                                     : Container(
-                                    padding: EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: kPurple300),
-                                    child: Container(
-                                      padding: EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: kPrimaryWhite),
-                                      child: Container(
-                                        padding: EdgeInsets.all(kSmallPadding),
+                                        padding: EdgeInsets.all(8),
                                         decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            color: kPrimaryTextColor
-                                                .withOpacity(0.05)),
+                                            color: kPurple300),
                                         child: Container(
                                           padding: EdgeInsets.all(8),
                                           decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: kPurpleColor600,
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                height: kRegularPadding,
-                                                width: kRegularPadding,
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: kPrimaryTextColor),
+                                              shape: BoxShape.circle,
+                                              color: kPrimaryWhite),
+                                          child: Container(
+                                            padding:
+                                                EdgeInsets.all(kSmallPadding),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: kPrimaryTextColor
+                                                    .withOpacity(0.05)),
+                                            child: Container(
+                                              padding: EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: kPurpleColor600,
                                               ),
-                                              SizedBox(
-                                                height: 7,
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    height: kRegularPadding,
+                                                    width: kRegularPadding,
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color:
+                                                            kPrimaryTextColor),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 7,
+                                                  ),
+                                                  Container(
+                                                    height: kRegularPadding,
+                                                    width: 35,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    kSmallPadding),
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    kPadding),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    kSmallPadding),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    kPadding)),
+                                                        color: kPurpleColor500),
+                                                  )
+                                                ],
                                               ),
-                                              Container(
-                                                height: kRegularPadding,
-                                                width: 35,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.only(
-                                                        topLeft:
-                                                            Radius.circular(
-                                                                kSmallPadding),
-                                                        bottomLeft:
-                                                            Radius.circular(
-                                                                kPadding),
-                                                        topRight:
-                                                            Radius.circular(
-                                                                kSmallPadding),
-                                                        bottomRight:
-                                                            Radius.circular(
-                                                                kPadding)),
-                                                    color: kPurpleColor500),
-                                              )
-                                            ],
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    ))),
+                                        ))),
                           ),
                           Positioned(
                             bottom: 0,
@@ -324,7 +338,7 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
               SizedBox(
                 width: kSmallPadding,
               ),
-              inkWell(
+           hiveTierLevel == 3 ? SizedBox() : inkWell(
                 onTap: () {
                   pushTo(
                     context,
@@ -422,10 +436,11 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                   },
                 ),
                 KYCColumn(
+                  tierLevel: hiveTierLevel,
                   textTheme: textTheme,
                   title: idVerification,
-                  subTitle: "",
-                  onTap: () {
+                  subTitle: dataSuccess,
+                  onTap: hiveTierLevel == 3 ? null : () {
                     pushTo(
                       context,
                       AccountVerificationStatus(),
@@ -502,9 +517,9 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
         setState(() {
           isLoading = false;
         });
-        ref
-            .read(editProfileProvider2.notifier)
-            .editProfile(profilePicture: "https://photow-profile-images.s3.us-west-2.amazonaws.com/$selectedImage");
+        ref.read(editProfileProvider2.notifier).editProfile(
+            profilePicture:
+                "https://photow-profile-images.s3.us-west-2.amazonaws.com/$selectedImage");
       }
     } catch (e) {
       setState(() {

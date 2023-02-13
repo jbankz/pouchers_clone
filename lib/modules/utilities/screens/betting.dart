@@ -48,29 +48,30 @@ class _BettingState extends State<Betting> {
           Expanded(
             child: ListView(
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
-                  decoration: BoxDecoration(
-                      color: kBackgroundColor,
-                      borderRadius: BorderRadius.circular(kSmallPadding)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      prefixIcon,
-                      inkWell(
-                          onTap: () async {
-                            // final result = await buildShowModalBottomSheet(
-                            //     context, UtilityModal());
-                            // if (result != SizedBox()) {
-                            //   setState(() => prefixIcon = result);
-                            // }
-                          },
-                          child: Icon(
-                            Icons.keyboard_arrow_down,
-                            size: 30,
-                            color: kSecondaryTextColor,
-                          )),
-                    ],
+                inkWell(
+                  onTap: () async {
+                    // final result = await buildShowModalBottomSheet(
+                    //     context, UtilityModal());
+                    // if (result != SizedBox()) {
+                    //   setState(() => prefixIcon = result);
+                    // }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                    decoration: BoxDecoration(
+                        color: kBackgroundColor,
+                        borderRadius: BorderRadius.circular(kSmallPadding)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        prefixIcon,
+                       Icon(
+                              Icons.keyboard_arrow_down,
+                              size: 30,
+                              color: kSecondaryTextColor,
+                            ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(

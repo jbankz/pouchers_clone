@@ -7,6 +7,7 @@ import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/constant/ui_constants.dart';
+import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
@@ -15,9 +16,14 @@ class CreateVirtualCard extends StatefulWidget {
   static const String routeName = "createVirtualCard";
   final bool? isFundCard;
   final bool? isFundNaira;
+  final AddressClass? addressDetails;
 
   const CreateVirtualCard(
-      {Key? key, this.isNaira, this.isFundCard, this.isFundNaira})
+      {Key? key,
+      this.isNaira,
+      this.isFundCard,
+      this.isFundNaira,
+      this.addressDetails})
       : super(key: key);
 
   @override
@@ -136,8 +142,8 @@ class _CreateVirtualCardState extends State<CreateVirtualCard> {
                     children: [
                       Text(
                         "$creationFeeText: + ",
-                        style: textTheme.headline3!
-                            .copyWith(color: kPrimaryTextColor.withOpacity(0.8)),
+                        style: textTheme.headline3!.copyWith(
+                            color: kPrimaryTextColor.withOpacity(0.8)),
                       ),
                       RichText(
                         text: TextSpan(
@@ -256,19 +262,26 @@ class _CreateVirtualCardState extends State<CreateVirtualCard> {
             ),
             LargeButton(
               disableColor: kPurpleDeep,
-              title: fundCard,
+              title: headerText(widget.isFundCard!, widget.isFundNaira!, widget.isNaira!),
               onPressed: () {
-                pushTo(
-                  context,
-                  CardSummary(
-                    isFundCard: widget.isFundCard,
-                    isFundNaira: widget.isFundNaira,
-                    isNaira: widget.isNaira,
-                  ),
-                  settings: const RouteSettings(
-                    name: CardSummary.routeName,
-                  ),
-                );
+                if(wholeText == "0"){
+                  showErrorBar(context, "Please input amount");
+                }else{
+                  pushTo(
+                    context,
+                    CardSummary(
+                        isFundCard: widget.isFundCard,
+                        isFundNaira: widget.isFundNaira,
+                        isNaira: widget.isNaira,
+                        addressDetails: widget.addressDetails,
+                        amount : "$wholeText.$decimalText"
+                    ),
+                    settings: const RouteSettings(
+                      name: CardSummary.routeName,
+                    ),
+                  );
+                }
+
               },
             )
           ],

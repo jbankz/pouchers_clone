@@ -28,7 +28,6 @@ class _VoucherHistoryState extends ConsumerState<VoucherHistory> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(fetchVoucherProvider.notifier).fetchVoucher(status: "");
@@ -38,7 +37,6 @@ class _VoucherHistoryState extends ConsumerState<VoucherHistory> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-
     return InitialPage(
       title: voucherHistory,
       child: ref.watch(fetchVoucherProvider).when(
@@ -84,6 +82,7 @@ class _VoucherHistoryState extends ConsumerState<VoucherHistory> {
                           height: 300,
                           child: NoVoucher(
                             textTheme: textTheme,
+                            text: noVouchers,
                           ),
                         )
                       : Expanded(
@@ -245,14 +244,6 @@ class _VoucherHistoryState extends ConsumerState<VoucherHistory> {
                 (element.gifteeId == null && element.redeemed == false))
             .toList();
       }
-      // service = voucherHistoryDummy.where((element) {
-      //   return element.image == historyTypes[currentIndex];
-      // }).toList();
-      // service = vouchers.where((element) {
-      // if(element.redeemed) return element.redeemed == true;
-      // if(element.gifteeId != null) return element.gifteeId
-      //  return element.image == historyTypes[currentIndex];
-      // }).toList();
       return service;
     }
   }

@@ -28,12 +28,19 @@ class LogInRepository {
     final result = await LogInService.logIn(
         phoneNumber: phoneNumber, password: password, isEmail: isEmail);
     print(result);
+    await Hive.box(kTokenBox).clear();
 
-    if (result.data != null) {
-      await cacheUserProfile(
-          HiveStoreResponseData.fromJson(result.data!.data!.toJson()));
+    //await Hive.openBox(kUserBox);
+    if(result.data != null){
+      await persistAccessToken(
+          accessToken: result.data!.data!.token!,
+          tokenExpiry: result.data!.data!.tokenExpireAt!);
+
+      await persistRefreshToken(result.data!.data!.refreshToken!);
+      await cacheUserProfile(HiveStoreResponseData.fromJson(result.data!.data!.toJson()));
+
     }
-    ;
+
     return result.toNotifierState();
   }
 

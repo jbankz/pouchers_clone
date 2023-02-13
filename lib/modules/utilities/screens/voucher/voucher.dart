@@ -61,7 +61,6 @@ class _VouchersState extends ConsumerState<Vouchers> {
           child: Column(
             children: [
               VoucherImage(
-                textTheme: textTheme,
                 amount: "5000",
                 voucherCode: "#12ABC499J",
               ),

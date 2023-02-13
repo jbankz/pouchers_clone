@@ -13,7 +13,7 @@ class Utils {
       logTimeoutException(e);
       return "Request timed out, please try again";
     } else if (e is FormatException || e is ClientException) {
-      log(e);
+      logPrint(e);
       return "Something went wrong, please try again";
     } else {
       return e.toString();

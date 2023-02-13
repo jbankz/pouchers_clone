@@ -21,7 +21,7 @@ class PaymentService {
 
     String url = "${baseUrl()}/user/profile/$poucherTag";
 
-    log(url);
+    logPrint(url);
 
     try {
       http.Response response = await http.get(
@@ -42,8 +42,8 @@ class PaymentService {
         }, message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<Map<String, dynamic>>(error, stack);
     }
   }
@@ -60,8 +60,8 @@ class PaymentService {
 
     String url = "${baseUrl()}/user/pouchers-contacts";
 
-    log(url);
-    log(contacts);
+    logPrint(url);
+    logPrint(contacts);
     try {
       http.Response response = await http.post(Uri.parse(url),
           headers: _authHeaders, body: jsonEncode({"contacts": contacts}));
@@ -75,8 +75,8 @@ class PaymentService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<ContactListResponse>(error, stack);
     }
   }
@@ -95,10 +95,10 @@ class PaymentService {
 
     String url = "${baseUrl()}/payment/request-money";
 
-    log(url);
-    log(tag);
-    log(amount);
-    log(note);
+    logPrint(url);
+    logPrint(tag);
+    logPrint(amount);
+    logPrint(note);
 
     Map<String, dynamic> body = {
       "tag": tag,
@@ -119,8 +119,8 @@ class PaymentService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<RequestResponse>(error, stack);
     }
   }
@@ -140,10 +140,10 @@ class PaymentService {
 
     String url = "${baseUrl()}/payment/p2p-transfer";
 
-    log(url);
-    log(tag);
-    log(amount);
-    log(note);
+    logPrint(url);
+    logPrint(tag);
+    logPrint(amount);
+    logPrint(note);
 
     Map<String, dynamic> body = {
       "tag": tag,
@@ -165,8 +165,8 @@ class PaymentService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<P2PResponse>(error, stack);
     }
   }
@@ -186,9 +186,9 @@ class PaymentService {
 
     String url = "${baseUrl()}/payment/bank-account?account_number=$accountNumber&amount=$amount&bank_name=$bankName";
 
-    log(url);
-    log(accountNumber);
-    log(amount);
+    logPrint(url);
+    logPrint(accountNumber);
+    logPrint(amount);
 
     try {
       http.Response response = await http.get(Uri.parse(url),
@@ -203,8 +203,8 @@ class PaymentService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<AccountDetailsResponse>(error, stack);
     }
   }
@@ -220,7 +220,7 @@ class PaymentService {
 
     String url = "${baseUrl()}/payment/banks";
 
-    log(url);
+    logPrint(url);
 
     try {
       http.Response response = await http.get(Uri.parse(url),
@@ -235,8 +235,8 @@ class PaymentService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<GetAllBanksResponse>(error, stack);
     }
   }
@@ -263,8 +263,8 @@ class PaymentService {
       "transactionPin" : transactionPin
     };
 
-    log(url);
-    log(body);
+    logPrint(url);
+    logPrint(body);
 
     try {
       http.Response response = await http.post(Uri.parse(url),
@@ -279,8 +279,8 @@ class PaymentService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError(error, stack);
     }
   }
@@ -296,7 +296,7 @@ class PaymentService {
 
     String url = "${baseUrl()}/payment/wallet";
 
-    log(url);
+    logPrint(url);
     try {
       http.Response response = await http.get(Uri.parse(url),
           headers: _authHeaders,);
@@ -310,8 +310,8 @@ class PaymentService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<GetWalletResponse>(error, stack);
     }
   }

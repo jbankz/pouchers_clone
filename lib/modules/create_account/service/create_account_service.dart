@@ -25,7 +25,7 @@ class CreateAccountService {
 
     String url = "${baseUrl()}/auth/signup";
 
-    log(url);
+    logPrint(url);
     Map<String, dynamic> body = {
       "first_name": firstName,
       "last_name": lastName,
@@ -33,7 +33,7 @@ class CreateAccountService {
       "phone_number": phoneNumber,
       "password": password
     };
-    log("what is body $body");
+    logPrint("what is body $body");
 
     try {
       http.Response response = await http.post(
@@ -52,8 +52,8 @@ class CreateAccountService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<CreateAccountResponse>(error, stack);
     }
   }
@@ -70,9 +70,9 @@ class CreateAccountService {
 
     String url = "${baseUrl()}/auth/verify-email";
 
-    log(url);
+    logPrint(url);
 
-    log("what is body $otp");
+    logPrint("what is body $otp");
 
     try {
       http.Response response = await http.post(
@@ -98,8 +98,8 @@ class CreateAccountService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<VerifyEmailResponse>(error, stack);
     }
   }
@@ -114,9 +114,9 @@ class CreateAccountService {
 
     String url = "${baseUrl()}/auth/create-tag";
 
-    log(url);
+    logPrint(url);
 
-    log("what is body $tag");
+    logPrint("what is body $tag");
 
     try {
       http.Response response = await http.post(
@@ -134,8 +134,8 @@ class CreateAccountService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<TagResponse>(error, stack);
     }
   }
@@ -150,8 +150,8 @@ class CreateAccountService {
 
     String url = "${baseUrl()}/auth/resend-confirmation";
 
-    log(url);
-    log("what is body $email");
+    logPrint(url);
+    logPrint("what is body $email");
 
     try {
       http.Response response = await http.post(
@@ -168,8 +168,8 @@ class CreateAccountService {
             data: responseBody["message"], message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -184,9 +184,9 @@ class CreateAccountService {
 
     String url = "${baseUrl()}/auth/create-pin";
 
-    log(url);
+    logPrint(url);
 
-    log("what is body $pin");
+    logPrint("what is body $pin");
 
     try {
       http.Response response = await http.post(
@@ -204,8 +204,8 @@ class CreateAccountService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<TagResponse>(error, stack);
     }
   }

@@ -1,26 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pouchers/app/helpers/notifiers.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
+import 'package:pouchers/modules/cards/providers/cards_providers.dart';
+import 'package:pouchers/modules/cards/screens/card_home.dart';
 import 'package:pouchers/modules/cards/screens/card_widgets.dart';
+import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
+import 'package:pouchers/modules/tab_layout/screens/tab_layout.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
+import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
+import 'package:pouchers/utils/utils.dart';
 import 'package:pouchers/utils/widgets.dart';
 
-class CardSummary extends StatelessWidget {
+class CardSummary extends ConsumerStatefulWidget {
   final bool? isFundCard;
   final bool? isNaira;
   final bool? isFundNaira;
+  final AddressClass? addressDetails;
+  final String? amount;
 
   static const String routeName = "cardSummary";
 
-  const CardSummary({Key? key, this.isFundCard, this.isNaira, this.isFundNaira})
+  const CardSummary(
+      {Key? key,
+      this.amount,
+      this.isFundCard,
+      this.addressDetails,
+      this.isNaira,
+      this.isFundNaira})
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  ConsumerState<CardSummary> createState() => _CardSummaryState();
+}
+
+class _CardSummaryState extends ConsumerState<CardSummary> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      print(ref.watch(getWalletProvider).data!.data!.balance);
+    });
+  }
+
+  @override
+  Widget build(
+    BuildContext context,
+  ) {
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return InitialPage(
-      title: headerText(isFundCard!, isFundNaira!, isNaira!),
+      title:
+          headerText(widget.isFundCard!, widget.isFundNaira!, widget.isNaira!),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -49,9 +83,11 @@ class CardSummary extends StatelessWidget {
                       AirtimeRow(
                         textTheme: textTheme,
                         text: amountText,
-                        subText: "22,400.00",
+                        subText: kPriceFormatter(double.parse(widget.amount!)),
                         isCopyIcon: false,
-                        isNaira: (isNaira! || isFundNaira!) ? true : false,
+                        isNaira: (widget.isNaira! || widget.isFundNaira!)
+                            ? true
+                            : false,
                         noSymbol: false,
                         style: textTheme.headline4!.copyWith(
                           fontSize: 16,
@@ -60,51 +96,59 @@ class CardSummary extends StatelessWidget {
                       SizedBox(
                         height: kMacroPadding,
                       ),
-                      isFundCard!
+                      widget.isFundCard!
                           ? SizedBox()
                           : AirtimeRow(
                               textTheme: textTheme,
                               text: creationFeeText,
-                              subText: "2000.00",
+                              subText: "0",
                               isCopyIcon: false,
                               noSymbol: false,
-                              isNaira: isNaira!,
+                              isNaira: widget.isNaira!,
                               style: textTheme.headline4!.copyWith(
                                 fontSize: 16,
                               ),
                             ),
                       SizedBox(
-                        height: isFundCard! ? 0 : kMacroPadding,
+                        height: widget.isFundCard! ? 0 : kMacroPadding,
                       ),
                       AirtimeRow(
                         textTheme: textTheme,
-                        text:
-                            (isNaira! || isFundNaira!) ? total : totalInDollars,
-                        subText: "22,400",
+                        text: (widget.isNaira! || widget.isFundNaira!)
+                            ? total
+                            : totalInDollars,
+                        subText:
+                            kPriceFormatter(double.parse(widget.amount!) + 0),
                         isCopyIcon: false,
                         noSymbol: false,
                         isBold: true,
-                        isNaira: (isNaira! || isFundNaira!) ? true : false,
+                        isNaira: (widget.isNaira! || widget.isFundNaira!)
+                            ? true
+                            : false,
                         style: textTheme.headline4!
                             .copyWith(fontWeight: FontWeight.w700),
                       ),
                       SizedBox(
-                        height: isFundCard! ? kMacroPadding : 0,
+                        height: widget.isFundCard! ? kMacroPadding : 0,
                       ),
-                      isFundCard!
+                      widget.isFundCard!
                           ? AirtimeRow(
                               textTheme: textTheme,
                               text: totalInNaira,
-                              subText: "22,400",
+                              subText: widget.isFundNaira!
+                                  ? kPriceFormatter(
+                                      double.parse(widget.amount!) + 0)
+                                  : kPriceFormatter(
+                                      double.parse(widget.amount!) * 850),
                               noSymbol: false,
                               isCopyIcon: false,
                               isBold: true,
-                              isNaira: isFundNaira!,
+                              isNaira: true,
                               style: textTheme.headline4!
                                   .copyWith(fontWeight: FontWeight.w700),
                             )
                           : SizedBox(),
-                      isNaira!
+                      widget.isNaira!
                           ? SizedBox()
                           : Column(
                               children: [
@@ -150,7 +194,7 @@ class CardSummary extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: " ₦",
+                          text: widget.isFundNaira! ? " ₦" : " \$",
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
                             color: kPrimaryTextColor,
@@ -158,7 +202,8 @@ class CardSummary extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                            text: "22,400",
+                            text: kPriceFormatter(
+                                double.parse(widget.amount!) + 0),
                             style: textTheme.headline3!.copyWith(
                                 color: kPrimaryTextColor,
                                 fontWeight: FontWeight.bold)),
@@ -168,32 +213,184 @@ class CardSummary extends StatelessWidget {
                 SizedBox(
                   height: kSupremePadding,
                 ),
-                BalanceWidget(
-                  textTheme: textTheme,
-                  text: "945.04",
-                  hasBalance: false,
-                ),
+                ref.watch(getWalletProvider).data == null
+                    ? SizedBox()
+                    : BalanceWidget(
+                        textTheme: textTheme,
+                        text: ref.watch(getWalletProvider).data == null
+                            ? "0"
+                            : kPriceFormatter(double.parse(ref
+                                .watch(getWalletProvider)
+                                .data!
+                                .data!
+                                .balance!)),
+                        hasBalance: checkBalance()),
               ],
             ),
           ),
-          LargeButton(
-            title: isFundCard!
-                ? fundCard
-                : headerText(isFundCard!, isFundNaira!, isNaira!),
-            onPressed: () {
-              buildShowModalBottomSheet(
-                context,
-                TransactionPinContainer(
-                  isData: false,
-                  isCard: !isFundCard!,
-                  isFundCard: isFundCard!,
-                ),
-              );
-            },
-            disableColor: kPurpleColor100,
-          )
+          SizedBox(
+            height: kRegularPadding,
+          ),
+          widget.isFundCard!
+              ? Consumer(builder: (context, ref, _) {
+                  ref.listen(fundVirtualCardProvider,
+                      (previous, NotifierState<String> next) {
+                    if (next.status == NotifierStatus.done) {
+                      ref.read(getWalletProvider.notifier).getWalletDetails();
+                      pushTo(
+                          context,
+                          SuccessMessage(
+                            text: dataSuccess,
+                            subText: next.message ?? next.data ?? "",
+                            onTap: () {
+                              //Navigator.
+                              widget.isFundNaira!
+                                  ? Navigator.popUntil(
+                                      context,
+                                      (route) {
+                                        route.isFirst;
+                                      return  route.settings.name ==
+                                            CardHome.routeName;
+
+                                      }
+                                    )
+                                  : Navigator.popUntil(
+                                      context,
+                                      (route) =>
+                                          route.settings.name ==
+                                          CardHome.routeName,
+                                    );
+                            },
+                          ),
+                          settings:
+                              RouteSettings(name: SuccessMessage.routeName));
+                    } else if (next.status == NotifierStatus.error) {
+                      showErrorBar(context, next.message ?? "");
+                    }
+                  });
+                  var _widget = LargeButton(
+                    title: fundCard,
+                    onPressed: checkBalance() == true
+                        ? () async {
+                            final result = await buildShowModalBottomSheet(
+                              context,
+                              TransactionPinContainer(
+                                isData: false,
+                                isCard: !widget.isFundCard!,
+                                isFundCard: widget.isFundCard!,
+                              ),
+                            );
+                            if (result != null) {
+                              ref
+                                  .read(fundVirtualCardProvider.notifier)
+                                  .fundVirtualCard(
+                                      type: widget.isFundNaira! ? "NGN" : "USD",
+                                      amount: double.parse(widget.amount!),
+                                      transactionPin: result);
+                            }
+                          }
+                        : () {},
+                    disableColor: checkBalance() == true
+                        ? kPrimaryColor
+                        : kPurpleColor100,
+                  );
+                  return ref.watch(fundVirtualCardProvider).when(
+                        done: (data) => _widget,
+                        loading: () => SpinKitDemo(),
+                        error: (val) => _widget,
+                      );
+                })
+              : Consumer(builder: (context, ref, _) {
+                  ref.listen(createVirtualCardProvider,
+                      (previous, NotifierState<String> next) {
+                    if (next.status == NotifierStatus.done) {
+                      ref.read(getWalletProvider.notifier).getWalletDetails();
+                      pushTo(
+                        context,
+                        SuccessMessage(
+                          text: dataSuccess,
+                          subText: virtualCardSuccess,
+                          onTap: () {
+                            pushToAndClearStack(
+                              context,
+                              TabLayout(
+                                gottenIndex: 1,
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    } else if (next.status == NotifierStatus.error) {
+                      showErrorBar(context, next.message ?? "");
+                    }
+                  });
+                  var _widget = LargeButton(
+                    title: headerText(widget.isFundCard!, widget.isFundNaira!,
+                        widget.isNaira!),
+                    onPressed: checkBalance() == true
+                        ? () async {
+                            final result = await buildShowModalBottomSheet(
+                              context,
+                              TransactionPinContainer(
+                                isData: false,
+                                isCard: !widget.isFundCard!,
+                                isFundCard: widget.isFundCard!,
+                              ),
+                            );
+                            if (result != null) {
+                              ref
+                                  .read(createVirtualCardProvider.notifier)
+                                  .createVirtualCard(
+                                      address: widget.addressDetails!.address,
+                                      city: widget.addressDetails!.city,
+                                      residentState:
+                                          widget.addressDetails!.residentState,
+                                      country: widget.addressDetails!.country,
+                                      postalCode:
+                                          widget.addressDetails!.postalCode,
+                                      currency: widget.isNaira! ? "NGN" : "USD",
+                                      bvn: widget.addressDetails!.bvn,
+                                      amount: double.parse(widget.amount!),
+                                      transactionPin: result);
+                            }
+                          }
+                        : () {},
+                    disableColor: checkBalance() == true
+                        ? kPrimaryColor
+                        : kPurpleColor100,
+                  );
+                  return ref.watch(createVirtualCardProvider).when(
+                        done: (data) => _widget,
+                        loading: () => SpinKitDemo(),
+                        error: (val) => _widget,
+                      );
+                })
         ],
       ),
     );
+  }
+
+  bool checkBalance() {
+    bool status = false;
+    if (ref.watch(getWalletProvider).data != null) {
+      if (widget.isFundNaira! || widget.isNaira!) {
+        if (double.parse(ref.watch(getWalletProvider).data!.data!.balance!) >
+            (double.parse(widget.amount!) + 0)) {
+          status = true;
+        } else {
+          status = false;
+        }
+      } else {
+        if (double.parse(ref.watch(getWalletProvider).data!.data!.balance!) >
+            (double.parse(widget.amount!) * 850)) {
+          status = true;
+        } else {
+          status = false;
+        }
+      }
+      return status;
+    } else {
+      return status;
+    }
   }
 }

@@ -2,6 +2,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pouchers/app/helpers/network_helpers.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/modules/account/models/profile_model.dart';
+import 'package:pouchers/modules/account/models/referral_model.dart';
 import 'package:pouchers/modules/account/models/security_question.dart';
 import 'package:pouchers/modules/account/models/tier_list.dart';
 import 'package:pouchers/modules/account/service/account_service.dart';
@@ -189,6 +190,13 @@ class AccountRepository {
     final accessToken = await getAccessToken();
     return (await AccountService.disable2FA(
       token: accessToken!, transactionPin: transactionPin))
+        .toNotifierState();
+  }
+
+  Future<NotifierState<GetReferralResponse>> getReferralTrail() async {
+    final accessToken = await getAccessToken();
+    return (await AccountService.getReferralTrail(
+        token: accessToken!, ))
         .toNotifierState();
   }
 }

@@ -105,14 +105,14 @@ class _SetPasswordState extends State<SetPassword> {
                   if (next.status == NotifierStatus.done) {
                     print(widget.isChangePassword);
                     pushTo(
-                        context,
-                        ResetSuccessful(
-                          message: successResetPassword,
-                          isChangePassword: widget.isChangePassword,
-                          isResetPin: false,
-                        ),
-                        settings: const RouteSettings(
-                            name: ResetSuccessful.routeName));
+                      context,
+                      ResetSuccessful(
+                        message: successResetPassword,
+                        isChangePassword: widget.isChangePassword,
+                      ),
+                      settings:
+                          const RouteSettings(name: ResetSuccessful.routeName),
+                    );
                   } else if (next.status == NotifierStatus.error) {
                     showErrorBar(context, next.message!);
                   }

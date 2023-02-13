@@ -1,46 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
  import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/modules/account/models/buy_cable_class.dart';
 import 'package:pouchers/modules/account/models/buy_electricity_class.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
 import 'package:pouchers/modules/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/modules/schedule_purchase/schedule_widget_constants.dart';
 import 'package:pouchers/modules/schedule_purchase/screens/schedule_electricity_topup.dart';
+import 'package:pouchers/modules/tab_layout/screens/tab_layout.dart';
+import 'package:pouchers/modules/utilities/model/utilities_model.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
+import 'package:pouchers/utils/utils.dart';
 import 'package:pouchers/utils/widgets.dart';
 
-class BuyElectricity extends StatefulWidget {
+import '../providers/utilities_provider.dart';
+
+class BuyElectricity extends ConsumerStatefulWidget {
   static const String routeName = "buyElectricity";
   final bool? isGuest;
 
   const BuyElectricity({Key? key, this.isGuest}) : super(key: key);
 
   @override
-  State<BuyElectricity> createState() => _BuyElectricityState();
+  ConsumerState<BuyElectricity> createState() => _BuyElectricityState();
 }
 
-class _BuyElectricityState extends State<BuyElectricity> {
+class _BuyElectricityState extends ConsumerState<BuyElectricity> {
   bool _saveBeneficiary = false;
   TextEditingController contactController = TextEditingController();
   TextEditingController amountController = TextEditingController();
   String _meterType = prepaid;
+  GetUtilitiesData? utilitiesData;
+  List<GetUtilitiesData> utilities = [];
+  String _meterNo = "";
+  String _amount = "";
+  List<PaymentItem> utilitiesType = [];
+  PaymentItem? paymentType;
 
-  Widget prefixIcon = Padding(
-    padding: EdgeInsets.symmetric(vertical: kMediumPadding),
-    child: Text(selectProvider,
-        style: TextStyle(
-          fontWeight: FontWeight.w300,
-          color: kSecondaryTextColor.withOpacity(0.7),
-          fontFamily: "DMSans",
-          fontSize: 18,
-        )),
-  );
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(getUtilitiesProvider.notifier).getUtilities(utility: "utility?category=electricity");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,29 +64,81 @@ class _BuyElectricityState extends State<BuyElectricity> {
           Expanded(
             child: ListView(
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
-                  decoration: BoxDecoration(
-                      color: kBackgroundColor,
-                      borderRadius: BorderRadius.circular(kSmallPadding)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      prefixIcon,
-                      inkWell(
-                          onTap: () async {
-                            final result = await buildShowModalBottomSheet(
-                                context, ElectricityModal());
-                            if (result != SizedBox()) {
-                              setState(() => prefixIcon = result);
-                            }
-                          },
-                          child: Icon(
-                            Icons.keyboard_arrow_down,
-                            size: 30,
-                            color: kSecondaryTextColor,
-                          )),
-                    ],
+                inkWell(
+                  onTap: () async {
+                    final result = await buildShowModalBottomSheet(
+                        context, UtilityModal(utilities: utilities));
+                    if (result != null) {
+                      setState(() {
+                        utilitiesData = result;
+                        paymentType = null;
+                      });
+                      ref
+                          .read(getUtilitiesTypeProvider.notifier)
+                          .getUtilitiesType(
+                          categoryId: int.parse(
+                              utilitiesData!.billerid!));
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                    decoration: BoxDecoration(
+                        color: kBackgroundColor,
+                        borderRadius: BorderRadius.circular(kSmallPadding)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: kMediumPadding),
+                          child: Row(
+                            children: [
+                              utilitiesData == null
+                                  ? SizedBox()
+                                  : Container(
+                                height: 40,
+                                width: 40,
+                                color: kIconGrey,
+                                margin: EdgeInsets.only(
+                                  right: kRegularPadding,
+                                ),
+                              ),
+                              Text(
+                                  utilitiesData == null
+                                      ? selectProvider
+                                      : utilitiesData!.billername!,
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
+                                  style: utilitiesData == null
+                                      ? textTheme.bodyText1!.copyWith(
+                                    color: kSecondaryTextColor
+                                        .withOpacity(0.7),
+                                    fontWeight: FontWeight.w300,
+                                  )
+                                      : textTheme.subtitle1),
+                            ],
+                          ),
+                        ),
+                        Consumer(builder: (context, ref, _) {
+                          var _widget = Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 30,
+                                color: kSecondaryTextColor,
+                              );
+                          return ref.watch(getUtilitiesProvider).when(
+                            done: (data) {
+                              if (data != null) {
+                                utilities = data.data!;
+                              }
+                              return _widget;
+                            },
+                            loading: () => SpinKitDemo(
+                              size: 25,
+                            ),
+                            error: (val) => _widget,
+                          );
+                        })
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -87,123 +151,220 @@ class _BuyElectricityState extends State<BuyElectricity> {
                 SizedBox(
                   height: kSmallPadding,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    inkWell(
-                      onTap: () {
-                        setState(() => _meterType = prepaid);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: kMediumPadding,
-                            vertical: kRegularPadding),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(kSmallPadding),
-                          border: Border.all(
-                            color: _meterType == prepaid
-                                ? kPrimaryColor
-                                : kLightPurple,
-                            width: 1,
+                inkWell(
+                  onTap: (utilitiesData == null)
+                      ? null
+                      : () async {
+                    final result =
+                    await buildShowModalBottomSheet(
+                        context,
+                        SubscriptionModal(
+                            paymentItem: utilitiesType));
+                    if (result != null) {
+                      setState(() => paymentType = result);
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                    decoration: BoxDecoration(
+                        color: kBackgroundColor,
+                        borderRadius: BorderRadius.circular(kSmallPadding)),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding:
+                            EdgeInsets.symmetric(vertical: kMediumPadding),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                      paymentType == null
+                                          ? type
+                                          : paymentType!.paymentitemname!,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true,
+                                      style: paymentType == null
+                                          ? textTheme.bodyText1!.copyWith(
+                                        color: kSecondaryTextColor
+                                            .withOpacity(0.7),
+                                        fontWeight: FontWeight.w300,
+                                      )
+                                          : textTheme.subtitle1),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: _meterType == prepaid
-                                      ? kPrimaryColor
-                                      : kPurpleColor400,
-                                  width: 1.5,
-                                ),
-                              ),
-                              child: _meterType == prepaid
-                                  ? Container(
-                                      height: kSmallPadding,
-                                      width: kSmallPadding,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: kPrimaryColor,
+                        Consumer(builder: (context, ref, _) {
+                          var _widget = Row(
+                                children: [
+                                  paymentType == null
+                                      ? SizedBox()
+                                      : RichText(
+                                    text: TextSpan(
+                                      text: "₦",
+                                      style: TextStyle(
+                                        color: kPrimaryTextColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 18,
                                       ),
-                                    )
-                                  : SizedBox(
-                                      height: kSmallPadding,
-                                      width: kSmallPadding,
+                                      children: [
+                                        TextSpan(
+                                            text: kPriceFormatter(
+                                                double.parse(
+                                                    paymentType!
+                                                        .amount!) /
+                                                    100)
+                                                .replaceAll(".00", ""),
+                                            style: textTheme.subtitle1)
+                                      ],
                                     ),
-                            ),
-                            SizedBox(
-                              width: kMediumPadding,
-                            ),
-                            Text(
-                              prepaid,
-                              style: textTheme.subtitle1!
-                                  .copyWith(fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                      ),
+                                  ),
+                                  Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 30,
+                                    color: kSecondaryTextColor,
+                                  ),
+                                ],
+                              );
+                          return ref.watch(getUtilitiesTypeProvider).when(
+                            done: (data) {
+                              if (data != null) {
+                                utilitiesType = data.data!.paymentitems!;
+                              }
+                              return _widget;
+                            },
+                            loading: () {
+                              return SpinKitDemo(
+                                size: 25,
+                              );
+                            },
+                            error: (val) => _widget,
+                          );
+                        }),
+                      ],
                     ),
-                    inkWell(
-                      onTap: () {
-                        setState(() => _meterType = postpaid);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: kMediumPadding,
-                            vertical: kRegularPadding),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(kSmallPadding),
-                          border: Border.all(
-                            color: _meterType == postpaid
-                                ? kPrimaryColor
-                                : kLightPurple,
-                            width: 1,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: _meterType == postpaid
-                                      ? kPrimaryColor
-                                      : kLightPurple,
-                                  width: 1.5,
-                                ),
-                              ),
-                              child: _meterType == postpaid
-                                  ? Container(
-                                      height: kSmallPadding,
-                                      width: kSmallPadding,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: kPrimaryColor,
-                                      ),
-                                    )
-                                  : SizedBox(
-                                      height: kSmallPadding,
-                                      width: kSmallPadding,
-                                    ),
-                            ),
-                            SizedBox(
-                              width: kMediumPadding,
-                            ),
-                            Text(
-                              postpaid,
-                              style: textTheme.subtitle1!
-                                  .copyWith(fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
+
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     inkWell(
+                //       onTap: () {
+                //         setState(() => _meterType = prepaid);
+                //       },
+                //       child: Container(
+                //         padding: EdgeInsets.symmetric(
+                //             horizontal: kMediumPadding,
+                //             vertical: kRegularPadding),
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(kSmallPadding),
+                //           border: Border.all(
+                //             color: _meterType == prepaid
+                //                 ? kPrimaryColor
+                //                 : kLightPurple,
+                //             width: 1,
+                //           ),
+                //         ),
+                //         child: Row(
+                //           children: [
+                //             Container(
+                //               padding: EdgeInsets.all(4),
+                //               decoration: BoxDecoration(
+                //                 shape: BoxShape.circle,
+                //                 border: Border.all(
+                //                   color: _meterType == prepaid
+                //                       ? kPrimaryColor
+                //                       : kPurpleColor400,
+                //                   width: 1.5,
+                //                 ),
+                //               ),
+                //               child: _meterType == prepaid
+                //                   ? Container(
+                //                       height: kSmallPadding,
+                //                       width: kSmallPadding,
+                //                       decoration: BoxDecoration(
+                //                         shape: BoxShape.circle,
+                //                         color: kPrimaryColor,
+                //                       ),
+                //                     )
+                //                   : SizedBox(
+                //                       height: kSmallPadding,
+                //                       width: kSmallPadding,
+                //                     ),
+                //             ),
+                //             SizedBox(
+                //               width: kMediumPadding,
+                //             ),
+                //             Text(
+                //               prepaid,
+                //               style: textTheme.subtitle1!
+                //                   .copyWith(fontWeight: FontWeight.w500),
+                //             )
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //     inkWell(
+                //       onTap: () {
+                //         setState(() => _meterType = postpaid);
+                //       },
+                //       child: Container(
+                //         padding: EdgeInsets.symmetric(
+                //             horizontal: kMediumPadding,
+                //             vertical: kRegularPadding),
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(kSmallPadding),
+                //           border: Border.all(
+                //             color: _meterType == postpaid
+                //                 ? kPrimaryColor
+                //                 : kLightPurple,
+                //             width: 1,
+                //           ),
+                //         ),
+                //         child: Row(
+                //           children: [
+                //             Container(
+                //               padding: EdgeInsets.all(4),
+                //               decoration: BoxDecoration(
+                //                 shape: BoxShape.circle,
+                //                 border: Border.all(
+                //                   color: _meterType == postpaid
+                //                       ? kPrimaryColor
+                //                       : kLightPurple,
+                //                   width: 1.5,
+                //                 ),
+                //               ),
+                //               child: _meterType == postpaid
+                //                   ? Container(
+                //                       height: kSmallPadding,
+                //                       width: kSmallPadding,
+                //                       decoration: BoxDecoration(
+                //                         shape: BoxShape.circle,
+                //                         color: kPrimaryColor,
+                //                       ),
+                //                     )
+                //                   : SizedBox(
+                //                       height: kSmallPadding,
+                //                       width: kSmallPadding,
+                //                     ),
+                //             ),
+                //             SizedBox(
+                //               width: kMediumPadding,
+                //             ),
+                //             Text(
+                //               postpaid,
+                //               style: textTheme.subtitle1!
+                //                   .copyWith(fontWeight: FontWeight.w500),
+                //             )
+                //           ],
+                //         ),
+                //       ),
+                //     )
+                //   ],
+                // ),
                 SizedBox(
                   height: kMicroPadding,
                 ),
@@ -215,6 +376,15 @@ class _BuyElectricityState extends State<BuyElectricity> {
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                   ],
+                  onChanged: (val) {
+                    if (val!.isEmpty) {
+                      setState(() => _meterNo = "");
+                    } else {
+                      setState(() {
+                        _meterNo = val;
+                      });
+                    };
+                  },
                   icon: inkWell(
                     onTap: () async {
                       final PhoneContact contact =
@@ -255,6 +425,15 @@ class _BuyElectricityState extends State<BuyElectricity> {
                         return "Amount cannot start with zero";
                       } else
                         return null;
+                    },
+                    onChanged: (val) {
+                      if (val.isEmpty) {
+                        setState(() => _amount = "");
+                      } else {
+                        setState(() {
+                          _amount = val;
+                        });
+                      };
                     },
                     decoration: InputDecoration(
                       filled: true,
@@ -340,29 +519,86 @@ class _BuyElectricityState extends State<BuyElectricity> {
           SizedBox(
             height: kLargePadding,
           ),
-          LargeButton(
-            title: continueText,
-            onPressed: () {
-              if (double.parse(amountController.text) > 10000 &&
-                  widget.isGuest!) {
-                buildShowModalBottomSheet(context, GuestMaximumAmountModal());
-              } else {
-                // buildShowModalBottomSheet(
-                //   context,
-                //   widget.isGuest!
-                //       ? GuestRechargeSummary(
-                //           textTheme: textTheme,
-                //     purchaseDelivered: true,
-                //         )
-                //       : RechargeSummary(
-                //           isData: false,
-                //           isCable: true,
-                //           textTheme: textTheme,
-                //         ),
-                // );
-              }
-            },
-          )
+          Consumer(builder: (context, ref, _) {
+            ref.listen(buyUtilitiesProvider,
+                    (previous, NotifierState<String> next) {
+                  if (next.status == NotifierStatus.done) {
+                    pushTo(
+                      context,
+                      SuccessMessage(
+                          text: dataSuccess,
+                          subText: deliveredPurchase,
+                          onTap: () {
+                            pushToAndClearStack(
+                              context,
+                              TabLayout(
+                                gottenIndex: 0,
+                              ),
+                            );
+                          }),
+                    );
+                  }else if(next.status == NotifierStatus.error) {
+                    showErrorBar(context, next.data ?? next.message!);
+                  }
+                });
+            var _widget = LargeButton(
+              title: continueText,
+              disableColor: (paymentType == null || _meterNo == "" || utilitiesData == null || _amount == "")
+                  ? kBackgroundColor
+                  : kPrimaryColor,
+              onPressed:
+               (paymentType == null || _meterNo == "" ||
+                  utilitiesData == null || _amount == "")
+                  ? () {}
+                  :
+                  () {
+                FocusScope.of(context).unfocus();
+                    if (double.parse(amountController.text) > 10000 &&
+                        widget.isGuest!) {
+                      buildShowModalBottomSheet(context, GuestMaximumAmountModal());
+                    }else{
+                    buildShowModalBottomSheet(
+                  context,
+                  widget.isGuest!
+                      ? GuestRechargeSummary(
+                    textTheme: textTheme,
+                    purchaseDelivered: true,
+                  )
+                      : RechargeSummary(
+                    billerName: utilitiesData!.billername!,
+                    amount: amountController.text,
+                    billerLogo: "",
+                    recipientNo: contactController.text,
+                    textTheme: textTheme,
+                  ),
+                ).then((value) async {
+                  final result = await buildShowModalBottomSheet(
+                      context,
+                      TransactionPinContainer(
+                        isData: false,
+                        isCable: false,
+                        isCard: false,
+                        isFundCard: false,
+                      ));
+                  if (result != null) {
+                    ref.read(buyUtilitiesProvider.notifier).buyUtilities(
+                      paymentCode: paymentType!.paymentCode!,
+                      amount: amountController.text,
+                      customerId: contactController.text,
+                      transactionPin: result,
+                      subCategory: utilitiesData!.billername!,
+                      category: "cable-purchase",
+                    );
+                  }
+                });};
+              },
+            );
+            return ref.watch(buyUtilitiesProvider).when(
+              done: (data) => _widget,
+              loading: () => SpinKitDemo(),
+              error: (val) => _widget,
+            );
+          }),
         ],
       ),
     );

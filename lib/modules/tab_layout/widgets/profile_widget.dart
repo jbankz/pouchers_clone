@@ -4,17 +4,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
+import 'package:pouchers/data/hive_data.dart';
 import 'package:pouchers/modules/account/models/profile_model.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
+import 'package:pouchers/utils/logger.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class KYCColumn extends StatelessWidget {
   final String title, subTitle;
+  final int? tierLevel;
   final Function()? onTap;
 
   const KYCColumn(
@@ -22,6 +25,7 @@ class KYCColumn extends StatelessWidget {
       required this.textTheme,
       required this.title,
       required this.subTitle,
+      this.tierLevel,
       this.onTap})
       : super(key: key);
 
@@ -43,7 +47,7 @@ class KYCColumn extends StatelessWidget {
                   ),
                 ),
               ),
-              title == idVerification
+              (title == idVerification && tierLevel != 3)
                   ? Container(
                       padding: EdgeInsets.symmetric(
                           horizontal: kSmallPadding, vertical: 2),
@@ -67,11 +71,13 @@ class KYCColumn extends StatelessWidget {
               SizedBox(
                 width: kSmallPadding,
               ),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: kSecondaryTextColor,
-                size: kRegularPadding,
-              )
+              (title == idVerification && tierLevel == 3)
+                  ? SizedBox()
+                  : Icon(
+                      Icons.arrow_forward_ios,
+                      color: kSecondaryTextColor,
+                      size: kRegularPadding,
+                    )
             ],
           ),
         ),
@@ -193,7 +199,9 @@ class _EditFullNameModalState extends State<EditFullNameModal> {
                 Navigator.pop(context);
                 showSuccessBar(context, next.data!.message);
                 ref.read(editProfileInHouseProvider.notifier).state =
-                    next.data!.data!;
+                    EditProfileData.fromJson(next.data!.data!.toJson());
+                logPrint(
+                    "Full name profile ${ref.watch(editProfileInHouseProvider)}"); //next.data!.data!;
               } else if (next.status == NotifierStatus.error) {
                 showErrorBar(context, next.message!);
               }
@@ -368,7 +376,7 @@ class _GenderModalState extends State<GenderModal> {
               Navigator.pop(context);
               showSuccessBar(context, next.data!.message);
               ref.read(editProfileInHouseProvider.notifier).state =
-                  next.data!.data!;
+                  EditProfileData.fromJson(next.data!.data!.toJson());
             } else if (next.status == NotifierStatus.error) {
               showErrorBar(context, next.message!);
             }
@@ -546,13 +554,12 @@ class ProfileRoleWidget extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              height: 50,
-              width: 50,
-              padding: EdgeInsets.all(kRegularPadding),
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle, color: kBackgroundColor),
-              child: icon
-            ),
+                height: 50,
+                width: 50,
+                padding: EdgeInsets.all(kRegularPadding),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle, color: kBackgroundColor),
+                child: icon),
             SizedBox(
               width: kSmallPadding,
             ),
@@ -670,7 +677,7 @@ class _BirthCalendarState extends State<BirthCalendar> {
                 Navigator.pop(context);
                 showSuccessBar(context, next.data!.message);
                 ref.read(editProfileInHouseProvider.notifier).state =
-                    next.data!.data!;
+                    EditProfileData.fromJson(next.data!.data!.toJson());
               } else if (next.status == NotifierStatus.error) {
                 showErrorBar(context, next.message!);
               }

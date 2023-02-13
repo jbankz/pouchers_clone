@@ -161,23 +161,23 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
     try {
       canCheckBiometrics = await auth.canCheckBiometrics;
     } catch (e) {
-      log("error biometrics $e");
+      logPrint("error biometrics $e");
     }
     if (!mounted) return;
     setState(() {
       _canCheckBiometrics = canCheckBiometrics;
     });
-    log("biometric is available: $canCheckBiometrics");
+    logPrint("biometric is available: $canCheckBiometrics");
     List<BiometricType>? availableBiometrics;
     try {
       availableBiometrics = await auth.getAvailableBiometrics();
     } catch (e) {
-      log("error enumerate biometrics $e");
+      logPrint("error enumerate biometrics $e");
     }
-    log("following biometrics are available");
+    logPrint("following biometrics are available");
     if (availableBiometrics!.isNotEmpty) {
       availableBiometrics.forEach((ab) {
-        log("\ttech: $availableBiometrics");
+        logPrint("\ttech: $availableBiometrics");
       });
     } else {
       showErrorBar(context,

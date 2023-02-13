@@ -59,58 +59,61 @@ class _RedeemVoucherState extends ConsumerState<RedeemVoucher> {
           SizedBox(
             height: kSmallPadding,
           ),
-          Container(
-            padding: EdgeInsets.all(kRegularPadding),
-            decoration: BoxDecoration(
-                color: kBackgroundColor,
-                borderRadius: BorderRadius.circular(kSmallPadding)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  _value.code,
-                  style: textTheme.headline2!.copyWith(
-                      color: _value.code != "#12345647"
-                          ? kPrimaryTextColor
-                          : kLightColor200),
-                ),
-                inkWell(onTap: () async {
-                  final result = await buildShowModalBottomSheet(
-                      context,
-                      VoucherModal(
-                        voucherItems: activeVouchers,
-                      ));
-                  if (result != null) {
-                    setState(() {
-                      _value.code = result.code;
-                      _value.amount = result.amount;
-                    });
-                  }
-                }, child: Consumer(
-                  builder: (context, ref, _) {
-                    ref.listen(fetchVoucherProvider,
-                        (previous, NotifierState<GetVoucherResponse> next) {
-                      if (next.status == NotifierStatus.done) {
-                        next.data!.data!.vouchers.forEach((element) {
-                          activeVouchers.add(element);
-                        });
-                      }
-                    });
-                    var _widget = Icon(
-                      Icons.keyboard_arrow_down,
-                      size: 30,
-                      color: kSecondaryTextColor,
-                    );
-                    return ref.watch(fetchVoucherProvider).when(
-                          done: (data) => _widget,
-                          loading: () => SpinKitDemo(
-                            size: 25,
-                          ),
-                          error: (val) => _widget,
-                        );
-                  },
-                )),
-              ],
+          inkWell(
+              onTap: () async {
+                final result = await buildShowModalBottomSheet(
+                    context,
+                    VoucherModal(
+                      voucherItems: activeVouchers,
+                    ));
+                if (result != null) {
+                  setState(() {
+                    _value.code = result.code;
+                    _value.amount = result.amount;
+                  });
+                }
+              },
+            child: Container(
+              padding: EdgeInsets.all(kRegularPadding),
+              decoration: BoxDecoration(
+                  color: kBackgroundColor,
+                  borderRadius: BorderRadius.circular(kSmallPadding)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    _value.code,
+                    style: textTheme.headline2!.copyWith(
+                        color: _value.code != "#12345647"
+                            ? kPrimaryTextColor
+                            : kLightColor200),
+                  ),
+                   Consumer(
+                    builder: (context, ref, _) {
+                      ref.listen(fetchVoucherProvider,
+                          (previous, NotifierState<GetVoucherResponse> next) {
+                        if (next.status == NotifierStatus.done) {
+                          next.data!.data!.vouchers.forEach((element) {
+                            activeVouchers.add(element);
+                          });
+                        }
+                      });
+                      var _widget = Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 30,
+                        color: kSecondaryTextColor,
+                      );
+                      return ref.watch(fetchVoucherProvider).when(
+                            done: (data) => _widget,
+                            loading: () => SpinKitDemo(
+                              size: 25,
+                            ),
+                            error: (val) => _widget,
+                          );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           SizedBox(
@@ -125,7 +128,6 @@ class _RedeemVoucherState extends ConsumerState<RedeemVoucher> {
                     borderRadius: BorderRadius.circular(kRegularPadding),
                   ),
                   child: VoucherImage(
-                    textTheme: textTheme,
                     amount: _value.amount,
                     voucherCode: _value.code,
                   ),
@@ -138,7 +140,7 @@ class _RedeemVoucherState extends ConsumerState<RedeemVoucher> {
                 (previous, NotifierState<String> next) {
               if (next.status == NotifierStatus.done) {
                 ref.read(getWalletProvider.notifier).getWalletDetails();
-                pushTo(
+                pushReplacementTo(
                   context,
                   VoucherSuccessful(
                     isRedeem: true,

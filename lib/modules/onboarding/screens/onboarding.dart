@@ -1,12 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/create_account/screens/create_account.dart';
 import 'package:pouchers/modules/login/screens/login.dart';
 import 'package:pouchers/modules/onboarding/screens/welcome_guest.dart';
+import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
@@ -80,6 +81,90 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         ),
       ],
     ),
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: OnBoardingVoucherImage(
+                image: AssetPaths.onBoardingVoucher2Icon,
+              ),
+            ),
+            Expanded(
+                child: Column(
+              children: [
+                SvgPicture.asset(
+                  AssetPaths.voucherIcon,
+                  color: kPrimaryColor,
+                  height: 50,
+                ),
+                Text(
+                  buyVoucher1,
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    color: kPurpleLight100,
+                    fontFamily: "DMSans",
+                    fontSize: 16,
+                  ),
+                )
+              ],
+            )),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+                child: Column(
+              children: [
+                SvgPicture.asset(
+                  AssetPaths.redeemVoucher,
+                  color: kBlueColor,
+                  height: 50,
+                ),
+                Text(
+                  "Redeem Voucher",
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    color: kBlueColor,
+                    fontFamily: "DMSans",
+                    fontSize: 16,
+                  ),
+                )
+              ],
+            )),
+            Expanded(
+              child: OnBoardingVoucherImage(
+                image: AssetPaths.onBoardingVoucherIcon,
+              ),
+            ),
+          ],
+        ),
+        Center(
+          child: Column(
+            children: [
+              SvgPicture.asset(
+                AssetPaths.giftVoucher,
+                color: kColorOrange100,
+                height: 50,
+              ),
+              Text(
+                "Gift Voucher",
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  color: kColorOrange100,
+                  fontFamily: "DMSans",
+                  fontSize: 16,
+                ),
+              )
+            ],
+          ),
+        )
+      ],
+    ),
   ];
 
   _onChanged(int index) {
@@ -92,7 +177,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   void initState() {
     _controller = PageController();
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _animateSlider());
+    // WidgetsBinding.instance.addPostFrameCallback((_) => _animateSlider());
   }
 
   @override
@@ -137,15 +222,13 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(onBoardingTitle,
-                          style: textTheme.headline1!.copyWith(height: 1.3, fontSize: SizeConfig.blockSizeVertical! *  3)),
-                      // SizedBox(
-                      //   height: kPadding,
-                      // ),
+                          style: textTheme.headline1!.copyWith(
+                              height: 1.3,
+                              fontSize: SizeConfig.blockSizeVertical! * 3)),
                       Text(onBoardingSubTitle,
-                          style: textTheme.bodyText1!.copyWith(height: 1.5, fontSize: SizeConfig.blockSizeVertical! *  2.5)),
-                      // SizedBox(
-                      //   height: kFullPadding,
-                      // ),
+                          style: textTheme.bodyText1!.copyWith(
+                              height: 1.5,
+                              fontSize: SizeConfig.blockSizeVertical! * 2.5)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -171,8 +254,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             child: LargeButton(
                               title: register,
                               onPressed: () {
-                                pushTo(context, CreateAccount(), settings: const RouteSettings(
-                                    name: CreateAccount.routeName));
+                                pushTo(context, CreateAccount(),
+                                    settings: const RouteSettings(
+                                        name: CreateAccount.routeName));
                               },
                             ),
                           ),
@@ -183,12 +267,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                       // ),
                       inkWell(
                         onTap: () {
-                          pushTo(
-                            context,
-                            WelcomeGuest(),
-                               settings: const RouteSettings(
-                          name: WelcomeGuest.routeName)
-                          );
+                          pushTo(context, WelcomeGuest(),
+                              settings: const RouteSettings(
+                                  name: WelcomeGuest.routeName));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

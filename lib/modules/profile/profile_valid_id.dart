@@ -126,8 +126,8 @@ class _ValidIdState extends State<ValidId> {
                       ),
                       settings: const RouteSettings(
                           name: ProfileSuccessful.routeName));
-                  ref.read(editProfileInHouseProvider.notifier).state =
-                  next.data!.data!;
+                  ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
+
                 } else if (next.status == NotifierStatus.error) {
                   setState(() {
                     error = next.message ?? "";

@@ -13,7 +13,7 @@ void logResponse(Response response) {
       "${response.body}\n");
 }
 
-void log(Object object) {
+void logPrint(Object object) {
   logger.i(object);
 }
 

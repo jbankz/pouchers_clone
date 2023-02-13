@@ -22,7 +22,12 @@ class AssetPaths {
    static String ussdImage = "${imgPath}ussd_image.png";
    static String voucherImage = "${imgPath}voucher.png";
    static String voucher1Image = "${imgPath}voucher1.png";
-   static String referralImage = "${imgPath}referral_image.png";
+   static String referralAvatar = "${imgPath}referral_avatar.png";
+   static String inviteImage = "${imgPath}invite_image.png";
+   static String checkImage = "${imgPath}check.png";
+
+
+   //static String referralImage = "${imgPath}referral_image.png";
 
 
 
@@ -70,7 +75,7 @@ class AssetPaths {
    static String pouIcon = "${iconPath}pou_logo.svg";
    static String nairaIcon = "${iconPath}naira.svg";
     static String dollarIcon = "${iconPath}dollar.svg";
-   static String cardFrameIcon = "${iconPath}card_frame.svg";
+   static String cardHomeDollarIcon = "${iconPath}card_frame.svg";
    static String fundCardIcon = "${iconPath}fund_card.svg";
    static String cardDetailIcon = "${iconPath}card_detail.svg";
    static String  manageIcon = "${iconPath}manage.svg";
@@ -91,5 +96,12 @@ class AssetPaths {
    static String earnIcon = "${iconPath}earn.svg";
    static String reminderIcon = "${iconPath}reminder.svg";
    static String poucherTextImage = "${iconPath}poucher_logo.svg";
+   static String ticketStarIcon = "${iconPath}ticket_star.svg";
+   static String cardDollarIcon = "${iconPath}card_dollar.svg";
+   static String cardNairaIcon = "${iconPath}card_naira.svg";
+   static String cardHomeNairaIcon = "${iconPath}card_home_naira.svg";
+   static String onBoardingVoucherIcon = "${iconPath}onboarding_voucher.svg";
+   static String onBoardingVoucher2Icon = "${iconPath}onboarding_voucher2.svg";
+
 
 }

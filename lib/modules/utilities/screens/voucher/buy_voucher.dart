@@ -70,9 +70,8 @@ class _BuyVouchersState extends ConsumerState<BuyVouchers> {
                           currentIndex = index;
                           amountController.text = buyVoucherList[index];
                         });
-                        amountController.selection =
-                            TextSelection.fromPosition(TextPosition(
-                                offset: amountController.text.length));
+                        amountController.selection = TextSelection.fromPosition(
+                            TextPosition(offset: amountController.text.length));
                       },
                       child: Container(
                           alignment: Alignment.center,
@@ -150,7 +149,7 @@ class _BuyVouchersState extends ConsumerState<BuyVouchers> {
                     (previous, NotifierState<String> next) {
                   if (next.status == NotifierStatus.done) {
                     ref.read(getWalletProvider.notifier).getWalletDetails();
-                    pushTo(
+                    pushReplacementTo(
                       context,
                       VoucherSuccessful(
                         amount: amountController.text,
@@ -165,6 +164,7 @@ class _BuyVouchersState extends ConsumerState<BuyVouchers> {
                 var _widget = LargeButton(
                   title: buyVoucher1,
                   onPressed: () async {
+                    FocusScope.of(context).unfocus();
                     if (amountController.text.isEmpty && currentIndex == -1) {
                       showErrorBar(context, "Please Input an amount");
                     } else {

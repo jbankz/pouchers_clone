@@ -51,13 +51,13 @@ class _HomePageState extends ConsumerState<HomePage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if (ref.watch(editProfileInHouseProvider).profilePicture == null) {
-        ref.read(editProfileInHouseProvider.notifier).state =
-            await EditProfileData()
-                .copyWith(profilePicture: userProfile.profilePicture);
+      if (ref.watch(editProfileInHouseProvider) == null) {
+        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(userProfile.toJson());
         setState(() {});
-      }
-      ref.read(getWalletProvider.notifier).getWalletDetails();
+      } else {
+        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(ref.watch(editProfileInHouseProvider).toJson());
+        setState(() {});
+      }      ref.read(getWalletProvider.notifier).getWalletDetails();
     });
   }
 
@@ -94,10 +94,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                     child: CachedNetworkImage(
                         height: 50,
                         width: 50,
-                        imageUrl: ref
-                                .watch(editProfileInHouseProvider)
-                                .profilePicture ??
-                            "",
+                        imageUrl: ref.watch(editProfileInHouseProvider) == null
+                            ? userProfile.profilePicture!
+                            : ref
+                                    .watch(editProfileInHouseProvider)
+                                    .profilePicture ??
+                                "",
                         placeholder: (context, url) => Container(
                               color: Colors.transparent,
                               height: 50,
@@ -198,19 +200,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   color: kPurpleColor700, width: 0.7),
                               borderRadius:
                                   BorderRadius.circular(kSmallPadding)),
-                          child: ref
-                                      .watch(editProfileInHouseProvider)
-                                      .tierLevels ==
-                                  null
-                              ? Text(
-                                  "$tier ${userProfile.tierLevels}",
-                                  style: textTheme.headline4!.copyWith(
-                                    color: kSecondaryPurple,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                )
-                              : Text(
-                                  "$tier ${ref.watch(editProfileInHouseProvider).tierLevels}",
+                          child:  Text(
+                              ref.watch(editProfileInHouseProvider).tierLevels == null ? "$tier ${userProfile.tierLevels}" : "$tier ${ref.watch(editProfileInHouseProvider).tierLevels}",
                                   style: textTheme.headline4!.copyWith(
                                     color: kSecondaryPurple,
                                     fontWeight: FontWeight.w700,
@@ -238,7 +229,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             SizedBox(
               height: kMediumPadding,
             ),
-            inkWell(
+            ref.watch(editProfileInHouseProvider).tierLevels == 3 ? SizedBox() : inkWell(
               onTap: () {
                 pushTo(
                   context,
@@ -312,7 +303,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                           text: obscure
                                               ? "****** "
                                               : kPriceFormatter(double.parse(
-                                                  done!.data!.balance ??
+                                                  done.data!.balance ??
                                                       "0.00")),
                                           style: textTheme.bodyText2!.copyWith(
                                             fontWeight: FontWeight.w700,

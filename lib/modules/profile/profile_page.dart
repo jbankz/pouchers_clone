@@ -42,9 +42,43 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if (ref.watch(editProfileInHouseProvider).profilePicture == null) {
-        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData()
-            .copyWith(profilePicture: userProfile.profilePicture);
+      if (ref.watch(editProfileInHouseProvider) == null) {
+        print("null");
+        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(userProfile.toJson());
+
+        // ref.read(editProfileInHouseProvider.notifier).state =
+        // await EditProfileData().copyWith(
+        //   profilePicture: userProfile.profilePicture,
+        //   id: userProfile.id,
+        //   lastName: userProfile.lastName,
+        //   firstName: userProfile.firstName,
+        //   tierLevels: userProfile.tierLevels,
+        //   tag: userProfile.tag,
+        //   email: userProfile.email,
+        //   userId: userProfile.userId,
+        //   phoneNumber: userProfile.phoneNumber,
+        //   gender: userProfile.gender,
+        //   dob: userProfile.dob,
+        // );
+        setState(() {});
+      } else {
+        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(ref.watch(editProfileInHouseProvider).toJson());
+
+        // ref.read(editProfileInHouseProvider.notifier).state =
+        // await EditProfileData().copyWith(
+        //   profilePicture: ref.watch(editProfileInHouseProvider).profilePicture,
+        //   id: ref.watch(editProfileInHouseProvider).id,
+        //   lastName: ref.watch(editProfileInHouseProvider).lastName,
+        //   firstName: ref.watch(editProfileInHouseProvider).firstName,
+        //   tierLevels: ref.watch(editProfileInHouseProvider).tierLevels,
+        //   tag: ref.watch(editProfileInHouseProvider).tag,
+        //   email: ref.watch(editProfileInHouseProvider).email,
+        //   userId: ref.watch(editProfileInHouseProvider).userId,
+        //   phoneNumber: ref.watch(editProfileInHouseProvider).phoneNumber,
+        //   gender: ref.watch(editProfileInHouseProvider).gender,
+        //   dob: ref.watch(editProfileInHouseProvider).dob,
+        // );
+        setState(() {});
       }
       await checkTierLevel();
       setState(() {});
@@ -216,7 +250,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           SizedBox(
                             width: kSmallPadding,
                           ),
-                          inkWell(
+                          hiveTierLevel == 3 ? SizedBox() : inkWell(
                             onTap: () {
                               pushTo(
                                 context,
@@ -269,13 +303,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     settings: RouteSettings(name: Referral.routeName),
                   );
                 },
-              ),
-              ProfileRoleWidget(
-                text: savedCard,
-                subText: savedCardSub,
-                textTheme: textTheme,
-                icon: SvgPicture.asset(AssetPaths.savedCardIcon),
-                onTap: () {},
               ),
               ProfileRoleWidget(
                 text: accountSetting,
@@ -358,9 +385,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               LargeButton(
                 title: logOut,
                 onPressed: () async{
-                  await Hive.box(kUserBox).clear();
-                  await Hive.box(kTokenBox).clear();
-                  await Hive.box(k2FACodeBox).clear();
+                  ref.invalidate(editProfileInHouseProvider);
+                // var refff =   ref.refresh(editProfileInHouseProvider);
                   pushToAndClearStack(
                     context,
                     LogInAccount(),

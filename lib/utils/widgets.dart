@@ -379,14 +379,16 @@ Future<dynamic> buildShowModalBottomSheet(BuildContext context, Widget widget) {
 }
 
 class SuccessMessage extends StatelessWidget {
-  final String text, subText;
-  final Function() onTap;
+  static const String routeName = "successMessage";
+
+  final String? text, subText;
+  final Function()? onTap;
 
   const SuccessMessage(
       {Key? key,
-      required this.text,
-      required this.subText,
-      required this.onTap})
+       this.text,
+       this.subText,
+       this.onTap})
       : super(key: key);
 
   @override
@@ -405,14 +407,14 @@ class SuccessMessage extends StatelessWidget {
                     height: kMacroPadding,
                   ),
                   Text(
-                    text,
+                    text!,
                     style: textTheme.headline1,
                   ),
                   SizedBox(
                     height: kPadding,
                   ),
                   Text(
-                    subText,
+                    subText!,
                     textAlign: TextAlign.center,
                     style: textTheme.bodyText1!
                         .copyWith(fontWeight: FontWeight.normal, height: 1.6),
@@ -423,7 +425,7 @@ class SuccessMessage extends StatelessWidget {
             LargeButton(
                 title: continueText,
                 disableColor: kPurpleColor,
-                onPressed: onTap),
+                onPressed: onTap!),
             SizedBox(
               height: kMediumPadding,
             ),

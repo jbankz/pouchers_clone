@@ -33,6 +33,7 @@ import 'package:pouchers/modules/utilities/screens/voucher/gift_voucher.dart';
 import 'package:pouchers/modules/utilities/screens/voucher/redeem_voucher.dart';
 import 'package:pouchers/modules/utilities/screens/voucher/view_voucher_history.dart';
 import 'package:pouchers/modules/utilities/screens/voucher/voucher.dart';
+import 'package:pouchers/utils/widgets.dart';
 import 'modules/account/screens/account_settings/account_settings.dart';
 import 'modules/account/screens/two_factor_auth/confirm_auth_pin.dart';
 import 'modules/cards/screens/card_home.dart';
@@ -153,5 +154,6 @@ Map<String, WidgetBuilder> appRoutes = {
   HistoryDetail.routeName: (context) => HistoryDetail(),
   TransactionReceipt.routeName : (context) => TransactionReceipt(),
   Analytics.routeName : (context) => Analytics(),
-  Referral.routeName : (context) => Referral()
+  Referral.routeName : (context) => Referral(),
+  SuccessMessage.routeName: (context) => SuccessMessage()
 };

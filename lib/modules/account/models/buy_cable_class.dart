@@ -22,8 +22,8 @@ class _UtilityModalState extends State<UtilityModal> {
     return makeDismissible(
       context: context,
       child: DraggableScrollableSheet(
-        initialChildSize: 0.5,
-        maxChildSize: 0.5,
+        initialChildSize: widget.utilities.isEmpty ? 0.25: 0.5,
+        maxChildSize: widget.utilities.isEmpty? 0.25 : 0.5,
         builder: (_, controller) => Container(
           padding: const EdgeInsets.only(top: 10, bottom: 20),
           decoration: BoxDecoration(
@@ -59,52 +59,61 @@ class _UtilityModalState extends State<UtilityModal> {
               const SizedBox(
                 height: 30,
               ),
-              ...widget.utilities.map(
-                (e) => Padding(
-                  padding: const EdgeInsets.only(bottom: kRegularPadding),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: kRegularPadding),
-                        child: inkWell(
-                          onTap: () {
-                            Navigator.pop(context, e);
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 40,
-                                width: 40,
-                                color: kIconGrey,
-                              ),
-                              // ClipRRect(
-                              //   child: Image.asset(
-                              //     e.icon,
-                              //   ),
-                              //   borderRadius: BorderRadius.circular(116),
-                              // ),
-                              SizedBox(
-                                width: kRegularPadding,
-                              ),
-                              Text(
-                                e.billername!,
-                                style: textTheme.subtitle1,
-                              )
-                            ],
+              widget.utilities.isEmpty
+                  ? Text(
+                "No Provider available",
+                style: textTheme.subtitle1,
+                textAlign: TextAlign.center,
+              )
+                  : Column(
+                children: widget.utilities.map(
+                      (e) => Padding(
+                    padding: const EdgeInsets.only(bottom: kRegularPadding),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: kRegularPadding),
+                          child: inkWell(
+                            onTap: () {
+                              Navigator.pop(context, e);
+                            },
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 40,
+                                  width: 40,
+                                  color: kIconGrey,
+                                ),
+                                // ClipRRect(
+                                //   child: Image.asset(
+                                //     e.icon,
+                                //   ),
+                                //   borderRadius: BorderRadius.circular(116),
+                                // ),
+                                SizedBox(
+                                  width: kRegularPadding,
+                                ),
+                                Text(
+                                  e.billername!,
+                                  style: textTheme.subtitle1,
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: kSmallPadding,
-                      ),
-                      Divider(
-                        color: kLightPurple,
-                        thickness: 1,
-                      )
-                    ],
+                        SizedBox(
+                          height: kSmallPadding,
+                        ),
+                        Divider(
+                          color: kLightPurple,
+                          thickness: 1,
+                        )
+                      ],
+                    ),
                   ),
-                ),
+                ).toList(),
               )
+
             ],
           ),
         ),
@@ -130,9 +139,8 @@ class _SubscriptionModalState extends State<SubscriptionModal> {
     return makeDismissible(
       context: context,
       child: DraggableScrollableSheet(
-        initialChildSize: widget.paymentItem.isEmpty ? 0.2: 0.5,
-        maxChildSize: widget.paymentItem.isEmpty? 0.2 : 0.5,
-        minChildSize: widget.paymentItem.isEmpty? 0.2 : 0.5,
+        initialChildSize: widget.paymentItem.isEmpty ? 0.25: 0.5,
+        maxChildSize: widget.paymentItem.isEmpty? 0.25 : 0.5,
         builder: (_, controller) => Container(
           padding: const EdgeInsets.only(top: 10, bottom: 20),
           decoration: BoxDecoration(

@@ -115,7 +115,10 @@ class TransferSuccess extends StatelessWidget {
                             typeOfTransfer: typeOfTransfer,
                             accNo: accNo,
                             amount: amount,
+                            fromWhere: "transfer",
+                            tag: tag ?? "",
                             transferName: transferName,
+                              transactionTime: DateTime.now(),
                               beneficiary: beneficiary
                           ),
                               settings: RouteSettings(

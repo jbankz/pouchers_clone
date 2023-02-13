@@ -1,16 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
 import 'package:pouchers/modules/account/screens/disable_account/disable_modal.dart';
+import 'package:pouchers/modules/cards/model/cards_model.dart';
+import 'package:pouchers/modules/cards/providers/cards_providers.dart';
 import 'package:pouchers/modules/cards/screens/card_residential_address.dart';
 import 'package:pouchers/modules/cards/screens/create_virtual_card.dart';
+import 'package:pouchers/modules/tab_layout/screens/tab_layout.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
+import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
+
+class AddressClass {
+  final String address;
+  final String city;
+  final String residentState;
+  final String country;
+  final String postalCode;
+  final String bvn;
+
+  AddressClass(
+      {required this.address,
+      required this.city,
+      required this.residentState,
+      required this.country,
+      required this.postalCode,
+      required this.bvn});
+}
 
 String headerText(bool isFundCard, bool isFundNaira, bool isNaira) {
   if (isFundCard && !isFundNaira) {
@@ -27,12 +50,12 @@ String headerText(bool isFundCard, bool isFundNaira, bool isNaira) {
 }
 
 class CreateCardWidget extends StatelessWidget {
-  const CreateCardWidget({
-    Key? key,
-    required this.textTheme,
-  }) : super(key: key);
+  const CreateCardWidget(
+      {Key? key, required this.textTheme, required this.cardType})
+      : super(key: key);
 
   final TextTheme textTheme;
+  final String cardType;
 
   @override
   Widget build(BuildContext context) {
@@ -71,37 +94,92 @@ class CreateCardWidget extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(
-            height: kMacroPadding,
+            height: cardType == "" ? kMacroPadding : kPadding,
           ),
-          VirtualCardType(
-            textTheme: textTheme,
-            isNaira: true,
-            onTap: () {
-              Navigator.pop(context);
-              pushTo(context, ResidentialAddress(),
-                  settings:
-                      const RouteSettings(name: ResidentialAddress.routeName));
-            },
-          ),
-          SizedBox(
-            height: kMacroPadding,
-          ),
-          VirtualCardType(
-            textTheme: textTheme,
-            isNaira: false,
-            onTap: () {
-              Navigator.pop(context);
-              pushTo(
-                  context,
-                  CreateVirtualCard(
-                    isNaira: false,
-                    isFundNaira: false,
-                    isFundCard: false,
-                  ),
-                  settings:
-                      const RouteSettings(name: CreateVirtualCard.routeName));
-            },
-          ),
+          cardType == ""
+              ? Column(
+                  children: [
+                    VirtualCardType(
+                      textTheme: textTheme,
+                      isNaira: true,
+                      onTap: () {
+                        Navigator.pop(context);
+                        pushTo(
+                            context,
+                            ResidentialAddress(
+                              isNaira: true,
+                              isFundNaira: false,
+                              isFundCard: false,
+                            ),
+                            settings: const RouteSettings(
+                                name: ResidentialAddress.routeName));
+                      },
+                    ),
+                    SizedBox(
+                      height: kMacroPadding,
+                    ),
+                    VirtualCardType(
+                      textTheme: textTheme,
+                      isNaira: false,
+                      onTap: () {
+                        Navigator.pop(context);
+                        pushTo(
+                            context,
+                            ResidentialAddress(
+                              isNaira: false,
+                              isFundNaira: false,
+                              isFundCard: false,
+                            ),
+                            settings: const RouteSettings(
+                                name: ResidentialAddress.routeName));
+                      },
+                    ),
+                  ],
+                )
+              : Column(
+                  children: [
+                    cardType == "dollar"
+                        ? SizedBox()
+                        : VirtualCardType(
+                            textTheme: textTheme,
+                            isNaira: true,
+                            onTap: () {
+                              Navigator.pop(context);
+                              pushTo(
+                                  context,
+                                  ResidentialAddress(
+                                    isNaira: true,
+                                    isFundNaira: false,
+                                    isFundCard: false,
+                                  ),
+                                  settings: const RouteSettings(
+                                      name: ResidentialAddress.routeName));
+                            },
+                          ),
+                    SizedBox(
+                      height: kMacroPadding,
+                    ),
+                    cardType == "dollar"
+                        ? VirtualCardType(
+                            textTheme: textTheme,
+                            isNaira: false,
+                            onTap: () {
+                              Navigator.pop(context);
+                              pushTo(
+                                context,
+                                ResidentialAddress(
+                                  isNaira: false,
+                                  isFundNaira: false,
+                                  isFundCard: false,
+                                ),
+                                settings: const RouteSettings(
+                                    name: ResidentialAddress.routeName),
+                              );
+                            },
+                          )
+                        : SizedBox(),
+                  ],
+                )
         ],
       ),
     );
@@ -206,7 +284,9 @@ class VirtualCardType extends StatelessWidget {
 }
 
 class CardDetails extends StatelessWidget {
-  const CardDetails({Key? key}) : super(key: key);
+  final GetCardDetailsData cardData;
+
+  const CardDetails({Key? key, required this.cardData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -262,7 +342,7 @@ class CardDetails extends StatelessWidget {
                   text: cardNumber,
                   isCopyIcon: true,
                   noSymbol: true,
-                  subText: "1234 4556 8748 8734",
+                  subText: cardData.maskedPan!,
                   style: textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
@@ -284,7 +364,7 @@ class CardDetails extends StatelessWidget {
                 AirtimeRow(
                   textTheme: textTheme,
                   text: validTill,
-                  subText: "07/24",
+                  subText: "${cardData.expiryMonth}/${cardData.expiryYear}",
                   noSymbol: true,
                   isCopyIcon: true,
                   style: textTheme.headline4!
@@ -296,7 +376,7 @@ class CardDetails extends StatelessWidget {
                 AirtimeRow(
                   textTheme: textTheme,
                   text: cardName,
-                  subText: "Munachi Abi",
+                  subText: cardData.account!.accountName!,
                   noSymbol: true,
                   isCopyIcon: true,
                   style: textTheme.headline4!.copyWith(
@@ -321,7 +401,8 @@ class CardDetails extends StatelessWidget {
                 AirtimeRow(
                   textTheme: textTheme,
                   text: billingAddress,
-                  subText: "19 Phaye street",
+                  subText:
+                      "${cardData.billingAddress!.line1} ${cardData.billingAddress!.line2}",
                   noSymbol: true,
                   isCopyIcon: true,
                   style: textTheme.headline4!
@@ -333,7 +414,7 @@ class CardDetails extends StatelessWidget {
                 AirtimeRow(
                   textTheme: textTheme,
                   text: zipCode,
-                  subText: "123455",
+                  subText: "${cardData.billingAddress!.postalCode}",
                   noSymbol: true,
                   isCopyIcon: true,
                   style: textTheme.headline4!
@@ -345,7 +426,7 @@ class CardDetails extends StatelessWidget {
                 AirtimeRow(
                   textTheme: textTheme,
                   text: city,
-                  subText: "Lekki",
+                  subText: "${cardData.billingAddress!.city}",
                   noSymbol: true,
                   isCopyIcon: true,
                   style: textTheme.headline4!
@@ -359,7 +440,7 @@ class CardDetails extends StatelessWidget {
                   text: state,
                   isCopyIcon: true,
                   noSymbol: true,
-                  subText: "Lagos",
+                  subText: "${cardData.billingAddress!.state}",
                   style: textTheme.headline4!.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -374,7 +455,8 @@ class CardDetails extends StatelessWidget {
 }
 
 class ManageCard extends StatefulWidget {
-  const ManageCard({Key? key}) : super(key: key);
+  const ManageCard({Key? key, required this.cardData}) : super(key: key);
+  final GetCardDetailsData cardData;
 
   @override
   State<ManageCard> createState() => _ManageCardState();
@@ -455,48 +537,86 @@ class _ManageCardState extends State<ManageCard> {
                   )
                 ],
               )),
-              FlutterSwitch(
-                  width: 40.0,
-                  height: 25.0,
-                  valueFontSize: 25.0,
-                  toggleSize: 15.0,
-                  activeColor: kPrimaryColor,
-                  inactiveColor: kLightColor500,
-                  value: _freezeCard,
-                  borderRadius: 30.0,
-                  padding: 5.0,
-                  onToggle: (val) {
-                    setState(() {
-                      _freezeCard = val;
-                    });
-                    Navigator.pop(context);
-
-                    buildShowModalBottomSheet(
+              Consumer(builder: (context, ref, _) {
+                ref.listen(freezeCardProvider,
+                    (previous, NotifierState<String> next) {
+                  if (next.status == NotifierStatus.done) {
+                    pushToAndClearStack(
                         context,
-                        CommonModal(
-                          title: whatItMeans,
-                          widget: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              FreezeCardWidget(
-                                textTheme: textTheme,
-                                text: freezeCardSub1,
-                              ),
-                              SizedBox(
-                                height: kSmallPadding,
-                              ),
-                              FreezeCardWidget(
-                                textTheme: textTheme,
-                                text: freezeCardSub2,
-                              ),
-                            ],
-                          ),
-                          buttonText: freezeCard,
-                          color: kPrimaryColor,
-                          subTitle: "",
-                          textTheme: textTheme,
+                        TabLayout(
+                          gottenIndex: 1,
                         ));
-                  }),
+                  }else if(next.status == NotifierStatus.error){
+                    setState(() {
+                      _freezeCard = false;
+                    });
+                    showErrorBar(context, next.data ?? next.message ?? "");
+                  }
+                });
+                var _widget = FlutterSwitch(
+                    width: 40.0,
+                    height: 25.0,
+                    valueFontSize: 25.0,
+                    toggleSize: 15.0,
+                    activeColor: kPrimaryColor,
+                    inactiveColor: kLightColor500,
+                    value: _freezeCard,
+                    borderRadius: 30.0,
+                    padding: 5.0,
+                    onToggle: (val) async {
+                      setState(() {
+                        _freezeCard = val;
+                      });
+                      //Navigator.pop(context);
+                      final result = await buildShowModalBottomSheet(
+                          context,
+                          CommonModal(
+                            title: whatItMeans,
+                            widget: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                FreezeCardWidget(
+                                  textTheme: textTheme,
+                                  text: freezeCardSub1,
+                                ),
+                                SizedBox(
+                                  height: kSmallPadding,
+                                ),
+                                FreezeCardWidget(
+                                  textTheme: textTheme,
+                                  text: freezeCardSub2,
+                                ),
+                              ],
+                            ),
+                            buttonText: freezeCard,
+                            color: kPrimaryColor,
+                            subTitle: "",
+                            textTheme: textTheme,
+                          ));
+                      if (result == "yes") {
+                        final pin = await buildShowModalBottomSheet(
+                            context,
+                            TransactionPinContainer(
+                              isData: false,
+                              isCard: false,
+                              isFundCard: false,
+                            ));
+                        if (pin != null) {
+                          ref.read(freezeCardProvider.notifier).freezeCard(
+                                cardId: widget.cardData.id!,
+                                type: widget.cardData.account!.currency!,
+                                transactionPin: pin,
+                              );
+                        }
+                        // ref.
+                        print("yes");
+                      }
+                    });
+                return ref.watch(freezeCardProvider).when(
+                    done: (done) => _widget,
+                    loading: () => SpinKitDemo(),
+                    error: (val) => _widget);
+              })
             ],
           )
         ],

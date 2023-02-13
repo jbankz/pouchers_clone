@@ -21,8 +21,8 @@ class UtilitiesService {
 
     String url = "${baseUrl()}/voucher/buy";
 
-    log(url);
-    log("what is body $amount");
+    logPrint(url);
+    logPrint("what is body $amount");
 
     try {
       http.Response response = await http.post(
@@ -40,8 +40,8 @@ class UtilitiesService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -58,8 +58,8 @@ class UtilitiesService {
         ? "${baseUrl()}/voucher"
         : "${baseUrl()}/voucher?status=$status";
 
-    log(url);
-    log("what is body $status");
+    logPrint(url);
+    logPrint("what is body $status");
 
     try {
       http.Response response = await http.get(
@@ -79,8 +79,8 @@ class UtilitiesService {
         );
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<GetVoucherResponse>(error, stack);
     }
   }
@@ -111,8 +111,8 @@ class UtilitiesService {
             "transactionPin": transactionPin,
           };
 
-    log(url);
-    log("what is body $body");
+    logPrint(url);
+    logPrint("what is body $body");
 
     try {
       http.Response response = await http.patch(
@@ -129,8 +129,8 @@ class UtilitiesService {
             data: responseBody["message"], message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -147,8 +147,8 @@ class UtilitiesService {
 
     String url = "${baseUrl()}/voucher/redeem";
 
-    log(url);
-    log("what is body $code");
+    logPrint(url);
+    logPrint("what is body $code");
 
     try {
       http.Response response = await http.patch(
@@ -165,8 +165,8 @@ class UtilitiesService {
             data: responseBody["message"], message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -181,8 +181,8 @@ class UtilitiesService {
 
     String url = "${baseUrl()}/utility/billers-by-category/$utility";
 
-    log(url);
-    log("what is body $utility");
+    logPrint(url);
+    logPrint("what is body $utility");
 
     try {
       http.Response response = await http.get(
@@ -202,8 +202,8 @@ class UtilitiesService {
         );
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<GetUtilitiesResponse>(error, stack);
     }
   }
@@ -218,8 +218,8 @@ class UtilitiesService {
 
     String url = "${baseUrl()}/utility/biller-payment-items/$categoryId";
 
-    log(url);
-    log("what is body $categoryId");
+    logPrint(url);
+    logPrint("what is body $categoryId");
 
     try {
       http.Response response = await http.get(
@@ -239,8 +239,8 @@ class UtilitiesService {
         );
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<GetUtilitiesTypesResponse>(error, stack);
     }
   }
@@ -268,8 +268,8 @@ class UtilitiesService {
       "sub_category": subCategory,
       "category": category
     };
-    log(url);
-    log("what is body $_body");
+    logPrint(url);
+    logPrint("what is body $_body");
 
     try {
       http.Response response = await http.post(Uri.parse(url),
@@ -285,8 +285,8 @@ class UtilitiesService {
         );
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }

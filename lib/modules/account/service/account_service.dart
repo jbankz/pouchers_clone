@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:pouchers/app/helpers/service_constants.dart';
 import 'package:pouchers/app/helpers/service_response.dart';
 import 'package:pouchers/modules/account/models/profile_model.dart';
+import 'package:pouchers/modules/account/models/referral_model.dart';
 import 'package:pouchers/modules/account/models/security_question.dart';
 import 'package:pouchers/modules/account/models/tier_list.dart';
 import 'package:pouchers/utils/extras.dart';
@@ -20,8 +21,8 @@ class AccountService {
 
     String url = "${baseUrl()}/auth/request-password-change";
 
-    log(url);
-    log("what is body $email");
+    logPrint(url);
+    logPrint("what is body $email");
 
     try {
       http.Response response = await http.patch(
@@ -38,8 +39,8 @@ class AccountService {
             data: responseBody["message"], message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -54,8 +55,8 @@ class AccountService {
 
     String url = "${baseUrl()}/user/request-phone-change";
 
-    log(url);
-    log("what is body $email");
+    logPrint(url);
+    logPrint("what is body $email");
 
     try {
       http.Response response = await http.patch(
@@ -72,8 +73,8 @@ class AccountService {
             data: responseBody["message"], message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -88,8 +89,8 @@ class AccountService {
 
     String url = "${baseUrl()}/user/change-phone";
 
-    log(url);
-    log("what is body $phoneNumber");
+    logPrint(url);
+    logPrint("what is body $phoneNumber");
 
     try {
       http.Response response = await http.patch(
@@ -107,8 +108,8 @@ class AccountService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<EditProfileResponse>(error, stack);
     }
   }
@@ -125,9 +126,9 @@ class AccountService {
 
     String url = "${baseUrl()}/user/disable";
 
-    log(url);
+    logPrint(url);
 
-    log("what is body $reason");
+    logPrint("what is body $reason");
 
     try {
       http.Response response = await http.patch(
@@ -144,8 +145,8 @@ class AccountService {
             data: responseBody["message"], message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -160,7 +161,7 @@ class AccountService {
 
     String url = "${baseUrl()}/user/";
 
-    log(url);
+    logPrint(url);
 
     try {
       http.Response response = await http.delete(
@@ -176,8 +177,8 @@ class AccountService {
             data: responseBody["message"], message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -218,8 +219,8 @@ class AccountService {
     if (isPaymentBiometricActive != null)
       body["is_payment_biometric_active"] = isPaymentBiometricActive;
 
-    log(url);
-    log("bomkmkmkdy$body");
+    logPrint(url);
+    logPrint("bomkmkmkdy$body");
 
     try {
       http.Response response = await http.patch(Uri.parse(url),
@@ -235,8 +236,8 @@ class AccountService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<EditProfileResponse>(error, stack);
     }
   }
@@ -252,7 +253,7 @@ class AccountService {
 
     String url = "${baseUrl()}/auth/security-questions";
 
-    log(url);
+    logPrint(url);
 
     try {
       http.Response response = await http.get(
@@ -269,8 +270,8 @@ class AccountService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<SecurityQuestionResponse>(error, stack);
     }
   }
@@ -296,9 +297,9 @@ class AccountService {
             "answer": answer,
           };
 
-    log(url);
-    log(questionId);
-    log(answer);
+    logPrint(url);
+    logPrint(questionId);
+    logPrint(answer);
 
     try {
       http.Response response = await http.post(
@@ -315,8 +316,8 @@ class AccountService {
             data: responseBody["message"], message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -332,7 +333,7 @@ class AccountService {
 
     String url = "${baseUrl()}/auth/selected-questions";
 
-    log(url);
+    logPrint(url);
 
     try {
       http.Response response = await http.get(
@@ -349,8 +350,8 @@ class AccountService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<SelectedQuestionResponse>(error, stack);
     }
   }
@@ -371,8 +372,8 @@ class AccountService {
       "oldPin": oldPin,
       "pin": newPin,
     };
-    log(url);
-    log("body$body");
+    logPrint(url);
+    logPrint("body$body");
     try {
       http.Response response = await http.patch(
         Uri.parse(url),
@@ -388,8 +389,8 @@ class AccountService {
             data: responseBody["message"], message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -404,8 +405,8 @@ class AccountService {
 
     String url = "${baseUrl()}/auth/validate-pin";
 
-    log(url);
-    log("what is body $pin");
+    logPrint(url);
+    logPrint("what is body $pin");
 
     try {
       http.Response response = await http.post(
@@ -422,8 +423,8 @@ class AccountService {
             data: responseBody["message"], message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -438,8 +439,8 @@ class AccountService {
 
     String url = "${baseUrl()}/auth/resend-otp";
 
-    log(url);
-    log("what is body $email");
+    logPrint(url);
+    logPrint("what is body $email");
 
     try {
       http.Response response = await http.post(
@@ -456,8 +457,8 @@ class AccountService {
             data: responseBody["message"], message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -472,8 +473,8 @@ class AccountService {
 
     String url = "${baseUrl()}/auth/validate-otp";
 
-    log(url);
-    log("what is body $otp");
+    logPrint(url);
+    logPrint("what is body $otp");
 
     try {
       http.Response response = await http.post(
@@ -490,8 +491,8 @@ class AccountService {
             data: responseBody["message"], message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -506,8 +507,8 @@ class AccountService {
 
     String url = "${baseUrl()}/user/validate-bvn";
 
-    log(url);
-    log("what is body $bvn");
+    logPrint(url);
+    logPrint("what is body $bvn");
 
     try {
       http.Response response = await http.patch(
@@ -525,8 +526,8 @@ class AccountService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<EditProfileResponse>(error, stack);
     }
   }
@@ -544,8 +545,8 @@ class AccountService {
     String url = "${baseUrl()}/user/validate-id";
     Map<String, dynamic> body = {"id_type": idType, "id_number": idNumber};
 
-    log(url);
-    log("what is body $body");
+    logPrint(url);
+    logPrint("what is body $body");
 
     try {
       http.Response response = await http.patch(
@@ -563,8 +564,8 @@ class AccountService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<EditProfileResponse>(error, stack);
     }
   }
@@ -579,7 +580,7 @@ class AccountService {
 
     String url = "${baseUrl()}/user/tiers";
 
-    log(url);
+    logPrint(url);
 
     try {
       http.Response response = await http.get(
@@ -596,8 +597,8 @@ class AccountService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<TierListResponse>(error, stack);
     }
   }
@@ -614,7 +615,7 @@ class AccountService {
 
     String url = "${baseUrl()}/user/pre-signed-url";
 
-    log(url);
+    logPrint(url);
 
     Map<String, dynamic> photoBody = {"profile_picture": fileName};
     Map<String, dynamic> utilityBody = {"utility_bill": fileName};
@@ -632,8 +633,8 @@ class AccountService {
             data: responseBody["data"], message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -649,7 +650,7 @@ class AccountService {
 
     String url = "${baseUrl()}/user/generate-2fa-token";
 
-    log(url);
+    logPrint(url);
 
     try {
       http.Response response = await http.post(
@@ -666,8 +667,8 @@ class AccountService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<String>(error, stack);
     }
   }
@@ -682,7 +683,7 @@ class AccountService {
 
     String url = "${baseUrl()}/user/validate-2fa-token";
 
-    log(url);
+    logPrint(url);
 
     try {
       http.Response response = await http.post(Uri.parse(url),
@@ -697,8 +698,8 @@ class AccountService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<bool>(error, stack);
     }
   }
@@ -715,7 +716,7 @@ class AccountService {
 
     String url = "${baseUrl()}/user/disable-2fa";
 
-    log(url);
+    logPrint(url);
 
     try {
       http.Response response = await http.patch(
@@ -733,9 +734,43 @@ class AccountService {
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      log(error);
-      log(stack);
+      logPrint(error);
+      logPrint(stack);
       return processServiceError<bool>(error, stack);
+    }
+  }
+
+  static Future<ServiceResponse<GetReferralResponse>> getReferralTrail({
+    required String token,
+  }) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    };
+
+    String url = "${baseUrl()}/user/referral-trail";
+
+    logPrint(url);
+
+    try {
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: _authHeaders,
+      );
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<GetReferralResponse>(
+            data: GetReferralResponse.fromJson(responseBody),
+            message: responseBody["message"]);
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<GetReferralResponse>(error, stack);
     }
   }
 }

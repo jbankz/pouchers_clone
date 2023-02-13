@@ -4,23 +4,35 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
+
 // import 'package:media_storage/media_storage.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
+import 'package:pouchers/modules/login/models/login_response.dart';
+import 'package:pouchers/modules/reuseables/components.dart';
 import 'package:pouchers/modules/transactions/components/transaction_components.dart';
+import 'package:pouchers/modules/transactions/model/transaction_model.dart';
 import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
+import 'package:pouchers/utils/logger.dart';
 import 'package:pouchers/utils/strings.dart';
+import 'package:pouchers/utils/utils.dart';
 import 'package:pouchers/utils/widgets.dart';
 import 'package:pdf/pdf.dart' as pdfSaver;
 import 'package:pdf/widgets.dart' as pdfWidget;
+import 'package:printing/printing.dart';
 
 class HistoryDetail extends StatelessWidget {
   static const String routeName = "historyDetail";
-  final VoucherItems? item;
+  final GetTransactionsData? item;
 
-  const HistoryDetail({Key? key, this.item}) : super(key: key);
+  HistoryDetail({Key? key, this.item}) : super(key: key);
+  String dateFormatter = 'MMM dd, yyy';
+  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
 
   @override
   Widget build(BuildContext context) {
@@ -68,29 +80,26 @@ class HistoryDetail extends StatelessWidget {
             ),
             Row(
               children: [
-                Container(
-                  height: 45,
-                  width: 45,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: kDarkGrey100),
-                ),
-                SizedBox(
-                  width: kRegularPadding,
-                ),
                 Expanded(
                   child: Text(
-                    item!.code,
+                    "${item!.transactionCategory}",
                     style: textTheme.headline3!.copyWith(
                         color: kBlueColorDark, fontWeight: FontWeight.w500),
                   ),
                 ),
                 NairaWidget(
-                  sign: '-',
+                  sign: item!.transactionType == "debit" ? "-" : "+",
                   addSign: true,
-                  text: item!.value,
-                  textStyle1: TextStyle(fontSize: 16, color: kColorRedDeep),
+                  text: kPriceFormatter(double.parse(item!.amount!)),
+                  textStyle1: TextStyle(
+                      fontSize: 16,
+                      color: item!.transactionType == "debit"
+                          ? kColorRedDeep
+                          : kColorGreen),
                   textStyle2: textTheme.headline3!.copyWith(
-                    color: kColorRedDeep,
+                    color: item!.transactionType == "debit"
+                        ? kColorRedDeep
+                        : kColorGreen,
                     fontSize: 20,
                   ),
                 ),
@@ -104,14 +113,14 @@ class HistoryDetail extends StatelessWidget {
               children: [
                 TransactionDate(
                   textTheme: textTheme,
-                  text: "Oct 18,2022",
+                  text: item!.createdAt!.formatDate(dateFormatter),
                 ),
                 SizedBox(
                   width: kRegularPadding,
                 ),
                 TransactionDate(
                   textTheme: textTheme,
-                  text: "16:30 PM",
+                  text: DateFormat.jm().format(item!.createdAt!),
                 )
               ],
             ),
@@ -121,7 +130,7 @@ class HistoryDetail extends StatelessWidget {
             TransactionDetails(
               textTheme: textTheme,
               text: status,
-              subText: "Completed",
+              subText: item!.status ?? "",
             ),
             TransactionDetails(
               textTheme: textTheme,
@@ -131,12 +140,12 @@ class HistoryDetail extends StatelessWidget {
             TransactionDetails(
               textTheme: textTheme,
               text: operator,
-              subText: "Globacom",
+              subText: item!.extraDetails!.subCategory ?? "No Sub Category",
             ),
             TransactionDetails(
               textTheme: textTheme,
               text: phoneNumberText,
-              subText: "+2348145224890",
+              subText: item!.extraDetails!.phoneNumber ?? "No PhoneNumber",
             ),
             SizedBox(
               height: kRegularPadding,
@@ -159,10 +168,11 @@ class HistoryDetail extends StatelessWidget {
                     height: kSmallPadding,
                   ),
                   Text(
-                    "3006211465789745271937",
+                    item!.transactionReference ?? "",
                     style: textTheme.subtitle1!.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
@@ -170,13 +180,16 @@ class HistoryDetail extends StatelessWidget {
             SizedBox(
               height: kRegularPadding,
             ),
-            // File: '/storage/emulated/0/Android/data/com.enyata.pouchers/files/receipt.pdf'
             LargeButton(
                 title: getReceipt,
                 onPressed: () async {
-                  await pdfApi.saveDocument();
-                  print(await pdfApi.saveDocument());
-                })
+                        await Printing.sharePdf(
+                          bytes:
+                              await DownloadTransactionReceipt.generate(item!),
+                          filename:
+                              'receipt_${DateTime.now().millisecondsSinceEpoch}.pdf',
+                        );
+                      })
           ],
         ),
       ),
@@ -188,7 +201,8 @@ class HistoryDetail extends StatelessWidget {
     if (Platform.isIOS) {
       dir = (await getApplicationDocumentsDirectory()).path;
     } else {
-      dir = (await getExternalStorageDirectory())!.path;
+      dir = "/sdcard/download/";
+      // dir = (await getExternalStorageDirectory())!.path;
     }
     var _localPath = dir + _name;
     final savedDir = Directory(_localPath);
@@ -206,10 +220,31 @@ class HistoryDetail extends StatelessWidget {
 }
 
 class pdfApi {
-  static  saveDocument() async {
+  static saveDocument() async {
+    // final permission = await Permission.manageExternalStorage.request();
+    final permission = await Permission.storage.request();
+
+    if (permission.isGranted) {
+      String dir;
+      if (Platform.isIOS) {
+        dir = (await getApplicationDocumentsDirectory()).path;
+      } else {
+        // dir = "/sdcard/download/";
+        // dir = (await getExternalStorageDirectory())!.path;
+        dir = (await getTemporaryDirectory()).path;
+        logPrint("Directory: $dir");
+        // await getTemporaryDirectory()
+        //     .then((dir) => logPrint("Download dir: ${dir.path}"));
+      }
+      // final bytes = await DownloadTransactionReceipt.generate();
+      final file = File('${dir}receipt_${DateTime.now()}.pdf');
+      // await file.writeAsBytes(bytes);
+    } else {
+      Permission.manageExternalStorage.request();
+    }
+
     // bool isPermission = await MediaStorage.getRequestStoragePermission();
 
-    final bytes = await DownloadTransactionReceipt.generate();
     // if (isPermission) {
     //   var path = await MediaStorage.getExternalStoragePublicDirectory(
     //       MediaStorage.DIRECTORY_DOWNLOADS);
@@ -227,10 +262,14 @@ class pdfApi {
 }
 
 class DownloadTransactionReceipt {
-  static Future<Uint8List> generate() async {
+  static Future<Uint8List> generate(GetTransactionsData item) async {
     final font = await rootBundle.load("assets/fonts/DMSans-Bold.ttf");
     final font2 = await rootBundle.load("assets/fonts/Inter.ttf");
+    final ByteData bytes = await rootBundle.load(AssetPaths.checkImage);
+    final Uint8List checkImage = bytes.buffer.asUint8List();
+
     final ttf = pdfWidget.Font.ttf(font);
+    String dateFormatter = 'MMM dd, yyy';
     final nairaTtf = pdfWidget.Font.ttf(font2);
     final pdfDoc = pdfWidget.Document();
 
@@ -306,12 +345,7 @@ class DownloadTransactionReceipt {
                 decoration: pdfWidget.BoxDecoration(
                     shape: pdfWidget.BoxShape.circle,
                     color: pdfSaver.PdfColor.fromHex("00BB64")),
-                child: pdfWidget.Icon(
-                    pdfWidget.IconData(
-                      (Icons.check.codePoint),
-                    ),
-                    size: 50,
-                    color: pdfSaver.PdfColor.fromHex("FFFFFF")),
+                child: pdfWidget.Image(pdfWidget.MemoryImage(checkImage),),
               ),
             ),
           ),
@@ -340,18 +374,8 @@ class DownloadTransactionReceipt {
           ),
           pdfWidget.Row(
             children: [
-              pdfWidget.Container(
-                height: 45,
-                width: 45,
-                decoration: pdfWidget.BoxDecoration(
-                    shape: pdfWidget.BoxShape.circle,
-                    color: pdfSaver.PdfColor.fromHex("A2A7B1")),
-              ),
-              pdfWidget.SizedBox(
-                width: kRegularPadding,
-              ),
               pdfWidget.Expanded(
-                child: pdfWidget.Text("item!.code",
+                child: pdfWidget.Text(item.transactionCategory ?? "",
                     style: pdfWidget.TextStyle(
                       fontWeight: pdfWidget.FontWeight.bold,
                       font: ttf,
@@ -359,11 +383,14 @@ class DownloadTransactionReceipt {
                       fontSize: 16,
                     )),
               ),
-              pdfWidget.Text("- ₦500,000",
+              pdfWidget.Text("- ₦${kPriceFormatter(double.parse(item.amount!))}",
                   style: pdfWidget.TextStyle(
-                      fontSize: 20,
-                      font: nairaTtf,
-                      color: pdfSaver.PdfColor.fromHex("AE1313")))
+                    fontSize: 20,
+                    font: nairaTtf,
+                    color: item.transactionType == "debit"
+                        ? pdfSaver.PdfColor.fromHex("AE1313")
+                        : pdfSaver.PdfColor.fromHex("00BB64"),
+                  ))
             ],
           ),
           pdfWidget.SizedBox(
@@ -372,21 +399,24 @@ class DownloadTransactionReceipt {
           pdfWidget.Row(
             mainAxisAlignment: pdfWidget.MainAxisAlignment.center,
             children: [
-              pdfTransactionDate("Oct 18,2022"),
-              pdfTransactionDate("16:30 PM"),
+              pdfTransactionDate(item.createdAt!.formatDate(dateFormatter)),
               pdfWidget.SizedBox(
                 width: kRegularPadding,
               ),
+              pdfTransactionDate(DateFormat.jm().format(item.createdAt!)),
             ],
           ),
           pdfWidget.SizedBox(
             height: kMacroPadding,
           ),
-          pdfTransactionDetails(text: status, subText: "Completed"),
+          pdfTransactionDetails(text: status, subText: item.status ?? ""),
           pdfTransactionDetails(text: paidWith, subText: "BalancePayment"),
-          pdfTransactionDetails(text: operator, subText: "Globacom"),
           pdfTransactionDetails(
-              text: phoneNumberText, subText: "+2348145224890"),
+              text: operator,
+              subText: item.extraDetails!.subCategory ?? "No SubCategory"),
+          pdfTransactionDetails(
+              text: phoneNumberText,
+              subText: item.extraDetails!.phoneNumber ?? "No PhoneNumber"),
           pdfWidget.SizedBox(
             height: kRegularPadding,
           ),
@@ -411,7 +441,7 @@ class DownloadTransactionReceipt {
                   height: kSmallPadding,
                 ),
                 pdfWidget.Text(
-                  "3006211465789745271937",
+                  item.transactionReference!,
                   style: pdfWidget.TextStyle(
                     fontWeight: pdfWidget.FontWeight.bold,
                     font: ttf,
@@ -427,66 +457,6 @@ class DownloadTransactionReceipt {
           ),
         ],
       );
-      //pdfWidget.Container(
-      // padding: pdfWidget.EdgeInsets.only(
-      //   left: kSmallPadding,
-      //   right: kSmallPadding,
-      //   top: kSmallPadding,
-      // ),
-      // child: pdfWidget.ListView(
-      //   children: [
-      //       pdfWidget.Container(
-      //         margin: pdfWidget.EdgeInsets.only(
-      //             left: kRegularPadding,
-      //             right: kRegularPadding,
-      //             bottom: kMediumPadding),
-      //         padding: pdfWidget.EdgeInsets.symmetric(
-      //             horizontal: kMacroPadding, vertical: kRegularPadding),
-      //         decoration: pdfWidget.BoxDecoration(
-      //             color: pdfSaver.PdfColor.fromHex("D9D9D9"),
-      //             borderRadius: pdfWidget.BorderRadius.circular(
-      //               kMediumPadding,
-      //             )),
-      //         child: pdfWidget.Column(
-      //           children: [
-      //             pdfWidget.Align(
-      //               alignment: pdfWidget.Alignment.centerRight,
-      //               child: pdfWidget.Image(pdfWidget.MemoryImage(poucherLogo),
-      //                   height: 80),
-      //             ),
-      //             pdfWidget.SizedBox(
-      //               height: kLargePadding,
-      //             ),
-      //             pdfWidget.SizedBox(
-      //               height: kRegularPadding,
-      //             ),
-      //             pdfWidget.Container(
-      //                 decoration: pdfWidget.BoxDecoration(
-      //               border: pdfWidget.Border.all(
-      //                   style: pdfWidget.BorderStyle.dashed, width: 2),
-      //             )),
-      //             pdfWidget.SizedBox(
-      //               height: kMacroPadding,
-      //             ),
-      //             pdfWidget.Text(
-      //               transferSuccess,
-      //               style: pdfWidget.TextStyle(
-      //                 fontWeight: pdfWidget.FontWeight.normal,
-      //                 font: ttf,
-      //                 color: pdfSaver.PdfColor.fromHex("8F8E9B"),
-      //                 fontSize: 16,
-      //               ),
-      //               textAlign: pdfWidget.TextAlign.center,
-      //             ),
-      //             pdfWidget.SizedBox(
-      //               height: kMicroPadding,
-      //             ),
-      //           ],
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // );
     }));
     return await pdfDoc.save();
   }

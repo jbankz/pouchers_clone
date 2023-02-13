@@ -94,7 +94,7 @@ class _VoucherModalState extends State<VoucherModal> {
               const SizedBox(
                 height: 30,
               ),
-              widget.voucherItems.isEmpty ?  NoVoucher(textTheme: textTheme) : Column(
+              widget.voucherItems.isEmpty ?  NoVoucher(textTheme: textTheme, text: noVouchers,) : Column(
                 children: widget.voucherItems.mapIndexed(
                       (index, element) =>
                       Padding(
@@ -254,7 +254,6 @@ class VoucherSuccessful extends StatelessWidget {
           isGift || isRedeem
               ? Lottie.asset(AssetPaths.success, height: 200, width: 200)
               : VoucherImage(
-                  textTheme: textTheme,
                   amount: amount!,
                   voucherCode: voucherCode!,
                 ),
@@ -294,16 +293,7 @@ class VoucherSuccessful extends StatelessWidget {
           LargeButton(
             title: continueText,
             onPressed: () {
-              if(isRedeem){
-                Navigator.popUntil(context,
-                        (route) => route.settings.name == RedeemVoucher.routeName) ;
-              }else{
-                isGift
-                    ? Navigator.popUntil(context,
-                        (route) => route.settings.name == GiftVoucher.routeName)
-                    : Navigator.popUntil(context,
-                        (route) => route.settings.name == BuyVouchers.routeName);
-              }
+              Navigator.pop(context);
               },
           ),
         ],
@@ -315,19 +305,18 @@ class VoucherSuccessful extends StatelessWidget {
 class VoucherImage extends StatelessWidget {
   const VoucherImage({
     Key? key,
-    required this.textTheme,
     required this.amount,
     required this.voucherCode,
   }) : super(key: key);
 
-  final TextTheme textTheme;
   final String amount;
   final String voucherCode;
 
   @override
   Widget build(BuildContext context) {
+   TextTheme textTheme = Theme.of(context).textTheme;
     return Container(
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width /2,
       height: 200,
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -436,13 +425,35 @@ class VoucherImage extends StatelessWidget {
   }
 }
 
+class OnBoardingVoucherImage extends StatelessWidget {
+  const OnBoardingVoucherImage({
+    Key? key,
+    required this.image
+
+  }) : super(key: key);
+
+  final String image;
+
+  @override
+  Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+    return Container(
+       height: 100,
+      child: SvgPicture.asset(image, )
+    );
+  }
+}
+
+
 class NoVoucher extends StatelessWidget {
   const NoVoucher({
     Key? key,
     required this.textTheme,
+    required this.text
   }) : super(key: key);
 
   final TextTheme textTheme;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -466,7 +477,7 @@ class NoVoucher extends StatelessWidget {
           height: kRegularPadding,
         ),
         Text(
-          noVouchers,
+          text,
           style: textTheme.headline3!.copyWith(
             color: kIconGrey,
           ),

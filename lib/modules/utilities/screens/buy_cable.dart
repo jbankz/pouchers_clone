@@ -35,7 +35,6 @@ class _BuyCableState extends ConsumerState<BuyCable> {
   TextEditingController contactController = TextEditingController();
   bool _saveBeneficiary = false;
   GetUtilitiesData? utilitiesData;
-
   List<GetUtilitiesData> utilities = [];
   List<PaymentItem> utilitiesType = [];
   PaymentItem? paymentType;
@@ -43,7 +42,6 @@ class _BuyCableState extends ConsumerState<BuyCable> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(getUtilitiesProvider.notifier).getUtilities(utility: "cable");
@@ -60,80 +58,81 @@ class _BuyCableState extends ConsumerState<BuyCable> {
           Expanded(
             child: ListView(
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
-                  decoration: BoxDecoration(
-                      color: kBackgroundColor,
-                      borderRadius: BorderRadius.circular(kSmallPadding)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: kMediumPadding),
-                        child: Row(
-                          children: [
-                            utilitiesData == null
-                                ? SizedBox()
-                                : Container(
-                                    height: 40,
-                                    width: 40,
-                                    color: kIconGrey,
-                                    margin: EdgeInsets.only(
-                                      right: kRegularPadding,
+                inkWell(
+                  onTap: () async {
+                    final result = await buildShowModalBottomSheet(
+                        context, UtilityModal(utilities: utilities));
+                    if (result != null) {
+                      setState(() {
+                        utilitiesData = result;
+                        paymentType = null;
+                      });
+                      ref
+                          .read(getUtilitiesTypeProvider.notifier)
+                          .getUtilitiesType(
+                          categoryId: int.parse(
+                              utilitiesData!.billerid!));
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                    decoration: BoxDecoration(
+                        color: kBackgroundColor,
+                        borderRadius: BorderRadius.circular(kSmallPadding)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: kMediumPadding),
+                          child: Row(
+                            children: [
+                              utilitiesData == null
+                                  ? SizedBox()
+                                  : Container(
+                                      height: 40,
+                                      width: 40,
+                                      color: kIconGrey,
+                                      margin: EdgeInsets.only(
+                                        right: kRegularPadding,
+                                      ),
                                     ),
-                                  ),
-                            Text(
-                                utilitiesData == null
-                                    ? selectProvider
-                                    : utilitiesData!.billername!,
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: true,
-                                style: utilitiesData == null
-                                    ? textTheme.bodyText1!.copyWith(
-                                        color: kSecondaryTextColor
-                                            .withOpacity(0.7),
-                                        fontWeight: FontWeight.w300,
-                                      )
-                                    : textTheme.subtitle1),
-                          ],
+                              Text(
+                                  utilitiesData == null
+                                      ? selectProvider
+                                      : utilitiesData!.billername!,
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
+                                  style: utilitiesData == null
+                                      ? textTheme.bodyText1!.copyWith(
+                                          color: kSecondaryTextColor
+                                              .withOpacity(0.7),
+                                          fontWeight: FontWeight.w300,
+                                        )
+                                      : textTheme.subtitle1),
+                            ],
+                          ),
                         ),
-                      ),
-                      Consumer(builder: (context, ref, _) {
-                        var _widget = inkWell(
-                            onTap: () async {
-                              final result = await buildShowModalBottomSheet(
-                                  context, UtilityModal(utilities: utilities));
-                              if (result != null) {
-                                setState(() {
-                                  utilitiesData = result;
-                                  paymentType = null;
-                                });
-                                ref
-                                    .read(getUtilitiesTypeProvider.notifier)
-                                    .getUtilitiesType(
-                                        categoryId: int.parse(
-                                            utilitiesData!.billerid!));
-                              }
-                            },
-                            child: Icon(
-                              Icons.keyboard_arrow_down,
-                              size: 30,
-                              color: kSecondaryTextColor,
-                            ));
-                        return ref.watch(getUtilitiesProvider).when(
-                              done: (data) {
-                                if (data != null) {
-                                  utilities = data.data!;
-                                }
-                                return _widget;
-                              },
-                              loading: () => SpinKitDemo(
-                                size: 25,
-                              ),
-                              error: (val) => _widget,
-                            );
-                      })
-                    ],
+                        Consumer(builder: (context, ref, _) {
+                          var _widget = Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 30,
+                                color: kSecondaryTextColor,
+                              );
+                          return ref.watch(getUtilitiesProvider).when(
+                                done: (data) {
+                                  if (data != null) {
+                                    utilities = data.data!;
+                                  }
+                                  return _widget;
+                                },
+                                loading: () => SpinKitDemo(
+                                  size: 25,
+                                ),
+                                error: (val) => _widget,
+                              );
+                        })
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -180,99 +179,100 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                 SizedBox(
                   height: kSmallPadding,
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
-                  decoration: BoxDecoration(
-                      color: kBackgroundColor,
-                      borderRadius: BorderRadius.circular(kSmallPadding)),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: kMediumPadding),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                    paymentType == null
-                                        ? type
-                                        : paymentType!.paymentitemname!,
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: true,
-                                    style: paymentType == null
-                                        ? textTheme.bodyText1!.copyWith(
-                                            color: kSecondaryTextColor
-                                                .withOpacity(0.7),
-                                            fontWeight: FontWeight.w300,
-                                          )
-                                        : textTheme.subtitle1),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Consumer(builder: (context, ref, _) {
-                        var _widget = inkWell(
-                            onTap: (utilitiesData == null)
-                                ? null
-                                : () async {
-                                    final result =
-                                        await buildShowModalBottomSheet(
-                                            context,
-                                            SubscriptionModal(
-                                                paymentItem: utilitiesType));
-                                    if (result != null) {
-                                      setState(() => paymentType = result);
-                                    }
-                                  },
+                InkWell(
+                  onTap: (utilitiesData == null)
+                      ? null
+                      : () async {
+                    final result =
+                    await buildShowModalBottomSheet(
+                        context,
+                        SubscriptionModal(
+                            paymentItem: utilitiesType));
+                    if (result != null) {
+                      setState(() => paymentType = result);
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                    decoration: BoxDecoration(
+                        color: kBackgroundColor,
+                        borderRadius: BorderRadius.circular(kSmallPadding)),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                EdgeInsets.symmetric(vertical: kMediumPadding),
                             child: Row(
                               children: [
-                                paymentType == null
-                                    ? SizedBox()
-                                    : RichText(
-                                        text: TextSpan(
-                                          text: "₦",
-                                          style: TextStyle(
-                                            color: kPrimaryTextColor,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 18,
-                                          ),
-                                          children: [
-                                            TextSpan(
-                                                text: kPriceFormatter(
-                                                        double.parse(
-                                                                paymentType!
-                                                                    .amount!) /
-                                                            100)
-                                                    .replaceAll(".00", ""),
-                                                style: textTheme.subtitle1)
-                                          ],
-                                        ),
-                                      ),
-                                Icon(
-                                  Icons.keyboard_arrow_down,
-                                  size: 30,
-                                  color: kSecondaryTextColor,
+                                Expanded(
+                                  child: Text(
+                                      paymentType == null
+                                          ? type
+                                          : paymentType!.paymentitemname!,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true,
+                                      style: paymentType == null
+                                          ? textTheme.bodyText1!.copyWith(
+                                              color: kSecondaryTextColor
+                                                  .withOpacity(0.7),
+                                              fontWeight: FontWeight.w300,
+                                            )
+                                          : textTheme.subtitle1),
                                 ),
                               ],
-                            ));
-                        return ref.watch(getUtilitiesTypeProvider).when(
-                              done: (data) {
-                                if (data != null) {
-                                  utilitiesType = data.data!.paymentitems!;
-                                }
-                                return _widget;
-                              },
-                              loading: () {
-                                return SpinKitDemo(
-                                  size: 25,
-                                );
-                              },
-                              error: (val) => _widget,
-                            );
-                      }),
-                    ],
+                            ),
+                          ),
+                        ),
+                        Consumer(builder: (context, ref, _) {
+                          var _widget =  Row(
+                                children: [
+                                  paymentType == null
+                                      ? SizedBox()
+                                      : RichText(
+                                          text: TextSpan(
+                                            text: "₦",
+                                            style: TextStyle(
+                                              color: kPrimaryTextColor,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 18,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                  text: kPriceFormatter(
+                                                          double.parse(
+                                                                  paymentType!
+                                                                      .amount!) /
+                                                              100)
+                                                      .replaceAll(".00", ""),
+                                                  style: textTheme.subtitle1)
+                                            ],
+                                          ),
+                                        ),
+                                  Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 30,
+                                    color: kSecondaryTextColor,
+                                  ),
+                                ],
+                              );
+                          return ref.watch(getUtilitiesTypeProvider).when(
+                                done: (data) {
+                                  if (data != null) {
+                                    utilitiesType = data.data!.paymentitems!;
+                                  }
+                                  return _widget;
+                                },
+                                loading: () {
+                                  return SpinKitDemo(
+                                    size: 25,
+                                  );
+                                },
+                                error: (val) => _widget,
+                              );
+                        }),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
