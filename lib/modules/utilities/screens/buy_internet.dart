@@ -23,8 +23,9 @@ import '../providers/utilities_provider.dart';
 class BuyInternet extends ConsumerStatefulWidget {
   static const String routeName = "buyInternet";
   final bool? isGuest;
+  final String? name, email;
 
-  const BuyInternet({Key? key, this.isGuest}) : super(key: key);
+  const BuyInternet({Key? key, this.isGuest, this.name, this.email}) : super(key: key);
 
   @override
   ConsumerState<BuyInternet> createState() => _BuyInternetState();
@@ -36,15 +37,19 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
   GetUtilitiesData? utilitiesData;
 
   List<GetUtilitiesData> utilities = [];
-  List<PaymentItem> utilitiesType = [];
-  PaymentItem? paymentType;
+  List<Service> utilitiesType = [];
+  Service? paymentType;
   String accId = "";
+  String? threshold;
+  String? discountValue;
+
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(getUtilitiesProvider.notifier).getUtilities(utility: "internet");
+      ref.read(getDiscountProvider.notifier).getDiscount(utility: "internet");
     });
   }
 
@@ -70,8 +75,8 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                       ref
                           .read(getUtilitiesTypeProvider.notifier)
                           .getUtilitiesType(
-                          categoryId: int.parse(
-                              utilitiesData!.billerid!));
+                              merchantServiceId:
+                                  utilitiesData!.operatorpublicid!);
                     }
                   },
                   child: Container(
@@ -82,53 +87,42 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                            padding: EdgeInsets.symmetric(vertical: kMediumPadding),
-                          child:  Row(
-                          children: [
-                            utilitiesData == null
-                                ? SizedBox()
-                                : Container(
-                              height: 40,
-                              width: 40,
-                              color: kIconGrey,
-                              margin: EdgeInsets.only(
-                                right: kRegularPadding,
-                              ),
-                            ),
-                            Text(
-                                utilitiesData == null
-                                    ? selectProvider
-                                    : utilitiesData!.billername!,
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: true,
-                                style: utilitiesData == null
-                                    ? textTheme.bodyText1!.copyWith(
-                                  color: kSecondaryTextColor
-                                      .withOpacity(0.7),
-                                  fontWeight: FontWeight.w300,
-                                )
-                                    : textTheme.subtitle1),
-                          ],
+                        Expanded(
+                            child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: kMediumPadding),
+                          child: Text(
+                              utilitiesData == null
+                                  ? selectProvider
+                                  : utilitiesData!.name!,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: true,
+                              style: utilitiesData == null
+                                  ? textTheme.bodyText1!.copyWith(
+                                      color:
+                                          kSecondaryTextColor.withOpacity(0.7),
+                                      fontWeight: FontWeight.w300,
+                                    )
+                                  : textTheme.subtitle1),
                         )),
                         Consumer(builder: (context, ref, _) {
                           var _widget = Icon(
-                                Icons.keyboard_arrow_down,
-                                size: 30,
-                                color: kSecondaryTextColor,
-                              );
-                          return ref.watch(getUtilitiesProvider).when(
-                            done: (data) {
-                              if (data != null) {
-                                utilities = data.data!;
-                              }
-                              return _widget;
-                            },
-                            loading: () => SpinKitDemo(
-                              size: 25,
-                            ),
-                            error: (val) => _widget,
+                            Icons.keyboard_arrow_down,
+                            size: 30,
+                            color: kSecondaryTextColor,
                           );
+                          return ref.watch(getUtilitiesProvider).when(
+                                done: (data) {
+                                  if (data != null) {
+                                    utilities = data.data!;
+                                  }
+                                  return _widget;
+                                },
+                                loading: () => SpinKitDemo(
+                                  size: 25,
+                                ),
+                                error: (val) => _widget,
+                              );
                         })
                       ],
                     ),
@@ -172,6 +166,15 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                 SizedBox(
                   height: kSmallPadding,
                 ),
+                ref.watch(getDiscountProvider).when(done: (done){
+                  if(done != null){
+                    threshold = done.data!.threshold ?? "0";
+                    discountValue = done.data!.discountValue ?? "0";
+                    return SizedBox();
+                  }else{
+                    return SizedBox();
+                  }
+                }),
                 Text(
                   subType,
                   style: textTheme.headline6,
@@ -183,15 +186,13 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                   onTap: (utilitiesData == null)
                       ? null
                       : () async {
-                    final result =
-                    await buildShowModalBottomSheet(
-                        context,
-                        SubscriptionModal(
-                            paymentItem: utilitiesType));
-                    if (result != null) {
-                      setState(() => paymentType = result);
-                    }
-                  },
+                          final result = await buildShowModalBottomSheet(
+                              context,
+                              SubscriptionModal(paymentItem: utilitiesType, threshold: threshold, discountValue: discountValue,));
+                          if (result != null) {
+                            setState(() => paymentType = result);
+                          }
+                        },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
                     decoration: BoxDecoration(
@@ -202,22 +203,22 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                         Expanded(
                           child: Padding(
                             padding:
-                            EdgeInsets.symmetric(vertical: kMediumPadding),
+                                EdgeInsets.symmetric(vertical: kMediumPadding),
                             child: Row(
                               children: [
                                 Expanded(
                                   child: Text(
                                       paymentType == null
                                           ? type
-                                          : paymentType!.paymentitemname!,
+                                          : paymentType!.name!,
                                       overflow: TextOverflow.ellipsis,
                                       softWrap: true,
                                       style: paymentType == null
                                           ? textTheme.bodyText1!.copyWith(
-                                        color: kSecondaryTextColor
-                                            .withOpacity(0.7),
-                                        fontWeight: FontWeight.w300,
-                                      )
+                                              color: kSecondaryTextColor
+                                                  .withOpacity(0.7),
+                                              fontWeight: FontWeight.w300,
+                                            )
                                           : textTheme.subtitle1),
                                 ),
                               ],
@@ -225,51 +226,49 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                           ),
                         ),
                         Consumer(builder: (context, ref, _) {
-                          var _widget =  Row(
-                                children: [
-                                  paymentType == null
-                                      ? SizedBox()
-                                      : RichText(
-                                    text: TextSpan(
-                                      text: "₦",
-                                      style: TextStyle(
-                                        color: kPrimaryTextColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 18,
+                          var _widget = Row(
+                            children: [
+                              paymentType == null
+                                  ? SizedBox()
+                                  : RichText(
+                                      text: TextSpan(
+                                        text: "₦",
+                                        style: TextStyle(
+                                          color: kPrimaryTextColor,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                              text: kPriceFormatter(paymentType!
+                                                      .price!
+                                                      .toDouble())
+                                                  .replaceAll(".00", ""),
+                                              style: textTheme.subtitle1)
+                                        ],
                                       ),
-                                      children: [
-                                        TextSpan(
-                                            text: kPriceFormatter(
-                                                double.parse(
-                                                    paymentType!
-                                                        .amount!) /
-                                                    100)
-                                                .replaceAll(".00", ""),
-                                            style: textTheme.subtitle1)
-                                      ],
                                     ),
-                                  ),
-                                  Icon(
-                                    Icons.keyboard_arrow_down,
-                                    size: 30,
-                                    color: kSecondaryTextColor,
-                                  ),
-                                ],
-                              );
-                          return ref.watch(getUtilitiesTypeProvider).when(
-                            done: (data) {
-                              if (data != null) {
-                                utilitiesType = data.data!.paymentitems!;
-                              }
-                              return _widget;
-                            },
-                            loading: () {
-                              return SpinKitDemo(
-                                size: 25,
-                              );
-                            },
-                            error: (val) => _widget,
+                              Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 30,
+                                color: kSecondaryTextColor,
+                              ),
+                            ],
                           );
+                          return ref.watch(getUtilitiesTypeProvider).when(
+                                done: (data) {
+                                  if (data != null) {
+                                    utilitiesType = data.data!.services!;
+                                  }
+                                  return _widget;
+                                },
+                                loading: () {
+                                  return SpinKitDemo(
+                                    size: 25,
+                                  );
+                                },
+                                error: (val) => _widget,
+                              );
                         }),
                       ],
                     ),
@@ -306,82 +305,41 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
             height: kLargePadding,
           ),
           Consumer(builder: (context, ref, _) {
-            ref.listen(buyUtilitiesProvider,
-                    (previous, NotifierState<String> next) {
-                  if (next.status == NotifierStatus.done) {
-                    pushTo(
-                      context,
-                      SuccessMessage(
-                          text: dataSuccess,
-                          subText: deliveredPurchase,
-                          onTap: () {
-                            pushToAndClearStack(
-                              context,
-                              TabLayout(
-                                gottenIndex: 0,
-                              ),
-                            );
-                          }),
-                    );
-                  }else if(next.status == NotifierStatus.error) {
-                    showErrorBar(context, next.data ?? next.message!);
-                  }
-                });
             var _widget = LargeButton(
               title: continueText,
               disableColor:
-              (paymentType == null || accId == "" || utilitiesData == null)
-                  ? kBackgroundColor
-                  : kPrimaryColor,
-              onPressed: (paymentType == null ||
-                  accId == "" ||
-                  utilitiesData == null)
-                  ? () {}
-                  : () {
-                FocusScope.of(context).unfocus();
-                buildShowModalBottomSheet(
-                  context,
-                  widget.isGuest!
-                      ? GuestRechargeSummary(
-                    textTheme: textTheme,
-                    purchaseDelivered: true,
-                  )
-                      : RechargeSummary(
-                    billerName: utilitiesData!.billername!,
-                    amount:
-                    "${double.parse(paymentType!.amount!) / 100}",
-                    billerLogo: "",
-                    recipientNo: contactController.text,
-                    textTheme: textTheme,
-                  ),
-                ).then((value) async {
-                  final result = await buildShowModalBottomSheet(
-                      context,
-                      TransactionPinContainer(
-                        isData: false,
-                        isCable: false,
-                        isCard: false,
-                        isFundCard: false,
-                      ));
-                  if (result != null) {
-                    ref.read(buyUtilitiesProvider.notifier).buyUtilities(
-                      paymentCode: paymentType!.paymentCode!,
-                      amount:
-                      "${double.parse(paymentType!.amount!) / 100}",
-                      customerId: contactController.text,
-                      transactionPin: result,
-                      subCategory: utilitiesData!.billername!,
-                      category: "cable-purchase",
-                    );
-                  }
-                });
-              },
+                  (paymentType == null || accId == "" || utilitiesData == null)
+                      ? kBackgroundColor
+                      : kPrimaryColor,
+              onPressed:
+                  (paymentType == null || accId == "" || utilitiesData == null)
+                      ? () {}
+                      : () {
+                          FocusScope.of(context).unfocus();
+                          buildShowModalBottomSheet(
+                            context,
+                            RechargeSummary(
+                                    billerName: utilitiesData!.displayName!,
+                                    billerId: utilitiesData!.operatorpublicid!,
+                                    utility: true,
+                                    isGuest: widget.isGuest!,
+                                    name: widget.name,
+                                    email: widget.email,
+                                    category: "internet-purchase",
+                                    amount: "${paymentType!.price!}",
+                                    billerLogo: "",
+                                    billerCode: paymentType!.code,
+                                    recipientNo: contactController.text,
+                                    textTheme: textTheme,
+                                  ),
+                          );
+                        },
             );
             return ref.watch(buyUtilitiesProvider).when(
-              done: (data) => _widget,
-              loading: () => SpinKitDemo(),
-              error: (val) => _widget,
-            );
+                  done: (data) => _widget,
+                  loading: () => SpinKitDemo(),
+                  error: (val) => _widget,
+                );
           })
         ],
       ),

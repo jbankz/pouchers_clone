@@ -12,7 +12,7 @@ class Utils {
     } else if (e is TimeoutException) {
       logTimeoutException(e);
       return "Request timed out, please try again";
-    } else if (e is FormatException || e is ClientException) {
+    } else if (e is FormatException || e is ClientException ||  e is  HandshakeException) {
       logPrint(e);
       return "Something went wrong, please try again";
     } else {

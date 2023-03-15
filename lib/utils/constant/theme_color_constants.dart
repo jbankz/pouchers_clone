@@ -9,7 +9,7 @@ RegExp onlyTextValues = RegExp(r'[a-zA-Z]');
 
 
 bool isPassword(String password) {
-  String pattern = r'^(?=.*?[a-zA-Z])(?=.*?[0-9]).{4,}$';
+  String pattern = r'^(?=.*?[a-zA-Z])(?=.*?[0-9]).{6,}$';
   RegExp regExp = RegExp(pattern);
     return regExp.hasMatch(password);
 }

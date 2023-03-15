@@ -209,13 +209,10 @@ class PaymentService {
     }
   }
 
-  static Future<ServiceResponse<GetAllBanksResponse>> getAllBanks({
-    required String token,
-  }) async {
+  static Future<ServiceResponse<GetAllBanksResponse>> getAllBanks() async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
-      HttpHeaders.authorizationHeader: "Bearer $token"
     };
 
     String url = "${baseUrl()}/payment/banks";

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:hive/hive.dart';
-import 'package:pouchers/app/helpers/network_helpers.dart';
 import 'package:pouchers/app/helpers/service_constants.dart';
 import 'package:pouchers/app/helpers/service_response.dart';
 import 'package:pouchers/modules/create_account/models/create_account_response.dart';

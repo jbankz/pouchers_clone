@@ -103,17 +103,6 @@ class _BVNPageState extends State<BVNPage> {
                       settings: const RouteSettings(
                           name: ProfileSuccessful.routeName));
                   ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
-
-                  // ref.read(editProfileInHouseProvider.notifier).state = EditProfileData(
-                  //   id: next.data!.data!.id,
-                  //   userId: next.data!.data!.userId,
-                  //   phoneNumber: next.data!.data!.phoneNumber,
-                  //   email: next.data!.data!.email,
-                  //   firstName: next.data!.data!.firstName,
-                  //   lastName: next.data!.data!.lastName,
-                  //   tierLevels: next.data!.data!.tierLevels
-                  // );
-                 // next.data!.data!;
                 } else if (next.status == NotifierStatus.error) {
                   showErrorBar(context, next.message!);
                 }

@@ -39,31 +39,21 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-// your code goes here
       await checkBiometricStatus();
     });
 
     setState(() {});
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-    //
-    //
-    //   print("refthings${ref.watch(editProfileInHouseProvider).profilePicture}");
-    // });
-    // _loginBiometric = userProfile.isLoginBiometricActive;
-    // _payBiometric = userProfile.isPaymentBiometricActive;
-    //
-    // setState(() {});
   }
 
   checkBiometricStatus() async {
     if (ref.watch(editProfileInHouseProvider).isPaymentBiometricActive ==
         null) {
       ref.read(editProfileInHouseProvider.notifier).state =
-          EditProfileData().copyWith(
-        isLoginBiometricActive: userProfile.isLoginBiometricActive,
-        isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
-        profilePicture: userProfile.profilePicture,
-      );
+          ref.read(editProfileInHouseProvider.notifier).state.copyWith(
+                profilePicture: userProfile.profilePicture,
+                isLoginBiometricActive: userProfile.isLoginBiometricActive,
+                isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+              );
     }
   }
 
@@ -98,18 +88,7 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
                           doBiom: () {
                             checkBiometric(context, logInBiometric);
                           },
-                        )
-                        // TransactionPinContainer(
-                        //   isData: false,
-                        //   isCable: false,
-                        //   isBiometric: true,
-                        //   isCard: false,
-                        //   isFundCard: false,
-                        //   doBiom: () {
-                        //     checkBiometric(context, logInBiometric);
-                        //   },
-                        // ),
-                        );
+                        ));
                   })),
           BiometricsWidget(
               textTheme: textTheme,
@@ -137,16 +116,6 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
                             checkBiometric(context, payBiometric);
                           },
                         )
-                        // TransactionPinContainer(
-                        //   isData: false,
-                        //   isCable: false,
-                        //   isBiometric: true,
-                        //   isCard: false,
-                        //   isFundCard: false,
-                        //   doBiom: () {
-                        //     checkBiometric(context, payBiometric);
-                        //   },
-                        // ),
                         );
                   })),
         ],
@@ -275,20 +244,22 @@ class _BiometricsWidgetState extends ConsumerState<BiometricsWidget> {
                           setState(() => widget.isSwitch = false);
                           Hive.box(kBiometricsBox).put(kBiometricsKey, 0);
                           ref.read(editProfileInHouseProvider.notifier).state =
-                              EditProfileData().copyWith(
+                              ref.read(editProfileInHouseProvider.notifier).state.copyWith(
                                   isLoginBiometricActive: widget.isSwitch,
                                   isPaymentBiometricActive: ref
                                       .watch(editProfileInHouseProvider)
-                                      .isPaymentBiometricActive);
+                                      .isPaymentBiometricActive
+                              );
                         } else {
                           setState(() => widget.isSwitch = true);
                           Hive.box(kBiometricsBox).put(kBiometricsKey, 1);
                           ref.read(editProfileInHouseProvider.notifier).state =
-                              EditProfileData().copyWith(
+                              ref.read(editProfileInHouseProvider.notifier).state.copyWith(
                                   isLoginBiometricActive: widget.isSwitch,
                                   isPaymentBiometricActive: ref
                                       .watch(editProfileInHouseProvider)
-                                      .isPaymentBiometricActive);
+                                      .isPaymentBiometricActive
+                              );
                         }
                       }
                     });
@@ -306,20 +277,22 @@ class _BiometricsWidgetState extends ConsumerState<BiometricsWidget> {
                           setState(() => widget.isSwitch = false);
                           Hive.box(kBiometricsBox).put(kPayBiometricsKey, 0);
                           ref.read(editProfileInHouseProvider.notifier).state =
-                              EditProfileData().copyWith(
+                              ref.read(editProfileInHouseProvider.notifier).state.copyWith(
                                   isPaymentBiometricActive: widget.isSwitch,
                                   isLoginBiometricActive: ref
                                       .watch(editProfileInHouseProvider)
-                                      .isLoginBiometricActive);
+                                      .isLoginBiometricActive
+                              );
                         } else {
                           setState(() => widget.isSwitch = true);
                           Hive.box(kBiometricsBox).put(kPayBiometricsKey, 1);
                           ref.read(editProfileInHouseProvider.notifier).state =
-                              EditProfileData().copyWith(
+                              ref.read(editProfileInHouseProvider.notifier).state.copyWith(
                                   isPaymentBiometricActive: widget.isSwitch,
                                   isLoginBiometricActive: ref
                                       .watch(editProfileInHouseProvider)
-                                      .isLoginBiometricActive);
+                                      .isLoginBiometricActive
+                              );
                         }
                       }
                     });

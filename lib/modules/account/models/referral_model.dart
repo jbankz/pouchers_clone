@@ -36,7 +36,7 @@ class RewardsContainer extends StatelessWidget {
                 ),
               ),
               child: icon),
-          widget,
+          Expanded(child: widget),
           Container(
             padding: EdgeInsets.symmetric(
                 horizontal: kRegularPadding, vertical: kSmallPadding),
@@ -91,10 +91,10 @@ class ReferralClass {
 
 class GetReferralResponse {
   GetReferralResponse({
-     this.status,
-     this.message,
-     this.code,
-     this.data,
+    this.status,
+    this.message,
+    this.code,
+    this.data,
   });
 
   String? status;
@@ -102,14 +102,14 @@ class GetReferralResponse {
   int? code;
   GetReferralData? data;
 
-
-
   factory GetReferralResponse.fromJson(Map<String, dynamic> json) =>
       GetReferralResponse(
         status: json["status"],
         message: json["message"],
         code: json["code"],
-        data: json["data"] == null ? null : GetReferralData.fromJson(json["data"]),
+        data: json["data"] == null
+            ? null
+            : GetReferralData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -122,22 +122,26 @@ class GetReferralResponse {
 
 class GetReferralData {
   GetReferralData({
-     this.earning,
-     this.referralTrail,
+    this.earning,
+    this.referralTrail,
   });
 
   List<Earning>? earning;
   List<ReferralTrail>? referralTrail;
 
-  factory GetReferralData.fromJson(Map<String, dynamic> json) => GetReferralData(
-    earning: List<Earning>.from(json["earning"].map((x) => Earning.fromJson(x))),
-    referralTrail: List<ReferralTrail>.from(json["referralTrail"].map((x) => ReferralTrail.fromJson(x))),
-  );
+  factory GetReferralData.fromJson(Map<String, dynamic> json) =>
+      GetReferralData(
+        earning:
+            List<Earning>.from(json["earning"].map((x) => Earning.fromJson(x))),
+        referralTrail: List<ReferralTrail>.from(
+            json["referralTrail"].map((x) => ReferralTrail.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "earning": List<dynamic>.from(earning!.map((x) => x.toJson())),
-    "referralTrail": List<dynamic>.from(referralTrail!.map((x) => x.toJson())),
-  };
+        "earning": List<dynamic>.from(earning!.map((x) => x.toJson())),
+        "referralTrail":
+            List<dynamic>.from(referralTrail!.map((x) => x.toJson())),
+      };
 }
 
 class Earning {
@@ -148,12 +152,12 @@ class Earning {
   dynamic totalEarnings;
 
   factory Earning.fromJson(Map<String, dynamic> json) => Earning(
-    totalEarnings: json["total_earnings"],
-  );
+        totalEarnings: json["total_earnings"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "total_earnings": totalEarnings,
-  };
+        "total_earnings": totalEarnings,
+      };
 }
 
 class ReferralTrail {
@@ -179,8 +183,7 @@ class ReferralTrail {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  factory ReferralTrail.fromJson(Map<String, dynamic> json) =>
-      ReferralTrail(
+  factory ReferralTrail.fromJson(Map<String, dynamic> json) => ReferralTrail(
         id: json["id"],
         referrerUserId: json["referrer_user_id"],
         referredUserId: json["referred_user_id"],

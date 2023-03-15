@@ -172,7 +172,7 @@ class _HistoryState extends ConsumerState<History> {
         ref.watch(getTransactionHistoryProvider).when(
             done: (data) {
               if (data != null) {
-                transactionData = data.data!.reversed.toList();
+                transactionData = data.data!.toList();
                 return transactionData.isEmpty
                     ? Container(
                         height: 300,
@@ -198,34 +198,43 @@ class _HistoryState extends ConsumerState<History> {
                             }
                             var _widget = inkWell(
                               onTap: () {
-                                transactionData[index]
-                                        .transactionCategory!
-                                        .contains("p2p")
-                                    ? pushTo(
+                                if (transactionData[index]
+                                    .transactionCategory!
+                                    .contains("p2p")) {
+                                  if (transactionData[index].transactionType ==
+                                      "debit") {
+                                    pushTo(
                                         context,
                                         TransactionReceipt(
                                             typeOfTransfer: "p2p",
                                             accNo: "",
                                             fromWhere: "history",
-                                            tag: "No Tag",
+                                            tag: transactionData[index]
+                                                .extraDetails!
+                                                .senderTag,
                                             transactionTime:
-                                                transactionData[index]
-                                                    .createdAt!,
+                                            transactionData[index]
+                                                .createdAt!,
+                                            senderName: transactionData[index]
+                                                .extraDetails!.senderName,
                                             amount:
-                                                transactionData[index].amount,
+                                            transactionData[index].amount,
                                             transferName: "",
                                             beneficiary: transactionData[index]
-                                                    .beneficiaryName ??
+                                                .beneficiaryName ??
                                                 "No name"),
                                         settings: RouteSettings(
-                                            name: TransactionReceipt.routeName))
-                                    : pushTo(
-                                        context,
-                                        HistoryDetail(
-                                          item: transactionData[index],
-                                        ),
-                                        settings: RouteSettings(
-                                            name: HistoryDetail.routeName));
+                                            name: TransactionReceipt.routeName));
+                                  }
+                                }else{
+                                  pushTo(
+                                      context,
+                                      HistoryDetail(
+                                        item: transactionData[index],
+                                      ),
+                                      settings: RouteSettings(
+                                          name: HistoryDetail.routeName));
+                                }
                               },
                               child: Column(
                                 children: [

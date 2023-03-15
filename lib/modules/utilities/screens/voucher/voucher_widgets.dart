@@ -316,7 +316,7 @@ class VoucherImage extends StatelessWidget {
   Widget build(BuildContext context) {
    TextTheme textTheme = Theme.of(context).textTheme;
     return Container(
-      width: MediaQuery.of(context).size.width /2,
+      width: double.infinity,
       height: 200,
       decoration: BoxDecoration(
         image: DecorationImage(

@@ -184,8 +184,10 @@ class _PouchersTierListState extends ConsumerState<PouchersTierList> {
         });
       }
     } else {
-      ref.read(editProfileInHouseProvider.notifier).state.tierLevels =
-          userProfile.tierLevels;
+      ref.read(editProfileInHouseProvider.notifier).state = ref
+          .read(editProfileInHouseProvider.notifier)
+          .state
+          .copyWith(tierLevels: userProfile.tierLevels);
       setState(() {
         hiveTierLevel = ref.watch(editProfileInHouseProvider).tierLevels;
       });

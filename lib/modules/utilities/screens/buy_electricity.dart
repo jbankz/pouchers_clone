@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
- import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/buy_cable_class.dart';
@@ -26,8 +26,10 @@ import '../providers/utilities_provider.dart';
 class BuyElectricity extends ConsumerStatefulWidget {
   static const String routeName = "buyElectricity";
   final bool? isGuest;
+  final String? name, email;
 
-  const BuyElectricity({Key? key, this.isGuest}) : super(key: key);
+  const BuyElectricity({Key? key, this.isGuest, this.name, this.email})
+      : super(key: key);
 
   @override
   ConsumerState<BuyElectricity> createState() => _BuyElectricityState();
@@ -42,15 +44,21 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
   List<GetUtilitiesData> utilities = [];
   String _meterNo = "";
   String _amount = "";
-  List<PaymentItem> utilitiesType = [];
-  PaymentItem? paymentType;
-
+  List<Service> utilitiesType = [];
+  Service? paymentType;
+  String? threshold;
+  String? discountValue;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(getUtilitiesProvider.notifier).getUtilities(utility: "utility?category=electricity");
+      ref
+          .read(getUtilitiesProvider.notifier)
+          .getUtilities(utility: "electricity");
+      ref
+          .read(getDiscountProvider.notifier)
+          .getDiscount(utility: "electricity");
     });
   }
 
@@ -76,8 +84,8 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                       ref
                           .read(getUtilitiesTypeProvider.notifier)
                           .getUtilitiesType(
-                          categoryId: int.parse(
-                              utilitiesData!.billerid!));
+                              merchantServiceId:
+                                  utilitiesData!.operatorpublicid!);
                     }
                   },
                   child: Container(
@@ -88,54 +96,43 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: kMediumPadding),
-                          child: Row(
-                            children: [
-                              utilitiesData == null
-                                  ? SizedBox()
-                                  : Container(
-                                height: 40,
-                                width: 40,
-                                color: kIconGrey,
-                                margin: EdgeInsets.only(
-                                  right: kRegularPadding,
-                                ),
-                              ),
-                              Text(
-                                  utilitiesData == null
-                                      ? selectProvider
-                                      : utilitiesData!.billername!,
-                                  overflow: TextOverflow.ellipsis,
-                                  softWrap: true,
-                                  style: utilitiesData == null
-                                      ? textTheme.bodyText1!.copyWith(
-                                    color: kSecondaryTextColor
-                                        .withOpacity(0.7),
-                                    fontWeight: FontWeight.w300,
-                                  )
-                                      : textTheme.subtitle1),
-                            ],
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                EdgeInsets.symmetric(vertical: kMediumPadding),
+                            child: Text(
+                                utilitiesData == null
+                                    ? selectProvider
+                                    : utilitiesData!.name!,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                                style: utilitiesData == null
+                                    ? textTheme.bodyText1!.copyWith(
+                                        color: kSecondaryTextColor
+                                            .withOpacity(0.7),
+                                        fontWeight: FontWeight.w300,
+                                      )
+                                    : textTheme.subtitle1),
                           ),
                         ),
                         Consumer(builder: (context, ref, _) {
                           var _widget = Icon(
-                                Icons.keyboard_arrow_down,
-                                size: 30,
-                                color: kSecondaryTextColor,
-                              );
-                          return ref.watch(getUtilitiesProvider).when(
-                            done: (data) {
-                              if (data != null) {
-                                utilities = data.data!;
-                              }
-                              return _widget;
-                            },
-                            loading: () => SpinKitDemo(
-                              size: 25,
-                            ),
-                            error: (val) => _widget,
+                            Icons.keyboard_arrow_down,
+                            size: 30,
+                            color: kSecondaryTextColor,
                           );
+                          return ref.watch(getUtilitiesProvider).when(
+                                done: (data) {
+                                  if (data != null) {
+                                    utilities = data.data!;
+                                  }
+                                  return _widget;
+                                },
+                                loading: () => SpinKitDemo(
+                                  size: 25,
+                                ),
+                                error: (val) => _widget,
+                              );
                         })
                       ],
                     ),
@@ -144,6 +141,15 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                 SizedBox(
                   height: kMicroPadding,
                 ),
+                ref.watch(getDiscountProvider).when(done: (done) {
+                  if (done != null) {
+                    threshold = done.data!.threshold ?? "0";
+                    discountValue = done.data!.discountValue ?? "0";
+                    return SizedBox();
+                  } else {
+                    return SizedBox();
+                  }
+                }),
                 Text(
                   meterType,
                   style: textTheme.headline6,
@@ -155,15 +161,17 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                   onTap: (utilitiesData == null)
                       ? null
                       : () async {
-                    final result =
-                    await buildShowModalBottomSheet(
-                        context,
-                        SubscriptionModal(
-                            paymentItem: utilitiesType));
-                    if (result != null) {
-                      setState(() => paymentType = result);
-                    }
-                  },
+                          final result = await buildShowModalBottomSheet(
+                              context,
+                              SubscriptionModal(
+                                paymentItem: utilitiesType,
+                                threshold: threshold,
+                                discountValue: discountValue,
+                              ));
+                          if (result != null) {
+                            setState(() => paymentType = result);
+                          }
+                        },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
                     decoration: BoxDecoration(
@@ -174,22 +182,22 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                         Expanded(
                           child: Padding(
                             padding:
-                            EdgeInsets.symmetric(vertical: kMediumPadding),
+                                EdgeInsets.symmetric(vertical: kMediumPadding),
                             child: Row(
                               children: [
                                 Expanded(
                                   child: Text(
                                       paymentType == null
                                           ? type
-                                          : paymentType!.paymentitemname!,
+                                          : paymentType!.name!,
                                       overflow: TextOverflow.ellipsis,
                                       softWrap: true,
                                       style: paymentType == null
                                           ? textTheme.bodyText1!.copyWith(
-                                        color: kSecondaryTextColor
-                                            .withOpacity(0.7),
-                                        fontWeight: FontWeight.w300,
-                                      )
+                                              color: kSecondaryTextColor
+                                                  .withOpacity(0.7),
+                                              fontWeight: FontWeight.w300,
+                                            )
                                           : textTheme.subtitle1),
                                 ),
                               ],
@@ -198,173 +206,33 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                         ),
                         Consumer(builder: (context, ref, _) {
                           var _widget = Row(
-                                children: [
-                                  paymentType == null
-                                      ? SizedBox()
-                                      : RichText(
-                                    text: TextSpan(
-                                      text: "₦",
-                                      style: TextStyle(
-                                        color: kPrimaryTextColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 18,
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                            text: kPriceFormatter(
-                                                double.parse(
-                                                    paymentType!
-                                                        .amount!) /
-                                                    100)
-                                                .replaceAll(".00", ""),
-                                            style: textTheme.subtitle1)
-                                      ],
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.keyboard_arrow_down,
-                                    size: 30,
-                                    color: kSecondaryTextColor,
-                                  ),
-                                ],
-                              );
-                          return ref.watch(getUtilitiesTypeProvider).when(
-                            done: (data) {
-                              if (data != null) {
-                                utilitiesType = data.data!.paymentitems!;
-                              }
-                              return _widget;
-                            },
-                            loading: () {
-                              return SpinKitDemo(
-                                size: 25,
-                              );
-                            },
-                            error: (val) => _widget,
+                            children: [
+                              Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 30,
+                                color: kSecondaryTextColor,
+                              ),
+                            ],
                           );
+                          return ref.watch(getUtilitiesTypeProvider).when(
+                                done: (data) {
+                                  if (data != null) {
+                                    utilitiesType = data.data!.services!;
+                                  }
+                                  return _widget;
+                                },
+                                loading: () {
+                                  return SpinKitDemo(
+                                    size: 25,
+                                  );
+                                },
+                                error: (val) => _widget,
+                              );
                         }),
                       ],
                     ),
                   ),
                 ),
-
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     inkWell(
-                //       onTap: () {
-                //         setState(() => _meterType = prepaid);
-                //       },
-                //       child: Container(
-                //         padding: EdgeInsets.symmetric(
-                //             horizontal: kMediumPadding,
-                //             vertical: kRegularPadding),
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(kSmallPadding),
-                //           border: Border.all(
-                //             color: _meterType == prepaid
-                //                 ? kPrimaryColor
-                //                 : kLightPurple,
-                //             width: 1,
-                //           ),
-                //         ),
-                //         child: Row(
-                //           children: [
-                //             Container(
-                //               padding: EdgeInsets.all(4),
-                //               decoration: BoxDecoration(
-                //                 shape: BoxShape.circle,
-                //                 border: Border.all(
-                //                   color: _meterType == prepaid
-                //                       ? kPrimaryColor
-                //                       : kPurpleColor400,
-                //                   width: 1.5,
-                //                 ),
-                //               ),
-                //               child: _meterType == prepaid
-                //                   ? Container(
-                //                       height: kSmallPadding,
-                //                       width: kSmallPadding,
-                //                       decoration: BoxDecoration(
-                //                         shape: BoxShape.circle,
-                //                         color: kPrimaryColor,
-                //                       ),
-                //                     )
-                //                   : SizedBox(
-                //                       height: kSmallPadding,
-                //                       width: kSmallPadding,
-                //                     ),
-                //             ),
-                //             SizedBox(
-                //               width: kMediumPadding,
-                //             ),
-                //             Text(
-                //               prepaid,
-                //               style: textTheme.subtitle1!
-                //                   .copyWith(fontWeight: FontWeight.w500),
-                //             )
-                //           ],
-                //         ),
-                //       ),
-                //     ),
-                //     inkWell(
-                //       onTap: () {
-                //         setState(() => _meterType = postpaid);
-                //       },
-                //       child: Container(
-                //         padding: EdgeInsets.symmetric(
-                //             horizontal: kMediumPadding,
-                //             vertical: kRegularPadding),
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(kSmallPadding),
-                //           border: Border.all(
-                //             color: _meterType == postpaid
-                //                 ? kPrimaryColor
-                //                 : kLightPurple,
-                //             width: 1,
-                //           ),
-                //         ),
-                //         child: Row(
-                //           children: [
-                //             Container(
-                //               padding: EdgeInsets.all(4),
-                //               decoration: BoxDecoration(
-                //                 shape: BoxShape.circle,
-                //                 border: Border.all(
-                //                   color: _meterType == postpaid
-                //                       ? kPrimaryColor
-                //                       : kLightPurple,
-                //                   width: 1.5,
-                //                 ),
-                //               ),
-                //               child: _meterType == postpaid
-                //                   ? Container(
-                //                       height: kSmallPadding,
-                //                       width: kSmallPadding,
-                //                       decoration: BoxDecoration(
-                //                         shape: BoxShape.circle,
-                //                         color: kPrimaryColor,
-                //                       ),
-                //                     )
-                //                   : SizedBox(
-                //                       height: kSmallPadding,
-                //                       width: kSmallPadding,
-                //                     ),
-                //             ),
-                //             SizedBox(
-                //               width: kMediumPadding,
-                //             ),
-                //             Text(
-                //               postpaid,
-                //               style: textTheme.subtitle1!
-                //                   .copyWith(fontWeight: FontWeight.w500),
-                //             )
-                //           ],
-                //         ),
-                //       ),
-                //     )
-                //   ],
-                // ),
                 SizedBox(
                   height: kMicroPadding,
                 ),
@@ -383,7 +251,8 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                       setState(() {
                         _meterNo = val;
                       });
-                    };
+                    }
+                    ;
                   },
                   icon: inkWell(
                     onTap: () async {
@@ -433,7 +302,8 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                         setState(() {
                           _amount = val;
                         });
-                      };
+                      }
+                      ;
                     },
                     decoration: InputDecoration(
                       filled: true,
@@ -484,120 +354,118 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                 SizedBox(
                   height: kMediumPadding,
                 ),
-                widget.isGuest! ? SizedBox() :  Scheduling(
-                  text: scheduleElectricity,
-                  subtext: scheduleElectricitySub,
-                  onTap: ()=> pushTo(context, ScheduleElectricity(),settings:
-                  RouteSettings(name: ScheduleElectricity.routeName)),
-                ),
+                widget.isGuest!
+                    ? SizedBox()
+                    : Scheduling(
+                        text: scheduleElectricity,
+                        subtext: scheduleElectricitySub,
+                        onTap: () => pushTo(context, ScheduleElectricity(
+                          utility: utilitiesData,
+                          paymentType: paymentType,
+                          cardNo: contactController.text,
+                          amount: amountController.text,
+                        ),
+                            settings: RouteSettings(
+                                name: ScheduleElectricity.routeName)),
+                      ),
               ],
             ),
           ),
           SizedBox(
             height: kRegularPadding,
           ),
-
-          widget.isGuest! ? SizedBox() :  Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                saveBeneficiary,
-                style: textTheme.headline2!.copyWith(
-                  color: kIconGrey,
+          widget.isGuest!
+              ? SizedBox()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      saveBeneficiary,
+                      style: textTheme.headline2!.copyWith(
+                        color: kIconGrey,
+                      ),
+                    ),
+                    FlutterSwitchClass(
+                      saveBeneficiary: _saveBeneficiary,
+                      onToggle: (val) {
+                        setState(() {
+                          _saveBeneficiary = val;
+                        });
+                      },
+                    )
+                  ],
                 ),
-              ),
-              FlutterSwitchClass(
-                saveBeneficiary: _saveBeneficiary,
-                onToggle: (val) {
-                  setState(() {
-                    _saveBeneficiary = val;
-                  });
-                },
-              )
-            ],
-          ),
           SizedBox(
             height: kLargePadding,
           ),
           Consumer(builder: (context, ref, _) {
             ref.listen(buyUtilitiesProvider,
-                    (previous, NotifierState<String> next) {
-                  if (next.status == NotifierStatus.done) {
-                    pushTo(
-                      context,
-                      SuccessMessage(
-                          text: dataSuccess,
-                          subText: deliveredPurchase,
-                          onTap: () {
-                            pushToAndClearStack(
-                              context,
-                              TabLayout(
-                                gottenIndex: 0,
-                              ),
-                            );
-                          }),
-                    );
-                  }else if(next.status == NotifierStatus.error) {
-                    showErrorBar(context, next.data ?? next.message!);
-                  }
-                });
+                (previous, NotifierState<String> next) {
+              if (next.status == NotifierStatus.done) {
+                pushTo(
+                  context,
+                  SuccessMessage(
+                      text: dataSuccess,
+                      subText: deliveredPurchase,
+                      onTap: () {
+                        pushToAndClearStack(
+                          context,
+                          TabLayout(
+                            gottenIndex: 0,
+                          ),
+                        );
+                      }),
+                );
+              } else if (next.status == NotifierStatus.error) {
+                showErrorBar(context, next.data ?? next.message!);
+              }
+            });
             var _widget = LargeButton(
               title: continueText,
-              disableColor: (paymentType == null || _meterNo == "" || utilitiesData == null || _amount == "")
+              disableColor: (paymentType == null ||
+                      _meterNo == "" ||
+                      utilitiesData == null ||
+                      _amount == "")
                   ? kBackgroundColor
                   : kPrimaryColor,
-              onPressed:
-               (paymentType == null || _meterNo == "" ||
-                  utilitiesData == null || _amount == "")
+              onPressed: (paymentType == null ||
+                      _meterNo == "" ||
+                      utilitiesData == null ||
+                      _amount == "")
                   ? () {}
-                  :
-                  () {
-                FocusScope.of(context).unfocus();
-                    if (double.parse(amountController.text) > 10000 &&
-                        widget.isGuest!) {
-                      buildShowModalBottomSheet(context, GuestMaximumAmountModal());
-                    }else{
-                    buildShowModalBottomSheet(
-                  context,
-                  widget.isGuest!
-                      ? GuestRechargeSummary(
-                    textTheme: textTheme,
-                    purchaseDelivered: true,
-                  )
-                      : RechargeSummary(
-                    billerName: utilitiesData!.billername!,
-                    amount: amountController.text,
-                    billerLogo: "",
-                    recipientNo: contactController.text,
-                    textTheme: textTheme,
-                  ),
-                ).then((value) async {
-                  final result = await buildShowModalBottomSheet(
-                      context,
-                      TransactionPinContainer(
-                        isData: false,
-                        isCable: false,
-                        isCard: false,
-                        isFundCard: false,
-                      ));
-                  if (result != null) {
-                    ref.read(buyUtilitiesProvider.notifier).buyUtilities(
-                      paymentCode: paymentType!.paymentCode!,
-                      amount: amountController.text,
-                      customerId: contactController.text,
-                      transactionPin: result,
-                      subCategory: utilitiesData!.billername!,
-                      category: "cable-purchase",
-                    );
-                  }
-                });};
-              },
+                  : () {
+                      FocusScope.of(context).unfocus();
+                      if (double.parse(amountController.text) > 10000 &&
+                          widget.isGuest!) {
+                        buildShowModalBottomSheet(
+                            context, GuestMaximumAmountModal());
+                      } else {
+                        buildShowModalBottomSheet(
+                          context,
+                          RechargeSummary(
+                            billerName: utilitiesData!.displayName!,
+                            billerId: utilitiesData!.operatorpublicid!,
+                            utility: true,
+                            isGuest: widget.isGuest!,
+                            email: widget.email,
+                            name: widget.name,
+                            category: "electricity-purchase",
+                            amount: "${paymentType!.price!}",
+                            billerLogo: "",
+                            billerCode: paymentType!.code,
+                            recipientNo: contactController.text,
+                            textTheme: textTheme,
+                          ),
+                        );
+                      }
+                      ;
+                    },
             );
             return ref.watch(buyUtilitiesProvider).when(
-              done: (data) => _widget,
-              loading: () => SpinKitDemo(),
-              error: (val) => _widget,
-            );
+                  done: (data) => _widget,
+                  loading: () => SpinKitDemo(),
+                  error: (val) => _widget,
+                );
           }),
         ],
       ),

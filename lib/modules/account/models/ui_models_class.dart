@@ -6,14 +6,19 @@ import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
 import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
 import 'package:pouchers/modules/onboarding/screens/guest_widget.dart';
+import 'package:pouchers/modules/onboarding/screens/pay_card.dart';
+import 'package:pouchers/modules/onboarding/screens/pay_ussd.dart';
 import 'package:pouchers/modules/tab_layout/screens/homepage/fund_wallet.dart';
 import 'package:pouchers/modules/tab_layout/screens/tab_layout.dart';
+import 'package:pouchers/modules/utilities/providers/utilities_provider.dart';
+import 'package:pouchers/modules/utilities/screens/webview_page.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/constant/ui_constants.dart';
 import 'package:pouchers/utils/extras.dart';
 import 'package:pouchers/utils/flushbar.dart';
+import 'package:pouchers/utils/logger.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/utils.dart';
 import 'package:pouchers/utils/widgets.dart';
@@ -31,7 +36,7 @@ class ProviderRow {
   const ProviderRow({required this.icon});
 }
 
-List<ProviderRow> provider = [
+List<ProviderRow> airtimeProvider = [
   ProviderRow(
     icon: AssetPaths.mtnLogoIcon,
   ),
@@ -45,6 +50,34 @@ List<ProviderRow> provider = [
     icon: AssetPaths.airtelIcon,
   ),
 ];
+
+String icon(String displayName) {
+  String icon = "";
+  switch (displayName) {
+    case "MTN":
+      return airtimeProvider[0].icon;
+    case "GLO":
+      return airtimeProvider[1].icon;
+    case "Airtel":
+      return airtimeProvider[3].icon;
+    default:
+      return airtimeProvider[2].icon;
+  }
+}
+
+int getIndex(String displayName) {
+  String icon = "";
+  switch (displayName) {
+    case "MTN":
+      return 0;
+    case "GLO":
+      return 1;
+    case "Airtel":
+      return 3;
+    default:
+      return 2;
+  }
+}
 
 class HomeIcons extends StatelessWidget {
   final String icon, text;
@@ -426,18 +459,36 @@ class AirtimeRow extends StatelessWidget {
   }
 }
 
-class RechargeSummary extends StatelessWidget {
-  const RechargeSummary({
-    Key? key,
-    required this.textTheme,
-    required this.billerName,
-    required this.billerLogo,
-    required this.recipientNo,
-    required this.amount,
-  }) : super(key: key);
+class RechargeSummary extends StatefulWidget {
+  const RechargeSummary(
+      {Key? key,
+      required this.textTheme,
+      required this.billerName,
+      required this.billerLogo,
+      required this.recipientNo,
+      required this.billerId,
+      required this.amount,
+      this.utility = false,
+      this.billerCode,
+      this.category,
+      this.isGuest = false,
+      this.mobileOperatorServiceId,
+      this.email,
+      this.name})
+      : super(key: key);
 
   final TextTheme textTheme;
-  final String billerName, billerLogo, recipientNo, amount;
+  final bool utility, isGuest;
+  final String? billerCode, category, mobileOperatorServiceId, name, email;
+
+  final String billerName, billerLogo, recipientNo, amount, billerId;
+
+  @override
+  State<RechargeSummary> createState() => _RechargeSummaryState();
+}
+
+class _RechargeSummaryState extends State<RechargeSummary> {
+  String _payWith = payWithCard;
 
   @override
   Widget build(BuildContext context) {
@@ -467,21 +518,23 @@ class RechargeSummary extends StatelessWidget {
           const SizedBox(
             height: 30,
           ),
-          Container(
-            padding: EdgeInsets.all(kRegularPadding),
-            height: 70,
-            width: 70,
-            decoration:
-                BoxDecoration(color: kContainerColor, shape: BoxShape.circle),
-            child: SvgPicture.asset(
-              AssetPaths.mtnLogoIcon,
-              fit: BoxFit.scaleDown,
-            ),
-          ),
+          widget.billerLogo == ""
+              ? SizedBox()
+              : Container(
+                  padding: EdgeInsets.all(kRegularPadding),
+                  height: 70,
+                  width: 70,
+                  decoration: BoxDecoration(
+                      color: kContainerColor, shape: BoxShape.circle),
+                  child: SvgPicture.asset(
+                    widget.billerLogo,
+                    fit: BoxFit.scaleDown,
+                  ),
+                ),
           Text(
-            billerName,
+            widget.billerName,
             textAlign: TextAlign.center,
-            style: textTheme.headline4!.copyWith(
+            style: widget.textTheme.headline4!.copyWith(
               fontSize: 16,
             ),
           ),
@@ -498,54 +551,54 @@ class RechargeSummary extends StatelessWidget {
             child: Column(
               children: [
                 AirtimeRow(
-                  textTheme: textTheme,
+                  textTheme: widget.textTheme,
                   text: recipient,
-                  subText: recipientNo,
+                  subText: widget.recipientNo,
                   isCopyIcon: false,
                   noSymbol: true,
-                  style: textTheme.headline3!.copyWith(
+                  style: widget.textTheme.headline3!.copyWith(
                       color: kPurpleColor, fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
                   height: kRegularPadding,
                 ),
                 AirtimeRow(
-                  textTheme: textTheme,
+                  textTheme: widget.textTheme,
                   text: amountText,
-                  subText: kPriceFormatter(double.parse(amount))
+                  subText: kPriceFormatter(double.parse(widget.amount))
                       .replaceAll(".00", ""),
                   isCopyIcon: false,
                   isNaira: true,
                   isBold: true,
                   noSymbol: false,
-                  style: textTheme.headline4!
+                  style: widget.textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
                   height: kRegularPadding,
                 ),
-                AirtimeRow(
-                  textTheme: textTheme,
+              widget.isGuest ? SizedBox() :  AirtimeRow(
+                  textTheme: widget.textTheme,
                   text: fee,
                   subText: "0.00",
                   isNaira: true,
                   isCopyIcon: false,
                   noSymbol: false,
-                  style: textTheme.headline4!.copyWith(
+                  style: widget.textTheme.headline4!.copyWith(
                     fontSize: 16,
                   ),
                 ),
                 SizedBox(
-                  height: kRegularPadding,
+                  height: widget.isGuest ? 0 : kRegularPadding,
                 ),
                 AirtimeRow(
-                  textTheme: textTheme,
+                  textTheme: widget.textTheme,
                   text: cashBack,
                   subText: "0.00",
                   isCopyIcon: false,
                   noSymbol: false,
                   isNaira: true,
-                  style: textTheme.headline4!.copyWith(
+                  style: widget.textTheme.headline4!.copyWith(
                     fontSize: 16,
                   ),
                 ),
@@ -556,29 +609,344 @@ class RechargeSummary extends StatelessWidget {
             height: kLargePadding,
           ),
           Consumer(builder: (context, ref, _) {
-            return BalanceWidget(
-              hasBalance: double.parse(
-                          ref.watch(getWalletProvider).data!.data!.balance!) >
-                      double.parse(amount)
-                  ? true
-                  : false,
-              textTheme: textTheme,
-              text: ref.watch(getWalletProvider).data == null
-                  ? ""
-                  : kPriceFormatter(double.parse(
-                      ref.watch(getWalletProvider).data!.data!.balance!)),
-            );
+            return ref.watch(getWalletProvider).data == null
+                ? SizedBox()
+                : BalanceWidget(
+                    hasBalance: double.parse(ref
+                                .watch(getWalletProvider)
+                                .data!
+                                .data!
+                                .balance!) >
+                            double.parse(widget.amount)
+                        ? true
+                        : false,
+                    textTheme: widget.textTheme,
+                    text: ref.watch(getWalletProvider).data == null
+                        ? ""
+                        : kPriceFormatter(double.parse(
+                            ref.watch(getWalletProvider).data!.data!.balance!)),
+                  );
           }),
           SizedBox(
-            height: kFullPadding,
+            height: widget.isGuest ? kSmallPadding : kFullPadding,
           ),
-          PayWithAmount(
-            amount: kPriceFormatter(double.parse(amount)).replaceAll(".00", ""),
-            text: "$pay ",
-            onTap: () async {
-              Navigator.pop(context);
-            },
-          ),
+          widget.isGuest
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      selectPaymentOption,
+                      style: widget.textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: kIconGrey,
+                      ),
+                    ),
+                    SizedBox(
+                      height: kMediumPadding,
+                    ),
+                    inkWell(
+                      onTap: () {
+                        setState(() => _payWith = payWithCard);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: kMediumPadding,
+                            vertical: kRegularPadding),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(kSmallPadding),
+                          border: Border.all(
+                            color: _payWith == payWithCard
+                                ? kPrimaryColor
+                                : kLightPurple,
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: _payWith == payWithCard
+                                      ? kPrimaryColor
+                                      : kPurpleColor400,
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: _payWith == payWithCard
+                                  ? Container(
+                                      height: kSmallPadding,
+                                      width: kSmallPadding,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: kPrimaryColor,
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      height: kSmallPadding,
+                                      width: kSmallPadding,
+                                    ),
+                            ),
+                            SizedBox(
+                              width: kMediumPadding,
+                            ),
+                            Text(
+                              payWithCard,
+                              style: widget.textTheme.subtitle1!
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: kMediumPadding,
+                    ),
+                    inkWell(
+                      onTap: () {
+                        setState(() => _payWith = payWithUssd);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: kMediumPadding,
+                            vertical: kRegularPadding),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(kSmallPadding),
+                          border: Border.all(
+                            color: _payWith == payWithUssd
+                                ? kPrimaryColor
+                                : kLightPurple,
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: _payWith == payWithUssd
+                                      ? kPrimaryColor
+                                      : kLightPurple,
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: _payWith == payWithUssd
+                                  ? Container(
+                                      height: kSmallPadding,
+                                      width: kSmallPadding,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: kPrimaryColor,
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      height: kSmallPadding,
+                                      width: kSmallPadding,
+                                    ),
+                            ),
+                            SizedBox(
+                              width: kMediumPadding,
+                            ),
+                            Text(
+                              payWithUssd,
+                              style: widget.textTheme.subtitle1!
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: kLargePadding,
+                    ),
+                    LargeButton(
+                      title: continueText,
+                      onPressed: () {
+                        _payWith == payWithCard
+                            ? pushTo(
+                                context,
+                                PayWithCard(
+                                  isCable: true,
+                                ),
+                                settings:
+                                    RouteSettings(name: PayWithCard.routeName))
+                            : pushTo(
+                                context,
+                                PayWithUssd(
+                                  cardNumber: widget.recipientNo,
+                                  category: widget.category,
+                                  subCat: widget.billerName,
+                                  amount: widget.amount,
+                                  name: widget.name,
+                                  email: widget.email,
+                                  providerId: widget.billerId,
+                                  isUtility: widget.utility,
+                                  serviceId: widget.mobileOperatorServiceId,
+                                  merchantService: widget.billerCode
+                                ),
+                                settings:
+                                    RouteSettings(name: PayWithUssd.routeName));
+                      },
+                    )
+                  ],
+                )
+              : widget.utility
+                  ? Consumer(builder: (context, ref, _) {
+                      var _widget = PayWithAmount(
+                        amount: kPriceFormatter(double.parse(widget.amount))
+                            .replaceAll(".00", ""),
+                        text: "$pay ",
+                        onTap: () async {
+                          final result = await buildShowModalBottomSheet(
+                            context,
+                            TransactionPinContainer(
+                              isData: false,
+                              isCard: false,
+                              isFundCard: false,
+                            ),
+                          );
+                          if (result != null) {
+                            ref
+                                .read(buyUtilitiesProvider.notifier)
+                                .buyUtilities(
+                                    amount: double.parse(widget.amount),
+                                    isSchedule: false,
+                                    merchantAccount: widget.billerId,
+                                    merchantReferenceNumber: widget.recipientNo,
+                                    merchantService: [widget.billerCode!],
+                                    subCategory: widget.billerName,
+                                    transactionPin: result,
+                                    category: "cable-purchase",
+                                    then: () {
+                                      ref
+                                          .read(getWalletProvider.notifier)
+                                          .getWalletDetails();
+                                      pushTo(
+                                        context,
+                                        SuccessMessage(
+                                          text: dataSuccess,
+                                          subText: deliveredPurchase,
+                                          onTap: () {
+                                            pushToAndClearStack(
+                                              context,
+                                              TabLayout(
+                                                gottenIndex: 0,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    error: (val) => showErrorBar(context, val));
+                          }
+                        },
+                      );
+                      return ref.watch(buyUtilitiesProvider).when(
+                          done: (done) => _widget,
+                          loading: () => SpinKitDemo(),
+                          error: (val) => _widget);
+                    })
+                  : Consumer(builder: (context, ref, _) {
+                      var _widget = PayWithAmount(
+                        amount: kPriceFormatter(double.parse(widget.amount))
+                            .replaceAll(".00", ""),
+                        text: "$pay ",
+                        onTap: widget.isGuest
+                            ? () {
+                                ref
+                                    .read(guestAirtimeProvider.notifier)
+                                    .guestAirtime(
+                                        subCategory: widget.billerName,
+                                        amount: widget.amount,
+                                        category: widget.category!,
+                                        name: widget.name,
+                                        email: widget.email,
+                                        isAirtime:
+                                            widget.category!.contains("airtime")
+                                                ? true
+                                                : false,
+                                        mobileOperatorServiceId:
+                                            widget.mobileOperatorServiceId,
+                                        destinationPhoneNumber:
+                                            widget.recipientNo,
+                                        mobileOperatorPublicId: widget.billerId,
+                                        then: (val) {
+                                          pushTo(
+                                              context,
+                                              WebViewPage(
+                                                url: val,
+                                              ));
+                                          print("val$val");
+                                        },
+                                        error: (val) =>
+                                            showErrorBar(context, val));
+                              }
+                            : () async {
+                                final result = await buildShowModalBottomSheet(
+                                  context,
+                                  TransactionPinContainer(
+                                    isData: false,
+                                    isCard: false,
+                                    isFundCard: false,
+                                  ),
+                                );
+                                if (result != null) {
+                                  ref
+                                      .read(buyAirtimeProvider.notifier)
+                                      .buyAirtime(
+                                          subCategory: widget.billerName,
+                                          amount: widget.amount,
+                                          category: widget.category!,
+                                          isAirtime: widget.category!
+                                                  .contains("airtime")
+                                              ? true
+                                              : false,
+                                          mobileOperatorServiceId:
+                                              widget.mobileOperatorServiceId,
+                                          destinationPhoneNumber:
+                                              widget.recipientNo,
+                                          transactionPin: result,
+                                          mobileOperatorPublicId:
+                                              widget.billerId,
+                                          then: () {
+                                            ref
+                                                .read(
+                                                    getWalletProvider.notifier)
+                                                .getWalletDetails();
+                                            pushTo(
+                                                context,
+                                                SuccessMessage(
+                                                    text: rechargeSuccessful,
+                                                    subText:
+                                                        rechargeSuccessfulSub,
+                                                    onTap: () {
+                                                      pushToAndClearStack(
+                                                        context,
+                                                        TabLayout(
+                                                          gottenIndex: 0,
+                                                        ),
+                                                      );
+                                                    }));
+                                          },
+                                          error: (val) =>
+                                              showErrorBar(context, val));
+                                }
+                              },
+                      );
+
+                      return widget.isGuest
+                          ? ref.watch(guestAirtimeProvider).when(
+                              done: (done) => _widget,
+                              loading: () => SpinKitDemo(),
+                              error: (val) => _widget)
+                          : ref.watch(buyAirtimeProvider).when(
+                              done: (done) => _widget,
+                              loading: () => SpinKitDemo(),
+                              error: (val) => _widget);
+                    })
         ],
       ),
     );

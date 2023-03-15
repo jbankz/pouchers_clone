@@ -16,7 +16,7 @@ import 'package:pouchers/modules/utilities/screens/voucher/voucher.dart';
 import 'package:pouchers/utils/assets_path.dart';
 
 final List<GuestClass> guestClass = [
-  GuestClass("Airtime/Data", AssetPaths.airtimeIcon,
+  GuestClass("Airtime", AssetPaths.airtimeIcon,
       page: GetGuestEmail(
         name: BuyAirtime.routeName,
       )),
@@ -24,7 +24,10 @@ final List<GuestClass> guestClass = [
       page: GetGuestEmail(
         name: BuyCable.routeName,
       )),
-  GuestClass("Water Bill", AssetPaths.waterTapIcon, page: GetGuestEmail()),
+  GuestClass("Data", AssetPaths.dataIcon,
+      page: GetGuestEmail(
+        name: BuyData.routeName,
+      )),
   GuestClass("Electricity", AssetPaths.electricityIcon,
       page: GetGuestEmail(
         name: BuyElectricity.routeName,
@@ -35,12 +38,14 @@ final List<GuestClass> guestClass = [
         name: BuyInternet.routeName,
       )),
   GuestClass("Tickets", AssetPaths.ticketIcon, page: Container()),
-  GuestClass("Vouchers", AssetPaths.voucherIcon, page: GetGuestEmail(
-    name: Vouchers.routeName,
-  )),
-  GuestClass("Betting", AssetPaths.bettingIcon, page: GetGuestEmail(
-    name: Betting.routeName,
-  )),
+  GuestClass("Vouchers", AssetPaths.voucherIcon,
+      page: GetGuestEmail(
+        name: Vouchers.routeName,
+      )),
+  GuestClass("Betting", AssetPaths.bettingIcon,
+      page: GetGuestEmail(
+        name: Betting.routeName,
+      )),
 ];
 
 List<GuestClass> guestList = [
@@ -124,26 +129,38 @@ final List<GuestClass> guestHomeClass = [
       ),
       days: BuyAirtime.routeName),
   GuestClass("Data", AssetPaths.dataIcon,
-      page: BuyData(
-      ), days: BuyData.routeName),
+      page: BuyData( isGuest: false,), days: BuyData.routeName),
   GuestClass("CableTV", AssetPaths.televisionIcon,
       page: BuyCable(
         isGuest: false,
-      ), days: BuyCable.routeName),
+      ),
+      days: BuyCable.routeName),
   GuestClass("Electricity", AssetPaths.electricityIcon,
-      page: BuyElectricity(isGuest: false,), days: BuyElectricity.routeName),
+      page: BuyElectricity(
+        isGuest: false,
+      ),
+      days: BuyElectricity.routeName),
   GuestClass("Internet", AssetPaths.wifiIcon,
-      page: BuyInternet(isGuest: false,), days: BuyInternet.routeName),
+      page: BuyInternet(
+        isGuest: false,
+      ),
+      days: BuyInternet.routeName),
   GuestClass("Betting", AssetPaths.bettingIcon,
-      page: Betting(isGuest: false,), days: Betting.routeName),
+      page: Betting(
+        isGuest: false,
+      ),
+      days: Betting.routeName),
   GuestClass(
     "Vouchers",
     AssetPaths.voucherIcon,
-    page: Vouchers(isGuest: false,),
+    page: Vouchers(
+      isGuest: false,
+    ),
   ),
-  GuestClass("More", AssetPaths.moreIcon, page: Container(
-    color: Colors.white,
-  )),
+  GuestClass("More", AssetPaths.moreIcon,
+      page: Container(
+        color: Colors.white,
+      )),
 ];
 
 final List<GuestClass> voucherClass = [

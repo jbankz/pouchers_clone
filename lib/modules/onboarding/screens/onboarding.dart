@@ -177,7 +177,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   void initState() {
     _controller = PageController();
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_) => _animateSlider());
+     WidgetsBinding.instance.addPostFrameCallback((_) => _animateSlider());
   }
 
   @override

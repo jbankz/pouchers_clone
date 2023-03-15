@@ -60,14 +60,7 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
           i++) {
         dateTest.add(i);
       }
-      if (ref.watch(editProfileInHouseProvider) == null) {
-        print("null");
-        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(userProfile.toJson());
-        setState(() {});
-      } else {
-        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(ref.watch(editProfileInHouseProvider).toJson());
-        setState(() {});
-      }
+      checkProvider();
        await checkTierLevel();
       setState(() {});
       logPrint("edit profile in house${ref.watch(editProfileInHouseProvider)}");
@@ -131,11 +124,6 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                     if (next.status == NotifierStatus.done) {
                       showSuccessBar(context, next.data!.message);
                       ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
-                      logPrint("Full name profile ${ref.watch(editProfileInHouseProvider)}");   //next.data!.data!;
-                      // ref.read(editProfileInHouseProvider.notifier).state =
-                      //     EditProfileData().copyWith(
-                      //         profilePicture:
-                      //             "https://photow-profile-images.s3.us-west-2.amazonaws.com/$selectedImage");
                     }
                   });
 
@@ -480,6 +468,48 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
     );
   }
 
+  checkProvider(){
+    if (ref.watch(editProfileInHouseProvider).firstName == null) {
+      ref.read(editProfileInHouseProvider.notifier).state = ref
+          .read(editProfileInHouseProvider.notifier)
+          .state
+          .copyWith(
+          profilePicture: userProfile.profilePicture,
+          firstName: userProfile.firstName,
+          lastName: userProfile.lastName,
+          tierLevels: userProfile.tierLevels,
+          address: userProfile.address,
+          gender: userProfile.gender,
+          tag: userProfile.tag,
+          dob: userProfile.dob,
+          phoneNumber: userProfile.phoneNumber,
+          email: userProfile.email,
+          isLoginBiometricActive: userProfile.isLoginBiometricActive,
+          isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+          isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
+    } else {
+      ref.read(editProfileInHouseProvider.notifier).state = ref
+          .read(editProfileInHouseProvider.notifier)
+          .state
+          .copyWith(
+          profilePicture:
+          ref.watch(editProfileInHouseProvider).profilePicture,
+          firstName: ref.watch(editProfileInHouseProvider).firstName,
+          lastName: ref.watch(editProfileInHouseProvider).lastName,
+          tierLevels: ref.watch(editProfileInHouseProvider).tierLevels,
+          address: ref.watch(editProfileInHouseProvider).address,
+          gender: ref.watch(editProfileInHouseProvider).gender,
+          tag: ref.watch(editProfileInHouseProvider).tag,
+          dob: ref.watch(editProfileInHouseProvider).dob,
+          phoneNumber: ref.watch(editProfileInHouseProvider).phoneNumber,
+          email: ref.watch(editProfileInHouseProvider).email,
+          isLoginBiometricActive: userProfile.isLoginBiometricActive,
+          isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+          isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
+    }
+
+  }
+
   Future<void> getImage() async {
     pickedFile = await picker.pickImage(
         source: ImageSource.gallery,
@@ -544,8 +574,10 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
         });
       }
     } else {
-      ref.read(editProfileInHouseProvider.notifier).state.tierLevels =
-          userProfile.tierLevels;
+      ref.read(editProfileInHouseProvider.notifier).state = ref
+          .read(editProfileInHouseProvider.notifier)
+          .state
+          .copyWith(tierLevels: userProfile.tierLevels);
       setState(() {
         hiveTierLevel = ref.watch(editProfileInHouseProvider).tierLevels;
       });

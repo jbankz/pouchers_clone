@@ -8,7 +8,6 @@ import 'dart:math' as math;
 
 import 'package:pouchers/utils/widgets.dart';
 
-
 List<String> category = [dayText, monthText];
 List<String> days = [
   "Monday",
@@ -19,7 +18,14 @@ List<String> days = [
   "Saturday",
   "Sunday"
 ];
-List<String> schedulePaymentTypes = [allText, transfer, airtime, data, cableTv, electricity];
+List<String> schedulePaymentTypes = [
+  allText,
+  transfer1,
+  airtime,
+  data,
+  cable,
+  electricity
+];
 
 List<VoucherItems> schedulePaymentDummy = [
   VoucherItems(
@@ -76,8 +82,7 @@ List<int> generateNumbers() {
 }
 
 String ordinal_suffix_of(int i) {
-  var j = i % 10,
-      k = i % 100;
+  var j = i % 10, k = i % 100;
   if (j == 1 && k != 11) {
     return "${i}st";
   }
@@ -93,13 +98,19 @@ String ordinal_suffix_of(int i) {
 class Scheduling extends StatelessWidget {
   final String text, subtext;
   final Function() onTap;
-  const Scheduling({Key? key, required this.text, required this.subtext, required this.onTap}) : super(key: key);
+
+  const Scheduling(
+      {Key? key,
+      required this.text,
+      required this.subtext,
+      required this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    return  inkWell(
-      onTap: onTap ,
+    return inkWell(
+      onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(
             vertical: kSmallPadding, horizontal: kRegularPadding),
@@ -112,10 +123,22 @@ class Scheduling extends StatelessWidget {
           children: [
             Transform(
               transform: Matrix4(
-                1,0,0,0,
-                0,1,0,0,
-                0,0,1,0,
-                0,0,0,1,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
               )..rotateX(math.pi),
               alignment: Alignment.center,
               child: RotationTransition(
@@ -145,8 +168,7 @@ class Scheduling extends StatelessWidget {
                   ),
                   Text(
                     subtext,
-                    style:
-                    textTheme.headline4!.copyWith(color: kIconGrey),
+                    style: textTheme.headline4!.copyWith(color: kIconGrey),
                   )
                 ],
               ),
@@ -185,12 +207,10 @@ class NextUpdateContainer extends StatelessWidget {
             width: kSmallPadding,
           ),
           Expanded(
-            child: FittedBox(
-              child: Text(
-                text,
-                style: textTheme.headline6!.copyWith(
-                    color: kBlueColor200, fontWeight: FontWeight.w500),
-              ),
+            child: Text(
+              text,
+              style: textTheme.headline6!
+                  .copyWith(color: kBlueColor200, fontWeight: FontWeight.w500),
             ),
           )
         ],
@@ -198,8 +218,10 @@ class NextUpdateContainer extends StatelessWidget {
     );
   }
 }
+
 class DeleteScheduleText extends StatelessWidget {
   final Function()? onTap;
+
   const DeleteScheduleText({
     Key? key,
     required this.onTap,
@@ -455,10 +477,10 @@ class ScheduleWidget extends StatelessWidget {
 
   const ScheduleWidget(
       {Key? key,
-        required this.boxDecoration,
-        required this.onTap,
-        required this.icon,
-        required this.text})
+      required this.boxDecoration,
+      required this.onTap,
+      required this.icon,
+      required this.text})
       : super(key: key);
 
   @override
@@ -485,6 +507,60 @@ class ScheduleWidget extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class SelectFrequencyWidget extends StatelessWidget {
+  const SelectFrequencyWidget({
+    Key? key,
+    required this.textTheme,
+    required this.frequency,
+  }) : super(key: key);
+
+  final TextTheme textTheme;
+  final String frequency;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 56,
+      padding: EdgeInsets.symmetric(horizontal: kSmallPadding),
+      decoration: BoxDecoration(
+        color: kBackgroundColor,
+        borderRadius: BorderRadius.circular(kSmallPadding),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            selectFrequency,
+            style: textTheme.headline6!.copyWith(
+                color: kSecondaryTextColor.withOpacity(0.7), fontSize: 18),
+          ),
+          frequency == ""
+              ? SizedBox()
+              : Container(
+           // width: 150,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "Every $frequency",
+                  style: textTheme.headline2!.copyWith(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
+                  ),
+                ),
+                Icon(
+                  Icons.keyboard_arrow_down,
+                  color: kSecondaryTextColor,
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

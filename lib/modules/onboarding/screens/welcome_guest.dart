@@ -85,7 +85,7 @@ class WelcomeGuest extends StatelessWidget {
                                   ),
                                   padding: EdgeInsets.all(kMediumPadding),
                                   child:
-                                      SvgPicture.asset(guestClass[index].icon)),
+                                      SvgPicture.asset(guestClass[index].icon),),
                               SizedBox(
                                 height: kRegularPadding,
                               ),

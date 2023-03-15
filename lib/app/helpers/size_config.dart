@@ -52,7 +52,7 @@ class NairaWidget extends StatelessWidget {
       text: TextSpan(
         text: addSign ? "$sign ₦" : "₦",
         children: [
-          TextSpan(text: text, style: textStyle2),
+          TextSpan(text: text, style: textStyle2,   ),
         ],
         style: textStyle1
       ),

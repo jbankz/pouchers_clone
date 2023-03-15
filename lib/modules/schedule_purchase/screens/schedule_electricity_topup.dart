@@ -3,11 +3,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
-import 'package:pouchers/modules/account/models/buy_electricity_class.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/modules/account/models/buy_cable_class.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
+import 'package:pouchers/modules/account/screens/account_settings/schedule_payments.dart';
 import 'package:pouchers/modules/account/screens/disable_account/disable_modal.dart';
+import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
+import 'package:pouchers/modules/schedule_purchase/provider/schedule_provider.dart';
 import 'package:pouchers/modules/schedule_purchase/schedule_modal.dart';
 import 'package:pouchers/modules/schedule_purchase/schedule_widget_constants.dart';
+import 'package:pouchers/modules/tab_layout/screens/tab_layout.dart';
+import 'package:pouchers/modules/utilities/model/utilities_model.dart';
+import 'package:pouchers/modules/utilities/providers/utilities_provider.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
@@ -17,9 +24,11 @@ import 'package:pouchers/utils/widgets.dart';
 
 class ScheduleElectricity extends ConsumerStatefulWidget {
   static const String routeName = "scheduleElectricity";
-  final String? text;
+  final String? text, cardNo, amount, frequency, id;
+  final GetUtilitiesData? utility;
+  final Service? paymentType;
 
-  const ScheduleElectricity({Key? key, this.text}) : super(key: key);
+  const ScheduleElectricity({Key? key, this.text, this.utility, this.amount, this.paymentType, this.frequency, this.id, this.cardNo}) : super(key: key);
 
   @override
   ConsumerState<ScheduleElectricity> createState() =>
@@ -32,6 +41,12 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
   TextEditingController amountController = TextEditingController();
   String _meterType = prepaid;
   String frequency = "";
+  List<GetUtilitiesData> utilities = [];
+  List<Service> utilitiesType = [];
+  GetUtilitiesData? utilitiesData;
+  Service? paymentType;
+  String topUpDate = "";
+
 
   Widget prefixIcon = Padding(
     padding: EdgeInsets.symmetric(vertical: kMediumPadding),
@@ -45,6 +60,36 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
   );
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(getUtilitiesProvider.notifier).getUtilities(utility: "electricity");
+    });
+
+    widget.cardNo != null
+        ? contactController = TextEditingController(text: widget.cardNo)
+        : contactController = TextEditingController();
+
+    widget.amount != null
+        ? amountController = TextEditingController(text: widget.amount)
+        : amountController = TextEditingController();
+
+    if (widget.frequency != null) {
+      frequency = widget.frequency!.startsWith(RegExp("[0-9:\s]"))
+          ? ordinal_suffix_of(int.parse(widget.frequency!))
+          : widget.frequency!;
+      topUpDate = "Next top-up date is the next $frequency";
+    }
+
+    if (widget.utility != null) {
+      utilitiesData = widget.utility;
+    }
+    if (widget.paymentType != null) {
+      paymentType = widget.paymentType;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
@@ -54,29 +99,70 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
           Expanded(
             child: ListView(
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
-                  decoration: BoxDecoration(
-                      color: kBackgroundColor,
-                      borderRadius: BorderRadius.circular(kSmallPadding)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      prefixIcon,
-                      inkWell(
-                          onTap: () async {
-                            final result = await buildShowModalBottomSheet(
-                                context, ElectricityModal());
-                            if (result != SizedBox()) {
-                              setState(() => prefixIcon = result);
-                            }
-                          },
-                          child: Icon(
+                inkWell(
+                  onTap: () async {
+                    final result = await buildShowModalBottomSheet(
+                        context, UtilityModal(utilities: utilities));
+                    if (result != null) {
+                      setState(() {
+                        utilitiesData = result;
+                        paymentType = null;
+                      });
+                      ref
+                          .read(getUtilitiesTypeProvider.notifier)
+                          .getUtilitiesType(
+                          merchantServiceId:
+                          utilitiesData!.operatorpublicid!);
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                    decoration: BoxDecoration(
+                        color: kBackgroundColor,
+                        borderRadius: BorderRadius.circular(kSmallPadding)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding:
+                            EdgeInsets.symmetric(vertical: kMediumPadding),
+                            child: Text(
+                                utilitiesData == null
+                                    ? selectProvider
+                                    : utilitiesData!.name!,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                                style: utilitiesData == null
+                                    ? textTheme.bodyText1!.copyWith(
+                                  color: kSecondaryTextColor
+                                      .withOpacity(0.7),
+                                  fontWeight: FontWeight.w300,
+                                )
+                                    : textTheme.subtitle1),
+                          ),
+                        ),
+                        Consumer(builder: (context, ref, _) {
+                          var _widget = Icon(
                             Icons.keyboard_arrow_down,
                             size: 30,
                             color: kSecondaryTextColor,
-                          )),
-                    ],
+                          );
+                          return ref.watch(getUtilitiesProvider).when(
+                            done: (data) {
+                              if (data != null) {
+                                utilities = data.data!;
+                              }
+                              return _widget;
+                            },
+                            loading: () => SpinKitDemo(
+                              size: 25,
+                            ),
+                            error: (val) => _widget,
+                          );
+                        })
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -89,129 +175,79 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
                 SizedBox(
                   height: kSmallPadding,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: inkWell(
-                        onTap: () {
-                          setState(() => _meterType = prepaid);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: kMediumPadding,
-                              vertical: kRegularPadding),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(kSmallPadding),
-                            border: Border.all(
-                              color: _meterType == prepaid
-                                  ? kPrimaryColor
-                                  : kLightPurple,
-                              width: 1,
+                inkWell(
+                  onTap: (utilitiesData == null)
+                      ? null
+                      : () async {
+                    final result = await buildShowModalBottomSheet(
+                        context,
+                        SubscriptionModal(
+                          paymentItem: utilitiesType,
+                        ));
+                    if (result != null) {
+                      setState(() => paymentType = result);
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                    decoration: BoxDecoration(
+                        color: kBackgroundColor,
+                        borderRadius: BorderRadius.circular(kSmallPadding)),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding:
+                            EdgeInsets.symmetric(vertical: kMediumPadding),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                      paymentType == null
+                                          ? type
+                                          : paymentType!.name!,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true,
+                                      style: paymentType == null
+                                          ? textTheme.bodyText1!.copyWith(
+                                        color: kSecondaryTextColor
+                                            .withOpacity(0.7),
+                                        fontWeight: FontWeight.w300,
+                                      )
+                                          : textTheme.subtitle1),
+                                ),
+                              ],
                             ),
                           ),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: _meterType == prepaid
-                                        ? kPrimaryColor
-                                        : kPurpleColor400,
-                                    width: 1.5,
-                                  ),
-                                ),
-                                child: _meterType == prepaid
-                                    ? Container(
-                                        height: kSmallPadding,
-                                        width: kSmallPadding,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: kPrimaryColor,
-                                        ),
-                                      )
-                                    : SizedBox(
-                                        height: kSmallPadding,
-                                        width: kSmallPadding,
-                                      ),
-                              ),
-                              SizedBox(
-                                width: kMediumPadding,
-                              ),
-                              Text(
-                                prepaid,
-                                style: textTheme.subtitle1!
-                                    .copyWith(fontWeight: FontWeight.w500),
-                              )
-                            ],
-                          ),
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: kMicroPadding,
-                    ),
-                    Expanded(
-                      child: inkWell(
-                        onTap: () {
-                          setState(() => _meterType = postpaid);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: kMediumPadding,
-                              vertical: kRegularPadding),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(kSmallPadding),
-                            border: Border.all(
-                              color: _meterType == postpaid
-                                  ? kPrimaryColor
-                                  : kLightPurple,
-                              width: 1,
-                            ),
-                          ),
-                          child: Row(
+                        Consumer(builder: (context, ref, _) {
+                          var _widget = Row(
                             children: [
-                              Container(
-                                padding: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: _meterType == postpaid
-                                        ? kPrimaryColor
-                                        : kLightPurple,
-                                    width: 1.5,
-                                  ),
-                                ),
-                                child: _meterType == postpaid
-                                    ? Container(
-                                        height: kSmallPadding,
-                                        width: kSmallPadding,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: kPrimaryColor,
-                                        ),
-                                      )
-                                    : SizedBox(
-                                        height: kSmallPadding,
-                                        width: kSmallPadding,
-                                      ),
+                              Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 30,
+                                color: kSecondaryTextColor,
                               ),
-                              SizedBox(
-                                width: kMediumPadding,
-                              ),
-                              Text(
-                                postpaid,
-                                style: textTheme.subtitle1!
-                                    .copyWith(fontWeight: FontWeight.w500),
-                              )
                             ],
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
+                          );
+                          return ref.watch(getUtilitiesTypeProvider).when(
+                            done: (data) {
+                              if (data != null) {
+                                utilitiesType = data.data!.services!;
+                              }
+                              return _widget;
+                            },
+                            loading: () {
+                              return SpinKitDemo(
+                                size: 25,
+                              );
+                            },
+                            error: (val) => _widget,
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: kMicroPadding,
@@ -312,87 +348,232 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
                 SizedBox(
                   height: kMicroPadding,
                 ),
-                TextInputNoIcon(
-                  textTheme: textTheme,
-                  text: choosePeriod,
-                  hintText: selectFrequency,
-                  read: true,
-                  suffixIcon: frequency == ""
-                      ? SizedBox()
-                      : Container(
-                          width: 200,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                "Every $frequency",
-                                style: textTheme.headline2!.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              Icon(
-                                Icons.keyboard_arrow_down,
-                                color: kSecondaryTextColor,
-                              )
-                            ],
-                          ),
-                        ),
+                inkWell(
                   onTap: () async {
                     final result = await buildShowModalBottomSheet(
                         context, ScheduleModal());
-                    setState(() => frequency = result);
+                    if (result != null) {
+                      setState(() {
+                        frequency = result;
+                        topUpDate = "Next top-up date is the next $frequency";
+                      });
+                    }
                   },
+                  child: SelectFrequencyWidget(
+                    textTheme: textTheme,
+                    frequency: frequency,
+                  ),
                 ),
-                widget.text == "viewSchedule"
-                    ? NextUpdateContainer(
-                        textTheme: textTheme,
-                        text: "Next top-up date is 12:00pm, Dec 5, 2022 ",
-                      )
-                    : SizedBox(),
                 SizedBox(
-                  height: kMicroPadding,
-                )
+                  height: kRegularPadding,
+                ),
+                frequency == ""
+                    ? SizedBox()
+                    : NextUpdateContainer(
+                  textTheme: textTheme,
+                  text: topUpDate,
+                ),
+
               ],
             ),
           ),
-          LargeButton(
-              title: widget.text == "viewSchedule" ? save : confirm,
-              onPressed: frequency == ""
-                  ? () {}
-                  : () {
-                      buildShowModalBottomSheet(
-                        context,
-                        TransactionPinContainer(
-                          isSchedule: true,
-                          isData: false,
-                          isCard: false,
-                          isFundCard: false,
-                          doSchedule: () {
-                            showSuccessBar(
-                                context, "Auto top-up successfully created");
-                          },
+          SizedBox(
+            height: kMicroPadding,
+          ),
+          widget.text == "viewSchedule"
+              ? Consumer(builder: (context, ref, _) {
+            var _widget = LargeButton(
+                title: save,
+                onPressed: () async {
+                  if (frequency == "") {
+                    showErrorBar(context, "Please pick your frequency");
+                  } else {
+                    final result = await buildShowModalBottomSheet(
+                      context,
+                      TransactionPinContainer(
+                        isSchedule: true,
+                        isData: false,
+                        isCard: false,
+                        isFundCard: false,
+                        doSchedule: () {
+                          showSuccessBar(context,
+                              "Auto top-up successfully created");
+                        },
+                      ),
+                    );
+                    if (result != null) {
+                      ref
+                          .read(editScheduleProvider.notifier)
+                          .editSchedule(
+                        scheduleId: widget.id!,
+                        status: "active",
+                        frequency:
+                        frequency.startsWith(RegExp("[0-9:\s]"))
+                            ? frequency.replaceAll(
+                            RegExp("[a-zA-Z:\s]"), "")
+                            : frequency,
+                        transactionPin: result,
+                        error: (val) => showErrorBar(context, val),
+                        then: () => pushTo(
+                          context,
+                          SuccessMessage(
+                            text: dataSuccess,
+                            subText: billUpdateSuccess,
+                            onTap: () {
+                              Navigator.popUntil(
+                                context,
+                                    (route) =>
+                                route.settings.name ==
+                                    SchedulePayments.routeName,
+                              );
+                            },
+                          ),
                         ),
                       );
-                    }),
+                    }
+                  }
+                });
+            return ref.watch(editScheduleProvider).when(
+                done: (done) => _widget,
+                loading: () => SpinKitDemo(),
+                error: (val) => _widget);
+          })
+              : Consumer(builder: (context, ref, _) {
+            var _widget = LargeButton(
+                title: confirm,
+                onPressed: frequency == "" ||
+                    contactController.text.isEmpty ||
+                    paymentType == null ||
+                    utilitiesData == null
+                    ? () {
+                  showErrorBar(context, "Please fill all fields");
+                }
+                    : () async {
+                  final result = await buildShowModalBottomSheet(
+                    context,
+                    TransactionPinContainer(
+                      isSchedule: true,
+                      isData: false,
+                      isCard: false,
+                      isFundCard: false,
+                      doSchedule: () {
+                        showSuccessBar(context,
+                            "Auto top-up successfully created");
+                      },
+                    ),
+                  );
+                  if (result != null) {
+                    ref
+                        .read(buyUtilitiesProvider.notifier)
+                        .buyUtilities(
+                        amount:
+                        paymentType!.price!.toDouble(),
+                        isSchedule: true,
+                        merchantAccount:
+                        utilitiesData!.operatorpublicid!,
+                        merchantReferenceNumber:
+                        contactController.text,
+                        merchantService: [paymentType!.code!],
+                        subCategory:
+                        utilitiesData!.displayName!,
+                        transactionPin: result,
+                        frequency: frequency,
+                        category: "electricity-purchase",
+                        then: () {
+                          ref
+                              .read(
+                              getWalletProvider.notifier)
+                              .getWalletDetails();
+                          pushTo(
+                            context,
+                            SuccessMessage(
+                              text: dataSuccess,
+                              subText: billScheduleSuccess,
+                              onTap: () {
+                                pushToAndClearStack(
+                                  context,
+                                  TabLayout(
+                                    gottenIndex: 0,
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        error: (val) =>
+                            showErrorBar(context, val));
+                  }
+                });
+            return ref.watch(buyUtilitiesProvider).when(
+                done: (done) => _widget,
+                loading: () => SpinKitDemo(),
+                error: (val) => _widget);
+          }),
           SizedBox(
             height: kMicroPadding,
           ),
           widget.text == "viewSchedule"
               ? DeleteScheduleText(
-                  textTheme: textTheme,
-                  onTap: () {
-                    buildShowModalBottomSheet(
-                      context,
-                      CommonModal(
-                          textTheme: textTheme,
-                          buttonText: yesDelete,
-                          title: deleteTopUp,
-                          subTitle: deleteTopUpSub,
-                          color: kLightOrange),
+            textTheme: textTheme,
+            onTap: () async{
+              final result = await  buildShowModalBottomSheet(
+                context,
+                CommonModal(
+                    textTheme: textTheme,
+                    buttonText: yesDelete,
+                    title: deleteTopUp,
+                    subTitle: deleteTopUpSub,
+                    color: kLightOrange),
+              );
+              if(result != null){
+                if(result == "yes"){
+                  final result = await buildShowModalBottomSheet(
+                    context,
+                    TransactionPinContainer(
+                      isSchedule: true,
+                      isData: false,
+                      isCard: false,
+                      isFundCard: false,
+                      doSchedule: () {
+                        showSuccessBar(context,
+                            "Auto top-up successfully created");
+                      },
+                    ),
+                  );
+                  if (result != null) {
+                    ref
+                        .read(editScheduleProvider.notifier)
+                        .editSchedule(
+                      scheduleId: widget.id!,
+                      status: "inactive",
+                      frequency:
+                      frequency.startsWith(RegExp("[0-9:\s]"))
+                          ? frequency.replaceAll(
+                          RegExp("[a-zA-Z:\s]"), "")
+                          : frequency,
+                      transactionPin: result,
+                      error: (val) => showErrorBar(context, val),
+                      then: () => pushTo(
+                        context,
+                        SuccessMessage(
+                          text: dataSuccess,
+                          subText: billUpdateSuccess,
+                          onTap: () {
+                            Navigator.popUntil(
+                              context,
+                                  (route) =>
+                              route.settings.name ==
+                                  SchedulePayments.routeName,
+                            );
+                          },
+                        ),
+                      ),
                     );
-                  },
-                )
+                  }
+                }
+              }
+            },
+          )
               : SizedBox()
         ],
       ),

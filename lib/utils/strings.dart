@@ -31,6 +31,7 @@ String heroAppBarTitle = "heroAppBarTitle";
 String onBoardingTitle = "Your one stop for all things payments";
 String allText = "All";
 String transfer = "Transfers";
+String transfer1 = "Transfer";
 String onBoardingSubTitle =
     "Service your bills, transfer money to friends, top-up your phone and many more have never been easier and faster.";
 String logIn = "Login";
@@ -129,7 +130,7 @@ String selectRecipient = "Select recipient";
 String voucher = "Vouchers";
 String buyVoucher = "Buy Vouchers";
 String noTrans = "Sorry, you have no transaction";
-String noVouchers ="Sorry, you have no avaliable Vouchers";
+String noVouchers = "Sorry, you have no avaliable Vouchers";
 String transSuccessful = "Transaction Successful";
 String transSummary = "Below is your transaction summary";
 String status = "Status";
@@ -174,7 +175,7 @@ String transactionReceipt = "Transaction Receipt";
 String accNumberValidation = "Number must be 10 digits";
 String invalidEmail = "Invalid Email";
 String invalidTag = "Invalid Tag";
-String invalidPassword = "Password must be more than 8 digits";
+String invalidPassword = "Password must be more than 6 digits";
 String pinMismatch = "Pin must match";
 String enableBiometrics = "Enable biometrics";
 String enableBiometricsSub = "This is faster and more secure";
@@ -200,8 +201,12 @@ String data = "Data";
 String cableTv = "Cable TV";
 
 String scheduleTransferSuccess = "Transfer schedule successfully created";
+String scheduleUpdateSuccess = "Transfer schedule successfully updated";
 String insufficient = "Insufficient fund to carry out this transaction.";
 String dataSuccess = "Completed";
+String billScheduleSuccess = "Bill schedule successfully created";
+String billUpdateSuccess = "Bill schedule successfully updated";
+
 String voucherSuccess = "Your voucher purchase was successful.";
 String dataSubSuccess = "Your data has been delivered";
 String cable = "Cable";
@@ -437,7 +442,7 @@ String idVerification = "ID verification";
 String dateOfBirth = "Date of birth";
 String noRewards = "You have no rewards.";
 String noInvite = "It seems that you haven’t invited someone yet.";
-String howToEarn =  "How to earn more points";
+String howToEarn = "How to earn more points";
 String inviteFriend = "Invite a friend";
 String date = "Date";
 String incomplete = "Incomplete";
@@ -508,7 +513,8 @@ String bonusEarned = "Bonus Earned";
 String invitation = "Your invitations & Rewards";
 String invitedPeople = "People you invited via mail or link will appear here";
 String inviteeName = "Invitee  Name";
-String referralBonus = "When your friends sign up using this referral code you get a redeemable";
+String referralBonus =
+    "When your friends sign up using this referral code you get a redeemable";
 String earnSub =
     "Earn 100.00 as you refer your friends, be sure to pin this down this bonus after verification.";
 String getReminders = "Get Reminders";
@@ -566,7 +572,6 @@ String noTransaction = "No transactions yet";
 String transaction = "Transactions";
 String virtualNairaCard = "Virtual Naira card";
 String virtualDollarCard = "Virtual Dollar card";
-
 
 List<String> nigeriaStates = [
   "Abuja",

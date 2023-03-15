@@ -200,8 +200,6 @@ class _EditFullNameModalState extends State<EditFullNameModal> {
                 showSuccessBar(context, next.data!.message);
                 ref.read(editProfileInHouseProvider.notifier).state =
                     EditProfileData.fromJson(next.data!.data!.toJson());
-                logPrint(
-                    "Full name profile ${ref.watch(editProfileInHouseProvider)}"); //next.data!.data!;
               } else if (next.status == NotifierStatus.error) {
                 showErrorBar(context, next.message!);
               }
@@ -513,7 +511,7 @@ class _EditPhoneModalState extends State<EditPhoneModal> {
               Navigator.pop(context);
               showSuccessBar(context, next.data!.message);
               ref.read(editProfileInHouseProvider.notifier).state =
-                  next.data!.data!;
+                 EditProfileData.fromJson(next.data!.data!.toJson());
             } else if (next.status == NotifierStatus.error) {
               showErrorBar(context, next.message!);
             }
@@ -736,97 +734,6 @@ class _BirthCalendarState extends State<BirthCalendar> {
           }),
         ],
       ),
-
-      // Column(
-      //   crossAxisAlignment: CrossAxisAlignment.start,
-      //   mainAxisSize: MainAxisSize.min,
-      //   children: [
-      //     Padding(
-      //       padding: const EdgeInsets.only(
-      //           top: kMediumPadding, left: kMediumPadding),
-      //       child: Text(
-      //         dateOfBirth,
-      //         style: textTheme.headline2!.copyWith(
-      //           color: Colors.black,
-      //         ),
-      //       ),
-      //     ),
-      //     SizedBox(
-      //       height: 5,
-      //     ),
-      //     const Divider(
-      //       height: 0,
-      //       thickness: 1,
-      //       color: kIconGrey,
-      //     ),
-      //     Consumer(builder: (context, ref, _) {
-      //       ref.listen(editProfileProvider,
-      //               (previous, NotifierState<EditProfileResponse> next) {
-      //             if (next.status == NotifierStatus.done) {
-      //               Navigator.pop(context);
-      //               showSuccessBar(context, next.data!.message);
-      //               ref.read(editProfileInHouseProvider.notifier).state =
-      //               next.data!.data!;
-      //             } else if (next.status == NotifierStatus.error) {
-      //               showErrorBar(context, next.message!);
-      //             }
-      //           });
-      //       var _widget = CalendarCarousel(
-      //         todayBorderColor: kPrimaryColor,
-      //         todayButtonColor: kPrimaryColor,
-      //         iconColor: Colors.black,
-      //         showIconBehindDayText: true,
-      //         dayPadding: 0,
-      //         minSelectedDate: minimumSelected,
-      //         targetDateTime: DateTime(
-      //             dateNumber!, DateTime.now().month, DateTime.now().day),
-      //         maxSelectedDate: maximumSelected,
-      //         onHeaderTitlePressed: () async {
-      //           final result = await showDialog(
-      //             barrierDismissible: true,
-      //             useSafeArea: true,
-      //             context: context,
-      //             builder: (_) => PickerDialog(
-      //               dateNumbers: dateTest,
-      //             ),
-      //           );
-      //           if (result == null) {
-      //             return;
-      //           } else {
-      //             setState(() {
-      //               dateNumber = result;
-      //             });
-      //           }
-      //         },
-      //         headerTitleTouchable: true,
-      //         headerMargin: EdgeInsets.symmetric(vertical: 2),
-      //         headerTextStyle: textTheme.headline2!
-      //             .copyWith(fontSize: 18, fontWeight: FontWeight.bold),
-      //         weekendTextStyle: textTheme.headline3,
-      //         daysTextStyle:
-      //         textTheme.headline4!.copyWith(fontWeight: FontWeight.bold),
-      //         weekdayTextStyle: textTheme.headline4!.copyWith(
-      //           fontWeight: FontWeight.bold,
-      //         ),
-      //         onDayPressed: (date, l) {
-      //           ref
-      //               .read(editProfileProvider.notifier)
-      //               .editProfile(dob: dateFormat.format(date));
-      //         },
-      //         thisMonthDayBorderColor: kTransparent,
-      //         height: MediaQuery.of(context).size.height / 2.05,
-      //         daysHaveCircularBorder: false,
-      //       );
-      //       return ref.watch(editProfileProvider).when(
-      //         done: (data) => _widget,
-      //         loading: () => Padding(
-      //             padding: EdgeInsets.symmetric(vertical: kRegularPadding),
-      //             child: SpinKitDemo()),
-      //         error: (val) => _widget,
-      //       );
-      //     }),
-      //   ],
-      // ),
     );
   }
 }

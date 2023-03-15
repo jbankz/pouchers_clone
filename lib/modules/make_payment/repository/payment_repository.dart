@@ -76,10 +76,7 @@ class PaymentRepository {
   }
 
   Future<NotifierState<GetAllBanksResponse>> getAllBanks() async {
-    final accessToken = await getAccessToken();
-    return (await PaymentService.getAllBanks(
-      token: accessToken!,
-    ))
+    return (await PaymentService.getAllBanks())
         .toNotifierState();
   }
 

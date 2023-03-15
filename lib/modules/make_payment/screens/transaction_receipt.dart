@@ -16,7 +16,7 @@ import '../../../utils/constant/theme_color_constants.dart';
 class TransactionReceipt extends StatefulWidget {
   static const String routeName = "transactionReceipt";
   final String? typeOfTransfer;
-  final String? transferName, accNo, amount, beneficiary;
+  final String? transferName, accNo, amount, beneficiary, senderName;
   final DateTime? transactionTime;
   final String? tag;
   final String? fromWhere;
@@ -28,6 +28,7 @@ class TransactionReceipt extends StatefulWidget {
       this.accNo,
       this.tag,
       this.transferName,
+        this.senderName,
       this.transactionTime,
       this.fromWhere,
       this.beneficiary})
@@ -92,13 +93,14 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                             ),
                             TransactionReceiptItems(
                               text: sender,
-                              subText:
-                                  "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.firstName!.substring(1).toLowerCase()} ${userProfile.lastName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(1).toLowerCase()}",
+                              subText: widget.senderName ?? "No name",
                             ),
-                            TransactionReceiptItems(
-                              text: beneficiary,
-                              subText: widget.beneficiary ?? "",
-                            ),
+                            widget.typeOfTransfer == "localBank"
+                                ? TransactionReceiptItems(
+                                    text: beneficiary,
+                                    subText: widget.beneficiary ?? "",
+                                  )
+                                : SizedBox(),
                             widget.typeOfTransfer == "localBank"
                                 ? Column(
                                     children: [
@@ -214,24 +216,26 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
           ),
           widget.fromWhere == "history"
               ? Padding(
-                padding: const EdgeInsets.all( kMediumPadding),
-                child: LargeButton(
-                    title: getReceipt,
-                    onPressed: () async {
-                      await Printing.sharePdf(
-                        bytes: await PdfInvoiceApi.generate(
-                            userProfile,
-                            widget.beneficiary ?? "",
-                            widget.typeOfTransfer ?? "",
-                            widget.transferName ?? "",
-                            widget.accNo ?? "",
-                            kPriceFormatter(double.parse(widget.amount ?? "0")),
-                            widget.transactionTime!, widget.tag ?? ""),
-                        filename:
-                            'receipt_${DateTime.now().millisecondsSinceEpoch}.pdf',
-                      );
-                    }),
-              )
+                  padding: const EdgeInsets.all(kMediumPadding),
+                  child: LargeButton(
+                      title: getReceipt,
+                      onPressed: () async {
+                        await Printing.sharePdf(
+                          bytes: await PdfInvoiceApi.generate(
+                              userProfile,
+                              widget.beneficiary ?? "",
+                              widget.typeOfTransfer ?? "",
+                              widget.transferName ?? "",
+                              widget.accNo ?? "",
+                              kPriceFormatter(
+                                  double.parse(widget.amount ?? "0")),
+                              widget.transactionTime!,
+                              widget.tag ?? ""),
+                          filename:
+                              'receipt_${DateTime.now().millisecondsSinceEpoch}.pdf',
+                        );
+                      }),
+                )
               : Container(
                   padding: EdgeInsets.symmetric(
                       vertical: kSmallPadding, horizontal: kMediumPadding),
@@ -278,7 +282,8 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                                       widget.accNo ?? "",
                                       kPriceFormatter(
                                           double.parse(widget.amount ?? "0")),
-                                      DateTime.now(), widget.tag ?? "No Tag"),
+                                      DateTime.now(),
+                                      widget.tag ?? "No Tag"),
                                   pages: [0, 1],
                                   dpi: 72)) {
                                 final imagee = page.toPng();
@@ -309,7 +314,8 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                                     widget.accNo ?? "",
                                     kPriceFormatter(
                                         double.parse(widget.amount ?? "0")),
-                                    DateTime.now(), widget.tag ?? "No Tag"),
+                                    DateTime.now(),
+                                    widget.tag ?? "No Tag"),
                                 filename:
                                     'receipt_${DateTime.now().millisecondsSinceEpoch}.pdf',
                               );

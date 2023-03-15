@@ -1000,3 +1000,51 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
 }
 
 List<String> iconList = ["🍕", "📚", "👜", "🚘", "🥰"];
+
+class TransferRowWidget extends StatelessWidget {
+  final Widget icon;
+  final String text;
+  final Function() onTap;
+
+  const TransferRowWidget({
+    required this.icon,
+    required this.text,
+    required this.onTap,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+    return Expanded(
+        child: inkWell(
+          onTap: onTap,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: kMediumPadding, vertical: kRegularPadding),
+            decoration: BoxDecoration(
+              color: kContainerColor,
+              borderRadius: BorderRadius.circular(kSmallPadding),
+            ),
+            child: Row(
+              children: [
+                icon,
+                SizedBox(
+                  width: kSmallPadding,
+                ),
+                Expanded(
+                  child: Text(
+                    text,
+                    style: textTheme.headline2!.copyWith(
+                        fontWeight: FontWeight.w500,
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: 14),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ));
+  }
+}
+

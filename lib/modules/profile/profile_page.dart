@@ -42,44 +42,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if (ref.watch(editProfileInHouseProvider) == null) {
-        print("null");
-        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(userProfile.toJson());
-
-        // ref.read(editProfileInHouseProvider.notifier).state =
-        // await EditProfileData().copyWith(
-        //   profilePicture: userProfile.profilePicture,
-        //   id: userProfile.id,
-        //   lastName: userProfile.lastName,
-        //   firstName: userProfile.firstName,
-        //   tierLevels: userProfile.tierLevels,
-        //   tag: userProfile.tag,
-        //   email: userProfile.email,
-        //   userId: userProfile.userId,
-        //   phoneNumber: userProfile.phoneNumber,
-        //   gender: userProfile.gender,
-        //   dob: userProfile.dob,
-        // );
-        setState(() {});
-      } else {
-        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(ref.watch(editProfileInHouseProvider).toJson());
-
-        // ref.read(editProfileInHouseProvider.notifier).state =
-        // await EditProfileData().copyWith(
-        //   profilePicture: ref.watch(editProfileInHouseProvider).profilePicture,
-        //   id: ref.watch(editProfileInHouseProvider).id,
-        //   lastName: ref.watch(editProfileInHouseProvider).lastName,
-        //   firstName: ref.watch(editProfileInHouseProvider).firstName,
-        //   tierLevels: ref.watch(editProfileInHouseProvider).tierLevels,
-        //   tag: ref.watch(editProfileInHouseProvider).tag,
-        //   email: ref.watch(editProfileInHouseProvider).email,
-        //   userId: ref.watch(editProfileInHouseProvider).userId,
-        //   phoneNumber: ref.watch(editProfileInHouseProvider).phoneNumber,
-        //   gender: ref.watch(editProfileInHouseProvider).gender,
-        //   dob: ref.watch(editProfileInHouseProvider).dob,
-        // );
-        setState(() {});
-      }
+      checkProvider();
       await checkTierLevel();
       setState(() {});
     });
@@ -400,12 +363,54 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     );
   }
 
+  checkProvider(){
+    if (ref.watch(editProfileInHouseProvider).firstName == null) {
+      ref.read(editProfileInHouseProvider.notifier).state = ref
+          .read(editProfileInHouseProvider.notifier)
+          .state
+          .copyWith(
+          profilePicture: userProfile.profilePicture,
+          firstName: userProfile.firstName,
+          lastName: userProfile.lastName,
+          tierLevels: userProfile.tierLevels,
+          address: userProfile.address,
+          gender: userProfile.gender,
+          tag: userProfile.tag,
+          dob: userProfile.dob,
+          phoneNumber: userProfile.phoneNumber,
+          email: userProfile.email,
+          isLoginBiometricActive: userProfile.isLoginBiometricActive,
+          isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+          isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
+    } else {
+      ref.read(editProfileInHouseProvider.notifier).state = ref
+          .read(editProfileInHouseProvider.notifier)
+          .state
+          .copyWith(
+          profilePicture:
+          ref.watch(editProfileInHouseProvider).profilePicture,
+          firstName: ref.watch(editProfileInHouseProvider).firstName,
+          lastName: ref.watch(editProfileInHouseProvider).lastName,
+          tierLevels: ref.watch(editProfileInHouseProvider).tierLevels,
+          address: ref.watch(editProfileInHouseProvider).address,
+          gender: ref.watch(editProfileInHouseProvider).gender,
+          tag: ref.watch(editProfileInHouseProvider).tag,
+          dob: ref.watch(editProfileInHouseProvider).dob,
+          phoneNumber: ref.watch(editProfileInHouseProvider).phoneNumber,
+          email: ref.watch(editProfileInHouseProvider).email,
+          isLoginBiometricActive: userProfile.isLoginBiometricActive,
+          isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+          isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
+    }
+
+  }
+
   checkTierLevel() {
     hiveTierLevel = ref.watch(editProfileInHouseProvider).tierLevels;
     userTierLevel = userProfile.tierLevels;
     if (hiveTierLevel != null) {
       if (userTierLevel! > hiveTierLevel!) {
-        ref
+        ref.read(editProfileInHouseProvider.notifier).state = ref
             .read(editProfileInHouseProvider.notifier)
             .state
             .copyWith(tierLevels: userProfile.tierLevels);
@@ -415,8 +420,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         });
       }
     } else {
-      ref.read(editProfileInHouseProvider.notifier).state.tierLevels =
-          userProfile.tierLevels;
+      ref.read(editProfileInHouseProvider.notifier).state = ref
+          .read(editProfileInHouseProvider.notifier)
+          .state
+          .copyWith(tierLevels: userProfile.tierLevels);
       setState(() {
         hiveTierLevel = ref.watch(editProfileInHouseProvider).tierLevels;
       });

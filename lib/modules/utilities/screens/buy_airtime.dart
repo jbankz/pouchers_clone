@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
- import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
 import 'package:pouchers/modules/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/modules/schedule_purchase/screens/schedule_airtime_topup.dart';
 import 'package:pouchers/modules/schedule_purchase/schedule_widget_constants.dart';
+import 'package:pouchers/modules/utilities/model/utilities_model.dart';
+import 'package:pouchers/modules/utilities/providers/utilities_provider.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
@@ -20,8 +22,10 @@ import 'package:collection/collection.dart';
 class BuyAirtime extends ConsumerStatefulWidget {
   static const String routeName = "buyAirtime";
   final bool? isGuest;
+  final String? name, email;
 
-  const BuyAirtime({Key? key, this.isGuest}) : super(key: key);
+  const BuyAirtime({Key? key, this.isGuest, this.name, this.email})
+      : super(key: key);
 
   @override
   ConsumerState<BuyAirtime> createState() => _BuyAirtimeState();
@@ -32,6 +36,17 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
   int currentIndex = -1;
   TextEditingController amountController = TextEditingController();
   String _amount = "";
+  GetUtilitiesData? billerData;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(getUtilitiesProvider.notifier).getUtilities(utility: "airtime");
+      ref.read(getDiscountProvider.notifier).getDiscount(utility: "airtime");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +64,15 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                   controller: contactController,
                   icon: inkWell(
                     onTap: () async {
-                      bool granted = await FlutterContactPicker.requestPermission();
-                      if(granted){
+                      bool granted =
+                          await FlutterContactPicker.requestPermission();
+                      if (granted) {
                         final PhoneContact contact =
-                        await FlutterContactPicker.pickPhoneContact();
+                            await FlutterContactPicker.pickPhoneContact();
                         setState(() {
                           contactController.text = contact.phoneNumber!.number!;
                         });
                       }
-
                     },
                     child: SvgPicture.asset(
                       AssetPaths.contactBook,
@@ -75,155 +90,193 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                 SizedBox(
                   height: kSmallPadding,
                 ),
-                Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: provider
-                        .mapIndexed(
-                          (index, element) => inkWell(
-                            onTap: () {
-                              setState(() {
-                                currentIndex = index;
-                              });
-                            },
-                            child: Stack(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(kRegularPadding),
-                                  height: 70,
-                                  width: 70,
-                                  decoration: BoxDecoration(
-                                      color: currentIndex == index
-                                          ? kLightPurple
-                                          : kContainerColor,
-                                      shape: BoxShape.circle),
-                                  child: SvgPicture.asset(
-                                    provider[index].icon,
-                                  ),
-                                ),
-                                currentIndex == index
-                                    ? Positioned(
-                                        bottom: 0,
-                                        right: 0,
-                                        child: Container(
-                                            padding: EdgeInsets.all(3),
-                                            decoration: BoxDecoration(
-                                                color: kPurpleColor,
-                                                shape: BoxShape.circle),
-                                            child: Icon(
-                                              Icons.check,
-                                              color: kPrimaryWhite,
-                                              size: 15,
-                                            )),
-                                      )
-                                    : SizedBox(),
-                              ],
-                            ),
-                          ),
-                        )
-                        .toList()),
-                SizedBox(
-                  height: kMicroPadding,
-                ),
-                Text(
-                  topDeal,
-                  style: textTheme.headline3,
-                ),
-                SizedBox(
-                  height: kSmallPadding,
-                ),
-                GridView.count(
-                  primary: false,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  crossAxisCount: 3,
-                  childAspectRatio: SizeConfig.blockSizeHorizontal! / 3.3,
-                  children: List.generate(
-                    guestList.length,
-                    (index) => Column(
-                      children: [
-                        inkWell(
-                          onTap: () {
-                            widget.isGuest!
-                                ? buildShowModalBottomSheet(
-                                    context, GuestDiscountModal())
-                                : setState(() {
-                                    amountController.text =
-                                        guestList[index].icon;
-                                    _amount = guestList[index].icon;
-                                  });
-                            amountController.selection =
-                                TextSelection.fromPosition(TextPosition(
-                                    offset: amountController.text.length));
-                          },
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: kLightPurple),
-                                  borderRadius:
-                                      BorderRadius.circular(kSmallPadding)),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(kPadding),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topRight:
-                                            Radius.circular(kSmallPadding),
-                                        topLeft: Radius.circular(kSmallPadding),
-                                      ),
-                                      color: kPurpleColor,
-                                    ),
-                                    child: RichText(
-                                      text: TextSpan(
-                                        text: "₦",
-                                        style: TextStyle(
-                                          color: kPrimaryWhite,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 14,
-                                        ),
+                ref.watch(getUtilitiesProvider).when(
+                      done: (provider) {
+                        if (provider != null) {
+                          return Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: provider.data!
+                                  .mapIndexed(
+                                    (index, element) => inkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          currentIndex = index;
+                                          billerData = element;
+                                        });
+                                      },
+                                      child: Stack(
                                         children: [
-                                          TextSpan(
-                                            text: guestList[index].title,
-                                            style:
-                                                textTheme.headline4!.copyWith(
-                                              color: kLightPurple,
-                                            ),
-                                          )
+                                          Container(
+                                              padding: EdgeInsets.all(
+                                                  kRegularPadding),
+                                              height: 70,
+                                              width: 70,
+                                              decoration: BoxDecoration(
+                                                  color: currentIndex == index
+                                                      ? kLightPurple
+                                                      : kContainerColor,
+                                                  shape: BoxShape.circle),
+                                              child: SvgPicture.asset(icon(
+                                                  provider.data![index]
+                                                      .displayName!))),
+                                          currentIndex == index
+                                              ? Positioned(
+                                                  bottom: 0,
+                                                  right: 0,
+                                                  child: Container(
+                                                      padding:
+                                                          EdgeInsets.all(3),
+                                                      decoration: BoxDecoration(
+                                                          color: kPurpleColor,
+                                                          shape:
+                                                              BoxShape.circle),
+                                                      child: Icon(
+                                                        Icons.check,
+                                                        color: kPrimaryWhite,
+                                                        size: 15,
+                                                      )),
+                                                )
+                                              : SizedBox(),
                                         ],
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: kSmallPadding,
-                                  ),
-                                  RichText(
-                                    text: TextSpan(
-                                      text: "₦",
-                                      style: TextStyle(
-                                        color: kPrimaryTextColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14,
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: guestList[index].icon,
-                                          style: textTheme.subtitle1!.copyWith(
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: kRegularPadding,
-                                  ),
-                                ],
-                              )),
-                        ),
-                      ],
+                                  )
+                                  .toList());
+                        } else {
+                          return SizedBox();
+                        }
+                      },
+                      loading: () => SpinKitDemo(),
+                      error: (val) => Text(
+                        "No Provider for now",
+                        style: textTheme.subtitle2,
+                      ),
                     ),
-                  ),
+                SizedBox(
+                  height: kMicroPadding,
                 ),
+                ref.watch(getDiscountProvider).when(
+                    loading: () {
+                      return SpinKitDemo();
+                    },
+                    error: (val) => SizedBox(),
+                    done: (done) {
+                      if (done != null) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              topDeal,
+                              style: textTheme.headline3,
+                            ),
+                            SizedBox(
+                              height: kSmallPadding,
+                            ),
+                            GridView.count(
+                              primary: false,
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              crossAxisCount: 3,
+                              childAspectRatio:
+                                  SizeConfig.blockSizeHorizontal! / 3.4,
+                              children: List.generate(
+                                guestList.length,
+                                (index) => Column(
+                                  children: [
+                                    inkWell(
+                                      onTap: () {
+                                        widget.isGuest!
+                                            ? buildShowModalBottomSheet(
+                                                context, GuestDiscountModal())
+                                            : setState(() {
+                                                amountController.text =
+                                                    guestList[index].icon;
+                                                _amount = guestList[index].icon;
+                                              });
+                                        amountController.selection =
+                                            TextSelection.fromPosition(
+                                                TextPosition(
+                                                    offset: amountController
+                                                        .text.length));
+                                      },
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: kLightPurple),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      kSmallPadding)),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                padding:
+                                                    EdgeInsets.all(kPadding),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topRight: Radius.circular(
+                                                        kSmallPadding),
+                                                    topLeft: Radius.circular(
+                                                        kSmallPadding),
+                                                  ),
+                                                  color: kPurpleColor,
+                                                ),
+                                                child: Text(
+                                                  double.parse(done.data!
+                                                              .threshold!) <=
+                                                          double.parse(
+                                                              guestList[index]
+                                                                  .icon)
+                                                      ? "${done.data!.discountValue}% cashback"
+                                                      : "0% cashback",
+                                                  style: textTheme.headline4!
+                                                      .copyWith(
+                                                    color: kLightPurple,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: kSmallPadding,
+                                              ),
+                                              RichText(
+                                                text: TextSpan(
+                                                  text: "₦",
+                                                  style: TextStyle(
+                                                    color: kPrimaryTextColor,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 14,
+                                                  ),
+                                                  children: [
+                                                    TextSpan(
+                                                      text:
+                                                          guestList[index].icon,
+                                                      style: textTheme
+                                                          .subtitle1!
+                                                          .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: kRegularPadding,
+                                              ),
+                                            ],
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      } else {
+                        return SizedBox();
+                      }
+                    }),
                 SizedBox(
                   height: kSmallPadding,
                 ),
@@ -295,13 +348,21 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                 SizedBox(
                   height: kMicroPadding,
                 ),
-                widget.isGuest! ? SizedBox() :  Scheduling(
-                  text: scheduleAirtime,
-                  subtext: scheduleAirtimeSub,
-                  onTap: () => pushTo(context, ScheduleAirtimeTopUp(),
-                      settings:
-                          RouteSettings(name: ScheduleAirtimeTopUp.routeName)),
-                ),
+                widget.isGuest!
+                    ? SizedBox()
+                    : Scheduling(
+                        text: scheduleAirtime,
+                        subtext: scheduleAirtimeSub,
+                        onTap: () => pushTo(
+                            context,
+                            ScheduleAirtimeTopUp(
+                              amount: amountController.text,
+                              contactNumber: contactController.text,
+                              billerData: billerData,
+                            ),
+                            settings: RouteSettings(
+                                name: ScheduleAirtimeTopUp.routeName)),
+                      ),
                 SizedBox(
                   height: kMicroPadding,
                 )
@@ -311,12 +372,14 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
           LargeButton(
             title: continueText,
             disableColor: (amountController.text.isEmpty ||
-                    _amount.isEmpty ||
-                    _amount.startsWith("0"))
+                        _amount.isEmpty ||
+                        _amount.startsWith("0")) ||
+                    contactController.text.isEmpty
                 ? kPurpleColor100
                 : kPrimaryColor,
             outlineButton: false,
             onPressed: amountController.text.isEmpty ||
+                    contactController.text.isEmpty ||
                     _amount.isEmpty ||
                     _amount.startsWith("0")
                 ? () {}
@@ -326,21 +389,40 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                       buildShowModalBottomSheet(
                           context, GuestMaximumAmountModal());
                     } else {
-                      // buildShowModalBottomSheet(
-                      //     context,
-                      //     widget.isGuest!
-                      //         ? GuestRechargeSummary(
-                      //             textTheme: textTheme,
-                      //           )
-                      //         : RechargeSummary(
-                      //             textTheme: textTheme,
-                      //             isData: false,
-                      //           ));
+                      buildShowModalBottomSheet(
+                        context,
+                        RechargeSummary(
+                          textTheme: textTheme,
+                          amount: amountController.text,
+                          category: "airtime-purchase",
+                          isGuest: widget.isGuest!,
+                          name: widget.name,
+                          email: widget.email,
+                          recipientNo: contactController.text,
+                          billerName: billerData!.name!,
+                          billerId: billerData!.operatorpublicid!,
+                          billerLogo: icon(billerData!.displayName!),
+                        ),
+                      );
                     }
                   },
           )
         ],
       ),
     );
+  }
+
+  String icon(String displayName) {
+    String icon = "";
+    switch (displayName) {
+      case "MTN":
+        return airtimeProvider[0].icon;
+      case "GLO":
+        return airtimeProvider[1].icon;
+      case "Airtel":
+        return airtimeProvider[3].icon;
+      default:
+        return airtimeProvider[2].icon;
+    }
   }
 }

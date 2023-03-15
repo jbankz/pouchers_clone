@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/make_payment/models/make_payment_model.dart';
+import 'package:pouchers/modules/make_payment/screens/make_payment_widgets.dart';
 import 'package:pouchers/modules/make_payment/screens/transaction_receipt.dart';
 import 'package:pouchers/modules/schedule_purchase/screens/schedule_transfer.dart';
 import 'package:pouchers/modules/tab_layout/screens/tab_layout.dart';
@@ -18,11 +19,20 @@ class TransferSuccess extends StatelessWidget {
   final String? typeOfTransfer;
   final bool isRequest;
   final P2PResponse? response;
-  final String? transferName, accNo, amount, beneficiary, tag;
+  final String? transferName, accNo, amount, beneficiary, tag, note;
 
   const TransferSuccess(
-      {Key? key, required this.text, required this.isRequest,  this.typeOfTransfer, this.amount,
-        this.accNo, this.beneficiary, this.transferName, this.response, this.tag})
+      {Key? key,
+      required this.text,
+      required this.isRequest,
+      this.typeOfTransfer,
+      this.amount,
+      this.accNo,
+      this.beneficiary,
+      this.transferName,
+      this.response,
+      this.tag,
+      this.note})
       : super(key: key);
 
   @override
@@ -66,13 +76,14 @@ class TransferSuccess extends StatelessWidget {
                           pushTo(
                               context,
                               ScheduleTransfer(
-                                text: text,
-                                tag: tag,
-                                transferName: transferName,
-                                amount: amount,
-                                accNo: accNo,
-                                beneficiary: beneficiary,
-                              ),
+                                  text: text,
+                                  tag: tag,
+                                  transferName: transferName,
+                                  typeOfTransfer: typeOfTransfer,
+                                  amount: amount,
+                                  accNo: accNo,
+                                  beneficiary: beneficiary,
+                                  note: note),
                               settings: RouteSettings(
                                   name: ScheduleTransfer.routeName));
                         },
@@ -111,16 +122,17 @@ class TransferSuccess extends StatelessWidget {
                       ),
                       TransferRowWidget(
                         onTap: () {
-                          pushTo(context, TransactionReceipt(
-                            typeOfTransfer: typeOfTransfer,
-                            accNo: accNo,
-                            amount: amount,
-                            fromWhere: "transfer",
-                            tag: tag ?? "",
-                            transferName: transferName,
-                              transactionTime: DateTime.now(),
-                              beneficiary: beneficiary
-                          ),
+                          pushTo(
+                              context,
+                              TransactionReceipt(
+                                  typeOfTransfer: typeOfTransfer,
+                                  accNo: accNo,
+                                  amount: amount,
+                                  fromWhere: "transfer",
+                                  tag: tag ?? "",
+                                  transferName: transferName,
+                                  transactionTime: DateTime.now(),
+                                  beneficiary: beneficiary),
                               settings: RouteSettings(
                                   name: TransactionReceipt.routeName));
                         },
@@ -150,52 +162,5 @@ class TransferSuccess extends StatelessWidget {
             ),
           ],
         ));
-  }
-}
-
-class TransferRowWidget extends StatelessWidget {
-  final Widget icon;
-  final String text;
-  final Function() onTap;
-
-  const TransferRowWidget({
-    required this.icon,
-    required this.text,
-    required this.onTap,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    TextTheme textTheme = Theme.of(context).textTheme;
-    return Expanded(
-        child: inkWell(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: kMediumPadding, vertical: kRegularPadding),
-        decoration: BoxDecoration(
-          color: kContainerColor,
-          borderRadius: BorderRadius.circular(kSmallPadding),
-        ),
-        child: Row(
-          children: [
-            icon,
-            SizedBox(
-              width: kSmallPadding,
-            ),
-            Expanded(
-              child: Text(
-                text,
-                style: textTheme.headline2!.copyWith(
-                    fontWeight: FontWeight.w500,
-                    overflow: TextOverflow.ellipsis,
-                    fontSize: 14),
-              ),
-            )
-          ],
-        ),
-      ),
-    ));
   }
 }

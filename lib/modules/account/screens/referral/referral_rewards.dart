@@ -17,8 +17,8 @@ class ReferralRewards extends ConsumerStatefulWidget {
 }
 
 class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
-
   final dateFormat = DateFormat('MMM-dd-yy');
+
   @override
   void initState() {
     super.initState();
@@ -47,7 +47,9 @@ class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
                     widget: Column(
                       children: [
                         NairaWidget(
-                            text: referralData.data!.earning![0].totalEarnings ?? "0",
+                            text: kPriceFormatter(double.parse(
+                                 referralData.data!.earning![0].totalEarnings ?? "0"
+                                   )),
                             textStyle1: TextStyle(
                               fontWeight: FontWeight.w700,
                               color: kPrimaryTextColor,
@@ -55,10 +57,12 @@ class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
                               fontSize: 34,
                             ),
                             textStyle2: textTheme.headline4!.copyWith(
-                                fontSize: 34, fontWeight: FontWeight.w700)),
+                                fontSize: 34, fontWeight: FontWeight.w700, overflow: TextOverflow.ellipsis, )),
                         Text(
                           bonusEarned,
                           style: textTheme.headline3,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
@@ -243,37 +247,54 @@ class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
                               ),
                             ),
                             child: Column(
-                              children: referralData.data!.referralTrail
-                                  !.map((e) => Column(
+                              children: referralData.data!.referralTrail!
+                                  .map((e) => Column(
                                         children: [
                                           Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                "${e.lastName} ${e.firstName}" ??
-                                                    "",
-                                                style: textTheme.headline4!
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 16),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Text(
+                                                  "${e.lastName} ${e.firstName}" ??
+                                                      "",
+                                                  style: textTheme.headline4!
+                                                      .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 16),
+                                                  softWrap: true,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
                                               ),
-                                              Text( dateFormat.format(e.createdAt!),
+                                              Text(
+                                                  dateFormat
+                                                      .format(e.createdAt!),
                                                   style: textTheme.headline4),
-                                              Container(
-                                                padding:
-                                                    EdgeInsets.all(kPadding),
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: e.isPaid! ? kColorGreen.withOpacity(0.2) : kLightYellow100
-                                                        .withOpacity(0.2)),
-                                                child: Container(
-                                                  height: 10,
-                                                  width: 10,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: e.isPaid! ? kColorGreen : kLightYellow100),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Align(
+                                                  alignment: Alignment.centerRight,
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.all(kPadding),
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: e.isPaid!
+                                                            ? kColorGreen
+                                                                .withOpacity(0.2)
+                                                            : kLightYellow100
+                                                                .withOpacity(0.2)),
+                                                    child: Container(
+                                                      height: 10,
+                                                      width: 10,
+                                                      decoration: BoxDecoration(
+                                                          shape: BoxShape.circle,
+                                                          color: e.isPaid!
+                                                              ? kColorGreen
+                                                              : kLightYellow100),
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ],

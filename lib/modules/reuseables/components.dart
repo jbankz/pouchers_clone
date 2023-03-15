@@ -113,10 +113,10 @@ class PdfInvoiceApi {
                     text: sender,
                     subText: "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.firstName!.substring(1).toLowerCase()} ${userProfile.lastName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(1).toLowerCase()}",
                   ),
-                  widget(
+                  transferType == "localBank" ? widget(
                     text: beneficiary,
                     subText: beneficiaryName,
-                  ),
+                  ) : pdfWidget.SizedBox(),
                   transferType == "localBank"
                       ? pdfWidget.Column(children: [
                     widget(text: bankName, subText: transferName),

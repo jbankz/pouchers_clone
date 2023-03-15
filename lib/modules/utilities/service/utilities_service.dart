@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:pouchers/app/helpers/service_constants.dart';
 import 'package:pouchers/app/helpers/service_response.dart';
+import 'package:pouchers/modules/onboarding/model/onboarding_model.dart';
 import 'package:pouchers/modules/utilities/model/utilities_model.dart';
 import 'package:pouchers/utils/extras.dart';
 import 'package:pouchers/utils/logger.dart';
@@ -172,14 +173,13 @@ class UtilitiesService {
   }
 
   static Future<ServiceResponse<GetUtilitiesResponse>> getUtilities(
-      {required String utility, required String token}) async {
+      {required String utility}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
-      HttpHeaders.authorizationHeader: "Bearer $token"
     };
 
-    String url = "${baseUrl()}/utility/billers-by-category/$utility";
+    String url = "${baseUrl()}/utility/billers/$utility";
 
     logPrint(url);
     logPrint("what is body $utility");
@@ -208,18 +208,52 @@ class UtilitiesService {
     }
   }
 
-  static Future<ServiceResponse<GetUtilitiesTypesResponse>> getUtilitiesType(
-      {required int categoryId, required String token}) async {
+  static Future<ServiceResponse<DiscountResponse>> getDiscount(
+      {required String utility, required String token}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $token"
     };
 
-    String url = "${baseUrl()}/utility/biller-payment-items/$categoryId";
+    String url = "${baseUrl()}/utility/discount/value/$utility";
 
     logPrint(url);
-    logPrint("what is body $categoryId");
+    logPrint("what is body $utility");
+
+    try {
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: _authHeaders,
+      );
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<DiscountResponse>(
+          data: DiscountResponse.fromJson(responseBody),
+          message: responseBody["message"],
+        );
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<DiscountResponse>(error, stack);
+    }
+  }
+
+  static Future<ServiceResponse<GetUtilitiesTypesResponse>> getUtilitiesType(
+      {required String merchantServiceId}) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+    };
+
+    String url = "${baseUrl()}/utility/merchantServices/$merchantServiceId";
+
+    logPrint(url);
+    logPrint("what is body $merchantServiceId");
 
     try {
       http.Response response = await http.get(
@@ -246,28 +280,42 @@ class UtilitiesService {
   }
 
   static Future<ServiceResponse<String>> buyUtilities(
-      {required String paymentCode,
-      required String amount,
-      required String customerId,
+      {required List<String> merchantService,
+      required double amount,
+      required String merchantAccount,
       required String transactionPin,
       required String subCategory,
+      required String merchantReferenceNumber,
       required String category,
-      required String token}) async {
+      String? frequency,
+      required String token,
+      required bool isSchedule,
+     }) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $token"
     };
 
-    String url = "${baseUrl()}/utility/send-bill-payment-advice";
-    Map<String, dynamic> _body = {
-      "payment_code": paymentCode,
-      "amount": amount,
-      "customer_id": customerId,
-      "transactionPin": transactionPin,
-      "sub_category": subCategory,
-      "category": category
-    };
+    String url = isSchedule
+        ? "${baseUrl()}/utility/schedule"
+        :  "${baseUrl()}/utility/merchantPayment";
+    Map<String, dynamic> _body =  {
+            "category": category,
+            "amount": amount,
+            "merchantAccount": merchantAccount,
+            "transactionPin": transactionPin,
+            "sub_category": subCategory,
+            "merchantReferenceNumber": merchantReferenceNumber,
+          };
+
+    if (frequency != null) {
+      _body["frequency"] = frequency;
+      _body["merchantService"] = merchantService[0];
+    } else {
+      _body["merchantService"] = merchantService;
+    }
+
     logPrint(url);
     logPrint("what is body $_body");
 
@@ -281,6 +329,299 @@ class UtilitiesService {
       } else {
         return serveSuccess<String>(
           data: responseBody["message"],
+          message: responseBody["message"],
+        );
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<String>(error, stack);
+    }
+  }
+
+  static Future<ServiceResponse<String>> buyAirtime(
+      {required String subCategory,
+      required String category,
+      required String amount,
+      required String destinationPhoneNumber,
+      required String transactionPin,
+      required String mobileOperatorPublicId,
+      required bool isAirtime,
+      String? mobileOperatorServiceId,
+      required String token}) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    };
+
+    String url = "${baseUrl()}/utility/mobile";
+    Map<String, dynamic> _body = {
+      "category": category,
+      "amount": double.parse(amount),
+      "sub_category": subCategory,
+      "transactionPin": transactionPin,
+      "destinationPhoneNumber": destinationPhoneNumber,
+      "mobileOperatorPublicId": mobileOperatorPublicId
+    };
+    if (!isAirtime) {
+      _body["mobileOperatorServiceId"] = mobileOperatorServiceId;
+      _body["isDataBundle"] = true;
+    }
+    logPrint(url);
+    logPrint("what is body $_body");
+
+    try {
+      http.Response response = await http.post(Uri.parse(url),
+          headers: _authHeaders, body: jsonEncode(_body));
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<String>(
+          data: responseBody["message"],
+          message: responseBody["message"],
+        );
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<String>(error, stack);
+    }
+  }
+
+  static Future<ServiceResponse<String>> isGuestBuyAirtime({
+    required String subCategory,
+    required String category,
+    required String amount,
+    required String destinationPhoneNumber,
+    required String mobileOperatorPublicId,
+    required bool isAirtime,
+    String? mobileOperatorServiceId,
+    email,
+    name,
+    bank,
+  }) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+    };
+
+    String url = "${baseUrl()}/guest-user/utility/card/pay";
+
+    Map<String, dynamic> _body = {
+      "amount": double.parse(amount),
+      "currency": "NGN",
+      "email": email,
+      "payer": {"name": name, "email": email},
+      "phone_number": destinationPhoneNumber,
+      "mobileOperatorPublicId": mobileOperatorPublicId,
+      "category": category,
+      "sub_category": subCategory
+    };
+
+    if (!isAirtime) {
+      _body["mobileOperatorServiceId"] = mobileOperatorServiceId;
+      _body["isDataBundle"] = true;
+    }
+
+    logPrint(url);
+    logPrint("what is body $_body");
+
+    try {
+      http.Response response = await http.post(Uri.parse(url),
+          headers: _authHeaders, body: jsonEncode(_body));
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<String>(
+          data: responseBody["data"]["paymentMethods"][0]["properties"]
+              ["WebPaymentLink"],
+          message: responseBody["message"],
+        );
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<String>(error, stack);
+    }
+  }
+
+  static Future<ServiceResponse<UssdResponse>> isGuestUssd({
+    required String subCategory,
+    required String category,
+    required String amount,
+    required String destinationPhoneNumber,
+    required String mobileOperatorPublicId,
+    required bool isAirtime,
+    String? mobileOperatorServiceId,
+    email,
+    name,
+    bank,
+  }) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+    };
+
+    String url = "${baseUrl()}/guest-user/utility/ussd/pay";
+
+    Map<String, dynamic> _body = {
+      "amount": double.parse(amount),
+      "currency": "NGN",
+      "email": email,
+      "payer": {"name": name, "email": email},
+      "phone_number": destinationPhoneNumber,
+      "mobileOperatorPublicId": mobileOperatorPublicId,
+      "category": category,
+      "sub_category": subCategory,
+      "bank": bank
+    };
+    logPrint(category);
+
+    if (!isAirtime) {
+      _body["mobileOperatorServiceId"] = mobileOperatorServiceId;
+    }
+
+    logPrint(url);
+    logPrint("what is body $_body");
+
+    try {
+      http.Response response = await http.post(Uri.parse(url),
+          headers: _authHeaders, body: jsonEncode(_body));
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<UssdResponse>(
+          data: UssdResponse.fromJson(responseBody),
+          message: responseBody["message"],
+        );
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<UssdResponse>(error, stack);
+    }
+  }
+
+  static Future<ServiceResponse<UssdResponse>> isGuestUtilityUssd({
+    required List<String> merchantService,
+    required double amount,
+    required String merchantAccount,
+    required String subCategory,
+    required String merchantReferenceNumber,
+    required String category,
+    String? email,
+    name,
+    bank,
+  }) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+    };
+
+    String url = "${baseUrl()}/guest-user/utility/ussd/pay";
+    Map<String, dynamic> _body = {
+      "category": category,
+      "amount": amount,
+      "merchantAccount": merchantAccount,
+      "sub_category": subCategory,
+      "currency": "NGN",
+      "merchantReferenceNumber": merchantReferenceNumber,
+      "merchantService": merchantService[0],
+      "email": email,
+      "payer": {"name": name, "email": email},
+      "bank": bank
+    };
+
+    logPrint(url);
+    logPrint("what is body $_body");
+
+    try {
+      http.Response response = await http.post(Uri.parse(url),
+          headers: _authHeaders, body: jsonEncode(_body));
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<UssdResponse>(
+          data: UssdResponse.fromJson(responseBody),
+          message: responseBody["message"],
+        );
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<UssdResponse>(error, stack);
+    }
+  }
+
+  static Future<ServiceResponse<DataBundleResponse>> getDataBundles({
+    required String merchantServiceId,
+  }) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+    };
+
+    String url = "${baseUrl()}/utility/data/operators/$merchantServiceId";
+
+    logPrint(url);
+    logPrint("what is body $merchantServiceId");
+
+    try {
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: _authHeaders,
+      );
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<DataBundleResponse>(
+          data: DataBundleResponse.fromJson(
+            responseBody,
+          ),
+          message: responseBody["message"],
+        );
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<DataBundleResponse>(error, stack);
+    }
+  }
+
+  static Future<ServiceResponse<String>> checkPaymentStatus(
+      {required String reference}) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+    };
+
+    String url = "${baseUrl()}/payment/status";
+
+    logPrint(url);
+    logPrint("what is body $reference");
+
+    try {
+      http.Response response = await http.post(Uri.parse(url),
+          headers: _authHeaders,
+          body: jsonEncode({"referenceNumber": reference}));
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<String>(
+          data: responseBody["data"]["statusCode"],
           message: responseBody["message"],
         );
       }

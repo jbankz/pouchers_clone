@@ -1,176 +1,301 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/modules/schedule_purchase/provider/schedule_provider.dart';
 import 'package:pouchers/modules/schedule_purchase/schedule_widget_constants.dart';
 import 'package:pouchers/modules/schedule_purchase/screens/schedule_airtime_topup.dart';
 import 'package:pouchers/modules/schedule_purchase/screens/schedule_cable_topup.dart';
 import 'package:pouchers/modules/schedule_purchase/screens/schedule_data_topup.dart';
 import 'package:pouchers/modules/schedule_purchase/screens/schedule_electricity_topup.dart';
 import 'package:pouchers/modules/schedule_purchase/screens/schedule_transfer.dart';
+import 'package:pouchers/modules/utilities/model/utilities_model.dart';
+import 'package:pouchers/modules/utilities/providers/utilities_provider.dart';
 import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/strings.dart';
+import 'package:pouchers/utils/utils.dart';
 import 'package:pouchers/utils/widgets.dart';
 import 'package:collection/collection.dart';
 
-class SchedulePayments extends StatefulWidget {
+class SchedulePayments extends ConsumerStatefulWidget {
   static const String routeName = "schedulePayments";
 
   const SchedulePayments({Key? key}) : super(key: key);
 
   @override
-  State<SchedulePayments> createState() => _SchedulePaymentsState();
+  ConsumerState<SchedulePayments> createState() => _SchedulePaymentsState();
 }
 
-class _SchedulePaymentsState extends State<SchedulePayments> {
+class _SchedulePaymentsState extends ConsumerState<SchedulePayments> {
   int currentIndex = 0;
+  List<GetAllScheduleData> allSchedule = [];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(getScheduleProvider.notifier).getSchedule(category: "");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
-      color: kPurpleColor800,
-      title: scheduledPayment,
-      child: Column(
-        children: [
-          Container(
-            height: kMacroPadding,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: schedulePaymentTypes
-                  .mapIndexed(
-                    (index, element) => inkWell(
-                      onTap: () {
-                        setState(() {
-                          currentIndex = index;
-                        });
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(right: kMediumPadding),
-                        padding: EdgeInsets.symmetric(
-                            vertical: kPadding, horizontal: kRegularPadding),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(kRegularPadding),
-                          color: currentIndex == index
-                              ? kPrimaryTextColor
-                              : kPrimaryWhite,
-                        ),
-                        child: Text(
-                          element,
-                          style: textTheme.headline6!.copyWith(
-                              color: currentIndex == index
-                                  ? kBackgroundColor
-                                  : kIconGrey),
-                        ),
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-          ),
-          SizedBox(
-            height: kMediumPadding,
-          ),
-          Expanded(
-            child: ListView.builder(
-                itemCount: filterBy().length,
-                itemBuilder: (_, index) {
-                  final item = filterBy()[index];
-                  var _widget = inkWell(
-                    onTap: () {
-                      pushTo(
-                          context,
-                          filterBy()[index].image == transfer
-                              ? ScheduleTransfer(
-                                  text: "viewSchedule",
-                                )
-                              : filterBy()[index].image == airtime
-                                  ? ScheduleAirtimeTopUp(
-                                      text: "viewSchedule",
-                                    )
-                                  : filterBy()[index].image == cableTv
-                                      ? ScheduleCableTopUp(
-                                          text: "viewSchedule",
-                                        )
-                                      : filterBy()[index].image == electricity
-                                          ? ScheduleElectricity(
-                                              text: "viewSchedule",
-                                            )
-                                          : ScheduleDataTopUp(
-                                              text: "viewSchedule",
-                                            ));
-                      // filterBy()[index].image
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: kPrimaryWhite,
-                          borderRadius: BorderRadius.circular(kSmallPadding),
-                          border: Border.all(width: 1, color: kLightPurple)),
-                      margin: EdgeInsets.symmetric(vertical: kSmallPadding),
-                      padding: EdgeInsets.symmetric(
-                          vertical: kRegularPadding,
-                          horizontal: kMediumPadding),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          SizedBox(
-                            width: kRegularPadding,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                item.code,
-                                style: textTheme.headline2!.copyWith(
-                                  fontWeight: FontWeight.w500,
+        color: kPurpleColor800,
+        title: scheduledPayment,
+        child: ref.watch(getScheduleProvider).when(
+            loading: () => SpinKitDemo(),
+            done: (data) {
+              if (data != null) {
+                allSchedule = data.data!;
+                return Column(
+                  children: [
+                    Container(
+                      height: kMacroPadding,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: schedulePaymentTypes
+                            .mapIndexed(
+                              (index, element) => inkWell(
+                                onTap: () {
+                                  setState(() {
+                                    currentIndex = index;
+                                  });
+                                  if (currentIndex == 0) {
+                                    ref
+                                        .read(getScheduleProvider.notifier)
+                                        .getSchedule(category: "");
+                                  } else {
+                                    ref
+                                        .read(getScheduleProvider.notifier)
+                                        .getSchedule(
+                                            category: element.toLowerCase());
+                                  }
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  margin:
+                                      EdgeInsets.only(right: kMediumPadding),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: kPadding,
+                                      horizontal: kRegularPadding),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.circular(kRegularPadding),
+                                    color: currentIndex == index
+                                        ? kPrimaryTextColor
+                                        : kPrimaryWhite,
+                                  ),
+                                  child: Text(
+                                    element,
+                                    style: textTheme.headline6!.copyWith(
+                                        color: currentIndex == index
+                                            ? kBackgroundColor
+                                            : kIconGrey),
+                                  ),
                                 ),
                               ),
-                              SizedBox(
-                                height: kPadding,
-                              ),
-                              Text(item.value, style: textTheme.headline6),
-                              SizedBox(
-                                height: kRegularPadding,
-                              ),
-                              Text("Top up ₦5,000 every 31st",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      color: kSecondaryTextColor,
-                                      fontSize: 14,
-                                      fontFamily: "")),
-                            ],
-                          ),
-                        ],
+                            )
+                            .toList(),
                       ),
                     ),
-                  );
-                  return _widget;
-                }),
-          )
-        ],
-      ),
-    );
+                    SizedBox(
+                      height: kMediumPadding,
+                    ),
+                    Expanded(
+                      child: allSchedule.isEmpty
+                          ? Center(
+                              child: Text(
+                                "No Schedule Payments here yet",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: allSchedule.length,
+                              itemBuilder: (_, index) {
+                                final item = allSchedule[index];
+                                var _widget = inkWell(
+                                  onTap: () {
+                                    pushTo(
+                                      context,
+                                      item.category! == "p2p-transfer"
+                                          ? ScheduleTransfer(
+                                              text: "viewSchedule",
+                                              typeOfTransfer: "p2p",
+                                              tag: item.recipient,
+                                              id: item.scheduleId,
+                                              frequency: item.frequency,
+                                              beneficiary:
+                                                  item.beneficiaryAccountName,
+                                              amount: item.amount,
+                                            )
+                                          : item.category! ==
+                                                  "local-bank-transfer"
+                                              ? ScheduleTransfer(
+                                                  text: "viewSchedule",
+                                                  typeOfTransfer: "localBank",
+                                                  transferName: item.bankName,
+                                                  accNo: item.recipient,
+                                                  beneficiary: item
+                                                      .beneficiaryAccountName,
+                                                  id: item.scheduleId,
+                                                  frequency: item.frequency,
+                                                  amount: item.amount)
+                                              : item.category!
+                                                      .contains("airtime")
+                                                  ? ScheduleAirtimeTopUp(
+                                                      text: "viewSchedule",
+                                                      contactNumber:
+                                                          item.recipient,
+                                                      frequency: item.frequency,
+                                                      id: item.scheduleId,
+                                                      amount: kPriceFormatter(
+                                                        double.parse(
+                                                            item.amount ?? "0"),
+                                                      ),
+                                                    )
+                                                  : item.category!
+                                                          .contains("cable")
+                                                      ? ScheduleCableTopUp(
+                                                          text: "viewSchedule",
+                                                          cardNo:
+                                                              item.recipient,
+                                                          frequency:
+                                                              item.frequency,
+                                                          id: item.scheduleId,
+                                                        )
+                                                      : item.category!.contains(
+                                                              "electricity")
+                                                          ? ScheduleElectricity(
+                                                              text:
+                                                                  "viewSchedule",
+                                                              cardNo: item
+                                                                  .recipient,
+                                                              frequency: item
+                                                                  .frequency,
+                                                              id: item
+                                                                  .scheduleId,
+                                                            )
+                                                          : ScheduleDataTopUp(
+                                                              text:
+                                                                  "viewSchedule",
+                                                              contactNumber:
+                                                                  item.recipient,
+                                                              frequency: item
+                                                                  .frequency,
+                                                              id: item
+                                                                  .scheduleId,
+                                                            ),
+                                    ).then((value) => ref
+                                        .read(getScheduleProvider.notifier)
+                                        .getSchedule(category: ""));
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: kPrimaryWhite,
+                                        borderRadius: BorderRadius.circular(
+                                            kSmallPadding),
+                                        border: Border.all(
+                                            width: 1, color: kLightPurple)),
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: kSmallPadding),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: kRegularPadding,
+                                        horizontal: kMediumPadding),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // Container(
+                                        //   height: 50,
+                                        //   width: 50,
+                                        //   decoration: BoxDecoration(
+                                        //     shape: BoxShape.circle,
+                                        //     color: Colors.grey,
+                                        //   ),
+                                        // ),
+                                        // SizedBox(
+                                        //   width: kRegularPadding,
+                                        // ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              item.recipient ?? "",
+                                              style:
+                                                  textTheme.headline2!.copyWith(
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: kPadding,
+                                            ),
+                                            Text(
+                                                "${item.category!.substring(0, 1).toUpperCase()}${item.category!.substring(1).toLowerCase()}",
+                                                style: textTheme.headline6),
+                                            SizedBox(
+                                              height: kRegularPadding,
+                                            ),
+                                            item.frequency!
+                                                    .contains(onlyTextValues)
+                                                ? Text(
+                                                    "Top up ₦${kPriceFormatter(double.parse(item.amount ?? "0"))} every ${item.frequency}",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        color:
+                                                            kSecondaryTextColor,
+                                                        fontSize: 14,
+                                                        fontFamily: ""))
+                                                : Text(
+                                                    "Top up ₦${item.amount} every ${ordinal_suffix_of(int.parse(item.frequency ?? "0"))}",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        color:
+                                                            kSecondaryTextColor,
+                                                        fontSize: 14,
+                                                        fontFamily: "")),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                                return _widget;
+                              }),
+                    )
+                  ],
+                );
+              } else {
+                return SizedBox();
+              }
+            }));
   }
 
-  List<VoucherItems> filterBy() {
-    List<VoucherItems> schedule = [];
+  List<GetAllScheduleData> filterBy() {
+    List<GetAllScheduleData> service = [];
     if (currentIndex == 0) {
-      schedule = schedulePaymentDummy;
-      return schedule;
+      service = allSchedule;
+      return service;
     } else {
-      schedule = schedulePaymentDummy.where((element) {
-        return element.image == schedulePaymentTypes[currentIndex];
-      }).toList();
-      return schedule;
+      // print(currentIndex);
+      // if (currentIndex == 1) {
+      //   service =
+      //       allSchedule.where((element) => element.gifteeId != null).toList();
+      // } else if (currentIndex == 2) {
+      //   service =
+      //       allSchedule.where((element) => element.redeemed == true).toList();
+      // } else {
+      //   service = allSchedule
+      //       .where((element) =>
+      //           (element.gifteeId == null && element.redeemed == false))
+      //       .toList();
+      // }
+      return service;
     }
   }
 }

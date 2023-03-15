@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,13 +49,8 @@ class _HomePageState extends ConsumerState<HomePage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if (ref.watch(editProfileInHouseProvider) == null) {
-        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(userProfile.toJson());
-        setState(() {});
-      } else {
-        ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(ref.watch(editProfileInHouseProvider).toJson());
-        setState(() {});
-      }      ref.read(getWalletProvider.notifier).getWalletDetails();
+      checkProvider();
+      ref.read(getWalletProvider.notifier).getWalletDetails();
     });
   }
 
@@ -94,12 +87,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                     child: CachedNetworkImage(
                         height: 50,
                         width: 50,
-                        imageUrl: ref.watch(editProfileInHouseProvider) == null
-                            ? userProfile.profilePicture!
-                            : ref
-                                    .watch(editProfileInHouseProvider)
-                                    .profilePicture ??
-                                "",
+                        imageUrl: ref
+                                .watch(editProfileInHouseProvider)
+                                .profilePicture ??
+                            "",
                         placeholder: (context, url) => Container(
                               color: Colors.transparent,
                               height: 50,
@@ -148,18 +139,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     )
                                   : Center(
                                       child: Text(
-                                          ref
-                                                          .watch(
-                                                              editProfileInHouseProvider)
-                                                          .firstName ==
-                                                      null ||
-                                                  ref
-                                                          .watch(
-                                                              editProfileInHouseProvider)
-                                                          .lastName ==
-                                                      null
-                                              ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
-                                              : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
+                                          "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
                                           style: textTheme.bodyText2!
                                               .copyWith(fontSize: 22)),
                                     ),
@@ -180,12 +160,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 ),
                                 children: [
                               TextSpan(
-                                text: ref
-                                            .watch(editProfileInHouseProvider)
-                                            .firstName ==
-                                        null
-                                    ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.firstName!.substring(1).toLowerCase()}"
-                                    : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).firstName!.substring(1).toLowerCase()}",
+                                text:
+                                    "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).firstName!.substring(1).toLowerCase()}",
                                 style: textTheme.headline3!.copyWith(
                                     fontWeight: FontWeight.w700,
                                     color: kDarkFill),
@@ -200,13 +176,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   color: kPurpleColor700, width: 0.7),
                               borderRadius:
                                   BorderRadius.circular(kSmallPadding)),
-                          child:  Text(
-                              ref.watch(editProfileInHouseProvider).tierLevels == null ? "$tier ${userProfile.tierLevels}" : "$tier ${ref.watch(editProfileInHouseProvider).tierLevels}",
-                                  style: textTheme.headline4!.copyWith(
-                                    color: kSecondaryPurple,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
+                          child: Text(
+                            "$tier ${ref.watch(editProfileInHouseProvider).tierLevels}",
+                            style: textTheme.headline4!.copyWith(
+                              color: kSecondaryPurple,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -229,42 +205,44 @@ class _HomePageState extends ConsumerState<HomePage> {
             SizedBox(
               height: kMediumPadding,
             ),
-            ref.watch(editProfileInHouseProvider).tierLevels == 3 ? SizedBox() : inkWell(
-              onTap: () {
-                pushTo(
-                  context,
-                  AccountVerificationStatus(from: "homepage"),
-                  settings: const RouteSettings(
-                      name: AccountVerificationStatus.routeName),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: kRegularPadding, vertical: kSmallPadding),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(kSmallPadding),
-                    color: kLightOrange100,
-                    border: Border.all(color: kLightOrange200, width: 1)),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(AssetPaths.shieldIcon),
-                    SizedBox(
-                      width: kPadding,
-                    ),
-                    Expanded(
-                      child: Text(
-                        completeSetUp,
-                        style: textTheme.headline2!.copyWith(
-                          color: kLightOrange300,
-                        ),
+            ref.watch(editProfileInHouseProvider).tierLevels == 3
+                ? SizedBox()
+                : inkWell(
+                    onTap: () {
+                      pushTo(
+                        context,
+                        AccountVerificationStatus(from: "homepage"),
+                        settings: const RouteSettings(
+                            name: AccountVerificationStatus.routeName),
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: kRegularPadding, vertical: kSmallPadding),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(kSmallPadding),
+                          color: kLightOrange100,
+                          border: Border.all(color: kLightOrange200, width: 1)),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(AssetPaths.shieldIcon),
+                          SizedBox(
+                            width: kPadding,
+                          ),
+                          Expanded(
+                            child: Text(
+                              completeSetUp,
+                              style: textTheme.headline2!.copyWith(
+                                color: kLightOrange300,
+                              ),
+                            ),
+                          ),
+                          Icon(Icons.arrow_forward_ios,
+                              color: kLightOrange200, size: 18)
+                        ],
                       ),
                     ),
-                    Icon(Icons.arrow_forward_ios,
-                        color: kLightOrange200, size: 18)
-                  ],
-                ),
-              ),
-            ),
+                  ),
             SizedBox(
               height: kMediumPadding,
             ),
@@ -524,5 +502,47 @@ class _HomePageState extends ConsumerState<HomePage> {
         ),
       ),
     );
+  }
+
+  checkProvider(){
+    if (ref.watch(editProfileInHouseProvider).firstName == null) {
+      ref.read(editProfileInHouseProvider.notifier).state = ref
+          .read(editProfileInHouseProvider.notifier)
+          .state
+          .copyWith(
+          profilePicture: userProfile.profilePicture,
+          firstName: userProfile.firstName,
+          lastName: userProfile.lastName,
+          tierLevels: userProfile.tierLevels,
+          address: userProfile.address,
+          gender: userProfile.gender,
+          tag: userProfile.tag,
+          dob: userProfile.dob,
+          phoneNumber: userProfile.phoneNumber,
+          email: userProfile.email,
+          isLoginBiometricActive: userProfile.isLoginBiometricActive,
+          isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+          isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
+    } else {
+      ref.read(editProfileInHouseProvider.notifier).state = ref
+          .read(editProfileInHouseProvider.notifier)
+          .state
+          .copyWith(
+          profilePicture:
+          ref.watch(editProfileInHouseProvider).profilePicture,
+          firstName: ref.watch(editProfileInHouseProvider).firstName,
+          lastName: ref.watch(editProfileInHouseProvider).lastName,
+          tierLevels: ref.watch(editProfileInHouseProvider).tierLevels,
+          address: ref.watch(editProfileInHouseProvider).address,
+          gender: ref.watch(editProfileInHouseProvider).gender,
+          tag: ref.watch(editProfileInHouseProvider).tag,
+          dob: ref.watch(editProfileInHouseProvider).dob,
+          phoneNumber: ref.watch(editProfileInHouseProvider).phoneNumber,
+          email: ref.watch(editProfileInHouseProvider).email,
+          isLoginBiometricActive: userProfile.isLoginBiometricActive,
+          isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+          isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
+    }
+
   }
 }

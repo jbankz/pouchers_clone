@@ -39,7 +39,6 @@ class _CardHomeState extends ConsumerState<CardHome> {
   @override
   void initState() {
     super.initState();
-    print("reached here");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref
           .read(getCardDetailsProvider.notifier)
@@ -206,7 +205,7 @@ class _CardHomeState extends ConsumerState<CardHome> {
                             onTap: () {
                               buildShowModalBottomSheet(
                                 context,
-                                CardDetails(cardData: data.data!),
+                                CardDetails(cardData: data.data!, cardCvv: cardCvv,),
                               );
                             },
                             textTheme: textTheme,

@@ -205,14 +205,14 @@ class _AccountVerificationStatusState
         });
       }
     } else {
-      print("here");
-      ref.read(editProfileInHouseProvider.notifier).state.tierLevels =
-          userProfile.tierLevels;
+      ref.read(editProfileInHouseProvider.notifier).state = ref
+          .read(editProfileInHouseProvider.notifier)
+          .state
+          .copyWith(tierLevels: userProfile.tierLevels);
       setState(() {
         hiveTierLevel = ref.watch(editProfileInHouseProvider).tierLevels;
       });
     }
-    print("hiveTierLevel$hiveTierLevel");
   }
 }
 

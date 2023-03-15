@@ -285,8 +285,9 @@ class VirtualCardType extends StatelessWidget {
 
 class CardDetails extends StatelessWidget {
   final GetCardDetailsData cardData;
+  final String? cardCvv;
 
-  const CardDetails({Key? key, required this.cardData}) : super(key: key);
+  const CardDetails({Key? key, required this.cardData, this.cardCvv}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -352,7 +353,7 @@ class CardDetails extends StatelessWidget {
                 AirtimeRow(
                   textTheme: textTheme,
                   text: cvv,
-                  subText: "227",
+                  subText: cardCvv ?? "",
                   noSymbol: true,
                   isCopyIcon: true,
                   style: textTheme.headline4!
