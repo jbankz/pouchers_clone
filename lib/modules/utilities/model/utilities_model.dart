@@ -387,7 +387,7 @@ class GetAllScheduleData {
 
   factory GetAllScheduleData.fromJson(Map<String, dynamic> json) => GetAllScheduleData(
     scheduleId: json["schedule_id"],
-    amount: json["amount"],
+    amount: json["amount"].toString(),
     recipient: json["recipient"],
     category: json["category"],
     subCategory: json["sub_category"],
@@ -467,8 +467,8 @@ class DiscountResponseData {
     threshold: json["threshold"],
     frequency: json["frequency"],
     status: json["status"],
-    startDate: DateTime.parse(json["start_date"]),
-    endDate: DateTime.parse(json["end_date"]),
+    startDate: json["start_date"] == null ? null : DateTime.parse(json["start_date"]),
+    endDate: json["end_date"] == null ? null : DateTime.parse(json["end_date"]),
   );
 
   Map<String, dynamic> toJson() => {

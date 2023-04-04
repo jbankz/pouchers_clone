@@ -32,6 +32,30 @@ class EditProfileResponse {
   }
 }
 
+class Biometric {
+  Biometric({this.isLoginBiometricActive, this.isPaymentBiometricActive});
+
+  bool? isLoginBiometricActive;
+  bool? isPaymentBiometricActive;
+
+  factory Biometric.fromJson(Map<String, dynamic> json) => Biometric(
+      isPaymentBiometricActive: json["is_payment_biometric_active"],
+      isLoginBiometricActive: json["is_login_biometric_active"]);
+
+  Map<String, dynamic> toJson() => {
+        "is_login_biometric_active": isLoginBiometricActive,
+        "is_payment_biometric_active": isPaymentBiometricActive
+      };
+
+  Biometric copyWith(
+          {bool? isLoginBiometricActive, bool? isPaymentBiometricActive}) =>
+      Biometric(
+          isLoginBiometricActive:
+              isLoginBiometricActive ?? this.isLoginBiometricActive,
+          isPaymentBiometricActive:
+              isPaymentBiometricActive ?? this.isPaymentBiometricActive);
+}
+
 class EditProfileData {
   EditProfileData(
       {this.id,
@@ -51,6 +75,7 @@ class EditProfileData {
       this.profilePicture,
       this.address,
       this.gender,
+      this.utilityBill,
       this.isLoginBiometricActive,
       this.isPaymentBiometricActive});
 
@@ -71,6 +96,7 @@ class EditProfileData {
   String? profilePicture;
   String? address;
   String? gender;
+  String? utilityBill;
   bool? isLoginBiometricActive;
   bool? isPaymentBiometricActive;
 
@@ -93,6 +119,7 @@ class EditProfileData {
           profilePicture: json["profile_picture"],
           address: json["address"],
           gender: json["gender"],
+          utilityBill: json["utility_bill"],
           isPaymentBiometricActive: json["is_payment_biometric_active"],
           isLoginBiometricActive: json["is_login_biometric_active"]);
 
@@ -114,6 +141,7 @@ class EditProfileData {
         "profile_picture": profilePicture,
         "address": address,
         "gender": gender,
+        "utility_bill": utilityBill,
         "is_login_biometric_active": isLoginBiometricActive,
         "is_payment_biometric_active": isPaymentBiometricActive
       };
@@ -136,35 +164,38 @@ class EditProfileData {
           dynamic profilePicture,
           String? address,
           String? gender,
+          String? utilityBill,
           bool? isLoginBiometricActive,
           bool? isPaymentBiometricActive}) =>
       EditProfileData(
-        id: id ?? this.id,
-        userId: userId ?? this.userId,
-        phoneNumber: phoneNumber ?? this.phoneNumber,
-        email: email ?? this.email,
-        firstName: firstName ?? this.firstName,
-        lastName: lastName ?? this.lastName,
-        tierLevels: tierLevels ?? this.tierLevels,
-        status: status ?? this.status,
-        deviceToken: deviceToken ?? this.deviceToken,
-        fcmToken: fcmToken ?? this.fcmToken,
-        isUploadedIdentityCard:
-            isUploadedIdentityCard ?? this.isUploadedIdentityCard,
-        referralCode: referralCode ?? this.referralCode,
-        tag: tag ?? this.tag,
-        dob: dob ?? this.dob,
-        profilePicture: profilePicture ?? this.profilePicture,
-        address: address ?? this.address,
-        gender: gender ?? this.gender,
-        isLoginBiometricActive: isLoginBiometricActive ?? this.isLoginBiometricActive,
-        isPaymentBiometricActive: isPaymentBiometricActive ?? this.isPaymentBiometricActive
-      );
+          id: id ?? this.id,
+          userId: userId ?? this.userId,
+          phoneNumber: phoneNumber ?? this.phoneNumber,
+          email: email ?? this.email,
+          firstName: firstName ?? this.firstName,
+          lastName: lastName ?? this.lastName,
+          tierLevels: tierLevels ?? this.tierLevels,
+          status: status ?? this.status,
+          deviceToken: deviceToken ?? this.deviceToken,
+          fcmToken: fcmToken ?? this.fcmToken,
+          isUploadedIdentityCard:
+              isUploadedIdentityCard ?? this.isUploadedIdentityCard,
+          referralCode: referralCode ?? this.referralCode,
+          tag: tag ?? this.tag,
+          dob: dob ?? this.dob,
+          profilePicture: profilePicture ?? this.profilePicture,
+          address: address ?? this.address,
+          gender: gender ?? this.gender,
+          utilityBill: utilityBill ?? this.utilityBill,
+          isLoginBiometricActive:
+              isLoginBiometricActive ?? this.isLoginBiometricActive,
+          isPaymentBiometricActive:
+              isPaymentBiometricActive ?? this.isPaymentBiometricActive);
 
   @override
   String toString() {
-    return 'EditProfileData{id: $id, userId: $userId, phoneNumber: $phoneNumber, email: $email, firstName: $firstName, lastName: $lastName, tierLevels: $tierLevels, status: $status, deviceToken: $deviceToken, fcmToken: $fcmToken, isUploadedIdentityCard: $isUploadedIdentityCard, referralCode: $referralCode, tag: $tag, dob: $dob, profilePicture: $profilePicture, address: $address, gender: $gender, isLoginBiometricActive: $isLoginBiometricActive, isPaymentBiometricActive: $isPaymentBiometricActive}';
+    return 'EditProfileData{id: $id, userId: $userId, phoneNumber: $phoneNumber, email: $email, firstName: $firstName, lastName: $lastName, tierLevels: $tierLevels, status: $status, deviceToken: $deviceToken, fcmToken: $fcmToken, isUploadedIdentityCard: $isUploadedIdentityCard, referralCode: $referralCode, tag: $tag, dob: $dob, profilePicture: $profilePicture, address: $address, gender: $gender, utilityBill: $utilityBill, isLoginBiometricActive: $isLoginBiometricActive, isPaymentBiometricActive: $isPaymentBiometricActive}';
   }
 }
 
-List<String> idMethodList = ["Driver’s license", "NIN", "Voter’s card"];
+List<String> idMethodList = ["Driver’s license", "VNIN", "Voter’s card"];

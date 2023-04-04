@@ -436,37 +436,47 @@ class _ScheduleTransferState extends ConsumerState<ScheduleTransfer> {
                         if (result != null) {
                           if (widget.typeOfTransfer == "localBank") {
                             ref
-                                .read(scheduleLocalProvider.notifier)
-                                .scheduleLocalTransfer(
-                                  frequency:
-                                      frequency.startsWith(RegExp("[0-9:\s]"))
-                                          ? frequency.replaceAll(
-                                              RegExp("[a-zA-Z:\s]"), "")
-                                          : frequency,
-                                  scheduleId: widget.id,
-                                  status: "inactive",
-                                  bankName: widget.transferName ?? "",
-                                  amount: double.parse(widget.amount ?? "0"),
-                                  accountNumber: widget.accNo ?? "",
+                                .read(deleteScheduleProvider.notifier)
+                                .deleteSchedule(
+                                  scheduleId: widget.id!,
                                   transactionPin: result,
+                                  then: () => pushTo(
+                                    context,
+                                    SuccessMessage(
+                                      text: dataSuccess,
+                                      subText: billDeleteSuccess,
+                                      onTap: () {
+                                        Navigator.popUntil(
+                                          context,
+                                          (route) =>
+                                              route.settings.name ==
+                                              SchedulePayments.routeName,
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 );
                           } else {
                             ref
-                                .read(scheduleP2PProvider.notifier)
-                                .scheduleP2PTransfer(
-                                  category: "p2p-transfer",
-                                  subCategory: "none",
-                                  scheduleId: widget.id,
-                                  status: "inactive",
-                                  frequency:
-                                      frequency.startsWith(RegExp("[0-9:\s]"))
-                                          ? frequency.replaceAll(
-                                              RegExp("[a-zA-Z:\s]"), "")
-                                          : frequency,
-                                  tag: widget.tag ?? "",
-                                  amount: double.parse(widget.amount ?? "0"),
-                                  note: widget.note ?? "",
+                                .read(deleteScheduleProvider.notifier)
+                                .deleteSchedule(
+                                  scheduleId: widget.id!,
                                   transactionPin: result,
+                                  then: () => pushTo(
+                                    context,
+                                    SuccessMessage(
+                                      text: dataSuccess,
+                                      subText: billDeleteSuccess,
+                                      onTap: () {
+                                        Navigator.popUntil(
+                                          context,
+                                          (route) =>
+                                              route.settings.name ==
+                                              SchedulePayments.routeName,
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 );
                           }
                         }

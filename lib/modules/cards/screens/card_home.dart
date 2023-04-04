@@ -46,9 +46,11 @@ class _CardHomeState extends ConsumerState<CardHome> {
       ref.read(getCardTokenProvider.notifier).getCardToken(
             cardId: widget.cardInfo!.cardId,
           );
+      ref.read(getCardBalanceProvider.notifier).getCardBalance(
+            cardId: widget.cardInfo!.accountId,
+          );
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +73,6 @@ class _CardHomeState extends ConsumerState<CardHome> {
                     ),
                     Consumer(builder: (context, ref, _) {
                       return ref.watch(getCardTokenProvider).when(loading: () {
-                        print("loading");
                         return Container(
                           width: 50,
                           height: 50,
@@ -91,24 +92,29 @@ class _CardHomeState extends ConsumerState<CardHome> {
                         }
                       });
                     }),
-                    RichText(
-                      text: TextSpan(
-                        text: widget.cardType == "NGN" ? "₦" : "\$",
-                        style: TextStyle(
-                          color: kPrimaryTextColor,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 26,
-                        ),
-                        children: [
-                          TextSpan(
-                              text: data.data!.balance == null
-                                  ? "0.00"
-                                  : kPriceFormatter(
-                                      data.data!.balance!.toDouble()),
-                              style: textTheme.headline1)
-                        ],
-                      ),
-                    ),
+                    ref.watch(getCardBalanceProvider).when(done: (done) {
+                      if (done != null) {
+                        return RichText(
+                          text: TextSpan(
+                            text: widget.cardType == "NGN" ? "₦" : "\$",
+                            style: TextStyle(
+                              color: kPrimaryTextColor,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 26,
+                            ),
+                            children: [
+                              TextSpan(
+                                  text: kPriceFormatter(
+                                    done.toDouble(),
+                                  ),
+                                  style: textTheme.headline1)
+                            ],
+                          ),
+                        );
+                      } else {
+                        return SizedBox();
+                      }
+                    }),
                     SizedBox(
                       height: kSmallPadding,
                     ),
@@ -191,12 +197,20 @@ class _CardHomeState extends ConsumerState<CardHome> {
                                       ),
                                       settings: const RouteSettings(
                                           name: CreateVirtualCard.routeName))
-                                  .then(
-                                (value) => ref
+                                  .then((value) {
+                                ref
                                     .read(getCardDetailsProvider.notifier)
                                     .getCardDetails(
-                                        cardId: widget.cardInfo!.cardId),
-                              );
+                                        cardId: widget.cardInfo!.cardId);
+                                ref
+                                    .read(getCardBalanceProvider.notifier)
+                                    .getCardBalance(
+                                      cardId: widget.cardInfo!.accountId,
+                                    );
+                                ref.read(getCardTokenProvider.notifier).getCardToken(
+                                  cardId: widget.cardInfo!.cardId,
+                                );
+                              });
                             },
                             textTheme: textTheme,
                             text: fundCard,
@@ -205,7 +219,10 @@ class _CardHomeState extends ConsumerState<CardHome> {
                             onTap: () {
                               buildShowModalBottomSheet(
                                 context,
-                                CardDetails(cardData: data.data!, cardCvv: cardCvv,),
+                                CardDetails(
+                                  cardData: data.data!,
+                                  cardCvv: cardCvv,
+                                ),
                               );
                             },
                             textTheme: textTheme,
@@ -462,7 +479,6 @@ class _CardHomeState extends ConsumerState<CardHome> {
     }
   }
 
-
   Stack frontCard(TextTheme textTheme, GetCardDetailsData data) {
     return Stack(
       children: [
@@ -483,7 +499,8 @@ class _CardHomeState extends ConsumerState<CardHome> {
           top: kRegularPadding,
           right: kRegularPadding,
           child: SvgPicture.asset(
-            AssetPaths.visaIcon,
+            widget.cardType == "NGN"
+                ?  AssetPaths.verveIcon : AssetPaths.masterCardIcon,
             height: 30,
           ),
         ),

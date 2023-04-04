@@ -15,7 +15,7 @@ class PdfInvoiceApi {
       String transferType,
       String transferName,
       String accNo,
-      String amount, DateTime transactionTime, String tag) async {
+      String amount, DateTime transactionTime, String tag, String transactionId, double _transactionFee) async {
     final ByteData bytes = await rootBundle.load(AssetPaths.poucherLogo);
     final Uint8List poucherLogo = bytes.buffer.asUint8List();
     final font = await rootBundle.load("assets/fonts/DMSans-Bold.ttf");
@@ -128,11 +128,36 @@ class PdfInvoiceApi {
                       : widget(text: poucherTag, subText: "@$tag"),
                   widget(text: transactionAmount, subText: amount, hasSymbol: true),
                   transferType == "localBank"
-                      ? widget(text: transactionFee, subText: "53.75", hasSymbol: true)
+                      ? widget(text: transactionFee, subText: _transactionFee.toString(), hasSymbol: true)
                       : widget(
                       text: status, subText: "Sent", color: "00BB64"),
                   pdfWidget.SizedBox(
                     height: kRegularPadding,
+                  ),
+                transactionId == "" ? pdfWidget.SizedBox() :  pdfWidget.Center(
+                    child: pdfWidget.Column(
+                      children: [
+                        pdfWidget.Text(
+                          "Transaction Number",
+                          style: pdfWidget.TextStyle(
+                            fontWeight: pdfWidget.FontWeight.bold,
+                            font: ttf,
+                            color: pdfSaver.PdfColor.fromHex("8F8E9B"),
+                            fontSize: 18,
+                          ),
+                        ),
+                        pdfWidget.SizedBox(height: kPadding,),
+                        pdfWidget.Text(
+                          transactionId,
+                            style: pdfWidget.TextStyle(
+                              fontWeight: pdfWidget.FontWeight.bold,
+                              font: ttf,
+                              color: pdfSaver.PdfColor.fromHex("060628"),
+                              fontSize: 18,
+                            )
+                        ),
+                      ],
+                    ),
                   ),
                   pdfWidget.Container(
                       decoration: pdfWidget.BoxDecoration(

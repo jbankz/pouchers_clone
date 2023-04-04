@@ -48,8 +48,10 @@ class _BuyDataState extends ConsumerState<BuyData>
     super.initState();
     _tabController = TabController(length: category.length, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(getDiscountProvider.notifier).getDiscount(utility: "data");
-      ref.read(getUtilitiesProvider.notifier).getUtilities(utility: "data");
+      widget.isGuest!
+          ? null
+          :   ref.read(getDiscountProvider.notifier).getDiscount(utility: "data");
+       ref.read(getUtilitiesProvider.notifier).getUtilities(utility: "data");
     });
   }
 
@@ -100,65 +102,68 @@ class _BuyDataState extends ConsumerState<BuyData>
                 ref.watch(getUtilitiesProvider).when(
                       done: (provider) {
                         if (provider != null) {
-                          return Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: provider.data!
-                                  .mapIndexed(
-                                    (index, element) => inkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          currentIndex = index;
-                                          billerData = element;
-                                        });
-                                        ref
-                                            .read(
-                                                getDataBundleProvider.notifier)
-                                            .getDataBundle(
-                                              merchantServiceId:
-                                                  billerData!.operatorpublicid!,
-
-                                            );
-                                      },
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            padding:
-                                                EdgeInsets.all(kRegularPadding),
-                                            height: 70,
-                                            width: 70,
-                                            decoration: BoxDecoration(
-                                                color: currentIndex == index
-                                                    ? kLightPurple
-                                                    : kContainerColor,
-                                                shape: BoxShape.circle),
-                                            child: SvgPicture.asset(icon(
-                                                provider.data![index]
-                                                    .displayName!)),
-                                          ),
-                                          currentIndex == index
-                                              ? Positioned(
-                                                  bottom: 0,
-                                                  right: 0,
-                                                  child: Container(
-                                                      padding:
-                                                          EdgeInsets.all(3),
-                                                      decoration: BoxDecoration(
-                                                          color: kPurpleColor,
-                                                          shape:
-                                                              BoxShape.circle),
-                                                      child: Icon(
-                                                        Icons.check,
-                                                        color: kPrimaryWhite,
-                                                        size: 15,
-                                                      )),
-                                                )
-                                              : SizedBox(),
-                                        ],
+                          return SizedBox(
+                            height: 70,
+                            child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: provider.data!
+                                    .mapIndexed(
+                                      (index, element) => inkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            currentIndex = index;
+                                            billerData = element;
+                                          });
+                                          ref
+                                              .read(
+                                                  getDataBundleProvider.notifier)
+                                              .getDataBundle(
+                                                merchantServiceId:
+                                                    billerData!.operatorpublicid!,
+                                              );
+                                        },
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              padding:
+                                                  EdgeInsets.all(kRegularPadding),
+                                              height: 70,
+                                              width: 70,
+                                              margin: EdgeInsets.only(
+                                                  right: kSmallPadding),
+                                              decoration: BoxDecoration(
+                                                  color: currentIndex == index
+                                                      ? kLightPurple
+                                                      : kContainerColor,
+                                                  shape: BoxShape.circle),
+                                              child: SvgPicture.asset(icon(
+                                                  provider.data![index]
+                                                      .displayName!)),
+                                            ),
+                                            currentIndex == index
+                                                ? Positioned(
+                                                    bottom: 0,
+                                                    right: 0,
+                                                    child: Container(
+                                                        padding:
+                                                            EdgeInsets.all(3),
+                                                        decoration: BoxDecoration(
+                                                            color: kPurpleColor,
+                                                            shape:
+                                                                BoxShape.circle),
+                                                        child: Icon(
+                                                          Icons.check,
+                                                          color: kPrimaryWhite,
+                                                          size: 15,
+                                                        )),
+                                                  )
+                                                : SizedBox(),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                  .toList());
+                                    )
+                                    .toList()),
+                          );
                         } else {
                           return SizedBox();
                         }
@@ -169,12 +174,12 @@ class _BuyDataState extends ConsumerState<BuyData>
                         style: textTheme.subtitle2,
                       ),
                     ),
-                ref.watch(getDiscountProvider).when(done: (done){
-                  if(done != null){
+                ref.watch(getDiscountProvider).when(done: (done) {
+                  if (done != null) {
                     threshold = done.data!.threshold ?? "0";
-                   discountValue = done.data!.discountValue ?? "0";
+                    discountValue = done.data!.discountValue ?? "0";
                     return SizedBox();
-                  }else{
+                  } else {
                     return SizedBox();
                   }
                 }),
@@ -186,7 +191,11 @@ class _BuyDataState extends ConsumerState<BuyData>
                       ? null
                       : () async {
                           final result = await buildShowModalBottomSheet(
-                              context, DataModal(paymentItem: mobileService, discountValue: discountValue, threshold: threshold));
+                              context,
+                              DataModal(
+                                  paymentItem: mobileService,
+                                  discountValue: discountValue,
+                                  threshold: threshold));
                           if (result != null) {
                             setState(() => _mobileOperatorService = result);
                           }
@@ -314,6 +323,7 @@ class _BuyDataState extends ConsumerState<BuyData>
                         amount: _mobileOperatorService!.servicePrice.toString(),
                         recipientNo: contactController.text,
                         billerName: billerData!.name!,
+                        threshold: threshold,
                         name: widget.name,
                         email: widget.email,
                         isGuest: widget.isGuest!,

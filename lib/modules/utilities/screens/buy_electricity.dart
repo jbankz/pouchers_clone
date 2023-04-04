@@ -449,6 +449,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                             isGuest: widget.isGuest!,
                             email: widget.email,
                             name: widget.name,
+                            threshold: threshold,
                             category: "electricity-purchase",
                             amount: "${paymentType!.price!}",
                             billerLogo: "",

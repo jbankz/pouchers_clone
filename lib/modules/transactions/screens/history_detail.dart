@@ -1,9 +1,8 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+// import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -196,27 +195,27 @@ class HistoryDetail extends StatelessWidget {
     );
   }
 
-  Future<void> _requestDownload(String _url, String _name) async {
-    String dir;
-    if (Platform.isIOS) {
-      dir = (await getApplicationDocumentsDirectory()).path;
-    } else {
-      dir = "/sdcard/download/";
-      // dir = (await getExternalStorageDirectory())!.path;
-    }
-    var _localPath = dir + _name;
-    final savedDir = Directory(_localPath);
-    await savedDir.create(recursive: true).then((value) async {
-      String? _taskid = await FlutterDownloader.enqueue(
-        url: _url.split(" ")[1],
-        fileName: "receipt",
-        savedDir: _localPath,
-        showNotification: true,
-        openFileFromNotification: true,
-      );
-      print(_taskid);
-    });
-  }
+  // Future<void> _requestDownload(String _url, String _name) async {
+  //   String dir;
+  //   if (Platform.isIOS) {
+  //     dir = (await getApplicationDocumentsDirectory()).path;
+  //   } else {
+  //     dir = "/sdcard/download/";
+  //     // dir = (await getExternalStorageDirectory())!.path;
+  //   }
+  //   var _localPath = dir + _name;
+  //   final savedDir = Directory(_localPath);
+  //   await savedDir.create(recursive: true).then((value) async {
+  //     String? _taskid = await FlutterDownloader.enqueue(
+  //       url: _url.split(" ")[1],
+  //       fileName: "receipt",
+  //       savedDir: _localPath,
+  //       showNotification: true,
+  //       openFileFromNotification: true,
+  //     );
+  //     print(_taskid);
+  //   });
+  // }
 }
 
 class pdfApi {

@@ -29,6 +29,7 @@ class _CreateCardState extends ConsumerState<CreateCard> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(getAllFeesProvider.notifier).getAllFees(amount: 0);
       ref.read(getAllVirtualCardProvider.notifier).getAllVirtualCards();
     });
   }
@@ -46,16 +47,17 @@ class _CreateCardState extends ConsumerState<CreateCard> {
                 width: double.infinity,
                 height: 300,
                 decoration: BoxDecoration(),
-                child: Stack(
+                child:
+                Stack(
                   children: [
                     Positioned(
-                      child: Image.asset(AssetPaths.nairaCard),
+                      child: SvgPicture.asset(AssetPaths.nairaCardIcon),
                       top: 50,
                     ),
                     Positioned(
                       top: 0,
                       right: 0,
-                      child: Image.asset(AssetPaths.visaCard),
+                      child: SvgPicture.asset(AssetPaths.dollarCardIcon),
                     ),
                   ],
                 ),
@@ -224,7 +226,8 @@ class _CreateCardState extends ConsumerState<CreateCard> {
                                               bottom: kRegularPadding,
                                               right: kRegularPadding,
                                               child: SvgPicture.asset(
-                                                AssetPaths.visaIcon,
+                                                e.currency == "NGN"
+                                                    ?  AssetPaths.verveIcon : AssetPaths.masterCardIcon,
                                                 height: 30,
                                               ),
                                             ),
@@ -266,7 +269,7 @@ class _CreateCardState extends ConsumerState<CreateCard> {
                                                             height: kPadding,
                                                           ),
                                                           Text(
-                                                            "**** **** ${e.last4}",
+                                                            "**** ****",
                                                             style: textTheme
                                                                 .bodyText2!
                                                                 .copyWith(

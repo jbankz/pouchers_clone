@@ -4,7 +4,6 @@ import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/modules/account/screens/two_factor_auth/copy_code.dart';
 import 'package:pouchers/modules/make_payment/models/make_payment_model.dart';
 import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
-import 'package:pouchers/modules/onboarding/screens/guest_widget.dart';
 import 'package:pouchers/modules/onboarding/screens/welcome_guest.dart';
 import 'package:pouchers/modules/utilities/providers/utilities_provider.dart';
 import 'package:pouchers/utils/assets_path.dart';
@@ -124,6 +123,8 @@ class _PayWithUssdState extends ConsumerState<PayWithUssd> {
                                 value: _selectedBank,
                                 onChanged: (GetAllBanksResponseData? val) {
                                   setState(() => _selectedBank = val);
+                                  print("selected bank$_selectedBank");
+                                  print(widget.isUtility);
                                   widget.isUtility!
                                       ? ref
                                           .read(
@@ -252,9 +253,11 @@ class _PayWithUssdState extends ConsumerState<PayWithUssd> {
                                 return SizedBox();
                               }
                             },
-                            loading: () => SpinKitDemo(),
+                            loading: ()  {
+                              print("loading");
+                              return SpinKitDemo();},
                             error: (val) => SizedBox())
-                        : ref.watch(guestUtilityUssdProvider).when(
+                        : ref.watch(guestUssdProvider).when(
                             done: (done) {
                               if (done != null) {
                                 referenceNo = done.data!.referenceNumber;

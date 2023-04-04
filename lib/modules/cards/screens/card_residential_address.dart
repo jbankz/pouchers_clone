@@ -150,7 +150,7 @@ class _ResidentialAddressState extends State<ResidentialAddress> {
                     hintText: enterBvn,
                     onSaved: (val) => setState(() => _bvn = val),
                     inputType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly,  LengthLimitingTextInputFormatter(11)],
                     validator: (val) {
                       if (val!.isEmpty) {
                         return emptyField;

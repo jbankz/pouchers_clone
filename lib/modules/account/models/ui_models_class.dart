@@ -473,13 +473,13 @@ class RechargeSummary extends StatefulWidget {
       this.category,
       this.isGuest = false,
       this.mobileOperatorServiceId,
-      this.email,
+      this.email,this.threshold,
       this.name})
       : super(key: key);
 
   final TextTheme textTheme;
   final bool utility, isGuest;
-  final String? billerCode, category, mobileOperatorServiceId, name, email;
+  final String? billerCode, category, mobileOperatorServiceId, name, email, threshold;
 
   final String billerName, billerLogo, recipientNo, amount, billerId;
 
@@ -489,6 +489,14 @@ class RechargeSummary extends StatefulWidget {
 
 class _RechargeSummaryState extends State<RechargeSummary> {
   String _payWith = payWithCard;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.threshold);
+    print(widget.amount);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -816,7 +824,8 @@ class _RechargeSummaryState extends State<RechargeSummary> {
                                     isSchedule: false,
                                     merchantAccount: widget.billerId,
                                     merchantReferenceNumber: widget.recipientNo,
-                                    merchantService: [widget.billerCode!],
+                                    merchantService: widget.billerCode == null ? [] :  [widget.billerCode!],
+                                    applyDiscount: double.parse(widget.threshold!) <= double.parse(widget.amount) ? true : false,
                                     subCategory: widget.billerName,
                                     transactionPin: result,
                                     category: "cable-purchase",
@@ -899,6 +908,7 @@ class _RechargeSummaryState extends State<RechargeSummary> {
                                       .buyAirtime(
                                           subCategory: widget.billerName,
                                           amount: widget.amount,
+                                          applyDiscount: double.parse(widget.threshold!) <= double.parse(widget.amount) ? true : false,
                                           category: widget.category!,
                                           isAirtime: widget.category!
                                                   .contains("airtime")

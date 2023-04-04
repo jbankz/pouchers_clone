@@ -199,4 +199,18 @@ class AccountRepository {
         token: accessToken!, ))
         .toNotifierState();
   }
+
+  Future<NotifierState<BannerResponse>> getBanner() async {
+    final accessToken = await getAccessToken();
+    return (await AccountService.getBanner(
+      token: accessToken!, ))
+        .toNotifierState();
+  }
+
+  Future<NotifierState<EditProfileResponse>> getUserProfile() async {
+    final accessToken = await getAccessToken();
+    return (await AccountService.getUserProfile(
+      token: accessToken!, ))
+        .toNotifierState();
+  }
 }

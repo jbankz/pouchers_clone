@@ -53,11 +53,6 @@ class _LogInAccountState extends ConsumerState<LogInAccount> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Hive.openBox(kBiometricsBox);
-      // if(userProfile.isLoginBiometricActive!){
-      //   await Hive.box(kBiometricsBox).put(kBiometricsKey, 1);
-      // }else{
-      //   await Hive.box(kBiometricsBox).put(kBiometricsKey, 0);
-      // }
       setState(() {});
       if (widget.disabled!) {
         Future.delayed(Duration(seconds: 1)).then((value) => showDialog(
@@ -79,10 +74,12 @@ class _LogInAccountState extends ConsumerState<LogInAccount> {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
-      onTap: (){
-        if(Navigator.canPop(context)){
+      onTap: () {
+        if (Navigator.canPop(context)) {
           Navigator.pop(context);
-        }else{
+        } else {
+          print("here");
+
           ///TODO WRONG IMPLEMENTATION, DO THE RIGHT ONE WITH WILLPOP
           exit(0);
         }
@@ -267,14 +264,13 @@ class _LogInAccountState extends ConsumerState<LogInAccount> {
               SizedBox(
                 height: kLargePadding,
               ),
-              ref
-                  .watch(editProfileInHouseProvider).isLoginBiometricActive == null
+              ref.watch(biometricProvider).isLoginBiometricActive ==
+                      null
                   ? SizedBox()
                   : ref
-                          .watch(editProfileInHouseProvider)
+                          .watch(biometricProvider)
                           .isLoginBiometricActive!
-                      ?
-              inkWell(
+                      ? inkWell(
                           onTap: () {
                             checkBiometric(context);
                           },

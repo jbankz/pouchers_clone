@@ -113,11 +113,11 @@ class _UtilityModalState extends State<UtilityModal> {
 
 class SubscriptionModal extends StatefulWidget {
   final List<Service> paymentItem;
- final String? threshold;
- final String? discountValue;
+  final String? threshold;
+  final String? discountValue;
 
-
-  const SubscriptionModal({Key? key, required this.paymentItem, this.threshold, this.discountValue})
+  const SubscriptionModal(
+      {Key? key, required this.paymentItem, this.threshold, this.discountValue})
       : super(key: key);
 
   @override
@@ -200,7 +200,8 @@ class _SubscriptionModalState extends State<SubscriptionModal> {
                                           ),
                                         ),
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
                                           children: [
                                             RichText(
                                               text: TextSpan(
@@ -222,29 +223,32 @@ class _SubscriptionModalState extends State<SubscriptionModal> {
                                                 ],
                                               ),
                                             ),
-                                            widget.threshold == null || widget.discountValue == null ?
-                                                 SizedBox() :
-                                            double.parse(widget.threshold!) <=
-                                                e.price!
-                                                ?  Container(
-                                              padding:
-                                              EdgeInsets.all(kPadding),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                BorderRadius.circular(
-                                                    kLargePadding
-                                                ),
-                                                color: kPurpleColor,
-                                              ),
-                                              child: Text(
-                                                "${widget.discountValue}% cashback",
-
-                                                style: textTheme.headline4!
-                                                    .copyWith(
-                                                  color: kLightPurple,
-                                                ),
-                                              ),
-                                            ) : SizedBox(),
+                                            widget.threshold == "0" ||
+                                                    widget.discountValue == "0"
+                                                ? SizedBox()
+                                                : double.parse(widget
+                                                            .threshold!) <=
+                                                        e.price!
+                                                    ? Container(
+                                                        padding: EdgeInsets.all(
+                                                            kPadding),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  kLargePadding),
+                                                          color: kPurpleColor,
+                                                        ),
+                                                        child: Text(
+                                                          "${widget.discountValue}% cashback",
+                                                          style: textTheme
+                                                              .headline4!
+                                                              .copyWith(
+                                                            color: kLightPurple,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : SizedBox(),
                                           ],
                                         )
                                       ],
@@ -273,11 +277,11 @@ class _SubscriptionModalState extends State<SubscriptionModal> {
 
 class DataModal extends StatefulWidget {
   final List<MobileOperatorService> paymentItem;
- final String? threshold;
- final String? discountValue;
+  final String? threshold;
+  final String? discountValue;
 
-
-  const DataModal({Key? key, required this.paymentItem, this.threshold, this.discountValue})
+  const DataModal(
+      {Key? key, required this.paymentItem, this.threshold, this.discountValue})
       : super(key: key);
 
   @override
@@ -285,8 +289,11 @@ class DataModal extends StatefulWidget {
 }
 
 class _DataModalState extends State<DataModal> {
+
+
   @override
   Widget build(BuildContext context) {
+    print("data${widget.threshold}");
     TextTheme textTheme = Theme.of(context).textTheme;
     return makeDismissible(
       context: context,
@@ -328,102 +335,107 @@ class _DataModalState extends State<DataModal> {
             ),
             widget.paymentItem.isEmpty
                 ? Text(
-              "No Subscription type for this category",
-              style: textTheme.subtitle1,
-              textAlign: TextAlign.center,
-            )
+                    "No Subscription type for this category",
+                    style: textTheme.subtitle1,
+                    textAlign: TextAlign.center,
+                  )
                 : Column(
-              children: widget.paymentItem
-                  .map(
-                    (e) => Padding(
-                  padding:
-                  const EdgeInsets.only(bottom: kSmallPadding),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: kRegularPadding),
-                        child: inkWell(
-                          onTap: () {
-                            Navigator.pop(context, e);
-                          },
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  e.serviceName ?? "",
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: textTheme.subtitle1,
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      text: "₦",
-                                      style: TextStyle(
-                                        color: kIconGrey,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 18,
-                                      ),
+                    children: widget.paymentItem
+                        .map(
+                          (e) => Padding(
+                            padding:
+                                const EdgeInsets.only(bottom: kSmallPadding),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: kRegularPadding),
+                                  child: inkWell(
+                                    onTap: () {
+                                      Navigator.pop(context, e);
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        TextSpan(
-                                          text: "${e.servicePrice ?? ""}",
-                                          style: textTheme.subtitle1!
-                                              .copyWith(
-                                              fontWeight:
-                                              FontWeight.w500,
-                                              color: kIconGrey),
+                                        Expanded(
+                                          child: Text(
+                                            e.serviceName ?? "",
+                                            softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: textTheme.subtitle1,
+                                          ),
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            RichText(
+                                              text: TextSpan(
+                                                text: "₦",
+                                                style: TextStyle(
+                                                  color: kIconGrey,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 18,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        "${e.servicePrice ?? ""}",
+                                                    style: textTheme.subtitle1!
+                                                        .copyWith(
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: kIconGrey),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            widget.threshold == "0" || widget.threshold == null ||
+                                                    widget.discountValue == "0"
+                                                ? SizedBox()
+                                                : double.parse(widget
+                                                            .threshold!) <=
+                                                        e.servicePrice!
+                                                    ? Container(
+                                                        padding: EdgeInsets.all(
+                                                            kPadding),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  kLargePadding),
+                                                          color: kPurpleColor,
+                                                        ),
+                                                        child: Text(
+                                                          "${widget.discountValue}% cashback",
+                                                          style: textTheme
+                                                              .headline4!
+                                                              .copyWith(
+                                                            color: kLightPurple,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : SizedBox(),
+                                          ],
                                         )
                                       ],
                                     ),
                                   ),
-                                  widget.threshold == null || widget.discountValue == null ?
-                                  SizedBox() :
-                                  double.parse(widget.threshold!) <=
-                                      e.servicePrice!
-                                      ?  Container(
-                                    padding:
-                                    EdgeInsets.all(kPadding),
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.circular(
-                                      kLargePadding
-                                      ),
-                                      color: kPurpleColor,
-                                    ),
-                                    child: Text(
-                                     "${widget.discountValue}% cashback",
-
-                                      style: textTheme.headline4!
-                                          .copyWith(
-                                        color: kLightPurple,
-                                      ),
-                                    ),
-                                  ) : SizedBox(),
-                                ],
-                              )
-                            ],
+                                ),
+                                SizedBox(
+                                  height: kPadding,
+                                ),
+                                Divider(
+                                  color: kLightPurple,
+                                  thickness: 1,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: kPadding,
-                      ),
-                      Divider(
-                        color: kLightPurple,
-                        thickness: 1,
-                      )
-                    ],
-                  ),
-                ),
-              )
-                  .toList(),
-            )
+                        )
+                        .toList(),
+                  )
           ]),
         ),
       ),

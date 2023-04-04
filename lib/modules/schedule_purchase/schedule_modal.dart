@@ -158,7 +158,6 @@ class _ScheduleModalState extends State<ScheduleModal>
                             },
                             child: Container(
                               alignment: Alignment.center,
-                              padding: EdgeInsets.all(kRegularPadding),
                               decoration: BoxDecoration(
                                   borderRadius:
                                       BorderRadius.circular(kSmallPadding),
@@ -166,17 +165,15 @@ class _ScheduleModalState extends State<ScheduleModal>
                                       color: dayIndex == index
                                           ? kPrimaryColor
                                           : kLightPurple)),
-                              child: FittedBox(
-                                fit: BoxFit.cover,
-                                child: Text(
-                                  days[index],
-                                  style: textTheme.bodyText1!.copyWith(
-                                    color: dayIndex == index
-                                        ? kPrimaryColor
-                                        : kIconGrey,
-                                  ),
-                                  textAlign: TextAlign.center,
+                              child: Text(
+                                days[index],
+                                style: textTheme.bodyText1!.copyWith(
+                                  fontSize: 16,
+                                  color: dayIndex == index
+                                      ? kPrimaryColor
+                                      : kIconGrey,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),

@@ -126,6 +126,7 @@ class _ValidIdState extends State<ValidId> {
                       ),
                       settings: const RouteSettings(
                           name: ProfileSuccessful.routeName));
+                  print("uitlrknkfnk djnjd${next.data!.data!.utilityBill}");
                   ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
 
                 } else if (next.status == NotifierStatus.error) {

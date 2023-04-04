@@ -16,10 +16,12 @@ import '../../../utils/constant/theme_color_constants.dart';
 class TransactionReceipt extends StatefulWidget {
   static const String routeName = "transactionReceipt";
   final String? typeOfTransfer;
-  final String? transferName, accNo, amount, beneficiary, senderName;
+  final String? transferName, accNo, amount, beneficiary, senderName, status, transactionId;
   final DateTime? transactionTime;
   final String? tag;
   final String? fromWhere;
+  final double? transactionFee;
+
 
   const TransactionReceipt(
       {Key? key,
@@ -27,10 +29,13 @@ class TransactionReceipt extends StatefulWidget {
       this.amount,
       this.accNo,
       this.tag,
+        this.transactionId,
       this.transferName,
+        this.status,
         this.senderName,
       this.transactionTime,
       this.fromWhere,
+        this.transactionFee,
       this.beneficiary})
       : super(key: key);
 
@@ -131,16 +136,38 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                                 ? SizedBox()
                                 : TransactionReceiptItems(
                                     text: status,
-                                    subText: "Sent",
+                                    subText: widget.status ?? "Sent",
                                     color: kColorGreen,
                                   ),
                             widget.typeOfTransfer == "localBank"
                                 ? TransactionReceiptItems(
                                     text: transactionFee,
-                                    subText: "53.75",
+                                    subText: widget.transactionFee.toString(),
                                     hasSymbol: true,
                                   )
                                 : SizedBox(),
+                            Center(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Transaction Number",
+                                    style: textTheme.headline3!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: kPadding,),
+                                  Text(
+                                    widget.transactionId ?? "",
+                                    style: textTheme.subtitle1!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color:  kPrimaryTextColor,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                             SizedBox(
                               height: kRegularPadding,
                             ),
@@ -230,7 +257,7 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                               kPriceFormatter(
                                   double.parse(widget.amount ?? "0")),
                               widget.transactionTime!,
-                              widget.tag ?? ""),
+                              widget.tag ?? "", widget.transactionId ?? "", widget.transactionFee ?? 0  ),
                           filename:
                               'receipt_${DateTime.now().millisecondsSinceEpoch}.pdf',
                         );
@@ -283,7 +310,7 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                                       kPriceFormatter(
                                           double.parse(widget.amount ?? "0")),
                                       DateTime.now(),
-                                      widget.tag ?? "No Tag"),
+                                      widget.tag ?? "No Tag", widget.transactionId ?? "", widget.transactionFee ?? 0),
                                   pages: [0, 1],
                                   dpi: 72)) {
                                 final imagee = page.toPng();
@@ -315,7 +342,7 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                                     kPriceFormatter(
                                         double.parse(widget.amount ?? "0")),
                                     DateTime.now(),
-                                    widget.tag ?? "No Tag"),
+                                    widget.tag ?? "No Tag", widget.transactionId ?? "", widget.transactionFee ?? 0),
                                 filename:
                                     'receipt_${DateTime.now().millisecondsSinceEpoch}.pdf',
                               );

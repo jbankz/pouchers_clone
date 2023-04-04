@@ -290,6 +290,7 @@ class UtilitiesService {
       String? frequency,
       required String token,
       required bool isSchedule,
+       bool? applyDiscount,
      }) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
@@ -306,6 +307,7 @@ class UtilitiesService {
             "merchantAccount": merchantAccount,
             "transactionPin": transactionPin,
             "sub_category": subCategory,
+            "apply_discount" : applyDiscount,
             "merchantReferenceNumber": merchantReferenceNumber,
           };
 
@@ -347,6 +349,7 @@ class UtilitiesService {
       required String transactionPin,
       required String mobileOperatorPublicId,
       required bool isAirtime,
+        required bool applyDiscount,
       String? mobileOperatorServiceId,
       required String token}) async {
     Map<String, String> _authHeaders = {
@@ -361,6 +364,7 @@ class UtilitiesService {
       "amount": double.parse(amount),
       "sub_category": subCategory,
       "transactionPin": transactionPin,
+      "apply_discount" : applyDiscount,
       "destinationPhoneNumber": destinationPhoneNumber,
       "mobileOperatorPublicId": mobileOperatorPublicId
     };
@@ -468,6 +472,7 @@ class UtilitiesService {
     };
 
     String url = "${baseUrl()}/guest-user/utility/ussd/pay";
+    print("jjdjkmk$url");
 
     Map<String, dynamic> _body = {
       "amount": double.parse(amount),

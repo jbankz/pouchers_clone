@@ -19,13 +19,13 @@ class ResetPasswordCode extends ConsumerStatefulWidget {
   final bool? isChangePassword, isChangePhone;
   final bool? forgot;
 
-  const ResetPasswordCode({
-    Key? key,
-    this.email,
-    this.isChangePassword,
-    this.isChangePhone,
-    this.forgot
-  }) : super(key: key);
+  const ResetPasswordCode(
+      {Key? key,
+      this.email,
+      this.isChangePassword,
+      this.isChangePhone,
+      this.forgot})
+      : super(key: key);
 
   @override
   ConsumerState<ResetPasswordCode> createState() => _ResetPasswordCodeState();
@@ -57,7 +57,9 @@ class _ResetPasswordCodeState extends ConsumerState<ResetPasswordCode> {
               height: kPadding,
             ),
             Text(
-              widget.isChangePhone! ? enterCodeSent : verifySub,
+              (widget.isChangePhone! || widget.isChangePassword!)
+                  ? enterCodeSent
+                  : verifySub,
               style: textTheme.bodyText1!.copyWith(
                 fontWeight: FontWeight.normal,
                 height: 1.6,
@@ -128,9 +130,11 @@ class _ResetPasswordCodeState extends ConsumerState<ResetPasswordCode> {
                       }
                     });
                     var _widget = LargeButton(
-                      title:
-                          widget.isChangePassword! ? confirm : recoverPassword,
+                      title: widget.isChangePassword! || widget.isChangePhone!
+                          ? confirm
+                          : recoverPassword,
                       onPressed: () {
+                        print("kmkmkv");
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
                           ref
@@ -193,7 +197,12 @@ class _ResetPasswordCodeState extends ConsumerState<ResetPasswordCode> {
             SizedBox(
               height: kMediumPadding,
             ),
-             CodeResendTimer(email: widget.email, change: widget.forgot!)
+            CodeResendTimer(
+              email: widget.email,
+              change: widget.forgot!,
+              isChangePassword: widget.isChangePassword!,
+              isChangePhone: widget.isChangePhone!,
+            )
           ],
         ),
       ),

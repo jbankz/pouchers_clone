@@ -29,6 +29,11 @@ final editScheduleProvider = StateNotifierProvider.autoDispose<
   return EditScheduleNotifier(ref.read(scheduleRepoProvider));
 });
 
+final deleteScheduleProvider = StateNotifierProvider.autoDispose<
+    DeleteScheduleNotifier, NotifierState<String>>((ref) {
+  return DeleteScheduleNotifier(ref.read(scheduleRepoProvider));
+});
+
 class ScheduleP2PNotifier extends StateNotifier<NotifierState<String>>
     with ResponseHandler {
   final ScheduleRepository _repo;
@@ -174,3 +179,28 @@ class EditScheduleNotifier extends StateNotifier<NotifierState<String>>
     }
   }
 }
+
+class DeleteScheduleNotifier extends StateNotifier<NotifierState<String>>
+    with ResponseHandler {
+  final ScheduleRepository _repo;
+
+  DeleteScheduleNotifier(this._repo) : super(NotifierState());
+
+  void deleteSchedule(
+      {Function()? then, Function(String)? error,
+        required String transactionPin,
+        required String scheduleId,}) async {
+    state = notifyLoading();
+    state = await _repo.deleteSchedule(
+
+        transactionPin: transactionPin,
+        scheduleId: scheduleId);
+    if (state.status == NotifierStatus.done) {
+      if (then != null) then();
+    } else if (state.status == NotifierStatus.error) {
+      if (error != null) error(state.data ?? state.message ?? "");
+    }
+  }
+}
+
+

@@ -87,7 +87,7 @@ class UtilitiesRepository {
     required String merchantReferenceNumber,
     required String category,
     String? frequency,
-    required bool isSchedule,
+    required bool isSchedule, bool? applyDiscount,
   }) async {
     final accessToken = await getAccessToken();
     return (await UtilitiesService.buyUtilities(
@@ -98,6 +98,7 @@ class UtilitiesRepository {
             transactionPin: transactionPin,
             subCategory: subCategory,
             category: category,
+        applyDiscount: applyDiscount,
             frequency: frequency,
             token: accessToken!,
             isSchedule: isSchedule))
@@ -112,6 +113,7 @@ class UtilitiesRepository {
     required String transactionPin,
     required String mobileOperatorPublicId,
     required bool isAirtime,
+    required bool applyDiscount,
     String? mobileOperatorServiceId,
   }) async {
     final accessToken = await getAccessToken();
@@ -121,6 +123,7 @@ class UtilitiesRepository {
       subCategory: subCategory,
       category: category,
       isAirtime: isAirtime,
+      applyDiscount: applyDiscount,
       mobileOperatorServiceId: mobileOperatorServiceId,
       mobileOperatorPublicId: mobileOperatorPublicId,
       destinationPhoneNumber: destinationPhoneNumber,

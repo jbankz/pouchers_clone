@@ -14,7 +14,6 @@ class AssetPaths {
    static String twoFactor = "${imgPath}two_factor.png";
    static String success = "${imgPath}success.json";
    static String frame_naira = "${imgPath}frame_naira.png";
-   static String nairaCard = "${imgPath}ooooo.png";
    static String visaCard = "${imgPath}visa_card.png";
    static String chooseContact = "${imgPath}choose_contacts.png";
    static String messageImage = "${imgPath}message.png";
@@ -25,10 +24,6 @@ class AssetPaths {
    static String referralAvatar = "${imgPath}referral_avatar.png";
    static String inviteImage = "${imgPath}invite_image.png";
    static String checkImage = "${imgPath}check.png";
-
-
-   //static String referralImage = "${imgPath}referral_image.png";
-
 
 
    ///UNUSED ICON N IMAGE BUT COMMENTED
@@ -71,15 +66,18 @@ class AssetPaths {
    static String helpIcon = "${iconPath}help_icon.svg";
    static String legalIcon = "${iconPath}legal_icon.svg";
    static String referralIcon = "${iconPath}referral_icon.svg";
+   // Not in use this savedCardIco remove on production
    static String savedCardIcon = "${iconPath}saved_card_icon.svg";
    static String pouIcon = "${iconPath}pou_logo.svg";
+   static String logOutIcon = "${iconPath}logout.svg";
    static String nairaIcon = "${iconPath}naira.svg";
     static String dollarIcon = "${iconPath}dollar.svg";
    static String cardHomeDollarIcon = "${iconPath}card_frame.svg";
    static String fundCardIcon = "${iconPath}fund_card.svg";
    static String cardDetailIcon = "${iconPath}card_detail.svg";
    static String  manageIcon = "${iconPath}manage.svg";
-   static String  visaIcon = "${iconPath}visa_logo.svg";
+   static String  verveIcon = "${iconPath}verve_logo.svg";
+   static String  masterCardIcon = "${iconPath}mastercard.svg";
    static String  copyIcon = "${iconPath}copy.svg";
    static String  freezeCardIcon = "${iconPath}freeze_card.svg";
    static String buyVoucher = "${iconPath}buy_voucher.svg";
@@ -93,8 +91,6 @@ class AssetPaths {
     static String deleteIcon = "${iconPath}delete.svg";
    static String incomeArrowIcon = "${iconPath}input_arrow.svg";
    static String outputArrowIcon = "${iconPath}output_arrow.svg";
-   static String earnIcon = "${iconPath}earn.svg";
-   static String reminderIcon = "${iconPath}reminder.svg";
    static String poucherTextImage = "${iconPath}poucher_logo.svg";
    static String ticketStarIcon = "${iconPath}ticket_star.svg";
    static String cardDollarIcon = "${iconPath}card_dollar.svg";
@@ -102,6 +98,8 @@ class AssetPaths {
    static String cardHomeNairaIcon = "${iconPath}card_home_naira.svg";
    static String onBoardingVoucherIcon = "${iconPath}onboarding_voucher.svg";
    static String onBoardingVoucher2Icon = "${iconPath}onboarding_voucher2.svg";
+   static String nairaCardIcon = "${iconPath}naira_card_icon.svg";
+   static String dollarCardIcon = "${iconPath}dollar_card_icon.svg";
 
 
 }

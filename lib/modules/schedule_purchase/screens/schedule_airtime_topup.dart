@@ -437,21 +437,15 @@ class _ScheduleTopUpState extends ConsumerState<ScheduleAirtimeTopUp> {
                           ),
                         );
                         if (result != null) {
-                          ref.read(editScheduleProvider.notifier).editSchedule(
+                          ref.read(deleteScheduleProvider.notifier).deleteSchedule(
                                 scheduleId: widget.id!,
-                                status: "inactive",
-                                frequency:
-                                    frequency.startsWith(RegExp("[0-9:\s]"))
-                                        ? frequency.replaceAll(
-                                            RegExp("[a-zA-Z:\s]"), "")
-                                        : frequency,
                                 transactionPin: result,
                                 error: (val) => showErrorBar(context, val),
                                 then: () => pushTo(
                                   context,
                                   SuccessMessage(
                                     text: dataSuccess,
-                                    subText:  billUpdateSuccess ,
+                                    subText:  billDeleteSuccess ,
                                     onTap: () {
                                       Navigator.popUntil(
                                         context,

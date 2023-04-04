@@ -210,62 +210,70 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                             },
                             child: Row(
                               children: [
-                                contactInfo["profilePicture"] == null ? SizedBox() :  ClipRRect(
-                                    borderRadius: BorderRadius.circular(116),
-                                    child: CachedNetworkImage(
-                                      height: 40,
-                                      width: 40,
-                                      imageUrl: contactInfo["profilePicture"],
-                                      placeholder: (context, url) => Container(
-                                        color: Colors.transparent,
-                                        height: 40,
-                                        width: 40,
-                                        child: const Center(
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    kPrimaryColor),
+                                contactInfo["profilePicture"] == null
+                                    ? SizedBox()
+                                    : ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(116),
+                                        child: CachedNetworkImage(
+                                          height: 40,
+                                          width: 40,
+                                          imageUrl:
+                                              contactInfo["profilePicture"],
+                                          placeholder: (context, url) =>
+                                              Container(
+                                            color: Colors.transparent,
+                                            height: 40,
+                                            width: 40,
+                                            child: const Center(
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(kPrimaryColor),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                      fit: BoxFit.cover,
-                                      errorWidget: (context, url, error) =>
-                                          contactInfo["profilePicture"] != null
-                                              ? Image.network(
-                                                  contactInfo["profilePicture"],
-                                                  fit: BoxFit.fill,
-                                                  loadingBuilder:
-                                                      (BuildContext context,
+                                          fit: BoxFit.cover,
+                                          errorWidget: (context, url, error) =>
+                                              contactInfo["profilePicture"] !=
+                                                      null
+                                                  ? Image.network(
+                                                      contactInfo[
+                                                          "profilePicture"],
+                                                      fit: BoxFit.fill,
+                                                      loadingBuilder: (BuildContext
+                                                              context,
                                                           Widget child,
                                                           ImageChunkEvent?
                                                               loadingProgress) {
-                                                    if (loadingProgress == null)
-                                                      return child;
-                                                    return Center(
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        value: loadingProgress
-                                                                    .expectedTotalBytes !=
-                                                                null
-                                                            ? loadingProgress
-                                                                    .cumulativeBytesLoaded /
-                                                                loadingProgress
-                                                                    .expectedTotalBytes!
-                                                            : null,
-                                                      ),
-                                                    );
-                                                  },
-                                                )
-                                              : Center(
-                                                  child: Text(
-                                                      "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}",
-                                                      style: textTheme
-                                                          .bodyText2!
-                                                          .copyWith(
-                                                              fontSize: 22)),
-                                                ),
-                                    )),
+                                                        if (loadingProgress ==
+                                                            null) return child;
+                                                        return Center(
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            value: loadingProgress
+                                                                        .expectedTotalBytes !=
+                                                                    null
+                                                                ? loadingProgress
+                                                                        .cumulativeBytesLoaded /
+                                                                    loadingProgress
+                                                                        .expectedTotalBytes!
+                                                                : null,
+                                                          ),
+                                                        );
+                                                      },
+                                                    )
+                                                  : Center(
+                                                      child: Text(
+                                                          "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}",
+                                                          style: textTheme
+                                                              .bodyText2!
+                                                              .copyWith(
+                                                                  fontSize:
+                                                                      22)),
+                                                    ),
+                                        )),
                                 SizedBox(
                                   width: kRegularPadding,
                                 ),
@@ -345,11 +353,28 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                                       phones.addAll(element.phones);
                                     });
                                   });
-                                  ref
-                                      .read(getAllContactsProvider.notifier)
-                                      .getAllContacts(
-                                        contacts: phones,
-                                      );
+                                  if (phones.isNotEmpty) {
+                                    List<String> phoneReplaced = [];
+                                    List<String> phoneReplaced1 = [];
+                                    phones.forEach((element) {
+                                      // element.replaceAll("234", "0");
+                                      // element.replaceAll(" ", "");
+                                      phoneReplaced
+                                          .add(element.replaceAll("+234", "0"));
+                                    });
+                                    phoneReplaced.forEach((element) {
+                                      phoneReplaced1
+                                          .add(element.replaceAll(" ", ""));
+                                    });
+                                    ref
+                                        .read(getAllContactsProvider.notifier)
+                                        .getAllContacts(
+                                          contacts: phoneReplaced1,
+                                        );
+                                  } else {
+                                    showErrorBar(context,
+                                        "You have no contact on your list");
+                                  }
                                 },
                                 child: Text(
                                   enableContact,
@@ -977,12 +1002,9 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                     } else if (_errorText.isNotEmpty) {
                       showErrorBar(context, "The account details is not valid");
                     } else if (double.parse(_amountChange) >
-                        double.parse(ref
-                            .watch(getWalletProvider)
-                            .data!
-                            .data!
-                            .balance ??
-                            "0")) {
+                        double.parse(
+                            ref.watch(getWalletProvider).data!.data!.balance ??
+                                "0")) {
                       showErrorBar(context, insufficient);
                     } else {
                       showErrorBar(context, "Please Input all fields");
@@ -1018,33 +1040,32 @@ class TransferRowWidget extends StatelessWidget {
     TextTheme textTheme = Theme.of(context).textTheme;
     return Expanded(
         child: inkWell(
-          onTap: onTap,
-          child: Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: kMediumPadding, vertical: kRegularPadding),
-            decoration: BoxDecoration(
-              color: kContainerColor,
-              borderRadius: BorderRadius.circular(kSmallPadding),
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+            horizontal: kMediumPadding, vertical: kRegularPadding),
+        decoration: BoxDecoration(
+          color: kContainerColor,
+          borderRadius: BorderRadius.circular(kSmallPadding),
+        ),
+        child: Row(
+          children: [
+            icon,
+            SizedBox(
+              width: kSmallPadding,
             ),
-            child: Row(
-              children: [
-                icon,
-                SizedBox(
-                  width: kSmallPadding,
-                ),
-                Expanded(
-                  child: Text(
-                    text,
-                    style: textTheme.headline2!.copyWith(
-                        fontWeight: FontWeight.w500,
-                        overflow: TextOverflow.ellipsis,
-                        fontSize: 14),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ));
+            Expanded(
+              child: Text(
+                text,
+                style: textTheme.headline2!.copyWith(
+                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: 14),
+              ),
+            )
+          ],
+        ),
+      ),
+    ));
   }
 }
-

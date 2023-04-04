@@ -29,7 +29,12 @@ class ScheduleDataTopUp extends ConsumerStatefulWidget {
   final GetUtilitiesData? billerData;
 
   const ScheduleDataTopUp(
-      {Key? key, this.text, this.contactNumber, this.billerData, this.frequency, this.id})
+      {Key? key,
+      this.text,
+      this.contactNumber,
+      this.billerData,
+      this.frequency,
+      this.id})
       : super(key: key);
 
   @override
@@ -45,13 +50,12 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
   late TabController? _tabController;
   int tabIndex = 0;
   GetUtilitiesData? billerData;
-  MobileOperatorService? operator;
+  // MobileOperatorService? operator;
   String topUpDate = "";
   String? threshold;
   String? discountValue;
   List<MobileOperatorService> mobileService = [];
   MobileOperatorService? _mobileOperatorService;
-
 
   @override
   void initState() {
@@ -62,7 +66,9 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
         : contactController = TextEditingController();
 
     if (widget.frequency != null) {
-      frequency = widget.frequency!.startsWith(RegExp("[0-9:\s]")) ? ordinal_suffix_of(int.parse(widget.frequency!)) : widget.frequency!;
+      frequency = widget.frequency!.startsWith(RegExp("[0-9:\s]"))
+          ? ordinal_suffix_of(int.parse(widget.frequency!))
+          : widget.frequency!;
       topUpDate = "Next top-up date is the next $frequency";
     }
 
@@ -75,8 +81,8 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
       ref.read(getDiscountProvider.notifier).getDiscount(utility: "data");
       widget.text == "viewSchedule"
           ? ref
-          .read(getUtilitiesProvider.notifier)
-          .getUtilities(utility: "data")
+              .read(getUtilitiesProvider.notifier)
+              .getUtilities(utility: "data")
           : null;
     });
   }
@@ -195,12 +201,12 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                         style: textTheme.subtitle2,
                       ),
                     ),
-                ref.watch(getDiscountProvider).when(done: (done){
-                  if(done != null){
+                ref.watch(getDiscountProvider).when(done: (done) {
+                  if (done != null) {
                     threshold = done.data!.threshold ?? "0";
                     discountValue = done.data!.discountValue ?? "0";
                     return SizedBox();
-                  }else{
+                  } else {
                     return SizedBox();
                   }
                 }),
@@ -211,12 +217,16 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                   onTap: (mobileService == null)
                       ? null
                       : () async {
-                    final result = await buildShowModalBottomSheet(
-                        context, DataModal(paymentItem: mobileService, discountValue: discountValue, threshold: threshold));
-                    if (result != null) {
-                      setState(() => _mobileOperatorService = result);
-                    }
-                  },
+                          final result = await buildShowModalBottomSheet(
+                              context,
+                              DataModal(
+                                  paymentItem: mobileService,
+                                  discountValue: discountValue,
+                                  threshold: threshold));
+                          if (result != null) {
+                            setState(() => _mobileOperatorService = result);
+                          }
+                        },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
                     decoration: BoxDecoration(
@@ -227,7 +237,7 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                         Expanded(
                           child: Padding(
                             padding:
-                            EdgeInsets.symmetric(vertical: kMediumPadding),
+                                EdgeInsets.symmetric(vertical: kMediumPadding),
                             child: Row(
                               children: [
                                 Expanded(
@@ -235,15 +245,15 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                                       _mobileOperatorService == null
                                           ? type
                                           : _mobileOperatorService!
-                                          .serviceName!,
+                                              .serviceName!,
                                       overflow: TextOverflow.ellipsis,
                                       softWrap: true,
                                       style: _mobileOperatorService == null
                                           ? textTheme.bodyText1!.copyWith(
-                                        color: kSecondaryTextColor
-                                            .withOpacity(0.7),
-                                        fontWeight: FontWeight.w300,
-                                      )
+                                              color: kSecondaryTextColor
+                                                  .withOpacity(0.7),
+                                              fontWeight: FontWeight.w300,
+                                            )
                                           : textTheme.subtitle1),
                                 ),
                               ],
@@ -256,24 +266,24 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                               _mobileOperatorService == null
                                   ? SizedBox()
                                   : RichText(
-                                text: TextSpan(
-                                  text: "₦",
-                                  style: TextStyle(
-                                    color: kPrimaryTextColor,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 18,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                        text: kPriceFormatter(
-                                            _mobileOperatorService!
-                                                .servicePrice!
-                                                .toDouble())
-                                            .replaceAll(".00", ""),
-                                        style: textTheme.subtitle1)
-                                  ],
-                                ),
-                              ),
+                                      text: TextSpan(
+                                        text: "₦",
+                                        style: TextStyle(
+                                          color: kPrimaryTextColor,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                              text: kPriceFormatter(
+                                                      _mobileOperatorService!
+                                                          .servicePrice!
+                                                          .toDouble())
+                                                  .replaceAll(".00", ""),
+                                              style: textTheme.subtitle1)
+                                        ],
+                                      ),
+                                    ),
                               Icon(
                                 Icons.keyboard_arrow_down,
                                 size: 30,
@@ -282,20 +292,20 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                             ],
                           );
                           return ref.watch(getDataBundleProvider).when(
-                            done: (data) {
-                              if (data != null) {
-                                mobileService =
-                                data.data!.mobileOperatorServices!;
-                              }
-                              return _widget;
-                            },
-                            loading: () {
-                              return SpinKitDemo(
-                                size: 25,
+                                done: (data) {
+                                  if (data != null) {
+                                    mobileService =
+                                        data.data!.mobileOperatorServices!;
+                                  }
+                                  return _widget;
+                                },
+                                loading: () {
+                                  return SpinKitDemo(
+                                    size: 25,
+                                  );
+                                },
+                                error: (val) => _widget,
                               );
-                            },
-                            error: (val) => _widget,
-                          );
                         }),
                       ],
                     ),
@@ -549,10 +559,12 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                 SizedBox(
                   height: kRegularPadding,
                 ),
-                frequency == "" ? SizedBox() : NextUpdateContainer(
-                  textTheme: textTheme,
-                  text: topUpDate,
-                ),
+                frequency == ""
+                    ? SizedBox()
+                    : NextUpdateContainer(
+                        textTheme: textTheme,
+                        text: topUpDate,
+                      ),
                 SizedBox(
                   height: kMicroPadding,
                 )
@@ -561,128 +573,133 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
           ),
           widget.text == "viewSchedule"
               ? Consumer(builder: (context, ref, _) {
-            var _widget = LargeButton(
-                title: save,
-                onPressed: () async {
-                  if (frequency == "") {
-                    showErrorBar(context, "Please pick your frequency");
-                  } else {
-                    final result = await buildShowModalBottomSheet(
-                      context,
-                      TransactionPinContainer(
-                        isSchedule: true,
-                        isData: false,
-                        isCard: false,
-                        isFundCard: false,
-                        doSchedule: () {
-                          showSuccessBar(context,
-                              "Auto top-up successfully created");
-                        },
-                      ),
-                    );
-                    if (result != null) {
-                      ref
-                          .read(editScheduleProvider.notifier)
-                          .editSchedule(
-                        scheduleId: widget.id!,
-                        status: "active",
-                        frequency:
-                        frequency.startsWith(RegExp("[0-9:\s]"))
-                            ? frequency.replaceAll(
-                            RegExp("[a-zA-Z:\s]"), "")
-                            : frequency,
-                        transactionPin: result,
-                        error: (val) => showErrorBar(context, val),
-                        then: () => pushTo(
-                          context,
-                          SuccessMessage(
-                            text: dataSuccess,
-                            subText: billScheduleSuccess,
-                            onTap: () {
-                              Navigator.popUntil(
-                                context,
-                                    (route) =>
-                                route.settings.name ==
-                                    SchedulePayments.routeName,
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    }
-                  }
-                });
-            return ref.watch(editScheduleProvider).when(
-                done: (done) => _widget,
-                loading: () => SpinKitDemo(),
-                error: (val) => _widget);
-          })
-              :
-          Consumer(builder: (context, ref, _) {
-            var _widget = LargeButton(
-                title: confirm,
-                onPressed: frequency == "" || operator == null
-                    ? () {
-                        showErrorBar(
-                            context, "Please pick your Frequency or Plan");
-                      }
-                    : () async {
-                        final result = await buildShowModalBottomSheet(
-                          context,
-                          TransactionPinContainer(
-                            isSchedule: true,
-                            isData: false,
-                            isCard: false,
-                            isFundCard: false,
-                            doSchedule: () {
-                              showSuccessBar(
-                                  context, "Auto top-up successfully created");
-                            },
-                          ),
-                        );
-                        if (result != null) {
-                          ref
-                              .read(scheduleUtilityProvider.notifier)
-                              .scheduleUtility(
-                                  category: "data-purchase",
-                                  subCategory: billerData!.name!,
-                                  frequency: frequency,
-                                  customerId: contactController.text,
-                                  amount: operator!.servicePrice!.toString(),
-                                  paymentCode:
-                                      operator!.mobileOperatorId!.toString(),
+                  var _widget = LargeButton(
+                      title: save,
+                      onPressed: () async {
+                        if (frequency == "") {
+                          showErrorBar(context, "Please pick your frequency");
+                        } else {
+                          final result = await buildShowModalBottomSheet(
+                            context,
+                            TransactionPinContainer(
+                              isSchedule: true,
+                              isData: false,
+                              isCard: false,
+                              isFundCard: false,
+                              doSchedule: () {
+                                showSuccessBar(context,
+                                    "Auto top-up successfully created");
+                              },
+                            ),
+                          );
+                          if (result != null) {
+                            ref
+                                .read(editScheduleProvider.notifier)
+                                .editSchedule(
+                                  scheduleId: widget.id!,
+                                  status: "active",
+                                  frequency:
+                                      frequency.startsWith(RegExp("[0-9:\s]"))
+                                          ? frequency.replaceAll(
+                                              RegExp("[a-zA-Z:\s]"), "")
+                                          : frequency,
                                   transactionPin: result,
-                                  serviceId: operator!.serviceId.toString(),
+                                  error: (val) => showErrorBar(context, val),
                                   then: () => pushTo(
-                                        context,
-                                        SuccessMessage(
-                                          text: dataSuccess,
-                                          subText: billScheduleSuccess,
-                                          onTap: () {
-                                            pushToAndClearStack(
-                                                context,
-                                                TabLayout(
-                                                  gottenIndex: 0,
-                                                ));
-                                          },
-                                        ),
-                                      ),
-                                  error: (val) => showErrorBar(context, val));
+                                    context,
+                                    SuccessMessage(
+                                      text: dataSuccess,
+                                      subText: billScheduleSuccess,
+                                      onTap: () {
+                                        Navigator.popUntil(
+                                          context,
+                                          (route) =>
+                                              route.settings.name ==
+                                              SchedulePayments.routeName,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                );
+                          }
                         }
                       });
-            return ref.watch(scheduleUtilityProvider).when(
-                done: (done) => _widget,
-                loading: () => SpinKitDemo(),
-                error: (val) => _widget);
-          }),
+                  return ref.watch(editScheduleProvider).when(
+                      done: (done) => _widget,
+                      loading: () => SpinKitDemo(),
+                      error: (val) => _widget);
+                })
+              : Consumer(builder: (context, ref, _) {
+                  var _widget = LargeButton(
+                      title: confirm,
+                      onPressed: frequency == "" || _mobileOperatorService == null
+                          ? () {
+                        print("jjj");
+                        print(frequency);
+                        print(_mobileOperatorService);
+                              showErrorBar(context,
+                                  "Please pick your Frequency or Plan");
+                            }
+                          : () async {
+                              final result = await buildShowModalBottomSheet(
+                                context,
+                                TransactionPinContainer(
+                                  isSchedule: true,
+                                  isData: false,
+                                  isCard: false,
+                                  isFundCard: false,
+                                  doSchedule: () {
+                                    showSuccessBar(context,
+                                        "Auto top-up successfully created");
+                                  },
+                                ),
+                              );
+                              if (result != null) {
+                                ref
+                                    .read(scheduleUtilityProvider.notifier)
+                                    .scheduleUtility(
+                                        category: "data-purchase",
+                                        subCategory: billerData!.name!,
+                                        frequency: frequency,
+                                        customerId: contactController.text,
+                                        amount:
+                                        _mobileOperatorService!.servicePrice!.toString(),
+                                        paymentCode: _mobileOperatorService!.mobileOperatorId!
+                                            .toString(),
+                                        transactionPin: result,
+                                        serviceId:
+                                        _mobileOperatorService!.serviceId.toString(),
+                                        then: () => pushTo(
+                                              context,
+                                              SuccessMessage(
+                                                text: dataSuccess,
+                                                subText: billScheduleSuccess,
+                                                onTap: () {
+                                                  pushToAndClearStack(
+                                                      context,
+                                                      TabLayout(
+                                                        gottenIndex: 0,
+                                                      ));
+                                                },
+                                              ),
+                                            ),
+                                        error: (val) =>
+                                            showErrorBar(context, val));
+                              }
+                            });
+                  return ref.watch(scheduleUtilityProvider).when(
+                      done: (done) => _widget,
+                      loading: () => SpinKitDemo(),
+                      error: (val) => _widget);
+                }),
           SizedBox(
             height: kPadding,
           ),
           widget.text == "viewSchedule"
               ? DeleteScheduleText(
                   textTheme: textTheme,
-                  onTap: () async{
-                  final result = await  buildShowModalBottomSheet(
+                  onTap: () async {
+                    final result = await buildShowModalBottomSheet(
                       context,
                       CommonModal(
                           textTheme: textTheme,
@@ -708,32 +725,28 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                           ),
                         );
                         if (result != null) {
-                          ref.read(editScheduleProvider.notifier).editSchedule(
-                            scheduleId: widget.id!,
-                            status: "inactive",
-                            frequency:
-                            frequency.startsWith(RegExp("[0-9:\s]"))
-                                ? frequency.replaceAll(
-                                RegExp("[a-zA-Z:\s]"), "")
-                                : frequency,
-                            transactionPin: result,
-                            error: (val) => showErrorBar(context, val),
-                            then: () => pushTo(
-                              context,
-                              SuccessMessage(
-                                text: dataSuccess,
-                                subText: billScheduleSuccess,
-                                onTap: () {
-                                  Navigator.popUntil(
-                                    context,
+                          ref
+                              .read(deleteScheduleProvider.notifier)
+                              .deleteSchedule(
+                                scheduleId: widget.id!,
+                                transactionPin: result,
+                                error: (val) => showErrorBar(context, val),
+                                then: () => pushTo(
+                                  context,
+                                  SuccessMessage(
+                                    text: dataSuccess,
+                                    subText: billDeleteSuccess,
+                                    onTap: () {
+                                      Navigator.popUntil(
+                                        context,
                                         (route) =>
-                                    route.settings.name ==
-                                        SchedulePayments.routeName,
-                                  );
-                                },
-                              ),
-                            ),
-                          );
+                                            route.settings.name ==
+                                            SchedulePayments.routeName,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              );
                         }
                       }
                     }

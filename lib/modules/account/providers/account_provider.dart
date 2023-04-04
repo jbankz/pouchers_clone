@@ -14,7 +14,18 @@ final accountProvider =
   return AccountNotifier(ref.read(accountRepoProvider));
 });
 
+final accountProvider2 =
+StateNotifierProvider.autoDispose<AccountNotifier, NotifierState<String>>(
+        (ref) {
+      return AccountNotifier(ref.read(accountRepoProvider));
+    });
+
 final requestPhoneChangeProvider = StateNotifierProvider.autoDispose<
+    RequestPhoneChangeNotifier, NotifierState<String>>((ref) {
+  return RequestPhoneChangeNotifier(ref.read(accountRepoProvider));
+});
+
+final requestPhoneChangeProvider2 = StateNotifierProvider.autoDispose<
     RequestPhoneChangeNotifier, NotifierState<String>>((ref) {
   return RequestPhoneChangeNotifier(ref.read(accountRepoProvider));
 });
@@ -26,8 +37,9 @@ final changePhoneProvider = StateNotifierProvider.autoDispose<
 
 final authFactorProvider = StateProvider<bool>((ref) => false);
 
-final editProfileInHouseProvider = StateProvider<EditProfileData>((ref) => EditProfileData(
-));
+final editProfileInHouseProvider = StateProvider<EditProfileData>((ref) => EditProfileData());
+
+final biometricProvider = StateProvider<Biometric>((ref) => Biometric());
 
 
 final editProfileProvider = StateNotifierProvider<EditProfileNotifier,
@@ -141,6 +153,18 @@ final getReferralProvider =
 StateNotifierProvider.autoDispose<GetReferralNotifier, NotifierState<GetReferralResponse>>(
         (ref) {
       return GetReferralNotifier(ref.read(accountRepoProvider));
+    });
+
+final getBannerProvider =
+StateNotifierProvider<GetBannerNotifier, NotifierState<BannerResponse>>(
+        (ref) {
+      return GetBannerNotifier(ref.read(accountRepoProvider));
+    });
+
+final getUserProfileProvider =
+StateNotifierProvider<GetUserProfileNotifier, NotifierState<EditProfileResponse>>(
+        (ref) {
+      return GetUserProfileNotifier(ref.read(accountRepoProvider));
     });
 
 class AccountNotifier extends StateNotifier<NotifierState<String>>
@@ -525,3 +549,40 @@ class GetReferralNotifier extends StateNotifier<NotifierState<GetReferralRespons
     }
   }
 }
+
+class GetBannerNotifier extends StateNotifier<NotifierState<BannerResponse>>
+    with ResponseHandler {
+  final AccountRepository _repo;
+
+  GetBannerNotifier(this._repo) : super(NotifierState());
+
+  void getBanner({
+    Function()? then,
+  }) async {
+    state = notifyLoading();
+    state = await _repo.getBanner();
+    if (state.status == NotifierStatus.done) {
+      if (then != null) then();
+    }
+  }
+}
+
+class GetUserProfileNotifier extends StateNotifier<NotifierState<EditProfileResponse>>
+    with ResponseHandler {
+  final AccountRepository _repo;
+
+  GetUserProfileNotifier(this._repo) : super(NotifierState());
+
+  void getUserProfile({
+    Function()? then,
+  }) async {
+    state = notifyLoading();
+    state = await _repo.getUserProfile();
+    if (state.status == NotifierStatus.done) {
+      if (then != null) then();
+    }
+  }
+}
+
+
+

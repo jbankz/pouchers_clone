@@ -18,6 +18,7 @@ class CardsService {
       required String postalCode,
       required String currency,
       required String bvn,
+      required String brand,
       required double amount,
       required String transactionPin}) async {
     Map<String, String> _authHeaders = {
@@ -33,7 +34,7 @@ class CardsService {
       "country": country,
       "postalCode": postalCode,
       "currency": currency,
-      "brand": "Visa",
+      "brand": brand,
       "bvn": bvn,
       "amount": amount,
       "transactionPin": transactionPin
@@ -92,6 +93,39 @@ class CardsService {
       logPrint(error);
       logPrint(stack);
       return processServiceError<GetAllCardsResponse>(error, stack);
+    }
+  }
+
+  static Future<ServiceResponse<FetchEnvs>> getAllFees(
+      {required String token, required double amount}) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    };
+
+    String url = "${baseUrl()}/admin-settings/envs?amount=$amount";
+
+    logPrint("$url amount $amount");
+
+    try {
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: _authHeaders,
+      );
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<FetchEnvs>(
+            data: FetchEnvs.fromJson(responseBody),
+            message: responseBody["message"]);
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<FetchEnvs>(error, stack);
     }
   }
 
@@ -201,7 +235,6 @@ class CardsService {
     }
   }
 
-
   static Future<ServiceResponse<String>> freezeCard({
     required String token,
     required String cardId,
@@ -219,28 +252,23 @@ class CardsService {
     logPrint(url);
 
     Map<String, dynamic> body = {
-      "status" : "inactive",
-      "currency" : type,
-      "transactionPin" : transactionPin
+      "status": "inactive",
+      "currency": type,
+      "transactionPin": transactionPin
     };
 
     logPrint(body);
 
     try {
-      http.Response response = await http.patch(
-        Uri.parse(url),
-        headers: _authHeaders,
-        body: jsonEncode(body)
-
-      );
+      http.Response response = await http.patch(Uri.parse(url),
+          headers: _authHeaders, body: jsonEncode(body));
       logResponse(response);
       var responseBody = jsonDecode(response.body);
       if (response.statusCode >= 300 && response.statusCode <= 520) {
         throw Failure.fromJson(responseBody);
       } else {
         return serveSuccess<String>(
-            data: responseBody["message"],
-            message: responseBody["message"]);
+            data: responseBody["message"], message: responseBody["message"]);
       }
     } catch (error, stack) {
       logPrint(error);
@@ -249,5 +277,36 @@ class CardsService {
     }
   }
 
+  static Future<ServiceResponse<int>> getCardBalance(
+      {required String token, required String cardId}) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    };
+
+    String url = "${baseUrl()}/card/accounts/$cardId/balance";
+
+    logPrint(url);
+    try {
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: _authHeaders,
+      );
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<int>(
+            data: responseBody["data"]["availableBalance"],
+            message: responseBody["message"]);
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<int>(error, stack);
+    }
+  }
 
 }

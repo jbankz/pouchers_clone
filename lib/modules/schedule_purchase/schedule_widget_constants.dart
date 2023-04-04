@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pouchers/modules/schedule_purchase/provider/schedule_provider.dart';
 import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
@@ -232,16 +234,22 @@ class DeleteScheduleText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Text(
-        delSchedule,
-        style: textTheme.bodyText1!.copyWith(
-          fontWeight: FontWeight.w700,
-          color: kLightOrange,
+    return Consumer(builder: (context, ref, _) {
+      var _widget = InkWell(
+        onTap: onTap,
+        child: Text(
+          delSchedule,
+          style: textTheme.bodyText1!.copyWith(
+            fontWeight: FontWeight.w700,
+            color: kLightOrange,
+          ),
         ),
-      ),
-    );
+      );
+      return ref.watch(deleteScheduleProvider).when(
+          done: (data) => _widget,
+          loading: () => SpinKitDemo(),
+          error: (val) => _widget);
+    });
   }
 }
 
@@ -535,34 +543,33 @@ class SelectFrequencyWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            selectFrequency,
+            frequency == "" ? selectFrequency : "Select...",
             style: textTheme.headline6!.copyWith(
                 color: kSecondaryTextColor.withOpacity(0.7), fontSize: 18),
           ),
           frequency == ""
               ? SizedBox()
               : Container(
-           // width: 150,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  "Every $frequency",
-                  style: textTheme.headline2!.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
+                  // width: 150,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        "Every $frequency",
+                        style: textTheme.headline2!.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Icon(
+                        Icons.keyboard_arrow_down,
+                        color: kSecondaryTextColor,
+                      )
+                    ],
                   ),
                 ),
-                Icon(
-                  Icons.keyboard_arrow_down,
-                  color: kSecondaryTextColor,
-                )
-              ],
-            ),
-          ),
         ],
       ),
     );
   }
 }
-

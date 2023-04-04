@@ -133,9 +133,13 @@ class TextInputNoIcon extends StatelessWidget {
 
 class CodeResendTimer extends StatefulWidget {
   final String? email;
-  final bool change;
+  final bool change, isChangePassword, isChangePhone;
 
-  const CodeResendTimer({this.email, required this.change});
+  const CodeResendTimer(
+      {this.email,
+      required this.change,
+      this.isChangePassword = false,
+      this.isChangePhone = false});
 
   @override
   _CodeResendTimerState createState() => _CodeResendTimerState();
@@ -185,15 +189,14 @@ class _CodeResendTimerState extends State<CodeResendTimer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          !widget.change
+          widget.isChangePassword
               ? Consumer(
                   builder: (context, ref, _) {
-                    ref.listen(resendEmailProvider,
+                    ref.listen(accountProvider2,
                         (previous, NotifierState<String> next) {
                       if (next.status == NotifierStatus.done) {
                         showSuccessBar(context, next.data);
                         refreshTime = 60;
-                        ref.read(checkResendProvider.notifier).state = 1;
                         activateTimer();
                       } else if (next.status == NotifierStatus.error) {
                         showErrorBar(context, next.message!);
@@ -209,12 +212,9 @@ class _CodeResendTimerState extends State<CodeResendTimer> {
                         inkWell(
                           onTap: refreshTime == 0
                               ? () {
-                            print("got here");
                                   ref
-                                      .read(resendEmailProvider.notifier)
-                                      .resendVerificationEmail(
-                                        email: widget.email!,
-                                      );
+                                      .read(accountProvider2.notifier)
+                                      .requestChangePassword();
                                 }
                               : null,
                           child: Container(
@@ -247,77 +247,216 @@ class _CodeResendTimerState extends State<CodeResendTimer> {
                         )
                       ],
                     );
-                    return ref.watch(resendEmailProvider).when(
+                    return ref.watch(accountProvider2).when(
                         done: (done) => _widget,
                         loading: () => SpinKitDemo(),
                         error: (val) => _widget);
                   },
                 )
-              : Consumer(
-                  builder: (context, ref, _) {
-                    ref.listen(forgotPasswordProvider,
-                        (previous, NotifierState<String> next) {
-                      if (next.status == NotifierStatus.done) {
-                        showSuccessBar(context, next.data);
-                        refreshTime = 60;
-                        activateTimer();
-                      } else if (next.status == NotifierStatus.error) {
-                        showErrorBar(context, next.message!);
-                      }
-                    });
-                    var _widget = Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          noCode,
-                          style: textTheme.headline3,
-                        ),
-                        inkWell(
-                          onTap: refreshTime == 0
-                              ? () {
-                                  ref
-                                      .read(forgotPasswordProvider.notifier)
-                                      .forgotPassword(
-                                        email: widget.email!,
-                                      );
-                                }
-                              : null,
-                          child: Container(
-                            child: refreshTime == 0
-                                ? Text(
-                                    resend,
-                                    style: textTheme.headline6!.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: kPrimaryColor,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  )
-                                : Text(
-                                    "$resend in ${timeCheck()}",
-                                    style: textTheme.headline6!.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                            padding: EdgeInsets.symmetric(
-                              horizontal: kRegularPadding,
-                              vertical: 8,
+              : widget.isChangePhone
+                  ? Consumer(
+                      builder: (context, ref, _) {
+                        ref.listen(requestPhoneChangeProvider2,
+                            (previous, NotifierState<String> next) {
+                          if (next.status == NotifierStatus.done) {
+                            showSuccessBar(context, next.data);
+                            refreshTime = 60;
+                            activateTimer();
+                          } else if (next.status == NotifierStatus.error) {
+                            showErrorBar(context, next.message!);
+                          }
+                        });
+                        var _widget = Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              noCode,
+                              style: textTheme.headline3,
                             ),
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(kMediumPadding),
-                                color: refreshTime == 0
-                                    ? kLightPurple
-                                    : kBackgroundColor),
-                          ),
+                            inkWell(
+                              onTap: refreshTime == 0
+                                  ? () {
+                                      ref
+                                          .read(requestPhoneChangeProvider2
+                                              .notifier)
+                                          .requestChangePhone();
+                                    }
+                                  : null,
+                              child: Container(
+                                child: refreshTime == 0
+                                    ? Text(
+                                        resend,
+                                        style: textTheme.headline6!.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          color: kPrimaryColor,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      )
+                                    : Text(
+                                        "$resend in ${timeCheck()}",
+                                        style: textTheme.headline6!.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: kRegularPadding,
+                                  vertical: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.circular(kMediumPadding),
+                                    color: refreshTime == 0
+                                        ? kLightPurple
+                                        : kBackgroundColor),
+                              ),
+                            )
+                          ],
+                        );
+                        return ref.watch(requestPhoneChangeProvider2).when(
+                            done: (done) => _widget,
+                            loading: () => SpinKitDemo(),
+                            error: (val) => _widget);
+                      },
+                    )
+                  : !widget.change
+                      ? Consumer(
+                          builder: (context, ref, _) {
+                            ref.listen(resendEmailProvider,
+                                (previous, NotifierState<String> next) {
+                              if (next.status == NotifierStatus.done) {
+                                showSuccessBar(context, next.data);
+                                refreshTime = 60;
+                                ref.read(checkResendProvider.notifier).state =
+                                    1;
+                                activateTimer();
+                              } else if (next.status == NotifierStatus.error) {
+                                showErrorBar(context, next.message!);
+                              }
+                            });
+                            var _widget = Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  noCode,
+                                  style: textTheme.headline3,
+                                ),
+                                inkWell(
+                                  onTap: refreshTime == 0
+                                      ? () {
+                                          ref
+                                              .read(
+                                                  resendEmailProvider.notifier)
+                                              .resendVerificationEmail(
+                                                email: widget.email!,
+                                              );
+                                        }
+                                      : null,
+                                  child: Container(
+                                    child: refreshTime == 0
+                                        ? Text(
+                                            resend,
+                                            style:
+                                                textTheme.headline6!.copyWith(
+                                              fontWeight: FontWeight.w700,
+                                              color: kPrimaryColor,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          )
+                                        : Text(
+                                            "$resend in ${timeCheck()}",
+                                            style:
+                                                textTheme.headline6!.copyWith(
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: kRegularPadding,
+                                      vertical: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            kMediumPadding),
+                                        color: refreshTime == 0
+                                            ? kLightPurple
+                                            : kBackgroundColor),
+                                  ),
+                                )
+                              ],
+                            );
+                            return ref.watch(resendEmailProvider).when(
+                                done: (done) => _widget,
+                                loading: () => SpinKitDemo(),
+                                error: (val) => _widget);
+                          },
                         )
-                      ],
-                    );
-                    return ref.watch(forgotPasswordProvider).when(
-                        done: (done) => _widget,
-                        loading: () => SpinKitDemo(),
-                        error: (val) => _widget);
-                  },
-                )
+                      : Consumer(
+                          builder: (context, ref, _) {
+                            ref.listen(forgotPasswordProvider2,
+                                (previous, NotifierState<String> next) {
+                              if (next.status == NotifierStatus.done) {
+                                showSuccessBar(context, next.data);
+                                refreshTime = 60;
+                                activateTimer();
+                              } else if (next.status == NotifierStatus.error) {
+                                showErrorBar(context, next.message!);
+                              }
+                            });
+                            var _widget = Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  noCode,
+                                  style: textTheme.headline3,
+                                ),
+                                inkWell(
+                                  onTap: refreshTime == 0
+                                      ? () {
+                                          ref
+                                              .read(forgotPasswordProvider2
+                                                  .notifier)
+                                              .forgotPassword(
+                                                email: widget.email!,
+                                              );
+                                        }
+                                      : null,
+                                  child: Container(
+                                    child: refreshTime == 0
+                                        ? Text(
+                                            resend,
+                                            style:
+                                                textTheme.headline6!.copyWith(
+                                              fontWeight: FontWeight.w700,
+                                              color: kPrimaryColor,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          )
+                                        : Text(
+                                            "$resend in ${timeCheck()}",
+                                            style:
+                                                textTheme.headline6!.copyWith(
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: kRegularPadding,
+                                      vertical: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            kMediumPadding),
+                                        color: refreshTime == 0
+                                            ? kLightPurple
+                                            : kBackgroundColor),
+                                  ),
+                                )
+                              ],
+                            );
+                            return ref.watch(forgotPasswordProvider2).when(
+                                done: (done) => _widget,
+                                loading: () => SpinKitDemo(),
+                                error: (val) => _widget);
+                          },
+                        )
         ],
       ),
     );

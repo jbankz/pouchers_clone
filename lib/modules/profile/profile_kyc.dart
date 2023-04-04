@@ -61,7 +61,7 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
         dateTest.add(i);
       }
       checkProvider();
-       await checkTierLevel();
+      await checkTierLevel();
       setState(() {});
       logPrint("edit profile in house${ref.watch(editProfileInHouseProvider)}");
     });
@@ -75,44 +75,46 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
       title: profile,
       child: ListView(
         children: [
-          hiveTierLevel == 3 ? SizedBox() :   inkWell(
-            onTap: () {
-              pushTo(
-                context,
-                AccountVerificationStatus(),
-                settings: const RouteSettings(
-                    name: AccountVerificationStatus.routeName),
-              ).then((value) {
-                checkTierLevel();
-              });
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: kRegularPadding, vertical: kSmallPadding),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(kSmallPadding),
-                  color: kLightOrange100,
-                  border: Border.all(color: kLightOrange200, width: 1)),
-              child: Row(
-                children: [
-                  SvgPicture.asset(AssetPaths.shieldIcon),
-                  SizedBox(
-                    width: kPadding,
-                  ),
-                  Expanded(
-                    child: Text(
-                      completeSetUp,
-                      style: textTheme.headline2!.copyWith(
-                        color: kLightOrange300,
-                      ),
+          hiveTierLevel == 3
+              ? SizedBox()
+              : inkWell(
+                  onTap: () {
+                    pushTo(
+                      context,
+                      AccountVerificationStatus(),
+                      settings: const RouteSettings(
+                          name: AccountVerificationStatus.routeName),
+                    ).then((value) {
+                      checkTierLevel();
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: kRegularPadding, vertical: kSmallPadding),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(kSmallPadding),
+                        color: kLightOrange100,
+                        border: Border.all(color: kLightOrange200, width: 1)),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(AssetPaths.shieldIcon),
+                        SizedBox(
+                          width: kPadding,
+                        ),
+                        Expanded(
+                          child: Text(
+                            completeSetUp,
+                            style: textTheme.headline2!.copyWith(
+                              color: kLightOrange300,
+                            ),
+                          ),
+                        ),
+                        Icon(Icons.arrow_forward_ios,
+                            color: kLightOrange200, size: 18)
+                      ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios,
-                      color: kLightOrange200, size: 18)
-                ],
-              ),
-            ),
-          ),
+                ),
           SizedBox(
             height: kRegularPadding,
           ),
@@ -123,7 +125,8 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                       (previous, NotifierState<EditProfileResponse> next) {
                     if (next.status == NotifierStatus.done) {
                       showSuccessBar(context, next.data!.message);
-                      ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
+                      ref.read(editProfileInHouseProvider.notifier).state =
+                          EditProfileData.fromJson(next.data!.data!.toJson());
                     }
                   });
 
@@ -326,28 +329,30 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
               SizedBox(
                 width: kSmallPadding,
               ),
-           hiveTierLevel == 3 ? SizedBox() : inkWell(
-                onTap: () {
-                  pushTo(
-                    context,
-                    PouchersTierList(
-                      tier: hiveTierLevel,
-                    ),
-                    settings: const RouteSettings(
-                      name: PouchersTierList.routeName,
-                    ),
-                  ).then((value) {
-                    checkTierLevel();
-                  });
-                },
-                child: Text(
-                  upgradeNow,
-                  style: textTheme.headline2!.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                  ),
-                ),
-              )
+              hiveTierLevel == 3
+                  ? SizedBox()
+                  : inkWell(
+                      onTap: () {
+                        pushTo(
+                          context,
+                          PouchersTierList(
+                            tier: hiveTierLevel,
+                          ),
+                          settings: const RouteSettings(
+                            name: PouchersTierList.routeName,
+                          ),
+                        ).then((value) {
+                          checkTierLevel();
+                        });
+                      },
+                      child: Text(
+                        upgradeNow,
+                        style: textTheme.headline2!.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                        ),
+                      ),
+                    )
             ],
           ),
           SizedBox(
@@ -428,16 +433,18 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                   textTheme: textTheme,
                   title: idVerification,
                   subTitle: dataSuccess,
-                  onTap: hiveTierLevel == 3 ? null : () {
-                    pushTo(
-                      context,
-                      AccountVerificationStatus(),
-                      settings: const RouteSettings(
-                          name: AccountVerificationStatus.routeName),
-                    ).then((value) {
-                      checkTierLevel();
-                    });
-                  },
+                  onTap: hiveTierLevel == 3
+                      ? null
+                      : () {
+                          pushTo(
+                            context,
+                            AccountVerificationStatus(),
+                            settings: const RouteSettings(
+                                name: AccountVerificationStatus.routeName),
+                          ).then((value) {
+                            checkTierLevel();
+                          });
+                        },
                 ),
                 KYCColumn(
                   textTheme: textTheme,
@@ -468,46 +475,59 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
     );
   }
 
-  checkProvider(){
+  checkProvider() {
     if (ref.watch(editProfileInHouseProvider).firstName == null) {
       ref.read(editProfileInHouseProvider.notifier).state = ref
           .read(editProfileInHouseProvider.notifier)
           .state
           .copyWith(
-          profilePicture: userProfile.profilePicture,
-          firstName: userProfile.firstName,
-          lastName: userProfile.lastName,
-          tierLevels: userProfile.tierLevels,
-          address: userProfile.address,
-          gender: userProfile.gender,
-          tag: userProfile.tag,
-          dob: userProfile.dob,
-          phoneNumber: userProfile.phoneNumber,
-          email: userProfile.email,
-          isLoginBiometricActive: userProfile.isLoginBiometricActive,
-          isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
-          isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
+              profilePicture: userProfile.profilePicture,
+              firstName: userProfile.firstName,
+              lastName: userProfile.lastName,
+              tierLevels: userProfile.tierLevels,
+              address: userProfile.address,
+              gender: userProfile.gender,
+              tag: userProfile.tag,
+              dob: userProfile.dob,
+              phoneNumber: userProfile.phoneNumber,
+              email: userProfile.email,
+              utilityBill: userProfile.utilityBill,
+              isLoginBiometricActive: userProfile.isLoginBiometricActive,
+              isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+              isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
+
+      ref.read(biometricProvider.notifier).state =
+          ref.read(biometricProvider.notifier).state.copyWith(
+                isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+                isLoginBiometricActive: userProfile.isLoginBiometricActive,
+              );
     } else {
       ref.read(editProfileInHouseProvider.notifier).state = ref
           .read(editProfileInHouseProvider.notifier)
           .state
           .copyWith(
-          profilePicture:
-          ref.watch(editProfileInHouseProvider).profilePicture,
-          firstName: ref.watch(editProfileInHouseProvider).firstName,
-          lastName: ref.watch(editProfileInHouseProvider).lastName,
-          tierLevels: ref.watch(editProfileInHouseProvider).tierLevels,
-          address: ref.watch(editProfileInHouseProvider).address,
-          gender: ref.watch(editProfileInHouseProvider).gender,
-          tag: ref.watch(editProfileInHouseProvider).tag,
-          dob: ref.watch(editProfileInHouseProvider).dob,
-          phoneNumber: ref.watch(editProfileInHouseProvider).phoneNumber,
-          email: ref.watch(editProfileInHouseProvider).email,
-          isLoginBiometricActive: userProfile.isLoginBiometricActive,
-          isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
-          isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
-    }
+              profilePicture:
+                  ref.watch(editProfileInHouseProvider).profilePicture,
+              firstName: ref.watch(editProfileInHouseProvider).firstName,
+              lastName: ref.watch(editProfileInHouseProvider).lastName,
+              tierLevels: ref.watch(editProfileInHouseProvider).tierLevels,
+              address: ref.watch(editProfileInHouseProvider).address,
+              gender: ref.watch(editProfileInHouseProvider).gender,
+              tag: ref.watch(editProfileInHouseProvider).tag,
+              dob: ref.watch(editProfileInHouseProvider).dob,
+              phoneNumber: ref.watch(editProfileInHouseProvider).phoneNumber,
+              email: ref.watch(editProfileInHouseProvider).email,
+              utilityBill: ref.watch(editProfileInHouseProvider).utilityBill,
+              isLoginBiometricActive: ref.watch(editProfileInHouseProvider).isLoginBiometricActive,
+              isPaymentBiometricActive: ref.watch(editProfileInHouseProvider).isPaymentBiometricActive,
+              isUploadedIdentityCard: ref.watch(editProfileInHouseProvider).isUploadedIdentityCard);
 
+      ref.read(biometricProvider.notifier).state =
+          ref.read(biometricProvider.notifier).state.copyWith(
+            isPaymentBiometricActive: ref.watch(biometricProvider).isPaymentBiometricActive,
+            isLoginBiometricActive: ref.watch(biometricProvider).isLoginBiometricActive,
+          );
+    }
   }
 
   Future<void> getImage() async {
@@ -577,7 +597,7 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
       ref.read(editProfileInHouseProvider.notifier).state = ref
           .read(editProfileInHouseProvider.notifier)
           .state
-          .copyWith(tierLevels: userProfile.tierLevels);
+          .copyWith(tierLevels: userProfile.tierLevels,);
       setState(() {
         hiveTierLevel = ref.watch(editProfileInHouseProvider).tierLevels;
       });

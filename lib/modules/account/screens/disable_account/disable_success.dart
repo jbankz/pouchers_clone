@@ -42,12 +42,12 @@ class _DisableSuccessfulState extends State<DisableSuccessful> {
     customTimer = new Timer.periodic(Duration(seconds: 01), (Timer _timer) {
       if (refreshTime == 0) {
         _timer.cancel();
-        Future.delayed(Duration(seconds: 2))
-            .then((value) => pushToAndClearStack(
-                context,
-            widget.isDelete! ? OnBoardingPage()  : LogInAccount(
-                  disabled: true,
-                )));
+        Future.delayed(Duration(seconds: 2)).then(
+          (value) => pushToAndClearStack(
+            context,
+            widget.isDelete! ? OnBoardingPage() : LogInAccount(),
+          ),
+        );
       } else {
         setState(() {
           refreshTime = refreshTime - 1;

@@ -211,3 +211,61 @@ class ReferralTrail {
         "updated_at": updatedAt!.toIso8601String(),
       };
 }
+
+class BannerResponse {
+  BannerResponse({
+     this.status,
+     this.message,
+     this.code,
+     this.data,
+  });
+
+  String? status;
+  String? message;
+  int? code;
+  List<BannerData>? data;
+
+  factory BannerResponse.fromJson(Map<String, dynamic> json) => BannerResponse(
+    status: json["status"],
+    message: json["message"],
+    code: json["code"],
+    data: json["data"] == null ? null : List<BannerData>.from(json["data"].map((x) => BannerData.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "message": message,
+    "code": code,
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+  };
+}
+
+class BannerData {
+  BannerData({
+     this.id,
+     this.imageUrl,
+     this.type,
+  });
+
+  String? id;
+  String? imageUrl;
+  String? type;
+
+  factory BannerData.fromJson(Map<String, dynamic> json) => BannerData(
+    id: json["id"],
+    imageUrl: json["image_url"],
+    type: json["type"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "image_url": imageUrl,
+    "type": type,
+  };
+
+  @override
+  String toString() {
+    return 'BannerData{id: $id, imageUrl: $imageUrl, type: $type}';
+  }
+}
+

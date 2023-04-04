@@ -55,9 +55,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                         pushTo(
                             context,
                             ResetPasswordCode(
-                              forgot: false,
+                                forgot: false,
                                 email: userProfile.email ?? "",
-                                isChangePassword: false,
+                                isChangePassword:  false ,
                                 isChangePhone: true),
                             settings: const RouteSettings(
                                 name: ResetPasswordCode.routeName));

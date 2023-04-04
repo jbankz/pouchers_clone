@@ -242,7 +242,8 @@ class _SchedulePaymentsState extends ConsumerState<SchedulePayments> {
                                             item.frequency!
                                                     .contains(onlyTextValues)
                                                 ? Text(
-                                                    "Top up ₦${kPriceFormatter(double.parse(item.amount ?? "0"))} every ${item.frequency}",
+
+                                                 "Top up ₦${kPriceFormatter(double.parse(item.amount ?? "0"))} every ${item.frequency}",
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.normal,
@@ -251,7 +252,7 @@ class _SchedulePaymentsState extends ConsumerState<SchedulePayments> {
                                                         fontSize: 14,
                                                         fontFamily: ""))
                                                 : Text(
-                                                    "Top up ₦${item.amount} every ${ordinal_suffix_of(int.parse(item.frequency ?? "0"))}",
+                                                    "Top up ₦${kPriceFormatter(double.parse(item.amount ?? "0"))} every ${ordinal_suffix_of(int.parse(item.frequency ?? "0"))}",
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.normal,

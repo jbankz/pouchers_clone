@@ -364,6 +364,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                               utility: true,
                               amount: "${paymentType!.price!}",
                               billerLogo: "",
+                              threshold: threshold,
                               name: widget.name,
                               email: widget.email,
                               category: "cable-purchase",

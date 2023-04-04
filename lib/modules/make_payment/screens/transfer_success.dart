@@ -19,7 +19,8 @@ class TransferSuccess extends StatelessWidget {
   final String? typeOfTransfer;
   final bool isRequest;
   final P2PResponse? response;
-  final String? transferName, accNo, amount, beneficiary, tag, note;
+  final String? transferName, accNo, amount, beneficiary, tag, note, senderName, status;
+  final double? transactionFee;
 
   const TransferSuccess(
       {Key? key,
@@ -29,8 +30,11 @@ class TransferSuccess extends StatelessWidget {
       this.amount,
       this.accNo,
       this.beneficiary,
+        this.status,
+        this.senderName,
       this.transferName,
       this.response,
+        this.transactionFee,
       this.tag,
       this.note})
       : super(key: key);
@@ -130,6 +134,9 @@ class TransferSuccess extends StatelessWidget {
                                   amount: amount,
                                   fromWhere: "transfer",
                                   tag: tag ?? "",
+                                  senderName: senderName,
+                                  status: status,
+                                  transactionFee: transactionFee,
                                   transferName: transferName,
                                   transactionTime: DateTime.now(),
                                   beneficiary: beneficiary),

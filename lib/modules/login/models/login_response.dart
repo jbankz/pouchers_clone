@@ -60,6 +60,7 @@ class HiveStoreResponseData {
     this.is2faActive,
     this.isLoginBiometricActive,
     this.isPaymentBiometricActive,
+    this.utilityBill
   });
 
   @HiveField(0)
@@ -114,6 +115,8 @@ class HiveStoreResponseData {
   bool? isLoginBiometricActive;
   @HiveField(25)
   bool? isPaymentBiometricActive;
+  @HiveField(26)
+  String? utilityBill;
 
   factory HiveStoreResponseData.fromJson(Map<String, dynamic> json) =>
       HiveStoreResponseData(
@@ -143,6 +146,7 @@ class HiveStoreResponseData {
         address: json["address"],
         profilePicture: json["profile_picture"],
         is2faActive: json["is_2fa_active"],
+        utilityBill: json["utility_bill"],
         isLoginBiometricActive: json["is_login_biometric_active"],
         isPaymentBiometricActive: json["is_payment_biometric_active"],
       );
@@ -169,6 +173,7 @@ class HiveStoreResponseData {
         "tokenExpireAt": tokenExpireAt!.toIso8601String(),
         "dob": dob,
         "gender": gender,
+    "utility_bill" : utilityBill,
         "address": address,
         "profile_picture": profilePicture,
         "is_2fa_active": is2faActive,

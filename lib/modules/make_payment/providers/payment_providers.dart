@@ -35,7 +35,7 @@ final getAllBanksProvider = StateNotifierProvider.autoDispose<
 });
 
 final localBankTransferProvider =
-    StateNotifierProvider.autoDispose<LocalBankTransferNotifier, NotifierState>(
+    StateNotifierProvider.autoDispose<LocalBankTransferNotifier, NotifierState<LocalTransferResponse>>(
         (ref) {
   return LocalBankTransferNotifier(ref.read(paymentRepoProvider));
 });
@@ -160,7 +160,7 @@ class GetAllBanksNotifier
   }
 }
 
-class LocalBankTransferNotifier extends StateNotifier<NotifierState>
+class LocalBankTransferNotifier extends StateNotifier<NotifierState<LocalTransferResponse>>
     with ResponseHandler {
   final PaymentRepository _repo;
 

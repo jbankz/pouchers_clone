@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/modules/cards/providers/cards_providers.dart';
 import 'package:pouchers/modules/cards/screens/card_summary.dart';
 import 'package:pouchers/modules/cards/screens/card_widgets.dart';
 import 'package:pouchers/utils/assets_path.dart';
@@ -11,13 +13,15 @@ import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
-class CreateVirtualCard extends StatefulWidget {
+class CreateVirtualCard extends ConsumerStatefulWidget {
   final bool? isNaira;
   static const String routeName = "createVirtualCard";
   final bool? isFundCard;
   final bool? isFundNaira;
   final AddressClass? addressDetails;
 
+//naira_card_funding_fee : 30
+  // dollar_card_funding_fee : 2
   const CreateVirtualCard(
       {Key? key,
       this.isNaira,
@@ -27,10 +31,10 @@ class CreateVirtualCard extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<CreateVirtualCard> createState() => _CreateVirtualCardState();
+  ConsumerState<CreateVirtualCard> createState() => _CreateVirtualCardState();
 }
 
-class _CreateVirtualCardState extends State<CreateVirtualCard> {
+class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
   List<int> pinPicked = [];
   List<int> decimalPinPicked = [];
   List<bool> containerBoolean = [];
@@ -46,6 +50,9 @@ class _CreateVirtualCardState extends State<CreateVirtualCard> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.isFundCard);
+    print(widget.isFundNaira);
+    print(widget.isNaira);
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       color: kPrimaryColor,
@@ -85,7 +92,17 @@ class _CreateVirtualCardState extends State<CreateVirtualCard> {
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: "850",
+                                    text: ref.watch(getAllFeesProvider).data ==
+                                            null
+                                        ? "0"
+                                        : ref
+                                            .watch(getAllFeesProvider)
+                                            .data!
+                                            .data!
+                                            .firstWhere((element) =>
+                                                element.name ==
+                                                "current_dollar_rate")
+                                            .value!,
                                     style: textTheme.bodyText2!.copyWith(
                                       fontFamily: "DMSans",
                                       fontSize: 16,
@@ -113,21 +130,21 @@ class _CreateVirtualCardState extends State<CreateVirtualCard> {
                         text: wholeText,
                         style: textTheme.headline3!.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: kBackgroundColor.withOpacity(0.5),
+                          color: kPrimaryWhite,
                           fontSize: 42,
                         )),
                     TextSpan(
                         text: ".",
                         style: textTheme.headline3!.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: kBackgroundColor.withOpacity(0.5),
+                          color: kPrimaryWhite,
                           fontSize: 22,
                         )),
                     TextSpan(
                         text: decimalText,
                         style: textTheme.headline3!.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: kBackgroundColor.withOpacity(0.5),
+                          color: kPrimaryWhite,
                           fontSize: 22,
                         )),
                   ]),
@@ -135,7 +152,7 @@ class _CreateVirtualCardState extends State<CreateVirtualCard> {
             SizedBox(
               height: kSmallPadding,
             ),
-            widget.isFundCard!
+            widget.isFundCard! || !widget.isFundNaira!
                 ? SizedBox()
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -145,22 +162,58 @@ class _CreateVirtualCardState extends State<CreateVirtualCard> {
                         style: textTheme.headline3!.copyWith(
                             color: kPrimaryTextColor.withOpacity(0.8)),
                       ),
-                      RichText(
-                        text: TextSpan(
-                            text: widget.isNaira! ? "₦" : "\$",
-                            style: TextStyle(
-                              color: kPrimaryTextColor.withOpacity(0.8),
-                              fontWeight: FontWeight.w700,
-                              fontSize: 14,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: "2,000.00",
-                                style: textTheme.headline3!.copyWith(
-                                    color: kPrimaryTextColor.withOpacity(0.8)),
+                      Consumer(builder: (context, ref, _) {
+                        return RichText(
+                          text: TextSpan(
+                              text: widget.isNaira! ? "₦" : "\$",
+                              style: TextStyle(
+                                color: kPrimaryTextColor.withOpacity(0.8),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14,
                               ),
-                            ]),
-                      ),
+                              children: [
+                                TextSpan(
+                                  text: widget.isNaira!
+                                      ? (int.parse(ref
+                                                  .watch(getAllFeesProvider)
+                                                  .data!
+                                                  .data!
+                                                  .firstWhere((element) =>
+                                                      element.name ==
+                                                      "naira_card_creation_fee")
+                                                  .value!) +
+                                              int.parse(ref
+                                                  .watch(getAllFeesProvider)
+                                                  .data!
+                                                  .data!
+                                                  .firstWhere((element) =>
+                                                      element.name ==
+                                                      "sudo_verve_naira_card_creation_fee")
+                                                  .value!) +
+                                              int.parse(ref
+                                                  .watch(getAllFeesProvider)
+                                                  .data!
+                                                  .data!
+                                                  .firstWhere((element) =>
+                                                      element.name ==
+                                                      "naira_card_funding_fee")
+                                                  .value!))
+                                          .toString()
+                                      : ref
+                                          .watch(getAllFeesProvider)
+                                          .data!
+                                          .data!
+                                          .firstWhere((element) =>
+                                              element.name ==
+                                              "dollar_card_creation_fee")
+                                          .value,
+                                  style: textTheme.headline3!.copyWith(
+                                      color:
+                                          kPrimaryTextColor.withOpacity(0.8)),
+                                ),
+                              ]),
+                        );
+                      })
                     ],
                   ),
             SizedBox(
@@ -260,30 +313,122 @@ class _CreateVirtualCardState extends State<CreateVirtualCard> {
                 ),
               ),
             ),
-            LargeButton(
-              disableColor: kPurpleDeep,
-              title: headerText(widget.isFundCard!, widget.isFundNaira!, widget.isNaira!),
-              onPressed: () {
-                if(wholeText == "0"){
-                  showErrorBar(context, "Please input amount");
-                }else{
-                  pushTo(
-                    context,
-                    CardSummary(
-                        isFundCard: widget.isFundCard,
-                        isFundNaira: widget.isFundNaira,
-                        isNaira: widget.isNaira,
-                        addressDetails: widget.addressDetails,
-                        amount : "$wholeText.$decimalText"
-                    ),
-                    settings: const RouteSettings(
-                      name: CardSummary.routeName,
-                    ),
-                  );
-                }
+            Consumer(builder: (context, ref, _) {
+              var _widget = LargeButton(
+                disableColor: kPurpleDeep,
+                title: headerText(
+                    widget.isFundCard!, widget.isFundNaira!, widget.isNaira!),
+                onPressed: () {
+                  if (wholeText == "0") {
+                    showErrorBar(context, "Please input amount");
+                  } else {
+                    if (widget.isFundCard!) {
+                      !widget.isFundNaira!
+                          ? ref.read(getAllFeesProvider.notifier).getAllFees(
+                              amount: double.parse(
+                                "$wholeText.$decimalText",
+                              ),
+                              then: () {
+                                pushTo(
+                                  context,
+                                  CardSummary(
+                                      isFundCard: widget.isFundCard,
+                                      isFundNaira: widget.isFundNaira,
+                                      isNaira: widget.isNaira,
+                                      addressDetails: widget.addressDetails,
+                                      amount: "$wholeText.$decimalText"),
+                                  settings: const RouteSettings(
+                                    name: CardSummary.routeName,
+                                  ),
+                                );
+                              })
+                          : pushTo(
+                              context,
+                              CardSummary(
+                                  isFundCard: widget.isFundCard,
+                                  isFundNaira: widget.isFundNaira,
+                                  isNaira: widget.isNaira,
+                                  addressDetails: widget.addressDetails,
+                                  amount: "$wholeText.$decimalText"),
+                              settings: const RouteSettings(
+                                name: CardSummary.routeName,
+                              ),
+                            );
+                    } else {
 
-              },
-            )
+                      widget.isNaira!
+                          ? pushTo(
+                              context,
+                              CardSummary(
+                                  isFundCard: widget.isFundCard,
+                                  isFundNaira: widget.isFundNaira,
+                                  isNaira: widget.isNaira,
+                                  addressDetails: widget.addressDetails,
+                                  amount: "$wholeText.$decimalText"),
+                              settings: const RouteSettings(
+                                name: CardSummary.routeName,
+                              ),
+                            )
+                          : ref.read(getAllFeesProvider.notifier).getAllFees(
+                              amount: double.parse(
+                                "$wholeText.$decimalText",
+                              ),
+                              then: () {
+                                pushTo(
+                                  context,
+                                  CardSummary(
+                                      isFundCard: widget.isFundCard,
+                                      isFundNaira: widget.isFundNaira,
+                                      isNaira: widget.isNaira,
+                                      addressDetails: widget.addressDetails,
+                                      amount: "$wholeText.$decimalText"),
+                                  settings: const RouteSettings(
+                                    name: CardSummary.routeName,
+                                  ),
+                                );
+                              });
+                    }
+                    // !widget.isFundNaira! || !widget.isNaira!
+                    //     ? ref.read(getAllFeesProvider.notifier).getAllFees(
+                    //         amount: double.parse(
+                    //           "$wholeText.$decimalText",
+                    //         ),
+                    //         then: () {
+                    //           pushTo(
+                    //             context,
+                    //             CardSummary(
+                    //                 isFundCard: widget.isFundCard,
+                    //                 isFundNaira: widget.isFundNaira,
+                    //                 isNaira: widget.isNaira,
+                    //                 addressDetails: widget.addressDetails,
+                    //                 amount: "$wholeText.$decimalText"),
+                    //             settings: const RouteSettings(
+                    //               name: CardSummary.routeName,
+                    //             ),
+                    //           );
+                    //         })
+                    //     : pushTo(
+                    //         context,
+                    //         CardSummary(
+                    //             isFundCard: widget.isFundCard,
+                    //             isFundNaira: widget.isFundNaira,
+                    //             isNaira: widget.isNaira,
+                    //             addressDetails: widget.addressDetails,
+                    //             amount: "$wholeText.$decimalText"),
+                    //         settings: const RouteSettings(
+                    //           name: CardSummary.routeName,
+                    //         ),
+                    //       );
+                  }
+                },
+              );
+              return ref.watch(getAllFeesProvider).when(
+                  done: (done) => _widget,
+                  loading: () => SpinKitDemo(
+                        color: kPrimaryWhite,
+                      ),
+                  error: (val) => _widget);
+            })
           ],
         ),
       ),

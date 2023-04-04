@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
+import 'package:pouchers/modules/make_payment/models/make_payment_model.dart';
 import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
 import 'package:pouchers/modules/make_payment/screens/transfer_success.dart';
 import 'package:pouchers/utils/assets_path.dart';
@@ -108,7 +109,7 @@ class TransferSummary extends StatelessWidget {
                         AirtimeRow(
                           textTheme: textTheme,
                           text: total,
-                          subText: "${double.parse(amount!) + 53.75}",
+                          subText: "${double.parse(amount!) + fee!.toDouble()}",
                           isCopyIcon: false,
                           noSymbol: false,
                           isNaira: true,
@@ -140,7 +141,7 @@ class TransferSummary extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                              text: "${double.parse(amount!) + 53.75}",
+                              text: "${double.parse(amount!) + fee!.toDouble()}",
                               style: textTheme.headline3!.copyWith(
                                   color: kPrimaryTextColor,
                                   fontWeight: FontWeight.bold)),
@@ -156,7 +157,7 @@ class TransferSummary extends StatelessWidget {
             ),
             Consumer(builder: (context, ref, _) {
               ref.listen(localBankTransferProvider,
-                  (previous, NotifierState next) {
+                  (previous, NotifierState<LocalTransferResponse> next) {
                 if (next.status == NotifierStatus.done) {
                   pushTo(
                       context,
@@ -164,10 +165,12 @@ class TransferSummary extends StatelessWidget {
                           text: "bank",
                           isRequest: false,
                           typeOfTransfer: "localBank",
-                          amount: amount,
-                          accNo: accNo,
+                          amount: next.data!.data!.transactionAmount,
+                          accNo: next.data!.data!.receiverAccountNumber,
+                          senderName: next.data!.data!.senderName,
                           transferName: transferName,
-                          beneficiary: beneficiary));
+                          transactionFee: next.data!.data!.transactionFee,
+                          beneficiary: next.data!.data!.receiverName,));
                 } else if (next.status == NotifierStatus.error) {
                   showErrorBar(context, next.message ?? "Error");
                 }

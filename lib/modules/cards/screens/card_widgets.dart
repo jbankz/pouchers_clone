@@ -228,25 +228,28 @@ class VirtualCardType extends StatelessWidget {
                   SizedBox(
                     height: kMicroPadding,
                   ),
-                  RichText(
-                    text: TextSpan(
-                      text: isNaira ? "₦" : "\$",
-                      style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 0.9),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14,
+                  Consumer(builder: (context, ref, _){
+                    return  RichText(
+                      text: TextSpan(
+                        text: isNaira ? "₦" : "\$",
+                        style: TextStyle(
+                          color: Color.fromRGBO(255, 255, 255, 0.9),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: isNaira ? ref.watch(getAllFeesProvider).data!.data!.firstWhere((element) => element.name == "naira_card_creation_fee").value :  ref.watch(getAllFeesProvider).data!.data!.firstWhere((element) => element.name == "dollar_card_creation_fee").value,
+                            style: textTheme.headline6!.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: Color.fromRGBO(255, 255, 255, 0.9),
+                            ),
+                          )
+                        ],
                       ),
-                      children: [
-                        TextSpan(
-                          text: "2,000",
-                          style: textTheme.headline6!.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: Color.fromRGBO(255, 255, 255, 0.9),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                    );
+                  }),
+
                   SizedBox(
                     height: kPadding,
                   ),
@@ -402,8 +405,8 @@ class CardDetails extends StatelessWidget {
                 AirtimeRow(
                   textTheme: textTheme,
                   text: billingAddress,
-                  subText:
-                      "${cardData.billingAddress!.line1} ${cardData.billingAddress!.line2}",
+                  subText: cardData.customer == null ? "" :
+                      "${cardData.customer!.billingAddress!.line1}",
                   noSymbol: true,
                   isCopyIcon: true,
                   style: textTheme.headline4!
@@ -415,7 +418,7 @@ class CardDetails extends StatelessWidget {
                 AirtimeRow(
                   textTheme: textTheme,
                   text: zipCode,
-                  subText: "${cardData.billingAddress!.postalCode}",
+                  subText: "${cardData.customer!.billingAddress!.postalCode}",
                   noSymbol: true,
                   isCopyIcon: true,
                   style: textTheme.headline4!
@@ -427,7 +430,7 @@ class CardDetails extends StatelessWidget {
                 AirtimeRow(
                   textTheme: textTheme,
                   text: city,
-                  subText: "${cardData.billingAddress!.city}",
+                  subText: "${cardData.customer!.billingAddress!.city}",
                   noSymbol: true,
                   isCopyIcon: true,
                   style: textTheme.headline4!
@@ -441,7 +444,7 @@ class CardDetails extends StatelessWidget {
                   text: state,
                   isCopyIcon: true,
                   noSymbol: true,
-                  subText: "${cardData.billingAddress!.state}",
+                  subText: "${cardData.customer!.billingAddress!.state}",
                   style: textTheme.headline4!.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -568,7 +571,6 @@ class _ManageCardState extends State<ManageCard> {
                       setState(() {
                         _freezeCard = val;
                       });
-                      //Navigator.pop(context);
                       final result = await buildShowModalBottomSheet(
                           context,
                           CommonModal(
@@ -609,8 +611,6 @@ class _ManageCardState extends State<ManageCard> {
                                 transactionPin: pin,
                               );
                         }
-                        // ref.
-                        print("yes");
                       }
                     });
                 return ref.watch(freezeCardProvider).when(

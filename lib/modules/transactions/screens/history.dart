@@ -212,6 +212,7 @@ class _HistoryState extends ConsumerState<History> {
                                             tag: transactionData[index]
                                                 .extraDetails!
                                                 .senderTag,
+                                            transactionId: transactionData[index].transactionId,
                                             transactionTime:
                                             transactionData[index]
                                                 .createdAt!,

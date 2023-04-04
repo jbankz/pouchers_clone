@@ -530,6 +530,7 @@ class _EditPhoneModalState extends State<EditPhoneModal> {
 class ProfileRoleWidget extends StatelessWidget {
   final String text, subText;
   final Widget icon;
+  final Color? color, textColor;
   final Function() onTap;
 
   const ProfileRoleWidget(
@@ -538,6 +539,7 @@ class ProfileRoleWidget extends StatelessWidget {
       required this.text,
       required this.onTap,
       required this.icon,
+        this.color, this.textColor,
       required this.subText})
       : super(key: key);
 
@@ -550,13 +552,14 @@ class ProfileRoleWidget extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(bottom: kMediumPadding),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
                 height: 50,
                 width: 50,
                 padding: EdgeInsets.all(kRegularPadding),
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: kBackgroundColor),
+                    shape: BoxShape.circle, color: color ?? kBackgroundColor),
                 child: icon),
             SizedBox(
               width: kSmallPadding,
@@ -569,12 +572,13 @@ class ProfileRoleWidget extends StatelessWidget {
                     text,
                     style: textTheme.subtitle1!.copyWith(
                       fontWeight: FontWeight.w500,
+                      color: textColor ?? kPrimaryTextColor
                     ),
                   ),
                   SizedBox(
                     height: kPadding,
                   ),
-                  Text(
+                 subText == "" ? SizedBox() : Text(
                     subText,
                     style: textTheme.headline6,
                   )

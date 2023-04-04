@@ -134,7 +134,7 @@ class AccountService {
       http.Response response = await http.patch(
         Uri.parse(url),
         headers: _authHeaders,
-        body: jsonEncode({"disable_reason": reason, "password": password}),
+        body: jsonEncode({"disable_reason": reason}),
       );
       logResponse(response);
       var responseBody = jsonDecode(response.body);
@@ -771,6 +771,74 @@ class AccountService {
       logPrint(error);
       logPrint(stack);
       return processServiceError<GetReferralResponse>(error, stack);
+    }
+  }
+
+  static Future<ServiceResponse<BannerResponse>> getBanner({
+    required String token,
+  }) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    };
+
+    String url = "${baseUrl()}/admin-settings/banners";
+
+    logPrint(url);
+
+    try {
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: _authHeaders,
+      );
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<BannerResponse>(
+            data: BannerResponse.fromJson(responseBody),
+            message: responseBody["message"]);
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<BannerResponse>(error, stack);
+    }
+  }
+
+  static Future<ServiceResponse<EditProfileResponse>> getUserProfile({
+    required String token,
+  }) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    };
+
+    String url = "${baseUrl()}/user/profile";
+
+    logPrint(url);
+
+    try {
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: _authHeaders,
+      );
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<EditProfileResponse>(
+            data: EditProfileResponse.fromJson(responseBody),
+            message: responseBody["message"]);
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<EditProfileResponse>(error, stack);
     }
   }
 }

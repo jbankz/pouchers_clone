@@ -135,6 +135,7 @@ const Color kPurpleColor700 = Color(0xFF8A76DB);
 const Color kPurpleColor800 = Color(0xFFF8F7FC);
 const Color kLightColor200 = Color(0xFFC8C8C8);
 const Color kLightColor300 = Color(0xFFE6E9F0);
+const Color kLightColor400 = Color(0xFF525A6C);
 
 // Border
 const double kBorderWidth = 1;

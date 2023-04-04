@@ -238,7 +238,7 @@ class PaymentService {
     }
   }
 
-  static Future<ServiceResponse> localBankTransfer({
+  static Future<ServiceResponse<LocalTransferResponse>> localBankTransfer({
     required String token,
     required String accountNumber,
     required String bankName,
@@ -271,14 +271,14 @@ class PaymentService {
       if (response.statusCode >= 300 && response.statusCode <= 520) {
         throw Failure.fromJson(responseBody);
       } else {
-        return serveSuccess(
-            data: responseBody["message"],
+        return serveSuccess<LocalTransferResponse>(
+            data: LocalTransferResponse.fromJson(responseBody),
             message: responseBody["message"]);
       }
     } catch (error, stack) {
       logPrint(error);
       logPrint(stack);
-      return processServiceError(error, stack);
+      return processServiceError<LocalTransferResponse>(error, stack);
     }
   }
 

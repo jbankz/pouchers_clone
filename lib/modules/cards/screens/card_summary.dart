@@ -38,20 +38,68 @@ class CardSummary extends ConsumerStatefulWidget {
 
 class _CardSummaryState extends ConsumerState<CardSummary> {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      print(ref.watch(getWalletProvider).data!.data!.balance);
-    });
-  }
-
-  @override
   Widget build(
     BuildContext context,
   ) {
     TextTheme textTheme = Theme.of(context).textTheme;
+    print(widget.isNaira);
+    print(widget.isFundNaira);
 
+    ///For creating naira card
+    double nairaCreationTotalFee = (int.parse(ref
+            .watch(getAllFeesProvider)
+            .data!
+            .data!
+            .firstWhere((element) => element.name == "naira_card_creation_fee")
+            .value!)) +
+        int.parse(ref
+            .watch(getAllFeesProvider)
+            .data!
+            .data!
+            .firstWhere((element) =>
+                element.name == "sudo_verve_naira_card_creation_fee")
+            .value!) +
+        int.parse(ref
+            .watch(getAllFeesProvider)
+            .data!
+            .data!
+            .firstWhere((element) => element.name == "naira_card_funding_fee")
+            .value!) +
+        double.parse(ref
+            .watch(getAllFeesProvider)
+            .data!
+            .data!
+            .firstWhere((element) =>
+                element.name == "sudo_verve_naira_card_funding_fee")
+            .value!);
+
+    ///For creating dollar card
+    double dollarCreationTotalFee = (int.parse(ref
+            .watch(getAllFeesProvider)
+            .data!
+            .data!
+            .firstWhere((element) => element.name == "dollar_card_creation_fee")
+            .value!)) +
+        double.parse(ref
+            .watch(getAllFeesProvider)
+            .data!
+            .data!
+            .firstWhere(
+                (element) => element.name == "sudo_dollar_card_creation_fee")
+            .value!) +
+        double.parse(ref
+            .watch(getAllFeesProvider)
+            .data!
+            .data!
+            .firstWhere((element) => element.name == "dollar_card_funding_fee")
+            .value!) +
+        double.parse(ref
+            .watch(getAllFeesProvider)
+            .data!
+            .data!
+            .firstWhere(
+                (element) => element.name == "sudo_dollar_card_funding_fee")
+            .value!);
     return InitialPage(
       title:
           headerText(widget.isFundCard!, widget.isFundNaira!, widget.isNaira!),
@@ -62,7 +110,7 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
             child: ListView(
               children: [
                 Text(
-                  transConfirm,
+                  confirmation,
                   style: textTheme.subtitle1!.copyWith(
                     fontWeight: FontWeight.w700,
                     fontSize: 20,
@@ -97,11 +145,48 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                         height: kMacroPadding,
                       ),
                       widget.isFundCard!
-                          ? SizedBox()
+                          ? AirtimeRow(
+                              textTheme: textTheme,
+                              text: fundingFeeText,
+                              subText: widget.isNaira!
+                                  ? kPriceFormatter(double.parse(ref
+                                          .watch(getAllFeesProvider)
+                                          .data!
+                                          .data!
+                                          .firstWhere((element) =>
+                                              element.name ==
+                                              "naira_card_funding_fee")
+                                          .value!) +
+                                      double.parse(ref
+                                          .watch(getAllFeesProvider)
+                                          .data!
+                                          .data!
+                                          .firstWhere((element) =>
+                                              element.name ==
+                                              "sudo_verve_naira_card_funding_fee")
+                                          .value!))
+                                  : kPriceFormatter((double.parse(ref
+                                          .watch(getAllFeesProvider)
+                                          .data!
+                                          .data!
+                                          .firstWhere((element) =>
+                                              element.name == "dollar_card_funding_fee")
+                                          .value!) +
+                                      double.parse(ref.watch(getAllFeesProvider).data!.data!.firstWhere((element) => element.name == "sudo_dollar_card_funding_fee").value!))),
+                              isCopyIcon: false,
+                              noSymbol: false,
+                              isNaira: widget.isNaira!,
+                              style: textTheme.headline4!.copyWith(
+                                fontSize: 16,
+                              ),
+                            )
                           : AirtimeRow(
                               textTheme: textTheme,
                               text: creationFeeText,
-                              subText: "0",
+                              subText: widget.isNaira!
+                                  ? kPriceFormatter(
+                                      (nairaCreationTotalFee).toDouble())
+                                  : kPriceFormatter(dollarCreationTotalFee),
                               isCopyIcon: false,
                               noSymbol: false,
                               isNaira: widget.isNaira!,
@@ -110,44 +195,110 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                               ),
                             ),
                       SizedBox(
-                        height: widget.isFundCard! ? 0 : kMacroPadding,
-                      ),
-                      AirtimeRow(
-                        textTheme: textTheme,
-                        text: (widget.isNaira! || widget.isFundNaira!)
-                            ? total
-                            : totalInDollars,
-                        subText:
-                            kPriceFormatter(double.parse(widget.amount!) + 0),
-                        isCopyIcon: false,
-                        noSymbol: false,
-                        isBold: true,
-                        isNaira: (widget.isNaira! || widget.isFundNaira!)
-                            ? true
-                            : false,
-                        style: textTheme.headline4!
-                            .copyWith(fontWeight: FontWeight.w700),
-                      ),
-                      SizedBox(
-                        height: widget.isFundCard! ? kMacroPadding : 0,
+                        height: kMacroPadding,
                       ),
                       widget.isFundCard!
                           ? AirtimeRow(
                               textTheme: textTheme,
-                              text: totalInNaira,
-                              subText: widget.isFundNaira!
+                              text:
+                                  widget.isFundNaira! ? total : totalInDollars,
+                              subText: (widget.isFundNaira!)
+                                  ? kPriceFormatter(double.parse(
+                                          widget.amount!) +
+                                      double.parse(ref
+                                          .watch(getAllFeesProvider)
+                                          .data!
+                                          .data!
+                                          .firstWhere((element) =>
+                                              element.name ==
+                                              "naira_card_funding_fee")
+                                          .value!) +
+                                      double.parse(ref
+                                          .watch(getAllFeesProvider)
+                                          .data!
+                                          .data!
+                                          .firstWhere((element) =>
+                                              element.name ==
+                                              "sudo_verve_naira_card_funding_fee")
+                                          .value!))
+                                  : kPriceFormatter(double.parse(
+                                          widget.amount!) +
+                                      double.parse(
+                                        ref
+                                            .watch(getAllFeesProvider)
+                                            .data!
+                                            .data!
+                                            .firstWhere((element) =>
+                                                element.name ==
+                                                "dollar_card_funding_fee")
+                                            .value!,
+                                      ) +
+                                      double.parse(ref
+                                          .watch(getAllFeesProvider)
+                                          .data!
+                                          .data!
+                                          .firstWhere((element) =>
+                                              element.name ==
+                                              "sudo_dollar_card_funding_fee")
+                                          .value!)),
+                              isCopyIcon: false,
+                              noSymbol: false,
+                              isBold: true,
+                              isNaira: widget.isFundNaira! ? true : false,
+                              style: textTheme.headline4!
+                                  .copyWith(fontWeight: FontWeight.w700),
+                            )
+                          : AirtimeRow(
+                              textTheme: textTheme,
+                              text: (widget.isNaira! || widget.isFundNaira!)
+                                  ? total
+                                  : totalInDollars,
+                              subText: (widget.isNaira! || widget.isFundNaira!)
                                   ? kPriceFormatter(
-                                      double.parse(widget.amount!) + 0)
+                                      double.parse(widget.amount!) +
+                                          nairaCreationTotalFee.toDouble())
                                   : kPriceFormatter(
-                                      double.parse(widget.amount!) * 850),
+                                      double.parse(widget.amount!) +
+                                          dollarCreationTotalFee),
+                              isCopyIcon: false,
+                              noSymbol: false,
+                              isBold: true,
+                              isNaira: (widget.isNaira! || widget.isFundNaira!)
+                                  ? true
+                                  : false,
+                              style: textTheme.headline4!
+                                  .copyWith(fontWeight: FontWeight.w700),
+                            ),
+                      SizedBox(
+                        height: kMacroPadding,
+                      ),
+                      widget.isFundNaira! || widget.isNaira!
+                          ? SizedBox()
+                          : AirtimeRow(
+                              textTheme: textTheme,
+                              text: totalInNaira,
+                              subText: !widget.isFundNaira!
+                                  ? kPriceFormatter((getTotalFee()))
+                                  : !widget.isNaira!
+                                      ? kPriceFormatter(
+                                          (double.parse(widget.amount!) +
+                                                  dollarCreationTotalFee) *
+                                              double.parse(ref
+                                                  .watch(getAllFeesProvider)
+                                                  .data!
+                                                  .data!
+                                                  .firstWhere((element) =>
+                                                      element.name ==
+                                                      "current_dollar_rate")
+                                                  .value!))
+                                      : "0",
                               noSymbol: false,
                               isCopyIcon: false,
                               isBold: true,
                               isNaira: true,
                               style: textTheme.headline4!
                                   .copyWith(fontWeight: FontWeight.w700),
-                            )
-                          : SizedBox(),
+                            ),
                       widget.isNaira!
                           ? SizedBox()
                           : Column(
@@ -163,7 +314,8 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                                         style: textTheme.headline3,
                                       ),
                                       TextSpan(
-                                        text: " \$1 = ₦850",
+                                        text:
+                                            " \$1 = ₦${ref.watch(getAllFeesProvider).data!.data!.firstWhere((element) => element.name == "current_dollar_rate").value!}",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           color: kSecondaryTextColor,
@@ -194,19 +346,40 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                       ),
                       children: [
                         TextSpan(
-                          text: widget.isFundNaira! ? " ₦" : " \$",
+                          text: " ₦",
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
                             color: kPrimaryTextColor,
                             fontSize: 16,
                           ),
                         ),
-                        TextSpan(
-                            text: kPriceFormatter(
-                                double.parse(widget.amount!) + 0),
-                            style: textTheme.headline3!.copyWith(
-                                color: kPrimaryTextColor,
-                                fontWeight: FontWeight.bold)),
+                        widget.isFundCard!
+                            ? TextSpan(
+                                text:
+                                    // widget.isFundNaira!
+                                    //     ? kPriceFormatter(getTotalFee())
+                                    //     :
+                                    kPriceFormatter(getTotalFee()),
+                                style: textTheme.headline3!.copyWith(
+                                    color: kPrimaryTextColor,
+                                    fontWeight: FontWeight.bold))
+                            : TextSpan(
+                                text: widget.isNaira!
+                                    ? kPriceFormatter(getTotalFee() +
+                                        nairaCreationTotalFee.toDouble())
+                                    : kPriceFormatter((getTotalFee() +
+                                            dollarCreationTotalFee) *
+                                        double.parse(ref
+                                            .watch(getAllFeesProvider)
+                                            .data!
+                                            .data!
+                                            .firstWhere((element) =>
+                                                element.name ==
+                                                "current_dollar_rate")
+                                            .value!)),
+                                style: textTheme.headline3!.copyWith(
+                                    color: kPrimaryTextColor,
+                                    fontWeight: FontWeight.bold)),
                         TextSpan(text: debitText3, style: textTheme.headline3),
                       ]),
                 ),
@@ -243,17 +416,12 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                             text: dataSuccess,
                             subText: next.message ?? next.data ?? "",
                             onTap: () {
-                              //Navigator.
                               widget.isFundNaira!
-                                  ? Navigator.popUntil(
-                                      context,
-                                      (route) {
-                                        route.isFirst;
-                                      return  route.settings.name ==
-                                            CardHome.routeName;
-
-                                      }
-                                    )
+                                  ? Navigator.popUntil(context, (route) {
+                                      route.isFirst;
+                                      return route.settings.name ==
+                                          CardHome.routeName;
+                                    })
                                   : Navigator.popUntil(
                                       context,
                                       (route) =>
@@ -285,7 +453,7 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                                   .read(fundVirtualCardProvider.notifier)
                                   .fundVirtualCard(
                                       type: widget.isFundNaira! ? "NGN" : "USD",
-                                      amount: double.parse(widget.amount!),
+                                      amount: (double.parse(widget.amount!)),
                                       transactionPin: result);
                             }
                           }
@@ -350,7 +518,31 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                                           widget.addressDetails!.postalCode,
                                       currency: widget.isNaira! ? "NGN" : "USD",
                                       bvn: widget.addressDetails!.bvn,
+                                      brand: widget.isNaira!
+                                          ? "Verve"
+                                          : "MasterCard",
                                       amount: double.parse(widget.amount!),
+                                      // widget.isNaira!
+                                      //     ?
+
+                                      //+
+                                      // double.parse(ref
+                                      //     .watch(getAllFeesProvider)
+                                      //     .data!
+                                      //     .data!
+                                      //     .firstWhere((element) =>
+                                      //         element.name ==
+                                      //         "naira_card_creation_fee")
+                                      //     .value!)
+                                      // : (double.parse(widget.amount!) +
+                                      //     double.parse(ref
+                                      //         .watch(getAllFeesProvider)
+                                      //         .data!
+                                      //         .data!
+                                      //         .firstWhere((element) =>
+                                      //             element.name ==
+                                      //             "dollar_card_creation_fee")
+                                      //         .value!)),
                                       transactionPin: result);
                             }
                           }
@@ -370,24 +562,208 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
     );
   }
 
+  double getTotalFee() {
+    double fee = 0;
+    if (widget.isFundCard!) {
+      if (widget.isFundNaira!) {
+        fee = (double.parse(widget.amount!) +
+            double.parse(ref
+                .watch(getAllFeesProvider)
+                .data!
+                .data!
+                .firstWhere(
+                    (element) => element.name == "naira_card_funding_fee")
+                .value!) +
+            double.parse(ref
+                .watch(getAllFeesProvider)
+                .data!
+                .data!
+                .firstWhere((element) =>
+                    element.name == "sudo_verve_naira_card_funding_fee")
+                .value!));
+      } else {
+        fee = ((double.parse(widget.amount!) +
+                double.parse(ref
+                    .watch(getAllFeesProvider)
+                    .data!
+                    .data!
+                    .firstWhere(
+                        (element) => element.name == "dollar_card_funding_fee")
+                    .value!) +
+                double.parse(ref
+                    .watch(getAllFeesProvider)
+                    .data!
+                    .data!
+                    .firstWhere((element) =>
+                        element.name == "sudo_dollar_card_funding_fee")
+                    .value!)) *
+            double.parse(ref
+                .watch(getAllFeesProvider)
+                .data!
+                .data!
+                .firstWhere((element) => element.name == "current_dollar_rate")
+                .value!));
+      }
+    } else {
+      if (widget.isNaira!) {
+        fee = double.parse(widget.amount!);
+      } else {
+        fee = ((double.parse(widget.amount!)
+            // +
+            //     double.parse(ref
+            //         .watch(getAllFeesProvider)
+            //         .data!
+            //         .data!
+            //         .firstWhere(
+            //             (element) => element.name == "dollar_card_creation_fee")
+            //         .value!)) *
+            // double.parse(ref
+            //     .watch(getAllFeesProvider)
+            //     .data!
+            //     .data!
+            //     .firstWhere((element) => element.name == "current_dollar_rate")
+            //     .value!)
+            ));
+      }
+    }
+    return fee;
+  }
+
   bool checkBalance() {
     bool status = false;
     if (ref.watch(getWalletProvider).data != null) {
-      if (widget.isFundNaira! || widget.isNaira!) {
-        if (double.parse(ref.watch(getWalletProvider).data!.data!.balance!) >
-            (double.parse(widget.amount!) + 0)) {
-          status = true;
+      if (widget.isFundCard!) {
+        if (widget.isFundNaira!) {
+          if (double.parse(ref.watch(getWalletProvider).data!.data!.balance!) >=
+              (double.parse(widget.amount!) +
+                  double.parse(ref
+                      .watch(getAllFeesProvider)
+                      .data!
+                      .data!
+                      .firstWhere(
+                          (element) => element.name == "naira_card_funding_fee")
+                      .value!) +
+                  double.parse(ref
+                      .watch(getAllFeesProvider)
+                      .data!
+                      .data!
+                      .firstWhere((element) =>
+                          element.name == "sudo_verve_naira_card_funding_fee")
+                      .value!))) {
+            status = true;
+          } else {
+            status = false;
+          }
         } else {
-          status = false;
+          if (double.parse(ref.watch(getWalletProvider).data!.data!.balance!) >=
+              ((double.parse(widget.amount!) +
+                      double.parse(ref
+                          .watch(getAllFeesProvider)
+                          .data!
+                          .data!
+                          .firstWhere((element) =>
+                              element.name == "dollar_card_funding_fee")
+                          .value!) +
+                      double.parse(ref
+                          .watch(getAllFeesProvider)
+                          .data!
+                          .data!
+                          .firstWhere((element) =>
+                              element.name == "sudo_dollar_card_funding_fee")
+                          .value!)) *
+                  double.parse(ref
+                      .watch(getAllFeesProvider)
+                      .data!
+                      .data!
+                      .firstWhere(
+                          (element) => element.name == "current_dollar_rate")
+                      .value!))) {
+            status = true;
+          } else {
+            status = false;
+          }
         }
       } else {
-        if (double.parse(ref.watch(getWalletProvider).data!.data!.balance!) >
-            (double.parse(widget.amount!) * 850)) {
-          status = true;
+        if (widget.isNaira!) {
+          if (double.parse(ref.watch(getWalletProvider).data!.data!.balance!) >=
+              (double.parse(widget.amount!) +
+                  double.parse(ref
+                      .watch(getAllFeesProvider)
+                      .data!
+                      .data!
+                      .firstWhere((element) =>
+                          element.name == "naira_card_creation_fee")
+                      .value!) +
+                  int.parse(ref
+                      .watch(getAllFeesProvider)
+                      .data!
+                      .data!
+                      .firstWhere((element) =>
+                          element.name == "sudo_verve_naira_card_creation_fee")
+                      .value!) +
+                  int.parse(ref
+                      .watch(getAllFeesProvider)
+                      .data!
+                      .data!
+                      .firstWhere(
+                          (element) => element.name == "naira_card_funding_fee")
+                      .value!) +
+                  double.parse(ref
+                      .watch(getAllFeesProvider)
+                      .data!
+                      .data!
+                      .firstWhere((element) =>
+                          element.name == "sudo_verve_naira_card_funding_fee")
+                      .value!))) {
+            status = true;
+          } else {
+            status = false;
+          }
         } else {
-          status = false;
+          if (double.parse(ref.watch(getWalletProvider).data!.data!.balance!) >=
+              ((double.parse(widget.amount!) +
+                      double.parse(ref
+                          .watch(getAllFeesProvider)
+                          .data!
+                          .data!
+                          .firstWhere((element) =>
+                              element.name == "dollar_card_creation_fee")
+                          .value!) +
+                      double.parse(ref
+                          .watch(getAllFeesProvider)
+                          .data!
+                          .data!
+                          .firstWhere((element) =>
+                              element.name == "sudo_dollar_card_creation_fee")
+                          .value!) +
+                      double.parse(ref
+                          .watch(getAllFeesProvider)
+                          .data!
+                          .data!
+                          .firstWhere((element) =>
+                              element.name == "dollar_card_funding_fee")
+                          .value!) +
+                      double.parse(ref
+                          .watch(getAllFeesProvider)
+                          .data!
+                          .data!
+                          .firstWhere((element) =>
+                              element.name == "sudo_dollar_card_funding_fee")
+                          .value!)) *
+                  double.parse(ref
+                      .watch(getAllFeesProvider)
+                      .data!
+                      .data!
+                      .firstWhere(
+                          (element) => element.name == "current_dollar_rate")
+                      .value!))) {
+            status = true;
+          } else {
+            status = false;
+          }
         }
       }
+
       return status;
     } else {
       return status;

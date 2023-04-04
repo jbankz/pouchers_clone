@@ -117,6 +117,17 @@ class ScheduleRepository {
         .toNotifierState();
   }
 
-
+  Future<NotifierState<String>> deleteSchedule({
+    required String transactionPin,
+    required String scheduleId,
+  }) async {
+    final accessToken = await getAccessToken();
+    return (await ScheduleService.deleteSchedule(
+        transactionPin: transactionPin,
+        scheduleId: scheduleId,
+        token: accessToken!
+    ))
+        .toNotifierState();
+  }
 }
 

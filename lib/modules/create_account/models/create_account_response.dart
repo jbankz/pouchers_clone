@@ -74,10 +74,10 @@ class CreateAccountResponseData {
         referralCode: json["referral_code"],
         verificationToken: json["verification_token"],
         verificationTokenExpires:
-            DateTime.parse(json["verification_token_expires"]),
+        json["verification_token_expires"] == null ? null : DateTime.parse(json["verification_token_expires"]),
         isDeleted: json["is_deleted"],
         otp: json["otp"],
-        expirationTime: DateTime.parse(json["expirationTime"]),
+        expirationTime: json["expirationTime"] == null ? null :  DateTime.parse(json["expirationTime"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -166,6 +166,7 @@ class VerifyEmailResponseData {
     this.is2faActive,
     this.isLoginBiometricActive,
     this.isPaymentBiometricActive,
+    this.utilityBill
   });
 
   int? id;
@@ -199,6 +200,7 @@ class VerifyEmailResponseData {
   bool? is2faActive;
   bool? isLoginBiometricActive;
   bool? isPaymentBiometricActive;
+  String? utilityBill;
 
   factory VerifyEmailResponseData.fromJson(Map<String, dynamic> json) =>
       VerifyEmailResponseData(
@@ -233,6 +235,7 @@ class VerifyEmailResponseData {
         is2faActive: json["is_2fa_active"],
         isLoginBiometricActive: json["is_login_biometric_active"],
         isPaymentBiometricActive: json["is_payment_biometric_active"],
+        utilityBill: json["utility_bill"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -255,6 +258,7 @@ class VerifyEmailResponseData {
         "is_uploaded_identity_card": isUploadedIdentityCard,
         "is_deleted": isDeleted,
         "referral_code": referralCode,
+    "utility_bill" : utilityBill,
         "tag": tag,
         "token": token,
         "refreshToken": refreshToken,
@@ -271,7 +275,7 @@ class VerifyEmailResponseData {
 
   @override
   String toString() {
-    return 'VerifyEmailResponseData{id: $id, phoneNumber: $phoneNumber, userId: $userId, email: $email, firstName: $firstName, lastName: $lastName, verificationToken: $verificationToken, verificationTokenExpires: $verificationTokenExpires, tierLevels: $tierLevels, passwordResetToken: $passwordResetToken, passwordResetTokenExpires: $passwordResetTokenExpires, pinResetToken: $pinResetToken, pinResetTokenExpires: $pinResetTokenExpires, status: $status, deviceToken: $deviceToken, fcmToken: $fcmToken, isUploadedIdentityCard: $isUploadedIdentityCard, isDeleted: $isDeleted, referralCode: $referralCode, tag: $tag, token: $token, refreshToken: $refreshToken, tokenExpireAt: $tokenExpireAt, dob: $dob, profilePicture: $profilePicture, address: $address, gender: $gender, isCreatedPin: $isCreatedPin, is2faActive: $is2faActive, isLoginBiometricActive: $isLoginBiometricActive, isPaymentBiometricActive: $isPaymentBiometricActive}';
+    return 'VerifyEmailResponseData{id: $id, phoneNumber: $phoneNumber, userId: $userId, email: $email, firstName: $firstName, lastName: $lastName, verificationToken: $verificationToken, verificationTokenExpires: $verificationTokenExpires, tierLevels: $tierLevels, passwordResetToken: $passwordResetToken, passwordResetTokenExpires: $passwordResetTokenExpires, pinResetToken: $pinResetToken, pinResetTokenExpires: $pinResetTokenExpires, status: $status, deviceToken: $deviceToken, fcmToken: $fcmToken, isUploadedIdentityCard: $isUploadedIdentityCard, isDeleted: $isDeleted, referralCode: $referralCode, tag: $tag, token: $token, refreshToken: $refreshToken, tokenExpireAt: $tokenExpireAt, dob: $dob, profilePicture: $profilePicture, address: $address, gender: $gender, isCreatedPin: $isCreatedPin, is2faActive: $is2faActive, isLoginBiometricActive: $isLoginBiometricActive, isPaymentBiometricActive: $isPaymentBiometricActive, utilityBill: $utilityBill}';
   }
 }
 

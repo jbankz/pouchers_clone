@@ -36,6 +36,8 @@ class _BettingState extends ConsumerState<Betting> {
   List<GetUtilitiesData> utilities = [];
   List<Service> utilitiesType = [];
   Service? paymentType;
+  String? threshold;
+
 
   @override
   void initState() {
@@ -153,6 +155,7 @@ class _BettingState extends ConsumerState<Betting> {
                     error: (val) => SizedBox(),
                     done: (done) {
                       if (done != null) {
+                        threshold = done.data!.threshold ?? "0";
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -388,7 +391,10 @@ class _BettingState extends ConsumerState<Betting> {
                                   recipientNo: contactController.text,
                                   billerName: utilitiesData!.name!,
                                   billerId: utilitiesData!.operatorpublicid!,
+                                  category: "betting-purchase",
+                                  utility: true,
                                   billerLogo: "",
+                            threshold: threshold,
                                 ));
                     }
                   },

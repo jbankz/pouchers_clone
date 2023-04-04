@@ -162,17 +162,23 @@ class P2PData {
     this.receiverName,
     this.receiverTag,
     this.amount,
+    this.senderName,
+    this.status
   });
 
   String? receiverName;
   String? receiverTag;
   String? amount;
+  String? senderName;
+  String? status;
 
   factory P2PData.fromJson(Map<String, dynamic> json) =>
       P2PData(
         receiverName: json["receiver_name"],
         receiverTag: json["receiver_tag"],
         amount: json["amount"],
+        senderName: json["sender_name"],
+        status: json["status"]
       );
 
   Map<String, dynamic> toJson() =>
@@ -180,8 +186,91 @@ class P2PData {
         "receiver_name": receiverName,
         "receiver_tag": receiverTag,
         "amount": amount,
+        "sender_name" : senderName,
+        "status" : status
       };
 }
+
+class LocalTransferResponse {
+  LocalTransferResponse({
+     this.status,
+     this.message,
+     this.code,
+     this.data,
+  });
+
+  String? status;
+  String? message;
+  int? code;
+  LocalTransferData? data;
+
+  factory LocalTransferResponse.fromJson(Map<String, dynamic> json) => LocalTransferResponse(
+    status: json["status"],
+    message: json["message"],
+    code: json["code"],
+    data: LocalTransferData.fromJson(json["data"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "message": message,
+    "code": code,
+    "data": data!.toJson(),
+  };
+}
+
+class LocalTransferData {
+  LocalTransferData({
+     this.senderName,
+     this.receiverName,
+     this.bankName,
+     this.receiverAccountNumber,
+     this.transactionAmount,
+     this.transactionFee,
+     this.referenceNumber,
+     this.pagaTransactionId,
+     this.currency,
+     this.transactionDate,
+  });
+
+  String? senderName;
+  String? receiverName;
+  String? bankName;
+  String? receiverAccountNumber;
+  String? transactionAmount;
+  double? transactionFee;
+  String? referenceNumber;
+  String? pagaTransactionId;
+  String? currency;
+  String? transactionDate;
+
+  factory LocalTransferData.fromJson(Map<String, dynamic> json) => LocalTransferData(
+    senderName: json["sender_name"],
+    receiverName: json["receiver_name"],
+    bankName: json["bank_name"],
+    receiverAccountNumber: json["receiver_account_number"],
+    transactionAmount: json["transaction_amount"],
+    transactionFee: json["transaction_fee"]?.toDouble(),
+    referenceNumber: json["referenceNumber"],
+    pagaTransactionId: json["pagaTransactionId"],
+    currency: json["currency"],
+    transactionDate: json["transaction_date"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "sender_name": senderName,
+    "receiver_name": receiverName,
+    "bank_name": bankName,
+    "receiver_account_number": receiverAccountNumber,
+    "transaction_amount": transactionAmount,
+    "transaction_fee": transactionFee,
+    "referenceNumber": referenceNumber,
+    "pagaTransactionId": pagaTransactionId,
+    "currency": currency,
+    "transaction_date": transactionDate,
+  };
+}
+
 
 
 class AccountDetailsResponse {

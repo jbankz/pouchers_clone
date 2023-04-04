@@ -80,7 +80,7 @@ class PaymentRepository {
         .toNotifierState();
   }
 
-  Future<NotifierState> localBankTransfer({required String accountNumber,
+  Future<NotifierState<LocalTransferResponse>> localBankTransfer({required String accountNumber,
     required String bankName,
     required String amount, required String transactionPin}) async {
     final accessToken = await getAccessToken();

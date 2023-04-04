@@ -12,6 +12,7 @@ import 'package:pouchers/modules/login/models/login_response.dart';
 import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
 import 'package:pouchers/modules/make_payment/screens/transfer_poucher_friend.dart';
 import 'package:pouchers/modules/profile/profile_account_verification.dart';
+import 'package:pouchers/modules/profile/profile_page.dart';
 import 'package:pouchers/modules/tab_layout/screens/homepage/fund_wallet.dart';
 import 'package:pouchers/modules/tab_layout/screens/tab_layout.dart';
 import 'package:pouchers/modules/tab_layout/widgets/home_widget.dart';
@@ -19,6 +20,7 @@ import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/constant/ui_constants.dart';
+import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/utils.dart';
 import 'package:pouchers/utils/widgets.dart';
@@ -51,6 +53,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       checkProvider();
       ref.read(getWalletProvider.notifier).getWalletDetails();
+      ref.read(getBannerProvider.notifier).getBanner();
     });
   }
 
@@ -270,7 +273,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                               if (done != null) {
                                 return RichText(
                                   text: TextSpan(
-                                    text: "₦",
+                                    text: obscure ? "" : "₦",
                                     style: TextStyle(
                                       color: kPrimaryWhite,
                                       fontWeight: FontWeight.w700,
@@ -378,123 +381,144 @@ class _HomePageState extends ConsumerState<HomePage> {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            Container(
-              child: GridView.count(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                crossAxisCount: 4,
-                childAspectRatio: SizeConfig.blockSizeHorizontal! / 5.2,
-                children: List.generate(
-                  guestHomeClass.length,
-                  (index) => Column(
-                    children: [
-                      inkWell(
-                        onTap: () {
-                          pushTo(context, guestHomeClass[index].page);
-                        },
-                        child: Container(
-                          height: 70,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: kColorBackgroundLight,
-                          ),
-                          padding: EdgeInsets.all(kMediumPadding),
-                          child: SvgPicture.asset(
-                            guestHomeClass[index].icon,
-                          ),
+            SizedBox(
+              height: kRegularPadding,
+            ),
+            GridView.count(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              crossAxisCount: 4,
+              padding: EdgeInsets.zero,
+              childAspectRatio: SizeConfig.blockSizeHorizontal! / 5.2,
+              children: List.generate(
+                guestHomeClass.length,
+                (index) => Column(
+                  children: [
+                    inkWell(
+                      onTap: () {
+                        guestHomeClass[index].title == "More"
+                            ? showSuccessBar(context, "More Products will be added soon...")
+                            :
+                        pushTo(context, guestHomeClass[index].page);
+                            },
+                      child: Container(
+                        height: 70,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: kColorBackgroundLight,
+                        ),
+                        padding: EdgeInsets.all(kMediumPadding),
+                        child: SvgPicture.asset(
+                          guestHomeClass[index].icon,
                         ),
                       ),
-                      SizedBox(
-                        height: kRegularPadding,
-                      ),
-                      Text(
-                        guestHomeClass[index].title,
-                        style: textTheme.headline4,
-                      )
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: kRegularPadding,
+                    ),
+                    Text(
+                      guestHomeClass[index].title,
+                      style: textTheme.headline4,
+                    )
+                  ],
                 ),
               ),
             ),
             SizedBox(
               height: kSmallPadding,
             ),
-            Container(
-              height: SizeConfig.blockSizeVertical! * 24,
-              width: double.infinity,
-              alignment: Alignment.bottomLeft,
-              child: PageView(
-                padEnds: false,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(kMediumPadding),
-                    margin: EdgeInsets.only(right: 10),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(kSmallPadding),
-                      image: DecorationImage(
-                        image: AssetImage(AssetPaths.pageImage),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          homePageText,
-                          softWrap: true,
-                          style: textTheme.bodyText1!.copyWith(
-                              fontSize: SizeConfig.blockSizeVertical! * 3,
-                              color: kOffWhite,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        SizedBox(
-                          height: kSmallPadding,
-                        ),
-                        Text(
-                          homePageSubText,
-                          style: textTheme.headline4!.copyWith(
-                            color: Color.fromRGBO(255, 255, 255, 0.5),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(kMediumPadding),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(kSmallPadding),
-                      color: Colors.green,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          homePageText,
-                          softWrap: true,
-                          style: textTheme.bodyText1!.copyWith(
-                              fontSize: SizeConfig.blockSizeVertical! * 3,
-                              color: kOffWhite,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        SizedBox(
-                          height: kSmallPadding,
-                        ),
-                        Text(
-                          homePageSubText,
-                          style: textTheme.headline4!.copyWith(
-                            color: Color.fromRGBO(255, 255, 255, 0.5),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-                controller: _controller,
-                onPageChanged: _onChanged,
-              ),
+            SizedBox(
+              height: kRegularPadding,
             ),
+            Consumer(builder: (context, ref, _) {
+              return ref.watch(getBannerProvider).when(
+                  done: (done) {
+                    if (done != null) {
+                      return ProductImageSlider(
+                        images: done.data!,
+                      );
+                    } else
+                      return SizedBox();
+                  },
+                  loading: () => SpinKitDemo(),
+                  error: (val) => SizedBox());
+            }),
+            // Container(
+            //   height: SizeConfig.blockSizeVertical! * 24,
+            //   width: double.infinity,
+            //   alignment: Alignment.bottomLeft,
+            //   child: PageView(
+            //     padEnds: false,
+            //     children: [
+            //       Container(
+            //         padding: EdgeInsets.all(kMediumPadding),
+            //         margin: EdgeInsets.only(right: 10),
+            //         width: double.infinity,
+            //         decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(kSmallPadding),
+            //           image: DecorationImage(
+            //             image: AssetImage(AssetPaths.pageImage),
+            //             fit: BoxFit.cover,
+            //           ),
+            //         ),
+            //         child: Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             Text(
+            //               homePageText,
+            //               softWrap: true,
+            //               style: textTheme.bodyText1!.copyWith(
+            //                   fontSize: SizeConfig.blockSizeVertical! * 3,
+            //                   color: kOffWhite,
+            //                   fontWeight: FontWeight.w700),
+            //             ),
+            //             SizedBox(
+            //               height: kSmallPadding,
+            //             ),
+            //             Text(
+            //               homePageSubText,
+            //               style: textTheme.headline4!.copyWith(
+            //                 color: Color.fromRGBO(255, 255, 255, 0.5),
+            //               ),
+            //             )
+            //           ],
+            //         ),
+            //       ),
+            //       Container(
+            //         padding: EdgeInsets.all(kMediumPadding),
+            //         width: double.infinity,
+            //         decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(kSmallPadding),
+            //           color: Colors.green,
+            //         ),
+            //         child: Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             Text(
+            //               homePageText,
+            //               softWrap: true,
+            //               style: textTheme.bodyText1!.copyWith(
+            //                   fontSize: SizeConfig.blockSizeVertical! * 3,
+            //                   color: kOffWhite,
+            //                   fontWeight: FontWeight.w700),
+            //             ),
+            //             SizedBox(
+            //               height: kSmallPadding,
+            //             ),
+            //             Text(
+            //               homePageSubText,
+            //               style: textTheme.headline4!.copyWith(
+            //                 color: Color.fromRGBO(255, 255, 255, 0.5),
+            //               ),
+            //             )
+            //           ],
+            //         ),
+            //       ),
+            //     ],
+            //     controller: _controller,
+            //     onPageChanged: _onChanged,
+            //   ),
+            // ),
             SizedBox(
               height: kSmallPadding,
             ),
@@ -504,45 +528,60 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
-  checkProvider(){
+  checkProvider() {
     if (ref.watch(editProfileInHouseProvider).firstName == null) {
       ref.read(editProfileInHouseProvider.notifier).state = ref
           .read(editProfileInHouseProvider.notifier)
           .state
           .copyWith(
-          profilePicture: userProfile.profilePicture,
-          firstName: userProfile.firstName,
-          lastName: userProfile.lastName,
-          tierLevels: userProfile.tierLevels,
-          address: userProfile.address,
-          gender: userProfile.gender,
-          tag: userProfile.tag,
-          dob: userProfile.dob,
-          phoneNumber: userProfile.phoneNumber,
-          email: userProfile.email,
-          isLoginBiometricActive: userProfile.isLoginBiometricActive,
-          isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
-          isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
+              profilePicture: userProfile.profilePicture,
+              firstName: userProfile.firstName,
+              lastName: userProfile.lastName,
+              tierLevels: userProfile.tierLevels,
+              address: userProfile.address,
+              gender: userProfile.gender,
+              tag: userProfile.tag,
+              dob: userProfile.dob,
+              phoneNumber: userProfile.phoneNumber,
+              email: userProfile.email,
+              utilityBill: userProfile.utilityBill,
+              isLoginBiometricActive: userProfile.isLoginBiometricActive,
+              isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+              isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
+
+      ref.read(biometricProvider.notifier).state = ref
+          .read(biometricProvider.notifier)
+          .state
+          .copyWith(isLoginBiometricActive: userProfile.isLoginBiometricActive,
+        isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+      );
     } else {
       ref.read(editProfileInHouseProvider.notifier).state = ref
           .read(editProfileInHouseProvider.notifier)
           .state
           .copyWith(
-          profilePicture:
-          ref.watch(editProfileInHouseProvider).profilePicture,
-          firstName: ref.watch(editProfileInHouseProvider).firstName,
-          lastName: ref.watch(editProfileInHouseProvider).lastName,
-          tierLevels: ref.watch(editProfileInHouseProvider).tierLevels,
-          address: ref.watch(editProfileInHouseProvider).address,
-          gender: ref.watch(editProfileInHouseProvider).gender,
-          tag: ref.watch(editProfileInHouseProvider).tag,
-          dob: ref.watch(editProfileInHouseProvider).dob,
-          phoneNumber: ref.watch(editProfileInHouseProvider).phoneNumber,
-          email: ref.watch(editProfileInHouseProvider).email,
-          isLoginBiometricActive: userProfile.isLoginBiometricActive,
-          isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
-          isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
-    }
+              profilePicture:
+                  ref.watch(editProfileInHouseProvider).profilePicture,
+              firstName: ref.watch(editProfileInHouseProvider).firstName,
+              lastName: ref.watch(editProfileInHouseProvider).lastName,
+              tierLevels: ref.watch(editProfileInHouseProvider).tierLevels,
+              address: ref.watch(editProfileInHouseProvider).address,
+              gender: ref.watch(editProfileInHouseProvider).gender,
+              tag: ref.watch(editProfileInHouseProvider).tag,
+              dob: ref.watch(editProfileInHouseProvider).dob,
+              phoneNumber: ref.watch(editProfileInHouseProvider).phoneNumber,
+              email: ref.watch(editProfileInHouseProvider).email,
+              utilityBill: ref.watch(editProfileInHouseProvider).utilityBill,
+              isLoginBiometricActive: ref.watch(editProfileInHouseProvider).isLoginBiometricActive,
+              isPaymentBiometricActive: ref.watch(editProfileInHouseProvider).isPaymentBiometricActive,
+              isUploadedIdentityCard: ref.watch(editProfileInHouseProvider).isUploadedIdentityCard);
 
+      ref.read(biometricProvider.notifier).state = ref
+          .read(biometricProvider.notifier)
+          .state
+          .copyWith(isLoginBiometricActive: ref.watch(biometricProvider).isLoginBiometricActive,
+        isPaymentBiometricActive: ref.watch(biometricProvider).isPaymentBiometricActive,
+      );
+    };
   }
 }

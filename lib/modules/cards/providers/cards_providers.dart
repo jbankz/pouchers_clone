@@ -15,6 +15,11 @@ final getAllVirtualCardProvider = StateNotifierProvider.autoDispose<
   return GetAllVirtualCardNotifier(ref.read(cardsRepoProvider));
 });
 
+final getAllFeesProvider = StateNotifierProvider<
+    GetAllFeesNotifier, NotifierState<FetchEnvs>>((ref) {
+  return GetAllFeesNotifier(ref.read(cardsRepoProvider));
+});
+
 final fundVirtualCardProvider = StateNotifierProvider.autoDispose<
     FundVirtualCardNotifier, NotifierState<String>>((ref) {
   return FundVirtualCardNotifier(ref.read(cardsRepoProvider));
@@ -36,6 +41,11 @@ final freezeCardProvider = StateNotifierProvider.autoDispose<
   return FreezeCardNotifier(ref.read(cardsRepoProvider));
 });
 
+final getCardBalanceProvider = StateNotifierProvider<
+    GetCardBalanceNotifier, NotifierState<int>>((ref) {
+  return GetCardBalanceNotifier(ref.read(cardsRepoProvider));
+});
+
 class CreateVirtualCardNotifier extends StateNotifier<NotifierState<String>>
     with ResponseHandler {
   final CardsRepository _repo;
@@ -50,6 +60,7 @@ class CreateVirtualCardNotifier extends StateNotifier<NotifierState<String>>
       required String postalCode,
       required String currency,
       required String bvn,
+        required String brand,
       required double amount,
       required String transactionPin,
       Function()? then}) async {
@@ -61,6 +72,7 @@ class CreateVirtualCardNotifier extends StateNotifier<NotifierState<String>>
         country: country,
         postalCode: postalCode,
         currency: currency,
+        brand: brand,
         bvn: bvn,
         amount: amount,
         transactionPin: transactionPin);
@@ -85,6 +97,25 @@ class GetAllVirtualCardNotifier
     }
   }
 }
+
+class GetAllFeesNotifier
+    extends StateNotifier<NotifierState<FetchEnvs>>
+    with ResponseHandler {
+  final CardsRepository _repo;
+
+  GetAllFeesNotifier(this._repo) : super(NotifierState());
+
+  void getAllFees({required double amount, Function()? then}) async {
+    state = notifyLoading();
+    state = await _repo.getAllFees(amount: amount);
+    if (state.status == NotifierStatus.done) {
+      if (then != null) then();
+    }
+  }
+}
+
+
+
 
 class FundVirtualCardNotifier extends StateNotifier<NotifierState<String>>
     with ResponseHandler {
@@ -132,6 +163,22 @@ class GetCardTokenNotifier
   void getCardToken({required cardId, Function()? then}) async {
     state = notifyLoading();
     state = await _repo.getCardToken(cardId: cardId);
+    if (state.status == NotifierStatus.done) {
+      if (then != null) then();
+    }
+  }
+}
+
+class GetCardBalanceNotifier
+    extends StateNotifier<NotifierState<int>>
+    with ResponseHandler {
+  final CardsRepository _repo;
+
+  GetCardBalanceNotifier(this._repo) : super(NotifierState());
+
+  void getCardBalance({required cardId, Function()? then}) async {
+    state = notifyLoading();
+    state = await _repo.getCardBalance(cardId: cardId);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }

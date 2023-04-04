@@ -7,8 +7,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/profile_model.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
+import 'package:pouchers/modules/profile/profile_success.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
@@ -17,9 +19,10 @@ import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
 class ProfileUtilityBill extends ConsumerStatefulWidget {
+  final String? from;
   static const String routeName = "profileUtilityBill";
 
-  const ProfileUtilityBill({Key? key}) : super(key: key);
+  const ProfileUtilityBill({Key? key, this.from}) : super(key: key);
 
   @override
   ConsumerState<ProfileUtilityBill> createState() => _ProfileUtilityBillState();
@@ -140,8 +143,16 @@ class _ProfileUtilityBillState extends ConsumerState<ProfileUtilityBill> {
             ref.listen(editProfileProvider,
                     (previous, NotifierState<EditProfileResponse> next) {
                   if (next.status == NotifierStatus.done) {
-                    Navigator.pop(context);
-                    showSuccessBar(context, next.data!.message);
+                    pushTo(
+                        context,
+                        ProfileSuccessful(
+                          from: widget.from,
+                          message: idSuccess,
+                        ),
+                        settings: const RouteSettings(
+                            name: ProfileSuccessful.routeName));
+                    // Navigator.pop(context);
+                    // showSuccessBar(context, next.data!.message);
                     ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
                   } else if (next.status == NotifierStatus.error) {
                     showErrorBar(context, next.message!);

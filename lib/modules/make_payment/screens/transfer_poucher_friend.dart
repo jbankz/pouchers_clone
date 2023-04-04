@@ -498,6 +498,8 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                       tag: next.data!.data!.receiverTag ?? "",
                                       amount: "$wholeText.$decimalText",
                                       note: noteText,
+                                      senderName: next.data!.data!.senderName,
+                                      status: next.data!.data!.status,
                                       beneficiary:
                                           "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["firstName"]!.substring(1).toLowerCase()} ${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(1).toLowerCase()}",
                                     ));

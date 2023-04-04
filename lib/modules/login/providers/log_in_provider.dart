@@ -14,6 +14,11 @@ final forgotPasswordProvider = StateNotifierProvider.autoDispose<
   return ForgotPasswordNotifier(ref.read(logInRepoProvider));
 });
 
+final forgotPasswordProvider2 = StateNotifierProvider.autoDispose<
+    ForgotPasswordNotifier, NotifierState<String>>((ref) {
+  return ForgotPasswordNotifier(ref.read(logInRepoProvider));
+});
+
 final validateForgotPasswordProvider = StateNotifierProvider.autoDispose<
     ValidateForgotPasswordNotifier, NotifierState<String>>((ref) {
   return ValidateForgotPasswordNotifier(ref.read(logInRepoProvider));

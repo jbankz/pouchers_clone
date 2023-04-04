@@ -101,7 +101,7 @@ class FundWallet extends ConsumerWidget {
                                         .data!
                                         .data!
                                         .accountName ??
-                                    ""),
+                                    "Paga"),
                         SizedBox(
                           height: kMediumPadding,
                         ),
@@ -114,8 +114,11 @@ class FundWallet extends ConsumerWidget {
                                         .watch(getWalletProvider)
                                         .data!
                                         .data!
-                                        .bankProvider ??
-                                    ""),
+                                        .bankProvider == "" ? "Paga" : ref
+                                .watch(getWalletProvider)
+                                .data!
+                                .data!
+                                .bankProvider!),
                       ],
                     ),
                   ),

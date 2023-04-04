@@ -325,6 +325,7 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                                     isGuest: widget.isGuest!,
                                     name: widget.name,
                                     email: widget.email,
+                                    threshold: threshold,
                                     category: "internet-purchase",
                                     amount: "${paymentType!.price!}",
                                     billerLogo: "",

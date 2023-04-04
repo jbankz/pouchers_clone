@@ -282,4 +282,43 @@ class ScheduleService {
       return processServiceError<String>(error, stack);
     }
   }
+
+  static Future<ServiceResponse<String>> deleteSchedule(
+      {required String token,
+        required String transactionPin,
+        required String scheduleId,
+        }) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    };
+
+    Map<String, dynamic> body = {
+      "transactionPin": transactionPin
+    };
+
+    String url = "${baseUrl()}/payment/schedule/$scheduleId";
+
+    logPrint(url);
+    logPrint(body);
+
+    try {
+      http.Response response = await http.delete(Uri.parse(url),
+          headers: _authHeaders, body: jsonEncode(body));
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      print("error${response.statusCode}");
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<String>(
+            data: responseBody["message"], message: responseBody["message"]);
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<String>(error, stack);
+    }
+  }
 }
