@@ -88,7 +88,8 @@ class _ChangePhoneNumberState extends State<ChangePhoneNumber> {
                             context,
                             (route) =>
                                 route.settings.name == ProfileKYC.routeName));
-                    ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
+                    ref.read(editProfileInHouseProvider.notifier).state =
+                        EditProfileData.fromJson(next.data!.data!.toJson());
                   } else if (next.status == NotifierStatus.error) {
                     showErrorBar(context, next.message!);
                   }

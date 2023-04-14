@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "818321487277",
+    "project_id": "pouchers-28a0f",
+    "storage_bucket": "pouchers-28a0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818321487277:android:d35d920cbcfeb792231d24",
+        "android_client_info": {
+          "package_name": "com.enyata.pouchers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "818321487277-c1otml1v02bg26skg0ouj7edoirojp3r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXMc5-_N6tbHSPM6JLdh1iye4GnEY8g7g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "818321487277-c1otml1v02bg26skg0ouj7edoirojp3r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

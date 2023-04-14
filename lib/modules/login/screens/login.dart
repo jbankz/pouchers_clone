@@ -4,9 +4,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
+import 'package:pouchers/app/helpers/response_handler.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
 import 'package:pouchers/modules/account/screens/two_factor_auth/security_modal.dart';
@@ -29,15 +31,15 @@ import 'package:pouchers/utils/widgets.dart';
 
 class LogInAccount extends ConsumerStatefulWidget {
   static const String routeName = "logIn";
-  final bool? disabled;
+  final bool? disabled, sessionTimeOut;
 
-  const LogInAccount({Key? key, this.disabled = false}) : super(key: key);
+  const LogInAccount({Key? key, this.disabled = false, this.sessionTimeOut = false}) : super(key: key);
 
   @override
   ConsumerState<LogInAccount> createState() => _LogInAccountState();
 }
 
-class _LogInAccountState extends ConsumerState<LogInAccount> {
+class _LogInAccountState extends ConsumerState<LogInAccount> with ResponseHandler {
   bool obscure = true;
   TextEditingController controller = TextEditingController();
   String? _password;
@@ -51,8 +53,23 @@ class _LogInAccountState extends ConsumerState<LogInAccount> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      widget.sessionTimeOut! ? handleExpiredToken(context,) : null;
       await Hive.openBox(kBiometricsBox);
+      var loginBiometrics = Hive.box(kBiometricsBox).get(kBiometricsKey);
+      if(loginBiometrics == 0){
+        ref.read(biometricProvider.notifier).state =
+            ref.read(biometricProvider.notifier).state.copyWith(
+              isLoginBiometricActive: false,
+            );
+      }else{
+        ref.read(biometricProvider.notifier).state =
+            ref.read(biometricProvider.notifier).state.copyWith(
+              isLoginBiometricActive: true,
+            );
+      }
+
       setState(() {});
       if (widget.disabled!) {
         Future.delayed(Duration(seconds: 1)).then((value) => showDialog(
@@ -79,7 +96,6 @@ class _LogInAccountState extends ConsumerState<LogInAccount> {
           Navigator.pop(context);
         } else {
           print("here");
-
           ///TODO WRONG IMPLEMENTATION, DO THE RIGHT ONE WITH WILLPOP
           exit(0);
         }
@@ -90,7 +106,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(AssetPaths.poucherLogo),
+              SvgPicture.asset(AssetPaths.poucherLogo),
               SizedBox(
                 height: kMicroPadding,
               ),
@@ -116,7 +132,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount> {
                 onSaved: (val) => setState(() => _email = val),
                 validator: (val) {
                   if (val!.isEmpty) {
-                    return emptyField;
+                    return null;
                   } else {
                     return null;
                   }
@@ -129,12 +145,15 @@ class _LogInAccountState extends ConsumerState<LogInAccount> {
                 obscure: obscure,
                 validator: (val) {
                   if (val!.isEmpty) {
-                    return emptyField;
-                  } else if (!isPassword(val)) {
-                    return invalidPassword;
-                  } else {
+                    return null;
+                  } else{
                     return null;
                   }
+                  // else if (!isPassword(val)) {
+                  //   return invalidPassword;
+                  // } else {
+                  //   return null;
+                  // }
                 },
                 onSaved: (val) => setState(() => _password = val),
                 inputFormatters: [FilteringTextInputFormatter.deny(" ")],
@@ -146,11 +165,11 @@ class _LogInAccountState extends ConsumerState<LogInAccount> {
                     },
                     child: obscure
                         ? Icon(
-                            Icons.visibility_off_outlined,
-                            color: kSecondaryTextColor,
-                          )
-                        : Icon(Icons.visibility_outlined,
-                            color: kSecondaryTextColor)),
+                      Icons.visibility_outlined,
+                      color: kSecondaryTextColor,
+                    )
+                        : Icon(Icons.visibility_off_outlined,
+                        color: kSecondaryTextColor)),
               ),
               SizedBox(
                 height: kSmallPadding,
@@ -221,15 +240,19 @@ class _LogInAccountState extends ConsumerState<LogInAccount> {
                   title: logIn,
                   onPressed: () {
                     FocusScope.of(context).unfocus();
+
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      ref.read(logInProvider.notifier).logIn(
-                            phoneNumber: _email!.trim(),
-                            password: _password!.trim(),
-                            isEmail: _email!.startsWith(
-                              RegExp(r'[a-zA-Z]'),
-                            ),
-                          );
+                      if(_email!.isNotEmpty || _password!.isNotEmpty){
+                        ref.read(logInProvider.notifier).logIn(
+                          phoneNumber: _email!.trim(),
+                          password: _password!.trim(),
+                          isEmail: _email!.startsWith(
+                            RegExp(r'[a-zA-Z]'),
+                          ),
+                        );
+                      }
+
                     }
                   },
                 );
@@ -264,12 +287,9 @@ class _LogInAccountState extends ConsumerState<LogInAccount> {
               SizedBox(
                 height: kLargePadding,
               ),
-              ref.watch(biometricProvider).isLoginBiometricActive ==
-                      null
+              ref.watch(biometricProvider).isLoginBiometricActive == null
                   ? SizedBox()
-                  : ref
-                          .watch(biometricProvider)
-                          .isLoginBiometricActive!
+                  : ref.watch(biometricProvider).isLoginBiometricActive!
                       ? inkWell(
                           onTap: () {
                             checkBiometric(context);

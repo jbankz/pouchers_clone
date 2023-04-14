@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/helpers/response_handler.dart';
 import 'package:pouchers/modules/schedule_purchase/repository/schedule_repository.dart';
 import 'package:pouchers/modules/utilities/model/utilities_model.dart';
 
@@ -35,7 +34,7 @@ final deleteScheduleProvider = StateNotifierProvider.autoDispose<
 });
 
 class ScheduleP2PNotifier extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+     {
   final ScheduleRepository _repo;
 
   ScheduleP2PNotifier(this._repo) : super(NotifierState());
@@ -70,7 +69,7 @@ class ScheduleP2PNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class ScheduleUtilityNotifier extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+    {
   final ScheduleRepository _repo;
 
   ScheduleUtilityNotifier(this._repo) : super(NotifierState());
@@ -106,7 +105,7 @@ class ScheduleUtilityNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class ScheduleLocalNotifier extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+     {
   final ScheduleRepository _repo;
 
   ScheduleLocalNotifier(this._repo) : super(NotifierState());
@@ -138,7 +137,7 @@ class ScheduleLocalNotifier extends StateNotifier<NotifierState<String>>
 
 class GetScheduleNotifier
     extends StateNotifier<NotifierState<GetAllScheduleResponse>>
-    with ResponseHandler {
+   {
   final ScheduleRepository _repo;
 
   GetScheduleNotifier(this._repo) : super(NotifierState());
@@ -156,7 +155,7 @@ class GetScheduleNotifier
 }
 
 class EditScheduleNotifier extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+     {
   final ScheduleRepository _repo;
 
   EditScheduleNotifier(this._repo) : super(NotifierState());
@@ -181,7 +180,7 @@ class EditScheduleNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class DeleteScheduleNotifier extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+    {
   final ScheduleRepository _repo;
 
   DeleteScheduleNotifier(this._repo) : super(NotifierState());

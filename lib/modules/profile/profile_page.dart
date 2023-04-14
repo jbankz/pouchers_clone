@@ -7,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:pouchers/app/helpers/network_helpers.dart';
+import 'package:pouchers/app/helpers/session_manager.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/profile_model.dart';
 import 'package:pouchers/modules/account/models/referral_model.dart';
@@ -78,91 +80,140 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     checkTierLevel();
                   });
                 },
-                child: CircularPercentIndicator(
-                  radius: 40.0,
-                  lineWidth: 8.0,
-                  percent: 0.20,
-                  backgroundColor: kPurple300,
-                  center: ClipRRect(
-                    borderRadius: BorderRadius.circular(116),
-                    child: CachedNetworkImage(
-                      height: 105,
-                      width: 105,
-                      imageUrl: ref
-                              .watch(editProfileInHouseProvider)
-                              .profilePicture ??
-                          "",
-                      placeholder: (context, url) => Container(
-                        color: Colors.transparent,
-                        height: 105,
-                        width: 105,
-                        child: const Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(kPrimaryColor),
-                          ),
-                        ),
-                      ),
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) => ref
-                                  .watch(editProfileInHouseProvider)
-                                  .profilePicture !=
-                              null
-                          ? Image.network(
-                              ref
-                                  .watch(editProfileInHouseProvider)
-                                  .profilePicture!,
-                              fit: BoxFit.fill,
-                              loadingBuilder: (BuildContext context,
-                                  Widget child,
-                                  ImageChunkEvent? loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                        : null,
-                                  ),
-                                );
-                              },
-                            )
-                          : Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: kRegularPadding,
-                                  width: kRegularPadding,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: kPurpleColor),
-                                ),
-                                SizedBox(
-                                  height: kPadding,
-                                ),
-                                Container(
-                                  height: kRegularPadding,
-                                  width: 35,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft:
-                                              Radius.circular(kSmallPadding),
-                                          bottomLeft: Radius.circular(kPadding),
-                                          topRight:
-                                              Radius.circular(kSmallPadding),
-                                          bottomRight:
-                                              Radius.circular(kPadding)),
-                                      color: kPurpleColor500),
-                                )
-                              ],
-                            ),
+                child:   ClipRRect(
+                  borderRadius: BorderRadius.circular(116),
+                  child: ref
+                      .watch(editProfileInHouseProvider)
+                      .profilePicture ==
+                      null
+                      ?
+                  Container(
+                    height: 105,
+                    width: 105,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: kPrimaryColor,
                     ),
+                    child: Center(
+                      child: Text(
+                          ref
+                              .watch(editProfileInHouseProvider)
+                              .profilePicture ==
+                              null
+                              ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
+                              : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
+                          style: textTheme.bodyText2!
+                              .copyWith(fontSize: 22)),
+                    ),
+                  )
+                      : Image.network(
+                    ref
+                        .watch(editProfileInHouseProvider)
+                        .profilePicture ??
+                        "",
+                    fit: BoxFit.cover,
+                    height: 100,
+                    width: 100,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes !=
+                              null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
                   ),
-                  progressColor: kPurpleColor,
                 ),
+                // CircularPercentIndicator(
+                //   radius: 40.0,
+                //   lineWidth: 8.0,
+                //   percent: 0.20,
+                //   backgroundColor: kPurple300,
+                //   center: ClipRRect(
+                //     borderRadius: BorderRadius.circular(116),
+                //     child: CachedNetworkImage(
+                //       height: 105,
+                //       width: 105,
+                //       imageUrl: ref
+                //               .watch(editProfileInHouseProvider)
+                //               .profilePicture ??
+                //           "",
+                //       placeholder: (context, url) => Container(
+                //         color: Colors.transparent,
+                //         height: 105,
+                //         width: 105,
+                //         child: const Center(
+                //           child: CircularProgressIndicator(
+                //             strokeWidth: 2,
+                //             valueColor:
+                //                 AlwaysStoppedAnimation<Color>(kPrimaryColor),
+                //           ),
+                //         ),
+                //       ),
+                //       fit: BoxFit.cover,
+                //       errorWidget: (context, url, error) => ref
+                //                   .watch(editProfileInHouseProvider)
+                //                   .profilePicture !=
+                //               null
+                //           ? Image.network(
+                //               ref
+                //                   .watch(editProfileInHouseProvider)
+                //                   .profilePicture!,
+                //               fit: BoxFit.fill,
+                //               loadingBuilder: (BuildContext context,
+                //                   Widget child,
+                //                   ImageChunkEvent? loadingProgress) {
+                //                 if (loadingProgress == null) return child;
+                //                 return Center(
+                //                   child: CircularProgressIndicator(
+                //                     value: loadingProgress.expectedTotalBytes !=
+                //                             null
+                //                         ? loadingProgress
+                //                                 .cumulativeBytesLoaded /
+                //                             loadingProgress.expectedTotalBytes!
+                //                         : null,
+                //                   ),
+                //                 );
+                //               },
+                //             )
+                //           : Column(
+                //               mainAxisAlignment: MainAxisAlignment.center,
+                //               children: [
+                //                 Container(
+                //                   height: kRegularPadding,
+                //                   width: kRegularPadding,
+                //                   decoration: BoxDecoration(
+                //                       shape: BoxShape.circle,
+                //                       color: kPurpleColor),
+                //                 ),
+                //                 SizedBox(
+                //                   height: kPadding,
+                //                 ),
+                //                 Container(
+                //                   height: kRegularPadding,
+                //                   width: 35,
+                //                   decoration: BoxDecoration(
+                //                       borderRadius: BorderRadius.only(
+                //                           topLeft:
+                //                               Radius.circular(kSmallPadding),
+                //                           bottomLeft: Radius.circular(kPadding),
+                //                           topRight:
+                //                               Radius.circular(kSmallPadding),
+                //                           bottomRight:
+                //                               Radius.circular(kPadding)),
+                //                       color: kPurpleColor500),
+                //                 )
+                //               ],
+                //             ),
+                //     ),
+                //   ),
+                //   progressColor: kPurpleColor,
+                // ),
               ),
               SizedBox(
                 height: kPadding,
@@ -203,7 +254,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         border: Border.all(color: kPurpleColor700, width: 0.7),
                         borderRadius: BorderRadius.circular(kSmallPadding)),
                     child: Text(
-                      "$tier $hiveTierLevel",
+                      "$tier ${ref.watch(editProfileInHouseProvider).tierLevels}",
                       style: textTheme.headline4!.copyWith(
                         color: kSecondaryPurple,
                         fontWeight: FontWeight.w700,
@@ -345,66 +396,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 icon: SvgPicture.asset(AssetPaths.logOutIcon),
                 textTheme: textTheme,
                 onTap: () {
+                  setState(() {
+                    nowDate = DateTime.now().add(Duration(minutes: 5));
+                  });
                   ref.invalidate(editProfileInHouseProvider);
-                  // if (ref
-                  //         .watch(editProfileInHouseProvider)
-                  //         .isPaymentBiometricActive ==
-                  //     null) {
-                  //   ref.read(editProfileInHouseProvider.notifier).state = ref
-                  //       .read(editProfileInHouseProvider.notifier)
-                  //       .state
-                  //       .copyWith(
-                  //           profilePicture: null,
-                  //           isLoginBiometricActive:
-                  //               userProfile.isLoginBiometricActive,
-                  //           isPaymentBiometricActive:
-                  //               userProfile.isPaymentBiometricActive,
-                  //           address: null,
-                  //           deviceToken: null,
-                  //           dob: null,
-                  //           email: null,
-                  //           fcmToken: null,
-                  //           firstName: null,
-                  //           lastName: null,
-                  //           gender: null,
-                  //           id: null,
-                  //           isUploadedIdentityCard: null,
-                  //           phoneNumber: null,
-                  //           referralCode: null,
-                  //           status: null,
-                  //           tag: null,
-                  //           tierLevels: null,
-                  //           userId: null);
-                  // } else {
-                  //   ref.read(editProfileInHouseProvider.notifier).state = ref
-                  //       .read(editProfileInHouseProvider.notifier)
-                  //       .state
-                  //       .copyWith(
-                  //           profilePicture: null,
-                  //           isLoginBiometricActive: ref
-                  //               .watch(editProfileInHouseProvider)
-                  //               .isLoginBiometricActive,
-                  //           isPaymentBiometricActive: ref
-                  //               .watch(editProfileInHouseProvider)
-                  //               .isPaymentBiometricActive,
-                  //           address: null,
-                  //           deviceToken: null,
-                  //           dob: null,
-                  //           email: null,
-                  //           fcmToken: null,
-                  //           firstName: null,
-                  //           lastName: null,
-                  //           gender: null,
-                  //           id: null,
-                  //           isUploadedIdentityCard: null,
-                  //           phoneNumber: null,
-                  //           referralCode: null,
-                  //           status: null,
-                  //           tag: null,
-                  //           tierLevels: null,
-                  //           userId: null);
-                  // }
-
+                  Hive.box(kUserBox).clear();
+                  SessionManager.setWalletBalance("");
                   pushToAndClearStack(
                     context,
                     LogInAccount(),
@@ -455,9 +452,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               phoneNumber: ref.watch(editProfileInHouseProvider).phoneNumber,
               email: ref.watch(editProfileInHouseProvider).email,
               utilityBill: ref.watch(editProfileInHouseProvider).utilityBill,
-              isLoginBiometricActive: ref.watch(editProfileInHouseProvider).isLoginBiometricActive,
-              isPaymentBiometricActive: ref.watch(editProfileInHouseProvider).isPaymentBiometricActive,
-              isUploadedIdentityCard: ref.watch(editProfileInHouseProvider).isUploadedIdentityCard);
+              isLoginBiometricActive:
+                  ref.watch(editProfileInHouseProvider).isLoginBiometricActive,
+              isPaymentBiometricActive: ref
+                  .watch(editProfileInHouseProvider)
+                  .isPaymentBiometricActive,
+              isUploadedIdentityCard:
+                  ref.watch(editProfileInHouseProvider).isUploadedIdentityCard);
     }
   }
 
@@ -480,7 +481,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       ref.read(editProfileInHouseProvider.notifier).state = ref
           .read(editProfileInHouseProvider.notifier)
           .state
-          .copyWith(tierLevels: userProfile.tierLevels, utilityBill: userProfile.utilityBill);
+          .copyWith(
+              tierLevels: userProfile.tierLevels,
+              utilityBill: userProfile.utilityBill);
       setState(() {
         hiveTierLevel = ref.watch(editProfileInHouseProvider).tierLevels;
       });
@@ -491,10 +494,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 class ProductImageSlider extends StatefulWidget {
   final List<BannerData> images;
 
-  const ProductImageSlider({
-    Key? key,
-    required this.images,
-  }) : super(key: key);
+  const ProductImageSlider({Key? key, required this.images}) : super(key: key);
 
   @override
   State<ProductImageSlider> createState() => _ProductImageSliderState();
@@ -503,7 +503,23 @@ class ProductImageSlider extends StatefulWidget {
 class _ProductImageSliderState extends State<ProductImageSlider> {
   late Timer _t;
   int _currentPage = 0;
-  late PageController _controller;
+  PageController _controller = PageController(initialPage: 0);
+
+  void startTicker() {
+    _t = Timer.periodic(Duration(seconds: 2), (Timer timer) {
+      if (_currentPage < widget.images.length - 1) {
+        _currentPage++;
+      } else {
+        _currentPage = 0;
+      }
+
+      _controller.animateToPage(
+        _currentPage,
+        duration: Duration(milliseconds: 350),
+        curve: Curves.easeIn,
+      );
+    });
+  }
 
   _onChanged(int index) {
     setState(() {
@@ -514,12 +530,14 @@ class _ProductImageSliderState extends State<ProductImageSlider> {
   @override
   void dispose() {
     _controller.dispose();
+    _t.cancel();
     super.dispose();
   }
 
   @override
   void initState() {
-    _controller = PageController();
+    // _controller = PageController();
+    startTicker();
     super.initState();
   }
 
@@ -528,7 +546,7 @@ class _ProductImageSliderState extends State<ProductImageSlider> {
     return Column(
       children: [
         Container(
-          height: 150,
+          height: 200,
           child: PageView.builder(
             scrollDirection: Axis.horizontal,
             physics: BouncingScrollPhysics(),
@@ -537,41 +555,61 @@ class _ProductImageSliderState extends State<ProductImageSlider> {
             itemCount: widget.images.length,
             itemBuilder: (context, index) {
               return ClipRRect(
-                  borderRadius: BorderRadius.circular(kMediumPadding),
-                  child: CachedNetworkImage(
-                      height: 150,
-                      width: 150,
-                      imageUrl: widget.images[index].imageUrl ?? "",
-                      placeholder: (context, url) => Container(
-                            color: Colors.transparent,
-                            height: 150,
-                            width: 150,
-                            child: const Center(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    kPrimaryColor),
-                              ),
-                            ),
-                          ),
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) => Image.network(
-                            widget.images[index].imageUrl!,
-                            fit: BoxFit.fill,
-                            loadingBuilder: (BuildContext context, Widget child,
-                                ImageChunkEvent? loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                                ),
-                              );
-                            },
-                          )));
+                borderRadius: BorderRadius.circular(kMediumPadding),
+                // child: CachedNetworkImage(
+                //     // height: 100,
+                //     // width: 150,
+                //     imageUrl: widget.images[index].imageUrl ?? "",
+                //     placeholder: (context, url) => Container(
+                //           color: Colors.transparent,
+                //           height: 150,
+                //           width: 150,
+                //           child: const Center(
+                //             child: CircularProgressIndicator(
+                //               strokeWidth: 2,
+                //               valueColor:
+                //                   AlwaysStoppedAnimation<Color>(kPrimaryColor),
+                //             ),
+                //           ),
+                //         ),
+                //     fit: BoxFit.scaleDown,
+                //     errorWidget: (context, url, error) => Image.network(
+                //           widget.images[index].imageUrl!,
+                //           fit: BoxFit.fill,
+                //           loadingBuilder: (BuildContext context, Widget child,
+                //               ImageChunkEvent? loadingProgress) {
+                //             if (loadingProgress == null) return child;
+                //             return Center(
+                //               child: CircularProgressIndicator(
+                //                 value: loadingProgress.expectedTotalBytes !=
+                //                         null
+                //                     ? loadingProgress.cumulativeBytesLoaded /
+                //                         loadingProgress.expectedTotalBytes!
+                //                     : null,
+                //               ),
+                //             );
+                //           },
+                //         )),
+                child: Container(
+                  margin: EdgeInsets.only(right: 10),
+                  child: Image.network(
+                    widget.images[index].imageUrl!,
+                    fit: BoxFit.fill,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
             },
           ),
         ),

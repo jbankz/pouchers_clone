@@ -12,6 +12,7 @@ import 'package:pouchers/modules/cards/screens/create_virtual_card.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
+import 'package:pouchers/utils/input_formatters.dart';
 import 'package:pouchers/utils/logger.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/utils.dart';
@@ -452,9 +453,9 @@ class _CardHomeState extends ConsumerState<CardHome> {
       "Authorization": "Bearer $cardUrl"
     };
     final url =
-        "https://tntbuyt0v9u.sandbox.verygoodproxy.com/cards/${widget.cardInfo!.cardId}/secure-data/cvv2";
+        "https://tntpaxvvvet.live.verygoodproxy.com/cards/${widget.cardInfo!.cardId}/secure-data/cvv2";
     final url2 =
-        "https://tntbuyt0v9u.sandbox.verygoodproxy.com/cards/${widget.cardInfo!.cardId}/secure-data/number";
+        "https://tntpaxvvvet.live.verygoodproxy.com/cards/${widget.cardInfo!.cardId}/secure-data/number";
 
     http.Response response = await http.get(
       Uri.parse(url),
@@ -528,7 +529,7 @@ class _CardHomeState extends ConsumerState<CardHome> {
                         height: kPadding,
                       ),
                       Text(
-                        data.account!.accountName!,
+                        data.customer!.name!.toTitleCase2(),
                         style: textTheme.bodyText2!.copyWith(
                             fontWeight: FontWeight.normal,
                             color: Color.fromRGBO(255, 255, 255, 0.8)),

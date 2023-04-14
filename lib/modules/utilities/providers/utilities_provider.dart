@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/helpers/response_handler.dart';
 import 'package:pouchers/modules/onboarding/model/onboarding_model.dart';
 import 'package:pouchers/modules/utilities/model/utilities_model.dart';
 import 'package:pouchers/modules/utilities/repository/utilities_repository.dart';
@@ -80,7 +79,7 @@ final guestUtilityUssdProvider = StateNotifierProvider<GuestUtilityUssdNotifier,
 
 
 class BuyVoucherNotifier extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+     {
   final UtilitiesRepository _repo;
 
   BuyVoucherNotifier(this._repo) : super(NotifierState());
@@ -100,22 +99,22 @@ class BuyVoucherNotifier extends StateNotifier<NotifierState<String>>
 
 class FetchVoucherNotifier
     extends StateNotifier<NotifierState<GetVoucherResponse>>
-    with ResponseHandler {
+   {
   final UtilitiesRepository _repo;
 
   FetchVoucherNotifier(this._repo) : super(NotifierState());
 
-  void fetchVoucher({required String status, Function()? then}) async {
+  void fetchVoucher({required String status, Function(List<Voucher>)? then}) async {
     state = notifyLoading();
     state = await _repo.fetchVoucher(status: status);
     if (state.status == NotifierStatus.done) {
-      if (then != null) then();
+      if (then != null) then(state.data!.data!.vouchers);
     }
   }
 }
 
 class GiftVoucherNotifier extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+    {
   final UtilitiesRepository _repo;
 
   GiftVoucherNotifier(this._repo) : super(NotifierState());
@@ -136,7 +135,7 @@ class GiftVoucherNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class RedeemVoucherNotifier extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+    {
   final UtilitiesRepository _repo;
 
   RedeemVoucherNotifier(this._repo) : super(NotifierState());
@@ -156,7 +155,7 @@ class RedeemVoucherNotifier extends StateNotifier<NotifierState<String>>
 
 class GetUtilitiesNotifier
     extends StateNotifier<NotifierState<GetUtilitiesResponse>>
-    with ResponseHandler {
+   {
   final UtilitiesRepository _repo;
 
   GetUtilitiesNotifier(this._repo) : super(NotifierState());
@@ -174,7 +173,7 @@ class GetUtilitiesNotifier
 
 class GetDiscountNotifier
     extends StateNotifier<NotifierState<DiscountResponse>>
-    with ResponseHandler {
+     {
   final UtilitiesRepository _repo;
 
   GetDiscountNotifier(this._repo) : super(NotifierState());
@@ -194,7 +193,7 @@ class GetDiscountNotifier
 
 class GetUtilitiesTypeNotifier
     extends StateNotifier<NotifierState<GetUtilitiesTypesResponse>>
-    with ResponseHandler {
+     {
   final UtilitiesRepository _repo;
 
   GetUtilitiesTypeNotifier(this._repo) : super(NotifierState());
@@ -213,7 +212,7 @@ class GetUtilitiesTypeNotifier
 
 class GetDataBundleNotifier
     extends StateNotifier<NotifierState<DataBundleResponse>>
-    with ResponseHandler {
+     {
   final UtilitiesRepository _repo;
 
   GetDataBundleNotifier(this._repo) : super(NotifierState());
@@ -232,7 +231,7 @@ class GetDataBundleNotifier
 
 class CheckStatusNotifier
     extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+  {
   final UtilitiesRepository _repo;
 
   CheckStatusNotifier(this._repo) : super(NotifierState());
@@ -252,7 +251,7 @@ class CheckStatusNotifier
 
 
 class BuyUtilitiesNotifier extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+   {
   final UtilitiesRepository _repo;
 
   BuyUtilitiesNotifier(this._repo) : super(NotifierState());
@@ -291,7 +290,7 @@ class BuyUtilitiesNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class BuyAirtimeNotifier extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+    {
   final UtilitiesRepository _repo;
 
   BuyAirtimeNotifier(this._repo) : super(NotifierState());
@@ -329,7 +328,7 @@ class BuyAirtimeNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class GuestAirtimeNotifier extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+     {
   final UtilitiesRepository _repo;
 
   GuestAirtimeNotifier(this._repo) : super(NotifierState());
@@ -366,7 +365,7 @@ class GuestAirtimeNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class GuestUssdNotifier extends StateNotifier<NotifierState<UssdResponse>>
-    with ResponseHandler {
+     {
   final UtilitiesRepository _repo;
 
   GuestUssdNotifier(this._repo) : super(NotifierState());
@@ -403,7 +402,7 @@ class GuestUssdNotifier extends StateNotifier<NotifierState<UssdResponse>>
 }
 
 class GuestUtilityUssdNotifier extends StateNotifier<NotifierState<UssdResponse>>
-    with ResponseHandler {
+    {
   final UtilitiesRepository _repo;
 
   GuestUtilityUssdNotifier(this._repo) : super(NotifierState());

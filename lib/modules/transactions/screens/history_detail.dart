@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 // import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +17,10 @@ import 'package:pouchers/modules/transactions/components/transaction_components.
 import 'package:pouchers/modules/transactions/model/transaction_model.dart';
 import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
 import 'package:pouchers/utils/assets_path.dart';
+import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
+import 'package:pouchers/utils/flushbar.dart';
+import 'package:pouchers/utils/input_formatters.dart';
 import 'package:pouchers/utils/logger.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/utils.dart';
@@ -81,7 +85,7 @@ class HistoryDetail extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    "${item!.transactionCategory}",
+                    "${item!.transactionCategory!.toTitleCase()}",
                     style: textTheme.headline3!.copyWith(
                         color: kBlueColorDark, fontWeight: FontWeight.w500),
                   ),
@@ -131,21 +135,28 @@ class HistoryDetail extends StatelessWidget {
               text: status,
               subText: item!.status ?? "",
             ),
-            TransactionDetails(
+            item!.extraDetails!.subCategory == null
+                ? SizedBox()
+                : TransactionDetails(
               textTheme: textTheme,
               text: paidWith,
               subText: "BalancePayment",
             ),
-            TransactionDetails(
-              textTheme: textTheme,
-              text: operator,
-              subText: item!.extraDetails!.subCategory ?? "No Sub Category",
-            ),
-            TransactionDetails(
-              textTheme: textTheme,
-              text: phoneNumberText,
-              subText: item!.extraDetails!.phoneNumber ?? "No PhoneNumber",
-            ),
+            item!.extraDetails!.subCategory == null
+                ? SizedBox()
+                : TransactionDetails(
+                    textTheme: textTheme,
+                    text: operator,
+                    subText: item!.extraDetails!.subCategory!,
+                  ),
+            item!.extraDetails!.phoneNumber == null
+                ? SizedBox()
+                : TransactionDetails(
+                    textTheme: textTheme,
+                    text: phoneNumberText,
+                    subText:
+                        item!.extraDetails!.phoneNumber ?? "No PhoneNumber",
+                  ),
             SizedBox(
               height: kRegularPadding,
             ),
@@ -177,45 +188,59 @@ class HistoryDetail extends StatelessWidget {
               ),
             ),
             SizedBox(
+              height: kSmallPadding,
+            ),
+            inkWell(
+              onTap: (){
+                Clipboard.setData(ClipboardData(text: item!.transactionReference));
+                showSuccessBar(context, "Copied");
+              },
+              child: Text(
+                tapCopy,
+                style: textTheme.headline3!.copyWith(
+                  color: kIconGrey,
+                ),
+              ),
+            ),
+            SizedBox(
               height: kRegularPadding,
             ),
             LargeButton(
                 title: getReceipt,
                 onPressed: () async {
-                        await Printing.sharePdf(
-                          bytes:
-                              await DownloadTransactionReceipt.generate(item!),
-                          filename:
-                              'receipt_${DateTime.now().millisecondsSinceEpoch}.pdf',
-                        );
-                      })
+                  await Printing.sharePdf(
+                    bytes: await DownloadTransactionReceipt.generate(item!),
+                    filename:
+                        'receipt_${DateTime.now().millisecondsSinceEpoch}.pdf',
+                  );
+                })
           ],
         ),
       ),
     );
   }
 
-  // Future<void> _requestDownload(String _url, String _name) async {
-  //   String dir;
-  //   if (Platform.isIOS) {
-  //     dir = (await getApplicationDocumentsDirectory()).path;
-  //   } else {
-  //     dir = "/sdcard/download/";
-  //     // dir = (await getExternalStorageDirectory())!.path;
-  //   }
-  //   var _localPath = dir + _name;
-  //   final savedDir = Directory(_localPath);
-  //   await savedDir.create(recursive: true).then((value) async {
-  //     String? _taskid = await FlutterDownloader.enqueue(
-  //       url: _url.split(" ")[1],
-  //       fileName: "receipt",
-  //       savedDir: _localPath,
-  //       showNotification: true,
-  //       openFileFromNotification: true,
-  //     );
-  //     print(_taskid);
-  //   });
-  // }
+// Future<void> _requestDownload(String _url, String _name) async {
+//   String dir;
+//   if (Platform.isIOS) {
+//     dir = (await getApplicationDocumentsDirectory()).path;
+//   } else {
+//     dir = "/sdcard/download/";
+//     // dir = (await getExternalStorageDirectory())!.path;
+//   }
+//   var _localPath = dir + _name;
+//   final savedDir = Directory(_localPath);
+//   await savedDir.create(recursive: true).then((value) async {
+//     String? _taskid = await FlutterDownloader.enqueue(
+//       url: _url.split(" ")[1],
+//       fileName: "receipt",
+//       savedDir: _localPath,
+//       showNotification: true,
+//       openFileFromNotification: true,
+//     );
+//     print(_taskid);
+//   });
+// }
 }
 
 class pdfApi {
@@ -344,7 +369,9 @@ class DownloadTransactionReceipt {
                 decoration: pdfWidget.BoxDecoration(
                     shape: pdfWidget.BoxShape.circle,
                     color: pdfSaver.PdfColor.fromHex("00BB64")),
-                child: pdfWidget.Image(pdfWidget.MemoryImage(checkImage),),
+                child: pdfWidget.Image(
+                  pdfWidget.MemoryImage(checkImage),
+                ),
               ),
             ),
           ),
@@ -382,7 +409,8 @@ class DownloadTransactionReceipt {
                       fontSize: 16,
                     )),
               ),
-              pdfWidget.Text("- ₦${kPriceFormatter(double.parse(item.amount!))}",
+              pdfWidget.Text(
+                  "- ₦${kPriceFormatter(double.parse(item.amount!))}",
                   style: pdfWidget.TextStyle(
                     fontSize: 20,
                     font: nairaTtf,

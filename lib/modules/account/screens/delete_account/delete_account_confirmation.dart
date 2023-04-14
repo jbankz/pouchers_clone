@@ -86,11 +86,11 @@ class _DeleteConfirmState extends State<DeleteConfirm> {
                       },
                       child: obscure
                           ? Icon(
-                              Icons.visibility_off_outlined,
-                              color: kSecondaryTextColor,
-                            )
-                          : Icon(Icons.visibility_outlined,
-                              color: kSecondaryTextColor),
+                        Icons.visibility_outlined,
+                        color: kSecondaryTextColor,
+                      )
+                          : Icon(Icons.visibility_off_outlined,
+                          color: kSecondaryTextColor)
                     ),
                   ),
                 ],

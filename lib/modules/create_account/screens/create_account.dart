@@ -162,11 +162,11 @@ class _CreateAccountState extends State<CreateAccount> {
                 },
                 child: obscure
                     ? Icon(
-                        Icons.visibility_off_outlined,
-                        color: kSecondaryTextColor,
-                      )
-                    : Icon(Icons.visibility_outlined,
-                        color: kSecondaryTextColor),
+                  Icons.visibility_outlined,
+                  color: kSecondaryTextColor,
+                )
+                    : Icon(Icons.visibility_off_outlined,
+                    color: kSecondaryTextColor)
               ),
             ),
             Text(

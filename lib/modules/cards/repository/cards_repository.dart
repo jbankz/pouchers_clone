@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pouchers/app/helpers/network_helpers.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
+import 'package:pouchers/app/helpers/service_response.dart';
+import 'package:pouchers/app/helpers/session_manager.dart';
 import 'package:pouchers/modules/cards/model/cards_model.dart';
 import 'package:pouchers/modules/cards/service/cards_service.dart';
 import 'package:pouchers/modules/login/models/login_response.dart';
@@ -24,90 +26,166 @@ class CardsRepository {
       required String currency,
       required String bvn,
       required double amount,
-        required String brand,
+      required String brand,
       required String transactionPin}) async {
-    final accessToken = await getAccessToken();
-    return (await CardsService.createVirtualCard(
-            address: address,
-            token: accessToken!,
-            amount: amount,
-            transactionPin: transactionPin,
-            bvn: bvn,
-            city: city,
-            country: country,
-            brand: brand,
-            currency: currency,
-            postalCode: postalCode,
-            state: state))
-        .toNotifierState();
+    ServiceResponse<String> createCard;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    createCard = await CardsService.createVirtualCard(
+        address: address,
+        token: userProfile.token!,
+        amount: amount,
+        transactionPin: transactionPin,
+        bvn: bvn,
+        city: city,
+        country: country,
+        brand: brand,
+        currency: currency,
+        postalCode: postalCode,
+        state: state);
+    if (createCard.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      createCard = await CardsService.createVirtualCard(
+          address: address,
+          token: userProfiles.token!,
+          amount: amount,
+          transactionPin: transactionPin,
+          bvn: bvn,
+          city: city,
+          country: country,
+          brand: brand,
+          currency: currency,
+          postalCode: postalCode,
+          state: state);
+    }
+    return createCard.toNotifierState();
   }
 
   Future<NotifierState<GetAllCardsResponse>> getAllVirtualCards() async {
-    final accessToken = await getAccessToken();
+    ServiceResponse<GetAllCardsResponse> cardsResponse;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-
-    return (await CardsService.getAllVirtualCards(
-            token: accessToken!, userId: userProfile.userId!))
-        .toNotifierState();
+     print("access Token ${userProfile.token}");
+    print("refresh Token ${userProfile.refreshToken}");
+    cardsResponse = await CardsService.getAllVirtualCards(
+        token: userProfile.token!, userId: userProfile.userId!);
+    if (cardsResponse.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      cardsResponse = await CardsService.getAllVirtualCards(
+          token: userProfiles.token!, userId: userProfiles.userId!);
+    }
+      print("cardsResponse${cardsResponse.notAuthenticated}");
+    return cardsResponse.toNotifierState();
   }
 
   Future<NotifierState<FetchEnvs>> getAllFees({required double amount}) async {
-    final accessToken = await getAccessToken();
+    ServiceResponse<FetchEnvs> fetchEnv;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    fetchEnv = await CardsService.getAllFees(
+        token: userProfile.token!, amount: amount);
 
-    return (await CardsService.getAllFees(token: accessToken!, amount: amount))
-        .toNotifierState();
+    if (fetchEnv.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      fetchEnv = await CardsService.getAllFees(
+          token: userProfiles.token!, amount: amount);
+    }
+    return fetchEnv.toNotifierState();
   }
 
   Future<NotifierState<String>> fundVirtualCard(
       {required String type,
       required double amount,
       required String transactionPin}) async {
-    final accessToken = await getAccessToken();
-    return (await CardsService.fundVirtualCard(
+    ServiceResponse<String> fundCard;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    fundCard = await CardsService.fundVirtualCard(
       type: type,
-      token: accessToken!,
+      token: userProfile.token!,
       amount: amount,
       transactionPin: transactionPin,
-    ))
-        .toNotifierState();
+    );
+
+    if (fundCard.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      fundCard = await CardsService.fundVirtualCard(
+        type: type,
+        token: userProfiles.token!,
+        amount: amount,
+        transactionPin: transactionPin,
+      );
+    }
+    return fundCard.toNotifierState();
   }
 
   Future<NotifierState<GetCardDetailsResponse>> getCardDetails(
       {required cardId}) async {
-    final accessToken = await getAccessToken();
+    ServiceResponse<GetCardDetailsResponse> cardDetails;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    cardDetails = await CardsService.getCardDetails(
+        token: userProfile.token!, cardId: cardId);
 
-    return (await CardsService.getCardDetails(
-            token: accessToken!, cardId: cardId))
-        .toNotifierState();
+    if (cardDetails.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      cardDetails = await CardsService.getCardDetails(
+          token: userProfiles.token!, cardId: cardId);
+    }
+    return cardDetails.toNotifierState();
   }
 
   Future<NotifierState<String>> getCardToken({required cardId}) async {
-    final accessToken = await getAccessToken();
+    ServiceResponse<String> getCardToken;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    getCardToken = await CardsService.getCardToken(
+        token: userProfile.token!, cardId: cardId);
 
-    return (await CardsService.getCardToken(
-            token: accessToken!, cardId: cardId))
-        .toNotifierState();
+    if (getCardToken.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      getCardToken = await CardsService.getCardToken(
+          token: userProfiles.token!, cardId: cardId);
+    }
+    return getCardToken.toNotifierState();
   }
 
   Future<NotifierState<int>> getCardBalance({required cardId}) async {
-    final accessToken = await getAccessToken();
+    ServiceResponse<int> cardBalance;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    cardBalance = await CardsService.getCardBalance(
+        token: userProfile.token!, cardId: cardId);
 
-    return (await CardsService.getCardBalance(
-        token: accessToken!, cardId: cardId))
-        .toNotifierState();
+    if (cardBalance.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      cardBalance = await CardsService.getCardBalance(
+          token: userProfiles.token!, cardId: cardId);
+    }
+    return cardBalance.toNotifierState();
   }
 
   Future<NotifierState<String>> freezeCard(
       {required String cardId,
       required String type,
       required String transactionPin}) async {
-    final accessToken = await getAccessToken();
+    ServiceResponse<String> freeze;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    freeze = await CardsService.freezeCard(
+        token: userProfile.token!,
+        cardId: cardId,
+        transactionPin: transactionPin,
+        type: type);
 
-    return (await CardsService.freezeCard(
-            token: accessToken!,
-            cardId: cardId,
-            transactionPin: transactionPin,
-            type: type))
-        .toNotifierState();
+    if (freeze.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      freeze = await CardsService.freezeCard(
+          token: userProfiles.token!,
+          cardId: cardId,
+          transactionPin: transactionPin,
+          type: type);
+    }
+    return freeze.toNotifierState();
   }
 }

@@ -3,15 +3,36 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pouchers/app/helpers/session_manager.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/modules/login/screens/login.dart';
+import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/widgets.dart';
 
 mixin ResponseHandler {
-  handleExpiredToken(BuildContext context) async {
-    _showLogoutDialog(context);
+
+  void restartApplication(BuildContext context, String? message) {
+    SessionManager.clear();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(
+        const Duration(milliseconds: 1000),
+            () => pushToAndClearStack(
+          context,
+          const LogInAccount(),
+        ),
+      );
+    });
+  }
+//10:28 am
+  //iphone 11
+
+  handleExpiredToken(BuildContext context, ) async {
+    _showLogoutDialog(context );
   }
 
   void _showLogoutDialog(BuildContext context) {
-    var content = const Text('Your session has expired');
+    var content = const Text('Your session has expired', style: TextStyle(
+      color: kPrimaryColor
+    ),);
     if (Platform.isIOS) {
       showDialog(
           context: context,
@@ -23,10 +44,10 @@ mixin ResponseHandler {
                 CupertinoDialogAction(
                   child: const Text('OK'),
                   isDefaultAction: true,
-                  onPressed: () async {
+                  onPressed: (){
                     Navigator.pop(context);
-                    await deleteSelectBoxes();
-                  },
+                    pushToAndClearStack(context, LogInAccount());
+                  }
                 ),
               ],
             );
@@ -38,11 +59,12 @@ mixin ResponseHandler {
           builder: (BuildContext context) {
             return AlertDialog(
               content: content,
+backgroundColor: kPrimaryWhite,
               actions: <Widget>[
                 LargeButton(
-                  onPressed: () async {
+                  onPressed: (){
                     Navigator.pop(context);
-                    await deleteSelectBoxes();
+                    pushToAndClearStack(context, LogInAccount());
                   },
                   title: 'OK',
                 )
@@ -50,9 +72,5 @@ mixin ResponseHandler {
             );
           });
     }
-  }
-
-  Future<void> deleteSelectBoxes() async {
-    SessionManager.clear();
   }
 }

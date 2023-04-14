@@ -66,7 +66,7 @@ class LargeButton extends StatelessWidget {
             : Text(
                 title,
                 style: textTheme.subtitle1!.copyWith(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w700,
                     color: download
                         ? kPrimaryColor
                         : whiteButton
@@ -246,7 +246,8 @@ class OnBoardingWidget extends StatelessWidget {
                         color: kPrimaryWhite,
                       ),
                     ),
-                    child: Image.asset(
+                    child:
+                    SvgPicture.asset(
                       AssetPaths.send,
                     )),
               ),

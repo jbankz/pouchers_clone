@@ -19,7 +19,14 @@ class TransferSuccess extends StatelessWidget {
   final String? typeOfTransfer;
   final bool isRequest;
   final P2PResponse? response;
-  final String? transferName, accNo, amount, beneficiary, tag, note, senderName, status;
+  final String? transferName,
+      accNo,
+      amount,
+      beneficiary,
+      tag,
+      note,
+      senderName,
+      status;
   final double? transactionFee;
 
   const TransferSuccess(
@@ -30,11 +37,11 @@ class TransferSuccess extends StatelessWidget {
       this.amount,
       this.accNo,
       this.beneficiary,
-        this.status,
-        this.senderName,
+      this.status,
+      this.senderName,
       this.transferName,
       this.response,
-        this.transactionFee,
+      this.transactionFee,
       this.tag,
       this.note})
       : super(key: key);
@@ -73,8 +80,9 @@ class TransferSuccess extends StatelessWidget {
             isRequest
                 ? SizedBox()
                 : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+
                       TransferRowWidget(
                         onTap: () {
                           pushTo(
@@ -112,7 +120,7 @@ class TransferSuccess extends StatelessWidget {
                           )..rotateX(math.pi),
                           alignment: Alignment.center,
                           child: RotationTransition(
-                            turns: AlwaysStoppedAnimation(0.87),
+                            turns: AlwaysStoppedAnimation(0.97),
                             child: Icon(
                               Icons.sync,
                               color: kPrimaryColor,
@@ -145,6 +153,8 @@ class TransferSuccess extends StatelessWidget {
                         },
                         icon: SvgPicture.asset(
                           AssetPaths.uploadOutlineIcon,
+                          height: 20,
+                          width: 20,
                         ),
                         text: shareReceipt,
                       ),

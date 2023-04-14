@@ -13,6 +13,7 @@ import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:collection/collection.dart';
+import 'package:pouchers/utils/input_formatters.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/utils.dart';
 import 'package:pouchers/utils/widgets.dart';
@@ -28,7 +29,7 @@ class History extends ConsumerStatefulWidget {
 
 class _HistoryState extends ConsumerState<History> {
   int currentIndex = 0;
-  String dateFormatter = 'MMM, dd, yyy';
+  String dateFormatter = 'MMM dd, yyy';
   List<GetTransactionsData> transactionData = [];
 
   @override
@@ -182,132 +183,136 @@ class _HistoryState extends ConsumerState<History> {
                         ),
                       )
                     : Expanded(
-                        child: ListView.builder(
-                          itemCount: transactionData.length,
-                          itemBuilder: (_, index) {
-                            bool isSameDate = true;
-                            final DateTime date =
-                                transactionData[index].createdAt!;
-                            final item = transactionData[index];
-                            if (index == 0) {
-                              isSameDate = false;
-                            } else {
-                              final DateTime prevDate =
-                                  transactionData[index - 1].createdAt!;
-                              isSameDate = date.isSameDate(prevDate);
-                            }
-                            var _widget = inkWell(
-                              onTap: () {
-                                if (transactionData[index]
-                                    .transactionCategory!
-                                    .contains("p2p")) {
-                                  if (transactionData[index].transactionType ==
-                                      "debit") {
+                        child: RefreshIndicator(
+                          onRefresh: refresh,
+                          color: kPrimaryColor,
+                          child: ListView.builder(
+                            itemCount: transactionData.length,
+                            itemBuilder: (_, index) {
+                              bool isSameDate = true;
+                              final DateTime date =
+                                  transactionData[index].createdAt!;
+                              final item = transactionData[index];
+                              if (index == 0) {
+                                isSameDate = false;
+                              } else {
+                                final DateTime prevDate =
+                                    transactionData[index - 1].createdAt!;
+                                isSameDate = date.isSameDate(prevDate);
+                              }
+                              var _widget = inkWell(
+                                onTap: () {
+                                  if (transactionData[index]
+                                      .transactionCategory!
+                                      .contains("p2p")) {
+                                    if (transactionData[index].transactionType ==
+                                        "debit") {
+                                      pushTo(
+                                          context,
+                                          TransactionReceipt(
+                                              typeOfTransfer: "p2p",
+                                              accNo: "",
+                                              fromWhere: "history",
+                                              tag: transactionData[index]
+                                                  .extraDetails!
+                                                  .senderTag,
+                                              transactionId: transactionData[index].transactionId,
+                                              transactionTime:
+                                              transactionData[index]
+                                                  .createdAt!,
+                                              senderName: transactionData[index]
+                                                  .extraDetails!.senderName,
+                                              amount:
+                                              transactionData[index].amount,
+                                              transferName: "",
+                                              beneficiary: transactionData[index]
+                                                  .beneficiaryName ??
+                                                  "No name"),
+                                          settings: RouteSettings(
+                                              name: TransactionReceipt.routeName));
+                                    }
+                                  }else{
                                     pushTo(
                                         context,
-                                        TransactionReceipt(
-                                            typeOfTransfer: "p2p",
-                                            accNo: "",
-                                            fromWhere: "history",
-                                            tag: transactionData[index]
-                                                .extraDetails!
-                                                .senderTag,
-                                            transactionId: transactionData[index].transactionId,
-                                            transactionTime:
-                                            transactionData[index]
-                                                .createdAt!,
-                                            senderName: transactionData[index]
-                                                .extraDetails!.senderName,
-                                            amount:
-                                            transactionData[index].amount,
-                                            transferName: "",
-                                            beneficiary: transactionData[index]
-                                                .beneficiaryName ??
-                                                "No name"),
+                                        HistoryDetail(
+                                          item: transactionData[index],
+                                        ),
                                         settings: RouteSettings(
-                                            name: TransactionReceipt.routeName));
+                                            name: HistoryDetail.routeName));
                                   }
-                                }else{
-                                  pushTo(
-                                      context,
-                                      HistoryDetail(
-                                        item: transactionData[index],
-                                      ),
-                                      settings: RouteSettings(
-                                          name: HistoryDetail.routeName));
-                                }
-                              },
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          item.transactionCategory!
-                                                  .contains("transfer")
-                                              ? item.beneficiaryName ??
-                                                  item.transactionCategory
-                                              : item.transactionCategory!,
-                                          style: textTheme.bodyText1!.copyWith(
-                                            color: kBlueColorDark,
+                                },
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            item.transactionCategory!
+                                                    .contains("transfer")
+                                                ? item.beneficiaryName ??
+                                                    item.transactionCategory!.toTitleCase()
+                                                : item.transactionCategory!.toTitleCase(),
+                                            style: textTheme.bodyText1!.copyWith(
+                                              color: kBlueColorDark,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      NairaWidget(
-                                        text: kPriceFormatter(
-                                            double.parse(item.amount!)),
-                                        textStyle1: TextStyle(
-                                            fontSize: 16,
-                                            color:
-                                                item.transactionType == "debit"
-                                                    ? kColorRedDeep
-                                                    : kColorGreen),
-                                        textStyle2: textTheme.headline3!
-                                            .copyWith(
-                                                color: item.transactionType ==
-                                                        "debit"
-                                                    ? kColorRedDeep
-                                                    : kColorGreen),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: kRegularPadding,
-                                  ),
-                                  Divider(
-                                    thickness: 1,
-                                    color: kContainerColor,
-                                  ),
-                                  SizedBox(
-                                    height: kRegularPadding,
-                                  ),
-                                ],
-                              ),
-                            );
-                            if (index == 0 || !(isSameDate)) {
-                              return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      date.formatDate(dateFormatter),
-                                      style: textTheme.headline6,
+                                        NairaWidget(
+                                          text: kPriceFormatter(
+                                              double.parse(item.amount!)),
+                                          textStyle1: TextStyle(
+                                              fontSize: 16,
+                                              color:
+                                                  item.transactionType == "debit"
+                                                      ? kColorRedDeep
+                                                      : kColorGreen),
+                                          textStyle2: textTheme.headline3!
+                                              .copyWith(
+                                                  color: item.transactionType ==
+                                                          "debit"
+                                                      ? kColorRedDeep
+                                                      : kColorGreen),
+                                        ),
+                                      ],
                                     ),
                                     SizedBox(
-                                      height: kPadding,
+                                      height: kRegularPadding,
                                     ),
                                     Divider(
                                       thickness: 1,
                                       color: kContainerColor,
                                     ),
                                     SizedBox(
-                                      height: kPadding,
+                                      height: kRegularPadding,
                                     ),
-                                    _widget,
-                                  ]);
-                            } else {
-                              return _widget;
-                            }
-                          },
+                                  ],
+                                ),
+                              );
+                              if (index == 0 || !(isSameDate)) {
+                                return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        date.formatDate(dateFormatter),
+                                        style: textTheme.headline6,
+                                      ),
+                                      SizedBox(
+                                        height: kPadding,
+                                      ),
+                                      Divider(
+                                        thickness: 1,
+                                        color: kContainerColor,
+                                      ),
+                                      SizedBox(
+                                        height: kPadding,
+                                      ),
+                                      _widget,
+                                    ]);
+                              } else {
+                                return _widget;
+                              }
+                            },
+                          ),
                         ),
                       );
               } else {
@@ -317,5 +322,10 @@ class _HistoryState extends ConsumerState<History> {
             loading: () => SpinKitDemo())
       ],
     );
+  }
+  Future refresh() async {
+    ref
+        .read(getTransactionHistoryProvider.notifier)
+        .getTransactionHistory(status: "");
   }
 }

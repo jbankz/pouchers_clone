@@ -31,7 +31,7 @@ final resetPasswordProvider = StateNotifierProvider.autoDispose<
 
 class LogInNotifier
     extends StateNotifier<NotifierState<VerifyEmailResponse>>
-    with ResponseHandler {
+     {
   final LogInRepository _repo;
 
   LogInNotifier(this._repo) : super(NotifierState());
@@ -41,7 +41,7 @@ class LogInNotifier
       {required String phoneNumber,
         required String password,
         required bool isEmail,
-        Function()? then}) async {
+        Function()? then,  Function(bool)? noAuth,}) async {
     state = notifyLoading();
     state = await _repo.logIn(
       phoneNumber: phoneNumber,
@@ -50,13 +50,15 @@ class LogInNotifier
     );
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
+    }else if(state.noAuth){
+      if (noAuth != null) noAuth(state.noAuth);
     }
   }
 }
 
 class ForgotPasswordNotifier
     extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+    {
   final LogInRepository _repo;
 
   ForgotPasswordNotifier(this._repo) : super(NotifierState());
@@ -77,7 +79,7 @@ class ForgotPasswordNotifier
 
 class ValidateForgotPasswordNotifier
     extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+     {
   final LogInRepository _repo;
 
   ValidateForgotPasswordNotifier(this._repo) : super(NotifierState());
@@ -100,7 +102,7 @@ class ValidateForgotPasswordNotifier
 
 class ResetPasswordNotifier
     extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+    {
   final LogInRepository _repo;
 
   ResetPasswordNotifier(this._repo) : super(NotifierState());

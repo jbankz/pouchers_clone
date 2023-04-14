@@ -1,7 +1,11 @@
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pouchers/app/helpers/network_helpers.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
+import 'package:pouchers/app/helpers/service_response.dart';
+import 'package:pouchers/modules/login/models/login_response.dart';
 import 'package:pouchers/modules/make_payment/models/make_payment_model.dart';
 import 'package:pouchers/modules/make_payment/service/payment_service.dart';
+import 'package:pouchers/utils/strings.dart';
 import 'package:riverpod/riverpod.dart';
 
 final paymentRepoProvider =
@@ -14,18 +18,34 @@ class PaymentRepository {
 
   Future<NotifierState<Map<String, dynamic>>> getContactByPoucherTag(
       {required String poucherTag}) async {
-    final accessToken = await getAccessToken();
-    return (await PaymentService.getContactByPoucherTag(
-            token: accessToken!, poucherTag: poucherTag))
-        .toNotifierState();
+    ServiceResponse<Map<String, dynamic>> getContactByPoucherTag;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    getContactByPoucherTag = await PaymentService.getContactByPoucherTag(
+        token: userProfile.token!, poucherTag: poucherTag);
+
+    if (getContactByPoucherTag.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      getContactByPoucherTag = await PaymentService.getContactByPoucherTag(
+          token: userProfiles.token!, poucherTag: poucherTag);
+    }
+    return getContactByPoucherTag.toNotifierState();
   }
 
   Future<NotifierState<ContactListResponse>> getAllContacts(
       {required List<String> contacts}) async {
-    final accessToken = await getAccessToken();
-    return (await PaymentService.getAllContacts(
-            token: accessToken!, contacts: contacts))
-        .toNotifierState();
+    ServiceResponse<ContactListResponse> getAllContacts;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    getAllContacts = await PaymentService.getAllContacts(
+        token: userProfile.token!, contacts: contacts);
+
+    if (getAllContacts.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      getAllContacts = await PaymentService.getAllContacts(
+          token: userProfiles.token!, contacts: contacts);
+    }
+    return getAllContacts.toNotifierState();
   }
 
   Future<NotifierState<RequestResponse>> requestMoney({
@@ -33,31 +53,53 @@ class PaymentRepository {
     required String amount,
     required String note,
   }) async {
-    final accessToken = await getAccessToken();
-    return (await PaymentService.requestMoney(
-      token: accessToken!,
+    ServiceResponse<RequestResponse> requestMoney;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    requestMoney = await PaymentService.requestMoney(
+      token: userProfile.token!,
       amount: amount,
       tag: tag,
       note: note,
-    ))
-        .toNotifierState();
+    );
+
+    if (requestMoney.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      requestMoney = await PaymentService.requestMoney(
+        token: userProfiles.token!,
+        amount: amount,
+        tag: tag,
+        note: note,
+      );
+    }
+    return requestMoney.toNotifierState();
   }
 
-  Future<NotifierState<P2PResponse>> p2pMoney({
-    required String tag,
-    required String amount,
-    required String note,
-    required String transactionPin
-  }) async {
-    final accessToken = await getAccessToken();
-    return (await PaymentService.p2p(
-      token: accessToken!,
-      amount: amount,
-      tag: tag,
-      note: note,
-      transactionPin: transactionPin
-    ))
-        .toNotifierState();
+  Future<NotifierState<P2PResponse>> p2pMoney(
+      {required String tag,
+      required String amount,
+      required String note,
+      required String transactionPin}) async {
+    ServiceResponse<P2PResponse> p2pMoney;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    p2pMoney = await PaymentService.p2p(
+        token: userProfile.token!,
+        amount: amount,
+        tag: tag,
+        note: note,
+        transactionPin: transactionPin);
+
+    if (p2pMoney.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      p2pMoney = await PaymentService.p2p(
+          token: userProfiles.token!,
+          amount: amount,
+          tag: tag,
+          note: note,
+          transactionPin: transactionPin);
+    }
+    return p2pMoney.toNotifierState();
   }
 
   Future<NotifierState<AccountDetailsResponse>> accountDetails({
@@ -65,44 +107,68 @@ class PaymentRepository {
     required String amount,
     required String bankName,
   }) async {
-    final accessToken = await getAccessToken();
-    return (await PaymentService.accountDetails(
-      token: accessToken!,
-      amount: amount,
-      accountNumber: accountNumber,
-      bankName: bankName
-    ))
-        .toNotifierState();
+
+    ServiceResponse<AccountDetailsResponse> accountDetails;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    accountDetails = await PaymentService.accountDetails(
+        token: userProfile.token!,  amount: amount,
+        accountNumber: accountNumber,
+        bankName: bankName);
+
+    if (accountDetails.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      accountDetails = await PaymentService.accountDetails(
+          token: userProfiles.token!,  amount: amount,
+          accountNumber: accountNumber,
+          bankName: bankName);
+    }
+    return accountDetails.toNotifierState();
   }
 
   Future<NotifierState<GetAllBanksResponse>> getAllBanks() async {
-    return (await PaymentService.getAllBanks())
-        .toNotifierState();
+    return (await PaymentService.getAllBanks()).toNotifierState();
   }
 
-  Future<NotifierState<LocalTransferResponse>> localBankTransfer({required String accountNumber,
-    required String bankName,
-    required String amount, required String transactionPin}) async {
-    final accessToken = await getAccessToken();
-    return (await PaymentService.localBankTransfer(
-        token: accessToken!,
-        accountNumber: accountNumber,
+  Future<NotifierState<LocalTransferResponse>> localBankTransfer(
+      {required String accountNumber,
+      required String bankName,
+      required String amount,
+      required String transactionPin}) async {
+
+    ServiceResponse<LocalTransferResponse> localBankTransfer;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    localBankTransfer = await PaymentService.localBankTransfer(
+        token: userProfile.token!,   accountNumber: accountNumber,
         amount: amount,
         bankName: bankName,
-      transactionPin: transactionPin
+        transactionPin: transactionPin);
 
-    ))
-        .toNotifierState();
+    if (localBankTransfer.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      localBankTransfer = await PaymentService.localBankTransfer(
+          token: userProfiles.token!,   accountNumber: accountNumber,
+          amount: amount,
+          bankName: bankName,
+          transactionPin: transactionPin);
+    }
+    return localBankTransfer.toNotifierState();
+
   }
 
   Future<NotifierState<GetWalletResponse>> getWalletDetails() async {
-    final accessToken = await getAccessToken();
-    return (await PaymentService.getWalletDetails(
-        token: accessToken!,
-    ))
-        .toNotifierState();
+    ServiceResponse<GetWalletResponse> getWalletDetails;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    getWalletDetails = await PaymentService.getWalletDetails(
+        token: userProfile.token!,);
+
+    if (getWalletDetails.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      getWalletDetails = await PaymentService.getWalletDetails(
+          token: userProfiles.token!,);
+    }
+    return getWalletDetails.toNotifierState();
   }
 }
-
-
-

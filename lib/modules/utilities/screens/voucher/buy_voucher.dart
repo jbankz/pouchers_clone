@@ -27,6 +27,7 @@ class BuyVouchers extends ConsumerStatefulWidget {
 class _BuyVouchersState extends ConsumerState<BuyVouchers> {
   int currentIndex = -1;
   TextEditingController amountController = TextEditingController();
+  String? lastInputValue;
 
   @override
   void initState() {
@@ -73,61 +74,66 @@ class _BuyVouchersState extends ConsumerState<BuyVouchers> {
                         amountController.selection = TextSelection.fromPosition(
                             TextPosition(offset: amountController.text.length));
                       },
-                      child: Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: currentIndex == index
-                                    ? kPrimaryColor
-                                    : kLightPurple),
-                            borderRadius: BorderRadius.circular(kSmallPadding),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              RichText(
-                                  text: TextSpan(
-                                      text: "₦",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        color: currentIndex == index
-                                            ? kPrimaryColor
-                                            : kSecondaryTextColor,
-                                        fontSize: 18,
-                                      ),
-                                      children: [
-                                    TextSpan(
-                                      text: buyVoucherList[index],
-                                      style: textTheme.bodyText1!.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: currentIndex == index
-                                            ? kPrimaryColor
-                                            : kSecondaryTextColor,
-                                      ),
-                                    )
-                                  ])),
-                              SizedBox(
-                                height: kPadding,
+                      child: Stack(
+                        children: [
+                          Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: currentIndex == index
+                                        ? kPrimaryColor
+                                        : kLightPurple),
+                                borderRadius:
+                                    BorderRadius.circular(kSmallPadding),
                               ),
-                              currentIndex == index
-                                  ? Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Container(
-                                          margin:
-                                              EdgeInsets.only(right: kPadding),
-                                          padding: EdgeInsets.all(3),
-                                          decoration: BoxDecoration(
-                                              color: kPurpleColor,
-                                              shape: BoxShape.circle),
-                                          child: Icon(
-                                            Icons.check,
-                                            color: kPrimaryWhite,
-                                            size: 10,
-                                          )),
-                                    )
-                                  : SizedBox()
-                            ],
-                          )),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  RichText(
+                                      text: TextSpan(
+                                          text: "₦",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: currentIndex == index
+                                                ? kPrimaryColor
+                                                : kSecondaryTextColor,
+                                            fontSize: 18,
+                                          ),
+                                          children: [
+                                        TextSpan(
+                                          text: buyVoucherList[index],
+                                          style: textTheme.bodyText1!.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                            color: currentIndex == index
+                                                ? kPrimaryColor
+                                                : kSecondaryTextColor,
+                                          ),
+                                        )
+                                      ])),
+                                  // SizedBox(
+                                  //   height: kPadding,
+                                  // ),
+                                ],
+                              )),
+                          currentIndex == index
+                              ? Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          right: kPadding, bottom: kPadding),
+                                      padding: EdgeInsets.all(3),
+                                      decoration: BoxDecoration(
+                                          color: kPurpleColor,
+                                          shape: BoxShape.circle),
+                                      child: Icon(
+                                        Icons.check,
+                                        color: kPrimaryWhite,
+                                        size: 12,
+                                      )),
+                                )
+                              : SizedBox()
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -140,6 +146,17 @@ class _BuyVouchersState extends ConsumerState<BuyVouchers> {
                 text: amountText,
                 hintText: enterAmount,
                 controller: amountController,
+                inputType: TextInputType.number,
+                onChanged: (inputValue) {
+                  if (inputValue!.isNotEmpty) {
+                    if (lastInputValue != inputValue) {
+                      lastInputValue = inputValue;
+                      setState(() {
+                        currentIndex = -1;
+                      });
+                    }
+                  }
+                },
               ),
               SizedBox(
                 height: kLargePadding,

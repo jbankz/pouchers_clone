@@ -34,6 +34,7 @@ class BuyAirtime extends ConsumerStatefulWidget {
 class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
   TextEditingController contactController = TextEditingController();
   int currentIndex = -1;
+  int dealCurrentIndex = -1;
   TextEditingController amountController = TextEditingController();
   String _amount = "";
   GetUtilitiesData? billerData;
@@ -67,6 +68,7 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                   textTheme: textTheme,
                   text: mobileNumber,
                   controller: contactController,
+                  inputFormatters: [LengthLimitingTextInputFormatter(11)],
                   icon: inkWell(
                     onTap: () async {
                       bool granted =
@@ -75,7 +77,16 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                         final PhoneContact contact =
                             await FlutterContactPicker.pickPhoneContact();
                         setState(() {
-                          contactController.text = contact.phoneNumber!.number!;
+                          String phoneReplaced = "";
+                          String phoneReplaced1 = "";
+                          String phoneReplaced2 = "";
+
+                          phoneReplaced = contact.phoneNumber!.number!
+                              .replaceAll("+234", "0");
+                          phoneReplaced1 = phoneReplaced.replaceAll("234", "0");
+                          phoneReplaced2 = phoneReplaced1.replaceAll(" ", "");
+
+                          contactController.text = phoneReplaced2;
                         });
                       }
                     },
@@ -98,61 +109,59 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                 ref.watch(getUtilitiesProvider).when(
                       done: (provider) {
                         if (provider != null) {
-                          return SizedBox(
-                            height: 70,
-                            child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: provider.data!
-                                    .mapIndexed(
-                                      (index, element) => inkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            currentIndex = index;
-                                            billerData = element;
-                                          });
-                                        },
-                                        child: Stack(
-                                          children: [
-                                            Container(
-                                                padding: EdgeInsets.all(
-                                                    kRegularPadding),
-                                                height: 70,
-                                                width: 70,
-                                                margin: EdgeInsets.only(
-                                                    right: kSmallPadding),
-                                                decoration: BoxDecoration(
-                                                    color: currentIndex == index
-                                                        ? kLightPurple
-                                                        : kContainerColor,
-                                                    shape: BoxShape.circle),
-                                                child: SvgPicture.asset(icon(
-                                                    provider.data![index]
-                                                        .displayName!))),
-                                            currentIndex == index
-                                                ? Positioned(
-                                                    bottom: 0,
-                                                    right: 0,
-                                                    child: Container(
-                                                        padding:
-                                                            EdgeInsets.all(3),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                color:
-                                                                    kPurpleColor,
-                                                                shape: BoxShape
-                                                                    .circle),
-                                                        child: Icon(
-                                                          Icons.check,
-                                                          color: kPrimaryWhite,
-                                                          size: 15,
-                                                        )),
-                                                  )
-                                                : SizedBox(),
-                                          ],
-                                        ),
-                                      ),
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: provider.data!
+                                .mapIndexed(
+                                  (index, element) => inkWell(
+                                onTap: () {
+                                  setState(() {
+                                    currentIndex = index;
+                                    billerData = element;
+                                  });
+                                },
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                        padding: EdgeInsets.all(
+                                            kRegularPadding),
+                                        height: 70,
+                                        width: 70,
+                                        margin: EdgeInsets.only(
+                                            right: kSmallPadding),
+                                        decoration: BoxDecoration(
+                                            color: currentIndex == index
+                                                ? kLightPurple
+                                                : kContainerColor,
+                                            shape: BoxShape.circle),
+                                        child: SvgPicture.asset(icon(
+                                            provider.data![index]
+                                                .displayName!))),
+                                    currentIndex == index
+                                        ? Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: Container(
+                                          padding:
+                                          EdgeInsets.all(3),
+                                          decoration:
+                                          BoxDecoration(
+                                              color:
+                                              kPurpleColor,
+                                              shape: BoxShape
+                                                  .circle),
+                                          child: Icon(
+                                            Icons.check,
+                                            color: kPrimaryWhite,
+                                            size: 15,
+                                          )),
                                     )
-                                    .toList()),
+                                        : SizedBox(),
+                                  ],
+                                ),
+                              ),
+                            )
+                                .toList(),
                           );
                         } else {
                           return SizedBox();
@@ -165,240 +174,242 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                       ),
                     ),
                 SizedBox(
-                  height: kMicroPadding,
+                  height: kSmallPadding,
                 ),
-                widget.isGuest! ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      topDeal,
-                      style: textTheme.headline3,
-                    ),
-                    SizedBox(
-                      height: kSmallPadding,
-                    ),
-                    GridView.count(
-                      primary: false,
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      crossAxisCount: 3,
-                      childAspectRatio:
-                      SizeConfig.blockSizeHorizontal! / 3.4,
-                      children: List.generate(
-                        guestList.length,
-                            (index) => Column(
-                          children: [
-                            inkWell(
-                              onTap: () {
-                                    buildShowModalBottomSheet(
-                                    context, GuestDiscountModal());
-                              },
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: kLightPurple),
-                                      borderRadius:
-                                      BorderRadius.circular(
-                                          kSmallPadding)),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        padding:
-                                        EdgeInsets.all(kPadding),
+                widget.isGuest!
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            topDeal,
+                            style: textTheme.headline3,
+                          ),
+                          SizedBox(
+                            height: kSmallPadding,
+                          ),
+                          GridView.count(
+                            primary: false,
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            crossAxisCount: 3,
+                            childAspectRatio:
+                                SizeConfig.blockSizeHorizontal! / 3.4,
+                            children: List.generate(
+                              guestList.length,
+                              (index) => Column(
+                                children: [
+                                  inkWell(
+                                    onTap: () {
+                                      buildShowModalBottomSheet(
+                                          context, GuestDiscountModal());
+                                    },
+                                    child: Container(
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius.only(
-                                            topRight: Radius.circular(
-                                                kSmallPadding),
-                                            topLeft: Radius.circular(
-                                                kSmallPadding),
-                                          ),
-                                          color: kPurpleColor,
-                                        ),
-                                        child:
-                                     Text(
-                                          "2% cashback",
-                                          style: textTheme
-                                              .headline4!
-                                              .copyWith(
-                                            color:
-                                            kLightPurple,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: kSmallPadding,
-                                      ),
-                                      RichText(
-                                        text: TextSpan(
-                                          text: "₦",
-                                          style: TextStyle(
-                                            color: kPrimaryTextColor,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                          ),
+                                            border:
+                                                Border.all(color: kLightPurple),
+                                            borderRadius: BorderRadius.circular(
+                                                kSmallPadding)),
+                                        child: Column(
                                           children: [
-                                            TextSpan(
-                                              text:
-                                              guestList[index].icon,
-                                              style: textTheme
-                                                  .subtitle1!
-                                                  .copyWith(
-                                                fontWeight:
-                                                FontWeight.w500,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: kRegularPadding,
-                                      ),
-                                    ],
-                                  )),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ) :
-                ref.watch(getDiscountProvider).when(
-                    loading: () {
-                      return SpinKitDemo();
-                    },
-                    error: (val) => SizedBox(),
-                    done: (done) {
-                      if (done != null) {
-                        threshold = done.data!.threshold;
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              topDeal,
-                              style: textTheme.headline3,
-                            ),
-                            SizedBox(
-                              height: kSmallPadding,
-                            ),
-                            GridView.count(
-                              primary: false,
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              crossAxisCount: 3,
-                              childAspectRatio:
-                                  SizeConfig.blockSizeHorizontal! / 3.4,
-                              children: List.generate(
-                                guestList.length,
-                                (index) => Column(
-                                  children: [
-                                    inkWell(
-                                      onTap: () {
-                                        widget.isGuest!
-                                            ? buildShowModalBottomSheet(
-                                                context, GuestDiscountModal())
-                                            : setState(() {
-                                                amountController.text =
-                                                    guestList[index].icon;
-                                                _amount = guestList[index].icon;
-                                              });
-                                        amountController.selection =
-                                            TextSelection.fromPosition(
-                                                TextPosition(
-                                                    offset: amountController
-                                                        .text.length));
-                                      },
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: kLightPurple),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      kSmallPadding)),
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                padding:
-                                                    EdgeInsets.all(kPadding),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topRight: Radius.circular(
-                                                        kSmallPadding),
-                                                    topLeft: Radius.circular(
-                                                        kSmallPadding),
-                                                  ),
-                                                  color: kPurpleColor,
+                                            Container(
+                                              padding: EdgeInsets.all(kPadding),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topRight: Radius.circular(
+                                                      kSmallPadding),
+                                                  topLeft: Radius.circular(
+                                                      kSmallPadding),
                                                 ),
-                                                child:
-                                                    done.data!.threshold == null
-                                                        ? Text(
-                                                            "0% cashback",
-                                                            style: textTheme
-                                                                .headline4!
-                                                                .copyWith(
-                                                              color:
-                                                                  kLightPurple,
-                                                            ),
-                                                          )
-                                                        : Text(
-                                                            double.parse(done
-                                                                        .data!
-                                                                        .threshold!) <=
-                                                                    double.parse(
-                                                                        guestList[index]
-                                                                            .icon)
-                                                                ? "${done.data!.discountValue}% cashback"
-                                                                : "0% cashback",
-                                                            style: textTheme
-                                                                .headline4!
-                                                                .copyWith(
-                                                              color:
-                                                                  kLightPurple,
-                                                            ),
-                                                          ),
+                                                color: kPurpleColor,
                                               ),
-                                              SizedBox(
-                                                height: kSmallPadding,
+                                              child: Text(
+                                                "2% cashback",
+                                                style: textTheme.headline4!
+                                                    .copyWith(
+                                                  color: kLightPurple,
+                                                ),
                                               ),
-                                              RichText(
-                                                text: TextSpan(
-                                                  text: "₦",
-                                                  style: TextStyle(
-                                                    color: kPrimaryTextColor,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 14,
+                                            ),
+                                            SizedBox(
+                                              height: kSmallPadding,
+                                            ),
+                                            RichText(
+                                              text: TextSpan(
+                                                text: "₦",
+                                                style: TextStyle(
+                                                  color: kPrimaryTextColor,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                    text: guestList[index].icon,
+                                                    style: textTheme.subtitle1!
+                                                        .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: kRegularPadding,
+                                            ),
+                                          ],
+                                        )),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    : ref.watch(getDiscountProvider).when(
+                        loading: () {
+                          return SpinKitDemo();
+                        },
+                        error: (val) => SizedBox(),
+                        done: (done) {
+                          if (done != null) {
+                            threshold = done.data!.threshold;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  topDeal,
+                                  style: textTheme.headline3,
+                                ),
+                                SizedBox(
+                                  height: kSmallPadding,
+                                ),
+                                GridView.count(
+                                  primary: false,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  crossAxisCount: 3,
+                                  childAspectRatio:
+                                      SizeConfig.blockSizeHorizontal! / 3.4,
+                                  children: List.generate(
+                                    guestList.length,
+                                    (index) => Column(
+                                      children: [
+                                        inkWell(
+                                          onTap: () {
+                                            widget.isGuest!
+                                                ? buildShowModalBottomSheet(
+                                                    context,
+                                                    GuestDiscountModal())
+                                                : setState(() {
+                                                    amountController.text =
+                                                        guestList[index].icon;
+                                                    _amount =
+                                                        guestList[index].icon;
+                                                    dealCurrentIndex = index;
+                                                  });
+                                            amountController.selection =
+                                                TextSelection.fromPosition(
+                                                    TextPosition(
+                                                        offset: amountController
+                                                            .text.length));
+                                          },
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                color: dealCurrentIndex == index
+                                                    ? kLightPurple : kTransparent,
+                                                  border: Border.all(
+                                                      color: kLightPurple),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          kSmallPadding)),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.all(
+                                                        kPadding),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        topRight:
+                                                            Radius.circular(
+                                                                kSmallPadding),
+                                                        topLeft:
+                                                            Radius.circular(
+                                                                kSmallPadding),
+                                                      ),
+                                                      color:  kPurpleColor,
+                                                    ),
+                                                    child:
+                                                        done.data!.threshold ==
+                                                                null
+                                                            ? Text(
+                                                                "0% cashback",
+                                                                style: textTheme
+                                                                    .headline4!
+                                                                    .copyWith(
+                                                                  color:
+                                                                      kLightPurple,
+                                                                ),
+                                                              )
+                                                            : Text(
+                                                                double.parse(done
+                                                                            .data!
+                                                                            .threshold!) <=
+                                                                        double.parse(
+                                                                            guestList[index].icon)
+                                                                    ? "${done.data!.discountValue}% cashback"
+                                                                    : "0% cashback",
+                                                                style: textTheme
+                                                                    .headline4!
+                                                                    .copyWith(
+                                                                  color:
+                                                                      kLightPurple,
+                                                                ),
+                                                              ),
                                                   ),
-                                                  children: [
-                                                    TextSpan(
-                                                      text:
-                                                          guestList[index].icon,
-                                                      style: textTheme
-                                                          .subtitle1!
-                                                          .copyWith(
+                                                  SizedBox(
+                                                    height: kSmallPadding,
+                                                  ),
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      text: "₦",
+                                                      style: TextStyle(
+                                                        color:
+                                                            kPrimaryTextColor,
                                                         fontWeight:
                                                             FontWeight.w500,
+                                                        fontSize: 14,
                                                       ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: kRegularPadding,
-                                              ),
-                                            ],
-                                          )),
+                                                      children: [
+                                                        TextSpan(
+                                                          text: guestList[index]
+                                                              .icon,
+                                                          style: textTheme
+                                                              .subtitle1!
+                                                              .copyWith(
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: kRegularPadding,
+                                                  ),
+                                                ],
+                                              )),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        );
-                      } else {
-                        return SizedBox();
-                      }
-                    }),
+                                  ),
+                                )
+                              ],
+                            );
+                          } else {
+                            return SizedBox();
+                          }
+                        }),
                 SizedBox(
                   height: kSmallPadding,
                 ),
@@ -495,13 +506,15 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
             title: continueText,
             disableColor: (amountController.text.isEmpty ||
                         _amount.isEmpty ||
-                        _amount.startsWith("0")) || billerData == null ||
+                        _amount.startsWith("0")) ||
+                    billerData == null ||
                     contactController.text.isEmpty
                 ? kPurpleColor100
                 : kPrimaryColor,
             outlineButton: false,
             onPressed: amountController.text.isEmpty ||
-                    contactController.text.isEmpty || billerData == null ||
+                    contactController.text.isEmpty ||
+                    billerData == null ||
                     _amount.isEmpty ||
                     _amount.startsWith("0")
                 ? () {}

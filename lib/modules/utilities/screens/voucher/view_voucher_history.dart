@@ -23,7 +23,7 @@ class VoucherHistory extends ConsumerStatefulWidget {
 
 class _VoucherHistoryState extends ConsumerState<VoucherHistory> {
   int currentIndex = 0;
-  String dateFormatter = 'MMM, dd, yyy';
+  String dateFormatter = 'MMM dd, yyy';
   List<Voucher> vouchers = [];
 
   @override
@@ -128,17 +128,17 @@ class _VoucherHistoryState extends ConsumerState<VoucherHistory> {
                                                 textStyle1: TextStyle(
                                                     fontSize: 16,
                                                     color: item.redeemed
-                                                        ? kSecondaryTextColor
+                                                        ? kColorGreen
                                                         : item.gifteeId != null
-                                                            ? kColorRed
+                                                            ? kColorRedDeep
                                                             : kColorGreen),
                                                 textStyle2: textTheme.headline3!
                                                     .copyWith(
                                                         color: item.redeemed
-                                                            ? kSecondaryTextColor
+                                                            ? kColorGreen
                                                             : item.gifteeId !=
                                                                     null
-                                                                ? kColorRed
+                                                                ? kColorRedDeep
                                                                 : kColorGreen),
                                               ),
                                               SizedBox(
@@ -234,7 +234,7 @@ class _VoucherHistoryState extends ConsumerState<VoucherHistory> {
       print(currentIndex);
       if (currentIndex == 3) {
         service =
-            vouchers.where((element) => element.gifteeId != null).toList();
+            vouchers.where((element) => element.gifteeId != null && element.redeemed != true).toList();
       } else if (currentIndex == 2) {
         service =
             vouchers.where((element) => element.redeemed == true).toList();

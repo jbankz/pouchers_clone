@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
@@ -75,12 +76,22 @@ class _BuyDataState extends ConsumerState<BuyData>
                   textTheme: textTheme,
                   text: mobileNumber,
                   controller: contactController,
+                  inputFormatters: [LengthLimitingTextInputFormatter(11)],
                   icon: inkWell(
                     onTap: () async {
                       final PhoneContact contact =
                           await FlutterContactPicker.pickPhoneContact();
                       setState(() {
-                        contactController.text = contact.phoneNumber!.number!;
+                        String phoneReplaced = "";
+                        String phoneReplaced1 = "";
+                        String phoneReplaced2 = "";
+
+                        phoneReplaced = contact.phoneNumber!.number!
+                            .replaceAll("+234", "0");
+                        phoneReplaced1 = phoneReplaced.replaceAll("234", "0");
+                        phoneReplaced2 = phoneReplaced1.replaceAll(" ", "");
+
+                        contactController.text = phoneReplaced2;
                       });
                     },
                     child: SvgPicture.asset(
@@ -102,67 +113,59 @@ class _BuyDataState extends ConsumerState<BuyData>
                 ref.watch(getUtilitiesProvider).when(
                       done: (provider) {
                         if (provider != null) {
-                          return SizedBox(
-                            height: 70,
-                            child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: provider.data!
-                                    .mapIndexed(
-                                      (index, element) => inkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            currentIndex = index;
-                                            billerData = element;
-                                          });
-                                          ref
-                                              .read(
-                                                  getDataBundleProvider.notifier)
-                                              .getDataBundle(
-                                                merchantServiceId:
-                                                    billerData!.operatorpublicid!,
-                                              );
-                                        },
-                                        child: Stack(
-                                          children: [
-                                            Container(
-                                              padding:
-                                                  EdgeInsets.all(kRegularPadding),
-                                              height: 70,
-                                              width: 70,
-                                              margin: EdgeInsets.only(
-                                                  right: kSmallPadding),
-                                              decoration: BoxDecoration(
-                                                  color: currentIndex == index
-                                                      ? kLightPurple
-                                                      : kContainerColor,
-                                                  shape: BoxShape.circle),
-                                              child: SvgPicture.asset(icon(
-                                                  provider.data![index]
-                                                      .displayName!)),
-                                            ),
-                                            currentIndex == index
-                                                ? Positioned(
-                                                    bottom: 0,
-                                                    right: 0,
-                                                    child: Container(
-                                                        padding:
-                                                            EdgeInsets.all(3),
-                                                        decoration: BoxDecoration(
-                                                            color: kPurpleColor,
-                                                            shape:
-                                                                BoxShape.circle),
-                                                        child: Icon(
-                                                          Icons.check,
-                                                          color: kPrimaryWhite,
-                                                          size: 15,
-                                                        )),
-                                                  )
-                                                : SizedBox(),
-                                          ],
-                                        ),
-                                      ),
+                          return  Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: provider.data!
+                                .mapIndexed(
+                                  (index, element) => inkWell(
+                                onTap: () {
+                                  setState(() {
+                                    currentIndex = index;
+                                    billerData = element;
+                                  });
+                                },
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                        padding: EdgeInsets.all(
+                                            kRegularPadding),
+                                        height: 70,
+                                        width: 70,
+                                        margin: EdgeInsets.only(
+                                            right: kSmallPadding),
+                                        decoration: BoxDecoration(
+                                            color: currentIndex == index
+                                                ? kLightPurple
+                                                : kContainerColor,
+                                            shape: BoxShape.circle),
+                                        child: SvgPicture.asset(icon(
+                                            provider.data![index]
+                                                .displayName!))),
+                                    currentIndex == index
+                                        ? Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: Container(
+                                          padding:
+                                          EdgeInsets.all(3),
+                                          decoration:
+                                          BoxDecoration(
+                                              color:
+                                              kPurpleColor,
+                                              shape: BoxShape
+                                                  .circle),
+                                          child: Icon(
+                                            Icons.check,
+                                            color: kPrimaryWhite,
+                                            size: 15,
+                                          )),
                                     )
-                                    .toList()),
+                                        : SizedBox(),
+                                  ],
+                                ),
+                              ),
+                            )
+                                .toList(),
                           );
                         } else {
                           return SizedBox();

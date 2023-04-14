@@ -38,7 +38,6 @@ class _BettingState extends ConsumerState<Betting> {
   Service? paymentType;
   String? threshold;
 
-
   @override
   void initState() {
     super.initState();
@@ -215,19 +214,33 @@ class _BettingState extends ConsumerState<Betting> {
                                                   ),
                                                   color: kPurpleColor,
                                                 ),
-                                                child: Text(
-                                                  double.parse(done.data!
-                                                              .threshold!) <=
-                                                          double.parse(
-                                                              guestList[index]
-                                                                  .icon)
-                                                      ? "${done.data!.discountValue}% cashback"
-                                                      : "0% cashback",
-                                                  style: textTheme.headline4!
-                                                      .copyWith(
-                                                    color: kLightPurple,
-                                                  ),
-                                                ),
+                                                child:
+                                                    done.data!.threshold == null
+                                                        ? Text(
+                                                            "0% cashback",
+                                                            style: textTheme
+                                                                .headline4!
+                                                                .copyWith(
+                                                              color:
+                                                                  kLightPurple,
+                                                            ),
+                                                          )
+                                                        : Text(
+                                                            double.parse(done
+                                                                        .data!
+                                                                        .threshold!) <=
+                                                                    double.parse(
+                                                                        guestList[index]
+                                                                            .icon)
+                                                                ? "${done.data!.discountValue}% cashback"
+                                                                : "0% cashback",
+                                                            style: textTheme
+                                                                .headline4!
+                                                                .copyWith(
+                                                              color:
+                                                                  kLightPurple,
+                                                            ),
+                                                          ),
                                               ),
                                               SizedBox(
                                                 height: kSmallPadding,
@@ -394,7 +407,7 @@ class _BettingState extends ConsumerState<Betting> {
                                   category: "betting-purchase",
                                   utility: true,
                                   billerLogo: "",
-                            threshold: threshold,
+                                  threshold: threshold,
                                 ));
                     }
                   },

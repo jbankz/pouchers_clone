@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/modules/utilities/providers/utilities_provider.dart';
 import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
@@ -10,8 +11,6 @@ import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/constant/ui_constants.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
-
-import '../../providers/utilities_provider.dart';
 
 class Vouchers extends ConsumerStatefulWidget {
   static const String routeName = "vouchers";
@@ -24,31 +23,22 @@ class Vouchers extends ConsumerStatefulWidget {
 }
 
 class _VouchersState extends ConsumerState<Vouchers> {
-  int _currentPage = 0;
+  double voucherAmount = 0.0;
+  int voucherList = 0;
 
-  // PageController _controller = PageController(viewportFraction: 0.85);
-
-  List<VoucherItems> _pages = [
-    VoucherItems(
-        value: "5000",
-        expiry: "12/04/2022",
-        code: "#12ABC99J",
-        image: AssetPaths.voucherImage),
-    VoucherItems(
-        value: "6000",
-        expiry: "12/05/2022",
-        code: "#12ABC99J",
-        image: AssetPaths.voucher1Image),
-    VoucherItems(
-        value: "7000",
-        expiry: "12/06/2022",
-        code: "#12ABC99J",
-        image: AssetPaths.voucherImage)
-  ];
-
-  _onChanged(int index) {
-    setState(() {
-      _currentPage = index;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(fetchVoucherProvider.notifier).fetchVoucher(
+          status: "active",
+          then: (voucher) {
+            voucherList = voucher.length;
+            voucher.fold(0.0, (double? sum, element) {
+              voucherAmount = sum! + double.parse(element.amount);
+              return voucherAmount;
+            });
+          });
     });
   }
 
@@ -60,10 +50,19 @@ class _VouchersState extends ConsumerState<Vouchers> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              VoucherImage(
-                amount: "5000",
-                voucherCode: "#12ABC499J",
-              ),
+              ref.watch(fetchVoucherProvider).when(
+                  loading: () => SpinKitDemo(),
+                  error: (val) => SizedBox(),
+                  done: (done) {
+                    if (done != null) {
+                      return VoucherImage(
+                        amount: voucherAmount.toString(),
+                        voucherCode: voucherList.toString(),
+                      );
+                    } else {
+                      return SizedBox();
+                    }
+                  }),
               SizedBox(
                 height: kLargePadding,
               ),

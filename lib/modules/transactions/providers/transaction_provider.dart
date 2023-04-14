@@ -17,7 +17,7 @@ final getTransactionAnalyticsProvider = StateNotifierProvider.autoDispose<
 
 class TransactionHistoryNotifier
     extends StateNotifier<NotifierState<GetTransactionsResponse>>
-    with ResponseHandler {
+    {
   final TransactionRepository _repo;
 
   TransactionHistoryNotifier(this._repo) : super(NotifierState());
@@ -33,7 +33,7 @@ class TransactionHistoryNotifier
 
 class TransactionAnalyticsNotifier
     extends StateNotifier<NotifierState<TransactionAnalyticsResponse>>
-    with ResponseHandler {
+    {
   final TransactionRepository _repo;
 
   TransactionAnalyticsNotifier(this._repo) : super(NotifierState());

@@ -50,7 +50,7 @@ class ReferralInvite extends StatelessWidget {
                 style: textTheme.bodyText1,
                 children: [
                   TextSpan(
-                      text: " 10 points",
+                      text: " 10 points.",
                       style: textTheme.bodyText1!.copyWith(
                         fontWeight: FontWeight.w500,
                       ))
@@ -58,39 +58,39 @@ class ReferralInvite extends StatelessWidget {
         SizedBox(
           height: kMediumPadding,
         ),
-        DottedBorder(
-            borderType: BorderType.RRect,
-            color: kPrimaryColor,
-            padding: EdgeInsets.zero,
-            strokeWidth: 2,
-            radius: Radius.circular(kSmallPadding),
-            dashPattern: [9],
-            child: Container(
-              width: double.infinity,
-              padding:
-              EdgeInsets.symmetric(vertical: kMacroPadding),
-              child: Text(
-                userProfile.referralCode ?? "",
-                style: textTheme.headline4!.copyWith(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 22,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            )),
-        SizedBox(
-          height: kRegularPadding,
-        ),
         inkWell(
           onTap: () {
             Clipboard.setData(ClipboardData(text: userProfile.referralCode));
             showSuccessBar(context, "Copied");
           },
-          child: Text(
+          child: DottedBorder(
+              borderType: BorderType.RRect,
+              color: kPrimaryColor,
+              padding: EdgeInsets.zero,
+              strokeWidth: 2,
+              radius: Radius.circular(kSmallPadding),
+              dashPattern: [9],
+              child: Container(
+                width: double.infinity,
+                padding:
+                EdgeInsets.symmetric(vertical: kMacroPadding),
+                child: Text(
+                  userProfile.referralCode ?? "",
+                  style: textTheme.headline4!.copyWith(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 22,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              )),
+        ),
+        SizedBox(
+          height: kRegularPadding,
+        ),
+         Text(
             tapCopyCode,
             style: textTheme.subtitle1,
           ),
-        ),
         SizedBox(
           height: kLargePadding,
         ),

@@ -1,12 +1,15 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pouchers/modules/login/models/login_response.dart';
 import 'package:pouchers/modules/reuseables/components.dart';
 import 'package:pouchers/modules/transactions/components/transaction_components.dart';
 import 'package:pouchers/utils/assets_path.dart';
+import 'package:pouchers/utils/components.dart';
+import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/utils.dart';
 import 'package:pouchers/utils/widgets.dart';
@@ -83,7 +86,7 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Image.asset(
+                            SvgPicture.asset(
                               AssetPaths.poucherLogo,
                               height: 80,
                             ),
@@ -157,12 +160,20 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                                     textAlign: TextAlign.center,
                                   ),
                                   SizedBox(height: kPadding,),
-                                  Text(
-                                    widget.transactionId ?? "",
-                                    style: textTheme.subtitle1!.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color:  kPrimaryTextColor,
-                                      fontSize: 16,
+                                  inkWell(
+                                    onTap: (){
+                                      Clipboard.setData(ClipboardData(
+                                          text: widget.transactionId));
+                                      showSuccessBar(context, "Copied");
+                                    },
+
+                                    child: Text(
+                                      widget.transactionId ?? "",
+                                      style: textTheme.subtitle1!.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color:  kPrimaryTextColor,
+                                        fontSize: 16,
+                                      ),
                                     ),
                                   ),
                                 ],

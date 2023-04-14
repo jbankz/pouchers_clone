@@ -3,13 +3,18 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 // import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path;
+import 'package:pouchers/app/helpers/network_helpers.dart';
+import 'package:pouchers/app/helpers/response_handler.dart';
 import 'package:pouchers/app/helpers/service_constants.dart';
 import 'package:pouchers/app/helpers/session_manager.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/modules/login/screens/login.dart';
 import 'package:pouchers/routes.dart';
 import 'package:pouchers/modules/login/models/login_response.dart';
 import 'package:pouchers/modules/onboarding/screens/onboarding.dart';
@@ -19,7 +24,7 @@ import 'package:pouchers/utils/strings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Env.setEnvironment(EnvState.test);
+  Env.setEnvironment(EnvState.production);
   Directory directory = await path.getApplicationDocumentsDirectory();
   // await FlutterDownloader.initialize(
   //     debug: true, // optional: set to false to disable printing logs to console (default: true)
@@ -61,23 +66,68 @@ Future<void> main() async {
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with ResponseHandler {
+  GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+
+  @override
   Widget build(BuildContext context) {
+    print(_navigatorKey);
+    var route = ModalRoute.of(context);
     return ProviderScope(
       observers: [
         ProviderLogger(),
       ],
-      child: MaterialApp(
-          title: "Pouchers",
-          theme: kThemeData,
-          debugShowCheckedModeBanner: false,
-          home:
-              // TabLayout(),
-              OnBoardingPage(),
-          routes: appRoutes),
+      child: Listener(
+        onPointerDown: (e) {
+          DateTime whenTouchedDatetime = DateTime.now();
+          print("now date $nowDate");
+          print("whenTouchedDatetime $whenTouchedDatetime");
+          if (nowDate.isBefore(whenTouchedDatetime)) {
+            print("it is after");
+            // if(_navigatorKey.currentState != null){
+              _navigatorKey.currentState!.pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) {
+                    return LogInAccount(
+                        sessionTimeOut: true
+                    );
+                  }), (route) => false);
+           //}
+            // else{
+            //   print("kmkmd");
+            //   pushToAndClearStack(context, LogInAccount(
+            //       sessionTimeOut: true
+            //   ));
+            // }
+
+            setState(() {
+              nowDate = DateTime.now().add(Duration(minutes: 5));
+            });
+          } else {
+            nowDate = DateTime.now().add(Duration(minutes: 5));
+          }
+        },
+        child: MaterialApp(
+            title: "Pouchers",
+            theme: kThemeData,
+            debugShowCheckedModeBanner: false,
+            home:
+                Navigator(
+              key: _navigatorKey,
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(builder: (context) {
+                  return OnBoardingPage();
+                });
+              },
+            ),
+            routes: appRoutes),
+      ),
     );
   }
 }

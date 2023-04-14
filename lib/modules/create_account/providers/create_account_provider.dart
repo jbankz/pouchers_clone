@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/helpers/response_handler.dart';
 import 'package:pouchers/modules/create_account/models/create_account_response.dart';
 import 'package:pouchers/modules/create_account/repository/create_account_repository.dart';
 
@@ -33,7 +32,7 @@ final resendEmailProvider = StateNotifierProvider.autoDispose<
 
 class CreateAccountNotifier
     extends StateNotifier<NotifierState<CreateAccountResponse>>
-    with ResponseHandler {
+     {
   final CreateAccountRepository _repo;
 
   CreateAccountNotifier(this._repo) : super(NotifierState());
@@ -61,7 +60,7 @@ class CreateAccountNotifier
 
 class VerifyEmailNotifier
     extends StateNotifier<NotifierState<VerifyEmailResponse>>
-    with ResponseHandler {
+     {
   final CreateAccountRepository _repo;
 
   VerifyEmailNotifier(this._repo) : super(NotifierState());
@@ -76,7 +75,7 @@ class VerifyEmailNotifier
 }
 
 class CreateTagNotifier extends StateNotifier<NotifierState<TagResponse>>
-    with ResponseHandler {
+   {
   final CreateAccountRepository _repo;
 
   CreateTagNotifier(this._repo) : super(NotifierState());
@@ -91,7 +90,7 @@ class CreateTagNotifier extends StateNotifier<NotifierState<TagResponse>>
 }
 
 class CreatePinNotifier extends StateNotifier<NotifierState<TagResponse>>
-    with ResponseHandler {
+     {
   final CreateAccountRepository _repo;
 
   CreatePinNotifier(this._repo) : super(NotifierState());
@@ -108,7 +107,7 @@ class CreatePinNotifier extends StateNotifier<NotifierState<TagResponse>>
 
 
 class ResendEmailNotifier extends StateNotifier<NotifierState<String>>
-    with ResponseHandler {
+     {
   final CreateAccountRepository _repo;
 
   ResendEmailNotifier(this._repo) : super(NotifierState());

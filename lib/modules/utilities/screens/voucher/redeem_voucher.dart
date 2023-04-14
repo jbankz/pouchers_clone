@@ -130,6 +130,7 @@ class _RedeemVoucherState extends ConsumerState<RedeemVoucher> {
                   child: VoucherImage(
                     amount: _value.amount,
                     voucherCode: _value.code,
+                    available: false,
                   ),
                 ),
           SizedBox(

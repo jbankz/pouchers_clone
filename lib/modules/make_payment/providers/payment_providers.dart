@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/helpers/response_handler.dart';
+import 'package:pouchers/app/helpers/session_manager.dart';
 import 'package:pouchers/modules/make_payment/models/make_payment_model.dart';
 import 'package:pouchers/modules/make_payment/repository/payment_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final getContactByPoucherTagProvider = StateNotifierProvider.autoDispose<
     GetContactByPoucherTagNotifier, NotifierState<Map<String, dynamic>>>((ref) {
@@ -34,20 +36,20 @@ final getAllBanksProvider = StateNotifierProvider.autoDispose<
   return GetAllBanksNotifier(ref.read(paymentRepoProvider));
 });
 
-final localBankTransferProvider =
-    StateNotifierProvider.autoDispose<LocalBankTransferNotifier, NotifierState<LocalTransferResponse>>(
-        (ref) {
+final localBankTransferProvider = StateNotifierProvider.autoDispose<
+    LocalBankTransferNotifier, NotifierState<LocalTransferResponse>>((ref) {
   return LocalBankTransferNotifier(ref.read(paymentRepoProvider));
 });
 
-final getWalletProvider = StateNotifierProvider<GetWalletNotifier,
-    NotifierState<GetWalletResponse>>((ref) {
+final getWalletProvider =
+    StateNotifierProvider<GetWalletNotifier, NotifierState<GetWalletResponse>>(
+        (ref) {
   return GetWalletNotifier(ref.read(paymentRepoProvider));
 });
 
 class GetContactByPoucherTagNotifier
     extends StateNotifier<NotifierState<Map<String, dynamic>>>
-    with ResponseHandler {
+     {
   final PaymentRepository _repo;
 
   GetContactByPoucherTagNotifier(this._repo) : super(NotifierState());
@@ -64,7 +66,7 @@ class GetContactByPoucherTagNotifier
 
 class GetAllContactsNotifier
     extends StateNotifier<NotifierState<ContactListResponse>>
-    with ResponseHandler {
+    {
   final PaymentRepository _repo;
 
   GetAllContactsNotifier(this._repo) : super(NotifierState());
@@ -80,7 +82,7 @@ class GetAllContactsNotifier
 }
 
 class RequestMoneyNotifier extends StateNotifier<NotifierState<RequestResponse>>
-    with ResponseHandler {
+     {
   final PaymentRepository _repo;
 
   RequestMoneyNotifier(this._repo) : super(NotifierState());
@@ -100,7 +102,7 @@ class RequestMoneyNotifier extends StateNotifier<NotifierState<RequestResponse>>
 }
 
 class P2PMoneyNotifier extends StateNotifier<NotifierState<P2PResponse>>
-    with ResponseHandler {
+     {
   final PaymentRepository _repo;
 
   P2PMoneyNotifier(this._repo) : super(NotifierState());
@@ -122,7 +124,7 @@ class P2PMoneyNotifier extends StateNotifier<NotifierState<P2PResponse>>
 
 class GetAccountDetailsNotifier
     extends StateNotifier<NotifierState<AccountDetailsResponse>>
-    with ResponseHandler {
+    {
   final PaymentRepository _repo;
 
   GetAccountDetailsNotifier(this._repo) : super(NotifierState());
@@ -144,7 +146,7 @@ class GetAccountDetailsNotifier
 
 class GetAllBanksNotifier
     extends StateNotifier<NotifierState<GetAllBanksResponse>>
-    with ResponseHandler {
+     {
   final PaymentRepository _repo;
 
   GetAllBanksNotifier(this._repo) : super(NotifierState());
@@ -160,8 +162,9 @@ class GetAllBanksNotifier
   }
 }
 
-class LocalBankTransferNotifier extends StateNotifier<NotifierState<LocalTransferResponse>>
-    with ResponseHandler {
+class LocalBankTransferNotifier
+    extends StateNotifier<NotifierState<LocalTransferResponse>>
+     {
   final PaymentRepository _repo;
 
   LocalBankTransferNotifier(this._repo) : super(NotifierState());
@@ -186,18 +189,27 @@ class LocalBankTransferNotifier extends StateNotifier<NotifierState<LocalTransfe
 }
 
 class GetWalletNotifier extends StateNotifier<NotifierState<GetWalletResponse>>
-    with ResponseHandler {
+    {
   final PaymentRepository _repo;
 
   GetWalletNotifier(this._repo) : super(NotifierState());
 
   void getWalletDetails({
-    Function()? then,
+    Function(bool)? noAuth,
   }) async {
-    state = notifyLoading();
+    if (SessionManager.getWalletBalance() == null ||
+        SessionManager.getWalletBalance() == "") {
+      state = notifyLoading();
+    }
     state = await _repo.getWalletDetails();
     if (state.status == NotifierStatus.done) {
-      if (then != null) then();
+      if (SessionManager.getWalletBalance() != state.data!.data!.balance!) {
+        SessionManager.setWalletBalance(state.data!.data!.balance!);
+      }
+    } else if (state.noAuth) {
+      print("knkdnkkd");
+      if (noAuth != null) noAuth(state.noAuth);
     }
+
   }
 }

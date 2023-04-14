@@ -96,19 +96,66 @@ class _ResidentialAddressState extends State<ResidentialAddress> {
                   SizedBox(
                     height: kMicroPadding,
                   ),
-                  FormDropdown(
-                      hint: selectState,
-                      value: _selectedState,
-                      hintColor: kIconGrey,
-                      onChanged: (String? val) {
-                        _selectedState = val;
-                      },
-                      items: nigeriaStates
-                          .map((e) => DropdownMenuItem(
-                                child: Text(e),
-                                value: e,
-                              ))
-                          .toList()),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        height: 60,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        decoration: BoxDecoration(
+                          borderRadius: kBorderSmallRadius,
+                          color: kBackgroundColor,
+                          // border: Border.all(
+                          //   color: borderColor,
+                          // ),
+                        ),
+                        child: Center(
+                          child: DropdownButton(
+                            value: _selectedState,
+                            itemHeight: 60,
+                            isExpanded: true,
+                            borderRadius: kBorderMidRadius,
+                            hint: Text(
+                              selectState,
+                              style: textTheme.subtitle1!.copyWith(
+                                  color: kIconGrey),
+                            ),
+                            style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
+                            icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                            underline: const SizedBox(),
+                            menuMaxHeight:
+                                MediaQuery.of(context).size.height / 2,
+                            onChanged: (String? val) {
+                              setState(() {
+                                _selectedState = val;
+                              });
+
+                            },
+                            items: nigeriaStates
+                                .map((e) => DropdownMenuItem(
+                                      child: Text(e),
+                                      value: e,
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // FormDropdown(
+                  //     hint: selectState,
+                  //     value: _selectedState,
+                  //     hintColor: kIconGrey,
+                  //     onChanged: (String? val) {
+                  //       _selectedState = val;
+                  //     },
+                  //     items: nigeriaStates
+                  //         .map((e) => DropdownMenuItem(
+                  //               child: Text(e),
+                  //               value: e,
+                  //             ))
+                  //         .toList()),
                   SizedBox(
                     height: kMediumPadding,
                   ),
@@ -150,12 +197,15 @@ class _ResidentialAddressState extends State<ResidentialAddress> {
                     hintText: enterBvn,
                     onSaved: (val) => setState(() => _bvn = val),
                     inputType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly,  LengthLimitingTextInputFormatter(11)],
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(11)
+                    ],
                     validator: (val) {
                       if (val!.isEmpty) {
                         return emptyField;
-                      } else if (val.length < 2) {
-                        return lessAddressValueField;
+                      } else if (val.length != 11) {
+                        return bvnElevenDigits;
                       } else {
                         return null;
                       }

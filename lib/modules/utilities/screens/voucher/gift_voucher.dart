@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
+import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
 import 'package:pouchers/modules/utilities/model/utilities_model.dart';
 import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
 import 'package:pouchers/utils/assets_path.dart';
@@ -36,10 +38,10 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
   List<Voucher> activeVouchers = [];
   TextEditingController giftController = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String? lastInputValue;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(fetchVoucherProvider.notifier).fetchVoucher(status: "active");
@@ -88,31 +90,30 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
                               ? kPrimaryTextColor
                               : kLightColor200),
                     ),
-                   Consumer(
-                        builder: (context, ref, _) {
-                          ref.listen(fetchVoucherProvider,
-                              (previous, NotifierState<GetVoucherResponse> next) {
-                            if (next.status == NotifierStatus.done) {
-                              next.data!.data!.vouchers.forEach((element) {
-                                activeVouchers.add(element);
-                              });
-                            }
-                          });
-                          var _widget = Icon(
-                            Icons.keyboard_arrow_down,
-                            size: 30,
-                            color: kSecondaryTextColor,
-                          );
-                          return ref.watch(fetchVoucherProvider).when(
-                                done: (data) => _widget,
-                                loading: () => SpinKitDemo(
-                                  size: 25,
-                                ),
-                                error: (val) => _widget,
-                              );
-                        },
-                      ),
-
+                    Consumer(
+                      builder: (context, ref, _) {
+                        ref.listen(fetchVoucherProvider,
+                            (previous, NotifierState<GetVoucherResponse> next) {
+                          if (next.status == NotifierStatus.done) {
+                            next.data!.data!.vouchers.forEach((element) {
+                              activeVouchers.add(element);
+                            });
+                          }
+                        });
+                        var _widget = Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 30,
+                          color: kSecondaryTextColor,
+                        );
+                        return ref.watch(fetchVoucherProvider).when(
+                              done: (data) => _widget,
+                              loading: () => SpinKitDemo(
+                                size: 25,
+                              ),
+                              error: (val) => _widget,
+                            );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -220,26 +221,145 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
               hintText:
                   _voucherType == onlyEmailText ? enterEmail : enterPoucherTag,
               controller: giftController,
+              suffixIcon: ref.watch(getContactByPoucherTagProvider).when(
+                  done: (done) {
+                    return SizedBox();
+                  },
+                  error: (val) => SizedBox(),
+                  loading: () => Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(giftController.text),
+                          SpinKitDemo(
+                            size: 25,
+                          ),
+                        ],
+                      )),
+              onChanged: (inputValue) {
+    if (_voucherType != onlyEmailText) {
+      if (inputValue!.isNotEmpty) {
+        if (lastInputValue != inputValue) {
+          lastInputValue = inputValue;
+          ref
+              .read(getContactByPoucherTagProvider.notifier)
+              .getContactByPoucherTag(poucherTag: inputValue);
+        }
+      }
+    }
 
+              },
               validator: (val) {
                 if (val != null) {
-                  if (val.length < 3){
-                    return lessTagValueField;
-                  }else{
-                    if (_voucherType == onlyEmailText) {
-                      if (!isEmail(val)) {
-                        return invalidEmail;
-                      }
-                    } else {
-                      if (isEmail(val)) {
-                        return invalidTag;
-                      }
+                  if (_voucherType == onlyEmailText) {
+                    if (!isEmail(val)) {
+                      return invalidEmail;
+                    }
+                  } else {
+                    if (isEmail(val)) {
+                      return invalidTag;
                     }
                   }
-
+                  // }
                 }
               },
             ),
+            ref.watch(getContactByPoucherTagProvider).when(
+                error: (val) => Text(
+                      val ?? "",
+                      style: textTheme.headline4!.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
+                    ),
+                done: (done) {
+                  if (done != null) {
+                    return Row(
+                      children: [
+                        done["profilePicture"] == null
+                            ? SizedBox()
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(116),
+                                child: CachedNetworkImage(
+                                  height: 40,
+                                  width: 40,
+                                  imageUrl: done["profilePicture"] ?? "",
+                                  placeholder: (context, url) => Container(
+                                    color: Colors.transparent,
+                                    height: 40,
+                                    width: 40,
+                                    child: const Center(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                kPrimaryColor),
+                                      ),
+                                    ),
+                                  ),
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) =>
+                                      done["profilePicture"] != null
+                                          ? Image.network(
+                                              done["profilePicture"],
+                                              fit: BoxFit.fill,
+                                              loadingBuilder:
+                                                  (BuildContext context,
+                                                      Widget child,
+                                                      ImageChunkEvent?
+                                                          loadingProgress) {
+                                                if (loadingProgress == null)
+                                                  return child;
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    value: loadingProgress
+                                                                .expectedTotalBytes !=
+                                                            null
+                                                        ? loadingProgress
+                                                                .cumulativeBytesLoaded /
+                                                            loadingProgress
+                                                                .expectedTotalBytes!
+                                                        : null,
+                                                  ),
+                                                );
+                                              },
+                                            )
+                                          : Center(
+                                              child: Text(
+                                                  "${done["firstName"]!.substring(0, 1).toUpperCase()}${done["lastName"]!.substring(0, 1).toUpperCase()}",
+                                                  style: textTheme.bodyText2!
+                                                      .copyWith(fontSize: 22)),
+                                            ),
+                                ),
+                              ),
+                        SizedBox(
+                          width: kRegularPadding,
+                        ),
+                        Expanded(
+                          child: Text(
+                            "${done["firstName"]} ${done["lastName"]}",
+                            style: textTheme.headline4!.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(kPadding),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: kPrimaryColor),
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 12,
+                            color: kPrimaryWhite,
+                          ),
+                        )
+                      ],
+                    );
+                  } else {
+                    return SizedBox();
+                  }
+                }),
             SizedBox(
               height: kLargePadding,
             ),
@@ -251,7 +371,7 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
                     context,
                     VoucherSuccessful(
                       isGift: true,
-                      message: voucherSuccess,
+                      message: giftVoucherSuccessful,
                     ),
                   );
                 } else if (next.status == NotifierStatus.error) {
@@ -262,7 +382,7 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
                   title: giftVoucher.substring(0, 12),
                   onPressed: () async {
                     FocusScope.of(context).unfocus();
-                    if(_formKey.currentState!.validate()){
+                    if (_formKey.currentState!.validate()) {
                       if (_value.code == "#12345647") {
                         showErrorBar(context, "Please select a voucher code");
                       } else {
@@ -288,42 +408,42 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
                                 code: _value.code);
                           }
                         } else {
-                          showErrorBar(context, "Please input the email or tag");
+                          showErrorBar(
+                              context, "Please input the email or tag");
                         }
                       }
                     }
-
                   });
               return ref.watch(giftVoucherProvider).when(
                   done: (done) => _widget,
                   loading: () => SpinKitDemo(),
                   error: (val) => _widget);
             }),
-            SizedBox(
-              height: kMicroPadding,
-            ),
-            Text(
-              sendCodeVia,
-              style: textTheme.headline6!.copyWith(color: kIconGrey),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(
-              height: kPadding,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(AssetPaths.facebookIcon),
-                SizedBox(
-                  width: kSmallPadding,
-                ),
-                SvgPicture.asset(AssetPaths.whatsappIcon),
-                SizedBox(
-                  width: kSmallPadding,
-                ),
-                SvgPicture.asset(AssetPaths.instagramIcon),
-              ],
-            )
+            // SizedBox(
+            //   height: kMicroPadding,
+            // ),
+            // Text(
+            //   sendCodeVia,
+            //   style: textTheme.headline6!.copyWith(color: kIconGrey),
+            //   textAlign: TextAlign.center,
+            // ),
+            // SizedBox(
+            //   height: kPadding,
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     SvgPicture.asset(AssetPaths.facebookIcon),
+            //     SizedBox(
+            //       width: kSmallPadding,
+            //     ),
+            //     SvgPicture.asset(AssetPaths.whatsappIcon),
+            //     SizedBox(
+            //       width: kSmallPadding,
+            //     ),
+            //     SvgPicture.asset(AssetPaths.instagramIcon),
+            //   ],
+            // )
           ],
         ),
       ),

@@ -95,13 +95,13 @@ class _PouchersTierListState extends ConsumerState<PouchersTierList> {
                                       text1: "50,000",
                                       text2: "50,000",
                                       maxbalance: "50,000",
-                                      tier: tier,
+                                      tier: "$tier 1",
                                     )
                                   : TiersContainer(
                                       maxbalance: done.data!.tier1!.maxBalance!,
                                       text1: done.data!.tier1!.dailyTxLimit!,
                                       text2: done.data!.tier1!.maxBalance!,
-                                      tier: tier,
+                                      tier: "$tier 1",
                                     ),
                               SizedBox(
                                 height: kMediumPadding,
@@ -218,7 +218,7 @@ class TiersContainer extends StatelessWidget {
       padding:
           EdgeInsets.only(top: 35, bottom: 35, right: kMacroPadding, left: 2),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(kRegularPadding),
+        borderRadius: BorderRadius.circular(kSmallPadding),
         color: bgColor ?? kBackgroundColor,
       ),
       child: Row(

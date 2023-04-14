@@ -16,5 +16,5 @@ enum EnvState { test, production }
 String baseUrl({int version = 1}) {
   return Env.getEnvironment() == EnvState.test
       ? "https://poucher-api.enyata.com/api/v$version"
-      : "https://poucher-api.enyata.com/api/v$version";
+      : "https://api.pouchers.io/api/v$version";
 }

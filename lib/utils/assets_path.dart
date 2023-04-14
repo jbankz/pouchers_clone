@@ -5,10 +5,10 @@ class AssetPaths {
   /// IMAGES
   /// Add png, jpg or jpeg filenames and extension from the assets directory e.g ${imgPath}image.png here
    static String faceId = "${imgPath}face-id.png";
-   static String send = "${imgPath}send.png";
+   // static String send = "${imgPath}send.png";
    static String airplane = "${imgPath}airplane.png";
    static String pageImage = "${imgPath}page_image.png";
-   static String poucherLogo = "${imgPath}pouchers_logo.png";
+   // static String poucherLogo = "${imgPath}pouchers_logo.png";
    static String fingerprint = "${imgPath}fingerprint.png";
    static String dstv = "${imgPath}dstv.png";
    static String twoFactor = "${imgPath}two_factor.png";
@@ -100,6 +100,6 @@ class AssetPaths {
    static String onBoardingVoucher2Icon = "${iconPath}onboarding_voucher2.svg";
    static String nairaCardIcon = "${iconPath}naira_card_icon.svg";
    static String dollarCardIcon = "${iconPath}dollar_card_icon.svg";
-
-
+   static String send = "${iconPath}send.svg";
+ static String poucherLogo = "${iconPath}pouchers_logo.svg";
 }

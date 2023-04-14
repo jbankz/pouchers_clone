@@ -3,11 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
+import 'package:pouchers/app/helpers/response_handler.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
+import 'package:pouchers/modules/account/providers/account_provider.dart';
 import 'package:pouchers/modules/account/screens/account_settings/reset_pin.dart';
 import 'package:pouchers/modules/create_account/models/create_account_response.dart';
 import 'package:pouchers/modules/login/models/login_response.dart';
 import 'package:pouchers/modules/login/providers/log_in_provider.dart';
+import 'package:pouchers/modules/login/screens/login.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
@@ -23,7 +26,7 @@ class ChangeTransactionPin extends StatefulWidget {
   State<ChangeTransactionPin> createState() => _ChangeTransactionPinState();
 }
 
-class _ChangeTransactionPinState extends State<ChangeTransactionPin> {
+class _ChangeTransactionPinState extends State<ChangeTransactionPin>{
   bool obscure = true;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _password;
@@ -81,11 +84,11 @@ class _ChangeTransactionPinState extends State<ChangeTransactionPin> {
                         },
                         child: obscure
                             ? Icon(
-                                Icons.visibility_off_outlined,
-                                color: kSecondaryTextColor,
-                              )
-                            : Icon(Icons.visibility_outlined,
-                                color: kSecondaryTextColor)),
+                          Icons.visibility_outlined,
+                          color: kSecondaryTextColor,
+                        )
+                            : Icon(Icons.visibility_off_outlined,
+                            color: kSecondaryTextColor)),
                   ),
                 ],
               ),
@@ -110,7 +113,7 @@ class _ChangeTransactionPinState extends State<ChangeTransactionPin> {
                       ref.read(logInProvider.notifier).logIn(
                           phoneNumber: userProfile.email!.trim(),
                           password: _password!.trim(),
-                          isEmail: true);
+                          isEmail: true,  );
                     }
                   },
                 );

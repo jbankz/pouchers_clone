@@ -4,11 +4,14 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
+import 'package:pouchers/app/helpers/response_handler.dart';
+import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/profile_model.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
 import 'package:pouchers/modules/account/screens/two_factor_auth/two_factor.dart';
 import 'package:pouchers/modules/login/models/login_response.dart';
+import 'package:pouchers/modules/login/screens/login.dart';
 import 'package:pouchers/modules/tab_layout/two_fa_modal.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
@@ -29,7 +32,8 @@ class BiometricSettings extends ConsumerStatefulWidget {
   ConsumerState<BiometricSettings> createState() => _BiometricSettingsState();
 }
 
-class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
+class _BiometricSettingsState extends ConsumerState<BiometricSettings>
+     {
   HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
   int id = -1;
   bool? _canCheckBiometrics;
@@ -57,9 +61,9 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
 
       ref.read(biometricProvider.notifier).state =
           ref.read(biometricProvider.notifier).state.copyWith(
-            isLoginBiometricActive: userProfile.isLoginBiometricActive,
-            isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
-          );
+                isLoginBiometricActive: userProfile.isLoginBiometricActive,
+                isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+              );
     }
   }
 
@@ -73,8 +77,7 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
           BiometricsWidget(
               textTheme: textTheme,
               text: logInBiometric,
-              isSwitch:
-                  ref.watch(biometricProvider).isLoginBiometricActive!,
+              isSwitch: ref.watch(biometricProvider).isLoginBiometricActive!,
               widget: FlutterSwitch(
                   width: 60.0,
                   height: 35.0,
@@ -82,9 +85,7 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
                   toggleSize: 27.0,
                   inactiveColor: kLightColor500,
                   activeColor: kPrimaryColor,
-                  value: ref
-                      .watch(biometricProvider)
-                      .isLoginBiometricActive!,
+                  value: ref.watch(biometricProvider).isLoginBiometricActive!,
                   borderRadius: 30.0,
                   onToggle: (val) {
                     buildShowModalBottomSheet(
@@ -99,9 +100,7 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
           BiometricsWidget(
               textTheme: textTheme,
               text: payBiometric,
-              isSwitch: ref
-                  .watch(biometricProvider)
-                  .isPaymentBiometricActive!,
+              isSwitch: ref.watch(biometricProvider).isPaymentBiometricActive!,
               widget: FlutterSwitch(
                   width: 60.0,
                   height: 35.0,
@@ -109,9 +108,7 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
                   toggleSize: 27.0,
                   inactiveColor: kLightColor500,
                   activeColor: kPrimaryColor,
-                  value: ref
-                      .watch(biometricProvider)
-                      .isPaymentBiometricActive!,
+                  value: ref.watch(biometricProvider).isPaymentBiometricActive!,
                   borderRadius: 30.0,
                   onToggle: (val) {
                     buildShowModalBottomSheet(
@@ -121,8 +118,7 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
                           doBiom: () {
                             checkBiometric(context, payBiometric);
                           },
-                        )
-                        );
+                        ));
                   })),
         ],
       ),
@@ -182,17 +178,19 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
     if (isAuth) {
       if (text == payBiometric) {
         ref.read(editProfileProvider2.notifier).editProfile(
-            isPaymentBiometricActive: !ref
-                .watch(biometricProvider)
-                .isPaymentBiometricActive!,
+            isPaymentBiometricActive:
+                !ref.watch(biometricProvider).isPaymentBiometricActive!,
             isLoginBiometricActive:
-                ref.watch(biometricProvider).isLoginBiometricActive);
+                ref.watch(biometricProvider).isLoginBiometricActive,
+           );
       } else {
         ref.read(editProfileProvider.notifier).editProfile(
             isLoginBiometricActive:
                 !ref.watch(biometricProvider).isLoginBiometricActive!,
             isPaymentBiometricActive:
-                ref.watch(biometricProvider).isPaymentBiometricActive);
+                ref.watch(biometricProvider).isPaymentBiometricActive,
+
+        );
       }
     }
   }
@@ -249,23 +247,25 @@ class _BiometricsWidgetState extends ConsumerState<BiometricsWidget> {
                         if (widget.isSwitch) {
                           setState(() => widget.isSwitch = false);
                           Hive.box(kBiometricsBox).put(kBiometricsKey, 0);
-                          ref.read(biometricProvider.notifier).state =
-                              ref.read(biometricProvider.notifier).state.copyWith(
+                          ref.read(biometricProvider.notifier).state = ref
+                              .read(biometricProvider.notifier)
+                              .state
+                              .copyWith(
                                   isLoginBiometricActive: widget.isSwitch,
                                   isPaymentBiometricActive: ref
                                       .watch(biometricProvider)
-                                      .isPaymentBiometricActive
-                              );
+                                      .isPaymentBiometricActive);
                         } else {
                           setState(() => widget.isSwitch = true);
                           Hive.box(kBiometricsBox).put(kBiometricsKey, 1);
-                          ref.read(biometricProvider.notifier).state =
-                              ref.read(biometricProvider.notifier).state.copyWith(
+                          ref.read(biometricProvider.notifier).state = ref
+                              .read(biometricProvider.notifier)
+                              .state
+                              .copyWith(
                                   isLoginBiometricActive: widget.isSwitch,
                                   isPaymentBiometricActive: ref
                                       .watch(biometricProvider)
-                                      .isPaymentBiometricActive
-                              );
+                                      .isPaymentBiometricActive);
                         }
                       }
                     });
@@ -282,23 +282,25 @@ class _BiometricsWidgetState extends ConsumerState<BiometricsWidget> {
                         if (widget.isSwitch) {
                           setState(() => widget.isSwitch = false);
                           Hive.box(kBiometricsBox).put(kPayBiometricsKey, 0);
-                          ref.read(biometricProvider.notifier).state =
-                              ref.read(biometricProvider.notifier).state.copyWith(
+                          ref.read(biometricProvider.notifier).state = ref
+                              .read(biometricProvider.notifier)
+                              .state
+                              .copyWith(
                                   isPaymentBiometricActive: widget.isSwitch,
                                   isLoginBiometricActive: ref
                                       .watch(biometricProvider)
-                                      .isLoginBiometricActive
-                              );
+                                      .isLoginBiometricActive);
                         } else {
                           setState(() => widget.isSwitch = true);
                           Hive.box(kBiometricsBox).put(kPayBiometricsKey, 1);
-                          ref.read(biometricProvider.notifier).state =
-                              ref.read(biometricProvider.notifier).state.copyWith(
+                          ref.read(biometricProvider.notifier).state = ref
+                              .read(biometricProvider.notifier)
+                              .state
+                              .copyWith(
                                   isPaymentBiometricActive: widget.isSwitch,
                                   isLoginBiometricActive: ref
                                       .watch(biometricProvider)
-                                      .isLoginBiometricActive
-                              );
+                                      .isLoginBiometricActive);
                         }
                       }
                     });

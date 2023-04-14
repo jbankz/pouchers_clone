@@ -13,6 +13,7 @@ import 'package:pouchers/modules/utilities/providers/utilities_provider.dart';
 import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
+import 'package:pouchers/utils/input_formatters.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/utils.dart';
 import 'package:pouchers/utils/widgets.dart';
@@ -234,7 +235,7 @@ class _SchedulePaymentsState extends ConsumerState<SchedulePayments> {
                                               height: kPadding,
                                             ),
                                             Text(
-                                                "${item.category!.substring(0, 1).toUpperCase()}${item.category!.substring(1).toLowerCase()}",
+                                                "${item.category!.toTitleCase()}",
                                                 style: textTheme.headline6),
                                             SizedBox(
                                               height: kRegularPadding,

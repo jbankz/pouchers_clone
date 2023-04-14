@@ -33,7 +33,6 @@ class _AccountSettingsState extends ConsumerState<AccountSettings> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       checkFactor();

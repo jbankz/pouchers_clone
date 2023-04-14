@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
+import 'package:pouchers/app/helpers/response_handler.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
+import 'package:pouchers/modules/login/screens/login.dart';
 import 'package:pouchers/modules/login/screens/reset_successful.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
@@ -121,7 +121,7 @@ class _ResetPinState extends ConsumerState<ResetPin> {
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
                               ref.read(resetPinProvider.notifier).resetPin(
-                                  oldPin: _pin!, newPin: _pin2Controller.text);
+                                  oldPin: _pin!, newPin: _pin2Controller.text, );
                             }
                           }
                         },

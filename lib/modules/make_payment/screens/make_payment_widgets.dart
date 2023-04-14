@@ -38,6 +38,8 @@ class _TransferModalState extends ConsumerState<TransferModal> {
   String? _errorText = "";
   Map<String, dynamic> contactInfo = {};
   List<ContactListData> contactData = [];
+  String? lastInputValue;
+
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +106,10 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                   child: Container(
                     child: TextFormField(
                       keyboardType: TextInputType.text,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny(
+                            RegExp(r'\s')),
+                      ],
                       style:
                           textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
                       cursorColor: kPrimaryColor,
@@ -114,13 +120,21 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                           return null;
                         }
                       },
-                      onChanged: (val) {
-                        if (val.isNotEmpty) {
-                          Future.delayed(Duration(seconds: 2)).then((value) =>
-                              ref
-                                  .read(getContactByPoucherTagProvider.notifier)
-                                  .getContactByPoucherTag(poucherTag: val));
+                      onChanged: (inputValue) {
+                        if (inputValue.isNotEmpty) {
+                          if (lastInputValue != inputValue) {
+                            lastInputValue = inputValue;
+                            ref
+                                .read(getContactByPoucherTagProvider.notifier)
+                                .getContactByPoucherTag(poucherTag: inputValue);
+                          }
                         }
+                        // if (val.isNotEmpty) {
+                        //   Future.delayed(Duration(seconds: 2)).then((value) =>
+                        //       ref
+                        //           .read(getContactByPoucherTagProvider.notifier)
+                        //           .getContactByPoucherTag(poucherTag: val));
+                        // }
                       },
                       onSaved: (val) => setState(() => _tag = val),
                       decoration: InputDecoration(
@@ -1042,25 +1056,29 @@ class TransferRowWidget extends StatelessWidget {
         child: inkWell(
       onTap: onTap,
       child: Container(
+        alignment: Alignment.center,
         padding: EdgeInsets.symmetric(
-            horizontal: kMediumPadding, vertical: kRegularPadding),
+           vertical: kRegularPadding),
         decoration: BoxDecoration(
           color: kContainerColor,
           borderRadius: BorderRadius.circular(kSmallPadding),
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
           children: [
             icon,
             SizedBox(
               width: kSmallPadding,
             ),
-            Expanded(
+            Flexible(
               child: Text(
                 text,
                 style: textTheme.headline2!.copyWith(
                     fontWeight: FontWeight.w500,
                     overflow: TextOverflow.ellipsis,
-                    fontSize: 14),
+                    fontSize: 14, ),
+                // textAlign: TextAlign.center,
               ),
             )
           ],

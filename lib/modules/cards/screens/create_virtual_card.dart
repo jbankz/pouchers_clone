@@ -152,36 +152,76 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
             SizedBox(
               height: kSmallPadding,
             ),
-            widget.isFundCard! || !widget.isFundNaira!
+            widget.isFundCard! ?
+            RichText(
+              text: TextSpan(
+                  text: "Minimum amount is ",
+                  //? "₦" : "\$",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: kPrimaryWhite.withOpacity(0.8),
+                      fontSize: 18,
+                      fontFamily: null),
+                  children: [
+                    TextSpan(
+                        text: widget.isFundNaira! ? "₦" : "\$",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: kPrimaryWhite.withOpacity(0.8),
+                            fontSize: 18,
+                            fontFamily: null)),
+                    TextSpan(
+                        text: widget.isFundNaira!
+                            ? ref
+                                .watch(getAllFeesProvider)
+                                .data!
+                                .data!
+                                .firstWhere((element) =>
+                                    element.name ==
+                                    "sudo_min_naira_card_funding_amt")
+                                .value!
+                            : ref
+                                .watch(getAllFeesProvider)
+                                .data!
+                                .data!
+                                .firstWhere((element) =>
+                                    element.name ==
+                                    "sudo_min_dollar_card_funding_amt")
+                                .value!,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: kPrimaryWhite.withOpacity(0.8),
+                            fontSize: 18,
+                            fontFamily: null)),
+                    //  sudo_min_naira_card_funding_amt
+                  ]),
+            ) : SizedBox(),
+            SizedBox(
+              height: kSmallPadding,
+            ),
+            widget.isFundCard! || !widget.isNaira!
                 ? SizedBox()
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "$creationFeeText: + ",
-                        style: textTheme.headline3!.copyWith(
-                            color: kPrimaryTextColor.withOpacity(0.8)),
+                        style: textTheme.headline3!
+                            .copyWith(color: kBackgroundColor),
                       ),
                       Consumer(builder: (context, ref, _) {
                         return RichText(
                           text: TextSpan(
                               text: widget.isNaira! ? "₦" : "\$",
                               style: TextStyle(
-                                color: kPrimaryTextColor.withOpacity(0.8),
+                                color: kBackgroundColor,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14,
                               ),
                               children: [
                                 TextSpan(
                                   text: widget.isNaira!
-                                      ? (int.parse(ref
-                                                  .watch(getAllFeesProvider)
-                                                  .data!
-                                                  .data!
-                                                  .firstWhere((element) =>
-                                                      element.name ==
-                                                      "naira_card_creation_fee")
-                                                  .value!) +
+                                      ? (int.parse(ref.watch(getAllFeesProvider).data!.data!.firstWhere((element) => element.name == "naira_card_creation_fee").value!) +
                                               int.parse(ref
                                                   .watch(getAllFeesProvider)
                                                   .data!
@@ -199,17 +239,20 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
                                                       "naira_card_funding_fee")
                                                   .value!))
                                           .toString()
-                                      : ref
-                                          .watch(getAllFeesProvider)
-                                          .data!
-                                          .data!
-                                          .firstWhere((element) =>
-                                              element.name ==
-                                              "dollar_card_creation_fee")
-                                          .value,
-                                  style: textTheme.headline3!.copyWith(
-                                      color:
-                                          kPrimaryTextColor.withOpacity(0.8)),
+                                      : (int.parse(ref.watch(getAllFeesProvider).data!.data!.firstWhere((element) => element.name == "dollar_card_creation_fee").value!) +
+                                              double.parse(ref
+                                                  .watch(getAllFeesProvider)
+                                                  .data!
+                                                  .data!
+                                                  .firstWhere((element) =>
+                                                      element.name ==
+                                                      "sudo_dollar_card_creation_fee")
+                                                  .value!) +
+                                              double.parse(ref.watch(getAllFeesProvider).data!.data!.firstWhere((element) => element.name == "dollar_card_funding_fee").value!) +
+                                              double.parse(ref.watch(getAllFeesProvider).data!.data!.firstWhere((element) => element.name == "sudo_dollar_card_funding_fee").value!))
+                                          .toString(),
+                                  style: textTheme.headline3!
+                                      .copyWith(color: kBackgroundColor),
                                 ),
                               ]),
                         );
@@ -355,7 +398,6 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
                               ),
                             );
                     } else {
-
                       widget.isNaira!
                           ? pushTo(
                               context,

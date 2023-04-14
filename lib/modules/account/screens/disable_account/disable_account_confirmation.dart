@@ -81,11 +81,11 @@ class _DisableConfirmState extends State<DisableConfirm> {
                       },
                       child: obscure
                           ? Icon(
-                              Icons.visibility_off_outlined,
-                              color: kSecondaryTextColor,
-                            )
-                          : Icon(Icons.visibility_outlined,
-                              color: kSecondaryTextColor),
+                        Icons.visibility_outlined,
+                        color: kSecondaryTextColor,
+                      )
+                          : Icon(Icons.visibility_off_outlined,
+                          color: kSecondaryTextColor)
                     ),
                   ),
                 ],

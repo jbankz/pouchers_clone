@@ -44,7 +44,7 @@ class VoucherModal extends StatefulWidget {
 class _VoucherModalState extends State<VoucherModal> {
   Voucher _value = Voucher(
     code: "",
-    amount: "amount",
+    amount: "0.0",
     buyerId: "buyerId",
     status: "status",
     redeemed: true,
@@ -94,98 +94,108 @@ class _VoucherModalState extends State<VoucherModal> {
               const SizedBox(
                 height: 30,
               ),
-              widget.voucherItems.isEmpty ?  NoVoucher(textTheme: textTheme, text: noVouchers,) : Column(
-                children: widget.voucherItems.mapIndexed(
-                      (index, element) =>
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: kRegularPadding, right: kSmallPadding),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: kRegularPadding),
-                              child: inkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _value = element;
-                                    currentIndex = index;
-                                  });
-                                  Navigator.pop(context, _value);
-                                },
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: currentIndex != index
-                                              ? kSecondaryTextColor
-                                              : kPrimaryColor,
-                                          width: 1.5,
-                                        ),
-                                      ),
-                                      child: currentIndex == index
-                                          ? Container(
-                                        height: kSmallPadding,
-                                        width: kSmallPadding,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: kPrimaryColor,
-                                        ),
-                                      )
-                                          : SizedBox(
-                                        height: kSmallPadding,
-                                        width: kSmallPadding,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: kSmallPadding,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        element.code,
-                                        style: textTheme.headline2!.copyWith(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 18,
-                                            color: currentIndex != index
-                                                ? kSecondaryTextColor
-                                                : kPrimaryColor),
-                                      ),
-                                    ),
-                                    RichText(
-                                        text: TextSpan(
-                                            text: "₦",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              color: kColorGreen,
-                                              fontSize: 16,
+              widget.voucherItems.isEmpty
+                  ? NoVoucher(
+                      textTheme: textTheme,
+                      text: noVouchers,
+                    )
+                  : Column(
+                      children: widget.voucherItems
+                          .mapIndexed(
+                            (index, element) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: kPadding,
+                                  horizontal: kMicroPadding),
+                              child: Column(
+                                children: [
+                                  inkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _value = element;
+                                        currentIndex = index;
+                                      });
+                                      Navigator.pop(context, _value);
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(4),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: currentIndex != index
+                                                  ? kSecondaryTextColor
+                                                  : kPrimaryColor,
+                                              width: 1.5,
                                             ),
-                                            children: [
+                                          ),
+                                          child: currentIndex == index
+                                              ? Container(
+                                                  height: kSmallPadding,
+                                                  width: kSmallPadding,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: kPrimaryColor,
+                                                  ),
+                                                )
+                                              : SizedBox(
+                                                  height: kSmallPadding,
+                                                  width: kSmallPadding,
+                                                ),
+                                        ),
+                                        SizedBox(
+                                          width: kSmallPadding,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            element.code,
+                                            style: textTheme.headline2!
+                                                .copyWith(
+                                                    fontWeight:
+                                                        FontWeight.w700,
+                                                    fontSize: 18,
+                                                    color: currentIndex !=
+                                                            index
+                                                        ? kSecondaryTextColor
+                                                        : kPrimaryColor),
+                                          ),
+                                        ),
+                                        RichText(
+                                            text: TextSpan(
+                                                text: "₦",
+                                                style: TextStyle(
+                                                  fontWeight:
+                                                      FontWeight.normal,
+                                                  color: kColorGreen,
+                                                  fontSize: 16,
+                                                ),
+                                                children: [
                                               TextSpan(
                                                 text: kPriceFormatter(
-                                                    double.parse(element.amount)),
-                                                style: textTheme.headline2!.copyWith(
+                                                    double.parse(
+                                                        element.amount)),
+                                                style: textTheme.headline2!
+                                                    .copyWith(
                                                   color: kColorGreen,
                                                 ),
                                               )
                                             ])),
-                                  ],
-                                ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: kSmallPadding,
+                                  ),
+                                  Divider(
+                                    color: kLightPurple,
+                                    thickness: 1,
+                                  )
+                                ],
                               ),
                             ),
-                            SizedBox(
-                              height: kSmallPadding,
-                            ),
-                            Divider(
-                              color: kLightPurple,
-                              thickness: 1,
-                            )
-                          ],
-                        ),
-                      ),
-                ).toList(),
-              )
+                          )
+                          .toList(),
+                    )
             ],
           ),
         ),
@@ -253,10 +263,14 @@ class VoucherSuccessful extends StatelessWidget {
         children: [
           isGift || isRedeem
               ? Lottie.asset(AssetPaths.success, height: 200, width: 200)
-              : VoucherImage(
-                  amount: amount!,
-                  voucherCode: voucherCode!,
-                ),
+              : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: kMicroPadding),
+                child: VoucherImage(
+                    amount: amount!,
+                    available: false,
+                    voucherCode: voucherCode!,
+                  ),
+              ),
           SizedBox(
             height: kLargePadding,
           ),
@@ -283,7 +297,8 @@ class VoucherSuccessful extends StatelessWidget {
               ? SizedBox()
               : LargeButton(
                   title: shareVoucher,
-                  outlineButton: true,
+                  whiteButton: true,
+                  download: true,
                   onPressed: () {
                     Share.share(voucherCode!);
                   }),
@@ -294,7 +309,7 @@ class VoucherSuccessful extends StatelessWidget {
             title: continueText,
             onPressed: () {
               Navigator.pop(context);
-              },
+            },
           ),
         ],
       ),
@@ -307,14 +322,16 @@ class VoucherImage extends StatelessWidget {
     Key? key,
     required this.amount,
     required this.voucherCode,
+     this.available = true
   }) : super(key: key);
 
   final String amount;
   final String voucherCode;
+  final bool available;
 
   @override
   Widget build(BuildContext context) {
-   TextTheme textTheme = Theme.of(context).textTheme;
+    TextTheme textTheme = Theme.of(context).textTheme;
     return Container(
       width: double.infinity,
       height: 200,
@@ -345,6 +362,7 @@ class VoucherImage extends StatelessWidget {
                   right: kMediumPadding,
                   bottom: kLargePadding,
                 ),
+                margin: EdgeInsets.only(left: kSmallPadding),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -359,7 +377,7 @@ class VoucherImage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              value,
+                              "Total value",
                               style: textTheme.headline3!.copyWith(
                                 color: kLightPurple,
                                 fontSize: 10,
@@ -393,12 +411,12 @@ class VoucherImage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: available ? CrossAxisAlignment.center : CrossAxisAlignment.start,
                             children: [
                               Text(
-                                code,
-                                style: textTheme.headline3!
-                                    .copyWith(color: kLightPurple, fontSize: 8),
+                                available ? "Available vouchers" : "Code",
+                                style: textTheme.headline3!.copyWith(
+                                    color: kLightPurple, fontSize: 10),
                               ),
                               SizedBox(
                                 height: 5,
@@ -426,11 +444,8 @@ class VoucherImage extends StatelessWidget {
 }
 
 class OnBoardingVoucherImage extends StatelessWidget {
-  const OnBoardingVoucherImage({
-    Key? key,
-    required this.image
-
-  }) : super(key: key);
+  const OnBoardingVoucherImage({Key? key, required this.image})
+      : super(key: key);
 
   final String image;
 
@@ -438,19 +453,16 @@ class OnBoardingVoucherImage extends StatelessWidget {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return Container(
-       height: 100,
-      child: SvgPicture.asset(image, )
-    );
+        height: 100,
+        child: SvgPicture.asset(
+          image,
+        ));
   }
 }
 
-
 class NoVoucher extends StatelessWidget {
-  const NoVoucher({
-    Key? key,
-    required this.textTheme,
-    required this.text
-  }) : super(key: key);
+  const NoVoucher({Key? key, required this.textTheme, required this.text})
+      : super(key: key);
 
   final TextTheme textTheme;
   final String text;
@@ -486,4 +498,3 @@ class NoVoucher extends StatelessWidget {
     );
   }
 }
-

@@ -1,8 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pouchers/app/helpers/network_helpers.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
+import 'package:pouchers/app/helpers/service_response.dart';
 import 'package:pouchers/modules/create_account/models/create_account_response.dart';
 import 'package:pouchers/modules/create_account/service/create_account_service.dart';
+import 'package:pouchers/modules/login/models/login_response.dart';
+import 'package:pouchers/utils/strings.dart';
 
 final createAccountRepoProvider = Provider.autoDispose<CreateAccountRepository>(
     (ref) => CreateAccountRepository(ref));
@@ -38,9 +42,19 @@ class CreateAccountRepository {
   Future<NotifierState<TagResponse>> createTag({
     required String tag,
   }) async {
-    final accessToken = await getAccessToken();
-    return (await CreateAccountService.createTag(tag: tag, token: accessToken!))
-        .toNotifierState();
+
+    ServiceResponse<TagResponse> createTag;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    createTag = await CreateAccountService.createTag(
+        token: userProfile.token!, tag: tag,);
+
+    if (createTag.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      createTag = await CreateAccountService.createTag(
+          token: userProfiles.token!, tag: tag,);
+    }
+    return createTag.toNotifierState();
   }
 
   Future<NotifierState<String>> resendVerificationEmail({
@@ -53,8 +67,18 @@ class CreateAccountRepository {
   Future<NotifierState<TagResponse>> createPin({
     required String pin,
   }) async {
-    final accessToken = await getAccessToken();
-    return (await CreateAccountService.createPin(pin: pin, token: accessToken!))
-        .toNotifierState();
+
+    ServiceResponse<TagResponse> createPin;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    createPin = await CreateAccountService.createPin(
+      token: userProfile.token!, pin: pin,);
+
+    if (createPin.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      createPin = await CreateAccountService.createPin(
+        token: userProfiles.token!, pin: pin,);
+    }
+    return createPin.toNotifierState();
   }
 }
