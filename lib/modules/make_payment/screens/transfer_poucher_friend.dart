@@ -338,7 +338,7 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                 )),
                           ]),
                     ),
-                    ref.watch(getWalletProvider).data == null
+                    ref.watch(getWalletProvider).data == null || widget.isRequestMoney!
                         ? SizedBox()
                         : double.parse(wholeText) >
                                 double.parse(ref

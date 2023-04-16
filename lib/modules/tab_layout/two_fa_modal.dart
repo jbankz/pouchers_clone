@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pouchers/app/common/credentials.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';

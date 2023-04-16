@@ -123,6 +123,13 @@ class _BuyDataState extends ConsumerState<BuyData>
                                     currentIndex = index;
                                     billerData = element;
                                   });
+                                  ref
+                                      .read(
+                                      getDataBundleProvider.notifier)
+                                      .getDataBundle(
+                                    merchantServiceId:
+                                    billerData!.operatorpublicid!,
+                                  );
                                 },
                                 child: Stack(
                                   children: [
@@ -313,8 +320,8 @@ class _BuyDataState extends ConsumerState<BuyData>
           LargeButton(
               title: continueText,
               onPressed: () {
-                if (contactController.text.isEmpty) {
-                  showErrorBar(context, "Please input the number");
+                if (contactController.text.isEmpty ||  billerData == null || _mobileOperatorService == null) {
+                  showErrorBar(context, "Please fill all fields");
                 } else {
                   buildShowModalBottomSheet(
                       context,

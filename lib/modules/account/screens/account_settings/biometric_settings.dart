@@ -1,8 +1,15 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:pouchers/app/common/credentials.dart';
+import 'package:pouchers/app/common/model.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/helpers/response_handler.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
@@ -32,12 +39,12 @@ class BiometricSettings extends ConsumerStatefulWidget {
   ConsumerState<BiometricSettings> createState() => _BiometricSettingsState();
 }
 
-class _BiometricSettingsState extends ConsumerState<BiometricSettings>
-     {
+class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
   HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
   int id = -1;
   bool? _canCheckBiometrics;
   bool isAuth = false;
+   String? userPin;
 
   @override
   void initState() {
@@ -110,15 +117,27 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings>
                   activeColor: kPrimaryColor,
                   value: ref.watch(biometricProvider).isPaymentBiometricActive!,
                   borderRadius: 30.0,
-                  onToggle: (val) {
-                    buildShowModalBottomSheet(
-                        context,
-                        TwoFactorPinModal(
-                          isBiometric: true,
-                          doBiom: () {
-                            checkBiometric(context, payBiometric);
-                          },
-                        ));
+                  onToggle: (val) async{
+                   // await saveUserCredential(transactionPin: "6032");
+                   //  UserCredentials? cred = await getUserCredentials();
+                   //  print("credential: ${cred?.transactionPin}");
+
+                    final  result  = await  buildShowModalBottomSheet(
+                          context,
+                          TwoFactorPinModal(
+                            isBiometric: true,
+                            doBiom: () {
+                              checkBiometric(context, payBiometric);
+                            },
+                          ));
+                      if(result != null){
+                        setState(() {
+                          userPin = result.join("");
+                        });
+                      }
+
+
+
                   })),
         ],
       ),
@@ -167,7 +186,7 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings>
           ),
           authMessages: const <AuthMessages>[
             AndroidAuthMessages(
-                signInTitle: "Biometrics login", cancelButton: "Cancel"),
+                signInTitle: "Biometrics login", cancelButton: "Cancel", ),
             IOSAuthMessages()
           ]);
     } catch (e) {}
@@ -182,15 +201,21 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings>
                 !ref.watch(biometricProvider).isPaymentBiometricActive!,
             isLoginBiometricActive:
                 ref.watch(biometricProvider).isLoginBiometricActive,
+          then: () async{
+              if(ref.watch(biometricProvider).isPaymentBiometricActive!){
+                await saveUserCredential(transactionPin: userPin);
+              }else{
+                await saveUserCredential(transactionPin: null);
+              }
+          }
            );
       } else {
         ref.read(editProfileProvider.notifier).editProfile(
-            isLoginBiometricActive:
-                !ref.watch(biometricProvider).isLoginBiometricActive!,
-            isPaymentBiometricActive:
-                ref.watch(biometricProvider).isPaymentBiometricActive,
-
-        );
+              isLoginBiometricActive:
+                  !ref.watch(biometricProvider).isLoginBiometricActive!,
+              isPaymentBiometricActive:
+                  ref.watch(biometricProvider).isPaymentBiometricActive,
+            );
       }
     }
   }

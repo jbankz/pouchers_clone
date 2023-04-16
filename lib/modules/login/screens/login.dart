@@ -58,7 +58,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount> with ResponseHandle
       widget.sessionTimeOut! ? handleExpiredToken(context,) : null;
       await Hive.openBox(kBiometricsBox);
       var loginBiometrics = Hive.box(kBiometricsBox).get(kBiometricsKey);
-      if(loginBiometrics == 0){
+      if(loginBiometrics == 0 || loginBiometrics == null){
         ref.read(biometricProvider.notifier).state =
             ref.read(biometricProvider.notifier).state.copyWith(
               isLoginBiometricActive: false,
@@ -89,6 +89,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount> with ResponseHandle
 
   @override
   Widget build(BuildContext context) {
+    print(Hive.box(kBiometricsBox).get(kBiometricsKey));
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       onTap: () {

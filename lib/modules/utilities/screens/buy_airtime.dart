@@ -39,6 +39,7 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
   String _amount = "";
   GetUtilitiesData? billerData;
   String? threshold;
+  String? lastInputValue;
 
   @override
   void initState() {
@@ -68,6 +69,19 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                   textTheme: textTheme,
                   text: mobileNumber,
                   controller: contactController,
+                  onChanged: (val) {
+                    if (val!.isNotEmpty) {
+                      setState(() {
+                        contactController.text = val;
+                      });
+                    } else {
+                      setState(() {
+                        contactController.text = "";
+                      });
+                    }
+                    contactController.selection = TextSelection.fromPosition(
+                        TextPosition(offset: contactController.text.length));
+                  },
                   inputFormatters: [LengthLimitingTextInputFormatter(11)],
                   icon: inkWell(
                     onTap: () async {
@@ -88,6 +102,9 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
 
                           contactController.text = phoneReplaced2;
                         });
+                        contactController.selection =
+                            TextSelection.fromPosition(TextPosition(
+                                offset: contactController.text.length));
                       }
                     },
                     child: SvgPicture.asset(
@@ -114,53 +131,49 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                             children: provider.data!
                                 .mapIndexed(
                                   (index, element) => inkWell(
-                                onTap: () {
-                                  setState(() {
-                                    currentIndex = index;
-                                    billerData = element;
-                                  });
-                                },
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                        padding: EdgeInsets.all(
-                                            kRegularPadding),
-                                        height: 70,
-                                        width: 70,
-                                        margin: EdgeInsets.only(
-                                            right: kSmallPadding),
-                                        decoration: BoxDecoration(
-                                            color: currentIndex == index
-                                                ? kLightPurple
-                                                : kContainerColor,
-                                            shape: BoxShape.circle),
-                                        child: SvgPicture.asset(icon(
-                                            provider.data![index]
-                                                .displayName!))),
-                                    currentIndex == index
-                                        ? Positioned(
-                                      bottom: 0,
-                                      right: 0,
-                                      child: Container(
-                                          padding:
-                                          EdgeInsets.all(3),
-                                          decoration:
-                                          BoxDecoration(
-                                              color:
-                                              kPurpleColor,
-                                              shape: BoxShape
-                                                  .circle),
-                                          child: Icon(
-                                            Icons.check,
-                                            color: kPrimaryWhite,
-                                            size: 15,
-                                          )),
-                                    )
-                                        : SizedBox(),
-                                  ],
-                                ),
-                              ),
-                            )
+                                    onTap: () {
+                                      setState(() {
+                                        currentIndex = index;
+                                        billerData = element;
+                                      });
+                                    },
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                            padding:
+                                                EdgeInsets.all(kRegularPadding),
+                                            height: 70,
+                                            width: 70,
+                                            margin: EdgeInsets.only(
+                                                right: kSmallPadding),
+                                            decoration: BoxDecoration(
+                                                color: currentIndex == index
+                                                    ? kLightPurple
+                                                    : kContainerColor,
+                                                shape: BoxShape.circle),
+                                            child: SvgPicture.asset(icon(
+                                                provider.data![index]
+                                                    .displayName!))),
+                                        currentIndex == index
+                                            ? Positioned(
+                                                bottom: 0,
+                                                right: 0,
+                                                child: Container(
+                                                    padding: EdgeInsets.all(3),
+                                                    decoration: BoxDecoration(
+                                                        color: kPurpleColor,
+                                                        shape: BoxShape.circle),
+                                                    child: Icon(
+                                                      Icons.check,
+                                                      color: kPrimaryWhite,
+                                                      size: 15,
+                                                    )),
+                                              )
+                                            : SizedBox(),
+                                      ],
+                                    ),
+                                  ),
+                                )
                                 .toList(),
                           );
                         } else {
@@ -315,8 +328,10 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                                           },
                                           child: Container(
                                               decoration: BoxDecoration(
-                                                color: dealCurrentIndex == index
-                                                    ? kLightPurple : kTransparent,
+                                                  color:
+                                                      dealCurrentIndex == index
+                                                          ? kLightPurple
+                                                          : kTransparent,
                                                   border: Border.all(
                                                       color: kLightPurple),
                                                   borderRadius:
@@ -337,7 +352,7 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                                                             Radius.circular(
                                                                 kSmallPadding),
                                                       ),
-                                                      color:  kPurpleColor,
+                                                      color: kPurpleColor,
                                                     ),
                                                     child:
                                                         done.data!.threshold ==
@@ -437,13 +452,21 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                       return null;
                   },
                   onChanged: (val) {
+                    if (val.isNotEmpty) {
+                      if (lastInputValue != val) {
+                        lastInputValue = val;
+                        setState(() {
+                          dealCurrentIndex = -1;
+                        });
+                      }
+                    }
                     setState(() {
                       _amount = val;
                       amountController.text = val;
+                      amountController.selection = TextSelection.fromPosition(
+                        TextPosition(offset: amountController.text.length),
+                      );
                     });
-                    amountController.selection = TextSelection.fromPosition(
-                      TextPosition(offset: amountController.text.length),
-                    );
                   },
                   decoration: InputDecoration(
                     filled: true,
@@ -504,9 +527,9 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
           ),
           LargeButton(
             title: continueText,
-            disableColor: (amountController.text.isEmpty ||
-                        _amount.isEmpty ||
-                        _amount.startsWith("0")) ||
+            disableColor: amountController.text.isEmpty ||
+                    _amount.isEmpty ||
+                    _amount.startsWith("0") ||
                     billerData == null ||
                     contactController.text.isEmpty
                 ? kPurpleColor100
@@ -517,8 +540,11 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                     billerData == null ||
                     _amount.isEmpty ||
                     _amount.startsWith("0")
-                ? () {}
+                ? () {
+
+                  }
                 : () {
+
                     if (double.parse(amountController.text) > 10000 &&
                         widget.isGuest!) {
                       buildShowModalBottomSheet(

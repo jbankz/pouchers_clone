@@ -313,13 +313,13 @@ class MobileOperatorService {
   });
 
   int? mobileOperatorId;
-  int? servicePrice;
+  double? servicePrice;
   String? serviceName;
   int? serviceId;
 
   factory MobileOperatorService.fromJson(Map<String, dynamic> json) => MobileOperatorService(
     mobileOperatorId: json["mobileOperatorId"],
-    servicePrice: json["servicePrice"],
+    servicePrice: json["servicePrice"].toDouble(),
     serviceName: json["serviceName"],
     serviceId: json["serviceId"],
   );

@@ -10,6 +10,7 @@ import 'package:pouchers/modules/transactions/components/transaction_components.
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/flushbar.dart';
+import 'package:pouchers/utils/input_formatters.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/utils.dart';
 import 'package:pouchers/utils/widgets.dart';
@@ -86,9 +87,12 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SvgPicture.asset(
-                              AssetPaths.poucherLogo,
-                              height: 80,
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: SvgPicture.asset(
+                                AssetPaths.poucherLogo,
+                                height: 80,
+                              ),
                             ),
                             SizedBox(
                               height: kLargePadding,
@@ -101,7 +105,11 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                             ),
                             TransactionReceiptItems(
                               text: sender,
-                              subText: widget.senderName ?? "No name",
+                              subText: widget.senderName!.toTitleCase2() ?? "No name",
+                            ),
+                            TransactionReceiptItems(
+                              text: beneficiary,
+                              subText: widget.beneficiary!.toTitleCase2() ?? "No name",
                             ),
                             widget.typeOfTransfer == "localBank"
                                 ? TransactionReceiptItems(

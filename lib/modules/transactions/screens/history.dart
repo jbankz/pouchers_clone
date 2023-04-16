@@ -213,9 +213,10 @@ class _HistoryState extends ConsumerState<History> {
                                               typeOfTransfer: "p2p",
                                               accNo: "",
                                               fromWhere: "history",
+                                              status: transactionData[index].status!.toCapitalized(),
                                               tag: transactionData[index]
                                                   .extraDetails!
-                                                  .senderTag,
+                                                  .receiverTag,
                                               transactionId: transactionData[index].transactionId,
                                               transactionTime:
                                               transactionData[index]

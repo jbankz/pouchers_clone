@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pouchers/app/common/credentials.dart';
+import 'package:pouchers/app/common/model.dart';
 import 'package:pouchers/app/helpers/session_manager.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
@@ -53,6 +55,8 @@ class _HomePageState extends ConsumerState<HomePage>  {
       checkProvider();
       ref.read(getWalletProvider.notifier).getWalletDetails();
       ref.read(getBannerProvider.notifier).getBanner();
+      UserCredentials? cred = await getUserCredentials();
+print(cred);
     });
   }
 
@@ -395,7 +399,7 @@ class _HomePageState extends ConsumerState<HomePage>  {
                           itemCount: guestHomeClass.length,
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          crossAxisSpacing: 30,
+                          crossAxisSpacing: 28,
                           mainAxisSpacing: 8,
                           padding: EdgeInsets.zero,
                           itemBuilder: (ctx, index) {
@@ -426,6 +430,8 @@ class _HomePageState extends ConsumerState<HomePage>  {
                                 Text(
                                   guestHomeClass[index].title,
                                   style: textTheme.headline4,
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
                                 ),
                                 SizedBox(
                                   height: kPadding,

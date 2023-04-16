@@ -32,7 +32,8 @@ class _BettingState extends ConsumerState<Betting> {
   TextEditingController amountController = TextEditingController();
   String _amount = "";
   GetUtilitiesData? utilitiesData;
-
+  int currentIndex = -1;
+  String? lastInputValue;
   List<GetUtilitiesData> utilities = [];
   List<Service> utilitiesType = [];
   Service? paymentType;
@@ -130,6 +131,19 @@ class _BettingState extends ConsumerState<Betting> {
                   text: accountId,
                   controller: contactController,
                   hintText: "Enter $accountId",
+                  onChanged: (val){
+                    if(val!= null){
+                      setState(() {
+                        contactController.text = val;
+                      });
+                    }else{
+                      setState(() {
+                        contactController.text = "";
+                      });
+                    }
+                    contactController.selection = TextSelection.fromPosition(
+                        TextPosition(offset: contactController.text.length));
+                  },
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                   ],
@@ -140,6 +154,9 @@ class _BettingState extends ConsumerState<Betting> {
                       setState(() {
                         contactController.text = contact.phoneNumber!.number!;
                       });
+                      contactController.selection =
+                          TextSelection.fromPosition(TextPosition(
+                              offset: contactController.text.length));
                     },
                     child: SvgPicture.asset(
                       AssetPaths.contactBook,
@@ -182,6 +199,7 @@ class _BettingState extends ConsumerState<Betting> {
                                             ? buildShowModalBottomSheet(
                                                 context, GuestDiscountModal())
                                             : setState(() {
+                                          currentIndex = index;
                                                 amountController.text =
                                                     guestList[index].icon;
                                                 _amount = guestList[index].icon;
@@ -195,7 +213,12 @@ class _BettingState extends ConsumerState<Betting> {
                                       child: Container(
                                           decoration: BoxDecoration(
                                               border: Border.all(
-                                                  color: kLightPurple),
+                                                  color:  kLightPurple
+                                                     ),
+                                              color:
+                                              currentIndex == index
+                                                  ? kLightPurple
+                                                  : kTransparent,
                                               borderRadius:
                                                   BorderRadius.circular(
                                                       kSmallPadding)),
@@ -311,6 +334,14 @@ class _BettingState extends ConsumerState<Betting> {
                         return null;
                     },
                     onChanged: (val) {
+                      if (val.isNotEmpty) {
+                        if (lastInputValue != val) {
+                          lastInputValue = val;
+                          setState(() {
+                            currentIndex = -1;
+                          });
+                        }
+                      }
                       setState(() {
                         _amount = val;
                         amountController.text = val;
@@ -374,14 +405,14 @@ class _BettingState extends ConsumerState<Betting> {
           LargeButton(
             title: continueText,
             disableColor: (amountController.text.isEmpty ||
-                    _amount.isEmpty ||
+                    _amount.isEmpty || utilitiesData == null ||
                     contactController.text.isEmpty ||
                     _amount.startsWith("0"))
                 ? kPurpleColor100
                 : kPrimaryColor,
             outlineButton: false,
             onPressed: amountController.text.isEmpty ||
-                    _amount.isEmpty ||
+                    _amount.isEmpty || utilitiesData == null ||
                     contactController.text.isEmpty ||
                     _amount.startsWith("0")
                 ? () {}

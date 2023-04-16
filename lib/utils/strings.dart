@@ -1,4 +1,5 @@
 const String kHiveEncryptionKey = "hiveKey";
+const String kHivePinKey = "hivePinKey";
 const String kTokenBox = "tokenBox";
 const String kAccessTokenKey = "access_token";
 const String kAccessTokenExpiryKey = "access_token_expiry";
@@ -12,6 +13,10 @@ const String k2FACodeBox = "k2FACodeBox";
 const String k2FACode = "2FACode";
 const String kSetQuestion = "setQuestion";
 const String kAnswerQuestion = "answerQuestion";
+
+const String userPinBox = "userPinBox";
+const String userCredentialKey = "userCredentialKey";
+
 
 String imgPath = "assets/images/";
 String iconPath = "assets/icons/";
