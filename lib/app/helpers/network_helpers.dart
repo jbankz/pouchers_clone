@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/helpers/service_constants.dart';
 import 'package:pouchers/app/helpers/service_response.dart';
 import 'package:pouchers/app/helpers/session_manager.dart';
@@ -35,7 +36,7 @@ Future<void> persistRefreshToken(String refreshToken) async {
   }
 }
 
-Future refreshToken({
+Future<ServiceResponse<String>> refreshToken({
   required String refreshToken,
 }) async {
   Map<String, String> _authHeaders = {
@@ -56,7 +57,8 @@ Future refreshToken({
     var responseBody = jsonDecode(response.body);
     if (response.statusCode >= 300 && response.statusCode <= 520) {
       throw Failure.fromJson(responseBody);
-    } else {
+    }
+    else {
       logPrint("refresh ${responseBody["data"]["refreshToken"]}");
       await cacheUserProfile(HiveStoreResponseData.fromJson(responseBody["data"]));
 
@@ -70,17 +72,19 @@ Future refreshToken({
           responseBody["data"]["refreshToken"]);
       print("network token${responseBody["data"]["refreshToken"]}");
       //b709eee202a
-      return serveSuccess(
+      return serveSuccess<String>(
           data: responseBody["message"], message: responseBody["message"]);
     }
   } catch (error, stack) {
     logPrint(error);
     logPrint(stack);
-    return processServiceError(error, stack);
+    return processServiceError<String>(error, stack);
   }
 }
 
+
 Future<String?> getAccessToken() async {
+
   await Hive.openBox(kTokenBox);
   var expiredToken = await Hive.box(kTokenBox).get(kAccessTokenExpiryKey);
   // await Hive.box(kTokenBox).listenable();

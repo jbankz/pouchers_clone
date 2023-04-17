@@ -163,7 +163,8 @@ class P2PData {
     this.receiverTag,
     this.amount,
     this.senderName,
-    this.status
+    this.status,
+    this.transactionId
   });
 
   String? receiverName;
@@ -171,6 +172,7 @@ class P2PData {
   String? amount;
   String? senderName;
   String? status;
+  String? transactionId;
 
   factory P2PData.fromJson(Map<String, dynamic> json) =>
       P2PData(
@@ -178,7 +180,8 @@ class P2PData {
         receiverTag: json["receiver_tag"],
         amount: json["amount"],
         senderName: json["sender_name"],
-        status: json["status"]
+        status: json["status"],
+        transactionId: json["transaction_id"]
       );
 
   Map<String, dynamic> toJson() =>
@@ -187,7 +190,8 @@ class P2PData {
         "receiver_tag": receiverTag,
         "amount": amount,
         "sender_name" : senderName,
-        "status" : status
+        "status" : status,
+        "transaction_id" : transactionId
       };
 }
 

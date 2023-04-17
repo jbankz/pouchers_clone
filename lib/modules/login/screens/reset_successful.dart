@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/screens/account_settings/account_settings.dart';
 import 'package:pouchers/modules/login/screens/login.dart';
@@ -35,52 +36,54 @@ class ResetSuccessful extends StatelessWidget {
                           route.settings.name == AccountSettings.routeName)
                   : pushToAndClearStack(context, LogInAccount());
         },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Lottie.asset(AssetPaths.success, height: 200, width: 200),
-            SizedBox(
-              height: kMacroPadding,
-            ),
-            Text(
-              resetSuccessful,
-              style: textTheme.headline1,
-            ),
-            SizedBox(
-              height: kPadding,
-            ),
-            Text(
-              message!,
-              // resetSuccessfulSub,
-              textAlign: TextAlign.center,
-              style: textTheme.bodyText1!
-                  .copyWith(fontWeight: FontWeight.normal, height: 1.6),
-            ),
-            SizedBox(
-              height: kMacroPadding,
-            ),
-            LargeButton(
-              title: isChangePassword!
-                  ? goBack
-                  : isResetPin!
-                      ? goBack
-                      : signIn,
-              onPressed: () {
-                isResetPin!
-                    ? Navigator.popUntil(
-                        context,
-                        (route) =>
-                            route.settings.name == AccountSettings.routeName)
-                    : isChangePassword!
-                        ? Navigator.popUntil(
-                            context,
-                            (route) =>
-                                route.settings.name ==
-                                AccountSettings.routeName)
-                        : pushToAndClearStack(context, LogInAccount());
-              },
-            )
-          ],
+        child: ListenerPage(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Lottie.asset(AssetPaths.success, height: 200, width: 200),
+              SizedBox(
+                height: kMacroPadding,
+              ),
+              Text(
+                resetSuccessful,
+                style: textTheme.headline1,
+              ),
+              SizedBox(
+                height: kPadding,
+              ),
+              Text(
+                message!,
+                // resetSuccessfulSub,
+                textAlign: TextAlign.center,
+                style: textTheme.bodyText1!
+                    .copyWith(fontWeight: FontWeight.normal, height: 1.6),
+              ),
+              SizedBox(
+                height: kMacroPadding,
+              ),
+              LargeButton(
+                title: isChangePassword!
+                    ? goBack
+                    : isResetPin!
+                        ? goBack
+                        : signIn,
+                onPressed: () {
+                  isResetPin!
+                      ? Navigator.popUntil(
+                          context,
+                          (route) =>
+                              route.settings.name == AccountSettings.routeName)
+                      : isChangePassword!
+                          ? Navigator.popUntil(
+                              context,
+                              (route) =>
+                                  route.settings.name ==
+                                  AccountSettings.routeName)
+                          : pushToAndClearStack(context, LogInAccount());
+                },
+              )
+            ],
+          ),
         ));
   }
 }

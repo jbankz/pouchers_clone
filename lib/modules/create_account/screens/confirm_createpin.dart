@@ -64,10 +64,13 @@ class _ConfirmCreatePinState extends ConsumerState<ConfirmCreatePin> {
               ref.listen(createPinProvider,
                       (previous, NotifierState<TagResponse> next) {
                     if (next.status == NotifierStatus.done) {
-                      pushToAndClearUntil(context, BiometricsPage(),
-                          routeName: LogInAccount.routeName,
-                          settings:
-                          const RouteSettings(name: BiometricsPage.routeName));
+                      pushToAndClearStack(context, LogInAccount(
+                        firstTime: true,
+                      ),);
+                      // pushToAndClearUntil(context, BiometricsPage(),
+                      //     routeName: LogInAccount.routeName,
+                      //     settings:
+                      //     const RouteSettings(name: BiometricsPage.routeName));
                     } else if (next.status == NotifierStatus.error) {
                       showErrorBar(context, next.message ?? "");
                     }

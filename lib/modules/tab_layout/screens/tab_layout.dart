@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/helpers/applifecycle_manager.dart';
 import 'package:pouchers/app/helpers/response_handler.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
@@ -77,7 +78,10 @@ class _TabLayoutState extends State<TabLayout> with ResponseHandler {
     return AppLifeCycleManager(
       child: WillPopScope(
           child: Scaffold(
-            body: items[_selectedIndex],
+            body: ListenerPage(
+              child:    items[_selectedIndex],
+            ),
+
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _selectedIndex,
               onTap: _onItemTapped,

@@ -24,20 +24,21 @@ Future<UserCredentials?> getUserCredentials() async {
 Future<void> saveUserCredential({
   String? password,
   String? transactionPin,
+  String? email,
 }) async {
   try {
     final existingCredentials = await getUserCredentials();
 
     if (existingCredentials == null) {
       final credentials =
-          UserCredentials(password: password, transactionPin: transactionPin);
+          UserCredentials(password: password, transactionPin: transactionPin, email: email);
       await _secureStorage.write(
           key: userCredentialKey, value: credentials.serialize());
     } else {
       await _secureStorage.write(
           key: userCredentialKey,
           value: existingCredentials
-              .copyWith(password: password, transactionPin: transactionPin)
+              .copyWith(password: password, transactionPin: transactionPin, email: email)
               .serialize());
     }
   } catch (e) {

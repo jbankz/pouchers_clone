@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/modules/account/screens/account_settings/account_settings.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
@@ -26,35 +27,37 @@ class SuccessAuthPage extends StatelessWidget {
           //   routeName: TabLayout.routeName,
           // );
         },
-        child: Column(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    AssetPaths.authSuccessIcon,
-                  ),
-                  SizedBox(
-                    height: kFullPadding,
-                  ),
-                  Text(
-                    authSuccess,
-                    style: textTheme.headline2!.copyWith(
-                      color: kIconGrey,
+        child: ListenerPage(
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      AssetPaths.authSuccessIcon,
                     ),
-                    textAlign: TextAlign.center,
-                  )
-                ],
+                    SizedBox(
+                      height: kFullPadding,
+                    ),
+                    Text(
+                      authSuccess,
+                      style: textTheme.headline2!.copyWith(
+                        color: kIconGrey,
+                      ),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
               ),
-            ),
-            LargeButton(
-              title: dataSuccess,
-              onPressed: () {
-                Navigator.popUntil(context, (route) => route.settings.name == AccountSettings.routeName);
-              },
-            )
-          ],
+              LargeButton(
+                title: dataSuccess,
+                onPressed: () {
+                  Navigator.popUntil(context, (route) => route.settings.name == AccountSettings.routeName);
+                },
+              )
+            ],
+          ),
         ));
   }
 }

@@ -150,8 +150,8 @@ class CardsRepository {
     return getCardToken.toNotifierState();
   }
 
-  Future<NotifierState<int>> getCardBalance({required cardId}) async {
-    ServiceResponse<int> cardBalance;
+  Future<NotifierState<String>> getCardBalance({required cardId}) async {
+    ServiceResponse<String> cardBalance;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     cardBalance = await CardsService.getCardBalance(
         token: userProfile.token!, cardId: cardId);

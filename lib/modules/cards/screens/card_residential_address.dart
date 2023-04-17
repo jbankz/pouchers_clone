@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/cards/screens/card_widgets.dart';
 import 'package:pouchers/modules/cards/screens/create_virtual_card.dart';
@@ -39,211 +40,214 @@ class _ResidentialAddressState extends State<ResidentialAddress> {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                children: [
-                  Text(
-                    residentialAddress,
-                    style: textTheme.headline4!.copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 26,
-                    ),
-                  ),
-                  SizedBox(
-                    height: kPadding,
-                  ),
-                  Text(
-                    residentialAddressSub,
-                    style: textTheme.bodyText1,
-                  ),
-                  SizedBox(
-                    height: kMacroPadding,
-                  ),
-                  TextInputNoIcon(
-                    textTheme: textTheme,
-                    text: address,
-                    hintText: enterAddress,
-                    onSaved: (val) => setState(() => _address = val),
-                    validator: (val) {
-                      if (val!.isEmpty) {
-                        return emptyField;
-                      } else if (val.length < 2) {
-                        return lessAddressValueField;
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(
-                    height: kSmallPadding,
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: kRegularPadding),
-                    height: 60,
-                    decoration: BoxDecoration(
-                        color: kBackgroundColor,
-                        borderRadius: BorderRadius.circular(kSmallPadding)),
-                    child: Text(
-                      "Nigeria",
-                      style: textTheme.subtitle1,
-                    ),
-                  ),
-                  SizedBox(
-                    height: kMicroPadding,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                        height: 60,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        decoration: BoxDecoration(
-                          borderRadius: kBorderSmallRadius,
-                          color: kBackgroundColor,
-                          // border: Border.all(
-                          //   color: borderColor,
-                          // ),
-                        ),
-                        child: Center(
-                          child: DropdownButton(
-                            value: _selectedState,
-                            itemHeight: 60,
-                            isExpanded: true,
-                            borderRadius: kBorderMidRadius,
-                            hint: Text(
-                              selectState,
-                              style: textTheme.subtitle1!.copyWith(
-                                  color: kIconGrey),
-                            ),
-                            style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
-                            icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                            underline: const SizedBox(),
-                            menuMaxHeight:
-                                MediaQuery.of(context).size.height / 2,
-                            onChanged: (String? val) {
-                              setState(() {
-                                _selectedState = val;
-                              });
+      child: ListenerPage(
 
-                            },
-                            items: nigeriaStates
-                                .map((e) => DropdownMenuItem(
-                                      child: Text(e),
-                                      value: e,
-                                    ))
-                                .toList(),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  children: [
+                    Text(
+                      residentialAddress,
+                      style: textTheme.headline4!.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 26,
+                      ),
+                    ),
+                    SizedBox(
+                      height: kPadding,
+                    ),
+                    Text(
+                      residentialAddressSub,
+                      style: textTheme.bodyText1,
+                    ),
+                    SizedBox(
+                      height: kMacroPadding,
+                    ),
+                    TextInputNoIcon(
+                      textTheme: textTheme,
+                      text: address,
+                      hintText: enterAddress,
+                      onSaved: (val) => setState(() => _address = val),
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return emptyField;
+                        } else if (val.length < 2) {
+                          return lessAddressValueField;
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: kSmallPadding,
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.only(left: kRegularPadding),
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: kBackgroundColor,
+                          borderRadius: BorderRadius.circular(kSmallPadding)),
+                      child: Text(
+                        "Nigeria",
+                        style: textTheme.subtitle1,
+                      ),
+                    ),
+                    SizedBox(
+                      height: kMicroPadding,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                          height: 60,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          decoration: BoxDecoration(
+                            borderRadius: kBorderSmallRadius,
+                            color: kBackgroundColor,
+                            // border: Border.all(
+                            //   color: borderColor,
+                            // ),
+                          ),
+                          child: Center(
+                            child: DropdownButton(
+                              value: _selectedState,
+                              itemHeight: 60,
+                              isExpanded: true,
+                              borderRadius: kBorderMidRadius,
+                              hint: Text(
+                                selectState,
+                                style: textTheme.subtitle1!.copyWith(
+                                    color: kIconGrey),
+                              ),
+                              style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
+                              icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                              underline: const SizedBox(),
+                              menuMaxHeight:
+                                  MediaQuery.of(context).size.height / 2,
+                              onChanged: (String? val) {
+                                setState(() {
+                                  _selectedState = val;
+                                });
+
+                              },
+                              items: nigeriaStates
+                                  .map((e) => DropdownMenuItem(
+                                        child: Text(e),
+                                        value: e,
+                                      ))
+                                  .toList(),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  // FormDropdown(
-                  //     hint: selectState,
-                  //     value: _selectedState,
-                  //     hintColor: kIconGrey,
-                  //     onChanged: (String? val) {
-                  //       _selectedState = val;
-                  //     },
-                  //     items: nigeriaStates
-                  //         .map((e) => DropdownMenuItem(
-                  //               child: Text(e),
-                  //               value: e,
-                  //             ))
-                  //         .toList()),
-                  SizedBox(
-                    height: kMediumPadding,
-                  ),
-                  TextInputNoIcon(
-                    textTheme: textTheme,
-                    text: city,
-                    hintText: enterCity,
-                    onSaved: (val) => setState(() => _city = val),
-                    validator: (val) {
-                      if (val!.isEmpty) {
-                        return emptyField;
-                      } else if (val.length < 2) {
-                        return lessAddressValueField;
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  TextInputNoIcon(
-                    textTheme: textTheme,
-                    text: postalCode,
-                    hintText: enterPostalCode,
-                    inputType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    onSaved: (val) => setState(() => _postalCode = val),
-                    validator: (val) {
-                      if (val!.isEmpty) {
-                        return emptyField;
-                      } else if (val.length < 2) {
-                        return lessAddressValueField;
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  TextInputNoIcon(
-                    textTheme: textTheme,
-                    text: bvn,
-                    hintText: enterBvn,
-                    onSaved: (val) => setState(() => _bvn = val),
-                    inputType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(11)
-                    ],
-                    validator: (val) {
-                      if (val!.isEmpty) {
-                        return emptyField;
-                      } else if (val.length != 11) {
-                        return bvnElevenDigits;
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                ],
+                      ],
+                    ),
+                    // FormDropdown(
+                    //     hint: selectState,
+                    //     value: _selectedState,
+                    //     hintColor: kIconGrey,
+                    //     onChanged: (String? val) {
+                    //       _selectedState = val;
+                    //     },
+                    //     items: nigeriaStates
+                    //         .map((e) => DropdownMenuItem(
+                    //               child: Text(e),
+                    //               value: e,
+                    //             ))
+                    //         .toList()),
+                    SizedBox(
+                      height: kMediumPadding,
+                    ),
+                    TextInputNoIcon(
+                      textTheme: textTheme,
+                      text: city,
+                      hintText: enterCity,
+                      onSaved: (val) => setState(() => _city = val),
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return emptyField;
+                        } else if (val.length < 2) {
+                          return lessAddressValueField;
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    TextInputNoIcon(
+                      textTheme: textTheme,
+                      text: postalCode,
+                      hintText: enterPostalCode,
+                      inputType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      onSaved: (val) => setState(() => _postalCode = val),
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return emptyField;
+                        } else if (val.length < 2) {
+                          return lessAddressValueField;
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    TextInputNoIcon(
+                      textTheme: textTheme,
+                      text: bvn,
+                      hintText: enterBvn,
+                      onSaved: (val) => setState(() => _bvn = val),
+                      inputType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(11)
+                      ],
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return emptyField;
+                        } else if (val.length != 11) {
+                          return bvnElevenDigits;
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            LargeButton(
-                title: continueText,
-                onPressed: () {
-                  FocusScope.of(context).unfocus();
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    if (_selectedState == null) {
-                      showErrorBar(context, "Please select a state");
-                    } else {
-                      AddressClass addressDetails = AddressClass(
-                          address: _address!,
-                          postalCode: _postalCode!,
-                          bvn: _bvn!,
-                          country: "Nigeria",
-                          city: _city!,
-                          residentState: _selectedState!);
-                      pushTo(
-                          context,
-                          CreateVirtualCard(
-                            isNaira: widget.isNaira,
-                            isFundNaira: widget.isFundNaira,
-                            isFundCard: widget.isFundCard,
-                            addressDetails: addressDetails,
-                          ),
-                          settings: const RouteSettings(
-                              name: CreateVirtualCard.routeName));
+              LargeButton(
+                  title: continueText,
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      if (_selectedState == null) {
+                        showErrorBar(context, "Please select a state");
+                      } else {
+                        AddressClass addressDetails = AddressClass(
+                            address: _address!,
+                            postalCode: _postalCode!,
+                            bvn: _bvn!,
+                            country: "Nigeria",
+                            city: _city!,
+                            residentState: _selectedState!);
+                        pushTo(
+                            context,
+                            CreateVirtualCard(
+                              isNaira: widget.isNaira,
+                              isFundNaira: widget.isFundNaira,
+                              isFundCard: widget.isFundCard,
+                              addressDetails: addressDetails,
+                            ),
+                            settings: const RouteSettings(
+                                name: CreateVirtualCard.routeName));
+                      }
                     }
-                  }
-                })
-          ],
+                  })
+            ],
+          ),
         ),
       ),
     );

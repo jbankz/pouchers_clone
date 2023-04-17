@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:pouchers/app/helpers/network_helpers.dart';
 import 'package:pouchers/app/helpers/service_constants.dart';
 import 'package:pouchers/app/helpers/service_response.dart';
+import 'package:pouchers/app/helpers/session_manager.dart';
 import 'package:pouchers/modules/create_account/models/create_account_response.dart';
 import 'package:pouchers/utils/extras.dart';
 import 'package:pouchers/utils/logger.dart';
@@ -62,6 +63,7 @@ class CreateAccountService {
     required String otp,
   }) async {
     await Hive.openBox(kTokenBox);
+    await Hive.openBox(kBiometricsBox);
 
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",

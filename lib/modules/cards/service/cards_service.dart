@@ -277,7 +277,7 @@ class CardsService {
     }
   }
 
-  static Future<ServiceResponse<int>> getCardBalance(
+  static Future<ServiceResponse<String>> getCardBalance(
       {required String token, required String cardId}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
@@ -298,14 +298,14 @@ class CardsService {
       if (response.statusCode >= 300 && response.statusCode <= 520) {
         throw Failure.fromJson(responseBody);
       } else {
-        return serveSuccess<int>(
-            data: responseBody["data"]["availableBalance"],
+        return serveSuccess<String>(
+            data: responseBody["data"]["availableBalance"].toString(),
             message: responseBody["message"]);
       }
     } catch (error, stack) {
       logPrint(error);
       logPrint(stack);
-      return processServiceError<int>(error, stack);
+      return processServiceError<String>(error, stack);
     }
   }
 

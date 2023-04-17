@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/login/screens/login.dart';
 import 'package:pouchers/modules/onboarding/screens/onboarding.dart';
@@ -66,34 +67,36 @@ class _DisableSuccessfulState extends State<DisableSuccessful> {
               : pushToAndClearUntil(context, LogInAccount(),
                   routeName: LogInAccount.routeName);
         },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Lottie.asset(AssetPaths.success, height: 200, width: 200),
-            SizedBox(
-              height: kMacroPadding,
-            ),
-            Text(
-              dataSuccess,
-              style: textTheme.headline1,
-            ),
-            SizedBox(
-              height: kPadding,
-            ),
-            Text(
-              widget.isDelete! ? weHateDelete : weHateSub,
-              textAlign: TextAlign.center,
-              style: textTheme.bodyText1!
-                  .copyWith(fontWeight: FontWeight.normal, height: 1.5),
-            ),
-            SizedBox(
-              height: kMicroPadding,
-            ),
-            Text(
-              refreshTime == 0 ? redirect : loggingOut,
-              style: textTheme.headline2!.copyWith(fontSize: 18),
-            ),
-          ],
+        child: ListenerPage(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Lottie.asset(AssetPaths.success, height: 200, width: 200),
+              SizedBox(
+                height: kMacroPadding,
+              ),
+              Text(
+                dataSuccess,
+                style: textTheme.headline1,
+              ),
+              SizedBox(
+                height: kPadding,
+              ),
+              Text(
+                widget.isDelete! ? weHateDelete : weHateSub,
+                textAlign: TextAlign.center,
+                style: textTheme.bodyText1!
+                    .copyWith(fontWeight: FontWeight.normal, height: 1.5),
+              ),
+              SizedBox(
+                height: kMicroPadding,
+              ),
+              Text(
+                refreshTime == 0 ? redirect : loggingOut,
+                style: textTheme.headline2!.copyWith(fontSize: 18),
+              ),
+            ],
+          ),
         ));
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
@@ -56,62 +57,64 @@ class _AccountSettingsState extends ConsumerState<AccountSettings> {
     SizeConfig().init(context);
     return InitialPage(
       title: settings,
-      child: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              children: [
-                SizedBox(
-                  height: SizeConfig.blockSizeVertical! / 6,
-                ),
-                AccountSettingsClass(
-                  text: changePassword,
-                  text2: changePasswordSub,
-                  page: ChangePassword(
-                    changePhone: false,
+      child: ListenerPage(
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView(
+                children: [
+                  SizedBox(
+                    height: SizeConfig.blockSizeVertical! / 6,
                   ),
-                  routeName: ChangePassword.routeName,
-                ),
-                AccountSettingsClass(
-                  text: changePin,
-                  text2: changePinSub,
-                  page: ChangeTransactionPin(),
-                  routeName: ChangeTransactionPin.routeName,
-                ),
-                AccountSettingsClass(
-                  text: biometricAuthentication,
-                  text2: biometricAuthenticationSub,
-                  page: BiometricSettings(),
-                  routeName: BiometricSettings.routeName,
-                ),
-                AccountSettingsClass(
-                    text: factorAuthentication,
-                    text2: factorAuthenticationAub,
-                    page: ref.watch(authFactorProvider)
-                        ? TwoFactorDisable()
-                        : TwoFactor(),
-                    routeName: ref.watch(authFactorProvider)
-                        ? TwoFactorDisable.routeName
-                        : TwoFactor.routeName),
-                SizedBox(
-                  height: kSmallPadding,
-                ),
-                AccountSettingsClass(
-                  text: disableAccount,
-                  text2: "",
-                  page: DisableAccount(),
-                  routeName: DisableAccount.routeName,
-                ),
-                AccountSettingsClass(
-                  text: deleteAccount,
-                  text2: "",
-                  page: DeleteAccount(),
-                  routeName: DeleteAccount.routeName,
-                ),
-              ],
+                  AccountSettingsClass(
+                    text: changePassword,
+                    text2: changePasswordSub,
+                    page: ChangePassword(
+                      changePhone: false,
+                    ),
+                    routeName: ChangePassword.routeName,
+                  ),
+                  AccountSettingsClass(
+                    text: changePin,
+                    text2: changePinSub,
+                    page: ChangeTransactionPin(),
+                    routeName: ChangeTransactionPin.routeName,
+                  ),
+                  AccountSettingsClass(
+                    text: biometricAuthentication,
+                    text2: biometricAuthenticationSub,
+                    page: BiometricSettings(),
+                    routeName: BiometricSettings.routeName,
+                  ),
+                  AccountSettingsClass(
+                      text: factorAuthentication,
+                      text2: factorAuthenticationAub,
+                      page: ref.watch(authFactorProvider)
+                          ? TwoFactorDisable()
+                          : TwoFactor(),
+                      routeName: ref.watch(authFactorProvider)
+                          ? TwoFactorDisable.routeName
+                          : TwoFactor.routeName),
+                  SizedBox(
+                    height: kSmallPadding,
+                  ),
+                  AccountSettingsClass(
+                    text: disableAccount,
+                    text2: "",
+                    page: DisableAccount(),
+                    routeName: DisableAccount.routeName,
+                  ),
+                  AccountSettingsClass(
+                    text: deleteAccount,
+                    text2: "",
+                    page: DeleteAccount(),
+                    routeName: DeleteAccount.routeName,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

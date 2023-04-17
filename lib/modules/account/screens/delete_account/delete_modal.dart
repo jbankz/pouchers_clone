@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
@@ -71,8 +72,11 @@ class DeleteModal extends StatelessWidget {
               ),
               Consumer(builder: (context, ref, _) {
                 ref.listen(deleteUserProvider,
-                    (previous, NotifierState<String> next) {
+                    (previous, NotifierState<String> next) async{
                   if (next.status == NotifierStatus.done) {
+                    await Hive.deleteFromDisk();
+                    ref.invalidate(editProfileInHouseProvider);
+                    ref.invalidate(biometricProvider);
                     pushTo(context, DisableSuccessful(
                       isDelete: true,
                     ),

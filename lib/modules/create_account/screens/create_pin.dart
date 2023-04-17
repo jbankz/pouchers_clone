@@ -55,7 +55,7 @@ class _CreatePinState extends ConsumerState<CreatePin> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-               createPin,
+              createPin,
               style: textTheme.headline1,
             ),
             SizedBox(
@@ -68,42 +68,43 @@ class _CreatePinState extends ConsumerState<CreatePin> {
             SizedBox(
               height: kFullPadding,
             ),
-            Consumer(builder: (context, ref, _) {
-              ref.listen(createPinProvider,
-                  (previous, NotifierState<TagResponse> next) {
-                if (next.status == NotifierStatus.done) {
-                  pushToAndClearUntil(context, BiometricsPage(),
-                      routeName: LogInAccount.routeName,
-                      settings:
-                          const RouteSettings(name: BiometricsPage.routeName));
-                } else if (next.status == NotifierStatus.error) {
-                  showErrorBar(context, next.message ?? "");
-                }
-              });
-              var _widget = Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ...List.generate(
-                    containerIndex.length,
-                    (index) => Container(
-                      margin: EdgeInsets.symmetric(horizontal: kRegularPadding),
-                      height: kMediumPadding,
-                      width: kMediumPadding,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: containerBoolean[index] == true
-                              ? kPrimaryColor
-                              : kPurpleColor300),
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ...List.generate(
+                  containerIndex.length,
+                  (index) => Container(
+                    margin: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                    height: kMediumPadding,
+                    width: kMediumPadding,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: containerBoolean[index] == true
+                            ? kPrimaryColor
+                            : kPurpleColor300),
                   ),
-                ],
-              );
-              return ref.watch(createPinProvider).when(
-                    done: (done) => _widget,
-                    loading: () => SpinKitDemo(),
-                    error: (val) => _widget,
-                  );
-            }),
+                ),
+              ],
+            ),
+            // Consumer(builder: (context, ref, _) {
+            //   ref.listen(createPinProvider,
+            //       (previous, NotifierState<TagResponse> next) {
+            //     if (next.status == NotifierStatus.done) {
+            //       pushToAndClearUntil(context, BiometricsPage(),
+            //           routeName: LogInAccount.routeName,
+            //           settings:
+            //               const RouteSettings(name: BiometricsPage.routeName));
+            //     } else if (next.status == NotifierStatus.error) {
+            //       showErrorBar(context, next.message ?? "");
+            //     }
+            //   });
+            //   var _widget =
+            //   return ref.watch(createPinProvider).when(
+            //         done: (done) => _widget,
+            //         loading: () => SpinKitDemo(),
+            //         error: (val) => _widget,
+            //       );
+            // }),
             SizedBox(
               height: kFullPadding,
             ),
@@ -161,7 +162,9 @@ class _CreatePinState extends ConsumerState<CreatePin> {
                                   if (ref.watch(phoneProvider) == 4) {
                                     pushReplacementTo(
                                         context,
-                                        ConfirmCreatePin(pinPicked: pinPicked,));
+                                        ConfirmCreatePin(
+                                          pinPicked: pinPicked,
+                                        ));
                                   }
                                 }
                                 print(pinPicked);

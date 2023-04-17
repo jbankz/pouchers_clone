@@ -156,14 +156,19 @@ class TransactionReceiptItems extends StatelessWidget {
                       fontSize: 16,
                     ),
                   )
-                : Text(
-                    subText,
-                    style: textTheme.subtitle1!.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: color ?? kPrimaryTextColor,
-                      fontSize: 16,
+                : Flexible(
+                  child: Text(
+                      subText,
+                      style: textTheme.subtitle1!.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: color ?? kPrimaryTextColor,
+                        fontSize: 16,
+                        overflow: TextOverflow.ellipsis
+                      ),
+              textAlign: TextAlign.right,
+              softWrap: true,
                     ),
-                  ),
+                ),
           ],
         ),
         SizedBox(
@@ -204,4 +209,66 @@ class MySeparator extends StatelessWidget {
       },
     );
   }
+}
+
+String changeCatNme(String name) {
+  String cat = "";
+  switch (name) {
+    case "airtime-purchase":
+      cat = "Airtime Purchase";
+      break;
+    case "data-purchase":
+      cat = "Data Purchase";
+      break;
+    case "cable-purchase":
+      cat = "Cable Purchase";
+      break;
+    case "electricity-purchase":
+      cat = "Electricity Purchase";
+      break;
+    case "internet-purchase":
+      cat = "Internet Purchase";
+      break;
+    case "voucher-redeem":
+      cat = "Vouchers Redeem";
+      break;
+    case "voucher-purchase":
+      cat = "Vouchers Purchase";
+      break;
+    case "p2p-transfer":
+      cat = "Money Transfer";
+      break;
+    case "fund-wallet":
+      cat = "Wallet Funding";
+      break;
+    case "create-virtual-card":
+      cat = "Virtual Card Created";
+      break;
+    case "fund-virtual-card":
+      cat = "Virtual Card Funded";
+      break;
+    case "local-bank-transfer":
+      cat = "Money Transfer";
+      break;
+    case "betting_purchase":
+      cat = "Betting Purchase";
+      break;
+  }
+  return cat;
+}
+
+String finalCatName(String currency, String itemCat){
+  String cat ='';
+  if(changeCatNme(itemCat) == "Virtual Card Funded" && currency == "NGN" ){
+    cat = "Virtual Card Funded (NGN)";
+  }else if(changeCatNme(itemCat) == "Virtual Card Funded" && currency == "USD"){
+    cat = "Virtual Card Funded (USD)";
+  }else if(changeCatNme(itemCat) == "Virtual Card Created" && currency == "USD"){
+    cat = "Virtual Card Created (USD)";
+  }else if(changeCatNme(itemCat) == "Virtual Card Created" && currency == "NGN"){
+    cat = "Virtual Card Created (NGN)";
+  }else{
+    cat = changeCatNme(itemCat);
+  }
+  return cat;
 }

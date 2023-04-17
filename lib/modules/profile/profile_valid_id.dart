@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/profile_model.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
+import 'package:pouchers/modules/account/screens/two_factor_auth/copy_code.dart';
 import 'package:pouchers/modules/profile/profile_modal.dart';
 import 'package:pouchers/modules/profile/profile_success.dart';
 import 'package:pouchers/utils/components.dart';
@@ -32,133 +34,186 @@ class _ValidIdState extends State<ValidId> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: validId,
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                children: [
-                  Text(
-                    validIdSub,
-                    style: textTheme.headline3!.copyWith(
-                      color: kIconGrey,
-                    ),
-                  ),
-                  SizedBox(
-                    height: kMacroPadding,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: kRegularPadding, vertical: kRegularPadding),
-                    decoration: BoxDecoration(
-                        color: kBackgroundColor,
-                        borderRadius: BorderRadius.circular(kSmallPadding)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            _prefixText,
-                            style: textTheme.subtitle1,
-                            softWrap: true,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        inkWell(
-                            onTap: () async {
-                              final result = await buildShowModalBottomSheet(
-                                  context,
-                                  ProfileModal(
-                                    methods: idMethodList,
-                                  ));
-                              if (result != null) {
-                                setState(() => _prefixText = result);
-                              }
-                            },
-                            child: Icon(
-                              Icons.keyboard_arrow_down,
-                              size: 30,
-                              color: kSecondaryTextColor,
-                            )),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: kMicroPadding,
-                  ),
-                  TextInputNoIcon(
-                    textTheme: textTheme,
-                    widget: SizedBox(),
-                    hintText: enterIdNumber,
-                    onSaved: (val) => setState(() => _id = val),
-                    validator: (val) {
-                      if (val!.isEmpty) {
-                        return emptyField;
-                      } else {
-                        return null;
-                      }
-                      ;
-                    },
-                  ),
-                  SizedBox(
-                    height: kPadding,
-                  ),
-                  error == ""
-                      ? SizedBox()
-                      : Text(
-                          error,
-                          style: textTheme.headline3!
-                              .copyWith(color: kLightOrange),
-                        )
-                ],
-              ),
-            ),
-            Consumer(builder: (context, ref, _) {
-              ref.listen(validateIDProvider,
-                  (previous, NotifierState<EditProfileResponse> next) {
-                if (next.status == NotifierStatus.done) {
-                  pushTo(
-                      context,
-                      ProfileSuccessful(
-                        from: widget.from,
-                        message: idSuccess,
+      child: ListenerPage(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  children: [
+                    Text(
+                      validIdSub,
+                      style: textTheme.headline3!.copyWith(
+                        color: kIconGrey,
                       ),
-                      settings: const RouteSettings(
-                          name: ProfileSuccessful.routeName));
-                  print("uitlrknkfnk djnjd${next.data!.data!.utilityBill}");
-                  ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
-
-                } else if (next.status == NotifierStatus.error) {
-                  setState(() {
-                    error = next.message ?? "";
-                  });
-                }
-              });
-              var _widget = LargeButton(
-                  title: confirm,
-                  onPressed: () {
-                    FocusScope.of(context).unfocus();
+                    ),
+                    SizedBox(
+                      height: kMacroPadding,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: kRegularPadding, vertical: kRegularPadding),
+                      decoration: BoxDecoration(
+                          color: kBackgroundColor,
+                          borderRadius: BorderRadius.circular(kSmallPadding)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              _prefixText,
+                              style: textTheme.subtitle1,
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          inkWell(
+                              onTap: () async {
+                                var result = await buildShowModalBottomSheet(
+                                    context,
+                                    ProfileModal(
+                                      methods: idMethodList,
+                                    ));
+                                if (result != null) {
+                                  if (result.contains("VNIN")) {
+                                    setState(() => _prefixText = "Virtual NIN");
+                                  } else {
+                                    setState(() => _prefixText = result);
+                                  }
+                                }
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 30,
+                                color: kSecondaryTextColor,
+                              )),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: kMicroPadding,
+                    ),
+                    TextInputNoIcon(
+                      textTheme: textTheme,
+                      widget: SizedBox(),
+                      hintText: enterIdNumber,
+                      onSaved: (val) => setState(() => _id = val),
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return emptyField;
+                        } else {
+                          return null;
+                        }
+                        ;
+                      },
+                    ),
+                    SizedBox(
+                      height: kPadding,
+                    ),
+                    error == ""
+                        ? SizedBox()
+                        : Text(
+                            error,
+                            style: textTheme.headline3!
+                                .copyWith(color: kLightOrange),
+                          )
+                  ],
+                ),
+              ),
+              _prefixText == "Virtual NIN"
+                  ? Expanded(
+                      child: ListView(
+                        children: [
+                          Center(
+                            child: Text(
+                              "How to get your Virtual NIN",
+                              style: textTheme.headline1!.copyWith(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: kMacroPadding,
+                          ),
+                          CopyCodeRow(
+                            textTheme: textTheme,
+                            text: vNin1,
+                          ),
+                          SizedBox(
+                            height: kMediumPadding,
+                          ),
+                          CopyCodeRow(
+                            textTheme: textTheme,
+                            text: vNin2,
+                          ),
+                          SizedBox(
+                            height: kMediumPadding,
+                          ),
+                          CopyCodeRow(
+                            textTheme: textTheme,
+                            text: vNin3,
+                          ),
+                          SizedBox(
+                            height: kMediumPadding,
+                          ),
+                          CopyCodeRow(
+                            textTheme: textTheme,
+                            text: vNin4,
+                          ),
+                        ],
+                      ),
+                    )
+                  : SizedBox(),
+              SizedBox(
+                height: kMediumPadding,
+              ),
+              Consumer(builder: (context, ref, _) {
+                ref.listen(validateIDProvider,
+                    (previous, NotifierState<EditProfileResponse> next) {
+                  if (next.status == NotifierStatus.done) {
+                    pushTo(
+                        context,
+                        ProfileSuccessful(
+                          from: widget.from,
+                          message: idSuccess,
+                        ),
+                        settings: const RouteSettings(
+                            name: ProfileSuccessful.routeName));
+                    print("uitlrknkfnk djnjd${next.data!.data!.utilityBill}");
+                    ref.read(editProfileInHouseProvider.notifier).state =
+                        EditProfileData.fromJson(next.data!.data!.toJson());
+                  } else if (next.status == NotifierStatus.error) {
                     setState(() {
-                      error = "";
+                      error = next.message ?? "";
                     });
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      ref.read(validateIDProvider.notifier).validateID(
-                          idType: _prefixText == "Driver’s license"
-                              ? "drivers_license"
-                              : _prefixText == "Voter’s card"
-                                  ? "voters_card"
-                                  : _prefixText.toLowerCase(),
-                          idNumber: _id!);
-                    }
-                  });
-              return ref.watch(validateIDProvider).when(
-                  done: (done) => _widget,
-                  loading: () => SpinKitDemo(),
-                  error: (val) => _widget);
-            }),
-          ],
+                  }
+                });
+                var _widget = LargeButton(
+                    title: confirm,
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+                      setState(() {
+                        error = "";
+                      });
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        ref.read(validateIDProvider.notifier).validateID(
+                            idType: _prefixText == "Driver’s license"
+                                ? "drivers_license"
+                                : _prefixText == "Voter’s card"
+                                    ? "voters_card"
+                                    : _prefixText.toLowerCase(),
+                            idNumber: _id!);
+                      }
+                    });
+                return ref.watch(validateIDProvider).when(
+                    done: (done) => _widget,
+                    loading: () => SpinKitDemo(),
+                    error: (val) => _widget);
+              }),
+            ],
+          ),
         ),
       ),
     );

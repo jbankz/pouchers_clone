@@ -42,7 +42,7 @@ final freezeCardProvider = StateNotifierProvider.autoDispose<
 });
 
 final getCardBalanceProvider = StateNotifierProvider<
-    GetCardBalanceNotifier, NotifierState<int>>((ref) {
+    GetCardBalanceNotifier, NotifierState<String>>((ref) {
   return GetCardBalanceNotifier(ref.read(cardsRepoProvider));
 });
 
@@ -109,9 +109,9 @@ class GetAllFeesNotifier
   GetAllFeesNotifier(this._repo) : super(NotifierState());
 
   void getAllFees({required double amount, Function()? then}) async {
-
+    // state = state.data.data!;
     state = notifyLoading();
-    // state = state.data;
+    //
     state = await _repo.getAllFees(amount: amount);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
@@ -175,7 +175,7 @@ class GetCardTokenNotifier
 }
 
 class GetCardBalanceNotifier
-    extends StateNotifier<NotifierState<int>>
+    extends StateNotifier<NotifierState<String>>
      {
   final CardsRepository _repo;
 

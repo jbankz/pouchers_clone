@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/profile_model.dart';
@@ -73,540 +74,542 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
     return InitialPage(
       color: kPurpleColor800,
       title: profile,
-      child: ListView(
-        children: [
-          hiveTierLevel == 3
-              ? SizedBox()
-              : inkWell(
-                  onTap: () {
-                    pushTo(
-                      context,
-                      AccountVerificationStatus(),
-                      settings: const RouteSettings(
-                          name: AccountVerificationStatus.routeName),
-                    ).then((value) {
-                      checkTierLevel();
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: kRegularPadding, vertical: kSmallPadding),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(kSmallPadding),
-                        color: kLightOrange100,
-                        border: Border.all(color: kLightOrange200, width: 1)),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(AssetPaths.shieldIcon),
-                        SizedBox(
-                          width: kPadding,
-                        ),
-                        Expanded(
-                          child: Text(
-                            completeSetUp,
-                            style: textTheme.headline2!.copyWith(
-                              color: kLightOrange300,
+      child: ListenerPage(
+        child: ListView(
+          children: [
+            hiveTierLevel == 3
+                ? SizedBox()
+                : inkWell(
+                    onTap: () {
+                      pushTo(
+                        context,
+                        AccountVerificationStatus(),
+                        settings: const RouteSettings(
+                            name: AccountVerificationStatus.routeName),
+                      ).then((value) {
+                        checkTierLevel();
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: kRegularPadding, vertical: kSmallPadding),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(kSmallPadding),
+                          color: kLightOrange100,
+                          border: Border.all(color: kLightOrange200, width: 1)),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(AssetPaths.shieldIcon),
+                          SizedBox(
+                            width: kPadding,
+                          ),
+                          Expanded(
+                            child: Text(
+                              completeSetUp,
+                              style: textTheme.headline2!.copyWith(
+                                color: kLightOrange300,
+                              ),
                             ),
                           ),
-                        ),
-                        Icon(Icons.arrow_forward_ios,
-                            color: kLightOrange200, size: 18)
-                      ],
+                          Icon(Icons.arrow_forward_ios,
+                              color: kLightOrange200, size: 18)
+                        ],
+                      ),
                     ),
                   ),
-                ),
-          SizedBox(
-            height: kRegularPadding,
-          ),
-          isLoading
-              ? SpinKitDemo()
-              : Consumer(builder: (context, ref, _) {
-                  ref.listen(editProfileProvider2,
-                      (previous, NotifierState<EditProfileResponse> next) {
-                    if (next.status == NotifierStatus.done) {
-                      showSuccessBar(context, next.data!.message);
-                      ref.read(editProfileInHouseProvider.notifier).state =
-                          EditProfileData.fromJson(next.data!.data!.toJson());
-                    }
-                  });
-
-                  var _widget = Consumer(builder: (context, ref, _) {
-                    ref.listen(getSignedProvider,
-                        (previous, NotifierState<String> next) {
+            SizedBox(
+              height: kRegularPadding,
+            ),
+            isLoading
+                ? SpinKitDemo()
+                : Consumer(builder: (context, ref, _) {
+                    ref.listen(editProfileProvider2,
+                        (previous, NotifierState<EditProfileResponse> next) {
                       if (next.status == NotifierStatus.done) {
-                        upload(pickedFile!, next.data!);
-                        print(next.data);
+                        showSuccessBar(context, next.data!.message);
+                        ref.read(editProfileInHouseProvider.notifier).state =
+                            EditProfileData.fromJson(next.data!.data!.toJson());
                       }
                     });
-                    var _widget = inkWell(
-                      onTap: isLoading
-                          ? null
-                          : () {
-                              getImage();
-                            },
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(116),
-                              child: ref
+
+                    var _widget = Consumer(builder: (context, ref, _) {
+                      ref.listen(getSignedProvider,
+                          (previous, NotifierState<String> next) {
+                        if (next.status == NotifierStatus.done) {
+                          upload(pickedFile!, next.data!);
+                          print(next.data);
+                        }
+                      });
+                      var _widget = inkWell(
+                        onTap: isLoading
+                            ? null
+                            : () {
+                                getImage();
+                              },
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(116),
+                                child: ref
+                                            .watch(editProfileInHouseProvider)
+                                            .profilePicture ==
+                                        null
+                                    ? Container(
+                                        padding: EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: kPurple300),
+                                        child: Container(
+                                            padding: EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: kPrimaryWhite),
+                                            child: Container(
+                                                padding:
+                                                    EdgeInsets.all(kSmallPadding),
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: kPrimaryTextColor
+                                                        .withOpacity(0.05)),
+                                                child: Container(
+                                                    padding: EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: kPurpleColor600,
+                                                    ),
+                                                    child: Column(
+                                                      children: [
+                                                        Container(
+                                                          height: kRegularPadding,
+                                                          width: kRegularPadding,
+                                                          decoration: BoxDecoration(
+                                                              shape:
+                                                                  BoxShape.circle,
+                                                              color:
+                                                                  kPrimaryTextColor),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 7,
+                                                        ),
+                                                        Container(
+                                                          height: kRegularPadding,
+                                                          width: 35,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          kSmallPadding),
+                                                                  bottomLeft: Radius
+                                                                      .circular(
+                                                                          kPadding),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          kSmallPadding),
+                                                                  bottomRight: Radius
+                                                                      .circular(
+                                                                          kPadding)),
+                                                              color:
+                                                                  kPurpleColor500),
+                                                        )
+                                                      ],
+                                                    ))))) : Image.network(
+                                    ref
+                                        .watch(editProfileInHouseProvider)
+                                        .profilePicture ??
+                                        "",
+                                    fit: BoxFit.cover,
+                                    height: 105,
+                                    width: 105,
+                                    loadingBuilder: (BuildContext context, Widget child,
+                                        ImageChunkEvent? loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          value: loadingProgress.expectedTotalBytes !=
+                                              null
+                                              ? loadingProgress.cumulativeBytesLoaded /
+                                              loadingProgress.expectedTotalBytes!
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                    // : Container(
+                                    //     height: 105,
+                                    //     width: 105,
+                                    //     decoration: BoxDecoration(
+                                    //       shape: BoxShape.circle,
+                                    //       color: kPrimaryColor,
+                                    //     ),
+                                    //     child: Center(
+                                    //       child: Text(
+                                    //           ref
+                                    //                       .watch(
+                                    //                           editProfileInHouseProvider)
+                                    //                       .profilePicture ==
+                                    //                   null
+                                    //               ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
+                                    //               : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
+                                    //           style: textTheme.bodyText2!
+                                    //               .copyWith(fontSize: 22)),
+                                    //     ),
+                                    //   )
+                                //     : Image.network(
+                                //   ref
+                                //       .watch(editProfileInHouseProvider)
+                                //       .profilePicture ??
+                                //       "",
+                                //   fit: BoxFit.cover,
+                                //   height: 105,
+                                //   width: 105,
+                                //   loadingBuilder: (BuildContext context, Widget child,
+                                //       ImageChunkEvent? loadingProgress) {
+                                //     if (loadingProgress == null) return child;
+                                //     return Center(
+                                //       child: CircularProgressIndicator(
+                                //         value: loadingProgress.expectedTotalBytes !=
+                                //             null
+                                //             ? loadingProgress.cumulativeBytesLoaded /
+                                //             loadingProgress.expectedTotalBytes!
+                                //             : null,
+                                //       ),
+                                //     );
+                                //   },
+                                // ),
+                                ),
+                            // ClipRRect(
+                            //   borderRadius: BorderRadius.circular(116),
+                            //   child: CachedNetworkImage(
+                            //       height: 105,
+                            //       width: 105,
+                            //       imageUrl: ref
+                            //               .watch(editProfileInHouseProvider)
+                            //               .profilePicture ??
+                            //           "",
+                            //       placeholder: (context, url) => Container(
+                            //             color: Colors.transparent,
+                            //             height: 105,
+                            //             width: 105,
+                            //             child: const Center(
+                            //               child: CircularProgressIndicator(
+                            //                 strokeWidth: 2,
+                            //                 valueColor:
+                            //                     AlwaysStoppedAnimation<Color>(
+                            //                         kPrimaryColor),
+                            //               ),
+                            //             ),
+                            //           ),
+                            //       fit: BoxFit.cover,
+                            //       errorWidget: (context, url, error) => ref
+                            //                   .watch(editProfileInHouseProvider)
+                            //                   .profilePicture !=
+                            //               null
+                            //           ? Image.network(
+                            //               ref
+                            //                   .watch(editProfileInHouseProvider)
+                            //                   .profilePicture!,
+                            //               fit: BoxFit.fill,
+                            //               loadingBuilder: (BuildContext context,
+                            //                   Widget child,
+                            //                   ImageChunkEvent? loadingProgress) {
+                            //                 if (loadingProgress == null)
+                            //                   return child;
+                            //                 return Center(
+                            //                   child: CircularProgressIndicator(
+                            //                     value: loadingProgress
+                            //                                 .expectedTotalBytes !=
+                            //                             null
+                            //                         ? loadingProgress
+                            //                                 .cumulativeBytesLoaded /
+                            //                             loadingProgress
+                            //                                 .expectedTotalBytes!
+                            //                         : null,
+                            //                   ),
+                            //                 );
+                            //               },
+                            //             )
+                            //           : Container(
+                            //               padding: EdgeInsets.all(8),
+                            //               decoration: BoxDecoration(
+                            //                   shape: BoxShape.circle,
+                            //                   color: kPurple300),
+                            //               child: Container(
+                            //                 padding: EdgeInsets.all(8),
+                            //                 decoration: BoxDecoration(
+                            //                     shape: BoxShape.circle,
+                            //                     color: kPrimaryWhite),
+                            //                 child: Container(
+                            //                   padding:
+                            //                       EdgeInsets.all(kSmallPadding),
+                            //                   decoration: BoxDecoration(
+                            //                       shape: BoxShape.circle,
+                            //                       color: kPrimaryTextColor
+                            //                           .withOpacity(0.05)),
+                            //                   child: Container(
+                            //                     padding: EdgeInsets.all(8),
+                            //                     decoration: BoxDecoration(
+                            //                       shape: BoxShape.circle,
+                            //                       color: kPurpleColor600,
+                            //                     ),
+                            //                     child: Column(
+                            //                       children: [
+                            //                         Container(
+                            //                           height: kRegularPadding,
+                            //                           width: kRegularPadding,
+                            //                           decoration: BoxDecoration(
+                            //                               shape: BoxShape.circle,
+                            //                               color:
+                            //                                   kPrimaryTextColor),
+                            //                         ),
+                            //                         SizedBox(
+                            //                           height: 7,
+                            //                         ),
+                            //                         Container(
+                            //                           height: kRegularPadding,
+                            //                           width: 35,
+                            //                           decoration: BoxDecoration(
+                            //                               borderRadius: BorderRadius.only(
+                            //                                   topLeft:
+                            //                                       Radius.circular(
+                            //                                           kSmallPadding),
+                            //                                   bottomLeft:
+                            //                                       Radius.circular(
+                            //                                           kPadding),
+                            //                                   topRight:
+                            //                                       Radius.circular(
+                            //                                           kSmallPadding),
+                            //                                   bottomRight:
+                            //                                       Radius.circular(
+                            //                                           kPadding)),
+                            //                               color: kPurpleColor500),
+                            //                         )
+                            //                       ],
+                            //                     ),
+                            //                   ),
+                            //                 ),
+                            //               ))),
+                            // ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              left: ref
                                           .watch(editProfileInHouseProvider)
                                           .profilePicture ==
                                       null
-                                  ? Container(
-                                      padding: EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: kPurple300),
-                                      child: Container(
-                                          padding: EdgeInsets.all(8),
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: kPrimaryWhite),
-                                          child: Container(
-                                              padding:
-                                                  EdgeInsets.all(kSmallPadding),
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: kPrimaryTextColor
-                                                      .withOpacity(0.05)),
-                                              child: Container(
-                                                  padding: EdgeInsets.all(8),
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: kPurpleColor600,
-                                                  ),
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                        height: kRegularPadding,
-                                                        width: kRegularPadding,
-                                                        decoration: BoxDecoration(
-                                                            shape:
-                                                                BoxShape.circle,
-                                                            color:
-                                                                kPrimaryTextColor),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 7,
-                                                      ),
-                                                      Container(
-                                                        height: kRegularPadding,
-                                                        width: 35,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.only(
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        kSmallPadding),
-                                                                bottomLeft: Radius
-                                                                    .circular(
-                                                                        kPadding),
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        kSmallPadding),
-                                                                bottomRight: Radius
-                                                                    .circular(
-                                                                        kPadding)),
-                                                            color:
-                                                                kPurpleColor500),
-                                                      )
-                                                    ],
-                                                  ))))) : Image.network(
-                                  ref
-                                      .watch(editProfileInHouseProvider)
-                                      .profilePicture ??
-                                      "",
-                                  fit: BoxFit.cover,
-                                  height: 105,
-                                  width: 105,
-                                  loadingBuilder: (BuildContext context, Widget child,
-                                      ImageChunkEvent? loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                            ? loadingProgress.cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                            : null,
-                                      ),
-                                    );
-                                  },
-                                ),
-                                  // : Container(
-                                  //     height: 105,
-                                  //     width: 105,
-                                  //     decoration: BoxDecoration(
-                                  //       shape: BoxShape.circle,
-                                  //       color: kPrimaryColor,
-                                  //     ),
-                                  //     child: Center(
-                                  //       child: Text(
-                                  //           ref
-                                  //                       .watch(
-                                  //                           editProfileInHouseProvider)
-                                  //                       .profilePicture ==
-                                  //                   null
-                                  //               ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
-                                  //               : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
-                                  //           style: textTheme.bodyText2!
-                                  //               .copyWith(fontSize: 22)),
-                                  //     ),
-                                  //   )
-                              //     : Image.network(
-                              //   ref
-                              //       .watch(editProfileInHouseProvider)
-                              //       .profilePicture ??
-                              //       "",
-                              //   fit: BoxFit.cover,
-                              //   height: 105,
-                              //   width: 105,
-                              //   loadingBuilder: (BuildContext context, Widget child,
-                              //       ImageChunkEvent? loadingProgress) {
-                              //     if (loadingProgress == null) return child;
-                              //     return Center(
-                              //       child: CircularProgressIndicator(
-                              //         value: loadingProgress.expectedTotalBytes !=
-                              //             null
-                              //             ? loadingProgress.cumulativeBytesLoaded /
-                              //             loadingProgress.expectedTotalBytes!
-                              //             : null,
-                              //       ),
-                              //     );
-                              //   },
-                              // ),
+                                  ? 80
+                                  : 90,
+                              child: Icon(
+                                Icons.add_circle,
+                                size: 35,
                               ),
-                          // ClipRRect(
-                          //   borderRadius: BorderRadius.circular(116),
-                          //   child: CachedNetworkImage(
-                          //       height: 105,
-                          //       width: 105,
-                          //       imageUrl: ref
-                          //               .watch(editProfileInHouseProvider)
-                          //               .profilePicture ??
-                          //           "",
-                          //       placeholder: (context, url) => Container(
-                          //             color: Colors.transparent,
-                          //             height: 105,
-                          //             width: 105,
-                          //             child: const Center(
-                          //               child: CircularProgressIndicator(
-                          //                 strokeWidth: 2,
-                          //                 valueColor:
-                          //                     AlwaysStoppedAnimation<Color>(
-                          //                         kPrimaryColor),
-                          //               ),
-                          //             ),
-                          //           ),
-                          //       fit: BoxFit.cover,
-                          //       errorWidget: (context, url, error) => ref
-                          //                   .watch(editProfileInHouseProvider)
-                          //                   .profilePicture !=
-                          //               null
-                          //           ? Image.network(
-                          //               ref
-                          //                   .watch(editProfileInHouseProvider)
-                          //                   .profilePicture!,
-                          //               fit: BoxFit.fill,
-                          //               loadingBuilder: (BuildContext context,
-                          //                   Widget child,
-                          //                   ImageChunkEvent? loadingProgress) {
-                          //                 if (loadingProgress == null)
-                          //                   return child;
-                          //                 return Center(
-                          //                   child: CircularProgressIndicator(
-                          //                     value: loadingProgress
-                          //                                 .expectedTotalBytes !=
-                          //                             null
-                          //                         ? loadingProgress
-                          //                                 .cumulativeBytesLoaded /
-                          //                             loadingProgress
-                          //                                 .expectedTotalBytes!
-                          //                         : null,
-                          //                   ),
-                          //                 );
-                          //               },
-                          //             )
-                          //           : Container(
-                          //               padding: EdgeInsets.all(8),
-                          //               decoration: BoxDecoration(
-                          //                   shape: BoxShape.circle,
-                          //                   color: kPurple300),
-                          //               child: Container(
-                          //                 padding: EdgeInsets.all(8),
-                          //                 decoration: BoxDecoration(
-                          //                     shape: BoxShape.circle,
-                          //                     color: kPrimaryWhite),
-                          //                 child: Container(
-                          //                   padding:
-                          //                       EdgeInsets.all(kSmallPadding),
-                          //                   decoration: BoxDecoration(
-                          //                       shape: BoxShape.circle,
-                          //                       color: kPrimaryTextColor
-                          //                           .withOpacity(0.05)),
-                          //                   child: Container(
-                          //                     padding: EdgeInsets.all(8),
-                          //                     decoration: BoxDecoration(
-                          //                       shape: BoxShape.circle,
-                          //                       color: kPurpleColor600,
-                          //                     ),
-                          //                     child: Column(
-                          //                       children: [
-                          //                         Container(
-                          //                           height: kRegularPadding,
-                          //                           width: kRegularPadding,
-                          //                           decoration: BoxDecoration(
-                          //                               shape: BoxShape.circle,
-                          //                               color:
-                          //                                   kPrimaryTextColor),
-                          //                         ),
-                          //                         SizedBox(
-                          //                           height: 7,
-                          //                         ),
-                          //                         Container(
-                          //                           height: kRegularPadding,
-                          //                           width: 35,
-                          //                           decoration: BoxDecoration(
-                          //                               borderRadius: BorderRadius.only(
-                          //                                   topLeft:
-                          //                                       Radius.circular(
-                          //                                           kSmallPadding),
-                          //                                   bottomLeft:
-                          //                                       Radius.circular(
-                          //                                           kPadding),
-                          //                                   topRight:
-                          //                                       Radius.circular(
-                          //                                           kSmallPadding),
-                          //                                   bottomRight:
-                          //                                       Radius.circular(
-                          //                                           kPadding)),
-                          //                               color: kPurpleColor500),
-                          //                         )
-                          //                       ],
-                          //                     ),
-                          //                   ),
-                          //                 ),
-                          //               ))),
-                          // ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            left: ref
-                                        .watch(editProfileInHouseProvider)
-                                        .profilePicture ==
-                                    null
-                                ? 80
-                                : 90,
-                            child: Icon(
-                              Icons.add_circle,
-                              size: 35,
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                    return ref.watch(getSignedProvider).when(
+                            )
+                          ],
+                        ),
+                      );
+                      return ref.watch(getSignedProvider).when(
+                          done: (done) => _widget,
+                          loading: () => SpinKitDemo(),
+                          error: (val) => _widget);
+                    });
+                    return ref.watch(editProfileProvider2).when(
                         done: (done) => _widget,
                         loading: () => SpinKitDemo(),
                         error: (val) => _widget);
-                  });
-                  return ref.watch(editProfileProvider2).when(
-                      done: (done) => _widget,
-                      loading: () => SpinKitDemo(),
-                      error: (val) => _widget);
-                }),
-          SizedBox(
-            height: kSmallPadding,
-          ),
-          Text(
-            ref.watch(editProfileInHouseProvider).firstName == null
-                ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.firstName!.substring(1).toLowerCase()} ${userProfile.lastName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(1).toLowerCase()}"
-                : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).firstName!.substring(1).toLowerCase()} ${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(1).toLowerCase()}",
-            style: textTheme.subtitle1!.copyWith(
-              fontWeight: FontWeight.w700,
+                  }),
+            SizedBox(
+              height: kSmallPadding,
             ),
-            textAlign: TextAlign.center,
-          ),
-          Text(
-            "@${userProfile.tag}",
-            style: textTheme.bodyText1!.copyWith(
-              color: kIconGrey,
+            Text(
+              ref.watch(editProfileInHouseProvider).firstName == null
+                  ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.firstName!.substring(1).toLowerCase()} ${userProfile.lastName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(1).toLowerCase()}"
+                  : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).firstName!.substring(1).toLowerCase()} ${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(1).toLowerCase()}",
+              style: textTheme.subtitle1!.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(
-            height: kRegularPadding,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: kSmallPadding, vertical: 2),
-                decoration: BoxDecoration(
-                    color: kColorBackgroundLight,
-                    border: Border.all(color: kPurpleColor700),
-                    borderRadius: BorderRadius.circular(kSmallPadding)),
-                child: Text(
-                  "$tier $hiveTierLevel",
-                  style: textTheme.headline4!.copyWith(
-                    color: kSecondaryPurple,
-                    fontWeight: FontWeight.w700,
+            Text(
+              "@${userProfile.tag}",
+              style: textTheme.bodyText1!.copyWith(
+                color: kIconGrey,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(
+              height: kRegularPadding,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: kSmallPadding, vertical: 2),
+                  decoration: BoxDecoration(
+                      color: kColorBackgroundLight,
+                      border: Border.all(color: kPurpleColor700),
+                      borderRadius: BorderRadius.circular(kSmallPadding)),
+                  child: Text(
+                    "$tier $hiveTierLevel",
+                    style: textTheme.headline4!.copyWith(
+                      color: kSecondaryPurple,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: kSmallPadding,
-              ),
-              hiveTierLevel == 3
-                  ? SizedBox()
-                  : inkWell(
-                      onTap: () {
-                        pushTo(
-                          context,
-                          PouchersTierList(
-                            tier: hiveTierLevel,
-                          ),
-                          settings: const RouteSettings(
-                            name: PouchersTierList.routeName,
-                          ),
-                        ).then((value) {
-                          checkTierLevel();
-                        });
-                      },
-                      child: Text(
-                        upgradeNow,
-                        style: textTheme.headline2!.copyWith(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                        ),
-                      ),
-                    )
-            ],
-          ),
-          SizedBox(
-            height: kMacroPadding,
-          ),
-          Container(
-            padding: EdgeInsets.only(
-                left: kRegularPadding,
-                right: kRegularPadding,
-                top: kMicroPadding,
-                bottom: kSmallPadding),
-            decoration: BoxDecoration(
-                color: kPrimaryWhite,
-                borderRadius: BorderRadius.circular(kRegularPadding)),
-            child: Column(
-              children: [
-                KYCColumn(
-                  textTheme: textTheme,
-                  title: fullName,
-                  subTitle: ref.watch(editProfileInHouseProvider).firstName ==
-                          null
-                      ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.firstName!.substring(1).toLowerCase()} ${userProfile.lastName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(1).toLowerCase()}"
-                      : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).firstName!.substring(1).toLowerCase()} ${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(1).toLowerCase()}",
-                  onTap: hiveTierLevel == 2 || hiveTierLevel == 3
-                      ? null
-                      : () async {
-                          final val = await showDialog(
-                              context: context,
-                              builder: (
-                                context,
-                              ) {
-                                return ProfileKYCDialog(
-                                  textTheme: textTheme,
-                                  child:
-                                      EditFullNameModal(textTheme: textTheme),
-                                );
-                              });
-                          setState(() {
-                            checkTierLevel();
-                          });
-                        },
+                SizedBox(
+                  width: kSmallPadding,
                 ),
-                KYCColumn(
-                  textTheme: textTheme,
-                  title: gender,
-                  subTitle: ref.watch(editProfileInHouseProvider).gender == null
-                      ? userProfile.gender ?? ""
-                      : "${ref.watch(editProfileInHouseProvider).gender ?? ""}",
-                  onTap: ref
-                          .watch(editProfileInHouseProvider)
-                          .isUploadedIdentityCard!
-                      ? null
-                      : () {
-                          showDialog(
-                              context: context,
-                              builder: (
-                                context,
-                              ) {
-                                return ProfileKYCDialog(
-                                  textTheme: textTheme,
-                                  child: GenderModal(textTheme: textTheme),
-                                );
-                              });
-                        },
-                ),
-                KYCColumn(
-                  textTheme: textTheme,
-                  title: phoneNumberText,
-                  subTitle: ref.watch(editProfileInHouseProvider).phoneNumber ==
-                          null
-                      ? userProfile.phoneNumber ?? ""
-                      : "${ref.watch(editProfileInHouseProvider).phoneNumber ?? ""}",
-                  onTap: () {
-                    pushTo(
-                        context,
-                        ChangePassword(
-                          changePhone: true,
-                        ),
-                        settings: const RouteSettings(
-                            name: ChangePassword.routeName));
-                  },
-                ),
-                KYCColumn(
-                  tierLevel: hiveTierLevel,
-                  textTheme: textTheme,
-                  title: idVerification,
-                  subTitle: dataSuccess,
-                  onTap: hiveTierLevel == 3
-                      ? null
-                      : () {
+                hiveTierLevel == 3
+                    ? SizedBox()
+                    : inkWell(
+                        onTap: () {
                           pushTo(
                             context,
-                            AccountVerificationStatus(),
+                            PouchersTierList(
+                              tier: hiveTierLevel,
+                            ),
                             settings: const RouteSettings(
-                                name: AccountVerificationStatus.routeName),
+                              name: PouchersTierList.routeName,
+                            ),
                           ).then((value) {
                             checkTierLevel();
                           });
                         },
-                ),
-                KYCColumn(
-                  textTheme: textTheme,
-                  title: dateOfBirth,
-                  subTitle: ref.watch(editProfileInHouseProvider).dob == null
-                      ? userProfile.dob ?? ""
-                      : "${ref.watch(editProfileInHouseProvider).dob ?? ""}",
-                  onTap: () async {
-                    final result = await buildShowModalBottomSheet(
-                        context, BirthCalendar());
-                    if (result != null) {
-                      setState(() {
-                        date = result;
-                      });
-                    }
-                  },
-                ),
-                KYCColumn(
-                  textTheme: textTheme,
-                  title: poucherTag,
-                  subTitle: "@${userProfile.tag}",
-                ),
+                        child: Text(
+                          upgradeNow,
+                          style: textTheme.headline2!.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                          ),
+                        ),
+                      )
               ],
             ),
-          )
-        ],
+            SizedBox(
+              height: kMacroPadding,
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                  left: kRegularPadding,
+                  right: kRegularPadding,
+                  top: kMicroPadding,
+                  bottom: kSmallPadding),
+              decoration: BoxDecoration(
+                  color: kPrimaryWhite,
+                  borderRadius: BorderRadius.circular(kRegularPadding)),
+              child: Column(
+                children: [
+                  KYCColumn(
+                    textTheme: textTheme,
+                    title: fullName,
+                    subTitle: ref.watch(editProfileInHouseProvider).firstName ==
+                            null
+                        ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.firstName!.substring(1).toLowerCase()} ${userProfile.lastName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(1).toLowerCase()}"
+                        : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).firstName!.substring(1).toLowerCase()} ${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(1).toLowerCase()}",
+                    onTap: hiveTierLevel == 2 || hiveTierLevel == 3
+                        ? null
+                        : () async {
+                            final val = await showDialog(
+                                context: context,
+                                builder: (
+                                  context,
+                                ) {
+                                  return ProfileKYCDialog(
+                                    textTheme: textTheme,
+                                    child:
+                                        EditFullNameModal(textTheme: textTheme),
+                                  );
+                                });
+                            setState(() {
+                              checkTierLevel();
+                            });
+                          },
+                  ),
+                  KYCColumn(
+                    textTheme: textTheme,
+                    title: gender,
+                    subTitle: ref.watch(editProfileInHouseProvider).gender == null
+                        ? userProfile.gender ?? ""
+                        : "${ref.watch(editProfileInHouseProvider).gender ?? ""}",
+                    onTap: ref
+                            .watch(editProfileInHouseProvider)
+                            .isUploadedIdentityCard!
+                        ? null
+                        : () {
+                            showDialog(
+                                context: context,
+                                builder: (
+                                  context,
+                                ) {
+                                  return ProfileKYCDialog(
+                                    textTheme: textTheme,
+                                    child: GenderModal(textTheme: textTheme),
+                                  );
+                                });
+                          },
+                  ),
+                  KYCColumn(
+                    textTheme: textTheme,
+                    title: phoneNumberText,
+                    subTitle: ref.watch(editProfileInHouseProvider).phoneNumber ==
+                            null
+                        ? userProfile.phoneNumber ?? ""
+                        : "${ref.watch(editProfileInHouseProvider).phoneNumber ?? ""}",
+                    onTap: () {
+                      pushTo(
+                          context,
+                          ChangePassword(
+                            changePhone: true,
+                          ),
+                          settings: const RouteSettings(
+                              name: ChangePassword.routeName));
+                    },
+                  ),
+                  KYCColumn(
+                    tierLevel: hiveTierLevel,
+                    textTheme: textTheme,
+                    title: idVerification,
+                    subTitle: dataSuccess,
+                    onTap: hiveTierLevel == 3
+                        ? null
+                        : () {
+                            pushTo(
+                              context,
+                              AccountVerificationStatus(),
+                              settings: const RouteSettings(
+                                  name: AccountVerificationStatus.routeName),
+                            ).then((value) {
+                              checkTierLevel();
+                            });
+                          },
+                  ),
+                  KYCColumn(
+                    textTheme: textTheme,
+                    title: dateOfBirth,
+                    subTitle: ref.watch(editProfileInHouseProvider).dob == null
+                        ? userProfile.dob ?? ""
+                        : "${ref.watch(editProfileInHouseProvider).dob ?? ""}",
+                    onTap: () async {
+                      final result = await buildShowModalBottomSheet(
+                          context, BirthCalendar());
+                      if (result != null) {
+                        setState(() {
+                          date = result;
+                        });
+                      }
+                    },
+                  ),
+                  KYCColumn(
+                    textTheme: textTheme,
+                    title: poucherTag,
+                    subTitle: "@${userProfile.tag}",
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

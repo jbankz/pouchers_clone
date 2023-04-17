@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/modules/account/screens/two_factor_auth/security_modal.dart';
 import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
@@ -18,67 +19,69 @@ class TwoFactorDisable extends StatelessWidget {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
         title: factorAuth,
-        child: Column(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    AssetPaths.authSuccessIcon,
-                  ),
-                  SizedBox(
-                    height: kMacroPadding,
-                  ),
-                  Text(
-                    authEnabled,
-                    style: textTheme.headline2!.copyWith(
-                      color: kIconGrey,
+        child: ListenerPage(
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      AssetPaths.authSuccessIcon,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: kMicroPadding,
-                  ),
-                  Divider(
-                    color: kLightPurple,
-                    thickness: 1,
-                  ),
-                  SizedBox(
-                    height: kRegularPadding,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        factorAuthentication,
-                        style: textTheme.subtitle1
+                    SizedBox(
+                      height: kMacroPadding,
+                    ),
+                    Text(
+                      authEnabled,
+                      style: textTheme.headline2!.copyWith(
+                        color: kIconGrey,
                       ),
-                      FlutterSwitchClass(
-                        saveBeneficiary: true,
-                        onToggle: (val) {
-                          showDialog(
-                              context: context,
-                              builder: (ctx) {
-                                return  Container(
-                                    color: Color.fromRGBO(6, 6, 40, 0.7),
-                                    child: SecurityModal(
-                                      textTheme: Theme.of(context).textTheme,
-                                      title: urgent,
-                                      message: urgentSub,
-                                      button: urgentButton,
-                                      color: kLightOrange,
-                                    ),
-                                );
-                              });
-                        },
-                      )
-                    ],
-                  ),
-                ],
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: kMicroPadding,
+                    ),
+                    Divider(
+                      color: kLightPurple,
+                      thickness: 1,
+                    ),
+                    SizedBox(
+                      height: kRegularPadding,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          factorAuthentication,
+                          style: textTheme.subtitle1
+                        ),
+                        FlutterSwitchClass(
+                          saveBeneficiary: true,
+                          onToggle: (val) {
+                            showDialog(
+                                context: context,
+                                builder: (ctx) {
+                                  return  Container(
+                                      color: Color.fromRGBO(6, 6, 40, 0.7),
+                                      child: SecurityModal(
+                                        textTheme: Theme.of(context).textTheme,
+                                        title: urgent,
+                                        message: urgentSub,
+                                        button: urgentButton,
+                                        color: kLightOrange,
+                                      ),
+                                  );
+                                });
+                          },
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }

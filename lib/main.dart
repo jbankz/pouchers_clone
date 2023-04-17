@@ -78,42 +78,42 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
 
   @override
   Widget build(BuildContext context) {
-    print(_navigatorKey);
-    var route = ModalRoute.of(context);
     return ProviderScope(
       observers: [
         ProviderLogger(),
       ],
-      child: Listener(
-        onPointerDown: (e) {
-          DateTime whenTouchedDatetime = DateTime.now();
-          print("now date $nowDate");
-          print("whenTouchedDatetime $whenTouchedDatetime");
-          if (nowDate.isBefore(whenTouchedDatetime)) {
-            print("it is after");
-            // if(_navigatorKey.currentState != null){
-              _navigatorKey.currentState!.pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) {
-                    return LogInAccount(
-                        sessionTimeOut: true
-                    );
-                  }), (route) => false);
-           //}
-            // else{
-            //   print("kmkmd");
-            //   pushToAndClearStack(context, LogInAccount(
-            //       sessionTimeOut: true
-            //   ));
-            // }
-
-            setState(() {
-              nowDate = DateTime.now().add(Duration(minutes: 5));
-            });
-          } else {
-            nowDate = DateTime.now().add(Duration(minutes: 5));
-          }
-        },
-        child: MaterialApp(
+      child:
+      //Listener(
+        // onPointerDown: (e) {
+        //   DateTime whenTouchedDatetime = DateTime.now();
+        //   print("now date $nowDate");
+        //   print("whenTouchedDatetime $whenTouchedDatetime");
+        //   if (nowDate.isBefore(whenTouchedDatetime)) {
+        //     print("it is after");
+        //     // if(_navigatorKey.currentState != null){
+        //       _navigatorKey.currentState!.pushAndRemoveUntil(
+        //           MaterialPageRoute(builder: (_) {
+        //             return LogInAccount(
+        //                 sessionTimeOut: true
+        //             );
+        //           }), (route) => false);
+        //    //}
+        //     // else{
+        //     //   print("kmkmd");
+        //     //   pushToAndClearStack(context, LogInAccount(
+        //     //       sessionTimeOut: true
+        //     //   ));
+        //     // }
+        //
+        //     setState(() {
+        //       nowDate = DateTime.now().add(Duration(minutes: 5));
+        //     });
+        //   } else {
+        //     nowDate = DateTime.now().add(Duration(minutes: 5));
+        //   }
+        // },
+       // child:
+        MaterialApp(
             title: "Pouchers",
             theme: kThemeData,
             debugShowCheckedModeBanner: false,
@@ -127,8 +127,8 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
               },
             ),
             routes: appRoutes),
-      ),
-    );
+      );
+  //  );
   }
 }
 

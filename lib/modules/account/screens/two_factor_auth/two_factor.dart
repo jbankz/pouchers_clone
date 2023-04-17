@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
 import 'package:pouchers/modules/tab_layout/two_fa_modal.dart';
 import 'package:pouchers/utils/assets_path.dart';
@@ -30,7 +31,9 @@ class _TwoFactorState extends ConsumerState<TwoFactor> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: factorAuth,
-      child: ref.watch(getSelectedQuestionsProvider).when(
+      child: ListenerPage(
+        child:
+      ref.watch(getSelectedQuestionsProvider).when(
           loading: () => Center(
                 child: SpinKitDemo(),
               ),
@@ -88,6 +91,6 @@ class _TwoFactorState extends ConsumerState<TwoFactor> {
             }
 
           }),
-    );
+    ));
   }
 }

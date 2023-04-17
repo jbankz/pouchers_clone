@@ -8,6 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/login/models/login_response.dart';
@@ -18,6 +19,7 @@ import 'package:pouchers/utils/assets_path.dart';
 import 'package:pouchers/utils/components.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/flushbar.dart';
+import 'package:pouchers/utils/input_formatters.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:flutter/services.dart';
 import 'package:pouchers/utils/utils.dart';
@@ -44,501 +46,503 @@ class _TransferModalState extends ConsumerState<TransferModal> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    return Container(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(kMicroPadding),
-            topRight: Radius.circular(kMicroPadding),
-          ),
-          color: kPrimaryWhite),
-      child: ListView(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        children: [
-          Container(
-            padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-              top: 10,
+    return ListenerPage(
+      child: Container(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(kMicroPadding),
+              topRight: Radius.circular(kMicroPadding),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: kMacroPadding,
-                    height: 3,
-                    decoration: BoxDecoration(
-                      color: kPurpleColor200,
-                      borderRadius: BorderRadius.circular(4),
+            color: kPrimaryWhite),
+        child: ListView(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          children: [
+            Container(
+              padding: EdgeInsets.only(
+                left: 20,
+                right: 20,
+                top: 10,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: kMacroPadding,
+                      height: 3,
+                      decoration: BoxDecoration(
+                        color: kPurpleColor200,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: kMediumPadding,
-                ),
-                Center(
-                  child: Text(
-                    widget.isRequest ? requestMoney : sendMoney,
-                    textAlign: TextAlign.center,
-                    style: textTheme.headline4!.copyWith(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
+                  SizedBox(
+                    height: kMediumPadding,
+                  ),
+                  Center(
+                    child: Text(
+                      widget.isRequest ? requestMoney : sendMoney,
+                      textAlign: TextAlign.center,
+                      style: textTheme.headline4!.copyWith(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: kMacroPadding,
-                ),
-                Text(
-                  widget.isRequest ? requestFrom : sendTo,
-                  style: textTheme.headline4,
-                  textAlign: TextAlign.start,
-                ),
-                SizedBox(
-                  height: kSmallPadding,
-                ),
-                Form(
-                  key: _formKey,
-                  child: Container(
-                    child: TextFormField(
-                      keyboardType: TextInputType.text,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.deny(
-                            RegExp(r'\s')),
-                      ],
-                      style:
-                          textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
-                      cursorColor: kPrimaryColor,
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return emptyField;
-                        } else {
-                          return null;
-                        }
-                      },
-                      onChanged: (inputValue) {
-                        if (inputValue.isNotEmpty) {
-                          if (lastInputValue != inputValue) {
-                            lastInputValue = inputValue;
-                            ref
-                                .read(getContactByPoucherTagProvider.notifier)
-                                .getContactByPoucherTag(poucherTag: inputValue);
+                  SizedBox(
+                    height: kMacroPadding,
+                  ),
+                  Text(
+                    widget.isRequest ? requestFrom : sendTo,
+                    style: textTheme.headline4,
+                    textAlign: TextAlign.start,
+                  ),
+                  SizedBox(
+                    height: kSmallPadding,
+                  ),
+                  Form(
+                    key: _formKey,
+                    child: Container(
+                      child: TextFormField(
+                        keyboardType: TextInputType.text,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(
+                              RegExp(r'\s')),
+                        ],
+                        style:
+                            textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
+                        cursorColor: kPrimaryColor,
+                        validator: (val) {
+                          if (val!.isEmpty) {
+                            return emptyField;
+                          } else {
+                            return null;
                           }
-                        }
-                        // if (val.isNotEmpty) {
-                        //   Future.delayed(Duration(seconds: 2)).then((value) =>
-                        //       ref
-                        //           .read(getContactByPoucherTagProvider.notifier)
-                        //           .getContactByPoucherTag(poucherTag: val));
-                        // }
-                      },
-                      onSaved: (val) => setState(() => _tag = val),
-                      decoration: InputDecoration(
-                        filled: true,
-                        isDense: true,
-                        hintText: enterPoucherTag,
-                        hintStyle: textTheme.headline6!.copyWith(fontSize: 18),
-                        prefixText: "@  ",
-                        prefixStyle: textTheme.subtitle1!.copyWith(
-                          color: kPrimaryTextColor.withOpacity(0.7),
-                        ),
-                        suffixIcon: Consumer(
-                          builder: (context, ref, _) {
-                            ref.listen(getContactByPoucherTagProvider,
-                                (previous,
-                                    NotifierState<Map<String, dynamic>> next) {
-                              if (next.status == NotifierStatus.done) {
-                                setState(() {
-                                  _errorText = "";
-                                  contactInfo["phoneNumber"] =
-                                      next.data!["phoneNumber"];
-                                  contactInfo["firstName"] =
-                                      next.data!["firstName"];
-                                  contactInfo["lastName"] =
-                                      next.data!["lastName"];
-                                  contactInfo["profilePicture"] =
-                                      next.data!["profilePicture"];
-                                  contactInfo["tag"] = next.data!["tag"];
-                                });
-
-                                print(next.data);
-                              } else if (next.status == NotifierStatus.error) {
-                                setState(() {
-                                  _errorText = next.message ?? "";
-                                });
-                              }
-                            });
-                            var _widget = SizedBox(
-                              width: kLargePadding,
-                              child: SpinKitDemo(
-                                size: kMacroPadding,
-                              ),
-                            );
-                            return ref
-                                .watch(getContactByPoucherTagProvider)
-                                .when(
-                                    done: (done) => SizedBox(),
-                                    loading: () => _widget,
-                                    error: (val) => SizedBox());
-                          },
-                        ),
-                        fillColor: kBackgroundColor,
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(style: BorderStyle.none),
-                          borderRadius: BorderRadius.circular(kSmallPadding),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: kPrimaryColor),
-                          borderRadius: BorderRadius.circular(kSmallPadding),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(kSmallPadding),
-                          borderSide: BorderSide(color: kColorRed),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(kSmallPadding),
-                          borderSide: BorderSide(color: kColorRed),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: kMicroPadding,
-                ),
-                _errorText != ""
-                    ? Text(
-                        _errorText!,
-                        style: textTheme.bodyText1!.copyWith(color: kColorRed),
-                      )
-                    : contactInfo.isEmpty
-                        ? SizedBox()
-                        : inkWell(
-                            onTap: () {
-                              Navigator.pop(context, contactInfo);
-                            },
-                            child: Row(
-                              children: [
-                                contactInfo["profilePicture"] == null
-                                    ? SizedBox()
-                                    : ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(116),
-                                        child: CachedNetworkImage(
-                                          height: 40,
-                                          width: 40,
-                                          imageUrl:
-                                              contactInfo["profilePicture"],
-                                          placeholder: (context, url) =>
-                                              Container(
-                                            color: Colors.transparent,
-                                            height: 40,
-                                            width: 40,
-                                            child: const Center(
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<
-                                                        Color>(kPrimaryColor),
-                                              ),
-                                            ),
-                                          ),
-                                          fit: BoxFit.cover,
-                                          errorWidget: (context, url, error) =>
-                                              contactInfo["profilePicture"] !=
-                                                      null
-                                                  ? Image.network(
-                                                      contactInfo[
-                                                          "profilePicture"],
-                                                      fit: BoxFit.fill,
-                                                      loadingBuilder: (BuildContext
-                                                              context,
-                                                          Widget child,
-                                                          ImageChunkEvent?
-                                                              loadingProgress) {
-                                                        if (loadingProgress ==
-                                                            null) return child;
-                                                        return Center(
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            value: loadingProgress
-                                                                        .expectedTotalBytes !=
-                                                                    null
-                                                                ? loadingProgress
-                                                                        .cumulativeBytesLoaded /
-                                                                    loadingProgress
-                                                                        .expectedTotalBytes!
-                                                                : null,
-                                                          ),
-                                                        );
-                                                      },
-                                                    )
-                                                  : Center(
-                                                      child: Text(
-                                                          "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}",
-                                                          style: textTheme
-                                                              .bodyText2!
-                                                              .copyWith(
-                                                                  fontSize:
-                                                                      22)),
-                                                    ),
-                                        )),
-                                SizedBox(
-                                  width: kRegularPadding,
-                                ),
-                                Text(
-                                  "${contactInfo["firstName"]} ${contactInfo["lastName"]}",
-                                  style: textTheme.headline4!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-              ],
-            ),
-          ),
-          Divider(
-            color: kLight100,
-            thickness: 2,
-          ),
-          SizedBox(
-            height: kMicroPadding,
-          ),
-          Container(
-            padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-            ),
-            child: contactData.isEmpty
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Image.asset(AssetPaths.chooseContact),
-                      SizedBox(
-                        width: kSmallPadding,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              chooseContact,
-                              style: textTheme.headline4!.copyWith(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
-                              ),
-                            ),
-                            Text(
-                              chooseContactSub,
-                              style: textTheme.headline4!.copyWith(
-                                color: kIconGrey,
-                              ),
-                            ),
-                            SizedBox(
-                              height: kPadding,
-                            ),
-                            Consumer(builder: (context, ref, _) {
-                              ref.listen(getAllContactsProvider, (previous,
-                                  NotifierState<ContactListResponse> next) {
+                        },
+                        onChanged: (inputValue) {
+                          if (inputValue.isNotEmpty) {
+                            if (lastInputValue != inputValue) {
+                              lastInputValue = inputValue;
+                              ref
+                                  .read(getContactByPoucherTagProvider.notifier)
+                                  .getContactByPoucherTag(poucherTag: inputValue);
+                            }
+                          }
+                          // if (val.isNotEmpty) {
+                          //   Future.delayed(Duration(seconds: 2)).then((value) =>
+                          //       ref
+                          //           .read(getContactByPoucherTagProvider.notifier)
+                          //           .getContactByPoucherTag(poucherTag: val));
+                          // }
+                        },
+                        onSaved: (val) => setState(() => _tag = val),
+                        decoration: InputDecoration(
+                          filled: true,
+                          isDense: true,
+                          hintText: enterPoucherTag,
+                          hintStyle: textTheme.headline6!.copyWith(fontSize: 18),
+                          prefixText: "@  ",
+                          prefixStyle: textTheme.subtitle1!.copyWith(
+                            color: kPrimaryTextColor.withOpacity(0.7),
+                          ),
+                          suffixIcon: Consumer(
+                            builder: (context, ref, _) {
+                              ref.listen(getContactByPoucherTagProvider,
+                                  (previous,
+                                      NotifierState<Map<String, dynamic>> next) {
                                 if (next.status == NotifierStatus.done) {
                                   setState(() {
-                                    contactData.addAll(next.data!.data!);
+                                    _errorText = "";
+                                    contactInfo["phoneNumber"] =
+                                        next.data!["phoneNumber"];
+                                    contactInfo["firstName"] =
+                                        next.data!["firstName"];
+                                    contactInfo["lastName"] =
+                                        next.data!["lastName"];
+                                    contactInfo["profilePicture"] =
+                                        next.data!["profilePicture"];
+                                    contactInfo["tag"] = next.data!["tag"];
                                   });
+
                                   print(next.data);
-                                } else if (next.status ==
-                                    NotifierStatus.error) {
-                                  showErrorBar(context, next.message ?? "");
+                                } else if (next.status == NotifierStatus.error) {
+                                  setState(() {
+                                    _errorText = next.message ?? "";
+                                  });
                                 }
                               });
-                              var _widget = inkWell(
-                                onTap: () async {
-                                  List<Contact> allContact =
-                                      await getContacts();
-                                  List<String> phones = [];
-                                  allContact.forEach((element) {
-                                    setState(() {
-                                      phones.addAll(element.phones);
-                                    });
-                                  });
-                                  if (phones.isNotEmpty) {
-                                    List<String> phoneReplaced = [];
-                                    List<String> phoneReplaced1 = [];
-                                    phones.forEach((element) {
-                                      // element.replaceAll("234", "0");
-                                      // element.replaceAll(" ", "");
-                                      phoneReplaced
-                                          .add(element.replaceAll("+234", "0"));
-                                    });
-                                    phoneReplaced.forEach((element) {
-                                      phoneReplaced1
-                                          .add(element.replaceAll(" ", ""));
-                                    });
-                                    ref
-                                        .read(getAllContactsProvider.notifier)
-                                        .getAllContacts(
-                                          contacts: phoneReplaced1,
-                                        );
-                                  } else {
-                                    showErrorBar(context,
-                                        "You have no contact on your list");
-                                  }
-                                },
-                                child: Text(
-                                  enableContact,
-                                  style: textTheme.headline2!.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14,
-                                  ),
+                              var _widget = SizedBox(
+                                width: kLargePadding,
+                                child: SpinKitDemo(
+                                  size: kMacroPadding,
                                 ),
                               );
-                              return ref.watch(getAllContactsProvider).when(
-                                  done: (done) => _widget,
-                                  loading: () => SpinKitDemo(
-                                        size: 40,
-                                      ),
-                                  error: (val) => _widget);
-                            })
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        contact,
-                        style: textTheme.headline4!.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
+                              return ref
+                                  .watch(getContactByPoucherTagProvider)
+                                  .when(
+                                      done: (done) => SizedBox(),
+                                      loading: () => _widget,
+                                      error: (val) => SizedBox());
+                            },
+                          ),
+                          fillColor: kBackgroundColor,
+                          border: OutlineInputBorder(),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(style: BorderStyle.none),
+                            borderRadius: BorderRadius.circular(kSmallPadding),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: kPrimaryColor),
+                            borderRadius: BorderRadius.circular(kSmallPadding),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(kSmallPadding),
+                            borderSide: BorderSide(color: kColorRed),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(kSmallPadding),
+                            borderSide: BorderSide(color: kColorRed),
+                          ),
                         ),
                       ),
-                      SizedBox(
-                        height: kMediumPadding,
-                      ),
-                      ...contactData.map((e) => Column(
-                            children: [
-                              Row(
+                    ),
+                  ),
+                  SizedBox(
+                    height: kMicroPadding,
+                  ),
+                  _errorText != ""
+                      ? Text(
+                          _errorText!,
+                          style: textTheme.bodyText1!.copyWith(color: kColorRed),
+                        )
+                      : contactInfo.isEmpty
+                          ? SizedBox()
+                          : inkWell(
+                              onTap: () {
+                                Navigator.pop(context, contactInfo);
+                              },
+                              child: Row(
                                 children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(116),
-                                    child: CachedNetworkImage(
-                                      height: 40,
-                                      width: 40,
-                                      imageUrl: e.profilePicture ?? "",
-                                      placeholder: (context, url) => Container(
-                                        color: Colors.transparent,
-                                        height: 40,
-                                        width: 40,
-                                        child: const Center(
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    kPrimaryColor),
-                                          ),
-                                        ),
-                                      ),
-                                      fit: BoxFit.cover,
-                                      errorWidget: (context, url, error) =>
-                                          e.profilePicture != null
-                                              ? Image.network(
-                                                  e.profilePicture!,
-                                                  fit: BoxFit.fill,
-                                                  loadingBuilder:
-                                                      (BuildContext context,
-                                                          Widget child,
-                                                          ImageChunkEvent?
-                                                              loadingProgress) {
-                                                    if (loadingProgress == null)
-                                                      return child;
-                                                    return Center(
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        value: loadingProgress
-                                                                    .expectedTotalBytes !=
-                                                                null
-                                                            ? loadingProgress
-                                                                    .cumulativeBytesLoaded /
-                                                                loadingProgress
-                                                                    .expectedTotalBytes!
-                                                            : null,
-                                                      ),
-                                                    );
-                                                  },
-                                                )
-                                              : Center(
-                                                  child: Text(
-                                                      "${e.firstName!.substring(0, 1).toUpperCase()}${e.lastName!.substring(0, 1).toUpperCase()}",
-                                                      style: textTheme
-                                                          .bodyText2!
-                                                          .copyWith(
-                                                              fontSize: 22)),
+                                  contactInfo["profilePicture"] == null
+                                      ? SizedBox()
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(116),
+                                          child: CachedNetworkImage(
+                                            height: 40,
+                                            width: 40,
+                                            imageUrl:
+                                                contactInfo["profilePicture"],
+                                            placeholder: (context, url) =>
+                                                Container(
+                                              color: Colors.transparent,
+                                              height: 40,
+                                              width: 40,
+                                              child: const Center(
+                                                child: CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(kPrimaryColor),
                                                 ),
-                                    ),
-                                  ),
+                                              ),
+                                            ),
+                                            fit: BoxFit.cover,
+                                            errorWidget: (context, url, error) =>
+                                                contactInfo["profilePicture"] !=
+                                                        null
+                                                    ? Image.network(
+                                                        contactInfo[
+                                                            "profilePicture"],
+                                                        fit: BoxFit.fill,
+                                                        loadingBuilder: (BuildContext
+                                                                context,
+                                                            Widget child,
+                                                            ImageChunkEvent?
+                                                                loadingProgress) {
+                                                          if (loadingProgress ==
+                                                              null) return child;
+                                                          return Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              value: loadingProgress
+                                                                          .expectedTotalBytes !=
+                                                                      null
+                                                                  ? loadingProgress
+                                                                          .cumulativeBytesLoaded /
+                                                                      loadingProgress
+                                                                          .expectedTotalBytes!
+                                                                  : null,
+                                                            ),
+                                                          );
+                                                        },
+                                                      )
+                                                    : Center(
+                                                        child: Text(
+                                                            "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}",
+                                                            style: textTheme
+                                                                .bodyText2!
+                                                                .copyWith(
+                                                                    fontSize:
+                                                                        22)),
+                                                      ),
+                                          )),
                                   SizedBox(
                                     width: kRegularPadding,
                                   ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "${e.firstName} ${e.lastName}",
-                                          style: textTheme.headline4!.copyWith(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: kPadding,
-                                        ),
-                                        Text("@${e.tag}",
-                                            style: textTheme.headline6),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: kMediumPadding,
-                                        vertical: kSmallPadding),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            kSmallPadding),
-                                        color: kPrimaryColor),
-                                    child: Text(
-                                      send,
-                                      style: textTheme.bodyText2!.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14,
-                                        fontFamily: "DMSans",
-                                      ),
+                                  Text(
+                                    "${contactInfo["firstName"].toString().toTitleCase2()} ${contactInfo["lastName"].toString().toTitleCase2()}",
+                                    style: textTheme.headline4!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
                                     ),
                                   )
                                 ],
                               ),
-                              Divider(
-                                color: kLightColor300,
-                                thickness: 1,
-                              )
+                            )
+                ],
+              ),
+            ),
+            Divider(
+              color: kLight100,
+              thickness: 2,
+            ),
+            SizedBox(
+              height: kMicroPadding,
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                left: 20,
+                right: 20,
+              ),
+              child: contactData.isEmpty
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset(AssetPaths.chooseContact),
+                        SizedBox(
+                          width: kSmallPadding,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                chooseContact,
+                                style: textTheme.headline4!.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(
+                                chooseContactSub,
+                                style: textTheme.headline4!.copyWith(
+                                  color: kIconGrey,
+                                ),
+                              ),
+                              SizedBox(
+                                height: kPadding,
+                              ),
+                              Consumer(builder: (context, ref, _) {
+                                ref.listen(getAllContactsProvider, (previous,
+                                    NotifierState<ContactListResponse> next) {
+                                  if (next.status == NotifierStatus.done) {
+                                    setState(() {
+                                      contactData.addAll(next.data!.data!);
+                                    });
+                                    print(next.data);
+                                  } else if (next.status ==
+                                      NotifierStatus.error) {
+                                    showErrorBar(context, next.message ?? "");
+                                  }
+                                });
+                                var _widget = inkWell(
+                                  onTap: () async {
+                                    List<Contact> allContact =
+                                        await getContacts();
+                                    List<String> phones = [];
+                                    allContact.forEach((element) {
+                                      setState(() {
+                                        phones.addAll(element.phones);
+                                      });
+                                    });
+                                    if (phones.isNotEmpty) {
+                                      List<String> phoneReplaced = [];
+                                      List<String> phoneReplaced1 = [];
+                                      phones.forEach((element) {
+                                        // element.replaceAll("234", "0");
+                                        // element.replaceAll(" ", "");
+                                        phoneReplaced
+                                            .add(element.replaceAll("+234", "0"));
+                                      });
+                                      phoneReplaced.forEach((element) {
+                                        phoneReplaced1
+                                            .add(element.replaceAll(" ", ""));
+                                      });
+                                      ref
+                                          .read(getAllContactsProvider.notifier)
+                                          .getAllContacts(
+                                            contacts: phoneReplaced1,
+                                          );
+                                    } else {
+                                      showErrorBar(context,
+                                          "You have no contact on your list");
+                                    }
+                                  },
+                                  child: Text(
+                                    enableContact,
+                                    style: textTheme.headline2!.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                );
+                                return ref.watch(getAllContactsProvider).when(
+                                    done: (done) => _widget,
+                                    loading: () => SpinKitDemo(
+                                          size: 40,
+                                        ),
+                                    error: (val) => _widget);
+                              })
                             ],
-                          ))
-                    ],
-                  ),
-          ),
-          SizedBox(
-            height: kRegularPadding,
-          )
-        ],
+                          ),
+                        )
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          contact,
+                          style: textTheme.headline4!.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(
+                          height: kMediumPadding,
+                        ),
+                        ...contactData.map((e) => Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(116),
+                                      child: CachedNetworkImage(
+                                        height: 40,
+                                        width: 40,
+                                        imageUrl: e.profilePicture ?? "",
+                                        placeholder: (context, url) => Container(
+                                          color: Colors.transparent,
+                                          height: 40,
+                                          width: 40,
+                                          child: const Center(
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      kPrimaryColor),
+                                            ),
+                                          ),
+                                        ),
+                                        fit: BoxFit.cover,
+                                        errorWidget: (context, url, error) =>
+                                            e.profilePicture != null
+                                                ? Image.network(
+                                                    e.profilePicture!,
+                                                    fit: BoxFit.fill,
+                                                    loadingBuilder:
+                                                        (BuildContext context,
+                                                            Widget child,
+                                                            ImageChunkEvent?
+                                                                loadingProgress) {
+                                                      if (loadingProgress == null)
+                                                        return child;
+                                                      return Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          value: loadingProgress
+                                                                      .expectedTotalBytes !=
+                                                                  null
+                                                              ? loadingProgress
+                                                                      .cumulativeBytesLoaded /
+                                                                  loadingProgress
+                                                                      .expectedTotalBytes!
+                                                              : null,
+                                                        ),
+                                                      );
+                                                    },
+                                                  )
+                                                : Center(
+                                                    child: Text(
+                                                        "${e.firstName!.substring(0, 1).toUpperCase()}${e.lastName!.substring(0, 1).toUpperCase()}",
+                                                        style: textTheme
+                                                            .bodyText2!
+                                                            .copyWith(
+                                                                fontSize: 22)),
+                                                  ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: kRegularPadding,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${e.firstName} ${e.lastName}",
+                                            style: textTheme.headline4!.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: kPadding,
+                                          ),
+                                          Text("@${e.tag}",
+                                              style: textTheme.headline6),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: kMediumPadding,
+                                          vertical: kSmallPadding),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              kSmallPadding),
+                                          color: kPrimaryColor),
+                                      child: Text(
+                                        send,
+                                        style: textTheme.bodyText2!.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 14,
+                                          fontFamily: "DMSans",
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Divider(
+                                  color: kLightColor300,
+                                  thickness: 1,
+                                )
+                              ],
+                            ))
+                      ],
+                    ),
+            ),
+            SizedBox(
+              height: kRegularPadding,
+            )
+          ],
+        ),
       ),
     );
   }
@@ -852,6 +856,7 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                         var seen = Set<String>();
                         List<GetAllBanksResponseData> uniquelist =
                             banks.where((bank) => seen.add(bank.name)).toList();
+                        uniquelist.sort((a,b) => a.name.toUpperCase().compareTo(b.name.toUpperCase()));
                         return FormDropdown<GetAllBanksResponseData>(
                             hint: selectBankText,
                             value: _selectedBank,
@@ -956,11 +961,15 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                     SizedBox(
                       width: kSmallPadding,
                     ),
-                    Text(
-                      accName ?? "No name",
-                      style: textTheme.subtitle1!.copyWith(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
+                    Flexible(
+                      child: Text(
+                        accName ?? "No name",
+                        style: textTheme.subtitle1!.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: true,
                       ),
                     )
                   ],

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/modules/account/models/buy_cable_class.dart';
 import 'package:pouchers/modules/account/models/ui_models_class.dart';
@@ -53,7 +54,14 @@ class _BettingState extends ConsumerState<Betting> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: betting,
-      child: Column(
+      child: widget.isGuest! ? bettingColumn(context, textTheme) : ListenerPage(
+        child: bettingColumn(context, textTheme),
+      ),
+    );
+  }
+
+  Column bettingColumn(BuildContext context, TextTheme textTheme) {
+    return Column(
         children: [
           Expanded(
             child: ListView(
@@ -444,7 +452,6 @@ class _BettingState extends ConsumerState<Betting> {
                   },
           )
         ],
-      ),
-    );
+      );
   }
 }

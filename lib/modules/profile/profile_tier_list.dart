@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
 import 'package:pouchers/modules/login/models/login_response.dart';
@@ -42,7 +43,8 @@ class _PouchersTierListState extends ConsumerState<PouchersTierList> {
     SizeConfig().init(context);
     return InitialPage(
       title: pouchertier,
-      child: ref.watch(getTiersProvider).when(
+      child: ListenerPage(
+     child: ref.watch(getTiersProvider).when(
           done: (done) {
             if (done != null) {
               return ListView(
@@ -166,7 +168,7 @@ class _PouchersTierListState extends ConsumerState<PouchersTierList> {
               return SizedBox();
           },
           loading: () => SpinKitDemo()),
-    );
+    ));
   }
 
   checkTierLevel() {

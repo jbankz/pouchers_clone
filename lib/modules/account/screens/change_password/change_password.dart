@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
@@ -29,88 +30,90 @@ class _ChangePasswordState extends State<ChangePassword> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: widget.changePhone! ? changePhone : "",
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              verifyAccount,
-              style: textTheme.headline1,
-            ),
-            SizedBox(
-              height: kPadding,
-            ),
-            Text(
-              widget.changePhone! ? changePhoneSub : sendCodeSub,
-              style: textTheme.bodyText1!.copyWith(color: kIconGrey),
-            ),
-            SizedBox(
-              height: kLargePadding,
-            ),
-            widget.changePhone!
-                ? Consumer(builder: (context, ref, _) {
-                    ref.listen(requestPhoneChangeProvider,
-                        (previous, NotifierState<String> next) {
-                      if (next.status == NotifierStatus.done) {
-                        pushTo(
-                            context,
-                            ResetPasswordCode(
-                                forgot: false,
-                                email: userProfile.email ?? "",
-                                isChangePassword:  false ,
-                                isChangePhone: true),
-                            settings: const RouteSettings(
-                                name: ResetPasswordCode.routeName));
-                      } else if (next.status == NotifierStatus.error) {
-                        showErrorBar(context, next.message!);
-                      }
-                    });
+      child: ListenerPage(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                verifyAccount,
+                style: textTheme.headline1,
+              ),
+              SizedBox(
+                height: kPadding,
+              ),
+              Text(
+                widget.changePhone! ? changePhoneSub : sendCodeSub,
+                style: textTheme.bodyText1!.copyWith(color: kIconGrey),
+              ),
+              SizedBox(
+                height: kLargePadding,
+              ),
+              widget.changePhone!
+                  ? Consumer(builder: (context, ref, _) {
+                      ref.listen(requestPhoneChangeProvider,
+                          (previous, NotifierState<String> next) {
+                        if (next.status == NotifierStatus.done) {
+                          pushTo(
+                              context,
+                              ResetPasswordCode(
+                                  forgot: false,
+                                  email: userProfile.email ?? "",
+                                  isChangePassword:  false ,
+                                  isChangePhone: true),
+                              settings: const RouteSettings(
+                                  name: ResetPasswordCode.routeName));
+                        } else if (next.status == NotifierStatus.error) {
+                          showErrorBar(context, next.message!);
+                        }
+                      });
 
-                    var _widget = LargeButton(
-                      title: sendCode,
-                      onPressed: () {
-                        ref
-                            .read(requestPhoneChangeProvider.notifier)
-                            .requestChangePhone();
-                      },
-                    );
-                    return ref.watch(requestPhoneChangeProvider).when(
-                        done: (done) => _widget,
-                        loading: () => SpinKitDemo(),
-                        error: (val) => _widget);
-                  })
-                : Consumer(builder: (context, ref, _) {
-                    ref.listen(accountProvider,
-                        (previous, NotifierState<String> next) {
-                      if (next.status == NotifierStatus.done) {
-                        pushTo(
-                            context,
-                            ResetPasswordCode(
-                                forgot: false,
-                                email: userProfile.email ?? "",
-                                isChangePassword: true,
-                                isChangePhone: false),
-                            settings: const RouteSettings(
-                                name: ResetPasswordCode.routeName));
-                      } else if (next.status == NotifierStatus.error) {
-                        showErrorBar(context, next.message!);
-                      }
-                    });
+                      var _widget = LargeButton(
+                        title: sendCode,
+                        onPressed: () {
+                          ref
+                              .read(requestPhoneChangeProvider.notifier)
+                              .requestChangePhone();
+                        },
+                      );
+                      return ref.watch(requestPhoneChangeProvider).when(
+                          done: (done) => _widget,
+                          loading: () => SpinKitDemo(),
+                          error: (val) => _widget);
+                    })
+                  : Consumer(builder: (context, ref, _) {
+                      ref.listen(accountProvider,
+                          (previous, NotifierState<String> next) {
+                        if (next.status == NotifierStatus.done) {
+                          pushTo(
+                              context,
+                              ResetPasswordCode(
+                                  forgot: false,
+                                  email: userProfile.email ?? "",
+                                  isChangePassword: true,
+                                  isChangePhone: false),
+                              settings: const RouteSettings(
+                                  name: ResetPasswordCode.routeName));
+                        } else if (next.status == NotifierStatus.error) {
+                          showErrorBar(context, next.message!);
+                        }
+                      });
 
-                    var _widget = LargeButton(
-                      title: sendCode,
-                      onPressed: () {
-                        ref
-                            .read(accountProvider.notifier)
-                            .requestChangePassword();
-                      },
-                    );
-                    return ref.watch(accountProvider).when(
-                        done: (done) => _widget,
-                        loading: () => SpinKitDemo(),
-                        error: (val) => _widget);
-                  })
-          ],
+                      var _widget = LargeButton(
+                        title: sendCode,
+                        onPressed: () {
+                          ref
+                              .read(accountProvider.notifier)
+                              .requestChangePassword();
+                        },
+                      );
+                      return ref.watch(accountProvider).when(
+                          done: (done) => _widget,
+                          loading: () => SpinKitDemo(),
+                          error: (val) => _widget);
+                    })
+            ],
+          ),
         ),
       ),
     );

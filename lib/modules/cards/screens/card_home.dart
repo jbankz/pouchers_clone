@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/cards/model/cards_model.dart';
 import 'package:pouchers/modules/cards/providers/cards_providers.dart';
@@ -58,7 +59,9 @@ class _CardHomeState extends ConsumerState<CardHome> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: widget.cardType == "NGN" ? nairaVirtualCard : dollarVirtualCard,
-      child: ref.watch(getCardDetailsProvider).when(
+      child:  ListenerPage(
+        child:
+      ref.watch(getCardDetailsProvider).when(
             done: (data) {
               if (data == null) {
                 return SizedBox();
@@ -106,7 +109,7 @@ class _CardHomeState extends ConsumerState<CardHome> {
                             children: [
                               TextSpan(
                                   text: kPriceFormatter(
-                                    done.toDouble(),
+                                    double.parse(done),
                                   ),
                                   style: textTheme.headline1)
                             ],
@@ -443,7 +446,7 @@ class _CardHomeState extends ConsumerState<CardHome> {
             },
             loading: () => SpinKitDemo(),
           ),
-    );
+    ));
   }
 
   Future fetch(String cardUrl) async {

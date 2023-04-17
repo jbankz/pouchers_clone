@@ -7,12 +7,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:pouchers/app/common/credentials.dart';
+import 'package:pouchers/app/common/model.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/helpers/response_handler.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
 import 'package:pouchers/modules/account/screens/two_factor_auth/security_modal.dart';
 import 'package:pouchers/modules/create_account/models/create_account_response.dart';
+import 'package:pouchers/modules/create_account/screens/biometrics_page.dart';
 import 'package:pouchers/modules/create_account/screens/create_account.dart';
 import 'package:pouchers/modules/create_account/screens/create_pin.dart';
 import 'package:pouchers/modules/create_account/screens/poucher_tag.dart';
@@ -31,15 +34,21 @@ import 'package:pouchers/utils/widgets.dart';
 
 class LogInAccount extends ConsumerStatefulWidget {
   static const String routeName = "logIn";
-  final bool? disabled, sessionTimeOut;
+  final bool? disabled, sessionTimeOut, firstTime;
 
-  const LogInAccount({Key? key, this.disabled = false, this.sessionTimeOut = false}) : super(key: key);
+  const LogInAccount(
+      {Key? key,
+      this.disabled = false,
+      this.sessionTimeOut = false,
+      this.firstTime = false})
+      : super(key: key);
 
   @override
   ConsumerState<LogInAccount> createState() => _LogInAccountState();
 }
 
-class _LogInAccountState extends ConsumerState<LogInAccount> with ResponseHandler {
+class _LogInAccountState extends ConsumerState<LogInAccount>
+    with ResponseHandler {
   bool obscure = true;
   TextEditingController controller = TextEditingController();
   String? _password;
@@ -55,21 +64,13 @@ class _LogInAccountState extends ConsumerState<LogInAccount> with ResponseHandle
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      widget.sessionTimeOut! ? handleExpiredToken(context,) : null;
-      await Hive.openBox(kBiometricsBox);
-      var loginBiometrics = Hive.box(kBiometricsBox).get(kBiometricsKey);
-      if(loginBiometrics == 0 || loginBiometrics == null){
-        ref.read(biometricProvider.notifier).state =
-            ref.read(biometricProvider.notifier).state.copyWith(
-              isLoginBiometricActive: false,
-            );
-      }else{
-        ref.read(biometricProvider.notifier).state =
-            ref.read(biometricProvider.notifier).state.copyWith(
-              isLoginBiometricActive: true,
-            );
-      }
+      widget.sessionTimeOut!
+          ? handleExpiredToken(
+              context,
+            )
+          : null;
 
+      checkTheBiometrics();
       setState(() {});
       if (widget.disabled!) {
         Future.delayed(Duration(seconds: 1)).then((value) => showDialog(
@@ -87,6 +88,23 @@ class _LogInAccountState extends ConsumerState<LogInAccount> with ResponseHandle
     });
   }
 
+  checkTheBiometrics() async {
+    await Hive.openBox(kBiometricsBox);
+    var loginBiometrics = Hive.box(kBiometricsBox).get(kBiometricsKey);
+    if (loginBiometrics == 0 || loginBiometrics == null) {
+      ref.read(biometricProvider.notifier).state =
+          ref.read(biometricProvider.notifier).state.copyWith(
+                isLoginBiometricActive: false,
+              );
+    } else {
+      ref.read(biometricProvider.notifier).state =
+          ref.read(biometricProvider.notifier).state.copyWith(
+                isLoginBiometricActive: true,
+              );
+      widget.firstTime! ? null : checkBiometric(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     print(Hive.box(kBiometricsBox).get(kBiometricsKey));
@@ -97,6 +115,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount> with ResponseHandle
           Navigator.pop(context);
         } else {
           print("here");
+
           ///TODO WRONG IMPLEMENTATION, DO THE RIGHT ONE WITH WILLPOP
           exit(0);
         }
@@ -147,7 +166,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount> with ResponseHandle
                 validator: (val) {
                   if (val!.isEmpty) {
                     return null;
-                  } else{
+                  } else {
                     return null;
                   }
                   // else if (!isPassword(val)) {
@@ -166,11 +185,11 @@ class _LogInAccountState extends ConsumerState<LogInAccount> with ResponseHandle
                     },
                     child: obscure
                         ? Icon(
-                      Icons.visibility_outlined,
-                      color: kSecondaryTextColor,
-                    )
+                            Icons.visibility_outlined,
+                            color: kSecondaryTextColor,
+                          )
                         : Icon(Icons.visibility_off_outlined,
-                        color: kSecondaryTextColor)),
+                            color: kSecondaryTextColor)),
               ),
               SizedBox(
                 height: kSmallPadding,
@@ -195,7 +214,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount> with ResponseHandle
               ),
               Consumer(builder: (context, ref, _) {
                 ref.listen(logInProvider,
-                    (previous, NotifierState<VerifyEmailResponse> next) {
+                    (previous, NotifierState<VerifyEmailResponse> next) async {
                   if (next.status == NotifierStatus.done) {
                     if (next.data!.data!.tag == null) {
                       pushTo(
@@ -214,10 +233,26 @@ class _LogInAccountState extends ConsumerState<LogInAccount> with ResponseHandle
                           settings:
                               const RouteSettings(name: CreatePin.routeName));
                     } else {
-                      pushToAndClearStack(
-                        context,
-                        TabLayout(),
-                      );
+                      if (widget.firstTime!) {
+                        await saveUserCredential(
+                            password: _password!.trim(), email: _email!.trim());
+                        pushTo(
+                          context,
+                          BiometricsPage(),
+                        );
+                      } else {
+                        UserCredentials? cred = await getUserCredentials();
+                        if (cred?.password == null || cred?.password == "" ) {
+                          await saveUserCredential(
+                              password: _password!.trim(),
+                              email: _email!.trim());
+                        } else {
+                          pushToAndClearStack(
+                            context,
+                            TabLayout(),
+                          );
+                        }
+                      }
                     }
                   } else if (next.status == NotifierStatus.error) {
                     print("here");
@@ -244,16 +279,15 @@ class _LogInAccountState extends ConsumerState<LogInAccount> with ResponseHandle
 
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      if(_email!.isNotEmpty || _password!.isNotEmpty){
+                      if (_email!.isNotEmpty || _password!.isNotEmpty) {
                         ref.read(logInProvider.notifier).logIn(
-                          phoneNumber: _email!.trim(),
-                          password: _password!.trim(),
-                          isEmail: _email!.startsWith(
-                            RegExp(r'[a-zA-Z]'),
-                          ),
-                        );
+                              phoneNumber: _email!.trim(),
+                              password: _password!.trim(),
+                              isEmail: _email!.startsWith(
+                                RegExp(r'[a-zA-Z]'),
+                              ),
+                            );
                       }
-
                     }
                   },
                 );
@@ -288,31 +322,33 @@ class _LogInAccountState extends ConsumerState<LogInAccount> with ResponseHandle
               SizedBox(
                 height: kLargePadding,
               ),
-              ref.watch(biometricProvider).isLoginBiometricActive == null
+              widget.firstTime!
                   ? SizedBox()
-                  : ref.watch(biometricProvider).isLoginBiometricActive!
-                      ? inkWell(
-                          onTap: () {
-                            checkBiometric(context);
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.all(kRegularPadding),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: kBackgroundColor,
-                            ),
-                            child: Image.asset(
-                              Platform.isAndroid
-                                  ? AssetPaths.fingerprint
-                                  : AssetPaths.faceId,
-                              height: 60,
-                              fit: BoxFit.scaleDown,
-                              color: kPrimaryColor,
-                            ),
-                          ),
-                        )
-                      : SizedBox()
+                  : ref.watch(biometricProvider).isLoginBiometricActive == null
+                      ? SizedBox()
+                      : ref.watch(biometricProvider).isLoginBiometricActive!
+                          ? inkWell(
+                              onTap: () {
+                                checkBiometric(context);
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(kRegularPadding),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: kBackgroundColor,
+                                ),
+                                child: Image.asset(
+                                  Platform.isAndroid
+                                      ? AssetPaths.fingerprint
+                                      : AssetPaths.faceId,
+                                  height: 60,
+                                  fit: BoxFit.scaleDown,
+                                  color: kPrimaryColor,
+                                ),
+                              ),
+                            )
+                          : SizedBox()
             ],
           ),
         ),
@@ -371,7 +407,19 @@ class _LogInAccountState extends ConsumerState<LogInAccount> with ResponseHandle
       isAuth = authenticated ? true : false;
     });
     if (isAuth) {
-      pushToAndClearStack(context, TabLayout());
+      UserCredentials? cred = await getUserCredentials();
+      print(cred?.transactionPin);
+      print(cred?.password);
+      print(cred?.email);
+      widget.firstTime!
+          ? pushToAndClearStack(context, TabLayout())
+          : ref.read(logInProvider.notifier).logIn(
+                phoneNumber: cred!.email!,
+                password: cred.password!.trim(),
+                isEmail: cred.email!.startsWith(
+                  RegExp(r'[a-zA-Z]'),
+                ),
+              );
     }
   }
 }

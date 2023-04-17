@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/utilities/providers/utilities_provider.dart';
@@ -47,66 +48,68 @@ class _VouchersState extends ConsumerState<Vouchers> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
         title: voucher,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ref.watch(fetchVoucherProvider).when(
-                  loading: () => SpinKitDemo(),
-                  error: (val) => SizedBox(),
-                  done: (done) {
-                    if (done != null) {
-                      return VoucherImage(
-                        amount: voucherAmount.toString(),
-                        voucherCode: voucherList.toString(),
-                      );
-                    } else {
-                      return SizedBox();
-                    }
-                  }),
-              SizedBox(
-                height: kLargePadding,
-              ),
-              Container(
-                child: GridView.count(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 15,
-                  crossAxisSpacing: 15,
-                  childAspectRatio: SizeConfig.blockSizeHorizontal! / 4,
-                  children: List.generate(
-                    voucherClass.length,
-                    (index) => inkWell(
-                      onTap: () {
-                        pushTo(context, voucherClass[index].page,
-                            settings:
-                                RouteSettings(name: voucherClass[index].days));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(kSmallPadding),
-                            color: kBackgroundColor),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              voucherClass[index].icon,
-                            ),
-                            SizedBox(
-                              height: kRegularPadding,
-                            ),
-                            Text(
-                              voucherClass[index].title,
-                              style: textTheme.headline2,
-                            )
-                          ],
+        child: ListenerPage(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ref.watch(fetchVoucherProvider).when(
+                    loading: () => SpinKitDemo(),
+                    error: (val) => SizedBox(),
+                    done: (done) {
+                      if (done != null) {
+                        return VoucherImage(
+                          amount: voucherAmount.toString(),
+                          voucherCode: voucherList.toString(),
+                        );
+                      } else {
+                        return SizedBox();
+                      }
+                    }),
+                SizedBox(
+                  height: kLargePadding,
+                ),
+                Container(
+                  child: GridView.count(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 15,
+                    childAspectRatio: SizeConfig.blockSizeHorizontal! / 4,
+                    children: List.generate(
+                      voucherClass.length,
+                      (index) => inkWell(
+                        onTap: () {
+                          pushTo(context, voucherClass[index].page,
+                              settings:
+                                  RouteSettings(name: voucherClass[index].days));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(kSmallPadding),
+                              color: kBackgroundColor),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                voucherClass[index].icon,
+                              ),
+                              SizedBox(
+                                height: kRegularPadding,
+                              ),
+                              Text(
+                                voucherClass[index].title,
+                                style: textTheme.headline2,
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ));
   }

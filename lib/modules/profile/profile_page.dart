@@ -7,6 +7,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:pouchers/app/common/credentials.dart';
+import 'package:pouchers/app/common/listener.dart';
+import 'package:pouchers/app/common/model.dart';
 import 'package:pouchers/app/helpers/network_helpers.dart';
 import 'package:pouchers/app/helpers/session_manager.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
@@ -313,7 +316,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 subText: accountSettingSub,
                 textTheme: textTheme,
                 icon: SvgPicture.asset(AssetPaths.accountIcon),
-                onTap: () {
+                onTap: () async{
                   pushTo(
                     context,
                     AccountSettings(),
@@ -389,13 +392,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 },
               ),
               ProfileRoleWidget(
-                text: logOut,
+                text:
+                logOut,
                 subText: "",
                 textColor: kColorOrange,
                 color: Color.fromRGBO(255, 100, 20, 0.1),
                 icon: SvgPicture.asset(AssetPaths.logOutIcon),
                 textTheme: textTheme,
-                onTap: () {
+                onTap: () async{
                   setState(() {
                     nowDate = DateTime.now().add(Duration(minutes: 5));
                   });

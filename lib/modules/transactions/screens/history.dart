@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/make_payment/screens/transaction_receipt.dart';
+import 'package:pouchers/modules/transactions/components/transaction_components.dart';
 import 'package:pouchers/modules/transactions/model/transaction_model.dart';
 import 'package:pouchers/modules/transactions/providers/transaction_provider.dart';
 import 'package:pouchers/modules/transactions/screens/history_detail.dart';
@@ -89,57 +90,7 @@ class _HistoryState extends ConsumerState<History> {
                             setState(() {
                               currentIndex = index;
                             });
-                            switch (currentIndex) {
-                              case 0:
-                                ref
-                                    .read(
-                                        getTransactionHistoryProvider.notifier)
-                                    .getTransactionHistory(status: "");
-                                break;
-                              case 1:
-                                ref
-                                    .read(
-                                        getTransactionHistoryProvider.notifier)
-                                    .getTransactionHistory(status: "transfer");
-                                break;
-                              case 2:
-                                ref
-                                    .read(
-                                        getTransactionHistoryProvider.notifier)
-                                    .getTransactionHistory(status: "airtime");
-                                break;
-                              case 3:
-                                ref
-                                    .read(
-                                        getTransactionHistoryProvider.notifier)
-                                    .getTransactionHistory(status: "data");
-                                break;
-                              case 4:
-                                ref
-                                    .read(
-                                        getTransactionHistoryProvider.notifier)
-                                    .getTransactionHistory(status: "cable");
-                                break;
-                              case 5:
-                                ref
-                                    .read(
-                                        getTransactionHistoryProvider.notifier)
-                                    .getTransactionHistory(
-                                        status: "electricity");
-                                break;
-                              case 6:
-                                ref
-                                    .read(
-                                        getTransactionHistoryProvider.notifier)
-                                    .getTransactionHistory(status: "internet");
-                                break;
-                              case 7:
-                                ref
-                                    .read(
-                                        getTransactionHistoryProvider.notifier)
-                                    .getTransactionHistory(status: "voucher");
-                                break;
-                            }
+                            checkingIndex();
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -184,7 +135,7 @@ class _HistoryState extends ConsumerState<History> {
                       )
                     : Expanded(
                         child: RefreshIndicator(
-                          onRefresh: refresh,
+                          onRefresh:  refresh,
                           color: kPrimaryColor,
                           child: ListView.builder(
                             itemCount: transactionData.length,
@@ -205,7 +156,8 @@ class _HistoryState extends ConsumerState<History> {
                                   if (transactionData[index]
                                       .transactionCategory!
                                       .contains("p2p")) {
-                                    if (transactionData[index].transactionType ==
+                                    if (transactionData[index]
+                                            .transactionType ==
                                         "debit") {
                                       pushTo(
                                           context,
@@ -213,26 +165,33 @@ class _HistoryState extends ConsumerState<History> {
                                               typeOfTransfer: "p2p",
                                               accNo: "",
                                               fromWhere: "history",
-                                              status: transactionData[index].status!.toCapitalized(),
+                                              status: transactionData[index]
+                                                  .status!
+                                                  .toCapitalized(),
                                               tag: transactionData[index]
                                                   .extraDetails!
                                                   .receiverTag,
-                                              transactionId: transactionData[index].transactionId,
+                                              transactionId:
+                                                  transactionData[index]
+                                                      .transactionId,
                                               transactionTime:
-                                              transactionData[index]
-                                                  .createdAt!,
+                                                  transactionData[index]
+                                                      .createdAt!,
                                               senderName: transactionData[index]
-                                                  .extraDetails!.senderName,
+                                                  .extraDetails!
+                                                  .senderName,
                                               amount:
-                                              transactionData[index].amount,
+                                                  transactionData[index].amount,
                                               transferName: "",
-                                              beneficiary: transactionData[index]
-                                                  .beneficiaryName ??
-                                                  "No name"),
+                                              beneficiary:
+                                                  transactionData[index]
+                                                          .beneficiaryName ??
+                                                      "No name"),
                                           settings: RouteSettings(
-                                              name: TransactionReceipt.routeName));
+                                              name: TransactionReceipt
+                                                  .routeName));
                                     }
-                                  }else{
+                                  } else {
                                     pushTo(
                                         context,
                                         HistoryDetail(
@@ -251,9 +210,12 @@ class _HistoryState extends ConsumerState<History> {
                                             item.transactionCategory!
                                                     .contains("transfer")
                                                 ? item.beneficiaryName ??
-                                                    item.transactionCategory!.toTitleCase()
-                                                : item.transactionCategory!.toTitleCase(),
-                                            style: textTheme.bodyText1!.copyWith(
+                                                finalCatName(item.currency! ,item
+                                                        .transactionCategory!)
+                                                : finalCatName(
+                                                item.currency!, item.transactionCategory!),
+                                            style:
+                                                textTheme.bodyText1!.copyWith(
                                               color: kBlueColorDark,
                                             ),
                                           ),
@@ -263,10 +225,10 @@ class _HistoryState extends ConsumerState<History> {
                                               double.parse(item.amount!)),
                                           textStyle1: TextStyle(
                                               fontSize: 16,
-                                              color:
-                                                  item.transactionType == "debit"
-                                                      ? kColorRedDeep
-                                                      : kColorGreen),
+                                              color: item.transactionType ==
+                                                      "debit"
+                                                  ? kColorRedDeep
+                                                  : kColorGreen),
                                           textStyle2: textTheme.headline3!
                                               .copyWith(
                                                   color: item.transactionType ==
@@ -291,7 +253,8 @@ class _HistoryState extends ConsumerState<History> {
                               );
                               if (index == 0 || !(isSameDate)) {
                                 return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         date.formatDate(dateFormatter),
@@ -324,9 +287,70 @@ class _HistoryState extends ConsumerState<History> {
       ],
     );
   }
+
+
+
+  checkingIndex(){
+    switch (currentIndex) {
+      case 0:
+        ref
+            .read(
+            getTransactionHistoryProvider.notifier)
+            .getTransactionHistory(status: "");
+        break;
+      case 1:
+        ref
+            .read(
+            getTransactionHistoryProvider.notifier)
+            .getTransactionHistory(status: "transfer");
+        break;
+      case 2:
+        ref
+            .read(
+            getTransactionHistoryProvider.notifier)
+            .getTransactionHistory(status: "airtime");
+        break;
+      case 3:
+        ref
+            .read(
+            getTransactionHistoryProvider.notifier)
+            .getTransactionHistory(status: "data");
+        break;
+      case 4:
+        ref
+            .read(
+            getTransactionHistoryProvider.notifier)
+            .getTransactionHistory(status: "cable");
+        break;
+      case 5:
+        ref
+            .read(
+            getTransactionHistoryProvider.notifier)
+            .getTransactionHistory(
+            status: "electricity");
+        break;
+      case 6:
+        ref
+            .read(
+            getTransactionHistoryProvider.notifier)
+            .getTransactionHistory(status: "internet");
+        break;
+      case 7:
+        ref
+            .read(
+            getTransactionHistoryProvider.notifier)
+            .getTransactionHistory(status: "voucher");
+        break;
+      case 8:
+        ref
+            .read(
+            getTransactionHistoryProvider.notifier)
+            .getTransactionHistory(status: "betting");
+        break;
+    }
+  }
+
   Future refresh() async {
-    ref
-        .read(getTransactionHistoryProvider.notifier)
-        .getTransactionHistory(status: "");
+    checkingIndex();
   }
 }

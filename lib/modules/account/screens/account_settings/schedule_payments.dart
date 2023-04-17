@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/schedule_purchase/provider/schedule_provider.dart';
 import 'package:pouchers/modules/schedule_purchase/schedule_widget_constants.dart';
@@ -46,7 +47,8 @@ class _SchedulePaymentsState extends ConsumerState<SchedulePayments> {
     return InitialPage(
         color: kPurpleColor800,
         title: scheduledPayment,
-        child: ref.watch(getScheduleProvider).when(
+        child: ListenerPage(
+       child: ref.watch(getScheduleProvider).when(
             loading: () => SpinKitDemo(),
             done: (data) {
               if (data != null) {
@@ -275,7 +277,7 @@ class _SchedulePaymentsState extends ConsumerState<SchedulePayments> {
               } else {
                 return SizedBox();
               }
-            }));
+            })));
   }
 
   List<GetAllScheduleData> filterBy() {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/models/security_question.dart';
@@ -52,7 +53,8 @@ class _DisableAuthQuestionState extends ConsumerState<DisableAuthQuestion> {
             onTap: (){
               Navigator.popUntil(context, (route) => route.settings.name == AccountSettings.routeName);
             },
-            child: ref.watch(getSelectedQuestionsProvider).when(
+            child: ListenerPage(
+          child:  ref.watch(getSelectedQuestionsProvider).when(
                 loading: () => SpinKitDemo(),
                 error: (val) => SizedBox(),
                 done: (done) => Column(
@@ -144,6 +146,6 @@ class _DisableAuthQuestionState extends ConsumerState<DisableAuthQuestion> {
                       ],
                     ))),
       ),
-    );
+    ));
   }
 }

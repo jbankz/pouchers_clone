@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/modules/utilities/model/utilities_model.dart';
 import 'package:pouchers/modules/utilities/screens/voucher/voucher_constants.dart';
@@ -39,7 +40,8 @@ class _VoucherHistoryState extends ConsumerState<VoucherHistory> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: voucherHistory,
-      child: ref.watch(fetchVoucherProvider).when(
+      child: ListenerPage(
+     child: ref.watch(fetchVoucherProvider).when(
           done: (data) {
             if (data != null) {
               vouchers = data.data!.vouchers;
@@ -222,7 +224,7 @@ class _VoucherHistoryState extends ConsumerState<VoucherHistory> {
             }
           },
           loading: () => SpinKitDemo()),
-    );
+    ));
   }
 
   List<Voucher> filterBy() {

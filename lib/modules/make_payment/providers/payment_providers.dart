@@ -207,7 +207,6 @@ class GetWalletNotifier extends StateNotifier<NotifierState<GetWalletResponse>>
         SessionManager.setWalletBalance(state.data!.data!.balance!);
       }
     } else if (state.noAuth) {
-      print("knkdnkkd");
       if (noAuth != null) noAuth(state.noAuth);
     }
 

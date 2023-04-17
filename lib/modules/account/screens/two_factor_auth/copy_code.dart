@@ -134,8 +134,12 @@ class CopyCodeRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SvgPicture.asset(AssetPaths.faIcon),
+        Padding(
+          padding: const EdgeInsets.only(top: 3),
+          child: SvgPicture.asset(AssetPaths.faIcon),
+        ),
         SizedBox(
           width: SizeConfig.blockSizeHorizontal! * 4,
         ),

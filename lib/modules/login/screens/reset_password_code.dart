@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
@@ -45,165 +46,167 @@ class _ResetPasswordCodeState extends ConsumerState<ResetPasswordCode> {
           : widget.isChangePhone!
               ? changePhone
               : "",
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              verifyAccount,
-              style: textTheme.headline1,
-            ),
-            SizedBox(
-              height: kPadding,
-            ),
-            Text(
-              (widget.isChangePhone! || widget.isChangePassword!)
-                  ? enterCodeSent
-                  : verifySub,
-              style: textTheme.bodyText1!.copyWith(
-                fontWeight: FontWeight.normal,
-                height: 1.6,
+      child: ListenerPage(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                verifyAccount,
+                style: textTheme.headline1,
               ),
-            ),
-            SizedBox(
-              height: kMacroPadding,
-            ),
-            Text(
-              resetCode,
-              style: textTheme.headline6!.copyWith(
-                color: kPrimaryGrey,
+              SizedBox(
+                height: kPadding,
               ),
-            ),
-            SizedBox(
-              height: kSmallPadding,
-            ),
-            Form(
-              key: _formKey,
-              child: PinCodeTextFieldWidget(
-                align: MainAxisAlignment.spaceBetween,
-                pinLength: 6,
-                onSaved: (val) => setState(() => _pin = val),
-                onChanged: (val) {
-                  if (val.length == 6) {
-                    ref.watch(checkResendProvider) == 1
-                        ? ref
-                            .read(validateOtpProvider.notifier)
-                            .validateResendOtp(
-                              otp: val,
-                            )
-                        : ref
-                            .read(validateForgotPasswordProvider.notifier)
-                            .validateForgotPassword(
-                              email: widget.email!,
-                              resetCode: val,
-                            );
-                  }
-                },
+              Text(
+                (widget.isChangePhone! || widget.isChangePassword!)
+                    ? enterCodeSent
+                    : verifySub,
+                style: textTheme.bodyText1!.copyWith(
+                  fontWeight: FontWeight.normal,
+                  height: 1.6,
+                ),
               ),
-            ),
-            SizedBox(
-              height: kMacroPadding,
-            ),
-            ref.watch(checkResendProvider) == 1
-                ? Consumer(builder: (context, ref, _) {
-                    ref.listen(validateOtpProvider,
-                        (previous, NotifierState<String> next) {
-                      if (next.status == NotifierStatus.done) {
-                        ref.read(checkResendProvider.notifier).state = 0;
-                        widget.isChangePhone!
-                            ? pushTo(
-                                context,
-                                ChangePhoneNumber(),
-                                settings: const RouteSettings(
-                                    name: ChangePhoneNumber.routeName),
-                              )
-                            : pushTo(
-                                context,
-                                SetPassword(
-                                  email: widget.email!,
-                                  isChangePassword: widget.isChangePassword,
-                                ),
-                                settings: const RouteSettings(
-                                    name: SetPassword.routeName));
-                      } else if (next.status == NotifierStatus.error) {
-                        showErrorBar(context, next.message!);
-                      }
-                    });
-                    var _widget = LargeButton(
-                      title: widget.isChangePassword! || widget.isChangePhone!
-                          ? confirm
-                          : recoverPassword,
-                      onPressed: () {
-                        print("kmkmkv");
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          ref
+              SizedBox(
+                height: kMacroPadding,
+              ),
+              Text(
+                resetCode,
+                style: textTheme.headline6!.copyWith(
+                  color: kPrimaryGrey,
+                ),
+              ),
+              SizedBox(
+                height: kSmallPadding,
+              ),
+              Form(
+                key: _formKey,
+                child: PinCodeTextFieldWidget(
+                  align: MainAxisAlignment.spaceBetween,
+                  pinLength: 6,
+                  onSaved: (val) => setState(() => _pin = val),
+                  onChanged: (val) {
+                    if (val.length == 6) {
+                      ref.watch(checkResendProvider) == 1
+                          ? ref
                               .read(validateOtpProvider.notifier)
                               .validateResendOtp(
-                                otp: _pin!,
-                              );
-                        }
-                      },
-                    );
-                    return ref.watch(validateOtpProvider).when(
-                        done: (done) => _widget,
-                        loading: () => SpinKitDemo(),
-                        error: (val) => _widget);
-                  })
-                : Consumer(builder: (context, ref, _) {
-                    ref.listen(validateForgotPasswordProvider,
-                        (previous, NotifierState<String> next) {
-                      if (next.status == NotifierStatus.done) {
-                        widget.isChangePhone!
-                            ? pushTo(
-                                context,
-                                ChangePhoneNumber(),
-                                settings: const RouteSettings(
-                                    name: ChangePhoneNumber.routeName),
+                                otp: val,
                               )
-                            : pushTo(
-                                context,
-                                SetPassword(
-                                  email: widget.email!,
-                                  isChangePassword: widget.isChangePassword,
-                                ),
-                                settings: const RouteSettings(
-                                    name: SetPassword.routeName));
-                      } else if (next.status == NotifierStatus.error) {
-                        showErrorBar(context, next.message!);
-                      }
-                    });
-
-                    var _widget = LargeButton(
-                      title:
-                          widget.isChangePassword! ? confirm : recoverPassword,
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          ref
+                          : ref
                               .read(validateForgotPasswordProvider.notifier)
                               .validateForgotPassword(
                                 email: widget.email!,
-                                resetCode: _pin!,
+                                resetCode: val,
                               );
+                    }
+                  },
+                ),
+              ),
+              SizedBox(
+                height: kMacroPadding,
+              ),
+              ref.watch(checkResendProvider) == 1
+                  ? Consumer(builder: (context, ref, _) {
+                      ref.listen(validateOtpProvider,
+                          (previous, NotifierState<String> next) {
+                        if (next.status == NotifierStatus.done) {
+                          ref.read(checkResendProvider.notifier).state = 0;
+                          widget.isChangePhone!
+                              ? pushTo(
+                                  context,
+                                  ChangePhoneNumber(),
+                                  settings: const RouteSettings(
+                                      name: ChangePhoneNumber.routeName),
+                                )
+                              : pushTo(
+                                  context,
+                                  SetPassword(
+                                    email: widget.email!,
+                                    isChangePassword: widget.isChangePassword,
+                                  ),
+                                  settings: const RouteSettings(
+                                      name: SetPassword.routeName));
+                        } else if (next.status == NotifierStatus.error) {
+                          showErrorBar(context, next.message!);
                         }
-                      },
-                    );
-                    return ref.watch(validateForgotPasswordProvider).when(
-                        done: (done) => _widget,
-                        loading: () => SpinKitDemo(),
-                        error: (val) => _widget);
-                  }),
-            SizedBox(
-              height: kMediumPadding,
-            ),
-            CodeResendTimer(
-              email: widget.email,
-              change: widget.forgot!,
-              isChangePassword: widget.isChangePassword!,
-              isChangePhone: widget.isChangePhone!,
-            )
-          ],
+                      });
+                      var _widget = LargeButton(
+                        title: widget.isChangePassword! || widget.isChangePhone!
+                            ? confirm
+                            : recoverPassword,
+                        onPressed: () {
+                          print("kmkmkv");
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            ref
+                                .read(validateOtpProvider.notifier)
+                                .validateResendOtp(
+                                  otp: _pin!,
+                                );
+                          }
+                        },
+                      );
+                      return ref.watch(validateOtpProvider).when(
+                          done: (done) => _widget,
+                          loading: () => SpinKitDemo(),
+                          error: (val) => _widget);
+                    })
+                  : Consumer(builder: (context, ref, _) {
+                      ref.listen(validateForgotPasswordProvider,
+                          (previous, NotifierState<String> next) {
+                        if (next.status == NotifierStatus.done) {
+                          widget.isChangePhone!
+                              ? pushTo(
+                                  context,
+                                  ChangePhoneNumber(),
+                                  settings: const RouteSettings(
+                                      name: ChangePhoneNumber.routeName),
+                                )
+                              : pushTo(
+                                  context,
+                                  SetPassword(
+                                    email: widget.email!,
+                                    isChangePassword: widget.isChangePassword,
+                                  ),
+                                  settings: const RouteSettings(
+                                      name: SetPassword.routeName));
+                        } else if (next.status == NotifierStatus.error) {
+                          showErrorBar(context, next.message!);
+                        }
+                      });
+
+                      var _widget = LargeButton(
+                        title:
+                            widget.isChangePassword! ? confirm : recoverPassword,
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            ref
+                                .read(validateForgotPasswordProvider.notifier)
+                                .validateForgotPassword(
+                                  email: widget.email!,
+                                  resetCode: _pin!,
+                                );
+                          }
+                        },
+                      );
+                      return ref.watch(validateForgotPasswordProvider).when(
+                          done: (done) => _widget,
+                          loading: () => SpinKitDemo(),
+                          error: (val) => _widget);
+                    }),
+              SizedBox(
+                height: kMediumPadding,
+              ),
+              CodeResendTimer(
+                email: widget.email,
+                change: widget.forgot!,
+                isChangePassword: widget.isChangePassword!,
+                isChangePhone: widget.isChangePhone!,
+              )
+            ],
+          ),
         ),
       ),
     );

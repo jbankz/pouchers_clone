@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
@@ -15,15 +16,18 @@ import 'package:pouchers/utils/flushbar.dart';
 import 'package:pouchers/utils/strings.dart';
 import 'package:pouchers/utils/widgets.dart';
 
-class BiometricsPage extends StatefulWidget {
+import '../../account/providers/account_provider.dart';
+
+class BiometricsPage extends ConsumerStatefulWidget {
   static const String routeName = "biometricsPage";
+
   const BiometricsPage({Key? key}) : super(key: key);
 
   @override
-  State<BiometricsPage> createState() => _BiometricsPageState();
+  ConsumerState<BiometricsPage> createState() => _BiometricsPageState();
 }
 
-class _BiometricsPageState extends State<BiometricsPage> {
+class _BiometricsPageState extends ConsumerState<BiometricsPage> {
   bool? _canCheckBiometrics;
   bool isAuth = false;
 
@@ -92,7 +96,14 @@ class _BiometricsPageState extends State<BiometricsPage> {
                   title: continueText,
                   customColor: true,
                   onPressed: () {
-                    checkBiometric(context);
+                    Hive.box(kBiometricsBox).put(kBiometricsKey, 1);
+                    pushToAndClearStack(context, LogInAccount());
+                    ref.read(editProfileProvider.notifier).editProfile(
+                      isLoginBiometricActive: true,
+                      isPaymentBiometricActive:
+                      ref.watch(biometricProvider).isPaymentBiometricActive,
+                    );
+                    // checkBiometric(context);
                   },
                 ),
                 SizedBox(
@@ -102,7 +113,7 @@ class _BiometricsPageState extends State<BiometricsPage> {
                   onTap: () {
                     pushToAndClearStack(
                       context,
-                      LogInAccount()
+                      TabLayout(),
                     );
                   },
                   child: Text(
@@ -176,7 +187,16 @@ class _BiometricsPageState extends State<BiometricsPage> {
       isAuth = authenticated ? true : false;
     });
     if (isAuth) {
-      pushToAndClearStack(context, TabLayout());
+
+      // pushToAndClearStack(
+      //   context,
+      //   TabLayout(),
+      // );
+      // pushToAndClearStack(
+      //   context,
+      //   LogInAccount(),
+      // );
+      // pushToAndClearStack(context, TabLayout());
     }
   }
 }

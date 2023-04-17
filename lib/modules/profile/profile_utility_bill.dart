@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/helpers/notifiers.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
@@ -42,139 +43,141 @@ class _ProfileUtilityBillState extends ConsumerState<ProfileUtilityBill> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: utilityBill,
-      child: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              children: [
-                Text(
-                  utilityBillText,
-                  style: textTheme.headline3!.copyWith(
-                    color: kIconGrey,
-                  ),
-                ),
-                SizedBox(
-                  height: kMacroPadding,
-                ),
-                Container(
-                  padding: EdgeInsets.all(kPadding),
-                  decoration: BoxDecoration(
-                    color: kBackgroundColor,
-                    borderRadius: BorderRadius.circular(kSmallPadding),
-                  ),
-                  child: inkWell(
-                    onTap: isLoading
-                        ? null
-                        : () {
-                            getImage();
-                          },
-                    child: Row(
-                      children: [
-                        isLoading
-                            ? SpinKitDemo()
-                            : Consumer(builder: (context, ref, _) {
-                                ref.listen(getSignedProvider,
-                                    (previous, NotifierState<String> next) {
-                                  if (next.status == NotifierStatus.done) {
-                                    upload(pickedFile!, next.data!);
-                                  }
-                                });
-                                var _widget = Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    width: SizeConfig.blockSizeHorizontal! * 35,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: kRegularPadding,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: kPrimaryWhite,
-                                      borderRadius:
-                                          BorderRadius.circular(kPadding),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        SvgPicture.asset(AssetPaths.uploadIcon),
-                                        SizedBox(
-                                          width: kSmallPadding,
-                                        ),
-                                        Text(
-                                          uploadFile,
-                                          style: textTheme.headline2,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
-                                return ref.watch(getSignedProvider).when(
-                                    done: (done) => _widget,
-                                    loading: () => SpinKitDemo(),
-                                    error: (val) => _widget);
-                              }),
-                        SizedBox(
-                          width: kPadding,
-                        ),
-                        Expanded(
-                          child: Text(
-                            selectedImage == null ? "" : selectedImage!,
-                            style: textTheme.subtitle1!.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
-                            softWrap: true,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )
-                      ],
+      child: ListenerPage(
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView(
+                children: [
+                  Text(
+                    utilityBillText,
+                    style: textTheme.headline3!.copyWith(
+                      color: kIconGrey,
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: kMediumPadding,
-                ),
-                buildUtilityRow(textTheme, utilityInstruction),
-                SizedBox(
-                  height: kPadding,
-                ),
-                buildUtilityRow(textTheme, utilityInstruction2),
-              ],
+                  SizedBox(
+                    height: kMacroPadding,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(kPadding),
+                    decoration: BoxDecoration(
+                      color: kBackgroundColor,
+                      borderRadius: BorderRadius.circular(kSmallPadding),
+                    ),
+                    child: inkWell(
+                      onTap: isLoading
+                          ? null
+                          : () {
+                              getImage();
+                            },
+                      child: Row(
+                        children: [
+                          isLoading
+                              ? SpinKitDemo()
+                              : Consumer(builder: (context, ref, _) {
+                                  ref.listen(getSignedProvider,
+                                      (previous, NotifierState<String> next) {
+                                    if (next.status == NotifierStatus.done) {
+                                      upload(pickedFile!, next.data!);
+                                    }
+                                  });
+                                  var _widget = Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Container(
+                                      width: SizeConfig.blockSizeHorizontal! * 35,
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: kRegularPadding,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: kPrimaryWhite,
+                                        borderRadius:
+                                            BorderRadius.circular(kPadding),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          SvgPicture.asset(AssetPaths.uploadIcon),
+                                          SizedBox(
+                                            width: kSmallPadding,
+                                          ),
+                                          Text(
+                                            uploadFile,
+                                            style: textTheme.headline2,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                  return ref.watch(getSignedProvider).when(
+                                      done: (done) => _widget,
+                                      loading: () => SpinKitDemo(),
+                                      error: (val) => _widget);
+                                }),
+                          SizedBox(
+                            width: kPadding,
+                          ),
+                          Expanded(
+                            child: Text(
+                              selectedImage == null ? "" : selectedImage!,
+                              style: textTheme.subtitle1!.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: kMediumPadding,
+                  ),
+                  buildUtilityRow(textTheme, utilityInstruction),
+                  SizedBox(
+                    height: kPadding,
+                  ),
+                  buildUtilityRow(textTheme, utilityInstruction2),
+                ],
+              ),
             ),
-          ),
-          Consumer(builder: (context, ref, _) {
-            ref.listen(editProfileProvider,
-                    (previous, NotifierState<EditProfileResponse> next) {
-                  if (next.status == NotifierStatus.done) {
-                    pushTo(
-                        context,
-                        ProfileSuccessful(
-                          from: widget.from,
-                          message: idSuccess,
-                        ),
-                        settings: const RouteSettings(
-                            name: ProfileSuccessful.routeName));
-                    // Navigator.pop(context);
-                    // showSuccessBar(context, next.data!.message);
-                    ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
-                  } else if (next.status == NotifierStatus.error) {
-                    showErrorBar(context, next.message!);
-                  }
-                });
-            var _widget = LargeButton(
-                title: submit,
-                disableColor:
-                    !isImageUploaded ? kPurpleColor100 : kPrimaryColor,
-                onPressed: !isImageUploaded
-                    ? () {}
-                    : () {
-                        ref
-                            .read(editProfileProvider.notifier)
-                            .editProfile(utilityBill: selectedImage!);
-                      });
-            return ref.watch(editProfileProvider).when(
-                done: (done) => _widget,
-                loading: () => SpinKitDemo(),
-                error: (val) => _widget);
-          })
-        ],
+            Consumer(builder: (context, ref, _) {
+              ref.listen(editProfileProvider,
+                      (previous, NotifierState<EditProfileResponse> next) {
+                    if (next.status == NotifierStatus.done) {
+                      pushTo(
+                          context,
+                          ProfileSuccessful(
+                            from: widget.from,
+                            message: idSuccess,
+                          ),
+                          settings: const RouteSettings(
+                              name: ProfileSuccessful.routeName));
+                      // Navigator.pop(context);
+                      // showSuccessBar(context, next.data!.message);
+                      ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
+                    } else if (next.status == NotifierStatus.error) {
+                      showErrorBar(context, next.message!);
+                    }
+                  });
+              var _widget = LargeButton(
+                  title: submit,
+                  disableColor:
+                      !isImageUploaded ? kPurpleColor100 : kPrimaryColor,
+                  onPressed: !isImageUploaded
+                      ? () {}
+                      : () {
+                          ref
+                              .read(editProfileProvider.notifier)
+                              .editProfile(utilityBill: selectedImage!);
+                        });
+              return ref.watch(editProfileProvider).when(
+                  done: (done) => _widget,
+                  loading: () => SpinKitDemo(),
+                  error: (val) => _widget);
+            })
+          ],
+        ),
       ),
     );
   }

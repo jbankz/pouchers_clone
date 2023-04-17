@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 // import 'package:media_storage/media_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/helpers/size_config.dart';
 import 'package:pouchers/modules/login/models/login_response.dart';
 import 'package:pouchers/modules/reuseables/components.dart';
@@ -43,204 +44,185 @@ class HistoryDetail extends StatelessWidget {
 
     return InitialPage(
       title: transactionReceipt,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(
-              child: Container(
-                padding: EdgeInsets.all(35),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: kColorGreen.withOpacity(0.2)),
+      child: ListenerPage(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Center(
                 child: Container(
                   padding: EdgeInsets.all(35),
-                  decoration:
-                      BoxDecoration(shape: BoxShape.circle, color: kColorGreen),
-                  child: Icon(Icons.check, color: kPrimaryWhite, size: 50),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: kRegularPadding,
-            ),
-            Text(
-              transSuccessful,
-              style: textTheme.bodyText2!.copyWith(
-                fontWeight: FontWeight.w500,
-                color: kColorGreen,
-                fontSize: 22,
-              ),
-            ),
-            SizedBox(
-              height: kPadding,
-            ),
-            Text(
-              transSummary,
-              style: textTheme.bodyText1!.copyWith(color: kDarkGrey100),
-            ),
-            SizedBox(
-              height: kRegularPadding,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    "${item!.transactionCategory!.toTitleCase()}",
-                    style: textTheme.headline3!.copyWith(
-                        color: kBlueColorDark, fontWeight: FontWeight.w500),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: kColorGreen.withOpacity(0.2)),
+                  child: Container(
+                    padding: EdgeInsets.all(35),
+                    decoration:
+                        BoxDecoration(shape: BoxShape.circle, color: kColorGreen),
+                    child: Icon(Icons.check, color: kPrimaryWhite, size: 50),
                   ),
                 ),
-                NairaWidget(
-                  sign: item!.transactionType == "debit" ? "-" : "+",
-                  addSign: true,
-                  text: kPriceFormatter(double.parse(item!.amount!)),
-                  textStyle1: TextStyle(
-                      fontSize: 16,
+              ),
+              SizedBox(
+                height: kRegularPadding,
+              ),
+              Text(
+                transSuccessful,
+                style: textTheme.bodyText2!.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: kColorGreen,
+                  fontSize: 22,
+                ),
+              ),
+              SizedBox(
+                height: kPadding,
+              ),
+              Text(
+                transSummary,
+                style: textTheme.bodyText1!.copyWith(color: kDarkGrey100),
+              ),
+              SizedBox(
+                height: kRegularPadding,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      finalCatName(
+                          item!.currency!, item!.transactionCategory!),
+                      style: textTheme.headline3!.copyWith(
+                          color: kBlueColorDark, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  NairaWidget(
+                    sign: item!.transactionType == "debit" ? "-" : "+",
+                    addSign: true,
+                    text: kPriceFormatter(double.parse(item!.amount!)),
+                    textStyle1: TextStyle(
+                        fontSize: 16,
+                        color: item!.transactionType == "debit"
+                            ? kColorRedDeep
+                            : kColorGreen),
+                    textStyle2: textTheme.headline3!.copyWith(
                       color: item!.transactionType == "debit"
                           ? kColorRedDeep
-                          : kColorGreen),
-                  textStyle2: textTheme.headline3!.copyWith(
-                    color: item!.transactionType == "debit"
-                        ? kColorRedDeep
-                        : kColorGreen,
-                    fontSize: 20,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: kMacroPadding,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TransactionDate(
-                  textTheme: textTheme,
-                  text: item!.createdAt!.formatDate(dateFormatter),
-                ),
-                SizedBox(
-                  width: kRegularPadding,
-                ),
-                TransactionDate(
-                  textTheme: textTheme,
-                  text: DateFormat.jm().format(item!.createdAt!),
-                )
-              ],
-            ),
-            SizedBox(
-              height: kMacroPadding,
-            ),
-            TransactionDetails(
-              textTheme: textTheme,
-              text: status,
-              subText: item!.status ?? "",
-            ),
-            item!.extraDetails!.subCategory == null
-                ? SizedBox()
-                : TransactionDetails(
-              textTheme: textTheme,
-              text: paidWith,
-              subText: "BalancePayment",
-            ),
-            item!.extraDetails!.subCategory == null
-                ? SizedBox()
-                : TransactionDetails(
-                    textTheme: textTheme,
-                    text: operator,
-                    subText: item!.extraDetails!.subCategory!,
-                  ),
-            item!.extraDetails!.phoneNumber == null
-                ? SizedBox()
-                : TransactionDetails(
-                    textTheme: textTheme,
-                    text: phoneNumberText,
-                    subText:
-                        item!.extraDetails!.phoneNumber ?? "No PhoneNumber",
-                  ),
-            SizedBox(
-              height: kRegularPadding,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                  vertical: kRegularPadding, horizontal: 50),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(kSmallPadding),
-                  color: kBackgroundColor),
-              child: Column(
-                children: [
-                  Text(
-                    transNumber,
-                    style: textTheme.headline3!.copyWith(
-                      color: kIconGrey,
+                          : kColorGreen,
+                      fontSize: 20,
                     ),
-                  ),
-                  SizedBox(
-                    height: kSmallPadding,
-                  ),
-                  Text(
-                    item!.transactionReference ?? "",
-                    style: textTheme.subtitle1!.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
-            ),
-            SizedBox(
-              height: kSmallPadding,
-            ),
-            inkWell(
-              onTap: (){
-                Clipboard.setData(ClipboardData(text: item!.transactionReference));
-                showSuccessBar(context, "Copied");
-              },
-              child: Text(
-                tapCopy,
-                style: textTheme.headline3!.copyWith(
-                  color: kIconGrey,
+              SizedBox(
+                height: kMacroPadding,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TransactionDate(
+                    textTheme: textTheme,
+                    text: item!.createdAt!.formatDate(dateFormatter),
+                  ),
+                  SizedBox(
+                    width: kRegularPadding,
+                  ),
+                  TransactionDate(
+                    textTheme: textTheme,
+                    text: DateFormat.jm().format(item!.createdAt!),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: kMacroPadding,
+              ),
+              TransactionDetails(
+                textTheme: textTheme,
+                text: status,
+                subText: item!.status ?? "",
+              ),
+              item!.extraDetails!.subCategory == null
+                  ? SizedBox()
+                  : TransactionDetails(
+                textTheme: textTheme,
+                text: paidWith,
+                subText: "BalancePayment",
+              ),
+              item!.extraDetails!.subCategory == null
+                  ? SizedBox()
+                  : TransactionDetails(
+                      textTheme: textTheme,
+                      text: operator,
+                      subText: item!.extraDetails!.subCategory!,
+                    ),
+              item!.extraDetails!.phoneNumber == null
+                  ? SizedBox()
+                  : TransactionDetails(
+                      textTheme: textTheme,
+                      text: phoneNumberText,
+                      subText:
+                          item!.extraDetails!.phoneNumber ?? "No PhoneNumber",
+                    ),
+              SizedBox(
+                height: kRegularPadding,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(
+                    vertical: kRegularPadding, horizontal: 50),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(kSmallPadding),
+                    color: kBackgroundColor),
+                child: Column(
+                  children: [
+                    Text(
+                      transNumber,
+                      style: textTheme.headline3!.copyWith(
+                        color: kIconGrey,
+                      ),
+                    ),
+                    SizedBox(
+                      height: kSmallPadding,
+                    ),
+                    Text(
+                      item!.transactionId ?? "",
+                      style: textTheme.subtitle1!.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
-            ),
-            SizedBox(
-              height: kRegularPadding,
-            ),
-            LargeButton(
-                title: getReceipt,
-                onPressed: () async {
-                  await Printing.sharePdf(
-                    bytes: await DownloadTransactionReceipt.generate(item!),
-                    filename:
-                        'receipt_${DateTime.now().millisecondsSinceEpoch}.pdf',
-                  );
-                })
-          ],
+              SizedBox(
+                height: kSmallPadding,
+              ),
+              inkWell(
+                onTap: (){
+                  Clipboard.setData(ClipboardData(text: item!.transactionReference));
+                  showSuccessBar(context, "Copied");
+                },
+                child: Text(
+                  tapCopy,
+                  style: textTheme.headline3!.copyWith(
+                    color: kIconGrey,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: kRegularPadding,
+              ),
+              LargeButton(
+                  title: getReceipt,
+                  onPressed: () async {
+                    await Printing.sharePdf(
+                      bytes: await DownloadTransactionReceipt.generate(item!),
+                      filename:
+                          'receipt_${DateTime.now().millisecondsSinceEpoch}.pdf',
+                    );
+                  })
+            ],
+          ),
         ),
       ),
     );
   }
-
-// Future<void> _requestDownload(String _url, String _name) async {
-//   String dir;
-//   if (Platform.isIOS) {
-//     dir = (await getApplicationDocumentsDirectory()).path;
-//   } else {
-//     dir = "/sdcard/download/";
-//     // dir = (await getExternalStorageDirectory())!.path;
-//   }
-//   var _localPath = dir + _name;
-//   final savedDir = Directory(_localPath);
-//   await savedDir.create(recursive: true).then((value) async {
-//     String? _taskid = await FlutterDownloader.enqueue(
-//       url: _url.split(" ")[1],
-//       fileName: "receipt",
-//       savedDir: _localPath,
-//       showNotification: true,
-//       openFileFromNotification: true,
-//     );
-//     print(_taskid);
-//   });
-// }
 }
 
 class pdfApi {
@@ -401,7 +383,8 @@ class DownloadTransactionReceipt {
           pdfWidget.Row(
             children: [
               pdfWidget.Expanded(
-                child: pdfWidget.Text(item.transactionCategory ?? "",
+                child: pdfWidget.Text(finalCatName(
+                    item.currency!, item.transactionCategory!) ?? "",
                     style: pdfWidget.TextStyle(
                       fontWeight: pdfWidget.FontWeight.bold,
                       font: ttf,
@@ -468,7 +451,7 @@ class DownloadTransactionReceipt {
                   height: kSmallPadding,
                 ),
                 pdfWidget.Text(
-                  item.transactionReference!,
+                  item.transactionId!,
                   style: pdfWidget.TextStyle(
                     fontWeight: pdfWidget.FontWeight.bold,
                     font: ttf,

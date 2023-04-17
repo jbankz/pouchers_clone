@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pouchers/app/common/listener.dart';
 import 'package:pouchers/app/navigators/navigators.dart';
 import 'package:pouchers/modules/account/providers/account_provider.dart';
 import 'package:pouchers/modules/account/screens/two_factor_auth/copy_code.dart';
@@ -50,70 +51,72 @@ class _GoogleAuthenticatorDownloadState extends ConsumerState<GoogleAuthenticato
           onTap: () {
             Navigator.popUntil(context, (route) => route.settings.name == TwoFactor.routeName);
           },
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(kMediumPadding),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromRGBO(224, 224, 255, 0.3),
+          child: ListenerPage(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(kMediumPadding),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color.fromRGBO(224, 224, 255, 0.3),
+                    ),
+                    child: SvgPicture.asset(AssetPaths.googleAuthIcon),
                   ),
-                  child: SvgPicture.asset(AssetPaths.googleAuthIcon),
-                ),
-                SizedBox(
-                  height: kMacroPadding,
-                ),
-                Text(
-                  setAuthenticator,
-                  style: textTheme.subtitle1!.copyWith(
-                    fontWeight: FontWeight.w700,
+                  SizedBox(
+                    height: kMacroPadding,
                   ),
-                ),
-                SizedBox(
-                  height: kSmallPadding,
-                ),
-                Text(
-                  setAuthenticatorSub,
-                  style: textTheme.headline3!.copyWith(
-                    color: kIconGrey,
+                  Text(
+                    setAuthenticator,
+                    style: textTheme.subtitle1!.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: kFullPadding,
-                ),
-                LargeButton(
-                  title: downloadAuthenticator,
-                  onPressed: () {
-                    if (Platform.isAndroid) {
-                      urlLauncher(
-                          "https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2");
-                    } else {
-                      urlLauncher(
-                          "https://apps.apple.com/us/app/google-authenticator/id388497605");
-                    }
-                  },
-                ),
-                SizedBox(
-                  height: kRegularPadding,
-                ),
-                LargeButton(
-                  title: downloadedAuthenticator,
-                  outlineButton: true,
-                  whiteButton: true,
-                  download: true,
-                  onPressed: () {
-                    pushTo(context, CopyCode(),
-                        settings: const RouteSettings(name: CopyCode.routeName));
-                  },
-                ),
-                SizedBox(
-                  height: kMacroPadding,
-                ),
-              ],
+                  SizedBox(
+                    height: kSmallPadding,
+                  ),
+                  Text(
+                    setAuthenticatorSub,
+                    style: textTheme.headline3!.copyWith(
+                      color: kIconGrey,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: kFullPadding,
+                  ),
+                  LargeButton(
+                    title: downloadAuthenticator,
+                    onPressed: () {
+                      if (Platform.isAndroid) {
+                        urlLauncher(
+                            "https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2");
+                      } else {
+                        urlLauncher(
+                            "https://apps.apple.com/us/app/google-authenticator/id388497605");
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: kRegularPadding,
+                  ),
+                  LargeButton(
+                    title: downloadedAuthenticator,
+                    outlineButton: true,
+                    whiteButton: true,
+                    download: true,
+                    onPressed: () {
+                      pushTo(context, CopyCode(),
+                          settings: const RouteSettings(name: CopyCode.routeName));
+                    },
+                  ),
+                  SizedBox(
+                    height: kMacroPadding,
+                  ),
+                ],
+              ),
             ),
           )),
     );
