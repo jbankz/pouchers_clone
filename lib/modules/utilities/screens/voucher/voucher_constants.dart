@@ -1,5 +1,5 @@
-import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
-import 'package:pouchers/utils/strings.dart';
+import 'package:Pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
+import 'package:Pouchers/utils/strings.dart';
 
 List<VoucherItems> voucherHistoryDummy = [
   VoucherItems(

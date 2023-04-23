@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
-import 'package:pouchers/app/helpers/network_helpers.dart';
-import 'package:pouchers/app/helpers/service_constants.dart';
-import 'package:pouchers/app/helpers/service_response.dart';
-import 'package:pouchers/app/helpers/session_manager.dart';
-import 'package:pouchers/modules/create_account/models/create_account_response.dart';
-import 'package:pouchers/utils/extras.dart';
-import 'package:pouchers/utils/logger.dart';
-import 'package:pouchers/utils/strings.dart';
+import 'package:Pouchers/app/helpers/network_helpers.dart';
+import 'package:Pouchers/app/helpers/service_constants.dart';
+import 'package:Pouchers/app/helpers/service_response.dart';
+import 'package:Pouchers/app/helpers/session_manager.dart';
+import 'package:Pouchers/modules/create_account/models/create_account_response.dart';
+import 'package:Pouchers/utils/extras.dart';
+import 'package:Pouchers/utils/logger.dart';
+import 'package:Pouchers/utils/strings.dart';
 
 class CreateAccountService {
   static Future<ServiceResponse<CreateAccountResponse>> createAccount(

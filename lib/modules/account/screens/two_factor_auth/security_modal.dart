@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/screens/two_factor_auth/disable_auth_question.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/account/screens/two_factor_auth/disable_auth_question.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
 
 class SecurityModal extends StatelessWidget {
   final String title;

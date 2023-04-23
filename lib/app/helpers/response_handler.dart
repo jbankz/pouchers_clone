@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pouchers/app/helpers/session_manager.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/login/screens/login.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/helpers/session_manager.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/login/screens/login.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 mixin ResponseHandler {
 

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/models/ui_models_class.dart';
-import 'package:pouchers/modules/create_account/screens/create_account.dart';
-import 'package:pouchers/modules/onboarding/screens/pay_card.dart';
-import 'package:pouchers/modules/onboarding/screens/pay_ussd.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/account/models/ui_models_class.dart';
+import 'package:Pouchers/modules/create_account/screens/create_account.dart';
+import 'package:Pouchers/modules/onboarding/screens/pay_card.dart';
+import 'package:Pouchers/modules/onboarding/screens/pay_ussd.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 import '../../../utils/constant/theme_color_constants.dart';
 

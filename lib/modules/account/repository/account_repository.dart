@@ -1,14 +1,15 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pouchers/app/helpers/network_helpers.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/helpers/service_response.dart';
-import 'package:pouchers/modules/account/models/profile_model.dart';
-import 'package:pouchers/modules/account/models/referral_model.dart';
-import 'package:pouchers/modules/account/models/security_question.dart';
-import 'package:pouchers/modules/account/models/tier_list.dart';
-import 'package:pouchers/modules/account/service/account_service.dart';
-import 'package:pouchers/modules/login/models/login_response.dart';
-import 'package:pouchers/utils/strings.dart';
+import 'package:Pouchers/app/common/provider.dart';
+import 'package:Pouchers/app/helpers/network_helpers.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/app/helpers/service_response.dart';
+import 'package:Pouchers/modules/account/models/profile_model.dart';
+import 'package:Pouchers/modules/account/models/referral_model.dart';
+import 'package:Pouchers/modules/account/models/security_question.dart';
+import 'package:Pouchers/modules/account/models/tier_list.dart';
+import 'package:Pouchers/modules/account/service/account_service.dart';
+import 'package:Pouchers/modules/login/models/login_response.dart';
+import 'package:Pouchers/utils/strings.dart';
 import 'package:riverpod/riverpod.dart';
 
 final accountRepoProvider =
@@ -26,6 +27,7 @@ class AccountRepository {
         email: userProfile.email ?? "", token: userProfile.token!);
 
     if (passwordChange.notAuthenticated) {
+
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
       passwordChange = await AccountService.requestPasswordChange(

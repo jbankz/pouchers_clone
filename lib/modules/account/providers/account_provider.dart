@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/helpers/response_handler.dart';
-import 'package:pouchers/modules/account/models/profile_model.dart';
-import 'package:pouchers/modules/account/models/referral_model.dart';
-import 'package:pouchers/modules/account/models/security_question.dart';
-import 'package:pouchers/modules/account/models/tier_list.dart';
-import 'package:pouchers/modules/account/repository/account_repository.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/app/helpers/response_handler.dart';
+import 'package:Pouchers/modules/account/models/profile_model.dart';
+import 'package:Pouchers/modules/account/models/referral_model.dart';
+import 'package:Pouchers/modules/account/models/security_question.dart';
+import 'package:Pouchers/modules/account/models/tier_list.dart';
+import 'package:Pouchers/modules/account/repository/account_repository.dart';
 
 final accountProvider =
     StateNotifierProvider.autoDispose<AccountNotifier, NotifierState<String>>(

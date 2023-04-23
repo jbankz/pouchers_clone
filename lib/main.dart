@@ -1,30 +1,30 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-// import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:path_provider/path_provider.dart' as path;
-import 'package:pouchers/app/helpers/network_helpers.dart';
-import 'package:pouchers/app/helpers/response_handler.dart';
-import 'package:pouchers/app/helpers/service_constants.dart';
-import 'package:pouchers/app/helpers/session_manager.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/login/screens/login.dart';
-import 'package:pouchers/routes.dart';
-import 'package:pouchers/modules/login/models/login_response.dart';
-import 'package:pouchers/modules/onboarding/screens/onboarding.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/logger.dart';
-import 'package:pouchers/utils/strings.dart';
+import 'package:Pouchers/app/helpers/response_handler.dart';
+import 'package:Pouchers/app/helpers/service_constants.dart';
+import 'package:Pouchers/app/helpers/session_manager.dart';
+import 'package:Pouchers/routes.dart';
+import 'package:Pouchers/modules/login/models/login_response.dart';
+import 'package:Pouchers/modules/onboarding/screens/onboarding.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/logger.dart';
+import 'package:Pouchers/utils/strings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Intercom.instance.initialize(interComAppId, iosApiKey: interComIOSKey, androidApiKey: interComAndroidKey);
   Env.setEnvironment(EnvState.production);
+  await Firebase.initializeApp();
   Directory directory = await path.getApplicationDocumentsDirectory();
   // await FlutterDownloader.initialize(
   //     debug: true, // optional: set to false to disable printing logs to console (default: true)
@@ -74,7 +74,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with ResponseHandler {
-  GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -117,15 +116,15 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
             title: "Pouchers",
             theme: kThemeData,
             debugShowCheckedModeBanner: false,
-            home:
-                Navigator(
-              key: _navigatorKey,
-              onGenerateRoute: (settings) {
-                return MaterialPageRoute(builder: (context) {
-                  return OnBoardingPage();
-                });
-              },
-            ),
+            home: OnBoardingPage(),
+            // Navigator(
+            //   key: _navigatorKey,
+            //   onGenerateRoute: (settings) {
+            //     return MaterialPageRoute(builder: (context) {
+            //       return OnBoardingPage();
+            //     });
+            //   },
+            // ),
             routes: appRoutes),
       );
   //  );
@@ -148,3 +147,12 @@ class ProviderLogger extends ProviderObserver {
 }''');
   }
 }
+
+// iOS API Key
+// ios_sdk-a1b43e5e09d3ef333aaec60a4ae3cfa79f477358
+//
+// Android API Key
+// android_sdk-543ba1f4cb81b13247aea6879c923fa666d9d79a
+
+// Your app ID
+// ors25jkb

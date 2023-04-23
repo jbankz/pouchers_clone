@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pouchers/app/helpers/response_handler.dart';
-import 'package:pouchers/app/helpers/session_manager.dart';
-import 'package:pouchers/utils/logger.dart';
+import 'package:Pouchers/app/helpers/response_handler.dart';
+import 'package:Pouchers/app/helpers/session_manager.dart';
+import 'package:Pouchers/utils/logger.dart';
 
 bool disableExpiry = false;
 bool isTracking = false;

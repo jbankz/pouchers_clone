@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/common/listener.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class AboutPouchers extends StatelessWidget {
   const AboutPouchers({Key? key}) : super(key: key);

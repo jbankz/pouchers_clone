@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class CommonModal extends StatelessWidget {
   final String title, buttonText;

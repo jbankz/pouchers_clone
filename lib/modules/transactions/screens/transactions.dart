@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pouchers/modules/transactions/screens/analytics.dart';
-import 'package:pouchers/modules/transactions/screens/history.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
+import 'package:Pouchers/modules/transactions/screens/analytics.dart';
+import 'package:Pouchers/modules/transactions/screens/history.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
 
 class Transactions extends StatefulWidget {
   static const String routeName = "transactions";

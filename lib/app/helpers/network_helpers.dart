@@ -3,15 +3,15 @@ import 'dart:io';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/helpers/service_constants.dart';
-import 'package:pouchers/app/helpers/service_response.dart';
-import 'package:pouchers/app/helpers/session_manager.dart';
-import 'package:pouchers/data/hive_data.dart';
-import 'package:pouchers/modules/login/models/login_response.dart';
-import 'package:pouchers/utils/extras.dart';
-import 'package:pouchers/utils/logger.dart';
-import 'package:pouchers/utils/strings.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/app/helpers/service_constants.dart';
+import 'package:Pouchers/app/helpers/service_response.dart';
+import 'package:Pouchers/app/helpers/session_manager.dart';
+import 'package:Pouchers/data/hive_data.dart';
+import 'package:Pouchers/modules/login/models/login_response.dart';
+import 'package:Pouchers/utils/extras.dart';
+import 'package:Pouchers/utils/logger.dart';
+import 'package:Pouchers/utils/strings.dart';
 import 'package:http/http.dart' as http;
 
 DateTime nowDate = DateTime.now().add(Duration(minutes: 5));
@@ -57,10 +57,10 @@ Future<ServiceResponse<String>> refreshToken({
     var responseBody = jsonDecode(response.body);
     if (response.statusCode >= 300 && response.statusCode <= 520) {
       throw Failure.fromJson(responseBody);
-    }
-    else {
+    } else {
       logPrint("refresh ${responseBody["data"]["refreshToken"]}");
-      await cacheUserProfile(HiveStoreResponseData.fromJson(responseBody["data"]));
+      await cacheUserProfile(
+          HiveStoreResponseData.fromJson(responseBody["data"]));
 
       await persistAccessToken(
           accessToken: responseBody["data"]["token"],
@@ -71,7 +71,6 @@ Future<ServiceResponse<String>> refreshToken({
       SessionManager.setRefreshAccessToken(
           responseBody["data"]["refreshToken"]);
       print("network token${responseBody["data"]["refreshToken"]}");
-      //b709eee202a
       return serveSuccess<String>(
           data: responseBody["message"], message: responseBody["message"]);
     }
@@ -82,9 +81,7 @@ Future<ServiceResponse<String>> refreshToken({
   }
 }
 
-
 Future<String?> getAccessToken() async {
-
   await Hive.openBox(kTokenBox);
   var expiredToken = await Hive.box(kTokenBox).get(kAccessTokenExpiryKey);
   // await Hive.box(kTokenBox).listenable();

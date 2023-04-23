@@ -2,7 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 
 /// Redesign or replace your flushbar design here
 void showErrorBar(BuildContext context, String value) {

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Pouchers/app/helpers/network_helpers.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,30 +8,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:pouchers/app/common/credentials.dart';
-import 'package:pouchers/app/common/model.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/helpers/response_handler.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/providers/account_provider.dart';
-import 'package:pouchers/modules/account/screens/two_factor_auth/security_modal.dart';
-import 'package:pouchers/modules/create_account/models/create_account_response.dart';
-import 'package:pouchers/modules/create_account/screens/biometrics_page.dart';
-import 'package:pouchers/modules/create_account/screens/create_account.dart';
-import 'package:pouchers/modules/create_account/screens/create_pin.dart';
-import 'package:pouchers/modules/create_account/screens/poucher_tag.dart';
-import 'package:pouchers/modules/create_account/screens/verify_account.dart';
-import 'package:pouchers/modules/login/providers/log_in_provider.dart';
-import 'package:pouchers/modules/login/screens/forgot_password.dart';
-import 'package:pouchers/modules/tab_layout/screens/tab_layout.dart';
+import 'package:Pouchers/app/common/credentials.dart';
+import 'package:Pouchers/app/common/model.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/app/helpers/response_handler.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
+import 'package:Pouchers/modules/account/screens/two_factor_auth/security_modal.dart';
+import 'package:Pouchers/modules/create_account/models/create_account_response.dart';
+import 'package:Pouchers/modules/create_account/screens/biometrics_page.dart';
+import 'package:Pouchers/modules/create_account/screens/create_account.dart';
+import 'package:Pouchers/modules/create_account/screens/create_pin.dart';
+import 'package:Pouchers/modules/create_account/screens/poucher_tag.dart';
+import 'package:Pouchers/modules/create_account/screens/verify_account.dart';
+import 'package:Pouchers/modules/login/providers/log_in_provider.dart';
+import 'package:Pouchers/modules/login/screens/forgot_password.dart';
+import 'package:Pouchers/modules/tab_layout/screens/tab_layout.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/flushbar.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/flushbar.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class LogInAccount extends ConsumerStatefulWidget {
   static const String routeName = "logIn";
@@ -101,255 +102,318 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
           ref.read(biometricProvider.notifier).state.copyWith(
                 isLoginBiometricActive: true,
               );
-      widget.firstTime! ? null : checkBiometric(context);
+      (widget.firstTime! || widget.sessionTimeOut!)
+          ? null
+          : checkBiometric(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     print(Hive.box(kBiometricsBox).get(kBiometricsKey));
+    print(ref.watch(biometricProvider).isLoginBiometricActive);
     TextTheme textTheme = Theme.of(context).textTheme;
-    return InitialPage(
-      onTap: () {
+    return WillPopScope(
+      onWillPop: () async {
+        bool result = false;
         if (Navigator.canPop(context)) {
           Navigator.pop(context);
+          result = false;
         } else {
-          print("here");
-
-          ///TODO WRONG IMPLEMENTATION, DO THE RIGHT ONE WITH WILLPOP
-          exit(0);
+          result = true;
         }
+        return result;
       },
-      child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SvgPicture.asset(AssetPaths.poucherLogo),
-              SizedBox(
-                height: kMicroPadding,
-              ),
-              Text(
-                logInPoucher,
-                style: textTheme.headline1,
-              ),
-              SizedBox(
-                height: kPadding,
-              ),
-              Text(
-                logInSub,
-                style: textTheme.bodyText1!
-                    .copyWith(fontWeight: FontWeight.normal, height: 1.6),
-              ),
-              SizedBox(
-                height: kLargePadding,
-              ),
-              TextInputNoIcon(
-                textTheme: textTheme,
-                text: emailOrPhone,
-                hintText: emailAddressText,
-                onSaved: (val) => setState(() => _email = val),
-                validator: (val) {
-                  if (val!.isEmpty) {
-                    return null;
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              TextInputNoIcon(
-                textTheme: textTheme,
-                text: passwordText,
-                hintText: enterPassword,
-                obscure: obscure,
-                validator: (val) {
-                  if (val!.isEmpty) {
-                    return null;
-                  } else {
-                    return null;
-                  }
-                  // else if (!isPassword(val)) {
-                  //   return invalidPassword;
-                  // } else {
-                  //   return null;
-                  // }
-                },
-                onSaved: (val) => setState(() => _password = val),
-                inputFormatters: [FilteringTextInputFormatter.deny(" ")],
-                icon: InkWell(
-                    onTap: () {
-                      setState(() {
-                        obscure = !obscure;
-                      });
-                    },
-                    child: obscure
-                        ? Icon(
-                            Icons.visibility_outlined,
-                            color: kSecondaryTextColor,
-                          )
-                        : Icon(Icons.visibility_off_outlined,
-                            color: kSecondaryTextColor)),
-              ),
-              SizedBox(
-                height: kSmallPadding,
-              ),
-              inkWell(
-                onTap: () {
-                  pushTo(context, ForgotPassword(),
-                      settings:
-                          const RouteSettings(name: ForgotPassword.routeName));
-                },
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    forgotPasswordText,
-                    style: textTheme.headline2,
-                    textAlign: TextAlign.right,
+      child: InitialPage(
+        onTap: () {
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context);
+          } else {
+            SystemNavigator.pop();
+          }
+        },
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SvgPicture.asset(AssetPaths.poucherLogo),
+                SizedBox(
+                  height: kMicroPadding,
+                ),
+                Text(
+                  logInPoucher,
+                  style: textTheme.headline1,
+                ),
+                SizedBox(
+                  height: kPadding,
+                ),
+                Text(
+                  logInSub,
+                  style: textTheme.bodyText1!
+                      .copyWith(fontWeight: FontWeight.normal, height: 1.6),
+                ),
+                SizedBox(
+                  height: kLargePadding,
+                ),
+                TextInputNoIcon(
+                  textTheme: textTheme,
+                  text: emailOrPhone,
+                  hintText: emailAddressText,
+                  onSaved: (val) => setState(() => _email = val),
+                  validator: (val) {
+                    if (val!.isEmpty) {
+                      return null;
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+                TextInputNoIcon(
+                  textTheme: textTheme,
+                  text: passwordText,
+                  hintText: enterPassword,
+                  obscure: obscure,
+                  validator: (val) {
+                    if (val!.isEmpty) {
+                      return null;
+                    } else {
+                      return null;
+                    }
+                    // else if (!isPassword(val)) {
+                    //   return invalidPassword;
+                    // } else {
+                    //   return null;
+                    // }
+                  },
+                  onSaved: (val) => setState(() => _password = val),
+                  inputFormatters: [FilteringTextInputFormatter.deny(" ")],
+                  icon: InkWell(
+                      onTap: () {
+                        setState(() {
+                          obscure = !obscure;
+                        });
+                      },
+                      child: obscure
+                          ? Icon(
+                              Icons.visibility_outlined,
+                              color: kSecondaryTextColor,
+                            )
+                          : Icon(Icons.visibility_off_outlined,
+                              color: kSecondaryTextColor)),
+                ),
+                SizedBox(
+                  height: kSmallPadding,
+                ),
+                inkWell(
+                  onTap: () {
+                    pushTo(context, ForgotPassword(),
+                        settings: const RouteSettings(
+                            name: ForgotPassword.routeName));
+                  },
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      forgotPasswordText,
+                      style: textTheme.headline2,
+                      textAlign: TextAlign.right,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: kMicroPadding,
-              ),
-              Consumer(builder: (context, ref, _) {
-                ref.listen(logInProvider,
-                    (previous, NotifierState<VerifyEmailResponse> next) async {
-                  if (next.status == NotifierStatus.done) {
-                    if (next.data!.data!.tag == null) {
-                      pushTo(
-                          context,
-                          PoucherTag(
-                            fromLogin: true,
-                          ),
-                          settings:
-                              const RouteSettings(name: PoucherTag.routeName));
-                    } else if (!next.data!.data!.isCreatedPin!) {
-                      pushTo(
-                          context,
-                          CreatePin(
-                            fromLogin: true,
-                          ),
-                          settings:
-                              const RouteSettings(name: CreatePin.routeName));
-                    } else {
-                      if (widget.firstTime!) {
-                        await saveUserCredential(
-                            password: _password!.trim(), email: _email!.trim());
-                        pushTo(
-                          context,
-                          BiometricsPage(),
-                        );
-                      } else {
-                        UserCredentials? cred = await getUserCredentials();
-                        if (cred?.password == null || cred?.password == "" ) {
-                          await saveUserCredential(
-                              password: _password!.trim(),
-                              email: _email!.trim());
-                        } else {
-                          pushToAndClearStack(
-                            context,
-                            TabLayout(),
+                SizedBox(
+                  height: kMicroPadding,
+                ),
+                Consumer(builder: (context, ref, _) {
+                  ref.listen(logInProvider, (previous,
+                      NotifierState<VerifyEmailResponse> next) async {
+                    if (next.status == NotifierStatus.done) {
+                      setState(() {
+                        nowDate = DateTime.now().add(Duration(minutes: 5));
+                      });
+
+                      ref.read(biometricProvider.notifier).state =
+                          ref.read(biometricProvider.notifier).state.copyWith(
+                            isLoginBiometricActive: next.data!.data!.isLoginBiometricActive,
+                            isPaymentBiometricActive: next.data!.data!.isPaymentBiometricActive
                           );
-                        }
-                      }
-                    }
-                  } else if (next.status == NotifierStatus.error) {
-                    print("here");
-                    if (next.message!.startsWith("User is not verified")) {
-                      showErrorBar(context, "next.message!");
-                      Future.delayed(Duration(seconds: 2)).then(
-                        (value) => pushTo(
+                      Hive.box(kBiometricsBox).put(kBiometricsKey, next.data!.data!.isLoginBiometricActive! ? 1 : 0);
+                      Hive.box(kBiometricsBox).put(kPayBiometricsKey, next.data!.data!.isPaymentBiometricActive! ? 1 : 0);
+
+                      print(Hive.box(kBiometricsBox).get(kBiometricsKey));
+                      print(ref.watch(biometricProvider).isLoginBiometricActive);
+
+                      // if (next.data!.data!.isLoginBiometricActive!) {
+                      //   print("it is true");
+                      //   Hive.box(kBiometricsBox).put(kBiometricsKey, 1);
+                      //   ref.read(biometricProvider.notifier).state =
+                      //       ref.read(biometricProvider.notifier).state.copyWith(
+                      //             isLoginBiometricActive: true,
+                      //           );
+                      // } else {
+                      //   print("it is false");
+                      //   Hive.box(kBiometricsBox).put(kBiometricsKey, 0);
+                      //   ref.read(biometricProvider.notifier).state =
+                      //       ref.read(biometricProvider.notifier).state.copyWith(
+                      //             isLoginBiometricActive: false,
+                      //           );
+                      // }
+                      // if (next.data!.data!.isPaymentBiometricActive!) {
+                      //   print("it is true");
+                      //   Hive.box(kBiometricsBox).put(kPayBiometricsKey, 1);
+                      //   ref.read(biometricProvider.notifier).state =
+                      //       ref.read(biometricProvider.notifier).state.copyWith(
+                      //         isPaymentBiometricActive: true,
+                      //       );
+                      // } else {
+                      //   print("it is false");
+                      //   Hive.box(kBiometricsBox).put(kBiometricsKey, 0);
+                      //   ref.read(biometricProvider.notifier).state =
+                      //       ref.read(biometricProvider.notifier).state.copyWith(
+                      //         isLoginBiometricActive: false,
+                      //       );
+                      // }
+                      if (next.data!.data!.tag == null) {
+                        pushTo(
                             context,
-                            VerifyAccount(
-                              email: _email!,
+                            PoucherTag(
                               fromLogin: true,
                             ),
                             settings: const RouteSettings(
-                                name: VerifyAccount.routeName)),
-                      );
-                    }
-                    showErrorBar(context, next.message!);
-                  }
-                });
-                var _widget = LargeButton(
-                  title: logIn,
-                  onPressed: () {
-                    FocusScope.of(context).unfocus();
-
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      if (_email!.isNotEmpty || _password!.isNotEmpty) {
-                        ref.read(logInProvider.notifier).logIn(
-                              phoneNumber: _email!.trim(),
+                                name: PoucherTag.routeName));
+                      } else if (!next.data!.data!.isCreatedPin!) {
+                        pushTo(
+                            context,
+                            CreatePin(
+                              fromLogin: true,
+                            ),
+                            settings:
+                                const RouteSettings(name: CreatePin.routeName));
+                      } else {
+                        if (widget.firstTime!) {
+                          await saveUserCredential(
                               password: _password!.trim(),
-                              isEmail: _email!.startsWith(
-                                RegExp(r'[a-zA-Z]'),
-                              ),
+                              email: _email!.trim());
+                          pushTo(
+                            context,
+                            BiometricsPage(),
+                          );
+                        } else {
+                          UserCredentials? cred = await getUserCredentials();
+                          if (cred?.password == null || cred?.password == "") {
+                            await saveUserCredential(
+                                password: _password!.trim(),
+                                email: _email!.trim());
+                            pushToAndClearStack(
+                              context,
+                              TabLayout(),
                             );
+                          } else {
+                            pushToAndClearStack(
+                              context,
+                              TabLayout(),
+                            );
+                          }
+                        }
                       }
-                    }
-                  },
-                );
-                return ref.watch(logInProvider).when(
-                    done: (done) => _widget,
-                    loading: () => SpinKitDemo(),
-                    error: (val) => _widget);
-              }),
-              SizedBox(
-                height: kMediumPadding,
-              ),
-              Center(
-                child: RichText(
-                    text: TextSpan(
-                        text: noAccount,
-                        style: textTheme.headline6!.copyWith(fontSize: 16),
-                        children: [
-                      TextSpan(
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            pushTo(context, CreateAccount());
-                          },
-                        text: create,
-                        style: textTheme.headline6!.copyWith(
-                          fontSize: 16,
-                          color: kPrimaryColor,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      )
-                    ])),
-              ),
-              SizedBox(
-                height: kLargePadding,
-              ),
-              widget.firstTime!
-                  ? SizedBox()
-                  : ref.watch(biometricProvider).isLoginBiometricActive == null
-                      ? SizedBox()
-                      : ref.watch(biometricProvider).isLoginBiometricActive!
-                          ? inkWell(
-                              onTap: () {
-                                checkBiometric(context);
-                              },
-                              child: Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(kRegularPadding),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: kBackgroundColor,
-                                ),
-                                child: Image.asset(
-                                  Platform.isAndroid
-                                      ? AssetPaths.fingerprint
-                                      : AssetPaths.faceId,
-                                  height: 60,
-                                  fit: BoxFit.scaleDown,
-                                  color: kPrimaryColor,
-                                ),
+                    } else if (next.status == NotifierStatus.error) {
+                      print("here");
+                      if (next.message!.startsWith("User is not verified")) {
+                        showErrorBar(context, "next.message!");
+                        Future.delayed(Duration(seconds: 2)).then(
+                          (value) => pushTo(
+                              context,
+                              VerifyAccount(
+                                email: _email!,
+                                fromLogin: true,
                               ),
-                            )
-                          : SizedBox()
-            ],
+                              settings: const RouteSettings(
+                                  name: VerifyAccount.routeName)),
+                        );
+                      }
+                      showErrorBar(context, next.message!);
+                    }
+                  });
+                  var _widget = LargeButton(
+                    title: logIn,
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        if (_email!.isNotEmpty || _password!.isNotEmpty) {
+                          ref.read(logInProvider.notifier).logIn(
+                                phoneNumber: _email!.trim(),
+                                password: _password!.trim(),
+                                isEmail: _email!.startsWith(
+                                  RegExp(r'[a-zA-Z]'),
+                                ),
+                              );
+                        }
+                      }
+                    },
+                  );
+                  return ref.watch(logInProvider).when(
+                      done: (done) => _widget,
+                      loading: () => SpinKitDemo(),
+                      error: (val) => _widget);
+                }),
+                SizedBox(
+                  height: kMediumPadding,
+                ),
+                Center(
+                  child: RichText(
+                      text: TextSpan(
+                          text: noAccount,
+                          style: textTheme.headline6!.copyWith(fontSize: 16),
+                          children: [
+                        TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              pushTo(context, CreateAccount());
+                            },
+                          text: create,
+                          style: textTheme.headline6!.copyWith(
+                            fontSize: 16,
+                            color: kPrimaryColor,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        )
+                      ])),
+                ),
+                SizedBox(
+                  height: kLargePadding,
+                ),
+                widget.firstTime!
+                    ? SizedBox()
+                    : ref.watch(biometricProvider).isLoginBiometricActive ==
+                            null
+                        ? SizedBox()
+                        : ref.watch(biometricProvider).isLoginBiometricActive!
+                            ? inkWell(
+                                onTap: () {
+                                  checkBiometric(context);
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.all(kRegularPadding),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: kBackgroundColor,
+                                  ),
+                                  child: Image.asset(
+                                    Platform.isAndroid
+                                        ? AssetPaths.fingerprint
+                                        : AssetPaths.faceId,
+                                    height: 60,
+                                    fit: BoxFit.scaleDown,
+                                    color: kPrimaryColor,
+                                  ),
+                                ),
+                              )
+                            : SizedBox()
+              ],
+            ),
           ),
         ),
       ),

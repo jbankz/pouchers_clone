@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:pouchers/app/helpers/size_config.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/create_account/screens/create_account.dart';
-import 'package:pouchers/modules/login/screens/login.dart';
-import 'package:pouchers/modules/onboarding/screens/guest_widget.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/constant/ui_constants.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/helpers/size_config.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/create_account/screens/create_account.dart';
+import 'package:Pouchers/modules/login/screens/login.dart';
+import 'package:Pouchers/modules/onboarding/screens/guest_widget.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/constant/ui_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class WelcomeGuest extends StatelessWidget {
   static const String routeName = "welcomeGuest";

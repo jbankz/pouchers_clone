@@ -1,13 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pouchers/app/helpers/network_helpers.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/helpers/service_response.dart';
-import 'package:pouchers/app/helpers/session_manager.dart';
-import 'package:pouchers/modules/cards/model/cards_model.dart';
-import 'package:pouchers/modules/cards/service/cards_service.dart';
-import 'package:pouchers/modules/login/models/login_response.dart';
-import 'package:pouchers/utils/strings.dart';
+import 'package:Pouchers/app/helpers/network_helpers.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/app/helpers/service_response.dart';
+import 'package:Pouchers/app/helpers/session_manager.dart';
+import 'package:Pouchers/modules/cards/model/cards_model.dart';
+import 'package:Pouchers/modules/cards/service/cards_service.dart';
+import 'package:Pouchers/modules/login/models/login_response.dart';
+import 'package:Pouchers/utils/strings.dart';
 
 final cardsRepoProvider =
     Provider.autoDispose<CardsRepository>((ref) => CardsRepository(ref));

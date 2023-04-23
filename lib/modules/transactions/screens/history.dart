@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pouchers/app/helpers/size_config.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/make_payment/screens/transaction_receipt.dart';
-import 'package:pouchers/modules/transactions/components/transaction_components.dart';
-import 'package:pouchers/modules/transactions/model/transaction_model.dart';
-import 'package:pouchers/modules/transactions/providers/transaction_provider.dart';
-import 'package:pouchers/modules/transactions/screens/history_detail.dart';
-import 'package:pouchers/modules/transactions/transactions_widgets.dart';
-import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/app/helpers/size_config.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/make_payment/screens/transaction_receipt.dart';
+import 'package:Pouchers/modules/transactions/components/transaction_components.dart';
+import 'package:Pouchers/modules/transactions/model/transaction_model.dart';
+import 'package:Pouchers/modules/transactions/providers/transaction_provider.dart';
+import 'package:Pouchers/modules/transactions/screens/history_detail.dart';
+import 'package:Pouchers/modules/transactions/transactions_widgets.dart';
+import 'package:Pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:collection/collection.dart';
-import 'package:pouchers/utils/input_formatters.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/utils.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/utils/input_formatters.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/utils.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class History extends ConsumerStatefulWidget {
   static const String routeName = "history";
@@ -156,9 +156,9 @@ class _HistoryState extends ConsumerState<History> {
                                   if (transactionData[index]
                                       .transactionCategory!
                                       .contains("p2p")) {
-                                    if (transactionData[index]
-                                            .transactionType ==
-                                        "debit") {
+                                    // if (transactionData[index]
+                                    //         .transactionType ==
+                                    //     "debit") {
                                       pushTo(
                                           context,
                                           TransactionReceipt(
@@ -180,6 +180,7 @@ class _HistoryState extends ConsumerState<History> {
                                               senderName: transactionData[index]
                                                   .extraDetails!
                                                   .senderName,
+                                              transferStatus: transactionData[index].transactionType,
                                               amount:
                                                   transactionData[index].amount,
                                               transferName: "",
@@ -190,7 +191,7 @@ class _HistoryState extends ConsumerState<History> {
                                           settings: RouteSettings(
                                               name: TransactionReceipt
                                                   .routeName));
-                                    }
+                                   // }
                                   } else {
                                     pushTo(
                                         context,
@@ -207,13 +208,13 @@ class _HistoryState extends ConsumerState<History> {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            item.transactionCategory!
-                                                    .contains("transfer")
-                                                ? item.beneficiaryName ??
-                                                finalCatName(item.currency! ,item
-                                                        .transactionCategory!)
-                                                : finalCatName(
-                                                item.currency!, item.transactionCategory!),
+                                            // item.transactionCategory!
+                                            //         .contains("transfer")
+                                            //     ? item.beneficiaryName ??
+                                                changeCatNme(item
+                                                        .transactionCategory ?? "", item.currency ?? "", item.extraDetails!.subCategory ?? "", item.beneficiaryName ?? "" ),
+                                                // : changeCatNme(
+                                                //  item.transactionCategory!, item.currency!, item.extraDetails!.subCategory ?? "" ),
                                             style:
                                                 textTheme.bodyText1!.copyWith(
                                               color: kBlueColorDark,

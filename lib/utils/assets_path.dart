@@ -1,5 +1,5 @@
 
-import 'package:pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/strings.dart';
 
 class AssetPaths {
   /// IMAGES

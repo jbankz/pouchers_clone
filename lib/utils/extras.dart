@@ -1,8 +1,8 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/app/helpers/service_response.dart';
-import 'package:pouchers/utils/logger.dart';
-import 'package:pouchers/utils/utils.dart';
+import 'package:Pouchers/app/helpers/service_response.dart';
+import 'package:Pouchers/utils/logger.dart';
+import 'package:Pouchers/utils/utils.dart';
 import 'package:http/http.dart' as http;
 
 

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pouchers/modules/schedule_purchase/provider/schedule_provider.dart';
-import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
+import 'package:Pouchers/modules/schedule_purchase/provider/schedule_provider.dart';
+import 'package:Pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
 import 'dart:math' as math;
 
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 List<String> category = [dayText, monthText];
 List<String> days = [

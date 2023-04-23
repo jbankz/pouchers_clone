@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/app/helpers/response_handler.dart';
-import 'package:pouchers/modules/cards/model/cards_model.dart';
-import 'package:pouchers/modules/cards/repository/cards_repository.dart';
+import 'package:Pouchers/app/helpers/response_handler.dart';
+import 'package:Pouchers/modules/cards/model/cards_model.dart';
+import 'package:Pouchers/modules/cards/repository/cards_repository.dart';
 
 import '../../../app/helpers/notifiers.dart';
 

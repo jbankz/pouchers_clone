@@ -4,27 +4,27 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/create_account/models/create_account_response.dart';
-import 'package:pouchers/modules/create_account/providers/create_account_provider.dart';
-import 'package:pouchers/modules/create_account/screens/biometrics_page.dart';
-import 'package:pouchers/modules/create_account/screens/confirm_createpin.dart';
-import 'package:pouchers/modules/login/screens/login.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/constant/ui_constants.dart';
-import 'package:pouchers/utils/extras.dart';
-import 'package:pouchers/utils/flushbar.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/create_account/models/create_account_response.dart';
+import 'package:Pouchers/modules/create_account/providers/create_account_provider.dart';
+import 'package:Pouchers/modules/create_account/screens/biometrics_page.dart';
+import 'package:Pouchers/modules/create_account/screens/confirm_createpin.dart';
+import 'package:Pouchers/modules/login/screens/login.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/constant/ui_constants.dart';
+import 'package:Pouchers/utils/extras.dart';
+import 'package:Pouchers/utils/flushbar.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class CreatePin extends ConsumerStatefulWidget {
   static const String routeName = "createPin";
   final bool? fromLogin;
-
-  const CreatePin({Key? key, this.fromLogin = false}) : super(key: key);
+  final bool isForgot;
+  const CreatePin({Key? key, this.fromLogin = false, this.isForgot = false}) : super(key: key);
 
   @override
   ConsumerState<CreatePin> createState() => _CreatePinState();
@@ -164,6 +164,7 @@ class _CreatePinState extends ConsumerState<CreatePin> {
                                         context,
                                         ConfirmCreatePin(
                                           pinPicked: pinPicked,
+                                          isForgot: widget.isForgot,
                                         ));
                                   }
                                 }

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/utilities/screens/betting.dart';
-import 'package:pouchers/modules/utilities/screens/buy_airtime.dart';
-import 'package:pouchers/modules/utilities/screens/buy_cable.dart';
-import 'package:pouchers/modules/utilities/screens/buy_data.dart';
-import 'package:pouchers/modules/utilities/screens/buy_electricity.dart';
-import 'package:pouchers/modules/utilities/screens/buy_internet.dart';
-import 'package:pouchers/modules/utilities/screens/voucher/voucher.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/utilities/screens/betting.dart';
+import 'package:Pouchers/modules/utilities/screens/buy_airtime.dart';
+import 'package:Pouchers/modules/utilities/screens/buy_cable.dart';
+import 'package:Pouchers/modules/utilities/screens/buy_data.dart';
+import 'package:Pouchers/modules/utilities/screens/buy_electricity.dart';
+import 'package:Pouchers/modules/utilities/screens/buy_internet.dart';
+import 'package:Pouchers/modules/utilities/screens/voucher/voucher.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class GetGuestEmail extends StatefulWidget {
   static const String routeName = "getGuestEmail";

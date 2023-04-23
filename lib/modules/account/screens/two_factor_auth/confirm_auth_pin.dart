@@ -4,15 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/providers/account_provider.dart';
-import 'package:pouchers/modules/account/screens/two_factor_auth/success_auth_page.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/flushbar.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/common/listener.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
+import 'package:Pouchers/modules/account/screens/two_factor_auth/success_auth_page.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/flushbar.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class ConfirmAuthPin extends ConsumerStatefulWidget {
   static const String routeName = "confirmAuthPin";

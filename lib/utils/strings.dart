@@ -1,3 +1,7 @@
+const String interComAppId = "INTERCOM_APP_ID";
+const String interComAndroidKey = "INTERCOM_ANDROID_KEY";
+const String interComIOSKey = "INTERCOM_IOS_KEY";
+
 const String kHiveEncryptionKey = "hiveKey";
 const String kHivePinKey = "hivePinKey";
 const String kTokenBox = "tokenBox";
@@ -82,6 +86,7 @@ String income = "Income";
 String outcome = "Outcome";
 String referAFriend = "Refer a friend";
 String forgotPasswordText = "Forgot Password?";
+String forgotPinText = "Forgot PIN?";
 String create = "Create one";
 String noAccount = "Don’t have an account? ";
 String forgotPassword = "Forgot Password";
@@ -377,6 +382,8 @@ String deleteAccountTextSub = "Why do you want to delete your account?";
 String sendCode = "Send code";
 String sendCodeSub =
     "To change your password, a code will be sent to the email associated with this account.";
+String sendPinCodeSub = "To reset your pin, a code will be sent to the email associated with this account.";
+
 String confirm = "Confirm";
 String goHome = "Go home";
 String sendMoney = "Send money";
@@ -439,6 +446,7 @@ String newPhoneNo = "Enter your new phone number.";
 String changePhoneSub =
     "To change your phone number, a code will be sent to the email associated with this account.";
 String successResetPassword = "Your password has been reset successfully";
+String successResetPin = "Your pin has been reset successfully";
 String enterCodeSent = "Enter the code sent to your email address.";
 String transferSuccess =
     "Your transfer is successful and the beneficiary’s account has been credited.";

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pouchers/modules/account/models/security_question.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/modules/account/models/security_question.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class QuestionModal extends StatefulWidget {
 

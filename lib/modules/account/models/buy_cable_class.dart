@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pouchers/modules/utilities/model/utilities_model.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/constant/ui_constants.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/modules/utilities/model/utilities_model.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/constant/ui_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class UtilityModal extends StatefulWidget {
   final List<GetUtilitiesData> utilities;

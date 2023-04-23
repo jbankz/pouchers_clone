@@ -10,22 +10,22 @@ import 'package:intl/intl.dart';
 // import 'package:media_storage/media_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/app/helpers/size_config.dart';
-import 'package:pouchers/modules/login/models/login_response.dart';
-import 'package:pouchers/modules/reuseables/components.dart';
-import 'package:pouchers/modules/transactions/components/transaction_components.dart';
-import 'package:pouchers/modules/transactions/model/transaction_model.dart';
-import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/flushbar.dart';
-import 'package:pouchers/utils/input_formatters.dart';
-import 'package:pouchers/utils/logger.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/utils.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/common/listener.dart';
+import 'package:Pouchers/app/helpers/size_config.dart';
+import 'package:Pouchers/modules/login/models/login_response.dart';
+import 'package:Pouchers/modules/reuseables/components.dart';
+import 'package:Pouchers/modules/transactions/components/transaction_components.dart';
+import 'package:Pouchers/modules/transactions/model/transaction_model.dart';
+import 'package:Pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/flushbar.dart';
+import 'package:Pouchers/utils/input_formatters.dart';
+import 'package:Pouchers/utils/logger.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/utils.dart';
+import 'package:Pouchers/utils/widgets.dart';
 import 'package:pdf/pdf.dart' as pdfSaver;
 import 'package:pdf/widgets.dart' as pdfWidget;
 import 'package:printing/printing.dart';
@@ -56,8 +56,8 @@ class HistoryDetail extends StatelessWidget {
                       color: kColorGreen.withOpacity(0.2)),
                   child: Container(
                     padding: EdgeInsets.all(35),
-                    decoration:
-                        BoxDecoration(shape: BoxShape.circle, color: kColorGreen),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: kColorGreen),
                     child: Icon(Icons.check, color: kPrimaryWhite, size: 50),
                   ),
                 ),
@@ -87,8 +87,7 @@ class HistoryDetail extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      finalCatName(
-                          item!.currency!, item!.transactionCategory!),
+                      changeCatNme(item!.transactionCategory!, item!.currency!, item!.extraDetails!.subCategory ?? "", item!.beneficiaryName ?? ""),
                       style: textTheme.headline3!.copyWith(
                           color: kBlueColorDark, fontWeight: FontWeight.w500),
                     ),
@@ -141,10 +140,10 @@ class HistoryDetail extends StatelessWidget {
               item!.extraDetails!.subCategory == null
                   ? SizedBox()
                   : TransactionDetails(
-                textTheme: textTheme,
-                text: paidWith,
-                subText: "BalancePayment",
-              ),
+                      textTheme: textTheme,
+                      text: paidWith,
+                      subText: "BalancePayment",
+                    ),
               item!.extraDetails!.subCategory == null
                   ? SizedBox()
                   : TransactionDetails(
@@ -194,8 +193,9 @@ class HistoryDetail extends StatelessWidget {
                 height: kSmallPadding,
               ),
               inkWell(
-                onTap: (){
-                  Clipboard.setData(ClipboardData(text: item!.transactionReference));
+                onTap: () {
+                  Clipboard.setData(
+                      ClipboardData(text: item!.transactionReference));
                   showSuccessBar(context, "Copied");
                 },
                 child: Text(
@@ -383,8 +383,8 @@ class DownloadTransactionReceipt {
           pdfWidget.Row(
             children: [
               pdfWidget.Expanded(
-                child: pdfWidget.Text(finalCatName(
-                    item.currency!, item.transactionCategory!) ?? "",
+                child: pdfWidget.Text(
+                    changeCatNme(item.transactionCategory!, item.currency!, item.extraDetails!.subCategory ?? "", item.beneficiaryName ?? ""),
                     style: pdfWidget.TextStyle(
                       fontWeight: pdfWidget.FontWeight.bold,
                       font: ttf,

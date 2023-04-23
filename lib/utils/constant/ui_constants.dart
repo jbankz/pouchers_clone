@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:pouchers/modules/account/models/ui_models_class.dart';
-import 'package:pouchers/modules/onboarding/model/onboarding_model.dart';
-import 'package:pouchers/modules/onboarding/screens/guest_email.dart';
-import 'package:pouchers/modules/utilities/screens/betting.dart';
-import 'package:pouchers/modules/utilities/screens/buy_airtime.dart';
-import 'package:pouchers/modules/utilities/screens/buy_cable.dart';
-import 'package:pouchers/modules/utilities/screens/buy_data.dart';
-import 'package:pouchers/modules/utilities/screens/buy_electricity.dart';
-import 'package:pouchers/modules/utilities/screens/buy_internet.dart';
-import 'package:pouchers/modules/utilities/screens/voucher/buy_voucher.dart';
-import 'package:pouchers/modules/utilities/screens/voucher/gift_voucher.dart';
-import 'package:pouchers/modules/utilities/screens/voucher/redeem_voucher.dart';
-import 'package:pouchers/modules/utilities/screens/voucher/view_voucher_history.dart';
-import 'package:pouchers/modules/utilities/screens/voucher/voucher.dart';
-import 'package:pouchers/utils/assets_path.dart';
+import 'package:Pouchers/modules/account/models/ui_models_class.dart';
+import 'package:Pouchers/modules/onboarding/model/onboarding_model.dart';
+import 'package:Pouchers/modules/onboarding/screens/guest_email.dart';
+import 'package:Pouchers/modules/utilities/screens/betting.dart';
+import 'package:Pouchers/modules/utilities/screens/buy_airtime.dart';
+import 'package:Pouchers/modules/utilities/screens/buy_cable.dart';
+import 'package:Pouchers/modules/utilities/screens/buy_data.dart';
+import 'package:Pouchers/modules/utilities/screens/buy_electricity.dart';
+import 'package:Pouchers/modules/utilities/screens/buy_internet.dart';
+import 'package:Pouchers/modules/utilities/screens/voucher/buy_voucher.dart';
+import 'package:Pouchers/modules/utilities/screens/voucher/gift_voucher.dart';
+import 'package:Pouchers/modules/utilities/screens/voucher/redeem_voucher.dart';
+import 'package:Pouchers/modules/utilities/screens/voucher/view_voucher_history.dart';
+import 'package:Pouchers/modules/utilities/screens/voucher/voucher.dart';
+import 'package:Pouchers/utils/assets_path.dart';
 
 final List<GuestClass> guestClass = [
   GuestClass("Airtime", AssetPaths.airtimeIcon,

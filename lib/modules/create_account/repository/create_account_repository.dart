@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/app/helpers/network_helpers.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/modules/create_account/models/create_account_response.dart';
-import 'package:pouchers/modules/create_account/service/create_account_service.dart';
+import 'package:Pouchers/app/helpers/network_helpers.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/modules/create_account/models/create_account_response.dart';
+import 'package:Pouchers/modules/create_account/service/create_account_service.dart';
 
 final createAccountRepoProvider = Provider.autoDispose<CreateAccountRepository>(
     (ref) => CreateAccountRepository(ref));

@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:pouchers/app/helpers/service_constants.dart';
-import 'package:pouchers/app/helpers/service_response.dart';
-import 'package:pouchers/modules/onboarding/model/onboarding_model.dart';
-import 'package:pouchers/modules/utilities/model/utilities_model.dart';
-import 'package:pouchers/utils/extras.dart';
-import 'package:pouchers/utils/logger.dart';
+import 'package:Pouchers/app/helpers/service_constants.dart';
+import 'package:Pouchers/app/helpers/service_response.dart';
+import 'package:Pouchers/modules/onboarding/model/onboarding_model.dart';
+import 'package:Pouchers/modules/utilities/model/utilities_model.dart';
+import 'package:Pouchers/utils/extras.dart';
+import 'package:Pouchers/utils/logger.dart';
 import 'package:http/http.dart' as http;
 
 class UtilitiesService {

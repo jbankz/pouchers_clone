@@ -1,37 +1,32 @@
 import 'dart:async';
 import 'dart:ffi';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:percent_indicator/percent_indicator.dart';
-import 'package:pouchers/app/common/credentials.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/app/common/model.dart';
-import 'package:pouchers/app/helpers/network_helpers.dart';
-import 'package:pouchers/app/helpers/session_manager.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/models/profile_model.dart';
-import 'package:pouchers/modules/account/models/referral_model.dart';
-import 'package:pouchers/modules/account/providers/account_provider.dart';
-import 'package:pouchers/modules/account/screens/about_pouchers.dart';
-import 'package:pouchers/modules/account/screens/account_settings/account_settings.dart';
-import 'package:pouchers/modules/account/screens/account_settings/schedule_payments.dart';
-import 'package:pouchers/modules/account/screens/referral/referral.dart';
-import 'package:pouchers/modules/login/models/login_response.dart';
-import 'package:pouchers/modules/login/screens/login.dart';
-import 'package:pouchers/modules/profile/profile_kyc.dart';
-import 'package:pouchers/modules/profile/profile_tier_list.dart';
-import 'package:pouchers/modules/tab_layout/widgets/profile_widget.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
+import 'package:Pouchers/app/helpers/network_helpers.dart';
+import 'package:Pouchers/app/helpers/session_manager.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/account/models/referral_model.dart';
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
+import 'package:Pouchers/modules/account/screens/about_Pouchers.dart';
+import 'package:Pouchers/modules/account/screens/account_settings/account_settings.dart';
+import 'package:Pouchers/modules/account/screens/account_settings/schedule_payments.dart';
+import 'package:Pouchers/modules/account/screens/referral/referral.dart';
+import 'package:Pouchers/modules/login/models/login_response.dart';
+import 'package:Pouchers/modules/login/screens/login.dart';
+import 'package:Pouchers/modules/profile/profile_kyc.dart';
+import 'package:Pouchers/modules/profile/profile_tier_list.dart';
+import 'package:Pouchers/modules/tab_layout/widgets/profile_widget.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
 import 'dart:math' as math;
 
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/utils/widgets.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   static const String routeName = "profilePage";
@@ -54,6 +49,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       checkProvider();
       await checkTierLevel();
+      Intercom.instance.loginIdentifiedUser(
+          userId: userProfile.userId,
+          statusCallback: IntercomStatusCallback(onSuccess: () {
+            print("it was a success");
+          }, onFailure: (val) {
+            print(val.errorMessage);
+            print("it was a failure");
+          }));
       setState(() {});
     });
   }
@@ -61,7 +64,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-
+    print(Hive.box(kBiometricsBox).get(kBiometricsKey));
+    print(ref.watch(biometricProvider).isLoginBiometricActive);
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -83,54 +87,51 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     checkTierLevel();
                   });
                 },
-                child:   ClipRRect(
+                child: ClipRRect(
                   borderRadius: BorderRadius.circular(116),
-                  child: ref
-                      .watch(editProfileInHouseProvider)
-                      .profilePicture ==
-                      null
-                      ?
-                  Container(
-                    height: 105,
-                    width: 105,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: kPrimaryColor,
-                    ),
-                    child: Center(
-                      child: Text(
-                          ref
-                              .watch(editProfileInHouseProvider)
-                              .profilePicture ==
-                              null
-                              ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
-                              : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
-                          style: textTheme.bodyText2!
-                              .copyWith(fontSize: 22)),
-                    ),
-                  )
+                  child: ref.watch(editProfileInHouseProvider).profilePicture ==
+                          null
+                      ? Container(
+                          height: 105,
+                          width: 105,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: kPrimaryColor,
+                          ),
+                          child: Center(
+                            child: Text(
+                                ref
+                                            .watch(editProfileInHouseProvider)
+                                            .profilePicture ==
+                                        null
+                                    ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
+                                    : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
+                                style: textTheme.bodyText2!
+                                    .copyWith(fontSize: 22)),
+                          ),
+                        )
                       : Image.network(
-                    ref
-                        .watch(editProfileInHouseProvider)
-                        .profilePicture ??
-                        "",
-                    fit: BoxFit.cover,
-                    height: 100,
-                    width: 100,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes !=
-                              null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                              : null,
+                          ref
+                                  .watch(editProfileInHouseProvider)
+                                  .profilePicture ??
+                              "",
+                          fit: BoxFit.cover,
+                          height: 100,
+                          width: 100,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
                 // CircularPercentIndicator(
                 //   radius: 40.0,
@@ -316,7 +317,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 subText: accountSettingSub,
                 textTheme: textTheme,
                 icon: SvgPicture.asset(AssetPaths.accountIcon),
-                onTap: () async{
+                onTap: () async {
                   pushTo(
                     context,
                     AccountSettings(),
@@ -373,7 +374,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 subText: helpSupportSub,
                 textTheme: textTheme,
                 icon: SvgPicture.asset(AssetPaths.helpIcon),
-                onTap: () {},
+                onTap: () {
+                  Intercom.instance.displayMessenger();
+                },
               ),
               // ProfileRoleWidget(
               //   text: legal,
@@ -392,18 +395,19 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 },
               ),
               ProfileRoleWidget(
-                text:
-                logOut,
+                text: logOut,
                 subText: "",
                 textColor: kColorOrange,
                 color: Color.fromRGBO(255, 100, 20, 0.1),
                 icon: SvgPicture.asset(AssetPaths.logOutIcon),
                 textTheme: textTheme,
-                onTap: () async{
+                onTap: () async {
                   setState(() {
                     nowDate = DateTime.now().add(Duration(minutes: 5));
                   });
                   ref.invalidate(editProfileInHouseProvider);
+                  print(Hive.box(kBiometricsBox).get(kBiometricsKey));
+                  print(ref.watch(biometricProvider).isLoginBiometricActive);
                   Hive.box(kUserBox).clear();
                   SessionManager.setWalletBalance("");
                   pushToAndClearStack(
@@ -510,7 +514,7 @@ class _ProductImageSliderState extends State<ProductImageSlider> {
   PageController _controller = PageController(initialPage: 0);
 
   void startTicker() {
-    _t = Timer.periodic(Duration(seconds: 2), (Timer timer) {
+    _t = Timer.periodic(Duration(seconds: 7), (Timer timer) {
       if (_currentPage < widget.images.length - 1) {
         _currentPage++;
       } else {

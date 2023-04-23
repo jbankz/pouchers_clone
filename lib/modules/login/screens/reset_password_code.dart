@@ -1,31 +1,33 @@
+import 'package:Pouchers/modules/create_account/screens/create_pin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/providers/account_provider.dart';
-import 'package:pouchers/modules/login/providers/log_in_provider.dart';
-import 'package:pouchers/modules/login/screens/set_password.dart';
-import 'package:pouchers/modules/profile/profile_change_number.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/flushbar.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/common/listener.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
+import 'package:Pouchers/modules/login/providers/log_in_provider.dart';
+import 'package:Pouchers/modules/login/screens/set_password.dart';
+import 'package:Pouchers/modules/profile/profile_change_number.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/flushbar.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class ResetPasswordCode extends ConsumerStatefulWidget {
   static const String routeName = "resetPasswordCode";
   final String? email;
   final bool? isChangePassword, isChangePhone;
-  final bool? forgot;
+  final bool? forgot, isForgotPin;
 
   const ResetPasswordCode(
       {Key? key,
       this.email,
       this.isChangePassword,
       this.isChangePhone,
-      this.forgot})
+      this.forgot,
+      this.isForgotPin = false})
       : super(key: key);
 
   @override
@@ -119,14 +121,19 @@ class _ResetPasswordCodeState extends ConsumerState<ResetPasswordCode> {
                                   settings: const RouteSettings(
                                       name: ChangePhoneNumber.routeName),
                                 )
-                              : pushTo(
-                                  context,
-                                  SetPassword(
-                                    email: widget.email!,
-                                    isChangePassword: widget.isChangePassword,
-                                  ),
-                                  settings: const RouteSettings(
-                                      name: SetPassword.routeName));
+                              : widget.isForgotPin!
+                                  ? pushTo(context, CreatePin(),
+                                      settings: const RouteSettings(
+                                          name: CreatePin.routeName))
+                                  : pushTo(
+                                      context,
+                                      SetPassword(
+                                        email: widget.email!,
+                                        isChangePassword:
+                                            widget.isChangePassword,
+                                      ),
+                                      settings: const RouteSettings(
+                                          name: SetPassword.routeName));
                         } else if (next.status == NotifierStatus.error) {
                           showErrorBar(context, next.message!);
                         }
@@ -163,22 +170,30 @@ class _ResetPasswordCodeState extends ConsumerState<ResetPasswordCode> {
                                   settings: const RouteSettings(
                                       name: ChangePhoneNumber.routeName),
                                 )
-                              : pushTo(
-                                  context,
-                                  SetPassword(
-                                    email: widget.email!,
-                                    isChangePassword: widget.isChangePassword,
-                                  ),
-                                  settings: const RouteSettings(
-                                      name: SetPassword.routeName));
+                              : widget.isForgotPin!
+                                  ? pushTo(context, CreatePin(
+                            isForgot: true,
+                          ),
+                                      settings: const RouteSettings(
+                                          name: CreatePin.routeName))
+                                  : pushTo(
+                                      context,
+                                      SetPassword(
+                                        email: widget.email!,
+                                        isChangePassword:
+                                            widget.isChangePassword,
+                                      ),
+                                      settings: const RouteSettings(
+                                          name: SetPassword.routeName));
                         } else if (next.status == NotifierStatus.error) {
                           showErrorBar(context, next.message!);
                         }
                       });
 
                       var _widget = LargeButton(
-                        title:
-                            widget.isChangePassword! ? confirm : recoverPassword,
+                        title: widget.isChangePassword!
+                            ? confirm
+                            : recoverPassword,
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();

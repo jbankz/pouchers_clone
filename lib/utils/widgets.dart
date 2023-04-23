@@ -4,9 +4,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
 
 class LargeButton extends StatelessWidget {
   final String title;
@@ -139,6 +139,7 @@ class InitialPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: color ?? kPrimaryWhite,
       bottomSheet: bottomSheet,
+      // resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           title == null ? "" : title!,

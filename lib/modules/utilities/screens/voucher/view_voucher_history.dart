@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/app/helpers/size_config.dart';
-import 'package:pouchers/modules/utilities/model/utilities_model.dart';
-import 'package:pouchers/modules/utilities/screens/voucher/voucher_constants.dart';
-import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/utils.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/common/listener.dart';
+import 'package:Pouchers/app/helpers/size_config.dart';
+import 'package:Pouchers/modules/utilities/model/utilities_model.dart';
+import 'package:Pouchers/modules/utilities/screens/voucher/voucher_constants.dart';
+import 'package:Pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/utils.dart';
+import 'package:Pouchers/utils/widgets.dart';
 import 'package:collection/collection.dart';
 
 import '../../providers/utilities_provider.dart';
@@ -53,20 +53,12 @@ class _VoucherHistoryState extends ConsumerState<VoucherHistory> {
                         .mapIndexed(
                           (index, element) => ViewVoucherHistoryHeading(
                             text: element,
-                            color: index == 0
-                                ? kContainerColor
-                                : index == 1
-                                    ? kPrimaryColor
-                                    : index == 2
-                                        ? kPrimaryTextColor
-                                        : kPrimaryWhite,
-                            bgColor: index == 0
+                            color: currentIndex == index
+                                ? kBackgroundColor
+                                : kIconGrey,
+                            bgColor: currentIndex == index
                                 ? kPrimaryTextColor
-                                : index == 1
-                                    ? kLightPurple
-                                    : index == 2
-                                        ? kBackgroundColor
-                                        : kBlueColor,
+                                : kBackgroundColor,
                             onTap: () {
                               setState(() {
                                 currentIndex = index;

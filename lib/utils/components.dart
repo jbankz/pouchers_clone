@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/modules/account/providers/account_provider.dart';
-import 'package:pouchers/modules/create_account/providers/create_account_provider.dart';
-import 'package:pouchers/modules/login/providers/log_in_provider.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/flushbar.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
+import 'package:Pouchers/modules/create_account/providers/create_account_provider.dart';
+import 'package:Pouchers/modules/login/providers/log_in_provider.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/flushbar.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class TextInputNoIcon extends StatelessWidget {
   const TextInputNoIcon(

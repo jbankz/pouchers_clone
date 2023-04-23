@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/helpers/response_handler.dart';
-import 'package:pouchers/app/helpers/session_manager.dart';
-import 'package:pouchers/modules/make_payment/models/make_payment_model.dart';
-import 'package:pouchers/modules/make_payment/repository/payment_repository.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/app/helpers/response_handler.dart';
+import 'package:Pouchers/app/helpers/session_manager.dart';
+import 'package:Pouchers/modules/make_payment/models/make_payment_model.dart';
+import 'package:Pouchers/modules/make_payment/repository/payment_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final getContactByPoucherTagProvider = StateNotifierProvider.autoDispose<

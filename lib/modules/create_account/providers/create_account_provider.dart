@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/modules/create_account/models/create_account_response.dart';
-import 'package:pouchers/modules/create_account/repository/create_account_repository.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/modules/create_account/models/create_account_response.dart';
+import 'package:Pouchers/modules/create_account/repository/create_account_repository.dart';
 
 final createAccountProvider = StateNotifierProvider.autoDispose<
     CreateAccountNotifier, NotifierState<CreateAccountResponse>>((ref) {

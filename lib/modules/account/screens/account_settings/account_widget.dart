@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
+import 'package:Pouchers/app/common/listener.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
 
 
 class BiometricModal extends StatefulWidget {

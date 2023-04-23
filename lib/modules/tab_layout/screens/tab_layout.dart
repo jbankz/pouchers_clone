@@ -1,18 +1,21 @@
+import 'package:Pouchers/data/fcmtoken.dart';
+import 'package:Pouchers/utils/logger.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/app/helpers/applifecycle_manager.dart';
-import 'package:pouchers/app/helpers/response_handler.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/cards/screens/card_home.dart';
-import 'package:pouchers/modules/cards/screens/create_card.dart';
-import 'package:pouchers/modules/login/screens/login.dart';
-import 'package:pouchers/modules/profile/profile_page.dart';
-import 'package:pouchers/modules/tab_layout/screens/homepage/homepage.dart';
-import 'package:pouchers/modules/transactions/screens/transactions.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/flushbar.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/common/listener.dart';
+import 'package:Pouchers/app/helpers/applifecycle_manager.dart';
+import 'package:Pouchers/app/helpers/response_handler.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/cards/screens/card_home.dart';
+import 'package:Pouchers/modules/cards/screens/create_card.dart';
+import 'package:Pouchers/modules/login/screens/login.dart';
+import 'package:Pouchers/modules/profile/profile_page.dart';
+import 'package:Pouchers/modules/tab_layout/screens/homepage/homepage.dart';
+import 'package:Pouchers/modules/transactions/screens/transactions.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/flushbar.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class TabLayout extends StatefulWidget {
   static const String routeName = "tabLayout";
@@ -55,13 +58,17 @@ class _TabLayoutState extends State<TabLayout> with ResponseHandler {
     } else {
       _selectedIndex = widget.gottenIndex!;
     }
+    FCManager.setupFCM();
+    _setupFCM();
   }
 
   Future<bool> _willPopCallback() {
     bool result = false;
     if (_selectedIndex != 0) {
+      print("hbhhd");
       _onItemTapped(0);
     } else {
+      print("extCount$extCount");
       ++extCount;
       if (extCount == 2) {
         result = true;
@@ -69,6 +76,7 @@ class _TabLayoutState extends State<TabLayout> with ResponseHandler {
         showErrorBar(context, "Tap again to exit app");
       }
     }
+    print("result$result");
     return Future.value(result);
   }
 
@@ -79,7 +87,7 @@ class _TabLayoutState extends State<TabLayout> with ResponseHandler {
       child: WillPopScope(
           child: Scaffold(
             body: ListenerPage(
-              child:    items[_selectedIndex],
+              child: items[_selectedIndex],
             ),
 
             bottomNavigationBar: BottomNavigationBar(
@@ -122,6 +130,69 @@ class _TabLayoutState extends State<TabLayout> with ResponseHandler {
           onWillPop: _willPopCallback,
         ),
       );
-   // );
+
   }
+  Future<void> _setupFCM() async {
+    await FCManager.getInstance().requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true);
+    await FCManager.getInstance().setForegroundNotificationPresentationOptions(
+        alert: true, badge: true, sound: true);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      if (message.notification != null) {
+        print("message2${message.notification}");
+        _parseNotification(message.notification!);
+      }
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      if (message.notification!.title != null) {
+        print("message2${message.notification}");
+        _parseNotification(message.notification!);
+      }
+    });
+
+    FirebaseMessaging?.onBackgroundMessage(
+            (message) => myBackgroundMessageHandler(message.data));
+
+    try {
+      await FCManager.getInstance().getToken().then(
+            (String? token) {
+          assert(token != null);
+          logPrint("tokehhghn$token");
+          //ref
+              // .read(sendFCMTokenProvider.notifier)
+              // .sendFCMToken(fcmToken: token!);
+        },
+      );
+    } catch (e, stack) {}
+  }
+
+  static Future<dynamic> myBackgroundMessageHandler(
+      Map<String, dynamic> message) async {
+    if (message.containsKey('data')) {
+      final dynamic data = message['data'];
+    }
+    if (message.containsKey('notification')) {
+      final dynamic notification = message['notification'];
+    }
+  }
+
+  _parseNotification(RemoteNotification notification) async {
+    print("message${notification.body}");
+    // showSimpleNotification(
+    //     Text(
+    //       notification.body!,
+    //       style: kBodyText2TextStyle.copyWith(color: Colors.white),
+    //     ),
+    //     duration: const Duration(seconds: 10),
+    //     background: AppColor.primary,
+    //     elevation: 0);
+  }
+
 }

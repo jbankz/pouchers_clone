@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/screens/account_settings/account_settings.dart';
-import 'package:pouchers/modules/login/screens/login.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/common/listener.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/account/screens/account_settings/account_settings.dart';
+import 'package:Pouchers/modules/login/screens/login.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class ResetSuccessful extends StatelessWidget {
   static const String routeName = "resetSuccessful";
@@ -25,7 +25,6 @@ class ResetSuccessful extends StatelessWidget {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
         onTap: () {
-          print(isChangePassword);
           isResetPin!
               ? Navigator.popUntil(context,
                   (route) => route.settings.name == AccountSettings.routeName)

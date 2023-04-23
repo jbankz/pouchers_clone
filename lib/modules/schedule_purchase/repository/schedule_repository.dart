@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pouchers/app/helpers/network_helpers.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/helpers/service_response.dart';
-import 'package:pouchers/modules/login/models/login_response.dart';
-import 'package:pouchers/modules/schedule_purchase/service/schedule_service.dart';
-import 'package:pouchers/modules/utilities/model/utilities_model.dart';
-import 'package:pouchers/utils/strings.dart';
+import 'package:Pouchers/app/helpers/network_helpers.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/app/helpers/service_response.dart';
+import 'package:Pouchers/modules/login/models/login_response.dart';
+import 'package:Pouchers/modules/schedule_purchase/service/schedule_service.dart';
+import 'package:Pouchers/modules/utilities/model/utilities_model.dart';
+import 'package:Pouchers/utils/strings.dart';
 
 final scheduleRepoProvider =
     Provider.autoDispose<ScheduleRepository>((ref) => ScheduleRepository(ref));

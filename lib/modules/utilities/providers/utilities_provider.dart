@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/modules/onboarding/model/onboarding_model.dart';
-import 'package:pouchers/modules/utilities/model/utilities_model.dart';
-import 'package:pouchers/modules/utilities/repository/utilities_repository.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/modules/onboarding/model/onboarding_model.dart';
+import 'package:Pouchers/modules/utilities/model/utilities_model.dart';
+import 'package:Pouchers/modules/utilities/repository/utilities_repository.dart';
 
 final buyVoucherProvider = StateNotifierProvider.autoDispose<BuyVoucherNotifier,
     NotifierState<String>>((ref) {

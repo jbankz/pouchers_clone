@@ -1,7 +1,7 @@
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/helpers/response_handler.dart';
-import 'package:pouchers/modules/create_account/models/create_account_response.dart';
-import 'package:pouchers/modules/login/repository/log_in_repository.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/app/helpers/response_handler.dart';
+import 'package:Pouchers/modules/create_account/models/create_account_response.dart';
+import 'package:Pouchers/modules/login/repository/log_in_repository.dart';
 import 'package:riverpod/riverpod.dart';
 
 final logInProvider = StateNotifierProvider.autoDispose<

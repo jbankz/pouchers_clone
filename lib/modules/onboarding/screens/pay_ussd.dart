@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/modules/account/screens/two_factor_auth/copy_code.dart';
-import 'package:pouchers/modules/make_payment/models/make_payment_model.dart';
-import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
-import 'package:pouchers/modules/onboarding/screens/welcome_guest.dart';
-import 'package:pouchers/modules/utilities/providers/utilities_provider.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/flushbar.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/modules/account/screens/two_factor_auth/copy_code.dart';
+import 'package:Pouchers/modules/make_payment/models/make_payment_model.dart';
+import 'package:Pouchers/modules/make_payment/providers/payment_providers.dart';
+import 'package:Pouchers/modules/onboarding/screens/welcome_guest.dart';
+import 'package:Pouchers/modules/utilities/providers/utilities_provider.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/flushbar.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PayWithUssd extends ConsumerStatefulWidget {

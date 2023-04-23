@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/login/screens/login.dart';
-import 'package:pouchers/modules/onboarding/screens/onboarding.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/common/listener.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/login/screens/login.dart';
+import 'package:Pouchers/modules/onboarding/screens/onboarding.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class DisableSuccessful extends StatefulWidget {
   static const String routeName = "disableSuccessful";

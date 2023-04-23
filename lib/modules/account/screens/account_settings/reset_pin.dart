@@ -1,17 +1,19 @@
+import 'package:Pouchers/modules/account/screens/change_password/change_password.dart';
+import 'package:Pouchers/utils/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/app/common/credentials.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/helpers/response_handler.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/providers/account_provider.dart';
-import 'package:pouchers/modules/login/screens/login.dart';
-import 'package:pouchers/modules/login/screens/reset_successful.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/flushbar.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/common/credentials.dart';
+import 'package:Pouchers/app/common/listener.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/app/helpers/response_handler.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
+import 'package:Pouchers/modules/login/screens/login.dart';
+import 'package:Pouchers/modules/login/screens/reset_successful.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/flushbar.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class ResetPin extends ConsumerStatefulWidget {
   static const String routeName = "resetPin";
@@ -124,10 +126,32 @@ class _ResetPinState extends ConsumerState<ResetPin> {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
                                 ref.read(resetPinProvider.notifier).resetPin(
-                                    oldPin: _pin!, newPin: _pin2Controller.text, );
+                                      oldPin: _pin!,
+                                      newPin: _pin2Controller.text,
+                                    );
                               }
                             }
                           },
+                        ),
+                        inkWell(
+                          onTap: () {
+                            pushTo(
+                                context,
+                                ChangePassword(
+                                  changePhone: false,
+                                  forgotPin: true,
+                                ),
+                                settings: const RouteSettings(
+                                    name: ChangePassword.routeName));
+                          },
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              forgotPinText,
+                              style: textTheme.headline2,
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -148,7 +172,8 @@ class _ResetPinState extends ConsumerState<ResetPin> {
                           isChangePassword: false,
                           message: resetPinSuccess,
                         ),
-                        settings: RouteSettings(name: ResetSuccessful.routeName));
+                        settings:
+                            RouteSettings(name: ResetSuccessful.routeName));
                   } else if (next.status == NotifierStatus.error) {
                     showErrorBar(context, next.message!);
                   }

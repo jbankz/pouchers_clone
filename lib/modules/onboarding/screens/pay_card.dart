@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/onboarding/screens/guest_widget.dart';
-import 'package:pouchers/modules/onboarding/screens/welcome_guest.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/onboarding/screens/guest_widget.dart';
+import 'package:Pouchers/modules/onboarding/screens/welcome_guest.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class PayWithCard extends StatefulWidget {
   static const String routeName = "payWithCard";

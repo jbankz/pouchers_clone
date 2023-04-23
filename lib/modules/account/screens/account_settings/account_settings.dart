@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/app/helpers/size_config.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/providers/account_provider.dart';
-import 'package:pouchers/modules/account/screens/account_settings/biometric_settings.dart';
-import 'package:pouchers/modules/account/screens/account_settings/change_pin.dart';
-import 'package:pouchers/modules/account/screens/change_password/change_password.dart';
-import 'package:pouchers/modules/account/screens/delete_account/delete_account.dart';
-import 'package:pouchers/modules/account/screens/disable_account/disable_account.dart';
-import 'package:pouchers/modules/account/screens/two_factor_auth/two_factor.dart';
-import 'package:pouchers/modules/account/screens/two_factor_auth/two_factor_disable.dart';
-import 'package:pouchers/modules/login/models/login_response.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/common/listener.dart';
+import 'package:Pouchers/app/helpers/size_config.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
+import 'package:Pouchers/modules/account/screens/account_settings/biometric_settings.dart';
+import 'package:Pouchers/modules/account/screens/account_settings/change_pin.dart';
+import 'package:Pouchers/modules/account/screens/change_password/change_password.dart';
+import 'package:Pouchers/modules/account/screens/delete_account/delete_account.dart';
+import 'package:Pouchers/modules/account/screens/disable_account/disable_account.dart';
+import 'package:Pouchers/modules/account/screens/two_factor_auth/two_factor.dart';
+import 'package:Pouchers/modules/account/screens/two_factor_auth/two_factor_disable.dart';
+import 'package:Pouchers/modules/login/models/login_response.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 class AccountSettings extends ConsumerStatefulWidget {
   static const String routeName = "accountSettings";

@@ -4,27 +4,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:pouchers/app/common/credentials.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/app/common/model.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/models/ui_models_class.dart';
-import 'package:pouchers/modules/account/screens/disable_account/disable_modal.dart';
-import 'package:pouchers/modules/login/models/login_response.dart';
-import 'package:pouchers/modules/make_payment/models/make_payment_model.dart';
-import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
-import 'package:pouchers/modules/make_payment/screens/make_payment_widgets.dart';
-import 'package:pouchers/modules/make_payment/screens/transfer_success.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/constant/ui_constants.dart';
-import 'package:pouchers/utils/flushbar.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/utils.dart';
-import 'package:pouchers/utils/widgets.dart';
-import 'package:pouchers/utils/input_formatters.dart';
+import 'package:Pouchers/app/common/credentials.dart';
+import 'package:Pouchers/app/common/listener.dart';
+import 'package:Pouchers/app/common/model.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/account/models/ui_models_class.dart';
+import 'package:Pouchers/modules/account/screens/disable_account/disable_modal.dart';
+import 'package:Pouchers/modules/login/models/login_response.dart';
+import 'package:Pouchers/modules/make_payment/models/make_payment_model.dart';
+import 'package:Pouchers/modules/make_payment/providers/payment_providers.dart';
+import 'package:Pouchers/modules/make_payment/screens/make_payment_widgets.dart';
+import 'package:Pouchers/modules/make_payment/screens/transfer_success.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/constant/ui_constants.dart';
+import 'package:Pouchers/utils/flushbar.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/utils.dart';
+import 'package:Pouchers/utils/widgets.dart';
+import 'package:Pouchers/utils/input_formatters.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
 
@@ -549,13 +549,13 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                             else if (contactInfo.isEmpty)
                               showErrorBar(context,
                                   "Please choose a user to request from");
-                            else if (double.parse(wholeText) >
+                            else if ((double.parse(wholeText) >
                                 double.parse(ref
                                         .watch(getWalletProvider)
                                         .data!
                                         .data!
                                         .balance ??
-                                    "0")) {
+                                    "0" )) && !widget.isRequestMoney!){
                               showErrorBar(context, insufficient);
                             } else
                               buildShowModalBottomSheet(

@@ -3,21 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:pouchers/app/common/credentials.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/app/common/model.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/account/models/ui_models_class.dart';
-import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
-import 'package:pouchers/modules/utilities/model/utilities_model.dart';
-import 'package:pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/flushbar.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/common/credentials.dart';
+import 'package:Pouchers/app/common/listener.dart';
+import 'package:Pouchers/app/common/model.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/account/models/ui_models_class.dart';
+import 'package:Pouchers/modules/make_payment/providers/payment_providers.dart';
+import 'package:Pouchers/modules/utilities/model/utilities_model.dart';
+import 'package:Pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/flushbar.dart';
+import 'package:Pouchers/utils/input_formatters.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 
 import '../../providers/utilities_provider.dart';
 import 'package:local_auth_android/local_auth_android.dart';
@@ -356,7 +357,7 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
                           ),
                           Expanded(
                             child: Text(
-                              "${done["firstName"]} ${done["lastName"]}",
+                              "${done["firstName"].toString().toTitleCase2()} ${done["lastName"].toString().toTitleCase2()}",
                               style: textTheme.headline4!.copyWith(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 
 class RewardsContainer extends StatelessWidget {
   final Widget widget, icon;

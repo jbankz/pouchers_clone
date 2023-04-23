@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:pouchers/app/common/credentials.dart';
-import 'package:pouchers/app/common/model.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/make_payment/providers/payment_providers.dart';
-import 'package:pouchers/modules/onboarding/screens/guest_widget.dart';
-import 'package:pouchers/modules/onboarding/screens/pay_card.dart';
-import 'package:pouchers/modules/onboarding/screens/pay_ussd.dart';
-import 'package:pouchers/modules/tab_layout/screens/homepage/fund_wallet.dart';
-import 'package:pouchers/modules/tab_layout/screens/tab_layout.dart';
-import 'package:pouchers/modules/utilities/providers/utilities_provider.dart';
-import 'package:pouchers/modules/utilities/screens/webview_page.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/constant/ui_constants.dart';
-import 'package:pouchers/utils/extras.dart';
-import 'package:pouchers/utils/flushbar.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/utils.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/common/credentials.dart';
+import 'package:Pouchers/app/common/model.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/make_payment/providers/payment_providers.dart';
+import 'package:Pouchers/modules/onboarding/screens/guest_widget.dart';
+import 'package:Pouchers/modules/onboarding/screens/pay_card.dart';
+import 'package:Pouchers/modules/onboarding/screens/pay_ussd.dart';
+import 'package:Pouchers/modules/tab_layout/screens/homepage/fund_wallet.dart';
+import 'package:Pouchers/modules/tab_layout/screens/tab_layout.dart';
+import 'package:Pouchers/modules/utilities/providers/utilities_provider.dart';
+import 'package:Pouchers/modules/utilities/screens/webview_page.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/constant/ui_constants.dart';
+import 'package:Pouchers/utils/extras.dart';
+import 'package:Pouchers/utils/flushbar.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/utils.dart';
+import 'package:Pouchers/utils/widgets.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
 
@@ -826,7 +826,7 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                     .watch(getWalletProvider)
                                     .data!
                                     .data!
-                                    .balance!) <
+                                    .balance!) <=
                                 double.parse(widget.amount)
                             ? () {}
                             : () async {

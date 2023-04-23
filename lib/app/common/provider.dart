@@ -1,10 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/app/common/repo.dart';
-import 'package:pouchers/app/helpers/network_helpers.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/login/screens/login.dart';
+import 'package:Pouchers/app/common/repo.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
 
 final refreshProvider =
     StateNotifierProvider<RefreshNotifier, NotifierState<String>>((ref) {
@@ -21,7 +17,8 @@ class RefreshNotifier extends StateNotifier<NotifierState<String>> {
     state = await _repo.refreshTokenRepo();
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
-    }else if(state.message == ""){
+    }else if(state.message!.contains("not exist")){
+      print("not exist");
       // pushToAndClearStack(context, LogInAccount(
       //   sessionTimeOut: true,
       // ));

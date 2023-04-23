@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:intl/intl.dart';
-import 'package:pouchers/utils/logger.dart';
+import 'package:Pouchers/utils/logger.dart';
 
 class Utils {
   static String handleRequestError(Exception e) {

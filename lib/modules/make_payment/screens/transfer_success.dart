@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
-import 'package:pouchers/app/common/listener.dart';
-import 'package:pouchers/app/navigators/navigators.dart';
-import 'package:pouchers/modules/make_payment/models/make_payment_model.dart';
-import 'package:pouchers/modules/make_payment/screens/make_payment_widgets.dart';
-import 'package:pouchers/modules/make_payment/screens/transaction_receipt.dart';
-import 'package:pouchers/modules/schedule_purchase/screens/schedule_transfer.dart';
-import 'package:pouchers/modules/tab_layout/screens/tab_layout.dart';
-import 'package:pouchers/utils/assets_path.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
-import 'package:pouchers/utils/strings.dart';
-import 'package:pouchers/utils/widgets.dart';
+import 'package:Pouchers/app/common/listener.dart';
+import 'package:Pouchers/app/navigators/navigators.dart';
+import 'package:Pouchers/modules/make_payment/models/make_payment_model.dart';
+import 'package:Pouchers/modules/make_payment/screens/make_payment_widgets.dart';
+import 'package:Pouchers/modules/make_payment/screens/transaction_receipt.dart';
+import 'package:Pouchers/modules/schedule_purchase/screens/schedule_transfer.dart';
+import 'package:Pouchers/modules/tab_layout/screens/tab_layout.dart';
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:Pouchers/utils/widgets.dart';
 import 'dart:math' as math;
 
 class TransferSuccess extends StatelessWidget {

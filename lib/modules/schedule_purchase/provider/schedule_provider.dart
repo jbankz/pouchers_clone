@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pouchers/app/helpers/notifiers.dart';
-import 'package:pouchers/modules/schedule_purchase/repository/schedule_repository.dart';
-import 'package:pouchers/modules/utilities/model/utilities_model.dart';
+import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:Pouchers/modules/schedule_purchase/repository/schedule_repository.dart';
+import 'package:Pouchers/modules/utilities/model/utilities_model.dart';
 
 final scheduleP2PProvider = StateNotifierProvider.autoDispose<
     ScheduleP2PNotifier, NotifierState<String>>((ref) {

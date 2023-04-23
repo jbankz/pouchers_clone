@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pouchers/app/helpers/size_config.dart';
-import 'package:pouchers/utils/components.dart';
-import 'package:pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/app/helpers/size_config.dart';
+import 'package:Pouchers/utils/components.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 
 class TransactionDate extends StatelessWidget {
   final String text;
@@ -211,23 +211,23 @@ class MySeparator extends StatelessWidget {
   }
 }
 
-String changeCatNme(String name) {
+String changeCatNme(String name, String currency, String subCat, String beneficiary) {
   String cat = "";
   switch (name) {
     case "airtime-purchase":
-      cat = "Airtime Purchase";
+      cat = "Airtime Purchase ($subCat)";
       break;
     case "data-purchase":
-      cat = "Data Purchase";
+      cat = "Data Purchase ($subCat)";
       break;
     case "cable-purchase":
-      cat = "Cable Purchase";
+      cat = "Cable Purchase ($subCat)";
       break;
     case "electricity-purchase":
-      cat = "Electricity Purchase";
+      cat = "Electricity Purchase ($subCat)";
       break;
     case "internet-purchase":
-      cat = "Internet Purchase";
+      cat = "Internet Purchase ($subCat)";
       break;
     case "voucher-redeem":
       cat = "Vouchers Redeem";
@@ -236,39 +236,42 @@ String changeCatNme(String name) {
       cat = "Vouchers Purchase";
       break;
     case "p2p-transfer":
-      cat = "Money Transfer";
+      cat = "Money Transfer (P2P)";
       break;
     case "fund-wallet":
       cat = "Wallet Funding";
       break;
     case "create-virtual-card":
-      cat = "Virtual Card Created";
+      cat = "Virtual Card Created ($currency)";
       break;
     case "fund-virtual-card":
-      cat = "Virtual Card Funded";
+      cat = "Virtual Card Funded ($currency)";
       break;
     case "local-bank-transfer":
-      cat = "Money Transfer";
+      cat = "Money Transfer (Bank)";
       break;
     case "betting_purchase":
-      cat = "Betting Purchase";
+      cat = "Betting Purchase ($subCat)";
+      break;
+    case "referral-bonus-payment":
+      cat = "Referral Bonus ($beneficiary)";
       break;
   }
   return cat;
 }
 
-String finalCatName(String currency, String itemCat){
-  String cat ='';
-  if(changeCatNme(itemCat) == "Virtual Card Funded" && currency == "NGN" ){
-    cat = "Virtual Card Funded (NGN)";
-  }else if(changeCatNme(itemCat) == "Virtual Card Funded" && currency == "USD"){
-    cat = "Virtual Card Funded (USD)";
-  }else if(changeCatNme(itemCat) == "Virtual Card Created" && currency == "USD"){
-    cat = "Virtual Card Created (USD)";
-  }else if(changeCatNme(itemCat) == "Virtual Card Created" && currency == "NGN"){
-    cat = "Virtual Card Created (NGN)";
-  }else{
-    cat = changeCatNme(itemCat);
-  }
-  return cat;
-}
+// String finalCatName(String currency, String itemCat){
+//   String cat ='';
+//   if(changeCatNme(itemCat) == "Virtual Card Funded" && currency == "NGN" ){
+//     cat = "Virtual Card Funded (NGN)";
+//   }else if(changeCatNme(itemCat) == "Virtual Card Funded" && currency == "USD"){
+//     cat = "Virtual Card Funded (USD)";
+//   }else if(changeCatNme(itemCat) == "Virtual Card Created" && currency == "USD"){
+//     cat = "Virtual Card Created (USD)";
+//   }else if(changeCatNme(itemCat) == "Virtual Card Created" && currency == "NGN"){
+//     cat = "Virtual Card Created (NGN)";
+//   }else{
+//     cat = changeCatNme(itemCat);
+//   }
+//   return cat;
+// }
