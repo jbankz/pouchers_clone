@@ -146,19 +146,6 @@ class _ResidentialAddressState extends State<ResidentialAddress> {
                         ),
                       ],
                     ),
-                    // FormDropdown(
-                    //     hint: selectState,
-                    //     value: _selectedState,
-                    //     hintColor: kIconGrey,
-                    //     onChanged: (String? val) {
-                    //       _selectedState = val;
-                    //     },
-                    //     items: nigeriaStates
-                    //         .map((e) => DropdownMenuItem(
-                    //               child: Text(e),
-                    //               value: e,
-                    //             ))
-                    //         .toList()),
                     SizedBox(
                       height: kMediumPadding,
                     ),

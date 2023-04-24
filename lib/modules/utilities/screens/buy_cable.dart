@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:Pouchers/app/common/listener.dart';
@@ -26,7 +29,8 @@ class BuyCable extends ConsumerStatefulWidget {
   final bool? isGuest;
   final String? name, email;
 
-  const BuyCable({Key? key, this.isGuest, this.name, this.email}) : super(key: key);
+  const BuyCable({Key? key, this.isGuest, this.name, this.email})
+      : super(key: key);
 
   @override
   ConsumerState<BuyCable> createState() => _BuyCableState();
@@ -42,7 +46,37 @@ class _BuyCableState extends ConsumerState<BuyCable> {
   String cardNo = "";
   String? threshold;
   String? discountValue;
+  String error = "";
 
+  Timer? searchOnStoppedTyping;
+
+  _onChangeHandler(value) {
+    if (value!.isEmpty) {
+      setState(() => cardNo = "");
+    } else {
+      setState(() {
+        cardNo = value;
+      });
+      const duration = Duration(seconds: 1);
+      if (searchOnStoppedTyping != null) {
+        setState(() => searchOnStoppedTyping!.cancel()); // clear timer
+      }
+      setState(() => searchOnStoppedTyping = new Timer(duration, () {
+            FocusScope.of(context).unfocus();
+            search(value);
+          }));
+    }
+  }
+
+  search(value) {
+    if (utilitiesData != null && cardNo.isNotEmpty) {
+      ref.read(validateUtilitiesProvider.notifier).validateUtilities(
+          merchantAccount: utilitiesData!.operatorpublicid!,
+          merchantReferenceNumber: cardNo);
+    } else {
+      showErrorBar(context, "Please choose a provider or card number");
+    }
+  }
 
   @override
   void initState() {
@@ -50,7 +84,6 @@ class _BuyCableState extends ConsumerState<BuyCable> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(getUtilitiesProvider.notifier).getUtilities(utility: "cable");
       ref.read(getDiscountProvider.notifier).getDiscount(utility: "cable");
-
     });
   }
 
@@ -59,7 +92,9 @@ class _BuyCableState extends ConsumerState<BuyCable> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: cable,
-      child: widget.isGuest! ? cableColumn(context, textTheme) : ListenerPage(child: cableColumn(context, textTheme)),
+      child: widget.isGuest!
+          ? cableColumn(context, textTheme)
+          : ListenerPage(child: cableColumn(context, textTheme)),
     );
   }
 
@@ -78,6 +113,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                       utilitiesData = result;
                       paymentType = null;
                     });
+                    search("");
                     ref
                         .read(getUtilitiesTypeProvider.notifier)
                         .getUtilitiesType(
@@ -94,8 +130,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: kMediumPadding),
+                        padding: EdgeInsets.symmetric(vertical: kMediumPadding),
                         child: Row(
                           children: [
                             Text(
@@ -147,16 +182,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
-                onChanged: (val) {
-                  if (val!.isEmpty) {
-                    setState(() => cardNo = "");
-                  } else {
-                    setState(() {
-                      cardNo = val;
-                    });
-                  }
-                  ;
-                },
+                onChanged: _onChangeHandler,
                 icon: inkWell(
                   onTap: () async {
                     final PhoneContact contact =
@@ -171,6 +197,47 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                   ),
                 ),
               ),
+              ref.watch(validateUtilitiesProvider).when(done: (done) {
+                if (done != null) {
+                  return Row(
+                    children: [
+                      Text(
+                        done,
+                        style: textTheme.headline4!.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                      )
+                    ],
+                  );
+                } else
+                  return SizedBox();
+              }, loading: () {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SpinKitThreeBounce(
+                      color: kPrimaryColor,
+                      size: 15.0,
+                    ),
+                  ],
+                );
+              }, error: (val) {
+                error = val ?? "";
+                return Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        val ?? "",
+                        style: textTheme.headline4!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: kColorRed),
+                      ),
+                    )
+                  ],
+                );
+              }),
               SizedBox(
                 height: kSmallPadding,
               ),
@@ -181,12 +248,12 @@ class _BuyCableState extends ConsumerState<BuyCable> {
               SizedBox(
                 height: kSmallPadding,
               ),
-              ref.watch(getDiscountProvider).when(done: (done){
-                if(done != null){
+              ref.watch(getDiscountProvider).when(done: (done) {
+                if (done != null) {
                   threshold = done.data!.threshold ?? "0";
                   discountValue = done.data!.discountValue ?? "0";
                   return SizedBox();
-                }else{
+                } else {
                   return SizedBox();
                 }
               }),
@@ -196,7 +263,10 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                     : () async {
                         final result = await buildShowModalBottomSheet(
                             context,
-                            SubscriptionModal(paymentItem: utilitiesType, discountValue: discountValue, threshold: threshold ));
+                            SubscriptionModal(
+                                paymentItem: utilitiesType,
+                                discountValue: discountValue,
+                                threshold: threshold));
                         if (result != null) {
                           setState(() => paymentType = result);
                         }
@@ -355,11 +425,11 @@ class _BuyCableState extends ConsumerState<BuyCable> {
           var _widget = LargeButton(
             title: continueText,
             disableColor:
-                (paymentType == null || cardNo == "" || utilitiesData == null)
+                (paymentType == null || cardNo == "" || utilitiesData == null || error.isNotEmpty)
                     ? kBackgroundColor
                     : kPrimaryColor,
             onPressed:
-                (paymentType == null || cardNo == "" || utilitiesData == null)
+                (paymentType == null || cardNo == "" || utilitiesData == null || error.isNotEmpty)
                     ? () {}
                     : () {
                         buildShowModalBottomSheet(

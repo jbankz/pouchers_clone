@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:Pouchers/app/common/listener.dart';
@@ -49,6 +52,41 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
   String? threshold;
   String? discountValue;
 
+  Timer? searchOnStoppedTyping;
+  String error = "";
+
+  _onChangeHandler(value) {
+    if (value!.isEmpty) {
+      setState(() => _meterNo = "");
+    } else {
+      setState(() {
+        _meterNo = value;
+      });
+      const duration = Duration(
+          seconds:
+          1); // set the duration that you want call search() after that.
+      if (searchOnStoppedTyping != null) {
+        setState(() => searchOnStoppedTyping!.cancel()); // clear timer
+      }
+      setState(() => searchOnStoppedTyping = new Timer(duration, () {
+        FocusScope.of(context).unfocus();
+        search(value);
+      }));
+    }
+  }
+
+  search(value) {
+    if(utilitiesData != null && _meterNo.isNotEmpty){
+      ref.read(validateUtilitiesProvider.notifier).validateUtilities(
+          merchantAccount: utilitiesData!.operatorpublicid!,
+          merchantReferenceNumber: _meterNo);
+      print('hello world from search . the value is $value');
+    }else{
+      showErrorBar(context, "Please choose a provider or meter number");
+    }
+
+  }
+
   @override
   void initState() {
     super.initState();
@@ -86,6 +124,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                       utilitiesData = result;
                       paymentType = null;
                     });
+                    search("");
                     ref
                         .read(getUtilitiesTypeProvider.notifier)
                         .getUtilitiesType(
@@ -249,16 +288,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
-                onChanged: (val) {
-                  if (val!.isEmpty) {
-                    setState(() => _meterNo = "");
-                  } else {
-                    setState(() {
-                      _meterNo = val;
-                    });
-                  }
-                  ;
-                },
+                onChanged: _onChangeHandler,
                 icon: inkWell(
                   onTap: () async {
                     final PhoneContact contact =
@@ -273,6 +303,47 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                   ),
                 ),
               ),
+              ref.watch(validateUtilitiesProvider).when(done: (done) {
+                if (done != null) {
+                  return Row(
+                    children: [
+                      Text(
+                        done,
+                        style: textTheme.headline4!.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                      )
+                    ],
+                  );
+                } else
+                  return SizedBox();
+              }, loading: () {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SpinKitThreeBounce(
+                      color: kPrimaryColor,
+                      size: 15.0,
+                    ),
+                  ],
+                );
+              }, error: (val) {
+                error = val ?? "";
+                return Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        val ?? "",
+                        style: textTheme.headline4!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: kColorRed),
+                      ),
+                    )
+                  ],
+                );
+              }),
               SizedBox(
                 height: kSmallPadding,
               ),
@@ -430,13 +501,13 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
             disableColor: (paymentType == null ||
                     _meterNo == "" ||
                     utilitiesData == null ||
-                    _amount == "")
+                    _amount == "" || error.isNotEmpty)
                 ? kBackgroundColor
                 : kPrimaryColor,
             onPressed: (paymentType == null ||
                     _meterNo == "" ||
                     utilitiesData == null ||
-                    _amount == "")
+                    _amount == "" || error.isNotEmpty)
                 ? () {}
                 : () {
                     FocusScope.of(context).unfocus();

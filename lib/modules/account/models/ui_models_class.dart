@@ -505,6 +505,7 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print("utility is ${widget.utility}");
     getUserCred();
   }
 

@@ -1,6 +1,10 @@
+import 'dart:async';
+
+import 'package:Pouchers/utils/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:Pouchers/app/common/listener.dart';
@@ -40,6 +44,40 @@ class _BettingState extends ConsumerState<Betting> {
   Service? paymentType;
   String? threshold;
 
+  String error = "";
+
+  Timer? searchOnStoppedTyping;
+
+  _onChangeHandler(value) {
+    if (value!.isEmpty) {
+      setState(() => contactController.text = "");
+    } else {
+      setState(() {
+        contactController.text = value;
+        contactController.selection = TextSelection.fromPosition(
+            TextPosition(offset: contactController.text.length));
+      });
+      const duration = Duration(seconds: 1);
+      if (searchOnStoppedTyping != null) {
+        setState(() => searchOnStoppedTyping!.cancel()); // clear timer
+      }
+      setState(() => searchOnStoppedTyping = new Timer(duration, () {
+        FocusScope.of(context).unfocus();
+        search(value);
+      }));
+    }
+  }
+
+  search(value) {
+    if (utilitiesData != null && contactController.text.isNotEmpty) {
+      ref.read(validateUtilitiesProvider.notifier).validateUtilities(
+          merchantAccount: utilitiesData!.operatorpublicid!,
+          merchantReferenceNumber: contactController.text);
+    } else {
+      showErrorBar(context, "Please choose a provider or account ID");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -75,6 +113,7 @@ class _BettingState extends ConsumerState<Betting> {
                         utilitiesData = result;
                         paymentType = null;
                       });
+                      search("");
                       ref
                           .read(getUtilitiesTypeProvider.notifier)
                           .getUtilitiesType(
@@ -139,19 +178,7 @@ class _BettingState extends ConsumerState<Betting> {
                   text: accountId,
                   controller: contactController,
                   hintText: "Enter $accountId",
-                  onChanged: (val){
-                    if(val!= null){
-                      setState(() {
-                        contactController.text = val;
-                      });
-                    }else{
-                      setState(() {
-                        contactController.text = "";
-                      });
-                    }
-                    contactController.selection = TextSelection.fromPosition(
-                        TextPosition(offset: contactController.text.length));
-                  },
+                  onChanged: _onChangeHandler,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                   ],
@@ -172,6 +199,47 @@ class _BettingState extends ConsumerState<Betting> {
                     ),
                   ),
                 ),
+                ref.watch(validateUtilitiesProvider).when(done: (done) {
+                  if (done != null) {
+                    return Row(
+                      children: [
+                        Text(
+                          done,
+                          style: textTheme.headline4!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                        )
+                      ],
+                    );
+                  } else
+                    return SizedBox();
+                }, loading: () {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SpinKitThreeBounce(
+                        color: kPrimaryColor,
+                        size: 15.0,
+                      ),
+                    ],
+                  );
+                }, error: (val) {
+                  error = val ?? "";
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          val ?? "",
+                          style: textTheme.headline4!.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                              color: kColorRed),
+                        ),
+                      )
+                    ],
+                  );
+                }),
                 ref.watch(getDiscountProvider).when(
                     loading: () {
                       return SpinKitDemo();
@@ -415,13 +483,13 @@ class _BettingState extends ConsumerState<Betting> {
             disableColor: (amountController.text.isEmpty ||
                     _amount.isEmpty || utilitiesData == null ||
                     contactController.text.isEmpty ||
-                    _amount.startsWith("0"))
+                    _amount.startsWith("0") || error.isNotEmpty)
                 ? kPurpleColor100
                 : kPrimaryColor,
             outlineButton: false,
             onPressed: amountController.text.isEmpty ||
                     _amount.isEmpty || utilitiesData == null ||
-                    contactController.text.isEmpty ||
+                    contactController.text.isEmpty ||  error.isNotEmpty ||
                     _amount.startsWith("0")
                 ? () {}
                 : () {

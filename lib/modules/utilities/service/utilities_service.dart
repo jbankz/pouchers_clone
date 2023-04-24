@@ -341,6 +341,46 @@ class UtilitiesService {
     }
   }
 
+  static Future<ServiceResponse<String>> validateUtilities(
+      {
+        required String merchantAccount,
+        required String merchantReferenceNumber,
+      }) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+      // HttpHeaders.authorizationHeader: "Bearer $token"
+    };
+
+    String url =  "${baseUrl()}/utility/customer-validation";
+    Map<String, dynamic> _body =  {
+      "merchantAccount": merchantAccount,
+      "merchantReferenceNumber": merchantReferenceNumber,
+    };
+
+    logPrint(url);
+    logPrint("what is body $_body");
+
+    try {
+      http.Response response = await http.post(Uri.parse(url),
+          headers: _authHeaders, body: jsonEncode(_body));
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<String>(
+          data: responseBody["message"],
+          message: responseBody["message"],
+        );
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<String>(error, stack);
+    }
+  }
+
   static Future<ServiceResponse<String>> buyAirtime(
       {required String subCategory,
       required String category,

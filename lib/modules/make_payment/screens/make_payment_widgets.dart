@@ -857,28 +857,84 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                         List<GetAllBanksResponseData> uniquelist =
                             banks.where((bank) => seen.add(bank.name)).toList();
                         uniquelist.sort((a,b) => a.name.toUpperCase().compareTo(b.name.toUpperCase()));
-                        return FormDropdown<GetAllBanksResponseData>(
-                            hint: selectBankText,
-                            value: _selectedBank,
-                            onChanged: (GetAllBanksResponseData? val) {
-                              _selectedBank = val;
-                              if (accNumberController.text.isNotEmpty &&
-                                  accNumberController.text.length == 10) {
-                                ref
-                                    .read(getAccountDetailsProvider.notifier)
-                                    .getAccountDetails(
-                                        accountNumber: accNumberController.text,
-                                        amount: "100.00",
-                                        bankName: _selectedBank!.name);
-                              }
-                            },
-                            items: uniquelist
-                                .map((e) =>
-                                    DropdownMenuItem<GetAllBanksResponseData>(
-                                      child: Text(e.name),
-                                      value: e,
-                                    ))
-                                .toList());
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Container(
+                              height: 60,
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(horizontal: 15),
+                              decoration: BoxDecoration(
+                                borderRadius: kBorderSmallRadius,
+                                color: kBackgroundColor,
+                                // border: Border.all(
+                                //   color: borderColor,
+                                // ),
+                              ),
+                              child: Center(
+                                child: DropdownButton(
+                                  value: _selectedBank,
+                                  itemHeight: 60,
+                                  isExpanded: true,
+                                  borderRadius: kBorderMidRadius,
+                                  hint: Text(
+                                    selectBankText,
+                                    style: textTheme.subtitle1!.copyWith(
+                                        color: kIconGrey),
+                                  ),
+                                  style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
+                                  icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                                  underline: const SizedBox(),
+                                  menuMaxHeight:
+                                  MediaQuery.of(context).size.height / 2,
+                                  onChanged: (GetAllBanksResponseData? val) {
+                                    setState(() {
+                                      _selectedBank = val;
+                                          if (accNumberController.text.isNotEmpty &&
+                                              accNumberController.text.length == 10) {
+                                            ref
+                                                .read(getAccountDetailsProvider.notifier)
+                                                .getAccountDetails(
+                                                    accountNumber: accNumberController.text,
+                                                    amount: "100.00",
+                                                    bankName: _selectedBank!.name);
+                                          }
+                                    });
+
+                                  },
+                                  items: uniquelist
+                                      .map((e) => DropdownMenuItem(
+                                    child: Text(e.name),
+                                    value: e,
+                                  ))
+                                      .toList(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                          // FormDropdown<GetAllBanksResponseData>(
+                          //   hint: selectBankText,
+                          //   value: _selectedBank,
+                          //   onChanged: (GetAllBanksResponseData? val) {
+                          //     _selectedBank = val;
+                          //     if (accNumberController.text.isNotEmpty &&
+                          //         accNumberController.text.length == 10) {
+                          //       ref
+                          //           .read(getAccountDetailsProvider.notifier)
+                          //           .getAccountDetails(
+                          //               accountNumber: accNumberController.text,
+                          //               amount: "100.00",
+                          //               bankName: _selectedBank!.name);
+                          //     }
+                          //   },
+                          //   items: uniquelist
+                          //       .map((e) =>
+                          //           DropdownMenuItem<GetAllBanksResponseData>(
+                          //             child: Text(e.name),
+                          //             value: e,
+                          //           ))
+                          //       .toList());
                       } else {
                         return _widget;
                       }

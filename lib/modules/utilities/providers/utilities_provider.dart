@@ -46,6 +46,11 @@ final buyUtilitiesProvider = StateNotifierProvider.autoDispose<
   return BuyUtilitiesNotifier(ref.read(utilitiesRepoProvider));
 });
 
+final validateUtilitiesProvider = StateNotifierProvider.autoDispose<
+    ValidateUtilitiesNotifier, NotifierState<String>>((ref) {
+  return ValidateUtilitiesNotifier(ref.read(utilitiesRepoProvider));
+});
+
 final buyAirtimeProvider = StateNotifierProvider.autoDispose<BuyAirtimeNotifier,
     NotifierState<String>>((ref) {
   return BuyAirtimeNotifier(ref.read(utilitiesRepoProvider));
@@ -279,6 +284,31 @@ class BuyUtilitiesNotifier extends StateNotifier<NotifierState<String>>
         applyDiscount : applyDiscount,
         frequency: frequency,
         subCategory: subCategory,
+        merchantReferenceNumber: merchantReferenceNumber,
+        merchantAccount: merchantAccount);
+    if (state.status == NotifierStatus.done) {
+      if (then != null) then();
+    } else if (state.status == NotifierStatus.error) {
+      if (error != null) error(state.message ?? state.data ?? "");
+    }
+  }
+}
+
+
+class ValidateUtilitiesNotifier extends StateNotifier<NotifierState<String>>
+   {
+  final UtilitiesRepository _repo;
+
+  ValidateUtilitiesNotifier(this._repo) : super(NotifierState());
+
+  void validateUtilities(
+      {
+      required String merchantAccount,
+      required String merchantReferenceNumber,
+      Function()? then,
+      Function(String)? error}) async {
+    state = notifyLoading();
+    state = await _repo.validateUtilities(
         merchantReferenceNumber: merchantReferenceNumber,
         merchantAccount: merchantAccount);
     if (state.status == NotifierStatus.done) {

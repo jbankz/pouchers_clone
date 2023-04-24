@@ -183,6 +183,29 @@ class UtilitiesRepository {
     return buyUtilities.toNotifierState();
   }
 
+  Future<NotifierState<String>> validateUtilities({
+    required String merchantAccount,
+    required String merchantReferenceNumber,
+  }) async {
+
+    ServiceResponse<String> validateUtilities;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    validateUtilities = await UtilitiesService.validateUtilities(
+      merchantAccount: merchantAccount,
+      merchantReferenceNumber: merchantReferenceNumber,
+    );
+
+    if (validateUtilities.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      validateUtilities = await UtilitiesService.validateUtilities(
+        merchantAccount: merchantAccount,
+        merchantReferenceNumber: merchantReferenceNumber,
+       );
+    }
+    return  validateUtilities.toNotifierState();
+  }
+
   Future<NotifierState<String>> buyAirtime({
     required String subCategory,
     required String amount,
