@@ -506,6 +506,84 @@ class GetWalletData {
   };
 }
 
+class NotificationResponse {
+  String? status;
+  String? message;
+  int? code;
+  NotificationData? data;
+
+  NotificationResponse({
+     this.status,
+     this.message,
+     this.code,
+     this.data,
+  });
+
+  factory NotificationResponse.fromJson(Map<String, dynamic> json) => NotificationResponse(
+    status: json["status"],
+    message: json["message"],
+    code: json["code"],
+    data: NotificationData.fromJson(json["data"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "message": message,
+    "code": code,
+    "data": data!.toJson(),
+  };
+}
+
+class NotificationData {
+  List<Notification> notifications;
+  int total;
+  String page;
+
+  NotificationData({
+    required this.notifications,
+    required this.total,
+    required this.page,
+  });
+
+  factory NotificationData.fromJson(Map<String, dynamic> json) => NotificationData(
+    notifications: json["notfications"] == null ? [] : List<Notification>.from(json["notfications"].map((x) => Notification.fromJson(x))),
+    total: json["total"],
+    page: json["page"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "notfications": List<dynamic>.from(notifications.map((x) => x.toJson())),
+    "total": total,
+    "page": page,
+  };
+}
+
+class Notification {
+  String? title;
+  String? body;
+  DateTime? createdAt;
+
+  Notification({
+     this.title,
+     this.body,
+     this.createdAt,
+  });
+
+  factory Notification.fromJson(Map<String, dynamic> json) => Notification(
+    title: json["title"],
+    body: json["body"],
+    createdAt: DateTime.parse(json["created_at"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "title": title,
+    "body": body,
+    "created_at": createdAt!.toIso8601String(),
+  };
+}
+
+
+
 
 
 

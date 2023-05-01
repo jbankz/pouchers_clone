@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:Pouchers/utils/components.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
@@ -22,8 +24,8 @@ class _ProfileModalState extends State<ProfileModal> {
     return makeDismissible(
       context: context,
       child: DraggableScrollableSheet(
-        initialChildSize: 0.37,
-        maxChildSize: 0.37,
+        initialChildSize: Platform.isIOS ? 0.38  :0.53,
+        maxChildSize:  Platform.isIOS ? 0.38  : 0.53,
         builder: (_, controller) => Container(
           padding: const EdgeInsets.only(top: 10),
           decoration: BoxDecoration(

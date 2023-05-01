@@ -186,6 +186,8 @@ class UtilitiesRepository {
   Future<NotifierState<String>> validateUtilities({
     required String merchantAccount,
     required String merchantReferenceNumber,
+    required String merchantProductCode,
+
   }) async {
 
     ServiceResponse<String> validateUtilities;
@@ -193,14 +195,15 @@ class UtilitiesRepository {
     validateUtilities = await UtilitiesService.validateUtilities(
       merchantAccount: merchantAccount,
       merchantReferenceNumber: merchantReferenceNumber,
+      merchantProductCode: merchantProductCode
     );
 
     if (validateUtilities.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
       validateUtilities = await UtilitiesService.validateUtilities(
         merchantAccount: merchantAccount,
         merchantReferenceNumber: merchantReferenceNumber,
+        merchantProductCode: merchantProductCode
        );
     }
     return  validateUtilities.toNotifierState();

@@ -312,4 +312,36 @@ class PaymentService {
       return processServiceError<GetWalletResponse>(error, stack);
     }
   }
+
+
+  static Future<ServiceResponse<NotificationResponse>> getNotifications({
+    required String token,
+  }) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    };
+
+    String url = "${baseUrl()}/notification";
+
+    logPrint(url);
+    try {
+      http.Response response = await http.get(Uri.parse(url),
+          headers: _authHeaders,);
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<NotificationResponse>(
+            data: NotificationResponse.fromJson(responseBody),
+            message: responseBody["message"]);
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<NotificationResponse>(error, stack);
+    }
+  }
 }

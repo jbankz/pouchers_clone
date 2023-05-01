@@ -1,4 +1,5 @@
 import 'package:Pouchers/data/fcmtoken.dart';
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:Pouchers/utils/logger.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,10 @@ import 'package:Pouchers/utils/components.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:overlay_support/overlay_support.dart';
 
-class TabLayout extends StatefulWidget {
+class TabLayout extends ConsumerStatefulWidget {
   static const String routeName = "tabLayout";
 
   final int? gottenIndex;
@@ -28,7 +31,7 @@ class TabLayout extends StatefulWidget {
   _TabLayoutState createState() => _TabLayoutState();
 }
 
-class _TabLayoutState extends State<TabLayout> with ResponseHandler {
+class _TabLayoutState extends ConsumerState<TabLayout> with ResponseHandler {
   int _selectedIndex = 0;
   int extCount = 0;
 
@@ -165,6 +168,8 @@ class _TabLayoutState extends State<TabLayout> with ResponseHandler {
             (String? token) {
           assert(token != null);
           logPrint("tokehhghn$token");
+          ref.read(editProfileProvider.notifier).editProfile(
+              fcmToken: token);
           //ref
               // .read(sendFCMTokenProvider.notifier)
               // .sendFCMToken(fcmToken: token!);
@@ -185,14 +190,14 @@ class _TabLayoutState extends State<TabLayout> with ResponseHandler {
 
   _parseNotification(RemoteNotification notification) async {
     print("message${notification.body}");
-    // showSimpleNotification(
-    //     Text(
-    //       notification.body!,
-    //       style: kBodyText2TextStyle.copyWith(color: Colors.white),
-    //     ),
-    //     duration: const Duration(seconds: 10),
-    //     background: AppColor.primary,
-    //     elevation: 0);
+    showSimpleNotification(
+        Text(
+          notification.body!,
+          style: kHeadline6Style.copyWith(color: Colors.white),
+        ),
+        duration: const Duration(seconds: 10),
+        background: kPrimaryColor,
+        elevation: 0);
   }
 
 }

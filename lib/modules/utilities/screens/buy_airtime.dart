@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,524 +62,570 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: airtime,
-      child: widget.isGuest! ?  airtimeColumn(textTheme, context) : ListenerPage(
-        child: airtimeColumn(textTheme, context),
-      ),
+      child: widget.isGuest!
+          ? airtimeColumn(textTheme, context)
+          : ListenerPage(
+              child: airtimeColumn(textTheme, context),
+            ),
     );
   }
 
   Column airtimeColumn(TextTheme textTheme, BuildContext context) {
     return Column(
-        children: [
-          Expanded(
-            child: ListView(
-              children: [
-                TextInputNoIcon(
-                  textTheme: textTheme,
-                  text: mobileNumber,
-                  controller: contactController,
-                  onChanged: (val) {
-                    if (val!.isNotEmpty) {
+      children: [
+        Expanded(
+          child: ListView(
+            children: [
+              TextInputNoIcon(
+                textTheme: textTheme,
+                text: mobileNumber,
+                controller: contactController,
+                onChanged: (val) {
+                  if (val!.isNotEmpty) {
+                    setState(() {
+                      contactController.text = val;
+                    });
+                  } else {
+                    setState(() {
+                      contactController.text = "";
+                    });
+                  }
+                  contactController.selection = TextSelection.fromPosition(
+                      TextPosition(offset: contactController.text.length));
+                },
+                inputFormatters: [LengthLimitingTextInputFormatter(11)],
+                icon: inkWell(
+                  onTap: () async {
+                    bool granted =
+                        await FlutterContactPicker.requestPermission();
+                    if (granted) {
+                      final PhoneContact contact =
+                          await FlutterContactPicker.pickPhoneContact();
                       setState(() {
-                        contactController.text = val;
+                        String phoneReplaced = "";
+                        String phoneReplaced1 = "";
+                        String phoneReplaced2 = "";
+
+                        phoneReplaced = contact.phoneNumber!.number!
+                            .replaceAll("+234", "0");
+                        phoneReplaced1 = phoneReplaced.replaceAll("234", "0");
+                        phoneReplaced2 = phoneReplaced1.replaceAll(" ", "");
+
+                        contactController.text = phoneReplaced2;
                       });
-                    } else {
-                      setState(() {
-                        contactController.text = "";
-                      });
+                      contactController.selection = TextSelection.fromPosition(
+                          TextPosition(offset: contactController.text.length));
                     }
-                    contactController.selection = TextSelection.fromPosition(
-                        TextPosition(offset: contactController.text.length));
                   },
-                  inputFormatters: [LengthLimitingTextInputFormatter(11)],
-                  icon: inkWell(
-                    onTap: () async {
-                      bool granted =
-                          await FlutterContactPicker.requestPermission();
-                      if (granted) {
-                        final PhoneContact contact =
-                            await FlutterContactPicker.pickPhoneContact();
-                        setState(() {
-                          String phoneReplaced = "";
-                          String phoneReplaced1 = "";
-                          String phoneReplaced2 = "";
-
-                          phoneReplaced = contact.phoneNumber!.number!
-                              .replaceAll("+234", "0");
-                          phoneReplaced1 = phoneReplaced.replaceAll("234", "0");
-                          phoneReplaced2 = phoneReplaced1.replaceAll(" ", "");
-
-                          contactController.text = phoneReplaced2;
-                        });
-                        contactController.selection =
-                            TextSelection.fromPosition(TextPosition(
-                                offset: contactController.text.length));
-                      }
-                    },
-                    child: SvgPicture.asset(
-                      AssetPaths.contactBook,
-                      fit: BoxFit.scaleDown,
-                    ),
+                  child: SvgPicture.asset(
+                    AssetPaths.contactBook,
+                    fit: BoxFit.scaleDown,
                   ),
                 ),
-                SizedBox(
-                  height: kPadding,
-                ),
-                Text(
-                  selectProvider,
-                  style: textTheme.headline3,
-                ),
-                SizedBox(
-                  height: kSmallPadding,
-                ),
-                ref.watch(getUtilitiesProvider).when(
-                      done: (provider) {
-                        if (provider != null) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: provider.data!
-                                .mapIndexed(
-                                  (index, element) => inkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        currentIndex = index;
-                                        billerData = element;
-                                      });
-                                    },
-                                    child: Stack(
-                                      children: [
-                                        Container(
-                                            padding:
-                                                EdgeInsets.all(kRegularPadding),
-                                            height: 70,
-                                            width: 70,
-                                            margin: EdgeInsets.only(
-                                                right: kSmallPadding),
-                                            decoration: BoxDecoration(
-                                                color: currentIndex == index
-                                                    ? kLightPurple
-                                                    : kContainerColor,
-                                                shape: BoxShape.circle),
-                                            child: SvgPicture.asset(icon(
-                                                provider.data![index]
-                                                    .displayName!))),
-                                        currentIndex == index
-                                            ? Positioned(
-                                                bottom: 0,
-                                                right: 0,
-                                                child: Container(
-                                                    padding: EdgeInsets.all(3),
-                                                    decoration: BoxDecoration(
-                                                        color: kPurpleColor,
-                                                        shape: BoxShape.circle),
-                                                    child: Icon(
-                                                      Icons.check,
-                                                      color: kPrimaryWhite,
-                                                      size: 15,
-                                                    )),
-                                              )
-                                            : SizedBox(),
-                                      ],
-                                    ),
+              ),
+              SizedBox(
+                height: kPadding,
+              ),
+              Text(
+                selectProvider,
+                style: textTheme.headline3,
+              ),
+              SizedBox(
+                height: kSmallPadding,
+              ),
+              ref.watch(getUtilitiesProvider).when(
+                    done: (provider) {
+                      if (provider != null) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: provider.data!
+                              .mapIndexed(
+                                (index, element) => inkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      currentIndex = index;
+                                      billerData = element;
+                                    });
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                          padding:
+                                              EdgeInsets.all(kRegularPadding),
+                                          height: 70,
+                                          width: 70,
+                                          margin: EdgeInsets.only(
+                                              right: kSmallPadding),
+                                          decoration: BoxDecoration(
+                                              color: currentIndex == index
+                                                  ? kLightPurple
+                                                  : kContainerColor,
+                                              shape: BoxShape.circle),
+                                          child: CachedNetworkImage(
+                                            imageUrl: element.logoUrl == null
+                                                ? ""
+                                                : element.logoUrl!,
+                                            placeholder: (context, url) =>
+                                                Container(
+                                              color: Colors.transparent,
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(kPrimaryColor),
+                                                ),
+                                              ),
+                                            ),
+                                            fit: BoxFit.scaleDown,
+                                            errorWidget: (context, url,
+                                                    error) =>
+                                                element.logoUrl != null
+                                                    ? Image.network(
+                                                        element.logoUrl!,
+                                                        fit: BoxFit.fill,
+                                                        loadingBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                Widget child,
+                                                                ImageChunkEvent?
+                                                                    loadingProgress) {
+                                                          if (loadingProgress ==
+                                                              null)
+                                                            return child;
+                                                          return Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              value: loadingProgress
+                                                                          .expectedTotalBytes !=
+                                                                      null
+                                                                  ? loadingProgress
+                                                                          .cumulativeBytesLoaded /
+                                                                      loadingProgress
+                                                                          .expectedTotalBytes!
+                                                                  : null,
+                                                            ),
+                                                          );
+                                                        },
+                                                      )
+                                                    : Center(
+                                                        child: Text(
+                                                            "${element.displayName}",
+                                                            style: textTheme
+                                                                .headline4!
+                                                                .copyWith(
+                                                                    // color: kPrimaryColor,
+                                                                    fontSize:
+                                                                        10)),
+                                                      ),
+                                          )),
+                                      currentIndex == index
+                                          ? Positioned(
+                                              bottom: 0,
+                                              right: 0,
+                                              child: Container(
+                                                  padding: EdgeInsets.all(3),
+                                                  decoration: BoxDecoration(
+                                                      color: kPurpleColor,
+                                                      shape: BoxShape.circle),
+                                                  child: Icon(
+                                                    Icons.check,
+                                                    color: kPrimaryWhite,
+                                                    size: 15,
+                                                  )),
+                                            )
+                                          : SizedBox(),
+                                    ],
                                   ),
-                                )
-                                .toList(),
+                                ),
+                              )
+                              .toList(),
+                        );
+                      } else {
+                        return SizedBox();
+                      }
+                    },
+                    loading: () => SpinKitDemo(),
+                    error: (val) => Text(
+                      "No Provider for now",
+                      style: textTheme.subtitle2,
+                    ),
+                  ),
+              SizedBox(
+                height: kSmallPadding,
+              ),
+              widget.isGuest!
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          topDeal,
+                          style: textTheme.headline3,
+                        ),
+                        SizedBox(
+                          height: kSmallPadding,
+                        ),
+                        GridView.count(
+                          primary: false,
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          crossAxisCount: 3,
+                          childAspectRatio:
+                              SizeConfig.blockSizeHorizontal! / 3.4,
+                          children: List.generate(
+                            guestList.length,
+                            (index) => Column(
+                              children: [
+                                inkWell(
+                                  onTap: () {
+                                    buildShowModalBottomSheet(
+                                        context, GuestDiscountModal());
+                                  },
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: kLightPurple),
+                                          borderRadius: BorderRadius.circular(
+                                              kSmallPadding)),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(kPadding),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(
+                                                    kSmallPadding),
+                                                topLeft: Radius.circular(
+                                                    kSmallPadding),
+                                              ),
+                                              color: kPurpleColor,
+                                            ),
+                                            child: Text(
+                                              "2% cashback",
+                                              style:
+                                                  textTheme.headline4!.copyWith(
+                                                color: kLightPurple,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: kSmallPadding,
+                                          ),
+                                          RichText(
+                                            text: TextSpan(
+                                              text: "₦",
+                                              style: TextStyle(
+                                                color: kPrimaryTextColor,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14,
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                  text: guestList[index].icon,
+                                                  style: textTheme.subtitle1!
+                                                      .copyWith(
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: kRegularPadding,
+                                          ),
+                                        ],
+                                      )),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  : ref.watch(getDiscountProvider).when(
+                      loading: () {
+                        return SpinKitDemo();
+                      },
+                      error: (val) => SizedBox(),
+                      done: (done) {
+                        if (done != null) {
+                          threshold = done.data!.threshold;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                topDeal,
+                                style: textTheme.headline3,
+                              ),
+                              SizedBox(
+                                height: kSmallPadding,
+                              ),
+                              GridView.count(
+                                primary: false,
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                crossAxisCount: 3,
+                                childAspectRatio:
+                                    SizeConfig.blockSizeHorizontal! / 3.4,
+                                children: List.generate(
+                                  guestList.length,
+                                  (index) => Column(
+                                    children: [
+                                      inkWell(
+                                        onTap: () {
+                                          widget.isGuest!
+                                              ? buildShowModalBottomSheet(
+                                                  context, GuestDiscountModal())
+                                              : setState(() {
+                                                  amountController.text =
+                                                      guestList[index].icon;
+                                                  _amount =
+                                                      guestList[index].icon;
+                                                  dealCurrentIndex = index;
+                                                });
+                                          amountController.selection =
+                                              TextSelection.fromPosition(
+                                                  TextPosition(
+                                                      offset: amountController
+                                                          .text.length));
+                                        },
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                color: dealCurrentIndex == index
+                                                    ? kLightPurple
+                                                    : kTransparent,
+                                                border: Border.all(
+                                                    color: kLightPurple),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        kSmallPadding)),
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  padding:
+                                                      EdgeInsets.all(kPadding),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      topRight: Radius.circular(
+                                                          kSmallPadding),
+                                                      topLeft: Radius.circular(
+                                                          kSmallPadding),
+                                                    ),
+                                                    color: kPurpleColor,
+                                                  ),
+                                                  child: done.data!.threshold ==
+                                                          null
+                                                      ? Text(
+                                                          "0% cashback",
+                                                          style: textTheme
+                                                              .headline4!
+                                                              .copyWith(
+                                                            color: kLightPurple,
+                                                          ),
+                                                        )
+                                                      : Text(
+                                                          double.parse(done
+                                                                      .data!
+                                                                      .threshold!) <=
+                                                                  double.parse(
+                                                                      guestList[
+                                                                              index]
+                                                                          .icon)
+                                                              ? "${done.data!.discountValue}% cashback"
+                                                              : "0% cashback",
+                                                          style: textTheme
+                                                              .headline4!
+                                                              .copyWith(
+                                                            color: kLightPurple,
+                                                          ),
+                                                        ),
+                                                ),
+                                                SizedBox(
+                                                  height: kSmallPadding,
+                                                ),
+                                                RichText(
+                                                  text: TextSpan(
+                                                    text: "₦",
+                                                    style: TextStyle(
+                                                      color: kPrimaryTextColor,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 14,
+                                                    ),
+                                                    children: [
+                                                      TextSpan(
+                                                        text: guestList[index]
+                                                            .icon,
+                                                        style: textTheme
+                                                            .subtitle1!
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: kRegularPadding,
+                                                ),
+                                              ],
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
                           );
                         } else {
                           return SizedBox();
                         }
-                      },
-                      loading: () => SpinKitDemo(),
-                      error: (val) => Text(
-                        "No Provider for now",
-                        style: textTheme.subtitle2,
-                      ),
-                    ),
-                SizedBox(
-                  height: kSmallPadding,
-                ),
-                widget.isGuest!
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            topDeal,
-                            style: textTheme.headline3,
-                          ),
-                          SizedBox(
-                            height: kSmallPadding,
-                          ),
-                          GridView.count(
-                            primary: false,
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            crossAxisCount: 3,
-                            childAspectRatio:
-                                SizeConfig.blockSizeHorizontal! / 3.4,
-                            children: List.generate(
-                              guestList.length,
-                              (index) => Column(
-                                children: [
-                                  inkWell(
-                                    onTap: () {
-                                      buildShowModalBottomSheet(
-                                          context, GuestDiscountModal());
-                                    },
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                            border:
-                                                Border.all(color: kLightPurple),
-                                            borderRadius: BorderRadius.circular(
-                                                kSmallPadding)),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.all(kPadding),
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.only(
-                                                  topRight: Radius.circular(
-                                                      kSmallPadding),
-                                                  topLeft: Radius.circular(
-                                                      kSmallPadding),
-                                                ),
-                                                color: kPurpleColor,
-                                              ),
-                                              child: Text(
-                                                "2% cashback",
-                                                style: textTheme.headline4!
-                                                    .copyWith(
-                                                  color: kLightPurple,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: kSmallPadding,
-                                            ),
-                                            RichText(
-                                              text: TextSpan(
-                                                text: "₦",
-                                                style: TextStyle(
-                                                  color: kPrimaryTextColor,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14,
-                                                ),
-                                                children: [
-                                                  TextSpan(
-                                                    text: guestList[index].icon,
-                                                    style: textTheme.subtitle1!
-                                                        .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: kRegularPadding,
-                                            ),
-                                          ],
-                                        )),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      )
-                    : ref.watch(getDiscountProvider).when(
-                        loading: () {
-                          return SpinKitDemo();
-                        },
-                        error: (val) => SizedBox(),
-                        done: (done) {
-                          if (done != null) {
-                            threshold = done.data!.threshold;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  topDeal,
-                                  style: textTheme.headline3,
-                                ),
-                                SizedBox(
-                                  height: kSmallPadding,
-                                ),
-                                GridView.count(
-                                  primary: false,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  crossAxisCount: 3,
-                                  childAspectRatio:
-                                      SizeConfig.blockSizeHorizontal! / 3.4,
-                                  children: List.generate(
-                                    guestList.length,
-                                    (index) => Column(
-                                      children: [
-                                        inkWell(
-                                          onTap: () {
-                                            widget.isGuest!
-                                                ? buildShowModalBottomSheet(
-                                                    context,
-                                                    GuestDiscountModal())
-                                                : setState(() {
-                                                    amountController.text =
-                                                        guestList[index].icon;
-                                                    _amount =
-                                                        guestList[index].icon;
-                                                    dealCurrentIndex = index;
-                                                  });
-                                            amountController.selection =
-                                                TextSelection.fromPosition(
-                                                    TextPosition(
-                                                        offset: amountController
-                                                            .text.length));
-                                          },
-                                          child: Container(
-                                              decoration: BoxDecoration(
-                                                  color:
-                                                      dealCurrentIndex == index
-                                                          ? kLightPurple
-                                                          : kTransparent,
-                                                  border: Border.all(
-                                                      color: kLightPurple),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          kSmallPadding)),
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    padding: EdgeInsets.all(
-                                                        kPadding),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.only(
-                                                        topRight:
-                                                            Radius.circular(
-                                                                kSmallPadding),
-                                                        topLeft:
-                                                            Radius.circular(
-                                                                kSmallPadding),
-                                                      ),
-                                                      color: kPurpleColor,
-                                                    ),
-                                                    child:
-                                                        done.data!.threshold ==
-                                                                null
-                                                            ? Text(
-                                                                "0% cashback",
-                                                                style: textTheme
-                                                                    .headline4!
-                                                                    .copyWith(
-                                                                  color:
-                                                                      kLightPurple,
-                                                                ),
-                                                              )
-                                                            : Text(
-                                                                double.parse(done
-                                                                            .data!
-                                                                            .threshold!) <=
-                                                                        double.parse(
-                                                                            guestList[index].icon)
-                                                                    ? "${done.data!.discountValue}% cashback"
-                                                                    : "0% cashback",
-                                                                style: textTheme
-                                                                    .headline4!
-                                                                    .copyWith(
-                                                                  color:
-                                                                      kLightPurple,
-                                                                ),
-                                                              ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: kSmallPadding,
-                                                  ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      text: "₦",
-                                                      style: TextStyle(
-                                                        color:
-                                                            kPrimaryTextColor,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 14,
-                                                      ),
-                                                      children: [
-                                                        TextSpan(
-                                                          text: guestList[index]
-                                                              .icon,
-                                                          style: textTheme
-                                                              .subtitle1!
-                                                              .copyWith(
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: kRegularPadding,
-                                                  ),
-                                                ],
-                                              )),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
-                            );
-                          } else {
-                            return SizedBox();
-                          }
-                        }),
-                SizedBox(
-                  height: kSmallPadding,
-                ),
-                Text(
-                  enterAmount,
-                  style: textTheme.headline6,
-                ),
-                SizedBox(
-                  height: kSmallPadding,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
-                  cursorColor: kPrimaryColor,
-                  controller: amountController,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (val) {
-                    if (val != null || val!.isNotEmpty) if (val
-                        .startsWith("0")) {
-                      return "Amount cannot start with zero";
-                    } else
-                      return null;
-                  },
-                  onChanged: (val) {
-                    if (val.isNotEmpty) {
-                      if (lastInputValue != val) {
-                        lastInputValue = val;
-                        setState(() {
-                          dealCurrentIndex = -1;
-                        });
-                      }
+                      }),
+              SizedBox(
+                height: kSmallPadding,
+              ),
+              Text(
+                enterAmount,
+                style: textTheme.headline6,
+              ),
+              SizedBox(
+                height: kSmallPadding,
+              ),
+              TextFormField(
+                keyboardType: TextInputType.text,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
+                cursorColor: kPrimaryColor,
+                controller: amountController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (val) {
+                  if (val != null || val!.isNotEmpty) if (val.startsWith("0")) {
+                    return "Amount cannot start with zero";
+                  } else
+                    return null;
+                },
+                onChanged: (val) {
+                  if (val.isNotEmpty) {
+                    if (lastInputValue != val) {
+                      lastInputValue = val;
+                      setState(() {
+                        dealCurrentIndex = -1;
+                      });
                     }
-                    setState(() {
-                      _amount = val;
-                      amountController.text = val;
-                      amountController.selection = TextSelection.fromPosition(
-                        TextPosition(offset: amountController.text.length),
-                      );
-                    });
-                  },
-                  decoration: InputDecoration(
-                    filled: true,
-                    isDense: true,
-                    prefix: RichText(
-                      text: TextSpan(
-                        text: "₦  ",
-                        style: TextStyle(
-                          color: kPrimaryTextColor,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18,
-                        ),
+                  }
+                  setState(() {
+                    _amount = val;
+                    amountController.text = val;
+                    amountController.selection = TextSelection.fromPosition(
+                      TextPosition(offset: amountController.text.length),
+                    );
+                  });
+                },
+                decoration: InputDecoration(
+                  filled: true,
+                  isDense: true,
+                  prefix: RichText(
+                    text: TextSpan(
+                      text: "₦  ",
+                      style: TextStyle(
+                        color: kPrimaryTextColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
                       ),
-                    ),
-                    fillColor: kBackgroundColor,
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(style: BorderStyle.none),
-                      borderRadius: BorderRadius.circular(kSmallPadding),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: kPrimaryColor),
-                      borderRadius: BorderRadius.circular(kSmallPadding),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(kSmallPadding),
-                      borderSide: BorderSide(color: kColorRed),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(kSmallPadding),
-                      borderSide: BorderSide(color: kColorRed),
                     ),
                   ),
+                  fillColor: kBackgroundColor,
+                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(style: BorderStyle.none),
+                    borderRadius: BorderRadius.circular(kSmallPadding),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: kPrimaryColor),
+                    borderRadius: BorderRadius.circular(kSmallPadding),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(kSmallPadding),
+                    borderSide: BorderSide(color: kColorRed),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(kSmallPadding),
+                    borderSide: BorderSide(color: kColorRed),
+                  ),
                 ),
-                SizedBox(
-                  height: kMicroPadding,
-                ),
-                widget.isGuest!
-                    ? SizedBox()
-                    : Scheduling(
-                        text: scheduleAirtime,
-                        subtext: scheduleAirtimeSub,
-                        onTap: () => pushTo(
-                            context,
-                            ScheduleAirtimeTopUp(
-                              amount: amountController.text,
-                              contactNumber: contactController.text,
-                              billerData: billerData,
-                            ),
-                            settings: RouteSettings(
-                                name: ScheduleAirtimeTopUp.routeName)),
-                      ),
-                SizedBox(
-                  height: kMicroPadding,
-                )
-              ],
-            ),
+              ),
+              SizedBox(
+                height: kMicroPadding,
+              ),
+              widget.isGuest!
+                  ? SizedBox()
+                  : Scheduling(
+                      text: scheduleAirtime,
+                      subtext: scheduleAirtimeSub,
+                      onTap: () => pushTo(
+                          context,
+                          ScheduleAirtimeTopUp(
+                            amount: amountController.text,
+                            contactNumber: contactController.text,
+                            billerData: billerData,
+                          ),
+                          settings: RouteSettings(
+                              name: ScheduleAirtimeTopUp.routeName)),
+                    ),
+              SizedBox(
+                height: kMicroPadding,
+              )
+            ],
           ),
-          LargeButton(
-            title: continueText,
-            disableColor: amountController.text.isEmpty ||
-                    _amount.isEmpty ||
-                    _amount.startsWith("0") ||
-                    billerData == null ||
-                    contactController.text.isEmpty
-                ? kPurpleColor100
-                : kPrimaryColor,
-            outlineButton: false,
-            onPressed: amountController.text.isEmpty ||
-                    contactController.text.isEmpty ||
-                    billerData == null ||
-                    _amount.isEmpty ||
-                    _amount.startsWith("0")
-                ? () {
-
+        ),
+        LargeButton(
+          title: continueText,
+          disableColor: amountController.text.isEmpty ||
+                  _amount.isEmpty ||
+                  _amount.startsWith("0") ||
+                  billerData == null ||
+                  contactController.text.isEmpty
+              ? kPurpleColor100
+              : kPrimaryColor,
+          outlineButton: false,
+          onPressed: amountController.text.isEmpty ||
+                  contactController.text.isEmpty ||
+                  billerData == null ||
+                  _amount.isEmpty ||
+                  _amount.startsWith("0")
+              ? () {}
+              : () {
+                  if (double.parse(amountController.text) > 10000 &&
+                      widget.isGuest!) {
+                    buildShowModalBottomSheet(
+                        context, GuestMaximumAmountModal());
+                  } else {
+                    buildShowModalBottomSheet(
+                      context,
+                      RechargeSummary(
+                        textTheme: textTheme,
+                        amount: amountController.text,
+                        category: "airtime-purchase",
+                        isGuest: widget.isGuest!,
+                        name: widget.name,
+                        email: widget.email,
+                        threshold: threshold ?? "0",
+                        recipientNo: contactController.text,
+                        billerName: billerData!.name!,
+                        billerId: billerData!.operatorpublicid!,
+                        billerLogo: icon(billerData!.displayName!),
+                      ),
+                    );
                   }
-                : () {
-
-                    if (double.parse(amountController.text) > 10000 &&
-                        widget.isGuest!) {
-                      buildShowModalBottomSheet(
-                          context, GuestMaximumAmountModal());
-                    } else {
-                      buildShowModalBottomSheet(
-                        context,
-                        RechargeSummary(
-                          textTheme: textTheme,
-                          amount: amountController.text,
-                          category: "airtime-purchase",
-                          isGuest: widget.isGuest!,
-                          name: widget.name,
-                          email: widget.email,
-                          threshold: threshold ?? "0",
-                          recipientNo: contactController.text,
-                          billerName: billerData!.name!,
-                          billerId: billerData!.operatorpublicid!,
-                          billerLogo: icon(billerData!.displayName!),
-                        ),
-                      );
-                    }
-                  },
-          )
-        ],
-      );
+                },
+        )
+      ],
+    );
   }
 
   String icon(String displayName) {

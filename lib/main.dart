@@ -4,11 +4,13 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:Pouchers/app/helpers/response_handler.dart';
 import 'package:Pouchers/app/helpers/service_constants.dart';
@@ -22,8 +24,10 @@ import 'package:Pouchers/utils/strings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Intercom.instance.initialize(interComAppId, iosApiKey: interComIOSKey, androidApiKey: interComAndroidKey);
-  Env.setEnvironment(EnvState.production);
+  await dotenv.load();
+  await Intercom.instance.initialize(interComAppId,
+      iosApiKey: interComIOSKey, androidApiKey: interComAndroidKey);
+  Env.setEnvironment(EnvState.test);
   await Firebase.initializeApp();
   Directory directory = await path.getApplicationDocumentsDirectory();
   // await FlutterDownloader.initialize(
@@ -74,60 +78,22 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with ResponseHandler {
-
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
       observers: [
         ProviderLogger(),
       ],
-      child:
-      //Listener(
-        // onPointerDown: (e) {
-        //   DateTime whenTouchedDatetime = DateTime.now();
-        //   print("now date $nowDate");
-        //   print("whenTouchedDatetime $whenTouchedDatetime");
-        //   if (nowDate.isBefore(whenTouchedDatetime)) {
-        //     print("it is after");
-        //     // if(_navigatorKey.currentState != null){
-        //       _navigatorKey.currentState!.pushAndRemoveUntil(
-        //           MaterialPageRoute(builder: (_) {
-        //             return LogInAccount(
-        //                 sessionTimeOut: true
-        //             );
-        //           }), (route) => false);
-        //    //}
-        //     // else{
-        //     //   print("kmkmd");
-        //     //   pushToAndClearStack(context, LogInAccount(
-        //     //       sessionTimeOut: true
-        //     //   ));
-        //     // }
-        //
-        //     setState(() {
-        //       nowDate = DateTime.now().add(Duration(minutes: 5));
-        //     });
-        //   } else {
-        //     nowDate = DateTime.now().add(Duration(minutes: 5));
-        //   }
-        // },
-       // child:
-        MaterialApp(
+      child: OverlaySupport.global(
+        child: MaterialApp(
             title: "Pouchers",
             theme: kThemeData,
             debugShowCheckedModeBanner: false,
             home: OnBoardingPage(),
-            // Navigator(
-            //   key: _navigatorKey,
-            //   onGenerateRoute: (settings) {
-            //     return MaterialPageRoute(builder: (context) {
-            //       return OnBoardingPage();
-            //     });
-            //   },
-            // ),
             routes: appRoutes),
-      );
-  //  );
+      ),
+    );
+    //  );
   }
 }
 

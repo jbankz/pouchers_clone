@@ -1,6 +1,8 @@
 const String interComAppId = "INTERCOM_APP_ID";
 const String interComAndroidKey = "INTERCOM_ANDROID_KEY";
 const String interComIOSKey = "INTERCOM_IOS_KEY";
+String kDojahAppId = "DOJAH_APP_ID";
+String kDojahPublicKey = "DOJAH_PUBLIC_KEY";
 
 const String kHiveEncryptionKey = "hiveKey";
 const String kHivePinKey = "hivePinKey";

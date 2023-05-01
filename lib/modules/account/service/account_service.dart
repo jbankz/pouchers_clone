@@ -192,6 +192,7 @@ class AccountService {
     String? dob,
     String? profilePicture,
     String? utilityBill,
+    String? fcmToken,
     bool? isLoginBiometricActive,
     isPaymentBiometricActive,
     required String token,
@@ -214,6 +215,7 @@ class AccountService {
     if (gender != null) body["gender"] = gender;
     if (profilePicture != null) body["profile_picture"] = profilePicture;
     if (utilityBill != null) body["utility_bill"] = utilityBill;
+    if (fcmToken != null) body["fcm_token"] = fcmToken;
     if (isLoginBiometricActive != null)
       body["is_login_biometric_active"] = isLoginBiometricActive;
     if (isPaymentBiometricActive != null)
@@ -276,12 +278,12 @@ class AccountService {
     }
   }
 
-  static Future<ServiceResponse<String>> setSecurityQuestion(
-      {required String questionId,
-      required String answer,
-      required String token,
-      required bool isValidate,
-    }) async {
+  static Future<ServiceResponse<String>> setSecurityQuestion({
+    required String questionId,
+    required String answer,
+    required String token,
+    required bool isValidate,
+  }) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
@@ -292,10 +294,10 @@ class AccountService {
         ? "${baseUrl()}/auth/validate-2fa"
         : "${baseUrl()}/auth/set-questions";
 
-    Map<String, dynamic> body =  {
-            "question_id": questionId,
-            "answer": answer,
-          };
+    Map<String, dynamic> body = {
+      "question_id": questionId,
+      "answer": answer,
+    };
 
     logPrint(url);
     logPrint(questionId);
@@ -535,6 +537,7 @@ class AccountService {
   static Future<ServiceResponse<EditProfileResponse>> validateId(
       {required String idType,
       required String idNumber,
+      String? surname,
       required String token}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
@@ -544,6 +547,9 @@ class AccountService {
 
     String url = "${baseUrl()}/user/validate-id";
     Map<String, dynamic> body = {"id_type": idType, "id_number": idNumber};
+    if (idType == "passport") {
+      body["surname"] = surname;
+    }
 
     logPrint(url);
     logPrint("what is body $body");
@@ -704,10 +710,8 @@ class AccountService {
     }
   }
 
-  static Future<ServiceResponse<bool>> disable2FA({
-    required String token,
-    required String transactionPin
-  }) async {
+  static Future<ServiceResponse<bool>> disable2FA(
+      {required String token, required String transactionPin}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
@@ -719,11 +723,9 @@ class AccountService {
     logPrint(url);
 
     try {
-      http.Response response = await http.patch(
-        Uri.parse(url),
-        headers: _authHeaders,
-        body: jsonEncode({"transactionPin" : transactionPin})
-      );
+      http.Response response = await http.patch(Uri.parse(url),
+          headers: _authHeaders,
+          body: jsonEncode({"transactionPin": transactionPin}));
       logResponse(response);
       var responseBody = jsonDecode(response.body);
       if (response.statusCode >= 300 && response.statusCode <= 520) {

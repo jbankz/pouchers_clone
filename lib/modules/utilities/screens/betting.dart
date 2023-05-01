@@ -69,10 +69,10 @@ class _BettingState extends ConsumerState<Betting> {
   }
 
   search(value) {
-    if (utilitiesData != null && contactController.text.isNotEmpty) {
+    if (utilitiesData != null && contactController.text.isNotEmpty && paymentType != null) {
       ref.read(validateUtilitiesProvider.notifier).validateUtilities(
           merchantAccount: utilitiesData!.operatorpublicid!,
-          merchantReferenceNumber: contactController.text);
+          merchantReferenceNumber: contactController.text, merchantProductCode: paymentType!.code! );
     } else {
       showErrorBar(context, "Please choose a provider or account ID");
     }
@@ -201,6 +201,7 @@ class _BettingState extends ConsumerState<Betting> {
                 ),
                 ref.watch(validateUtilitiesProvider).when(done: (done) {
                   if (done != null) {
+                    error = "";
                     return Row(
                       children: [
                         Text(

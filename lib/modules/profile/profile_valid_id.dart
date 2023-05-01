@@ -1,3 +1,5 @@
+import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:Pouchers/app/common/listener.dart';
@@ -12,6 +14,7 @@ import 'package:Pouchers/utils/components.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ValidId extends StatefulWidget {
   static const String routeName = "validId";
@@ -51,44 +54,46 @@ class _ValidIdState extends State<ValidId> {
                     SizedBox(
                       height: kMacroPadding,
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: kRegularPadding, vertical: kRegularPadding),
-                      decoration: BoxDecoration(
-                          color: kBackgroundColor,
-                          borderRadius: BorderRadius.circular(kSmallPadding)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              _prefixText,
-                              style: textTheme.subtitle1,
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
+                    inkWell(
+                      onTap: () async {
+                        var result = await buildShowModalBottomSheet(
+                            context,
+                            ProfileModal(
+                              methods: idMethodList,
+                            ));
+                        if (result != null) {
+                          if (result.contains("VNIN")) {
+                            setState(() => _prefixText = "Virtual NIN");
+                          } else {
+                            setState(() => _prefixText = result);
+                          }
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: kRegularPadding,
+                            vertical: kRegularPadding),
+                        decoration: BoxDecoration(
+                            color: kBackgroundColor,
+                            borderRadius: BorderRadius.circular(kSmallPadding)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                _prefixText,
+                                style: textTheme.subtitle1,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                          ),
-                          inkWell(
-                              onTap: () async {
-                                var result = await buildShowModalBottomSheet(
-                                    context,
-                                    ProfileModal(
-                                      methods: idMethodList,
-                                    ));
-                                if (result != null) {
-                                  if (result.contains("VNIN")) {
-                                    setState(() => _prefixText = "Virtual NIN");
-                                  } else {
-                                    setState(() => _prefixText = result);
-                                  }
-                                }
-                              },
-                              child: Icon(
-                                Icons.keyboard_arrow_down,
-                                size: 30,
-                                color: kSecondaryTextColor,
-                              )),
-                        ],
+                            Icon(
+                              Icons.keyboard_arrow_down,
+                              size: 30,
+                              color: kSecondaryTextColor,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -97,6 +102,7 @@ class _ValidIdState extends State<ValidId> {
                     TextInputNoIcon(
                       textTheme: textTheme,
                       widget: SizedBox(),
+                      addSpace: false,
                       hintText: enterIdNumber,
                       onSaved: (val) => setState(() => _id = val),
                       validator: (val) {
@@ -105,11 +111,10 @@ class _ValidIdState extends State<ValidId> {
                         } else {
                           return null;
                         }
-                        ;
                       },
                     ),
                     SizedBox(
-                      height: kPadding,
+                      height: kSmallPadding,
                     ),
                     error == ""
                         ? SizedBox()
@@ -117,7 +122,57 @@ class _ValidIdState extends State<ValidId> {
                             error,
                             style: textTheme.headline3!
                                 .copyWith(color: kLightOrange),
-                          )
+                          ),
+                    SizedBox(
+                      height: kSmallPadding,
+                    ),
+                    Text(
+                      "or",
+                      style: textTheme.headline3!.copyWith(color: kIconGrey),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: kSmallPadding,
+                    ),
+                    Center(
+                      child: inkWell(
+                        onTap: ()async{
+
+                            bool? result =
+                                await startDojahWidget(
+                              context,
+                              type: "custom",
+                              config: configObj,
+                            );
+                            if (result != null) {
+                              if (result) {
+
+                              }
+                            }
+
+                        },
+                        child: Container(
+                          width: 130,
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.all(kRegularPadding),
+                          decoration: BoxDecoration(
+                            borderRadius: kBorderRadius,
+                              border: Border.all(color: kLightPurple, width: 1)),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(AssetPaths.uploadIcon),
+                              SizedBox(
+                                width: kSmallPadding,
+                              ),
+                              Text(
+                                "Upload ID",
+                                style: textTheme.headline2!.copyWith(fontSize: 14),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -180,7 +235,6 @@ class _ValidIdState extends State<ValidId> {
                         ),
                         settings: const RouteSettings(
                             name: ProfileSuccessful.routeName));
-                    print("uitlrknkfnk djnjd${next.data!.data!.utilityBill}");
                     ref.read(editProfileInHouseProvider.notifier).state =
                         EditProfileData.fromJson(next.data!.data!.toJson());
                   } else if (next.status == NotifierStatus.error) {
@@ -203,7 +257,10 @@ class _ValidIdState extends State<ValidId> {
                                 ? "drivers_license"
                                 : _prefixText == "Voter’s card"
                                     ? "voters_card"
-                                    : _prefixText.toLowerCase(),
+                                    : _prefixText.contains("passport")
+                                ? "passport"
+                                : _prefixText.toLowerCase(),
+
                             idNumber: _id!);
                       }
                     });

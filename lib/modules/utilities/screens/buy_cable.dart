@@ -69,12 +69,13 @@ class _BuyCableState extends ConsumerState<BuyCable> {
   }
 
   search(value) {
-    if (utilitiesData != null && cardNo.isNotEmpty) {
+    if (utilitiesData != null && cardNo.isNotEmpty && paymentType != null) {
       ref.read(validateUtilitiesProvider.notifier).validateUtilities(
           merchantAccount: utilitiesData!.operatorpublicid!,
-          merchantReferenceNumber: cardNo);
+          merchantReferenceNumber: cardNo,
+          merchantProductCode: paymentType!.code!);
     } else {
-      showErrorBar(context, "Please choose a provider or card number");
+      showErrorBar(context, "Please choose a provider, type or card number");
     }
   }
 
@@ -199,6 +200,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
               ),
               ref.watch(validateUtilitiesProvider).when(done: (done) {
                 if (done != null) {
+                  error = "";
                   return Row(
                     children: [
                       Text(
@@ -269,6 +271,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                                 threshold: threshold));
                         if (result != null) {
                           setState(() => paymentType = result);
+                          search("");
                         }
                       },
                 child: Container(
@@ -424,33 +427,37 @@ class _BuyCableState extends ConsumerState<BuyCable> {
           });
           var _widget = LargeButton(
             title: continueText,
-            disableColor:
-                (paymentType == null || cardNo == "" || utilitiesData == null || error.isNotEmpty)
-                    ? kBackgroundColor
-                    : kPrimaryColor,
-            onPressed:
-                (paymentType == null || cardNo == "" || utilitiesData == null || error.isNotEmpty)
-                    ? () {}
-                    : () {
-                        buildShowModalBottomSheet(
-                          context,
-                          RechargeSummary(
-                            billerName: utilitiesData!.displayName!,
-                            billerId: utilitiesData!.operatorpublicid!,
-                            utility: true,
-                            amount: "${paymentType!.price!}",
-                            billerLogo: "",
-                            threshold: threshold,
-                            name: widget.name,
-                            email: widget.email,
-                            category: "cable-purchase",
-                            billerCode: paymentType!.code,
-                            recipientNo: contactController.text,
-                            textTheme: textTheme,
-                            isGuest: widget.isGuest!,
-                          ),
-                        );
-                      },
+            disableColor: (paymentType == null ||
+                    cardNo == "" ||
+                    utilitiesData == null ||
+                    error.isNotEmpty)
+                ? kBackgroundColor
+                : kPrimaryColor,
+            onPressed: (paymentType == null ||
+                    cardNo == "" ||
+                    utilitiesData == null ||
+                    error.isNotEmpty)
+                ? () {}
+                : () {
+                    buildShowModalBottomSheet(
+                      context,
+                      RechargeSummary(
+                        billerName: utilitiesData!.displayName!,
+                        billerId: utilitiesData!.operatorpublicid!,
+                        utility: true,
+                        amount: "${paymentType!.price!}",
+                        billerLogo: "",
+                        threshold: threshold,
+                        name: widget.name,
+                        email: widget.email,
+                        category: "cable-purchase",
+                        billerCode: paymentType!.code,
+                        recipientNo: contactController.text,
+                        textTheme: textTheme,
+                        isGuest: widget.isGuest!,
+                      ),
+                    );
+                  },
           );
           return ref.watch(buyUtilitiesProvider).when(
                 done: (data) => _widget,

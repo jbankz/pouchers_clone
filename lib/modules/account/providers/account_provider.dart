@@ -15,10 +15,10 @@ final accountProvider =
 });
 
 final accountProvider2 =
-StateNotifierProvider.autoDispose<AccountNotifier, NotifierState<String>>(
+    StateNotifierProvider.autoDispose<AccountNotifier, NotifierState<String>>(
         (ref) {
-      return AccountNotifier(ref.read(accountRepoProvider));
-    });
+  return AccountNotifier(ref.read(accountRepoProvider));
+});
 
 final requestPhoneChangeProvider = StateNotifierProvider.autoDispose<
     RequestPhoneChangeNotifier, NotifierState<String>>((ref) {
@@ -37,10 +37,10 @@ final changePhoneProvider = StateNotifierProvider.autoDispose<
 
 final authFactorProvider = StateProvider<bool>((ref) => false);
 
-final editProfileInHouseProvider = StateProvider<EditProfileData>((ref) => EditProfileData());
+final editProfileInHouseProvider =
+    StateProvider<EditProfileData>((ref) => EditProfileData());
 
 final biometricProvider = StateProvider<Biometric>((ref) => Biometric());
-
 
 final editProfileProvider = StateNotifierProvider<EditProfileNotifier,
     NotifierState<EditProfileResponse>>((ref) {
@@ -151,26 +151,23 @@ final disable2FAProvider =
   return Disable2FANotifier(ref.read(accountRepoProvider));
 });
 
-final getReferralProvider =
-StateNotifierProvider.autoDispose<GetReferralNotifier, NotifierState<GetReferralResponse>>(
-        (ref) {
-      return GetReferralNotifier(ref.read(accountRepoProvider));
-    });
+final getReferralProvider = StateNotifierProvider.autoDispose<
+    GetReferralNotifier, NotifierState<GetReferralResponse>>((ref) {
+  return GetReferralNotifier(ref.read(accountRepoProvider));
+});
 
 final getBannerProvider =
-StateNotifierProvider<GetBannerNotifier, NotifierState<BannerResponse>>(
+    StateNotifierProvider<GetBannerNotifier, NotifierState<BannerResponse>>(
         (ref) {
-      return GetBannerNotifier(ref.read(accountRepoProvider));
-    });
+  return GetBannerNotifier(ref.read(accountRepoProvider));
+});
 
-final getUserProfileProvider =
-StateNotifierProvider<GetUserProfileNotifier, NotifierState<EditProfileResponse>>(
-        (ref) {
-      return GetUserProfileNotifier(ref.read(accountRepoProvider));
-    });
+final getUserProfileProvider = StateNotifierProvider<GetUserProfileNotifier,
+    NotifierState<EditProfileResponse>>((ref) {
+  return GetUserProfileNotifier(ref.read(accountRepoProvider));
+});
 
-class AccountNotifier extends StateNotifier<NotifierState<String>>
-{
+class AccountNotifier extends StateNotifier<NotifierState<String>> {
   final AccountRepository _repo;
 
   AccountNotifier(this._repo) : super(NotifierState());
@@ -184,8 +181,7 @@ class AccountNotifier extends StateNotifier<NotifierState<String>>
   }
 }
 
-class RequestPhoneChangeNotifier extends StateNotifier<NotifierState<String>>
- {
+class RequestPhoneChangeNotifier extends StateNotifier<NotifierState<String>> {
   final AccountRepository _repo;
 
   RequestPhoneChangeNotifier(this._repo) : super(NotifierState());
@@ -200,8 +196,7 @@ class RequestPhoneChangeNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class ChangePhoneNotifier
-    extends StateNotifier<NotifierState<EditProfileResponse>>
- {
+    extends StateNotifier<NotifierState<EditProfileResponse>> {
   final AccountRepository _repo;
 
   ChangePhoneNotifier(this._repo) : super(NotifierState());
@@ -215,8 +210,7 @@ class ChangePhoneNotifier
   }
 }
 
-class DisableUserNotifier extends StateNotifier<NotifierState<String>>
-  {
+class DisableUserNotifier extends StateNotifier<NotifierState<String>> {
   final AccountRepository _repo;
 
   DisableUserNotifier(this._repo) : super(NotifierState());
@@ -233,8 +227,7 @@ class DisableUserNotifier extends StateNotifier<NotifierState<String>>
   }
 }
 
-class DeleteUserNotifier extends StateNotifier<NotifierState<String>>
-     {
+class DeleteUserNotifier extends StateNotifier<NotifierState<String>> {
   final AccountRepository _repo;
 
   DeleteUserNotifier(this._repo) : super(NotifierState());
@@ -249,24 +242,26 @@ class DeleteUserNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class EditProfileNotifier
-    extends StateNotifier<NotifierState<EditProfileResponse>>
-     {
+    extends StateNotifier<NotifierState<EditProfileResponse>> {
   final AccountRepository _repo;
 
   EditProfileNotifier(this._repo) : super(NotifierState());
 
-  void editProfile(
-      {String? firstName,
-      String? lastName,
-      String? tag,
-      String? dob,
-      String? address,
-      String? gender,
-      String? profilePicture,
-      String? utilityBill,
-      bool? isLoginBiometricActive,
-      bool? isPaymentBiometricActive,
-      Function()? then, Function(bool)? noAuth,}) async {
+  void editProfile({
+    String? firstName,
+    String? lastName,
+    String? tag,
+    String? dob,
+    String? address,
+    String? gender,
+    String? profilePicture,
+    String? fcmToken,
+    String? utilityBill,
+    bool? isLoginBiometricActive,
+    bool? isPaymentBiometricActive,
+    Function()? then,
+    Function(bool)? noAuth,
+  }) async {
     state = notifyLoading();
     state = await _repo.editProfile(
         firstName: firstName,
@@ -274,6 +269,7 @@ class EditProfileNotifier
         tag: tag,
         dob: dob,
         address: address,
+        fcmToken: fcmToken,
         gender: gender,
         profilePicture: profilePicture,
         utilityBill: utilityBill,
@@ -281,15 +277,14 @@ class EditProfileNotifier
         isPaymentBiometricActive: isPaymentBiometricActive);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
-    }else if(state.noAuth){
+    } else if (state.noAuth) {
       if (noAuth != null) noAuth(state.noAuth);
     }
   }
 }
 
 class GetSecurityQuestionsNotifier
-    extends StateNotifier<NotifierState<SecurityQuestionResponse>>
-    {
+    extends StateNotifier<NotifierState<SecurityQuestionResponse>> {
   final AccountRepository _repo;
 
   GetSecurityQuestionsNotifier(this._repo) : super(NotifierState());
@@ -304,8 +299,7 @@ class GetSecurityQuestionsNotifier
 }
 
 class GetSelectedQuestionsNotifier
-    extends StateNotifier<NotifierState<SelectedQuestionResponse>>
-    {
+    extends StateNotifier<NotifierState<SelectedQuestionResponse>> {
   final AccountRepository _repo;
 
   GetSelectedQuestionsNotifier(this._repo) : super(NotifierState());
@@ -319,8 +313,7 @@ class GetSelectedQuestionsNotifier
   }
 }
 
-class SetQuestionNotifier extends StateNotifier<NotifierState<String>>
-   {
+class SetQuestionNotifier extends StateNotifier<NotifierState<String>> {
   final AccountRepository _repo;
 
   SetQuestionNotifier(this._repo) : super(NotifierState());
@@ -332,15 +325,17 @@ class SetQuestionNotifier extends StateNotifier<NotifierState<String>>
       Function()? then}) async {
     state = notifyLoading();
     state = await _repo.setSecurityQuestion(
-        questionId: questionId, answer: answer, isValidate: isValidate, );
+      questionId: questionId,
+      answer: answer,
+      isValidate: isValidate,
+    );
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }
   }
 }
 
-class ResetPinNotifier extends StateNotifier<NotifierState<String>>
-    {
+class ResetPinNotifier extends StateNotifier<NotifierState<String>> {
   final AccountRepository _repo;
 
   ResetPinNotifier(this._repo) : super(NotifierState());
@@ -348,19 +343,19 @@ class ResetPinNotifier extends StateNotifier<NotifierState<String>>
   void resetPin(
       {required String oldPin,
       required String newPin,
-      Function()? then, Function(bool)? noAuth}) async {
+      Function()? then,
+      Function(bool)? noAuth}) async {
     state = notifyLoading();
     state = await _repo.resetPin(oldPin: oldPin, newPin: newPin);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
-    }else if(state.noAuth){
+    } else if (state.noAuth) {
       if (noAuth != null) noAuth(state.noAuth);
     }
   }
 }
 
-class ValidatePinNotifier extends StateNotifier<NotifierState<String>>
-  {
+class ValidatePinNotifier extends StateNotifier<NotifierState<String>> {
   final AccountRepository _repo;
 
   ValidatePinNotifier(this._repo) : super(NotifierState());
@@ -379,8 +374,7 @@ class ValidatePinNotifier extends StateNotifier<NotifierState<String>>
   }
 }
 
-class ResendOTPNotifier extends StateNotifier<NotifierState<String>>
-     {
+class ResendOTPNotifier extends StateNotifier<NotifierState<String>> {
   final AccountRepository _repo;
 
   ResendOTPNotifier(this._repo) : super(NotifierState());
@@ -397,8 +391,7 @@ class ResendOTPNotifier extends StateNotifier<NotifierState<String>>
   }
 }
 
-class ValidateOTPNotifier extends StateNotifier<NotifierState<String>>
-     {
+class ValidateOTPNotifier extends StateNotifier<NotifierState<String>> {
   final AccountRepository _repo;
 
   ValidateOTPNotifier(this._repo) : super(NotifierState());
@@ -416,8 +409,7 @@ class ValidateOTPNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class ValidateBVNNotifier
-    extends StateNotifier<NotifierState<EditProfileResponse>>
-    {
+    extends StateNotifier<NotifierState<EditProfileResponse>> {
   final AccountRepository _repo;
 
   ValidateBVNNotifier(this._repo) : super(NotifierState());
@@ -435,8 +427,7 @@ class ValidateBVNNotifier
 }
 
 class ValidateIDNotifier
-    extends StateNotifier<NotifierState<EditProfileResponse>>
-    {
+    extends StateNotifier<NotifierState<EditProfileResponse>> {
   final AccountRepository _repo;
 
   ValidateIDNotifier(this._repo) : super(NotifierState());
@@ -447,15 +438,17 @@ class ValidateIDNotifier
     Function()? then,
   }) async {
     state = notifyLoading();
-    state = await _repo.validateId(idNumber: idNumber, idType: idType);
+    state = await _repo.validateId(
+      idNumber: idNumber,
+      idType: idType,
+    );
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }
   }
 }
 
-class GetTiersNotifier extends StateNotifier<NotifierState<TierListResponse>>
- {
+class GetTiersNotifier extends StateNotifier<NotifierState<TierListResponse>> {
   final AccountRepository _repo;
 
   GetTiersNotifier(this._repo) : super(NotifierState());
@@ -471,8 +464,7 @@ class GetTiersNotifier extends StateNotifier<NotifierState<TierListResponse>>
   }
 }
 
-class GetSignedUrlNotifier extends StateNotifier<NotifierState<String>>
-     {
+class GetSignedUrlNotifier extends StateNotifier<NotifierState<String>> {
   final AccountRepository _repo;
 
   GetSignedUrlNotifier(this._repo) : super(NotifierState());
@@ -489,8 +481,7 @@ class GetSignedUrlNotifier extends StateNotifier<NotifierState<String>>
   }
 }
 
-class Generate2FANotifier extends StateNotifier<NotifierState<String>>
-     {
+class Generate2FANotifier extends StateNotifier<NotifierState<String>> {
   final AccountRepository _repo;
 
   Generate2FANotifier(this._repo) : super(NotifierState());
@@ -506,8 +497,7 @@ class Generate2FANotifier extends StateNotifier<NotifierState<String>>
   }
 }
 
-class Validate2FANotifier extends StateNotifier<NotifierState<bool>>
-     {
+class Validate2FANotifier extends StateNotifier<NotifierState<bool>> {
   final AccountRepository _repo;
 
   Validate2FANotifier(this._repo) : super(NotifierState());
@@ -521,14 +511,13 @@ class Validate2FANotifier extends StateNotifier<NotifierState<bool>>
   }
 }
 
-class Disable2FANotifier extends StateNotifier<NotifierState<bool>>
-     {
+class Disable2FANotifier extends StateNotifier<NotifierState<bool>> {
   final AccountRepository _repo;
 
   Disable2FANotifier(this._repo) : super(NotifierState());
 
   void disable2FA({
-  required String transactionPin,
+    required String transactionPin,
     Function()? then,
   }) async {
     state = notifyLoading();
@@ -539,8 +528,8 @@ class Disable2FANotifier extends StateNotifier<NotifierState<bool>>
   }
 }
 
-class GetReferralNotifier extends StateNotifier<NotifierState<GetReferralResponse>>
-    {
+class GetReferralNotifier
+    extends StateNotifier<NotifierState<GetReferralResponse>> {
   final AccountRepository _repo;
 
   GetReferralNotifier(this._repo) : super(NotifierState());
@@ -556,8 +545,7 @@ class GetReferralNotifier extends StateNotifier<NotifierState<GetReferralRespons
   }
 }
 
-class GetBannerNotifier extends StateNotifier<NotifierState<BannerResponse>>
-     {
+class GetBannerNotifier extends StateNotifier<NotifierState<BannerResponse>> {
   final AccountRepository _repo;
 
   GetBannerNotifier(this._repo) : super(NotifierState());
@@ -573,8 +561,8 @@ class GetBannerNotifier extends StateNotifier<NotifierState<BannerResponse>>
   }
 }
 
-class GetUserProfileNotifier extends StateNotifier<NotifierState<EditProfileResponse>>
-    {
+class GetUserProfileNotifier
+    extends StateNotifier<NotifierState<EditProfileResponse>> {
   final AccountRepository _repo;
 
   GetUserProfileNotifier(this._repo) : super(NotifierState());
@@ -589,6 +577,3 @@ class GetUserProfileNotifier extends StateNotifier<NotifierState<EditProfileResp
     }
   }
 }
-
-
-

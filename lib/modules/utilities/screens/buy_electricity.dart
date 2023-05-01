@@ -76,13 +76,13 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
   }
 
   search(value) {
-    if(utilitiesData != null && _meterNo.isNotEmpty){
+    if(utilitiesData != null && _meterNo.isNotEmpty && paymentType != null){
       ref.read(validateUtilitiesProvider.notifier).validateUtilities(
           merchantAccount: utilitiesData!.operatorpublicid!,
-          merchantReferenceNumber: _meterNo);
+          merchantReferenceNumber: _meterNo,  merchantProductCode: paymentType!.code!);
       print('hello world from search . the value is $value');
     }else{
-      showErrorBar(context, "Please choose a provider or meter number");
+      showErrorBar(context, "Please choose a provider, type or meter number");
     }
 
   }
@@ -214,6 +214,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                             ));
                         if (result != null) {
                           setState(() => paymentType = result);
+                          search("");
                         }
                       },
                 child: Container(
@@ -305,6 +306,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
               ),
               ref.watch(validateUtilitiesProvider).when(done: (done) {
                 if (done != null) {
+                  error = "";
                   return Row(
                     children: [
                       Text(

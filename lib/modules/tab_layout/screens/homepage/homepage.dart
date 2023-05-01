@@ -116,6 +116,27 @@ print(cred);
                         .watch(editProfileInHouseProvider)
                         .profilePicture ??
                         "",
+                    errorBuilder: (BuildContext context, _, stackTrace) {
+                      return Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: kPrimaryColor,
+                        ),
+                        child: Center(
+                          child: Text(
+                              ref
+                                  .watch(editProfileInHouseProvider)
+                                  .profilePicture ==
+                                  null
+                                  ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
+                                  : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
+                              style: textTheme.bodyText2!
+                                  .copyWith(fontSize: 22)),
+                        ),
+                      );
+                    },
                     fit: BoxFit.cover,
                     height: 50,
                     width: 50,

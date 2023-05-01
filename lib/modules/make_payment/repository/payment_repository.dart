@@ -171,4 +171,19 @@ class PaymentRepository {
     }
     return getWalletDetails.toNotifierState();
   }
+
+  Future<NotifierState<NotificationResponse>> getNotifications() async {
+    ServiceResponse<NotificationResponse> getNotifications;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    getNotifications = await PaymentService.getNotifications(
+        token: userProfile.token!,);
+
+    if (getNotifications.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      getNotifications = await PaymentService.getNotifications(
+          token: userProfiles.token!,);
+    }
+    return getNotifications.toNotifierState();
+  }
 }

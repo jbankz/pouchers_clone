@@ -221,6 +221,67 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                                     fit: BoxFit.cover,
                                     height: 105,
                                     width: 105,
+                                    errorBuilder: (context, _, st){
+                                      return Container(
+                                          padding: EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: kPurple300),
+                                          child: Container(
+                                              padding: EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: kPrimaryWhite),
+                                              child: Container(
+                                                  padding:
+                                                  EdgeInsets.all(kSmallPadding),
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: kPrimaryTextColor
+                                                          .withOpacity(0.05)),
+                                                  child: Container(
+                                                      padding: EdgeInsets.all(8),
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: kPurpleColor600,
+                                                      ),
+                                                      child: Column(
+                                                        children: [
+                                                          Container(
+                                                            height: kRegularPadding,
+                                                            width: kRegularPadding,
+                                                            decoration: BoxDecoration(
+                                                                shape:
+                                                                BoxShape.circle,
+                                                                color:
+                                                                kPrimaryTextColor),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 7,
+                                                          ),
+                                                          Container(
+                                                            height: kRegularPadding,
+                                                            width: 35,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                        kSmallPadding),
+                                                                    bottomLeft: Radius
+                                                                        .circular(
+                                                                        kPadding),
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                        kSmallPadding),
+                                                                    bottomRight: Radius
+                                                                        .circular(
+                                                                        kPadding)),
+                                                                color:
+                                                                kPurpleColor500),
+                                                          )
+                                                        ],
+                                                      )))));
+                                    },
                                     loadingBuilder: (BuildContext context, Widget child,
                                         ImageChunkEvent? loadingProgress) {
                                       if (loadingProgress == null) return child;

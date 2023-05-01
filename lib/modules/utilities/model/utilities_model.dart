@@ -129,6 +129,7 @@ class GetUtilitiesData {
     this.displayName,
     this.category,
     this.status,
+    this.logoUrl,
     this.operatorpublicid,
   });
 
@@ -136,6 +137,7 @@ class GetUtilitiesData {
   String? displayName;
   String? category;
   String? status;
+  String? logoUrl;
   String? operatorpublicid;
 
   factory GetUtilitiesData.fromJson(Map<String, dynamic> json) =>
@@ -144,6 +146,7 @@ class GetUtilitiesData {
         displayName: json["display_name"],
         category: json["category"],
         status: json["status"],
+        logoUrl: json["logo_url"],
         operatorpublicid: json["operatorpublicid"],
       );
 
@@ -152,6 +155,7 @@ class GetUtilitiesData {
         "display_name": displayName,
         "category": category,
         "status": status,
+    "logo_url" : logoUrl,
         "operatorpublicid": operatorpublicid,
       };
 }

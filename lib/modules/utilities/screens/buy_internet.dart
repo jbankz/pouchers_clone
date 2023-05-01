@@ -66,12 +66,12 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
   }
 
   search(value) {
-    if (utilitiesData != null && accId.isNotEmpty) {
+    if (utilitiesData != null && accId.isNotEmpty && paymentType != null) {
       ref.read(validateUtilitiesProvider.notifier).validateUtilities(
           merchantAccount: utilitiesData!.operatorpublicid!,
-          merchantReferenceNumber: accId);
+          merchantReferenceNumber: accId, merchantProductCode: paymentType!.code!);
     } else {
-      showErrorBar(context, "Please choose a provider or account ID");
+      showErrorBar(context, "Please choose a provider, type or account ID");
     }
   }
 
@@ -194,6 +194,7 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
               ),
               ref.watch(validateUtilitiesProvider).when(done: (done) {
                 if (done != null) {
+                  error = "";
                   return Row(
                     children: [
                       Text(
@@ -261,6 +262,7 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                             SubscriptionModal(paymentItem: utilitiesType, threshold: threshold, discountValue: discountValue,));
                         if (result != null) {
                           setState(() => paymentType = result);
+                          search("");
                         }
                       },
                 child: Container(

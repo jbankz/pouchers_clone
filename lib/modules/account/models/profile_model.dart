@@ -198,4 +198,4 @@ class EditProfileData {
   }
 }
 
-List<String> idMethodList = ["Driver’s license", "VNIN", "Voter’s card"];
+List<String> idMethodList = ["Driver’s license", "VNIN", "Voter’s card", "International passport"];

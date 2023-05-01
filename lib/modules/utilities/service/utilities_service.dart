@@ -345,6 +345,7 @@ class UtilitiesService {
       {
         required String merchantAccount,
         required String merchantReferenceNumber,
+        required String merchantProductCode,
       }) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
@@ -356,6 +357,7 @@ class UtilitiesService {
     Map<String, dynamic> _body =  {
       "merchantAccount": merchantAccount,
       "merchantReferenceNumber": merchantReferenceNumber,
+      "merchantServiceProductCode": merchantProductCode
     };
 
     logPrint(url);
@@ -370,7 +372,7 @@ class UtilitiesService {
         throw Failure.fromJson(responseBody);
       } else {
         return serveSuccess<String>(
-          data: responseBody["message"],
+          data: responseBody["data"]["customerName"],
           message: responseBody["message"],
         );
       }

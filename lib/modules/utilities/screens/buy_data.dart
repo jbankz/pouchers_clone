@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -151,9 +152,65 @@ class _BuyDataState extends ConsumerState<BuyData>
                                               ? kLightPurple
                                               : kContainerColor,
                                           shape: BoxShape.circle),
-                                      child: SvgPicture.asset(icon(
-                                          provider.data![index]
-                                              .displayName!))),
+                                      child: CachedNetworkImage(
+                                        imageUrl: element.logoUrl == null
+                                            ? ""
+                                            : element.logoUrl!,
+                                        placeholder: (context, url) =>
+                                            Container(
+                                              color: Colors.transparent,
+                                              child: const Center(
+                                                child:
+                                                CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                  valueColor:
+                                                  AlwaysStoppedAnimation<
+                                                      Color>(kPrimaryColor),
+                                                ),
+                                              ),
+                                            ),
+                                        fit: BoxFit.scaleDown,
+                                        errorWidget: (context, url,
+                                            error) =>
+                                        element.logoUrl != null
+                                            ? Image.network(
+                                          element.logoUrl!,
+                                          fit: BoxFit.fill,
+                                          loadingBuilder:
+                                              (BuildContext
+                                          context,
+                                              Widget child,
+                                              ImageChunkEvent?
+                                              loadingProgress) {
+                                            if (loadingProgress ==
+                                                null)
+                                              return child;
+                                            return Center(
+                                              child:
+                                              CircularProgressIndicator(
+                                                value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                    null
+                                                    ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes!
+                                                    : null,
+                                              ),
+                                            );
+                                          },
+                                        )
+                                            : Center(
+                                          child: Text(
+                                              "${element.displayName}",
+                                              style: textTheme
+                                                  .headline4!
+                                                  .copyWith(
+                                                // color: kPrimaryColor,
+                                                  fontSize:
+                                                  10)),
+                                        ),
+                                      )),
                                   currentIndex == index
                                       ? Positioned(
                                     bottom: 0,

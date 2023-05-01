@@ -118,6 +118,28 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           fit: BoxFit.cover,
                           height: 100,
                           width: 100,
+                          errorBuilder: (BuildContext context, _, stackTrace) {
+                            return Container(
+                              height: 105,
+                              width: 105,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: kPrimaryColor,
+                              ),
+                              child: Center(
+                                child: Text(
+                                    ref
+                                                .watch(
+                                                    editProfileInHouseProvider)
+                                                .profilePicture ==
+                                            null
+                                        ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
+                                        : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
+                                    style: textTheme.bodyText2!
+                                        .copyWith(fontSize: 22)),
+                              ),
+                            );
+                          },
                           loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent? loadingProgress) {
                             if (loadingProgress == null) return child;

@@ -116,6 +116,7 @@ class AccountRepository {
     String? gender,
     String? profilePicture,
     String? utilityBill,
+    String? fcmToken,
     bool? isLoginBiometricActive,
     bool? isPaymentBiometricActive
   }) async {
@@ -128,6 +129,7 @@ class AccountRepository {
         tag: tag,
         dob: dob,
         address: address,
+        fcmToken: fcmToken,
         gender: gender,
         profilePicture: profilePicture,
         utilityBill: utilityBill,
@@ -145,6 +147,7 @@ class AccountRepository {
           dob: dob,
           address: address,
           gender: gender,
+          fcmToken: fcmToken,
           profilePicture: profilePicture,
           utilityBill: utilityBill,
           isLoginBiometricActive: isLoginBiometricActive,
@@ -296,17 +299,19 @@ class AccountRepository {
   }
 
   Future<NotifierState<EditProfileResponse>> validateId(
-      {required String idType, required String idNumber,}) async {
+      {required String idType, required String idNumber}) async {
 
     ServiceResponse<EditProfileResponse> validateId;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     validateId = await AccountService.validateId(
+      surname:   userProfile.lastName,
         idType: idType, idNumber: idNumber, token: userProfile.token!);
 
     if (validateId.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
       validateId = await AccountService.validateId(
+        surname: userProfiles.lastName,
           idType: idType, idNumber: idNumber, token: userProfiles.token!);
     }
     return validateId.toNotifierState();

@@ -1,6 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:Pouchers/data/liveness_check_response.dart';
+import 'package:Pouchers/utils/flushbar.dart';
+import 'package:Pouchers/utils/strings.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_dojah_kyc/flutter_dojah_kyc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:Pouchers/utils/logger.dart';
 
@@ -38,6 +45,121 @@ class ClientException implements Exception {
   @override
   String toString() => message;
 }
+
+Future<bool?> startDojahWidget(
+    BuildContext context, {
+      required String type,
+      Map<String, dynamic>? userData,
+      Map<String, dynamic>? config,
+      Map<String, dynamic>? metadata,
+    }) async {
+  final DojahKYC dojahKyc = DojahKYC(
+    appId: dotenv.get(kDojahAppId),
+    publicKey: dotenv.get(kDojahPublicKey),
+    type: type,
+    userData: userData,
+    config: config,
+    metaData: metadata,
+  );
+
+  Map<String, dynamic>? result;
+  bool submittedSuccessfully = false;
+
+  await dojahKyc.open(
+    context,
+    onSuccess: (response) {
+      JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+      String prettyResponse = encoder.convert(response);
+      debugPrint("dojah response: $prettyResponse");
+
+      // exit kyc widget
+
+      //context.popRoute();
+
+      List<dynamic> responseList = response;
+      Map<String, dynamic> responseBody =
+      jsonDecode(jsonEncode(responseList[0]));
+
+      result = responseBody;
+      responseBody["status"];
+      submittedSuccessfully = responseBody["status"];
+
+      Navigator.pop(context, responseBody["status"]);
+      showSuccessBar(context, responseBody["message"]);
+      final idData = IdCheckResponse.fromJson(responseBody["idData"]);
+      final String? idImageUrl = responseBody["idUrl"];
+      final String? verificationUrl = responseBody["verificationUrl"];
+
+      // no need to check if dateIssued and expiryDate are not null as some IDs may not have them
+      if (idImageUrl != null &&
+          verificationUrl != null &&
+          idData.documentType != null &&
+          idData.documentNumber != null) {
+        ///send d info to backend
+        // final payload = IdVerificationPayload(
+        //   idType: idData.documentType!,
+        //   cardNumber: idData.documentNumber!,
+        //   imageUrl: idImageUrl,
+        //   verificationUrl: verificationUrl,
+        //   issuedDate: idData.dateIssued,
+        //   expiryDate: idData.expiryDate,
+        // );
+
+        // context
+        //     .pushRoute(
+        //         HandleIdUploadRoute(payload: payload, onboarding: onboarding))
+        //     .then((value) {
+        //   if (value is bool) {
+        //     submittedSuccessfully.complete(value);
+        //   } else {
+        //     submittedSuccessfully.complete(null);
+        //   }
+        // });
+      }
+    },
+    onClose: (_) {
+      if (result == null) {
+        debugPrint("dojah close - window");
+        Navigator.pop(context);
+      } else {
+        debugPrint("dojah close - success");
+      }
+    },
+    //TODO test onError call back
+    onError: (e) {
+      debugPrint("dojah error: $e");
+    },
+  );
+
+  debugPrint("returned function");
+  return submittedSuccessfully;
+}
+
+final configObj = {
+  "debug": false,
+  "mobile": true,
+  // "review_process": "Automatic",
+  "pages": [
+    {
+      "page": "user-data",
+      "config": {"enabled": false}
+    },
+    {
+      "page": "countries",
+      "config": {"enabled": false}
+    },
+    {
+      "page": "id",
+      "config": {
+        "passport": true,
+        "dl": true,
+        "nin": true,
+        "voter": true,
+        "custom": true
+      }
+    }
+  ]
+};
 
 String dateFormatter2 = 'dd MMM yyy';
 

@@ -47,9 +47,14 @@ final getWalletProvider =
   return GetWalletNotifier(ref.read(paymentRepoProvider));
 });
 
+final getNotificationProvider =
+    StateNotifierProvider<GetNotificationNotifier, NotifierState<NotificationResponse>>(
+        (ref) {
+  return GetNotificationNotifier(ref.read(paymentRepoProvider));
+});
+
 class GetContactByPoucherTagNotifier
-    extends StateNotifier<NotifierState<Map<String, dynamic>>>
-     {
+    extends StateNotifier<NotifierState<Map<String, dynamic>>> {
   final PaymentRepository _repo;
 
   GetContactByPoucherTagNotifier(this._repo) : super(NotifierState());
@@ -65,8 +70,7 @@ class GetContactByPoucherTagNotifier
 }
 
 class GetAllContactsNotifier
-    extends StateNotifier<NotifierState<ContactListResponse>>
-    {
+    extends StateNotifier<NotifierState<ContactListResponse>> {
   final PaymentRepository _repo;
 
   GetAllContactsNotifier(this._repo) : super(NotifierState());
@@ -81,8 +85,8 @@ class GetAllContactsNotifier
   }
 }
 
-class RequestMoneyNotifier extends StateNotifier<NotifierState<RequestResponse>>
-     {
+class RequestMoneyNotifier
+    extends StateNotifier<NotifierState<RequestResponse>> {
   final PaymentRepository _repo;
 
   RequestMoneyNotifier(this._repo) : super(NotifierState());
@@ -101,8 +105,7 @@ class RequestMoneyNotifier extends StateNotifier<NotifierState<RequestResponse>>
   }
 }
 
-class P2PMoneyNotifier extends StateNotifier<NotifierState<P2PResponse>>
-     {
+class P2PMoneyNotifier extends StateNotifier<NotifierState<P2PResponse>> {
   final PaymentRepository _repo;
 
   P2PMoneyNotifier(this._repo) : super(NotifierState());
@@ -123,8 +126,7 @@ class P2PMoneyNotifier extends StateNotifier<NotifierState<P2PResponse>>
 }
 
 class GetAccountDetailsNotifier
-    extends StateNotifier<NotifierState<AccountDetailsResponse>>
-    {
+    extends StateNotifier<NotifierState<AccountDetailsResponse>> {
   final PaymentRepository _repo;
 
   GetAccountDetailsNotifier(this._repo) : super(NotifierState());
@@ -145,8 +147,7 @@ class GetAccountDetailsNotifier
 }
 
 class GetAllBanksNotifier
-    extends StateNotifier<NotifierState<GetAllBanksResponse>>
-     {
+    extends StateNotifier<NotifierState<GetAllBanksResponse>> {
   final PaymentRepository _repo;
 
   GetAllBanksNotifier(this._repo) : super(NotifierState());
@@ -163,8 +164,7 @@ class GetAllBanksNotifier
 }
 
 class LocalBankTransferNotifier
-    extends StateNotifier<NotifierState<LocalTransferResponse>>
-     {
+    extends StateNotifier<NotifierState<LocalTransferResponse>> {
   final PaymentRepository _repo;
 
   LocalBankTransferNotifier(this._repo) : super(NotifierState());
@@ -188,8 +188,8 @@ class LocalBankTransferNotifier
   }
 }
 
-class GetWalletNotifier extends StateNotifier<NotifierState<GetWalletResponse>>
-    {
+class GetWalletNotifier
+    extends StateNotifier<NotifierState<GetWalletResponse>> {
   final PaymentRepository _repo;
 
   GetWalletNotifier(this._repo) : super(NotifierState());
@@ -209,6 +209,23 @@ class GetWalletNotifier extends StateNotifier<NotifierState<GetWalletResponse>>
     } else if (state.noAuth) {
       if (noAuth != null) noAuth(state.noAuth);
     }
+  }
+}
 
+class GetNotificationNotifier
+    extends StateNotifier<NotifierState<NotificationResponse>> {
+  final PaymentRepository _repo;
+
+  GetNotificationNotifier(this._repo) : super(NotifierState());
+
+  void getNotifications({
+    Function(bool)? noAuth,
+  }) async {
+    state = notifyLoading();
+    state = await _repo.getNotifications();
+    if (state.status == NotifierStatus.done) {
+    } else if (state.noAuth) {
+      if (noAuth != null) noAuth(state.noAuth);
+    }
   }
 }

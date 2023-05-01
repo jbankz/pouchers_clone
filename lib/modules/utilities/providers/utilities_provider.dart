@@ -305,12 +305,13 @@ class ValidateUtilitiesNotifier extends StateNotifier<NotifierState<String>>
       {
       required String merchantAccount,
       required String merchantReferenceNumber,
-      Function()? then,
+        required String merchantProductCode,
+        Function()? then,
       Function(String)? error}) async {
     state = notifyLoading();
     state = await _repo.validateUtilities(
         merchantReferenceNumber: merchantReferenceNumber,
-        merchantAccount: merchantAccount);
+        merchantAccount: merchantAccount, merchantProductCode: merchantProductCode);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     } else if (state.status == NotifierStatus.error) {
