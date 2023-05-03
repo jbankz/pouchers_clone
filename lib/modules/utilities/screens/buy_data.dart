@@ -83,7 +83,8 @@ class _BuyDataState extends ConsumerState<BuyData>
                 textTheme: textTheme,
                 text: mobileNumber,
                 controller: contactController,
-                inputFormatters: [LengthLimitingTextInputFormatter(11)],
+                inputType: TextInputType.number,
+                inputFormatters: [LengthLimitingTextInputFormatter(11), FilteringTextInputFormatter.digitsOnly],
                 icon: inkWell(
                   onTap: () async {
                     final PhoneContact contact =

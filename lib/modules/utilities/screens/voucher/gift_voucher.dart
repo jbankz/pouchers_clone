@@ -1,3 +1,4 @@
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -407,8 +408,7 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
                           showErrorBar(context, "Please select a voucher code");
                         } else {
                           if (giftController.text.isNotEmpty) {
-                            if (cred?.transactionPin == null ||
-                                cred?.transactionPin == "") {
+                            if (ref.watch(biometricProvider).isPaymentBiometricActive == null || !ref.watch(biometricProvider).isPaymentBiometricActive!) {
                               var result = await buildShowModalBottomSheet(
                                 context,
                                 TransactionPinContainer(
@@ -432,7 +432,31 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
                                         code: _value.code);
                               }
                             } else {
-                              checkBiometric(context);
+                              if(cred?.transactionPin == null || cred?.transactionPin == ""){
+                                var result = await buildShowModalBottomSheet(
+                                  context,
+                                  TransactionPinContainer(
+                                    isData: false,
+                                    isCard: false,
+                                    isFundCard: false,
+                                    isGiftVoucher: true,
+                                  ),
+                                );
+                                if (result != null) {
+                                  ref
+                                      .read(giftVoucherProvider.notifier)
+                                      .giftVoucher(
+                                      email: _voucherType == onlyEmailText
+                                          ? giftController.text
+                                          : "",
+                                      tag: _voucherType == poucherTag
+                                          ? giftController.text
+                                          : "",
+                                      transactionPin: result,
+                                      code: _value.code);
+                                }
+                              }
+                             else checkBiometric(context);
                             }
                           } else {
                             showErrorBar(

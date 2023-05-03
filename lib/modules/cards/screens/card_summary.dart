@@ -1,3 +1,4 @@
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_auth/local_auth.dart';
@@ -459,8 +460,10 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                       title: fundCard,
                       onPressed: checkBalance() == true
                           ? () async {
-                              if (cred?.transactionPin == null ||
-                                  cred?.transactionPin == "") {
+                              if (
+                              ref.watch(biometricProvider).isPaymentBiometricActive == null || !ref.watch(biometricProvider).isPaymentBiometricActive!
+
+                              ) {
                                 final result = await buildShowModalBottomSheet(
                                   context,
                                   TransactionPinContainer(
@@ -479,7 +482,25 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                                           transactionPin: result);
                                 }
                               } else {
-                                checkBiometric(context);
+                                if(cred?.transactionPin == null || cred?.transactionPin == ""){
+                                  final result = await buildShowModalBottomSheet(
+                                    context,
+                                    TransactionPinContainer(
+                                      isData: false,
+                                      isCard: !widget.isFundCard!,
+                                      isFundCard: widget.isFundCard!,
+                                    ),
+                                  );
+                                  if (result != null) {
+                                    ref
+                                        .read(fundVirtualCardProvider.notifier)
+                                        .fundVirtualCard(
+                                        type:
+                                        widget.isFundNaira! ? "NGN" : "USD",
+                                        amount: (double.parse(widget.amount!)),
+                                        transactionPin: result);
+                                  }
+                                }else checkBiometric(context);
                               }
                             }
                           : () {},
@@ -522,8 +543,8 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                           widget.isNaira!),
                       onPressed: checkBalance() == true
                           ? () async {
-                              if (cred?.transactionPin == null ||
-                                  cred?.transactionPin == "") {
+                              if ( ref.watch(biometricProvider).isPaymentBiometricActive == null || !ref.watch(biometricProvider).isPaymentBiometricActive!
+                              ) {
                                 final result = await buildShowModalBottomSheet(
                                   context,
                                   TransactionPinContainer(
@@ -553,7 +574,36 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                                           transactionPin: result);
                                 }
                               } else {
-                                checkBiometric(context);
+                                if(cred?.transactionPin == null || cred?.transactionPin == ""){
+                                  final result = await buildShowModalBottomSheet(
+                                    context,
+                                    TransactionPinContainer(
+                                      isData: false,
+                                      isCard: !widget.isFundCard!,
+                                      isFundCard: widget.isFundCard!,
+                                    ),
+                                  );
+                                  if (result != null) {
+                                    ref
+                                        .read(createVirtualCardProvider.notifier)
+                                        .createVirtualCard(
+                                        address: widget.addressDetails!.address,
+                                        city: widget.addressDetails!.city,
+                                        residentState: widget
+                                            .addressDetails!.residentState,
+                                        country: widget.addressDetails!.country,
+                                        postalCode:
+                                        widget.addressDetails!.postalCode,
+                                        currency:
+                                        widget.isNaira! ? "NGN" : "USD",
+                                        bvn: widget.addressDetails!.bvn,
+                                        brand: widget.isNaira!
+                                            ? "Verve"
+                                            : "MasterCard",
+                                        amount: double.parse(widget.amount!),
+                                        transactionPin: result);
+                                  }
+                                }else checkBiometric(context);
                               }
                             }
                           : () {},

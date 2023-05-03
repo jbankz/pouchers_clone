@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:Pouchers/app/common/credentials.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:Pouchers/app/helpers/network_helpers.dart';
 import 'package:Pouchers/app/helpers/notifiers.dart';
@@ -26,19 +27,23 @@ class LogInRepository {
     required String password,
     required bool isEmail,
   }) async {
+    var userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     final result = await LogInService.logIn(
         phoneNumber: phoneNumber, password: password, isEmail: isEmail);
-    print(result);
+    if (userProfile != null && result.data != null) {
+      if (userProfile.id != result.data!.data!.id) {
+        await Hive.box(kUserBox).clear();
+        await deleteUserCredentials();
+      }
+    }
     await Hive.box(kTokenBox).clear();
 
-    //await Hive.openBox(kUserBox);
     if (result.data != null) {
       await persistAccessToken(
           accessToken: result.data!.data!.token!,
           tokenExpiry: result.data!.data!.tokenExpireAt!);
       SessionManager.setAccessToken(result.data!.data!.token!);
       SessionManager.setRefreshAccessToken(result.data!.data!.refreshToken!);
-
       await persistRefreshToken(result.data!.data!.refreshToken!);
       await cacheUserProfile(
           HiveStoreResponseData.fromJson(result.data!.data!.toJson()));

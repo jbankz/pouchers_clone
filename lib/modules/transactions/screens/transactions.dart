@@ -29,52 +29,50 @@ class _TransactionsState extends State<Transactions>
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    return SafeArea(
-      child: Container(
-        padding: EdgeInsets.only(
-            left: kMediumPadding, right: kMediumPadding, top: kMacroPadding),
-        child: Column(
-          children: [
-            Text(
-              transaction,
-              style: textTheme.headline4!.copyWith(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
+    return Container(
+      padding: EdgeInsets.only(
+          left: kMediumPadding, right: kMediumPadding, top: kRegularPadding),
+      child: Column(
+        children: [
+          Text(
+            transaction,
+            style: textTheme.headline4!.copyWith(
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: TabBar(
-                onTap: (index) {
-                  setState(() {
-                    tabIndex = index;
-                  });
-                },
-                tabs: [
-                  Text(
-                    history,
-                  ),
-                  Text(analytics),
-                ],
-                controller: _tabController,
-                indicatorColor: kPurpleColor,
-                indicatorWeight: 2,
-                unselectedLabelColor: kSecondaryTextColor,
-                unselectedLabelStyle: textTheme.headline2!.copyWith(height: 3),
-                labelColor: kPurpleColor,
-                labelStyle: textTheme.headline2!.copyWith(height: 3),
-              ),
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: TabBar(
+              onTap: (index) {
+                setState(() {
+                  tabIndex = index;
+                });
+              },
+              tabs: [
+                Text(
+                  history,
+                ),
+                Text(analytics),
+              ],
+              controller: _tabController,
+              indicatorColor: kPurpleColor,
+              indicatorWeight: 2,
+              unselectedLabelColor: kSecondaryTextColor,
+              unselectedLabelStyle: textTheme.headline2!.copyWith(height: 3),
+              labelColor: kPurpleColor,
+              labelStyle: textTheme.headline2!.copyWith(height: 3),
             ),
-            SizedBox(
-              height: kRegularPadding,
-            ),
-            Expanded(
-                child: tabIndex == 0
-                    ? History()
-                    : Analytics()
-              )
-          ],
-        ),
+          ),
+          SizedBox(
+            height: kRegularPadding,
+          ),
+          Expanded(
+              child: tabIndex == 0
+                  ? History()
+                  : Analytics()
+            )
+        ],
       ),
     );
   }

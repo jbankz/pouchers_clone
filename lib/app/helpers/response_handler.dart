@@ -46,7 +46,7 @@ mixin ResponseHandler {
                   isDefaultAction: true,
                   onPressed: (){
                     Navigator.pop(context);
-                    pushToAndClearStack(context, LogInAccount());
+                    // pushToAndClearStack(context, LogInAccount());
                   }
                 ),
               ],
@@ -64,7 +64,7 @@ backgroundColor: kPrimaryWhite,
                 LargeButton(
                   onPressed: (){
                     Navigator.pop(context);
-                    pushToAndClearStack(context, LogInAccount());
+                    // pushToAndClearStack(context, LogInAccount());
                   },
                   title: 'OK',
                 )

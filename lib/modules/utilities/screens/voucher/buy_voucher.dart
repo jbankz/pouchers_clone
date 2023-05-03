@@ -1,3 +1,4 @@
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_auth/local_auth.dart';
@@ -199,8 +200,9 @@ class _BuyVouchersState extends ConsumerState<BuyVouchers> {
                       if (amountController.text.isEmpty && currentIndex == -1) {
                         showErrorBar(context, "Please Input an amount");
                       } else {
-                        if (cred?.transactionPin == null ||
-                            cred?.transactionPin == "") {
+                        if (
+                        ref.watch(biometricProvider).isPaymentBiometricActive == null || !ref.watch(biometricProvider).isPaymentBiometricActive!
+                        ) {
                           var result = await buildShowModalBottomSheet(
                               context,
                               TransactionPinContainer(
@@ -215,6 +217,21 @@ class _BuyVouchersState extends ConsumerState<BuyVouchers> {
                                 transactionPin: result);
                           }
                         } else {
+                          if(cred?.transactionPin == null || cred?.transactionPin == ""){
+                            var result = await buildShowModalBottomSheet(
+                                context,
+                                TransactionPinContainer(
+                                  isData: false,
+                                  isCard: false,
+                                  isFundCard: false,
+                                  isBuyVoucher: true,
+                                ));
+                            if (result != null) {
+                              ref.read(buyVoucherProvider.notifier).buyVoucher(
+                                  amount: amountController.text,
+                                  transactionPin: result);
+                            }
+                          }else
                           checkBiometric(context);
                         }
                       }

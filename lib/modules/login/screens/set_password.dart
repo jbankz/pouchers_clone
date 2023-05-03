@@ -43,7 +43,6 @@ class _SetPasswordState extends State<SetPassword> {
             : Navigator.pop(context);
       },
       child: ListenerPage(
-
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -114,8 +113,8 @@ class _SetPasswordState extends State<SetPassword> {
                           message: successResetPassword,
                           isChangePassword: widget.isChangePassword,
                         ),
-                        settings:
-                            const RouteSettings(name: ResetSuccessful.routeName),
+                        settings: const RouteSettings(
+                            name: ResetSuccessful.routeName),
                       );
                     } else if (next.status == NotifierStatus.error) {
                       showErrorBar(context, next.message!);
@@ -124,14 +123,16 @@ class _SetPasswordState extends State<SetPassword> {
 
                   var _widget = LargeButton(
                     title: setPasswordText,
-                    onPressed: () {
+                    onPressed: () async {
                       FocusScope.of(context).unfocus();
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         ref.read(resetPasswordProvider.notifier).resetPassword(
                               email: widget.email!,
-                              password: _password!,
+                              password: _password!.trim(),
                             );
+                        await saveUserCredential(
+                            password: _password!.trim(), email: widget.email!);
                       }
                     },
                   );

@@ -1,3 +1,4 @@
+import 'package:Pouchers/app/common/credentials.dart';
 import 'package:Pouchers/modules/login/screens/reset_successful.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -64,8 +65,11 @@ class _ConfirmCreatePinState extends ConsumerState<ConfirmCreatePin> {
             ),
             Consumer(builder: (context, ref, _) {
               ref.listen(createPinProvider,
-                  (previous, NotifierState<TagResponse> next) {
+                  (previous, NotifierState<TagResponse> next) async{
                 if (next.status == NotifierStatus.done) {
+                  await saveUserCredential(
+                      transactionPin: pinPicked.join(""),
+                  );
                   widget.isForgot
                       ? pushTo(
                           context,

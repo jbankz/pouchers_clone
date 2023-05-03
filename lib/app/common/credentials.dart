@@ -46,4 +46,14 @@ Future<void> saveUserCredential({
   }
 }
 
+Future<void> deleteUserCredentials() async {
+  try {
+    await _secureStorage.delete(key: userCredentialKey);
+  } catch (e) {
+    throw "An error occurred";
+  }
+}
+
+
+
 

@@ -1,3 +1,4 @@
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -172,8 +173,14 @@ class _RedeemVoucherState extends ConsumerState<RedeemVoucher> {
                   onPressed: () async {
                     FocusScope.of(context).unfocus();
                     if (_value.code != "#12345647") {
-                      if (cred?.transactionPin == null ||
-                          cred?.transactionPin == "") {
+                      if (ref
+                                      .watch(biometricProvider)
+                                      .isPaymentBiometricActive ==
+                                  null ||
+                              !ref
+                                  .watch(biometricProvider)
+                                  .isPaymentBiometricActive!
+                          ) {
                         var result = await buildShowModalBottomSheet(
                           context,
                           TransactionPinContainer(
@@ -184,11 +191,29 @@ class _RedeemVoucherState extends ConsumerState<RedeemVoucher> {
                           ),
                         );
                         if (result != null) {
-                          ref.read(redeemVoucherProvider.notifier).redeemVoucher(
-                              transactionPin: result, code: _value.code);
+                          ref
+                              .read(redeemVoucherProvider.notifier)
+                              .redeemVoucher(
+                                  transactionPin: result, code: _value.code);
                         }
                       } else {
-                        checkBiometric(context);
+                        if(cred?.transactionPin == null || cred?.transactionPin == ""){
+                          var result = await buildShowModalBottomSheet(
+                            context,
+                            TransactionPinContainer(
+                              isData: false,
+                              isCard: false,
+                              isFundCard: false,
+                              isGiftVoucher: true,
+                            ),
+                          );
+                          if (result != null) {
+                            ref
+                                .read(redeemVoucherProvider.notifier)
+                                .redeemVoucher(
+                                transactionPin: result, code: _value.code);
+                          }
+                        }else checkBiometric(context);
                       }
                     } else {
                       showErrorBar(context, "Please select a voucher code");
@@ -221,6 +246,7 @@ class _RedeemVoucherState extends ConsumerState<RedeemVoucher> {
       ),
     );
   }
+
   Future<void> checkBiometric(BuildContext context) async {
     final LocalAuthentication auth = LocalAuthentication();
     bool canCheckBiometrics = false;
@@ -276,5 +302,4 @@ class _RedeemVoucherState extends ConsumerState<RedeemVoucher> {
           transactionPin: cred!.transactionPin!, code: _value.code);
     }
   }
-
 }

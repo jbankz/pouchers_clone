@@ -4,8 +4,8 @@ import 'package:Pouchers/modules/create_account/models/create_account_response.d
 import 'package:Pouchers/modules/login/repository/log_in_repository.dart';
 import 'package:riverpod/riverpod.dart';
 
-final logInProvider = StateNotifierProvider.autoDispose<
-    LogInNotifier, NotifierState<VerifyEmailResponse>>((ref) {
+final logInProvider = StateNotifierProvider.autoDispose<LogInNotifier,
+    NotifierState<VerifyEmailResponse>>((ref) {
   return LogInNotifier(ref.read(logInRepoProvider));
 });
 
@@ -29,19 +29,18 @@ final resetPasswordProvider = StateNotifierProvider.autoDispose<
   return ResetPasswordNotifier(ref.read(logInRepoProvider));
 });
 
-class LogInNotifier
-    extends StateNotifier<NotifierState<VerifyEmailResponse>>
-     {
+class LogInNotifier extends StateNotifier<NotifierState<VerifyEmailResponse>> {
   final LogInRepository _repo;
 
   LogInNotifier(this._repo) : super(NotifierState());
 
-
-  void logIn(
-      {required String phoneNumber,
-        required String password,
-        required bool isEmail,
-        Function()? then,  Function(bool)? noAuth,}) async {
+  void logIn({
+    required String phoneNumber,
+    required String password,
+    required bool isEmail,
+    Function()? then,
+    Function(bool)? noAuth,
+  }) async {
     state = notifyLoading();
     state = await _repo.logIn(
       phoneNumber: phoneNumber,
@@ -50,27 +49,20 @@ class LogInNotifier
     );
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
-    }else if(state.noAuth){
+    } else if (state.noAuth) {
       if (noAuth != null) noAuth(state.noAuth);
     }
   }
 }
 
-class ForgotPasswordNotifier
-    extends StateNotifier<NotifierState<String>>
-    {
+class ForgotPasswordNotifier extends StateNotifier<NotifierState<String>> {
   final LogInRepository _repo;
 
   ForgotPasswordNotifier(this._repo) : super(NotifierState());
 
-
-  void forgotPassword(
-      {required String email,
-        Function()? then}) async {
+  void forgotPassword({required String email, Function()? then}) async {
     state = notifyLoading();
-    state = await _repo.forgotPassword(
-      email: email
-    );
+    state = await _repo.forgotPassword(email: email);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }
@@ -78,45 +70,35 @@ class ForgotPasswordNotifier
 }
 
 class ValidateForgotPasswordNotifier
-    extends StateNotifier<NotifierState<String>>
-     {
+    extends StateNotifier<NotifierState<String>> {
   final LogInRepository _repo;
 
   ValidateForgotPasswordNotifier(this._repo) : super(NotifierState());
 
-
   void validateForgotPassword(
       {required String email,
-        required String resetCode,
-        Function()? then}) async {
+      required String resetCode,
+      Function()? then}) async {
     state = notifyLoading();
-    state = await _repo.validateForgotPassword(
-        email: email,
-      resetCode: resetCode
-    );
+    state =
+        await _repo.validateForgotPassword(email: email, resetCode: resetCode);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }
   }
 }
 
-class ResetPasswordNotifier
-    extends StateNotifier<NotifierState<String>>
-    {
+class ResetPasswordNotifier extends StateNotifier<NotifierState<String>> {
   final LogInRepository _repo;
 
   ResetPasswordNotifier(this._repo) : super(NotifierState());
 
-
   void resetPassword(
       {required String email,
-        required String password,
-        Function()? then}) async {
+      required String password,
+      Function()? then}) async {
     state = notifyLoading();
-    state = await _repo.resetPassword(
-        email: email,
-        password: password
-    );
+    state = await _repo.resetPassword(email: email, password: password);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }

@@ -174,6 +174,7 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                 text: accountId,
                 controller: contactController,
                 hintText: "Enter $accountId",
+                inputType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],

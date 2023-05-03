@@ -179,6 +179,7 @@ class _BettingState extends ConsumerState<Betting> {
                   controller: contactController,
                   hintText: "Enter $accountId",
                   onChanged: _onChangeHandler,
+                  inputType: TextInputType.number,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                   ],

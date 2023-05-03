@@ -180,6 +180,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                 textTheme: textTheme,
                 text: cardNumber,
                 controller: contactController,
+                inputType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],

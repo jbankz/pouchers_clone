@@ -80,6 +80,7 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                 textTheme: textTheme,
                 text: mobileNumber,
                 controller: contactController,
+                inputType: TextInputType.number,
                 onChanged: (val) {
                   if (val!.isNotEmpty) {
                     setState(() {
@@ -93,7 +94,10 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                   contactController.selection = TextSelection.fromPosition(
                       TextPosition(offset: contactController.text.length));
                 },
-                inputFormatters: [LengthLimitingTextInputFormatter(11)],
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(11),
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 icon: inkWell(
                   onTap: () async {
                     bool granted =

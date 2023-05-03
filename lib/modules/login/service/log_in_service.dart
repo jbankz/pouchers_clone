@@ -41,12 +41,13 @@ class LogInService {
       );
       logResponse(response);
       var responseBody = jsonDecode(response.body);
-      print("error${response.statusCode}");
       if (response.statusCode >= 300 && response.statusCode <= 520) {
         throw Failure.fromJson(responseBody);
       } else {
+        logPrint("before ${responseBody}");
         //Start with new slate in case where a user account logs in on a new device that was in use by another device
-        await Hive.box(kUserBox).clear();
+
+        logPrint("after ${responseBody}");
         return serveSuccess<VerifyEmailResponse>(
             data: VerifyEmailResponse.fromJson(responseBody),
             message: responseBody["message"]);

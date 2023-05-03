@@ -1,3 +1,4 @@
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -612,8 +613,9 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                           note: noteText,
                                         );
                                   else {
-                                    if (cred?.transactionPin == null ||
-                                        cred?.transactionPin == "") {
+                                    if (
+                                    ref.watch(biometricProvider).isPaymentBiometricActive == null || !ref.watch(biometricProvider).isPaymentBiometricActive!
+                                    ) {
                                       final result =
                                           await buildShowModalBottomSheet(
                                               context,
@@ -633,7 +635,29 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                                 transactionPin: result);
                                       }
                                     } else {
-                                      checkBiometric(context);
+                                      if(cred?.transactionPin == null || cred?.transactionPin == "") {
+                                        final result =
+                                            await buildShowModalBottomSheet(
+                                                context,
+                                                TransactionPinContainer(
+                                                  isData: false,
+                                                  isCard: false,
+                                                  isFundCard: false,
+                                                  isTransfer: true,
+                                                ));
+                                        if (result != null) {
+                                          ref
+                                              .read(p2pMoneyProvider.notifier)
+                                              .p2pMoney(
+                                                  tag: contactInfo["tag"],
+                                                  amount:
+                                                      "$wholeText.$decimalText",
+                                                  note: noteText,
+                                                  transactionPin: result);
+                                        }
+                                      } else
+                                        checkBiometric(context);
+
                                     }
                                   }
                                 }

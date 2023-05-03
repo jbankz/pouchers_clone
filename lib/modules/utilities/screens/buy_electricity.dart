@@ -286,6 +286,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                 text: meterNo,
                 controller: contactController,
                 hintText: enterMeterNo,
+                inputType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],

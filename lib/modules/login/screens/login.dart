@@ -71,7 +71,6 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
             )
           : null;
 
-      checkTheBiometrics();
       setState(() {});
       if (widget.disabled!) {
         Future.delayed(Duration(seconds: 1)).then((value) => showDialog(
@@ -336,7 +335,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                   });
                   var _widget = LargeButton(
                     title: logIn,
-                    onPressed: () {
+                    onPressed: () async{
                       FocusScope.of(context).unfocus();
 
                       if (_formKey.currentState!.validate()) {
@@ -349,6 +348,9 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                                   RegExp(r'[a-zA-Z]'),
                                 ),
                               );
+                          await saveUserCredential(
+                              password: _password!.trim(),
+                              email: _email!.trim());
                         }
                       }
                     },
@@ -472,9 +474,9 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
     });
     if (isAuth) {
       UserCredentials? cred = await getUserCredentials();
-      print(cred?.transactionPin);
-      print(cred?.password);
-      print(cred?.email);
+      print("trans pin${cred?.transactionPin}");
+      print("password ${cred?.password}");
+      print("email ${cred?.email}");
       widget.firstTime!
           ? pushToAndClearStack(context, TabLayout())
           : ref.read(logInProvider.notifier).logIn(

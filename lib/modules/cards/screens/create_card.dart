@@ -162,171 +162,169 @@ class _CreateCardState extends ConsumerState<CreateCard> {
         )
       ],
     );
-    return SafeArea(
-      child: Container(
-          padding: EdgeInsets.only(
-              left: kMediumPadding, right: kMediumPadding, top: kLargePadding),
-          child: ref.watch(getAllVirtualCardProvider).when(
-              done: (card) {
-                if (card != null) {
-                  if (card.data!.isEmpty || card.data == null) {
-                    return _widget;
-                  } else
-                    return Column(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                myCard,
-                                style: textTheme.headline1,
-                              ),
-                              ...card.data!.map((e) => e == null
-                                  ? SizedBox()
-                                  : Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: kMediumPadding),
-                                      child: inkWell(
-                                        onTap: e.cardStatus == "inactive"
-                                            ? () {
-                                                showErrorBar(context,
-                                                    "Card is frozen, Please contact admin.");
-                                              }
-                                            : () {
-                                                pushTo(
-                                                    context,
-                                                    CardHome(
-                                                      cardType: e.currency!,
-                                                      cardInfo: e,
-                                                    ),
-                                                    settings:
-                                                        const RouteSettings(
-                                                            name: CardHome
-                                                                .routeName));
-                                              },
-                                        child: Stack(
-                                          children: [
-                                            Stack(
-                                              children: [
-                                                Container(
-                                                  child: SvgPicture.asset(
-                                                    e.currency == "NGN"
-                                                        ? AssetPaths
-                                                            .cardNairaIcon
-                                                        : AssetPaths
-                                                            .cardDollarIcon,
-                                                    fit: BoxFit.fill,
+    return Container(
+        padding: EdgeInsets.only(
+            left: kMediumPadding, right: kMediumPadding, top: kSmallPadding),
+        child: ref.watch(getAllVirtualCardProvider).when(
+            done: (card) {
+              if (card != null) {
+                if (card.data!.isEmpty || card.data == null) {
+                  return _widget;
+                } else
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              myCard,
+                              style: textTheme.headline1,
+                            ),
+                            ...card.data!.map((e) => e == null
+                                ? SizedBox()
+                                : Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: kMediumPadding),
+                                    child: inkWell(
+                                      onTap: e.cardStatus == "inactive"
+                                          ? () {
+                                              showErrorBar(context,
+                                                  "Card is frozen, Please contact admin.");
+                                            }
+                                          : () {
+                                              pushTo(
+                                                  context,
+                                                  CardHome(
+                                                    cardType: e.currency!,
+                                                    cardInfo: e,
                                                   ),
-                                                  width: double.infinity,
+                                                  settings:
+                                                      const RouteSettings(
+                                                          name: CardHome
+                                                              .routeName));
+                                            },
+                                      child: Stack(
+                                        children: [
+                                          Stack(
+                                            children: [
+                                              Container(
+                                                child: SvgPicture.asset(
+                                                  e.currency == "NGN"
+                                                      ? AssetPaths
+                                                          .cardNairaIcon
+                                                      : AssetPaths
+                                                          .cardDollarIcon,
+                                                  fit: BoxFit.fill,
                                                 ),
-                                              ],
-                                            ),
-                                            Positioned(
-                                              bottom: kRegularPadding,
-                                              right: kRegularPadding,
-                                              child: SvgPicture.asset(
-                                                e.currency == "NGN"
-                                                    ?  AssetPaths.verveIcon : AssetPaths.masterCardIcon,
-                                                height: 30,
+                                                width: double.infinity,
                                               ),
+                                            ],
+                                          ),
+                                          Positioned(
+                                            bottom: kRegularPadding,
+                                            right: kRegularPadding,
+                                            child: SvgPicture.asset(
+                                              e.currency == "NGN"
+                                                  ?  AssetPaths.verveIcon : AssetPaths.masterCardIcon,
+                                              height: 30,
                                             ),
-                                            Positioned(
-                                              bottom: 0,
-                                              left: 0,
-                                              right: 0,
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: kSmallPadding,
-                                                    horizontal: kMediumPadding),
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          Text(
-                                                            e.currency == "NGN"
-                                                                ? virtualNairaCard
-                                                                : virtualDollarCard,
-                                                            style: textTheme
-                                                                .bodyText2!
-                                                                .copyWith(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    fontSize:
-                                                                        20),
-                                                          ),
-                                                          SizedBox(
-                                                            height: kPadding,
-                                                          ),
-                                                          Text(
-                                                            "**** ****",
-                                                            style: textTheme
-                                                                .bodyText2!
-                                                                .copyWith(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                    color: Color
-                                                                        .fromRGBO(
-                                                                            255,
-                                                                            255,
-                                                                            255,
-                                                                            0.8)),
-                                                          ),
-                                                        ],
-                                                      ),
+                                          ),
+                                          Positioned(
+                                            bottom: 0,
+                                            left: 0,
+                                            right: 0,
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: kSmallPadding,
+                                                  horizontal: kMediumPadding),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Text(
+                                                          e.currency == "NGN"
+                                                              ? virtualNairaCard
+                                                              : virtualDollarCard,
+                                                          style: textTheme
+                                                              .bodyText2!
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize:
+                                                                      20),
+                                                        ),
+                                                        SizedBox(
+                                                          height: kPadding,
+                                                        ),
+                                                        Text(
+                                                          "**** ****",
+                                                          style: textTheme
+                                                              .bodyText2!
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
+                                                                  color: Color
+                                                                      .fromRGBO(
+                                                                          255,
+                                                                          255,
+                                                                          255,
+                                                                          0.8)),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                                    )),
-                            ],
-                          ),
-                        ),
-                        card.data!.length == 2
-                            ? SizedBox()
-                            : LargeButton(
-                                title: card.data!.length == 1 &&
-                                        card.data![0]!.currency == "NGN"
-                                    ? createDollarCard
-                                    : createNairaCard,
-                                onPressed: () {
-                                  buildShowModalBottomSheet(
-                                    context,
-                                    CreateCardWidget(
-                                      textTheme: textTheme,
-                                      cardType: card.data!.length == 1 &&
-                                              card.data![0]!.currency == "NGN"
-                                          ? "dollar"
-                                          : "naira",
                                     ),
-                                  );
-                                }),
-                        SizedBox(
-                          height: kRegularPadding,
-                        )
-                      ],
-                    );
-                } else {
-                  return SizedBox();
-                }
-              },
-              loading: () => SpinKitDemo(),
-              error: (val) => _widget)),
-    );
+                                  )),
+                          ],
+                        ),
+                      ),
+                      card.data!.length == 2
+                          ? SizedBox()
+                          : LargeButton(
+                              title: card.data!.length == 1 &&
+                                      card.data![0]!.currency == "NGN"
+                                  ? createDollarCard
+                                  : createNairaCard,
+                              onPressed: () {
+                                buildShowModalBottomSheet(
+                                  context,
+                                  CreateCardWidget(
+                                    textTheme: textTheme,
+                                    cardType: card.data!.length == 1 &&
+                                            card.data![0]!.currency == "NGN"
+                                        ? "dollar"
+                                        : "naira",
+                                  ),
+                                );
+                              }),
+                      SizedBox(
+                        height: kRegularPadding,
+                      )
+                    ],
+                  );
+              } else {
+                return SizedBox();
+              }
+            },
+            loading: () => SpinKitDemo(),
+            error: (val) => _widget));
   }
 }

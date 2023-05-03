@@ -122,3 +122,182 @@ class ProviderLogger extends ProviderObserver {
 
 // Your app ID
 // ors25jkb
+
+//Liveness check voters card
+// dojah response: [
+// I/flutter (11047):   {
+// I/flutter (11047):     "data": {
+// I/flutter (11047):       "index": {
+// I/flutter (11047):         "data": {},
+// I/flutter (11047):         "status": true,
+// I/flutter (11047):         "message": "Successfully continued to the main checks."
+// I/flutter (11047):       },
+// I/flutter (11047):       "id-options": {
+// I/flutter (11047):         "data": {
+// I/flutter (11047):           "type": "NG-VCARD"
+// I/flutter (11047):         },
+// I/flutter (11047):         "message": "Successully picked a type",
+// I/flutter (11047):         "status": true
+// I/flutter (11047):       },
+// I/flutter (11047):       "id": {
+// I/flutter (11047):         "data": {
+// I/flutter (11047):           "idUrl": "https://dojah-images.s3.amazonaws.com/645111dc972663003ffbf78590F5AUF50F3501835000.jpeg",
+// I/flutter (11047):           "idData": {
+// I/flutter (11047):             "first_name": "SOTONWA",
+// I/flutter (11047):             "last_name": " OLUWAFEMI TOLUWA",
+// I/flutter (11047):             "middle_name": "",
+// I/flutter (11047):             "nationality": null,
+// I/flutter (11047):             "mrz_status": "True",
+// I/flutter (11047):             "mrz_1": null,
+// I/flutter (11047):             "mrz_2": "",
+// I/flutter (11047):             "expiry_date": null,
+// I/flutter (11047):             "document_type": "Nigeria - Voter Card #2",
+// I/flutter (11047):             "document_number": "90F5AUF50F3501835000",
+// I/flutter (11047):             "date_of_birth": "1997-05-15",
+// I/flutter (11047):             "date_issued": null,
+// I/flutter (11047):             "extras": ""
+// I/flutter (11047):           }
+// I/flutter (11047):         },
+// I/flutter (11047):         "status": true,
+// I/flutter (11047):         "message": "Successfully validated your liveness"
+// I/flutter (11047):       },
+// I/flutter (11047):       "selfie": {
+// I/flutter (11047):         "data": {}
+// I/flutter (11047):       }
+// I/flutter (11047):     },
+// I/flutter (11047):     "idUrl": "https://dojah-images.s3.amazonaws.com/645111dc972663003ffbf78590F5AUF50F3501835000.jpeg",
+// I/flutter (11047):     "idData": {
+// I/flutter (11047):       "first_name": "SOTONWA",
+// I/flutter (11047):       "last_name": " OLUWAFEMI TOLUWA",
+// I/flutter (11047):       "middle_name": "",
+// I/flutter (11047):       "nationality": null,
+// I/flutter (11047):       "mrz_status": "True",
+// I/flutter (11047):       "mrz_1": null,
+// I/flutter (11047):       "mrz_2": "",
+// I/flutter (11047):       "expiry_date": null,
+// I/flutter (11047):       "document_type": "Nigeria - Voter Card #2",
+// I/flutter (11047):       "document_number": "90F5AUF50F3501835000",
+// I/flutter (11047):       "date_of_birth": "1997-05-15",
+// I/flutter (11047):       "date_issued": null,
+// I/flutter (11047):       "extras": ""
+// I/flutter (11047):     },
+// I/flutter (11047):     "verificationId": 66974,
+// I/flutter (11047):     "verificationUrl": "https://app.dojah.io/verifications/bio-data/DJ-422B5D1346",
+// I/flutter (11047):     "referenceId": "DJ-422B5D1346",
+// I/flutter (11047):     "status": true,
+// I/flutter (11047):     "message": "Successfully completed the verification.",
+// I/flutter (11047):     "metadata": {
+// I/flutter (11047):       "deviceInfo": "Mozilla/5.0 (Linux; Android 12; SM-A217F Build/SP1A.210812.016; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/112.0.5615.135 Mobile Safari/537.36",
+// I/flutter (11047):       "ipInfo": {
+// I/flutter (11047):         "status": "success",
+// I/flutter (11047):         "country": "Nigeria",
+// I/flutter (11047):         "countryCode": "NG",
+// I/flutter (11047):         "regionName": "Lagos",
+// I/flutter (11047):         "city": "Onipanu",
+// I/flutter (11047):         "district": "",
+// I/flutter (11047):         "zip": "",
+// I/flutter (11047):         "lat": 6.5464,
+// I/flutter (11047):         "lon": 3.3721,
+// I/flutter (11047):         "timezone": "Africa/Lagos",
+// I/flutter (11047):         "isp": "eStream Networks",
+// I/flutter (11047):         "org": "Enyata",
+// I/flutter (11047):         "as": "AS37629 eStream Networks",
+// I/flutter (11047):         "asname": "eStreamNetworks-AS",
+// I/flutter (11047):         "mobile": false,
+// I/flutter (11047):         "proxy": false,
+// I/flutter (11047):         "hosting": false,
+// I/flutter (11047):         "query": "196.1.187.142"
+// I/flutter (11047):       }
+// I/flutter (11047):     }
+// I/flutter (11047):   }
+// I/flutter (11047): ]
+
+// driving license
+// dojah response: [
+// I/flutter (11047):   {
+// I/flutter (11047):     "data": {
+// I/flutter (11047):       "index": {
+// I/flutter (11047):         "data": {},
+// I/flutter (11047):         "status": true,
+// I/flutter (11047):         "message": "Successfully continued to the main checks."
+// I/flutter (11047):       },
+// I/flutter (11047):       "id-options": {
+// I/flutter (11047):         "data": {
+// I/flutter (11047):           "type": "DL_ID"
+// I/flutter (11047):         },
+// I/flutter (11047):         "message": "Successully picked a type",
+// I/flutter (11047):         "status": true
+// I/flutter (11047):       },
+// I/flutter (11047):       "id": {
+// I/flutter (11047):         "data": {
+// I/flutter (11047):           "idUrl": "https://dojah-images.s3.amazonaws.com/6451165d3bc78e00401c1e08LSR78347AA20.jpeg",
+// I/flutter (11047):           "idData": {
+// I/flutter (11047):             "first_name": "UMEMBA",
+// I/flutter (11047):             "last_name": "UZOMA EBER",
+// I/flutter (11047):             "middle_name": "",
+// I/flutter (11047):             "nationality": null,
+// I/flutter (11047):             "mrz_status": "True",
+// I/flutter (11047):             "mrz_1": null,
+// I/flutter (11047):             "mrz_2": "",
+// I/flutter (11047):             "expiry_date": "2023-05-11",
+// I/flutter (11047):             "document_type": "Nigeria - Driving License (2011)",
+// I/flutter (11047):             "document_number": "LSR78347AA20",
+// I/flutter (11047):             "date_of_birth": null,
+// I/flutter (11047):             "date_issued": null,
+// I/flutter (11047):             "extras": ""
+// I/flutter (11047):           }
+// I/flutter (11047):         },
+// I/flutter (11047):         "status": true,
+// I/flutter (11047):         "message": "Successfully validated your liveness"
+// I/flutter (11047):       },
+// I/flutter (11047):       "selfie": {
+// I/flutter (11047):         "data": {}
+// I/flutter (11047):       }
+// I/flutter (11047):     },
+// I/flutter (11047):     "idUrl": "https://dojah-images.s3.amazonaws.com/6451165d3bc78e00401c1e08LSR78347AA20.jpeg",
+// I/flutter (11047):     "idData": {
+// I/flutter (11047):       "first_name": "UMEMBA",
+// I/flutter (11047):       "last_name": "UZOMA EBER",
+// I/flutter (11047):       "middle_name": "",
+// I/flutter (11047):       "nationality": null,
+// I/flutter (11047):       "mrz_status": "True",
+// I/flutter (11047):       "mrz_1": null,
+// I/flutter (11047):       "mrz_2": "",
+// I/flutter (11047):       "expiry_date": "2023-05-11",
+// I/flutter (11047):       "document_type": "Nigeria - Driving License (2011)",
+// I/flutter (11047):       "document_number": "LSR78347AA20",
+// I/flutter (11047):       "date_of_birth": null,
+// I/flutter (11047):       "date_issued": null,
+// I/flutter (11047):       "extras": ""
+// I/flutter (11047):     },
+// I/flutter (11047):     "verificationId": 66979,
+// I/flutter (11047):     "verificationUrl": "https://app.dojah.io/verifications/bio-data/DJ-C1C77F5626",
+// I/flutter (11047):     "referenceId": "DJ-C1C77F5626",
+// I/flutter (11047):     "status": true,
+// I/flutter (11047):     "message": "Successfully completed the verification.",
+// I/flutter (11047):     "metadata": {
+// I/flutter (11047):       "deviceInfo": "Mozilla/5.0 (Linux; Android 12; SM-A217F Build/SP1A.210812.016; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/112.0.5615.135 Mobile Safari/537.36",
+// I/flutter (11047):       "ipInfo": {
+// I/flutter (11047):         "status": "success",
+// I/flutter (11047):         "country": "Nigeria",
+// I/flutter (11047):         "countryCode": "NG",
+// I/flutter (11047):         "regionName": "Lagos",
+// I/flutter (11047):         "city": "Onipanu",
+// I/flutter (11047):         "district": "",
+// I/flutter (11047):         "zip": "",
+// I/flutter (11047):         "lat": 6.5464,
+// I/flutter (11047):         "lon": 3.3721,
+// I/flutter (11047):         "timezone": "Africa/Lagos",
+// I/flutter (11047):         "isp": "eStream Networks",
+// I/flutter (11047):         "org": "Enyata",
+// I/flutter (11047):         "as": "AS37629 eStream Networks",
+// I/flutter (11047):         "asname": "eStreamNetworks-AS",
+// I/flutter (11047):         "mobile": false,
+// I/flutter (11047):         "proxy": false,
+// I/flutter (11047):         "hosting": false,
+// I/flutter (11047):         "query": "196.1.187.142"
+// I/flutter (11047):       }
+// I/flutter (11047):     }
+// I/flutter (11047):   }
+// I/flutter (11047): ]
+

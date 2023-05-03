@@ -86,11 +86,15 @@ class _TabLayoutState extends ConsumerState<TabLayout> with ResponseHandler {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    return AppLifeCycleManager(
-      child: WillPopScope(
+    return
+      // AppLifeCycleManager(
+      // child:
+      WillPopScope(
           child: Scaffold(
-            body: ListenerPage(
-              child: items[_selectedIndex],
+            body: SafeArea(
+              child: ListenerPage(
+                child: items[_selectedIndex],
+              ),
             ),
 
             bottomNavigationBar: BottomNavigationBar(
@@ -131,8 +135,8 @@ class _TabLayoutState extends ConsumerState<TabLayout> with ResponseHandler {
             ),
           ),
           onWillPop: _willPopCallback,
-        ),
-      );
+        );
+      //);
 
   }
   Future<void> _setupFCM() async {

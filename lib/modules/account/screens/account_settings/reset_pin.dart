@@ -162,9 +162,11 @@ class _ResetPinState extends ConsumerState<ResetPin> {
             Consumer(
               builder: (context, ref, _) {
                 ref.listen(resetPinProvider,
-                    (previous, NotifierState<String> next) {
+                    (previous, NotifierState<String> next) async{
                   if (next.status == NotifierStatus.done) {
-                    saveUserCredential(transactionPin: _pin2Controller.text);
+                   await saveUserCredential(
+                      transactionPin: _pin2Controller.text,
+                    );
                     pushTo(
                         context,
                         ResetSuccessful(

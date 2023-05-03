@@ -12,7 +12,6 @@ import 'package:Pouchers/app/navigators/navigators.dart';
 import 'package:Pouchers/modules/account/models/ui_models_class.dart';
 import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:Pouchers/modules/login/models/login_response.dart';
-import 'package:Pouchers/modules/login/screens/login.dart';
 import 'package:Pouchers/modules/make_payment/providers/payment_providers.dart';
 import 'package:Pouchers/modules/make_payment/screens/transfer_poucher_friend.dart';
 import 'package:Pouchers/modules/profile/profile_account_verification.dart';
@@ -39,13 +38,13 @@ class HomePage extends ConsumerStatefulWidget {
   ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage>  {
+class _HomePageState extends ConsumerState<HomePage> {
   PageController _controller = PageController(viewportFraction: 0.8);
   HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
 
   Future refresh() async {
-   SessionManager.setWalletBalance("");
-   ref.read(getWalletProvider.notifier).getWalletDetails();
+    SessionManager.setWalletBalance("");
+    ref.read(getWalletProvider.notifier).getWalletDetails();
   }
 
   @override
@@ -56,7 +55,7 @@ class _HomePageState extends ConsumerState<HomePage>  {
       ref.read(getWalletProvider.notifier).getWalletDetails();
       ref.read(getBannerProvider.notifier).getBanner();
       UserCredentials? cred = await getUserCredentials();
-print(cred);
+      print(cred);
     });
   }
 
@@ -72,7 +71,7 @@ print(cred);
     SizeConfig().init(context);
     return Padding(
       padding: EdgeInsets.only(
-          left: kMediumPadding, right: kMediumPadding, top: kLargePadding),
+          left: kMediumPadding, right: kMediumPadding, top: kSmallPadding),
       child: Column(
         children: [
           inkWell(
@@ -88,72 +87,71 @@ print(cred);
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(116),
-                  child: ref
-                      .watch(editProfileInHouseProvider)
-                      .profilePicture ==
-                      null
+                  child: ref.watch(editProfileInHouseProvider).profilePicture ==
+                          null
                       ? Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: kPrimaryColor,
-                    ),
-                    child: Center(
-                      child: Text(
-                          ref
-                              .watch(editProfileInHouseProvider)
-                              .profilePicture ==
-                              null
-                              ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
-                              : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
-                          style: textTheme.bodyText2!
-                              .copyWith(fontSize: 22)),
-                    ),
-                  )
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: kPrimaryColor,
+                          ),
+                          child: Center(
+                            child: Text(
+                                ref
+                                            .watch(editProfileInHouseProvider)
+                                            .profilePicture ==
+                                        null
+                                    ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
+                                    : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
+                                style: textTheme.bodyText2!
+                                    .copyWith(fontSize: 22)),
+                          ),
+                        )
                       : Image.network(
-                    ref
-                        .watch(editProfileInHouseProvider)
-                        .profilePicture ??
-                        "",
-                    errorBuilder: (BuildContext context, _, stackTrace) {
-                      return Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: kPrimaryColor,
-                        ),
-                        child: Center(
-                          child: Text(
-                              ref
+                          ref
                                   .watch(editProfileInHouseProvider)
-                                  .profilePicture ==
-                                  null
-                                  ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
-                                  : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
-                              style: textTheme.bodyText2!
-                                  .copyWith(fontSize: 22)),
+                                  .profilePicture ??
+                              "",
+                          errorBuilder: (BuildContext context, _, stackTrace) {
+                            return Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: kPrimaryColor,
+                              ),
+                              child: Center(
+                                child: Text(
+                                    ref
+                                                .watch(
+                                                    editProfileInHouseProvider)
+                                                .profilePicture ==
+                                            null
+                                        ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
+                                        : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
+                                    style: textTheme.bodyText2!
+                                        .copyWith(fontSize: 22)),
+                              ),
+                            );
+                          },
+                          fit: BoxFit.cover,
+                          height: 50,
+                          width: 50,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                    fit: BoxFit.cover,
-                    height: 50,
-                    width: 50,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes !=
-                              null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      );
-                    },
-                  ),
                 ),
                 SizedBox(
                   width: kSmallPadding,
@@ -169,27 +167,26 @@ print(cred);
                                 color: kDarkFill,
                               ),
                               children: [
-                                TextSpan(
-                                  text: ref
-                                      .watch(editProfileInHouseProvider)
-                                      .firstName ==
+                            TextSpan(
+                              text: ref
+                                          .watch(editProfileInHouseProvider)
+                                          .firstName ==
                                       null
-                                      ? "${userProfile.firstName}"
-                                      : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).firstName!.substring(1).toLowerCase()}.",
-                                  style: textTheme.headline3!.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: kDarkFill),
-                                )
-                              ])),
+                                  ? "${userProfile.firstName}"
+                                  : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).firstName!.substring(1).toLowerCase()}.",
+                              style: textTheme.headline3!.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: kDarkFill),
+                            )
+                          ])),
                       Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: kSmallPadding, vertical: 2),
                         decoration: BoxDecoration(
                             color: kColorBackgroundLight,
-                            border: Border.all(
-                                color: kPurpleColor700, width: 0.7),
-                            borderRadius:
-                            BorderRadius.circular(kSmallPadding)),
+                            border:
+                                Border.all(color: kPurpleColor700, width: 0.7),
+                            borderRadius: BorderRadius.circular(kSmallPadding)),
                         child: Text(
                           "$tier ${ref.watch(editProfileInHouseProvider).tierLevels}",
                           style: textTheme.headline4!.copyWith(
@@ -231,7 +228,6 @@ print(cred);
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       SizedBox(
                         height: kMediumPadding,
                       ),
@@ -243,16 +239,20 @@ print(cred);
                                   context,
                                   AccountVerificationStatus(from: "homepage"),
                                   settings: const RouteSettings(
-                                      name: AccountVerificationStatus.routeName),
+                                      name:
+                                          AccountVerificationStatus.routeName),
                                 );
                               },
                               child: Container(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: kRegularPadding, vertical: kSmallPadding),
+                                    horizontal: kRegularPadding,
+                                    vertical: kSmallPadding),
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(kSmallPadding),
+                                    borderRadius:
+                                        BorderRadius.circular(kSmallPadding),
                                     color: kLightOrange100,
-                                    border: Border.all(color: kLightOrange200, width: 1)),
+                                    border: Border.all(
+                                        color: kLightOrange200, width: 1)),
                                 child: Row(
                                   children: [
                                     SvgPicture.asset(AssetPaths.shieldIcon),
@@ -300,7 +300,8 @@ print(cred);
                                         if (done != null) {
                                           return RichText(
                                             text: TextSpan(
-                                              text: ref.watch(checkObscureProvider)
+                                              text: ref.watch(
+                                                      checkObscureProvider)
                                                   ? "₦"
                                                   : "",
                                               style: TextStyle(
@@ -310,14 +311,17 @@ print(cred);
                                               ),
                                               children: [
                                                 TextSpan(
-                                                    text: ref.watch(checkObscureProvider)
-                                                        ? kPriceFormatter(double.parse(
-                                                            SessionManager
+                                                    text: ref.watch(
+                                                            checkObscureProvider)
+                                                        ? kPriceFormatter(double
+                                                            .parse(SessionManager
                                                                     .getWalletBalance() ??
                                                                 "0.00"))
                                                         : "***** ",
-                                                    style: textTheme.bodyText2!.copyWith(
-                                                      fontWeight: FontWeight.w700,
+                                                    style: textTheme.bodyText2!
+                                                        .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w700,
                                                       fontSize: 32,
                                                       height: 1.5,
                                                       fontFamily: "DMSans",
@@ -340,9 +344,12 @@ print(cred);
                                 InkWell(
                                     onTap: () {
                                       setState(() {
-                                        ref.read(checkObscureProvider.notifier).state =
-                                            !ref
+                                        ref
                                                 .read(checkObscureProvider.notifier)
+                                                .state =
+                                            !ref
+                                                .read(checkObscureProvider
+                                                    .notifier)
                                                 .state;
                                       });
                                     },
@@ -392,7 +399,8 @@ print(cred);
                                         isRequestMoney: true,
                                       ),
                                       settings: const RouteSettings(
-                                          name: TransferPoucherFriend.routeName),
+                                          name:
+                                              TransferPoucherFriend.routeName),
                                     );
                                   },
                                   text: request,
@@ -431,7 +439,8 @@ print(cred);
                                     guestHomeClass[index].title == "More"
                                         ? showSuccessBar(context,
                                             "More Products will be added soon...")
-                                        : pushTo(context, guestHomeClass[index].page);
+                                        : pushTo(context,
+                                            guestHomeClass[index].page);
                                   },
                                   child: Container(
                                     height: 70,

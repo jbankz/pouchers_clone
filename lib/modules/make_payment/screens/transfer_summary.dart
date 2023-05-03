@@ -1,3 +1,4 @@
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_auth/local_auth.dart';
@@ -205,8 +206,7 @@ class _TransferSummaryState extends ConsumerState<TransferSummary> {
                 var _widget = LargeButton(
                     title: transfer.substring(0, 8),
                     onPressed: () async {
-    if (cred?.transactionPin == null ||
-    cred?.transactionPin == "") {
+    if ( ref.watch(biometricProvider).isPaymentBiometricActive == null || !ref.watch(biometricProvider).isPaymentBiometricActive!) {
       final result = await buildShowModalBottomSheet(
             context,
             TransactionPinContainer(
@@ -225,7 +225,25 @@ class _TransferSummaryState extends ConsumerState<TransferSummary> {
               transactionPin: result);
       }
     }else{
-      checkBiometric(context);
+      if(cred?.transactionPin == null || cred?.transactionPin == ""){
+        final result = await buildShowModalBottomSheet(
+            context,
+            TransactionPinContainer(
+              isData: false,
+              isCard: false,
+              isFundCard: false,
+              isTransfer: true,
+            ));
+        if (result != null) {
+          ref
+              .read(localBankTransferProvider.notifier)
+              .localBankTransfer(
+              accountNumber: widget.accNo!,
+              bankName: widget.transferName!,
+              amount: widget.amount!,
+              transactionPin: result);
+        }
+      }else checkBiometric(context);
     }
 
                     });

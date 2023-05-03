@@ -77,6 +77,8 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
+    print("jnnk${userProfile.isPaymentBiometricActive}");
+    print("kmkmk${ref.watch(biometricProvider).isPaymentBiometricActive!}");
     return InitialPage(
       title: biometric,
       child: Column(

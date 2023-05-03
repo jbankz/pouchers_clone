@@ -1,3 +1,4 @@
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -349,7 +350,7 @@ class _TransactionPinContainerState
                                 });
                               }
                             }
-                          : () {
+                          : () async {
                               if (pinPicked.length != 4) {
                                 setState(() {
                                   pinPicked.add(
@@ -367,6 +368,8 @@ class _TransactionPinContainerState
                                 ref.read(phoneProvider.notifier).state =
                                     pinPicked.length;
                                 if (ref.watch(phoneProvider) == 4) {
+                                  await saveUserCredential(
+                                      transactionPin: pinPicked.join(""));
                                   Navigator.pop(context, pinPicked.join(""));
                                   // ref
                                   //     .read(validatePinProvider.notifier)
@@ -831,8 +834,14 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                 double.parse(widget.amount)
                             ? () {}
                             : () async {
-                                if (cred?.transactionPin == null ||
-                                    cred?.transactionPin == "") {
+                                if (ref
+                                                .watch(biometricProvider)
+                                                .isPaymentBiometricActive ==
+                                            null ||
+                                        !ref
+                                            .watch(biometricProvider)
+                                            .isPaymentBiometricActive!
+                                    ) {
                                   final result =
                                       await buildShowModalBottomSheet(
                                     context,
@@ -888,7 +897,66 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                                 showErrorBar(context, val));
                                   }
                                 } else {
-                                  checkBiometric(context);
+                                  if (cred?.transactionPin == null ||
+                                      cred?.transactionPin == "") {
+                                    final result =
+                                        await buildShowModalBottomSheet(
+                                      context,
+                                      TransactionPinContainer(
+                                        isData: false,
+                                        isCard: false,
+                                        isFundCard: false,
+                                      ),
+                                    );
+                                    if (result != null) {
+                                      ref
+                                          .read(buyUtilitiesProvider.notifier)
+                                          .buyUtilities(
+                                              amount:
+                                                  double.parse(widget.amount),
+                                              isSchedule: false,
+                                              merchantAccount: widget.billerId,
+                                              merchantReferenceNumber:
+                                                  widget.recipientNo,
+                                              merchantService:
+                                                  widget.billerCode == null
+                                                      ? []
+                                                      : [widget.billerCode!],
+                                              applyDiscount: double.parse(
+                                                          widget.threshold!) <=
+                                                      double.parse(
+                                                          widget.amount)
+                                                  ? true
+                                                  : false,
+                                              subCategory: widget.billerName,
+                                              transactionPin: result,
+                                              category: "cable-purchase",
+                                              then: () {
+                                                ref
+                                                    .read(getWalletProvider
+                                                        .notifier)
+                                                    .getWalletDetails();
+                                                pushTo(
+                                                  context,
+                                                  SuccessMessage(
+                                                    text: dataSuccess,
+                                                    subText: deliveredPurchase,
+                                                    onTap: () {
+                                                      pushToAndClearStack(
+                                                        context,
+                                                        TabLayout(
+                                                          gottenIndex: 0,
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                              error: (val) =>
+                                                  showErrorBar(context, val));
+                                    }
+                                  } else
+                                    checkBiometric(context);
                                 }
                               },
                       );
@@ -939,8 +1007,13 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                         .balance!) >
                                     double.parse(widget.amount)
                                 ? () async {
-                                    if (cred?.transactionPin == null ||
-                                        cred?.transactionPin == "") {
+                                    if (ref
+                                                .watch(biometricProvider)
+                                                .isPaymentBiometricActive ==
+                                            null ||
+                                        !ref
+                                            .watch(biometricProvider)
+                                            .isPaymentBiometricActive!) {
                                       final result =
                                           await buildShowModalBottomSheet(
                                         context,
@@ -1000,7 +1073,74 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                                     showErrorBar(context, val));
                                       }
                                     } else {
-                                      checkBiometric(context);
+                                      if (cred?.transactionPin == null ||
+                                          cred?.transactionPin == "") {
+                                        print(cred?.transactionPin );
+                                        final result =
+                                            await buildShowModalBottomSheet(
+                                          context,
+                                          TransactionPinContainer(
+                                            isData: false,
+                                            isCard: false,
+                                            isFundCard: false,
+                                          ),
+                                        );
+                                        if (result != null) {
+                                          ref
+                                              .read(buyAirtimeProvider.notifier)
+                                              .buyAirtime(
+                                                  subCategory:
+                                                      widget.billerName,
+                                                  amount: widget.amount,
+                                                  applyDiscount: double.parse(
+                                                              widget
+                                                                  .threshold!) <=
+                                                          double.parse(
+                                                              widget.amount)
+                                                      ? true
+                                                      : false,
+                                                  category: widget.category!,
+                                                  isAirtime: widget.category!
+                                                          .contains("airtime")
+                                                      ? true
+                                                      : false,
+                                                  mobileOperatorServiceId: widget
+                                                      .mobileOperatorServiceId,
+                                                  destinationPhoneNumber:
+                                                      widget.recipientNo,
+                                                  transactionPin: result,
+                                                  mobileOperatorPublicId:
+                                                      widget.billerId,
+                                                  then: () {
+                                                    ref
+                                                        .read(getWalletProvider
+                                                            .notifier)
+                                                        .getWalletDetails();
+                                                    pushTo(
+                                                        context,
+                                                        SuccessMessage(
+                                                            text:
+                                                                rechargeSuccessful,
+                                                            subText:
+                                                                rechargeSuccessfulSub,
+                                                            onTap: () {
+                                                              pushToAndClearStack(
+                                                                context,
+                                                                TabLayout(
+                                                                  gottenIndex:
+                                                                      0,
+                                                                ),
+                                                              );
+                                                            }));
+                                                  },
+                                                  error: (val) => showErrorBar(
+                                                      context, val));
+                                        }
+                                      } else{
+                                        print(cred?.transactionPin );
+                                         checkBiometric(context);
+                                      }
+
                                     }
                                   }
                                 : () {},
@@ -1072,7 +1212,7 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
       isAuth = authenticated ? true : false;
     });
     if (isAuth) {
-      widget.utility 
+      widget.utility
           ? ref.read(buyUtilitiesProvider.notifier).buyUtilities(
               amount: double.parse(widget.amount),
               isSchedule: false,
@@ -1106,8 +1246,7 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                 );
               },
               error: (val) => showErrorBar(context, val))
-          :
-      ref.read(buyAirtimeProvider.notifier).buyAirtime(
+          : ref.read(buyAirtimeProvider.notifier).buyAirtime(
               subCategory: widget.billerName,
               amount: widget.amount,
               applyDiscount:
