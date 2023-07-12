@@ -8,6 +8,7 @@ import 'package:Pouchers/modules/account/models/security_question.dart';
 import 'package:Pouchers/modules/account/models/tier_list.dart';
 import 'package:Pouchers/utils/extras.dart';
 import 'package:Pouchers/utils/logger.dart';
+import 'package:Pouchers/utils/strings.dart';
 import 'package:http/http.dart' as http;
 
 class AccountService {
@@ -195,6 +196,9 @@ class AccountService {
     String? fcmToken,
     bool? isLoginBiometricActive,
     isPaymentBiometricActive,
+    String? city,
+    String? userState,
+    String? postalCode,
     required String token,
   }) async {
     Map<String, String> _authHeaders = {
@@ -215,6 +219,9 @@ class AccountService {
     if (gender != null) body["gender"] = gender;
     if (profilePicture != null) body["profile_picture"] = profilePicture;
     if (utilityBill != null) body["utility_bill"] = utilityBill;
+    if (city != null) body["city"] = city;
+    if (userState != null) body["state"] = userState;
+    if (postalCode != null) body["postal_code"] = postalCode;
     if (fcmToken != null) body["fcm_token"] = fcmToken;
     if (isLoginBiometricActive != null)
       body["is_login_biometric_active"] = isLoginBiometricActive;
@@ -537,7 +544,11 @@ class AccountService {
   static Future<ServiceResponse<EditProfileResponse>> validateId(
       {required String idType,
       required String idNumber,
+      required bool isUpload,
       String? surname,
+      firstName,
+      lastName,
+      dob,
       required String token}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
@@ -546,9 +557,21 @@ class AccountService {
     };
 
     String url = "${baseUrl()}/user/validate-id";
-    Map<String, dynamic> body = {"id_type": idType, "id_number": idNumber};
+    Map<String, dynamic> body = {
+      "id_type": idType,
+      "id_number": idNumber,
+      "is_upload_id": isUpload
+    };
     if (idType == "passport") {
       body["surname"] = surname;
+    }
+
+    if (isUpload) {
+      body["dojah_response"] = {
+        "first_name": firstName,
+        "last_name": lastName,
+        "dateOfBirth": dob
+      };
     }
 
     logPrint(url);

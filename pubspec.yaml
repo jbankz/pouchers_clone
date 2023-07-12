@@ -66,8 +66,7 @@ dependencies:
   local_auth: ^2.1.2
   equatable: ^2.0.5
   fl_chart: ^0.55.2
-  simple_s3: ^0.3.2
-  printing: ^5.9.3
+  printing: ^5.11.0
   riverpod: ^2.0.2
   logger: ^1.1.0
   lottie: ^1.4.3

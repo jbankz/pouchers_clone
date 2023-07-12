@@ -257,6 +257,9 @@ class EditProfileNotifier
     String? profilePicture,
     String? fcmToken,
     String? utilityBill,
+    String? city,
+    String? userState,
+    String? postalCode,
     bool? isLoginBiometricActive,
     bool? isPaymentBiometricActive,
     Function()? then,
@@ -271,6 +274,9 @@ class EditProfileNotifier
         address: address,
         fcmToken: fcmToken,
         gender: gender,
+        city: city,
+        userState: userState,
+        postalCode: postalCode,
         profilePicture: profilePicture,
         utilityBill: utilityBill,
         isLoginBiometricActive: isLoginBiometricActive,
@@ -435,12 +441,18 @@ class ValidateIDNotifier
   void validateID({
     required String idType,
     required String idNumber,
+    required bool isUpload,
+    String? firstName, lastName, dob,
     Function()? then,
   }) async {
     state = notifyLoading();
     state = await _repo.validateId(
       idNumber: idNumber,
       idType: idType,
+      firstName: firstName,
+      lastName: lastName,
+      dob: dob,
+      isUpload: isUpload
     );
     if (state.status == NotifierStatus.done) {
       if (then != null) then();

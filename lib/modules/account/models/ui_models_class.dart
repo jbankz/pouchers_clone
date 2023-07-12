@@ -368,8 +368,7 @@ class _TransactionPinContainerState
                                 ref.read(phoneProvider.notifier).state =
                                     pinPicked.length;
                                 if (ref.watch(phoneProvider) == 4) {
-                                  await saveUserCredential(
-                                      transactionPin: pinPicked.join(""));
+
                                   Navigator.pop(context, pinPicked.join(""));
                                   // ref
                                   //     .read(validatePinProvider.notifier)
@@ -518,6 +517,9 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
 
   @override
   Widget build(BuildContext context) {
+    print(ref
+        .watch(biometricProvider)
+        .isPaymentBiometricActive);
     return Container(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 20),
       decoration: BoxDecoration(
@@ -1048,7 +1050,9 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                                 transactionPin: result,
                                                 mobileOperatorPublicId:
                                                     widget.billerId,
-                                                then: () {
+                                                then: () async{
+                                                  await saveUserCredential(
+                                                  transactionPin: result);
                                                   ref
                                                       .read(getWalletProvider
                                                           .notifier)
@@ -1069,12 +1073,21 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                                             );
                                                           }));
                                                 },
-                                                error: (val) =>
-                                                    showErrorBar(context, val));
+                                                error: (val) async{
+                                                  if(val.contains("Invalid credentials")){
+
+                                                  }else{
+                                                    await saveUserCredential(
+                                                    transactionPin: result);
+                                                  }
+                                                  print("hghghjgjhsd$val");
+                                                  showErrorBar(context, val);
+                                                });
                                       }
                                     } else {
                                       if (cred?.transactionPin == null ||
                                           cred?.transactionPin == "") {
+                                        print("touched here");
                                         print(cred?.transactionPin );
                                         final result =
                                             await buildShowModalBottomSheet(
@@ -1111,7 +1124,9 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                                   transactionPin: result,
                                                   mobileOperatorPublicId:
                                                       widget.billerId,
-                                                  then: () {
+                                                  then: () async{
+                                                    await saveUserCredential(
+                                                    transactionPin: result);
                                                     ref
                                                         .read(getWalletProvider
                                                             .notifier)
@@ -1133,8 +1148,17 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                                               );
                                                             }));
                                                   },
-                                                  error: (val) => showErrorBar(
-                                                      context, val));
+                                                  error: (val) async{
+                                                    if(val.contains("Invalid credentials")){
+
+                                                    }else{
+                                                      await saveUserCredential(
+                                                      transactionPin: result);
+                                                    }
+                                                    print("val ,mkkdkue$val");
+                                                    showErrorBar(
+                                                        context, val);
+                                                  });
                                         }
                                       } else{
                                         print(cred?.transactionPin );

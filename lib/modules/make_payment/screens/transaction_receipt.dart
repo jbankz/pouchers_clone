@@ -172,7 +172,7 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                                   inkWell(
                                     onTap: (){
                                       Clipboard.setData(ClipboardData(
-                                          text: widget.transactionId));
+                                          text: widget.transactionId ?? ""));
                                       showSuccessBar(context, "Copied");
                                     },
 

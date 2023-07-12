@@ -58,62 +58,103 @@ class _AccountVerificationStatusState
         title: accountVerification,
         color: kPurpleColor800,
         child: ListenerPage(
-          child: Column(
-            children: [
-              Text(
-                accountVerificationSub,
-                style: textTheme.headline3,
-              ),
-              SizedBox(
-                height: kMediumPadding,
-              ),
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                Text(
+                  accountVerificationSub,
+                  style: textTheme.headline3,
+                ),
+                SizedBox(
+                  height: kMediumPadding,
+                ),
 
-                  AccountVerifyContainer(
-                    textTheme: textTheme,
-                    title: bvn,
-                    subTitle: bvnSub,
-                    bgColor:
-                    hiveTierLevel == 1 ? kColorLightYellow : kLightColorGreen,
-                    status: hiveTierLevel == 1 ? pending : verified,
-                    iconColor: hiveTierLevel == 1 ? kColorYellow200 : kColorGreen,
-                    next: hiveTierLevel == 1 ? true : false,
-                    widget: hiveTierLevel == 1
-                        ? Text(
-                      "i",
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    )
-                        : Icon(
-                      Icons.check,
-                      color: kPrimaryWhite,
-                      size: 20,
-                    ),
-                    onTap: hiveTierLevel == 1
-                        ? () {
-                      pushTo(
-                        context,
-                        BVNPage(from: widget.from),
-                        settings: const RouteSettings(
-                          name: BVNPage.routeName,
-                        ),
-                      );
-                    }
-                        : null,
-                  ),
-                  AccountVerifyContainer(
+                    AccountVerifyContainer(
                       textTheme: textTheme,
-                      status: hiveTierLevel == 2 && (hiveIsUploadedIdentityCard!)
+                      title: bvn,
+                      subTitle: bvnSub,
+                      bgColor:
+                      hiveTierLevel == 1 ? kColorLightYellow : kLightColorGreen,
+                      status: hiveTierLevel == 1 ? pending : verified,
+                      iconColor: hiveTierLevel == 1 ? kColorYellow200 : kColorGreen,
+                      next: hiveTierLevel == 1 ? true : false,
+                      widget: hiveTierLevel == 1
+                          ? Text(
+                        "i",
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      )
+                          : Icon(
+                        Icons.check,
+                        color: kPrimaryWhite,
+                        size: 20,
+                      ),
+                      onTap: hiveTierLevel == 1
+                          ? () {
+                        pushTo(
+                          context,
+                          BVNPage(from: widget.from),
+                          settings: const RouteSettings(
+                            name: BVNPage.routeName,
+                          ),
+                        );
+                      }
+                          : null,
+                    ),
+                    AccountVerifyContainer(
+                        textTheme: textTheme,
+                        status: hiveTierLevel == 2 && (hiveIsUploadedIdentityCard!)
+                            ? verified
+                            : pending,
+                        title: validCard,
+                        subTitle: validCardSub,
+                        bgColor: hiveTierLevel == 2 && (hiveIsUploadedIdentityCard!)
+                            ? kLightColorGreen
+                            : kColorLightYellow,
+                        iconColor: hiveTierLevel == 2 && (hiveIsUploadedIdentityCard!)
+                            ? kColorGreen
+                            : kColorYellow200,
+                        next: hiveTierLevel == 2 || hiveTierLevel == 3 ? false : true,
+                        widget: hiveTierLevel == 2 && (hiveIsUploadedIdentityCard!)
+                            ? Icon(
+                          Icons.check,
+                          color: kPrimaryWhite,
+                          size: 20,
+                        )
+                            : Text(
+                          "i",
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                        onTap: hiveTierLevel == 2 && (!hiveIsUploadedIdentityCard!)
+                            ? () {
+                          pushTo(
+                            context,
+                            ValidId(from: widget.from),
+                            settings: const RouteSettings(
+                              name: ValidId.routeName,
+                            ),
+                          );
+                        }
+                            : null),
+                    AccountVerifyContainer(
+                      textTheme: textTheme,
+                      status: (hiveTierLevel == 3 && hiveIsUploadedIdentityCard!)
                           ? verified
                           : pending,
-                      title: validCard,
-                      subTitle: validCardSub,
-                      bgColor: hiveTierLevel == 2 && (hiveIsUploadedIdentityCard!)
+                      title: utilityBill,
+                      subTitle: utilityBillSub,
+                      bgColor: (hiveTierLevel == 3 && hiveIsUploadedIdentityCard!)
                           ? kLightColorGreen
                           : kColorLightYellow,
-                      iconColor: hiveTierLevel == 2 && (hiveIsUploadedIdentityCard!)
+                      iconColor: (hiveTierLevel == 3 && hiveIsUploadedIdentityCard!)
                           ? kColorGreen
                           : kColorYellow200,
-                      next: hiveTierLevel == 2 || hiveTierLevel == 3 ? false : true,
-                      widget: hiveTierLevel == 2 && (hiveIsUploadedIdentityCard!)
+                      next: (hiveTierLevel == 3 && hiveIsUploadedIdentityCard!)
+                          ? false
+                          : (hiveTierLevel == 3 && hiveIsUploadedIdentityCard!)
+                          ? false
+                          : true,
+                      widget: (hiveTierLevel == 3 && hiveIsUploadedIdentityCard!)
                           ? Icon(
                         Icons.check,
                         color: kPrimaryWhite,
@@ -123,78 +164,40 @@ class _AccountVerificationStatusState
                         "i",
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),
-                      onTap: hiveTierLevel == 2 && (!hiveIsUploadedIdentityCard!)
-                          ? () {
-                        pushTo(
+                      onTap: (hiveTierLevel == 2 &&
+                          hiveIsUploadedIdentityCard! &&
+                          result == null)
+                          ? () async {
+                        result = await pushTo(
                           context,
-                          ValidId(from: widget.from),
+                          ProfileUtilityBill(
+                              from: widget.from
+                          ),
                           settings: const RouteSettings(
-                            name: ValidId.routeName,
+                            name: ProfileUtilityBill.routeName,
                           ),
                         );
+                        if (result != null) {
+                          setState(() {
+                            result = result;
+                          });
+                        }
                       }
-                          : null),
-                  AccountVerifyContainer(
-                    textTheme: textTheme,
-                    status: (hiveTierLevel == 3 && hiveIsUploadedIdentityCard!)
-                        ? verified
-                        : pending,
-                    title: utilityBill,
-                    subTitle: utilityBillSub,
-                    bgColor: (hiveTierLevel == 3 && hiveIsUploadedIdentityCard!)
-                        ? kLightColorGreen
-                        : kColorLightYellow,
-                    iconColor: (hiveTierLevel == 3 && hiveIsUploadedIdentityCard!)
-                        ? kColorGreen
-                        : kColorYellow200,
-                    next: (hiveTierLevel == 3 && hiveIsUploadedIdentityCard!)
-                        ? false
-                        : (hiveTierLevel == 3 && hiveIsUploadedIdentityCard!)
-                        ? false
-                        : true,
-                    widget: (hiveTierLevel == 3 && hiveIsUploadedIdentityCard!)
-                        ? Icon(
-                      Icons.check,
-                      color: kPrimaryWhite,
-                      size: 20,
-                    )
-                        : Text(
-                      "i",
-                      style: TextStyle(fontWeight: FontWeight.w500),
+                          : (hiveTierLevel == 2 &&
+                          hiveIsUploadedIdentityCard! &&
+                          result != null)
+                          ? () {
+                        showErrorBar(context, "Awaiting approval");
+                      }
+                          : () {
+                        print("$hiveTierLevel");
+                        print("$hiveIsUploadedIdentityCard");
+                      },
                     ),
-                    onTap: (hiveTierLevel == 2 &&
-                        hiveIsUploadedIdentityCard! &&
-                        result == null)
-                        ? () async {
-                      result = await pushTo(
-                        context,
-                        ProfileUtilityBill(
-                            from: widget.from
-                        ),
-                        settings: const RouteSettings(
-                          name: ProfileUtilityBill.routeName,
-                        ),
-                      );
-                      if (result != null) {
-                        setState(() {
-                          result = result;
-                        });
-                      }
-                    }
-                        : (hiveTierLevel == 2 &&
-                        hiveIsUploadedIdentityCard! &&
-                        result != null)
-                        ? () {
-                      showErrorBar(context, "Awaiting approval");
-                    }
-                        : () {
-                      print("$hiveTierLevel");
-                      print("$hiveIsUploadedIdentityCard");
-                    },
-                  ),
 
 
-            ],
+              ],
+            ),
           ),
         ));
   }

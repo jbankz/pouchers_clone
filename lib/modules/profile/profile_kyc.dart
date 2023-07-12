@@ -71,6 +71,7 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
+    print(userProfile.address);
     return InitialPage(
       color: kPurpleColor800,
       title: profile,
@@ -296,161 +297,7 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                                       );
                                     },
                                   ),
-                                    // : Container(
-                                    //     height: 105,
-                                    //     width: 105,
-                                    //     decoration: BoxDecoration(
-                                    //       shape: BoxShape.circle,
-                                    //       color: kPrimaryColor,
-                                    //     ),
-                                    //     child: Center(
-                                    //       child: Text(
-                                    //           ref
-                                    //                       .watch(
-                                    //                           editProfileInHouseProvider)
-                                    //                       .profilePicture ==
-                                    //                   null
-                                    //               ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
-                                    //               : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
-                                    //           style: textTheme.bodyText2!
-                                    //               .copyWith(fontSize: 22)),
-                                    //     ),
-                                    //   )
-                                //     : Image.network(
-                                //   ref
-                                //       .watch(editProfileInHouseProvider)
-                                //       .profilePicture ??
-                                //       "",
-                                //   fit: BoxFit.cover,
-                                //   height: 105,
-                                //   width: 105,
-                                //   loadingBuilder: (BuildContext context, Widget child,
-                                //       ImageChunkEvent? loadingProgress) {
-                                //     if (loadingProgress == null) return child;
-                                //     return Center(
-                                //       child: CircularProgressIndicator(
-                                //         value: loadingProgress.expectedTotalBytes !=
-                                //             null
-                                //             ? loadingProgress.cumulativeBytesLoaded /
-                                //             loadingProgress.expectedTotalBytes!
-                                //             : null,
-                                //       ),
-                                //     );
-                                //   },
-                                // ),
                                 ),
-                            // ClipRRect(
-                            //   borderRadius: BorderRadius.circular(116),
-                            //   child: CachedNetworkImage(
-                            //       height: 105,
-                            //       width: 105,
-                            //       imageUrl: ref
-                            //               .watch(editProfileInHouseProvider)
-                            //               .profilePicture ??
-                            //           "",
-                            //       placeholder: (context, url) => Container(
-                            //             color: Colors.transparent,
-                            //             height: 105,
-                            //             width: 105,
-                            //             child: const Center(
-                            //               child: CircularProgressIndicator(
-                            //                 strokeWidth: 2,
-                            //                 valueColor:
-                            //                     AlwaysStoppedAnimation<Color>(
-                            //                         kPrimaryColor),
-                            //               ),
-                            //             ),
-                            //           ),
-                            //       fit: BoxFit.cover,
-                            //       errorWidget: (context, url, error) => ref
-                            //                   .watch(editProfileInHouseProvider)
-                            //                   .profilePicture !=
-                            //               null
-                            //           ? Image.network(
-                            //               ref
-                            //                   .watch(editProfileInHouseProvider)
-                            //                   .profilePicture!,
-                            //               fit: BoxFit.fill,
-                            //               loadingBuilder: (BuildContext context,
-                            //                   Widget child,
-                            //                   ImageChunkEvent? loadingProgress) {
-                            //                 if (loadingProgress == null)
-                            //                   return child;
-                            //                 return Center(
-                            //                   child: CircularProgressIndicator(
-                            //                     value: loadingProgress
-                            //                                 .expectedTotalBytes !=
-                            //                             null
-                            //                         ? loadingProgress
-                            //                                 .cumulativeBytesLoaded /
-                            //                             loadingProgress
-                            //                                 .expectedTotalBytes!
-                            //                         : null,
-                            //                   ),
-                            //                 );
-                            //               },
-                            //             )
-                            //           : Container(
-                            //               padding: EdgeInsets.all(8),
-                            //               decoration: BoxDecoration(
-                            //                   shape: BoxShape.circle,
-                            //                   color: kPurple300),
-                            //               child: Container(
-                            //                 padding: EdgeInsets.all(8),
-                            //                 decoration: BoxDecoration(
-                            //                     shape: BoxShape.circle,
-                            //                     color: kPrimaryWhite),
-                            //                 child: Container(
-                            //                   padding:
-                            //                       EdgeInsets.all(kSmallPadding),
-                            //                   decoration: BoxDecoration(
-                            //                       shape: BoxShape.circle,
-                            //                       color: kPrimaryTextColor
-                            //                           .withOpacity(0.05)),
-                            //                   child: Container(
-                            //                     padding: EdgeInsets.all(8),
-                            //                     decoration: BoxDecoration(
-                            //                       shape: BoxShape.circle,
-                            //                       color: kPurpleColor600,
-                            //                     ),
-                            //                     child: Column(
-                            //                       children: [
-                            //                         Container(
-                            //                           height: kRegularPadding,
-                            //                           width: kRegularPadding,
-                            //                           decoration: BoxDecoration(
-                            //                               shape: BoxShape.circle,
-                            //                               color:
-                            //                                   kPrimaryTextColor),
-                            //                         ),
-                            //                         SizedBox(
-                            //                           height: 7,
-                            //                         ),
-                            //                         Container(
-                            //                           height: kRegularPadding,
-                            //                           width: 35,
-                            //                           decoration: BoxDecoration(
-                            //                               borderRadius: BorderRadius.only(
-                            //                                   topLeft:
-                            //                                       Radius.circular(
-                            //                                           kSmallPadding),
-                            //                                   bottomLeft:
-                            //                                       Radius.circular(
-                            //                                           kPadding),
-                            //                                   topRight:
-                            //                                       Radius.circular(
-                            //                                           kSmallPadding),
-                            //                                   bottomRight:
-                            //                                       Radius.circular(
-                            //                                           kPadding)),
-                            //                               color: kPurpleColor500),
-                            //                         )
-                            //                       ],
-                            //                     ),
-                            //                   ),
-                            //                 ),
-                            //               ))),
-                            // ),
                             Positioned(
                               bottom: 0,
                               right: 0,
@@ -568,9 +415,11 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                             null
                         ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.firstName!.substring(1).toLowerCase()} ${userProfile.lastName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(1).toLowerCase()}"
                         : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).firstName!.substring(1).toLowerCase()} ${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(1).toLowerCase()}",
-                    onTap: hiveTierLevel == 2 || hiveTierLevel == 3
+                    onTap:
+                    hiveTierLevel == 2 || hiveTierLevel == 3
                         ? null
-                        : () async {
+                        :
+                        () async {
                             final val = await showDialog(
                                 context: context,
                                 builder: (
@@ -625,6 +474,30 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                           ),
                           settings: const RouteSettings(
                               name: ChangePassword.routeName));
+                    },
+                  ),
+                  KYCColumn(
+                    textTheme: textTheme,
+                    title: address,
+                    subTitle: ref.watch(editProfileInHouseProvider).address ==
+                        null
+                        ? "${userProfile.address}"
+                        : "${ref.watch(editProfileInHouseProvider).address}",
+                    onTap: () async {
+                      final val = await showDialog(
+                          context: context,
+                          builder: (
+                              context,
+                              ) {
+                            return ProfileKYCDialog(
+                              textTheme: textTheme,
+                              child:
+                              EditAddressModal(textTheme: textTheme),
+                            );
+                          });
+                      setState(() {
+                        checkTierLevel();
+                      });
                     },
                   ),
                   KYCColumn(

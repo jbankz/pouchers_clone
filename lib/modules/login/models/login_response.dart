@@ -143,7 +143,7 @@ class HiveStoreResponseData {
             : DateTime.parse(json["tokenExpireAt"]),
         dob: json["dob"],
         gender: json["gender"],
-        address: json["address"],
+        address: json["address"] ?? "",
         profilePicture: json["profile_picture"],
         is2faActive: json["is_2fa_active"],
         utilityBill: json["utility_bill"],

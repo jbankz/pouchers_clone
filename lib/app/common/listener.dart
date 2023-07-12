@@ -16,11 +16,7 @@ class _ListenerPageState extends State<ListenerPage> {
     return Listener(
       onPointerDown: (e) {
         DateTime whenTouchedDatetime = DateTime.now();
-        print("now date $nowDate");
-        print("whenTouchedDatetime $whenTouchedDatetime");
         if (nowDate.isBefore(whenTouchedDatetime)) {
-          print("it is after");
-
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (_) {
                 return LogInAccount(

@@ -349,12 +349,12 @@ class AnalyticsSummary {
   });
 
   int day;
-  String? totalOutflow;
+  int? totalOutflow;
 
   factory AnalyticsSummary.fromJson(Map<String, dynamic> json) =>
       AnalyticsSummary(
         day: json["day"],
-        totalOutflow: json["total_outflow"],
+        totalOutflow:  json["total_outflow"],
       );
 
   Map<String, dynamic> toJson() => {

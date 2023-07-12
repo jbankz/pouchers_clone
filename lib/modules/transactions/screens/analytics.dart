@@ -166,7 +166,7 @@ class _AnalyticsState extends ConsumerState<Analytics> {
                   analyticsSummary.add(element);
                 });
                 _maxNumber = analyticsSummary
-                    .map<double>((e) => double.parse(e.totalOutflow ?? "0"))
+                    .map<double>((e) => e.totalOutflow == null ? 0 : e.totalOutflow!.toDouble() )
                     .reduce(max);
               }
             });
@@ -407,7 +407,7 @@ class _AnalyticsState extends ConsumerState<Analytics> {
           barsSpace: 5,
           barRods: [
             BarChartRodData(
-                toY: e.totalOutflow == null ? 0 : double.parse(e.totalOutflow!),
+                toY: e.totalOutflow == null ? 0 : e.totalOutflow!.toDouble(),
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(kPadding),
                     topRight: Radius.circular(kPadding)),

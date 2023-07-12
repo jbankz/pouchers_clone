@@ -4,7 +4,6 @@ import 'package:local_auth/local_auth.dart';
 import 'package:Pouchers/app/common/model.dart';
 import 'package:Pouchers/utils/strings.dart';
 
-
 final _secureStorage = FlutterSecureStorage();
 
 Future<UserCredentials?> getUserCredentials() async {
@@ -26,19 +25,25 @@ Future<void> saveUserCredential({
   String? transactionPin,
   String? email,
 }) async {
+  print("got here");
   try {
     final existingCredentials = await getUserCredentials();
-
+    print(existingCredentials?.transactionPin);
     if (existingCredentials == null) {
-      final credentials =
-          UserCredentials(password: password, transactionPin: transactionPin, email: email);
+      final credentials = UserCredentials(
+          password: password, transactionPin: transactionPin, email: email);
       await _secureStorage.write(
           key: userCredentialKey, value: credentials.serialize());
+      print("object$transactionPin");
     } else {
+      print("na here i dey");
       await _secureStorage.write(
           key: userCredentialKey,
           value: existingCredentials
-              .copyWith(password: password, transactionPin: transactionPin, email: email)
+              .copyWith(
+                  password: password,
+                  transactionPin: transactionPin,
+                  email: email)
               .serialize());
     }
   } catch (e) {
@@ -53,7 +58,3 @@ Future<void> deleteUserCredentials() async {
     throw "An error occurred";
   }
 }
-
-
-
-

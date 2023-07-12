@@ -27,7 +27,7 @@ Future<void> main() async {
   await dotenv.load();
   await Intercom.instance.initialize(interComAppId,
       iosApiKey: interComIOSKey, androidApiKey: interComAndroidKey);
-  Env.setEnvironment(EnvState.test);
+  Env.setEnvironment(EnvState.production);
   await Firebase.initializeApp();
   Directory directory = await path.getApplicationDocumentsDirectory();
   // await FlutterDownloader.initialize(
@@ -131,14 +131,14 @@ class ProviderLogger extends ProviderObserver {
 // I/flutter (11047):         "data": {},
 // I/flutter (11047):         "status": true,
 // I/flutter (11047):         "message": "Successfully continued to the main checks."
-// I/flutter (11047):       },
+// I/flutter (11047):       },index close
 // I/flutter (11047):       "id-options": {
 // I/flutter (11047):         "data": {
 // I/flutter (11047):           "type": "NG-VCARD"
-// I/flutter (11047):         },
+// I/flutter (11047):         }, data id close
 // I/flutter (11047):         "message": "Successully picked a type",
 // I/flutter (11047):         "status": true
-// I/flutter (11047):       },
+// I/flutter (11047):       }, id options close
 // I/flutter (11047):       "id": {
 // I/flutter (11047):         "data": {
 // I/flutter (11047):           "idUrl": "https://dojah-images.s3.amazonaws.com/645111dc972663003ffbf78590F5AUF50F3501835000.jpeg",
@@ -300,4 +300,3 @@ class ProviderLogger extends ProviderObserver {
 // I/flutter (11047):     }
 // I/flutter (11047):   }
 // I/flutter (11047): ]
-

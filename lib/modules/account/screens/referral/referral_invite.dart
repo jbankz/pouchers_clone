@@ -62,7 +62,7 @@ class ReferralInvite extends StatelessWidget {
           ),
           inkWell(
             onTap: () {
-              Clipboard.setData(ClipboardData(text: userProfile.referralCode));
+              Clipboard.setData(ClipboardData(text: userProfile.referralCode ?? ""));
               showSuccessBar(context, "Copied");
             },
             child: DottedBorder(

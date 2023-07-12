@@ -19,7 +19,9 @@ class Utils {
     } else if (e is TimeoutException) {
       logTimeoutException(e);
       return "Request timed out, please try again";
-    } else if (e is FormatException || e is ClientException ||  e is  HandshakeException) {
+    } else if (e is FormatException ||
+        e is ClientException ||
+        e is HandshakeException) {
       logPrint(e);
       return "Something went wrong, please try again";
     } else {
@@ -46,13 +48,13 @@ class ClientException implements Exception {
   String toString() => message;
 }
 
-Future<bool?> startDojahWidget(
-    BuildContext context, {
-      required String type,
-      Map<String, dynamic>? userData,
-      Map<String, dynamic>? config,
-      Map<String, dynamic>? metadata,
-    }) async {
+Future<Map<String, dynamic>?> startDojahWidget(
+  BuildContext context, {
+  required String type,
+  Map<String, dynamic>? userData,
+  Map<String, dynamic>? config,
+  Map<String, dynamic>? metadata,
+}) async {
   final DojahKYC dojahKyc = DojahKYC(
     appId: dotenv.get(kDojahAppId),
     publicKey: dotenv.get(kDojahPublicKey),
@@ -63,7 +65,7 @@ Future<bool?> startDojahWidget(
   );
 
   Map<String, dynamic>? result;
-  bool submittedSuccessfully = false;
+  Map<String, dynamic> submittedSuccessfully = {};
 
   await dojahKyc.open(
     context,
@@ -78,14 +80,23 @@ Future<bool?> startDojahWidget(
 
       List<dynamic> responseList = response;
       Map<String, dynamic> responseBody =
-      jsonDecode(jsonEncode(responseList[0]));
+          jsonDecode(jsonEncode(responseList[0]));
 
       result = responseBody;
       responseBody["status"];
-      submittedSuccessfully = responseBody["status"];
+      submittedSuccessfully = {
+        "firstName": responseBody["data"]["id"]["data"]["idData"]["last_name"]
+            .toString()
+            .split(" ")
+            .first,
+        "lastName": responseBody["data"]["id"]["data"]["idData"]["first_name"],
+        "dob": responseBody["data"]["id"]["data"]["idData"]["date_of_birth"],
+        "docType": responseBody["data"]["id"]["data"]["idData"]["document_type"],
+        "docNo": responseBody["data"]["id"]["data"]["idData"]["document_number"]
 
-      Navigator.pop(context, responseBody["status"]);
-      showSuccessBar(context, responseBody["message"]);
+      };
+
+      Navigator.pop(context, submittedSuccessfully);
       final idData = IdCheckResponse.fromJson(responseBody["idData"]);
       final String? idImageUrl = responseBody["idUrl"];
       final String? verificationUrl = responseBody["verificationUrl"];
@@ -132,7 +143,9 @@ Future<bool?> startDojahWidget(
   );
 
   debugPrint("returned function");
-  return submittedSuccessfully;
+  // return submittedSuccessfully;
+   return submittedSuccessfully;
+
 }
 
 final configObj = {
@@ -163,9 +176,7 @@ final configObj = {
 
 String dateFormatter2 = 'dd MMM yyy';
 
-
 extension DateHelper on DateTime {
-
   String formatDate(String format) {
     final formatter = DateFormat(format);
     return formatter.format(this);
@@ -182,4 +193,3 @@ extension DateHelper on DateTime {
     return now.difference(this).inDays;
   }
 }
-

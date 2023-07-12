@@ -238,40 +238,6 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                           );
                       Hive.box(kBiometricsBox).put(kBiometricsKey, next.data!.data!.isLoginBiometricActive! ? 1 : 0);
                       Hive.box(kBiometricsBox).put(kPayBiometricsKey, next.data!.data!.isPaymentBiometricActive! ? 1 : 0);
-
-                      print(Hive.box(kBiometricsBox).get(kBiometricsKey));
-                      print(ref.watch(biometricProvider).isLoginBiometricActive);
-
-                      // if (next.data!.data!.isLoginBiometricActive!) {
-                      //   print("it is true");
-                      //   Hive.box(kBiometricsBox).put(kBiometricsKey, 1);
-                      //   ref.read(biometricProvider.notifier).state =
-                      //       ref.read(biometricProvider.notifier).state.copyWith(
-                      //             isLoginBiometricActive: true,
-                      //           );
-                      // } else {
-                      //   print("it is false");
-                      //   Hive.box(kBiometricsBox).put(kBiometricsKey, 0);
-                      //   ref.read(biometricProvider.notifier).state =
-                      //       ref.read(biometricProvider.notifier).state.copyWith(
-                      //             isLoginBiometricActive: false,
-                      //           );
-                      // }
-                      // if (next.data!.data!.isPaymentBiometricActive!) {
-                      //   print("it is true");
-                      //   Hive.box(kBiometricsBox).put(kPayBiometricsKey, 1);
-                      //   ref.read(biometricProvider.notifier).state =
-                      //       ref.read(biometricProvider.notifier).state.copyWith(
-                      //         isPaymentBiometricActive: true,
-                      //       );
-                      // } else {
-                      //   print("it is false");
-                      //   Hive.box(kBiometricsBox).put(kBiometricsKey, 0);
-                      //   ref.read(biometricProvider.notifier).state =
-                      //       ref.read(biometricProvider.notifier).state.copyWith(
-                      //         isLoginBiometricActive: false,
-                      //       );
-                      // }
                       if (next.data!.data!.tag == null) {
                         pushTo(
                             context,
@@ -337,7 +303,6 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                     title: logIn,
                     onPressed: () async{
                       FocusScope.of(context).unfocus();
-
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         if (_email!.isNotEmpty || _password!.isNotEmpty) {

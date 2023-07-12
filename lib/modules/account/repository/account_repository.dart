@@ -13,7 +13,7 @@ import 'package:Pouchers/utils/strings.dart';
 import 'package:riverpod/riverpod.dart';
 
 final accountRepoProvider =
-Provider.autoDispose<AccountRepository>((ref) => AccountRepository(ref));
+    Provider.autoDispose<AccountRepository>((ref) => AccountRepository(ref));
 
 class AccountRepository {
   final ProviderRef ref;
@@ -27,7 +27,6 @@ class AccountRepository {
         email: userProfile.email ?? "", token: userProfile.token!);
 
     if (passwordChange.notAuthenticated) {
-
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
       passwordChange = await AccountService.requestPasswordChange(
@@ -37,7 +36,6 @@ class AccountRepository {
   }
 
   Future<NotifierState<String>> requestPhoneChange() async {
-
     ServiceResponse<String> phoneChange;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     phoneChange = await AccountService.requestPhoneChange(
@@ -54,7 +52,6 @@ class AccountRepository {
 
   Future<NotifierState<EditProfileResponse>> changePhoneNumber(
       {required String phoneNumber}) async {
-
     ServiceResponse<EditProfileResponse> changePhone;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     changePhone = await AccountService.changePhoneNumber(
@@ -69,9 +66,8 @@ class AccountRepository {
     return changePhone.toNotifierState();
   }
 
-  Future<NotifierState<String>> disableUser(String reason,
-      String password) async {
-
+  Future<NotifierState<String>> disableUser(
+      String reason, String password) async {
     ServiceResponse<String> disable;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     disable = await AccountService.disableAccount(
@@ -87,7 +83,6 @@ class AccountRepository {
   }
 
   Future<NotifierState<String>> deleteUser(String reason) async {
-
     ServiceResponse<String> delete;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     delete = await AccountService.deleteAccount(
@@ -104,23 +99,23 @@ class AccountRepository {
       );
     }
     return delete.toNotifierState();
-
   }
 
-  Future<NotifierState<EditProfileResponse>> editProfile({
-    String? firstName,
-    String? lastName,
-    String? tag,
-    String? dob,
-    String? address,
-    String? gender,
-    String? profilePicture,
-    String? utilityBill,
-    String? fcmToken,
-    bool? isLoginBiometricActive,
-    bool? isPaymentBiometricActive
-  }) async {
-
+  Future<NotifierState<EditProfileResponse>> editProfile(
+      {String? firstName,
+      String? lastName,
+      String? tag,
+      String? dob,
+      String? address,
+      String? gender,
+      String? profilePicture,
+      String? utilityBill,
+      String? fcmToken,
+        String? city,
+        String? userState,
+        String? postalCode,
+      bool? isLoginBiometricActive,
+      bool? isPaymentBiometricActive}) async {
     ServiceResponse<EditProfileResponse> editProfile;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     editProfile = await AccountService.editProfile(
@@ -133,6 +128,9 @@ class AccountRepository {
         gender: gender,
         profilePicture: profilePicture,
         utilityBill: utilityBill,
+        city: city,
+        userState: userState,
+        postalCode: postalCode,
         isLoginBiometricActive: isLoginBiometricActive,
         isPaymentBiometricActive: isPaymentBiometricActive,
         token: userProfile.token!);
@@ -147,6 +145,9 @@ class AccountRepository {
           dob: dob,
           address: address,
           gender: gender,
+          city: city,
+          userState: userState,
+          postalCode: postalCode,
           fcmToken: fcmToken,
           profilePicture: profilePicture,
           utilityBill: utilityBill,
@@ -158,32 +159,33 @@ class AccountRepository {
   }
 
   Future<NotifierState<SecurityQuestionResponse>> getSecurityQuestion() async {
-
     ServiceResponse<SecurityQuestionResponse> securityQuestion;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-    securityQuestion = await AccountService.getSecurityQuestion(token: userProfile.token!);
+    securityQuestion =
+        await AccountService.getSecurityQuestion(token: userProfile.token!);
 
     if (securityQuestion.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
-      securityQuestion = await AccountService.getSecurityQuestion(token: userProfiles.token!);
+      securityQuestion =
+          await AccountService.getSecurityQuestion(token: userProfiles.token!);
     }
     return securityQuestion.toNotifierState();
   }
 
   Future<NotifierState<SelectedQuestionResponse>> getSelectedQuestion() async {
-
     ServiceResponse<SelectedQuestionResponse> selectedQuestion;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-    selectedQuestion = await AccountService.getSelectedQuestion(token: userProfile.token!);
+    selectedQuestion =
+        await AccountService.getSelectedQuestion(token: userProfile.token!);
 
     if (selectedQuestion.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
-      selectedQuestion = await AccountService.getSelectedQuestion(token: userProfiles.token!);
+      selectedQuestion =
+          await AccountService.getSelectedQuestion(token: userProfiles.token!);
     }
     return selectedQuestion.toNotifierState();
-
   }
 
   Future<NotifierState<String>> setSecurityQuestion({
@@ -191,14 +193,14 @@ class AccountRepository {
     required String answer,
     required bool isValidate,
   }) async {
-
     ServiceResponse<String> setQuestion;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     setQuestion = await AccountService.setSecurityQuestion(
       questionId: questionId,
       answer: answer,
       token: userProfile.token!,
-      isValidate: isValidate,);
+      isValidate: isValidate,
+    );
 
     if (setQuestion.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
@@ -207,7 +209,8 @@ class AccountRepository {
         questionId: questionId,
         answer: answer,
         token: userProfiles.token!,
-        isValidate: isValidate,);
+        isValidate: isValidate,
+      );
     }
     return setQuestion.toNotifierState();
   }
@@ -216,7 +219,6 @@ class AccountRepository {
     required String oldPin,
     required String newPin,
   }) async {
-
     ServiceResponse<String> reset;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     reset = await AccountService.resetPin(
@@ -232,11 +234,10 @@ class AccountRepository {
   }
 
   Future<NotifierState<String>> validatePin({required String pin}) async {
-
     ServiceResponse<String> validatePin;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-    validatePin = await AccountService.validatePin(
-        pin: pin, token: userProfile.token!);
+    validatePin =
+        await AccountService.validatePin(pin: pin, token: userProfile.token!);
 
     if (validatePin.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
@@ -248,11 +249,10 @@ class AccountRepository {
   }
 
   Future<NotifierState<String>> resendOtp({required String email}) async {
-
     ServiceResponse<String> resendOtp;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-    resendOtp = await AccountService.resendOtp(
-        email: email, token: userProfile.token!);
+    resendOtp =
+        await AccountService.resendOtp(email: email, token: userProfile.token!);
 
     if (resendOtp.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
@@ -261,11 +261,9 @@ class AccountRepository {
           email: email, token: userProfiles.token!);
     }
     return resendOtp.toNotifierState();
-
   }
 
   Future<NotifierState<String>> validateResendOtp({required String otp}) async {
-
     ServiceResponse<String> validateResend;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     validateResend = await AccountService.validateResendOtp(
@@ -280,14 +278,12 @@ class AccountRepository {
     return validateResend.toNotifierState();
   }
 
-
   Future<NotifierState<EditProfileResponse>> validateBvn(
       {required String bvn}) async {
-
     ServiceResponse<EditProfileResponse> validateBvn;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-    validateBvn = await AccountService.validateBvn(
-        bvn: bvn, token: userProfile.token!);
+    validateBvn =
+        await AccountService.validateBvn(bvn: bvn, token: userProfile.token!);
 
     if (validateBvn.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
@@ -298,27 +294,41 @@ class AccountRepository {
     return validateBvn.toNotifierState();
   }
 
-  Future<NotifierState<EditProfileResponse>> validateId(
-      {required String idType, required String idNumber}) async {
-
+  Future<NotifierState<EditProfileResponse>> validateId({
+    required String idType,
+    required String idNumber,
+    required bool isUpload,
+    String? firstName, lastName, dob
+  }) async {
     ServiceResponse<EditProfileResponse> validateId;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     validateId = await AccountService.validateId(
-      surname:   userProfile.lastName,
-        idType: idType, idNumber: idNumber, token: userProfile.token!);
+        isUpload: isUpload,
+        surname: userProfile.lastName,
+        idType: idType,
+        idNumber: idNumber,
+        firstName: firstName,
+        lastName: lastName,
+        dob: dob,
+        token: userProfile.token!);
 
     if (validateId.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
       validateId = await AccountService.validateId(
-        surname: userProfiles.lastName,
-          idType: idType, idNumber: idNumber, token: userProfiles.token!);
+          isUpload: isUpload,
+          surname: userProfiles.lastName,
+          idType: idType,
+          idNumber: idNumber,
+          firstName: firstName,
+          lastName: lastName,
+          dob: dob,
+          token: userProfiles.token!);
     }
     return validateId.toNotifierState();
   }
 
   Future<NotifierState<TierListResponse>> getTierList() async {
-
     ServiceResponse<TierListResponse> tierList;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     tierList = await AccountService.getTierList(token: userProfile.token!);
@@ -333,85 +343,98 @@ class AccountRepository {
 
   Future<NotifierState<String>> getSignedUrl(
       {required String fileName, required bool isPhoto}) async {
-
     ServiceResponse<String> signedUrl;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-    signedUrl = await AccountService.getSignedUrl(token: userProfile.token!, fileName: fileName, isPhoto: isPhoto);
+    signedUrl = await AccountService.getSignedUrl(
+        token: userProfile.token!, fileName: fileName, isPhoto: isPhoto);
 
     if (signedUrl.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
-      signedUrl = await AccountService.getSignedUrl(token: userProfiles.token!, fileName: fileName, isPhoto: isPhoto);
+      signedUrl = await AccountService.getSignedUrl(
+          token: userProfiles.token!, fileName: fileName, isPhoto: isPhoto);
     }
     return signedUrl.toNotifierState();
   }
 
   Future<NotifierState<String>> generate2FA() async {
-
     ServiceResponse<String> generate2FA;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-    generate2FA = await AccountService.generate2FAToken(token: userProfile.token!, );
+    generate2FA = await AccountService.generate2FAToken(
+      token: userProfile.token!,
+    );
 
     if (generate2FA.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
-      generate2FA = await AccountService.generate2FAToken(token: userProfiles.token!,);
+      generate2FA = await AccountService.generate2FAToken(
+        token: userProfiles.token!,
+      );
     }
     return generate2FA.toNotifierState();
   }
 
   Future<NotifierState<bool>> validate2FA({required String userToken}) async {
-
     ServiceResponse<bool> validate2FA;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-    validate2FA = await AccountService.validate2FAToken(token: userProfile.token!, userToken: userToken );
+    validate2FA = await AccountService.validate2FAToken(
+        token: userProfile.token!, userToken: userToken);
 
     if (validate2FA.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
-      validate2FA = await AccountService.validate2FAToken(token: userProfiles.token!, userToken: userToken);
+      validate2FA = await AccountService.validate2FAToken(
+          token: userProfiles.token!, userToken: userToken);
     }
     return validate2FA.toNotifierState();
   }
 
-  Future<NotifierState<bool>> disable2FA({required String transactionPin}) async {
-
+  Future<NotifierState<bool>> disable2FA(
+      {required String transactionPin}) async {
     ServiceResponse<bool> disable2FA;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-    disable2FA = await AccountService.disable2FA(token: userProfile.token!, transactionPin: transactionPin );
+    disable2FA = await AccountService.disable2FA(
+        token: userProfile.token!, transactionPin: transactionPin);
 
     if (disable2FA.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
-      disable2FA = await AccountService.disable2FA(token: userProfiles.token!, transactionPin: transactionPin);
+      disable2FA = await AccountService.disable2FA(
+          token: userProfiles.token!, transactionPin: transactionPin);
     }
     return disable2FA.toNotifierState();
   }
 
   Future<NotifierState<GetReferralResponse>> getReferralTrail() async {
-
     ServiceResponse<GetReferralResponse> getReferralTrail;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-    getReferralTrail = await AccountService.getReferralTrail(token: userProfile.token!, );
+    getReferralTrail = await AccountService.getReferralTrail(
+      token: userProfile.token!,
+    );
 
     if (getReferralTrail.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
-      getReferralTrail = await AccountService.getReferralTrail(token: userProfiles.token!,);
+      getReferralTrail = await AccountService.getReferralTrail(
+        token: userProfiles.token!,
+      );
     }
     return getReferralTrail.toNotifierState();
   }
 
   Future<NotifierState<BannerResponse>> getBanner() async {
-
     ServiceResponse<BannerResponse> getBanner;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-    getBanner = await AccountService.getBanner(token: userProfile.token!, );
+    getBanner = await AccountService.getBanner(
+      token: userProfile.token!,
+    );
 
     if (getBanner.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
-      getBanner = await AccountService.getBanner(token: userProfiles.token!,);
+      getBanner = await AccountService.getBanner(
+        token: userProfiles.token!,
+      );
     }
     return getBanner.toNotifierState();
   }
@@ -419,12 +442,16 @@ class AccountRepository {
   Future<NotifierState<EditProfileResponse>> getUserProfile() async {
     ServiceResponse<EditProfileResponse> getUserProfile;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-    getUserProfile = await AccountService.getUserProfile(token: userProfile.token!, );
+    getUserProfile = await AccountService.getUserProfile(
+      token: userProfile.token!,
+    );
 
     if (getUserProfile.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
-      getUserProfile = await AccountService.getUserProfile(token: userProfiles.token!,);
+      getUserProfile = await AccountService.getUserProfile(
+        token: userProfiles.token!,
+      );
     }
     return getUserProfile.toNotifierState();
   }

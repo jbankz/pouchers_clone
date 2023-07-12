@@ -41,7 +41,6 @@ class _BettingState extends ConsumerState<Betting> {
   String? lastInputValue;
   List<GetUtilitiesData> utilities = [];
   List<Service> utilitiesType = [];
-  Service? paymentType;
   String? threshold;
 
   String error = "";
@@ -69,10 +68,11 @@ class _BettingState extends ConsumerState<Betting> {
   }
 
   search(value) {
-    if (utilitiesData != null && contactController.text.isNotEmpty && paymentType != null) {
+    if (utilitiesData != null && contactController.text.isNotEmpty) {
       ref.read(validateUtilitiesProvider.notifier).validateUtilities(
           merchantAccount: utilitiesData!.operatorpublicid!,
-          merchantReferenceNumber: contactController.text, merchantProductCode: paymentType!.code! );
+          merchantReferenceNumber: contactController.text, merchantProductCode: ""
+      );
     } else {
       showErrorBar(context, "Please choose a provider or account ID");
     }
@@ -111,7 +111,6 @@ class _BettingState extends ConsumerState<Betting> {
                     if (result != null) {
                       setState(() {
                         utilitiesData = result;
-                        paymentType = null;
                       });
                       search("");
                       ref

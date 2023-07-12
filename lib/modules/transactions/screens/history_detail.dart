@@ -195,7 +195,7 @@ class HistoryDetail extends StatelessWidget {
               inkWell(
                 onTap: () {
                   Clipboard.setData(
-                      ClipboardData(text: item!.transactionReference));
+                      ClipboardData(text: item!.transactionReference ?? ""));
                   showSuccessBar(context, "Copied");
                 },
                 child: Text(

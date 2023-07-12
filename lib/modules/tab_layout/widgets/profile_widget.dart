@@ -251,6 +251,162 @@ class _EditFullNameModalState extends State<EditFullNameModal> {
   }
 }
 
+class EditAddressModal extends StatefulWidget {
+  const EditAddressModal({
+    Key? key,
+    required this.textTheme,
+  }) : super(key: key);
+
+  final TextTheme textTheme;
+
+  @override
+  State<EditAddressModal> createState() => _EditAddressModalState();
+}
+
+class _EditAddressModalState extends State<EditAddressModal> {
+  String? _streetAddress;
+  String? _city;
+  String? _state;
+  String? _postalCode;
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: ListView(
+        shrinkWrap: true,
+        children: [
+          Text(
+            address,
+            style: widget.textTheme.subtitle1!.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          SizedBox(height: kMediumPadding),
+          TextInputNoIcon(
+            textTheme: widget.textTheme,
+            text: addressStr,
+            onSaved: (val) => setState(() => _streetAddress = val),
+            validator: (val) {
+              if (val!.isEmpty) {
+                return emptyField;
+              } else if (val.length < 2) {
+                return lessValueField;
+              } else {
+                return null;
+              }
+            },
+          ),
+          TextInputNoIcon(
+            textTheme: widget.textTheme,
+            text: city,
+            onSaved: (val) => setState(() => _city = val),
+            validator: (val) {
+              if (val!.isEmpty) {
+                return emptyField;
+              } else if (val.length < 2) {
+                return lessValueField;
+              } else {
+                return null;
+              }
+            },
+          ),
+          TextInputNoIcon(
+            textTheme: widget.textTheme,
+            text: state,
+            onSaved: (val) => setState(() => _state = val),
+            validator: (val) {
+              if (val!.isEmpty) {
+                return emptyField;
+              } else if (val.length < 2) {
+                return lessValueField;
+              } else {
+                return null;
+              }
+            },
+          ),
+          TextInputNoIcon(
+            textTheme: widget.textTheme,
+            text: postalCode,
+            inputType: TextInputType.number,
+            onSaved: (val) => setState(() => _postalCode = val),
+            validator: (val) {
+              if (val!.isEmpty) {
+                return emptyField;
+              } else if (val.length < 2) {
+                return lessValueField;
+              } else {
+                return null;
+              }
+            },
+          ),
+          SizedBox(
+            height: kMicroPadding,
+          ),
+          Consumer(builder: (context, ref, _) {
+            ref.listen(editProfileProvider,
+                (previous, NotifierState<EditProfileResponse> next) {
+              if (next.status == NotifierStatus.done) {
+                Navigator.pop(context);
+                showSuccessBar(context, next.data!.message);
+                ref.read(editProfileInHouseProvider.notifier).state =
+                    EditProfileData.fromJson(next.data!.data!.toJson());
+              } else if (next.status == NotifierStatus.error) {
+                showErrorBar(context, next.message!);
+              }
+            });
+            var _widget =
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              inkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  cancel,
+                  style: widget.textTheme.subtitle1!.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: kIconGrey,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: kLargePadding,
+              ),
+              inkWell(
+                onTap: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    ref.read(editProfileProvider.notifier).editProfile(
+                          address: _streetAddress,
+                          city: _city,
+                          userState: _state,
+                          postalCode: _postalCode,
+                        );
+                  }
+                },
+                child: Text(
+                  save,
+                  style: widget.textTheme.headline2!.copyWith(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ]);
+
+            return ref.watch(editProfileProvider).when(
+                  done: (data) => _widget,
+                  loading: () => SpinKitDemo(),
+                  error: (val) => _widget,
+                );
+          })
+        ],
+      ),
+    );
+  }
+}
+
 class GenderModal extends StatefulWidget {
   const GenderModal({
     Key? key,
@@ -511,7 +667,7 @@ class _EditPhoneModalState extends State<EditPhoneModal> {
               Navigator.pop(context);
               showSuccessBar(context, next.data!.message);
               ref.read(editProfileInHouseProvider.notifier).state =
-                 EditProfileData.fromJson(next.data!.data!.toJson());
+                  EditProfileData.fromJson(next.data!.data!.toJson());
             } else if (next.status == NotifierStatus.error) {
               showErrorBar(context, next.message!);
             }
@@ -539,7 +695,8 @@ class ProfileRoleWidget extends StatelessWidget {
       required this.text,
       required this.onTap,
       required this.icon,
-        this.color, this.textColor,
+      this.color,
+      this.textColor,
       required this.subText})
       : super(key: key);
 
@@ -571,17 +728,18 @@ class ProfileRoleWidget extends StatelessWidget {
                   Text(
                     text,
                     style: textTheme.subtitle1!.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: textColor ?? kPrimaryTextColor
-                    ),
+                        fontWeight: FontWeight.w500,
+                        color: textColor ?? kPrimaryTextColor),
                   ),
                   SizedBox(
                     height: kPadding,
                   ),
-                 subText == "" ? SizedBox() : Text(
-                    subText,
-                    style: textTheme.headline6,
-                  )
+                  subText == ""
+                      ? SizedBox()
+                      : Text(
+                          subText,
+                          style: textTheme.headline6,
+                        )
                 ],
               ),
             )

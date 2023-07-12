@@ -16,17 +16,17 @@ import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ValidId extends StatefulWidget {
+class ValidId extends ConsumerStatefulWidget {
   static const String routeName = "validId";
   final String? from;
 
   ValidId({Key? key, this.from}) : super(key: key);
 
   @override
-  State<ValidId> createState() => _ValidIdState();
+  ConsumerState<ValidId> createState() => _ValidIdState();
 }
 
-class _ValidIdState extends State<ValidId> {
+class _ValidIdState extends ConsumerState<ValidId> {
   String _prefixText = idMethod;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _id;
@@ -136,28 +136,46 @@ class _ValidIdState extends State<ValidId> {
                     ),
                     Center(
                       child: inkWell(
-                        onTap: ()async{
-
-                            bool? result =
-                                await startDojahWidget(
-                              context,
-                              type: "custom",
-                              config: configObj,
-                            );
-                            if (result != null) {
-                              if (result) {
-
-                              }
-                            }
-
+                        onTap: () async {
+                          var result = await startDojahWidget(
+                            context,
+                            type: "custom",
+                            config: configObj,
+                          );
+                          if (result != null) {
+                            ref.read(validateIDProvider.notifier).validateID(
+                                isUpload: true,
+                                firstName: result["firstName"],
+                                lastName: result["lastName"],
+                                dob: result["dob"],
+                                idType: result["docType"]
+                                        .toString()
+                                        .contains("Driving")
+                                    ? "drivers_license"
+                                    : result["docType"]
+                                            .toString()
+                                            .contains("Voter Card")
+                                        ? "voters_card"
+                                        : result["docType"]
+                                                .toString()
+                                                .contains("Passport")
+                                            ? "passport"
+                                            : result["docType"]
+                                                    .toString()
+                                                    .contains("Id Card")
+                                                ? "virtual nin"
+                                                : _prefixText.toLowerCase(),
+                                idNumber: result["docNo"]);
+                          }
                         },
                         child: Container(
                           width: 130,
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(kRegularPadding),
                           decoration: BoxDecoration(
-                            borderRadius: kBorderRadius,
-                              border: Border.all(color: kLightPurple, width: 1)),
+                              borderRadius: kBorderRadius,
+                              border:
+                                  Border.all(color: kLightPurple, width: 1)),
                           child: Row(
                             children: [
                               SvgPicture.asset(AssetPaths.uploadIcon),
@@ -166,7 +184,8 @@ class _ValidIdState extends State<ValidId> {
                               ),
                               Text(
                                 "Upload ID",
-                                style: textTheme.headline2!.copyWith(fontSize: 14),
+                                style:
+                                    textTheme.headline2!.copyWith(fontSize: 14),
                               )
                             ],
                           ),
@@ -253,14 +272,14 @@ class _ValidIdState extends State<ValidId> {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         ref.read(validateIDProvider.notifier).validateID(
+                            isUpload: false,
                             idType: _prefixText == "Driver’s license"
                                 ? "drivers_license"
                                 : _prefixText == "Voter’s card"
                                     ? "voters_card"
                                     : _prefixText.contains("passport")
-                                ? "passport"
-                                : _prefixText.toLowerCase(),
-
+                                        ? "passport"
+                                        : _prefixText.toLowerCase(),
                             idNumber: _id!);
                       }
                     });
