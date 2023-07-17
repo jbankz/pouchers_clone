@@ -10,6 +10,7 @@ import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
+import 'package:intercom_flutter/intercom_flutter.dart';
 
 class DeleteAccount extends StatefulWidget {
   static const String routeName = "deleteAccount";
@@ -104,7 +105,9 @@ class _DeleteAccountState extends State<DeleteAccount> {
               ),
               LargeButton(
                 title: talkToSupport,
-                onPressed: () {},
+                onPressed: () {
+                  Intercom.instance.displayMessenger();
+                },
               ),
               SizedBox(
                 height: kMediumPadding,

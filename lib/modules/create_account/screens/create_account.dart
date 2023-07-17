@@ -263,7 +263,7 @@ class _CreateAccountState extends State<CreateAccount> {
                           style: textTheme.headline6!.copyWith(fontSize: 16),
                         ),
                         TextSpan(
-                          text: " $privacyPolicy",
+                          text: " $privacyPolicy.",
                           style: textTheme.headline6!.copyWith(
                             fontSize: 16,
                             color: kPrimaryColor,

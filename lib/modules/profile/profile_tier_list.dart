@@ -236,8 +236,8 @@ class TiersContainer extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(kMacroPadding),
-                  bottomLeft: Radius.circular(kPadding),
+                  topLeft: Radius.circular(150),
+                  bottomLeft: Radius.circular(80),
                   topRight: Radius.circular(300),
                   bottomRight: Radius.circular(300)),
               color: color ?? kPrimaryColor,

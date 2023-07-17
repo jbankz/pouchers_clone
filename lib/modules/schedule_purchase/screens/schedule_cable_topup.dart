@@ -107,7 +107,8 @@ class _ScheduleCableTopUpState extends ConsumerState<ScheduleCableTopUp> {
                       }
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: kRegularPadding),
                       decoration: BoxDecoration(
                           color: kBackgroundColor,
                           borderRadius: BorderRadius.circular(kSmallPadding)),
@@ -208,13 +209,17 @@ class _ScheduleCableTopUpState extends ConsumerState<ScheduleCableTopUp> {
                         : () async {
                             final result = await buildShowModalBottomSheet(
                                 context,
-                                SubscriptionModal(paymentItem: utilitiesType));
+                                SubscriptionModal(
+                                  paymentItem: utilitiesType,
+                                  threshold: "0",
+                                ));
                             if (result != null) {
                               setState(() => paymentType = result);
                             }
                           },
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: kRegularPadding),
                       decoration: BoxDecoration(
                           color: kBackgroundColor,
                           borderRadius: BorderRadius.circular(kSmallPadding)),
@@ -222,8 +227,8 @@ class _ScheduleCableTopUpState extends ConsumerState<ScheduleCableTopUp> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding:
-                                  EdgeInsets.symmetric(vertical: kMediumPadding),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: kMediumPadding),
                               child: Row(
                                 children: [
                                   Expanded(
@@ -260,9 +265,9 @@ class _ScheduleCableTopUpState extends ConsumerState<ScheduleCableTopUp> {
                                           ),
                                           children: [
                                             TextSpan(
-                                                text: kPriceFormatter(paymentType!
-                                                        .price!
-                                                        .toDouble())
+                                                text: kPriceFormatter(
+                                                        paymentType!.price!
+                                                            .toDouble())
                                                     .replaceAll(".00", ""),
                                                 style: textTheme.subtitle1)
                                           ],
@@ -361,7 +366,7 @@ class _ScheduleCableTopUpState extends ConsumerState<ScheduleCableTopUp> {
                                   .read(editScheduleProvider.notifier)
                                   .editSchedule(
                                     scheduleId: widget.id!,
-                                status: "active",
+                                    status: "active",
                                     frequency:
                                         frequency.startsWith(RegExp("[0-9:\s]"))
                                             ? frequency.replaceAll(
@@ -417,74 +422,74 @@ class _ScheduleCableTopUpState extends ConsumerState<ScheduleCableTopUp> {
                                     },
                                   ),
                                 );
-                                  if (result != null) {
-                                    ref
-                                        .read(buyUtilitiesProvider.notifier)
-                                        .buyUtilities(
-                                            amount:
-                                                paymentType!.price!.toDouble(),
-                                            isSchedule: true,
-                                            merchantAccount:
-                                                utilitiesData!.operatorpublicid!,
-                                            merchantReferenceNumber:
-                                                contactController.text,
-                                            merchantService: [paymentType!.code!],
-                                            subCategory:
-                                                utilitiesData!.displayName!,
-                                            transactionPin: result,
-                                            frequency: frequency,
-                                            category: "cable-purchase",
-                                            then: () {
-                                              ref
-                                                  .read(
-                                                      getWalletProvider.notifier)
-                                                  .getWalletDetails();
-                                              pushTo(
-                                                context,
-                                                SuccessMessage(
-                                                  text: dataSuccess,
-                                                  subText: billScheduleSuccess,
-                                                  onTap: () {
-                                                    pushToAndClearStack(
-                                                      context,
-                                                      TabLayout(
-                                                        gottenIndex: 0,
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              );
-                                            },
-                                            error: (val) =>
-                                                showErrorBar(context, val));
-                                    // ref
-                                    //     .read(scheduleUtilityProvider.notifier)
-                                    //     .scheduleUtility(
-                                    //         category: "cable-purchase",
-                                    //         subCategory: utilitiesData!.name!,
-                                    //         frequency: frequency,
-                                    //         customerId: contactController.text,
-                                    //         amount: paymentType!.price.toString(),
-                                    //         paymentCode: utilitiesData!.operatorpublicid!,
-                                    //         transactionPin: result,
-                                    //         serviceId: paymentType!.code!,
-                                    //
-                                    //         then: () => pushTo(
-                                    //               context,
-                                    //               SuccessMessage(
-                                    //                 text: dataSuccess,
-                                    //                 subText: billScheduleSuccess,
-                                    //                 onTap: () {
-                                    //                   pushToAndClearStack(
-                                    //                       context,
-                                    //                       TabLayout(
-                                    //                         gottenIndex: 0,
-                                    //                       ));
-                                    //                 },
-                                    //               ),
-                                    //             ),
-                                    //         error: (val) => showErrorBar(context, val));
-                                  }
+                                if (result != null) {
+                                  ref
+                                      .read(buyUtilitiesProvider.notifier)
+                                      .buyUtilities(
+                                          amount:
+                                              paymentType!.price!.toDouble(),
+                                          isSchedule: true,
+                                          merchantAccount:
+                                              utilitiesData!.operatorpublicid!,
+                                          merchantReferenceNumber:
+                                              contactController.text,
+                                          merchantService: [paymentType!.code!],
+                                          subCategory:
+                                              utilitiesData!.displayName!,
+                                          transactionPin: result,
+                                          frequency: frequency,
+                                          category: "cable-purchase",
+                                          then: () {
+                                            ref
+                                                .read(
+                                                    getWalletProvider.notifier)
+                                                .getWalletDetails();
+                                            pushTo(
+                                              context,
+                                              SuccessMessage(
+                                                text: dataSuccess,
+                                                subText: billScheduleSuccess,
+                                                onTap: () {
+                                                  pushToAndClearStack(
+                                                    context,
+                                                    TabLayout(
+                                                      gottenIndex: 0,
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                          error: (val) =>
+                                              showErrorBar(context, val));
+                                  // ref
+                                  //     .read(scheduleUtilityProvider.notifier)
+                                  //     .scheduleUtility(
+                                  //         category: "cable-purchase",
+                                  //         subCategory: utilitiesData!.name!,
+                                  //         frequency: frequency,
+                                  //         customerId: contactController.text,
+                                  //         amount: paymentType!.price.toString(),
+                                  //         paymentCode: utilitiesData!.operatorpublicid!,
+                                  //         transactionPin: result,
+                                  //         serviceId: paymentType!.code!,
+                                  //
+                                  //         then: () => pushTo(
+                                  //               context,
+                                  //               SuccessMessage(
+                                  //                 text: dataSuccess,
+                                  //                 subText: billScheduleSuccess,
+                                  //                 onTap: () {
+                                  //                   pushToAndClearStack(
+                                  //                       context,
+                                  //                       TabLayout(
+                                  //                         gottenIndex: 0,
+                                  //                       ));
+                                  //                 },
+                                  //               ),
+                                  //             ),
+                                  //         error: (val) => showErrorBar(context, val));
+                                }
                               });
                     return ref.watch(buyUtilitiesProvider).when(
                         done: (done) => _widget,
@@ -497,8 +502,8 @@ class _ScheduleCableTopUpState extends ConsumerState<ScheduleCableTopUp> {
             widget.text == "viewSchedule"
                 ? DeleteScheduleText(
                     textTheme: textTheme,
-                    onTap: () async{
-                    final result = await  buildShowModalBottomSheet(
+                    onTap: () async {
+                      final result = await buildShowModalBottomSheet(
                         context,
                         CommonModal(
                             textTheme: textTheme,
@@ -507,47 +512,47 @@ class _ScheduleCableTopUpState extends ConsumerState<ScheduleCableTopUp> {
                             subTitle: deleteTopUpSub,
                             color: kLightOrange),
                       );
-                    if(result != null){
-                      if(result == "yes"){
-                        final result = await buildShowModalBottomSheet(
-                          context,
-                          TransactionPinContainer(
-                            isSchedule: true,
-                            isData: false,
-                            isCard: false,
-                            isFundCard: false,
-                            doSchedule: () {
-                              showSuccessBar(context,
-                                  "Auto top-up successfully created");
-                            },
-                          ),
-                        );
-                        if (result != null) {
-                          ref
-                              .read(deleteScheduleProvider.notifier)
-                              .deleteSchedule(
-                            scheduleId: widget.id!,
-                            transactionPin: result,
-                            error: (val) => showErrorBar(context, val),
-                            then: () => pushTo(
-                              context,
-                              SuccessMessage(
-                                text: dataSuccess,
-                                subText: billDeleteSuccess,
-                                onTap: () {
-                                  Navigator.popUntil(
-                                    context,
-                                        (route) =>
-                                    route.settings.name ==
-                                        SchedulePayments.routeName,
-                                  );
-                                },
-                              ),
+                      if (result != null) {
+                        if (result == "yes") {
+                          final result = await buildShowModalBottomSheet(
+                            context,
+                            TransactionPinContainer(
+                              isSchedule: true,
+                              isData: false,
+                              isCard: false,
+                              isFundCard: false,
+                              doSchedule: () {
+                                showSuccessBar(context,
+                                    "Auto top-up successfully created");
+                              },
                             ),
                           );
+                          if (result != null) {
+                            ref
+                                .read(deleteScheduleProvider.notifier)
+                                .deleteSchedule(
+                                  scheduleId: widget.id!,
+                                  transactionPin: result,
+                                  error: (val) => showErrorBar(context, val),
+                                  then: () => pushTo(
+                                    context,
+                                    SuccessMessage(
+                                      text: dataSuccess,
+                                      subText: billDeleteSuccess,
+                                      onTap: () {
+                                        Navigator.popUntil(
+                                          context,
+                                          (route) =>
+                                              route.settings.name ==
+                                              SchedulePayments.routeName,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                );
+                          }
                         }
                       }
-                    }
                     },
                   )
                 : SizedBox()

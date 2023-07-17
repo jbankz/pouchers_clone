@@ -102,7 +102,7 @@ String resetPasswordCodeSub =
 String resetCode = "Reset Code";
 String setPassword = "Set New Password";
 String resetPasswordSub =
-    "Your new password must be different from previous used passwords.";
+    "Your new password must be different from previously used passwords.";
 String nextText = "Next";
 String newPassword = "New Password";
 String confirmPassword = "Confirm Password";

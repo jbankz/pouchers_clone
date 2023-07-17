@@ -1074,13 +1074,12 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                                           }));
                                                 },
                                                 error: (val) async{
-                                                  if(val.contains("Invalid credentials")){
+                                                  if(val.contains("Invalid transaction pin")){
 
                                                   }else{
                                                     await saveUserCredential(
                                                     transactionPin: result);
                                                   }
-                                                  print("hghghjgjhsd$val");
                                                   showErrorBar(context, val);
                                                 });
                                       }
@@ -1149,7 +1148,7 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                                             }));
                                                   },
                                                   error: (val) async{
-                                                    if(val.contains("Invalid credentials")){
+                                                    if(val.contains("Invalid transaction pin")){
 
                                                     }else{
                                                       await saveUserCredential(

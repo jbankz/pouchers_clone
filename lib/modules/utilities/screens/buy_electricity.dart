@@ -80,7 +80,6 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
       ref.read(validateUtilitiesProvider.notifier).validateUtilities(
           merchantAccount: utilitiesData!.operatorpublicid!,
           merchantReferenceNumber: _meterNo,  merchantProductCode: paymentType!.code!);
-      print('hello world from search . the value is $value');
     }else{
       showErrorBar(context, "Please choose a provider, type or meter number");
     }
@@ -124,7 +123,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                       utilitiesData = result;
                       paymentType = null;
                     });
-                    search("");
+                    // search("");
                     ref
                         .read(getUtilitiesTypeProvider.notifier)
                         .getUtilitiesType(
@@ -214,7 +213,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                             ));
                         if (result != null) {
                           setState(() => paymentType = result);
-                          search("");
+                          // search("");
                         }
                       },
                 child: Container(
@@ -284,6 +283,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
               TextInputNoIcon(
                 textTheme: textTheme,
                 text: meterNo,
+                read: (utilitiesData == null || paymentType == null),
                 controller: contactController,
                 hintText: enterMeterNo,
                 inputType: TextInputType.number,
@@ -292,7 +292,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                 ],
                 onChanged: _onChangeHandler,
                 icon: inkWell(
-                  onTap: () async {
+                  onTap: utilitiesData == null && paymentType == null ? null :  () async {
                     final PhoneContact contact =
                         await FlutterContactPicker.pickPhoneContact();
                     setState(() {

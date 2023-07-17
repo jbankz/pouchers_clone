@@ -265,7 +265,7 @@ ThemeData kThemeData = ThemeData.light().copyWith(
   dividerColor: kDarkGrey,
   primaryColor: kPrimaryColor,
   canvasColor: kPrimaryWhite,
-  backgroundColor: kPrimaryWhite,
+  backgroundColor: Colors.white,
   textSelectionTheme: const TextSelectionThemeData(
     selectionHandleColor: kColorGreen,
     cursorColor: kPrimaryColor,
@@ -274,7 +274,7 @@ ThemeData kThemeData = ThemeData.light().copyWith(
   dialogBackgroundColor: kPrimaryBlack,
   appBarTheme: AppBarTheme(
     color: kPrimaryWhite,
-    systemOverlayStyle: SystemUiOverlayStyle.light,
+    systemOverlayStyle: SystemUiOverlayStyle.dark,
     elevation: 0,
     iconTheme: const IconThemeData(size: kIconSize, color: kPrimaryGrey),
     titleTextStyle: kBodyText1Style,

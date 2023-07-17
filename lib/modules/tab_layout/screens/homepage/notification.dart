@@ -29,6 +29,7 @@ class _NotificationPageState extends ConsumerState<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
+    print(ref.watch(getNotificationProvider).data);
     return InitialPage(
       title: "Notification",
       child: ListenerPage(

@@ -323,7 +323,7 @@ class PaymentService {
       HttpHeaders.authorizationHeader: "Bearer $token"
     };
 
-    String url = "${baseUrl()}/notification";
+    String url = "${baseUrl()}/notification/";
 
     logPrint(url);
     try {

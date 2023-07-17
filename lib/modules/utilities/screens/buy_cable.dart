@@ -90,6 +90,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
 
   @override
   Widget build(BuildContext context) {
+    print(threshold);
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: cable,
@@ -114,7 +115,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                       utilitiesData = result;
                       paymentType = null;
                     });
-                    search("");
+                    // search("");
                     ref
                         .read(getUtilitiesTypeProvider.notifier)
                         .getUtilitiesType(
@@ -176,74 +177,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
               SizedBox(
                 height: kMediumPadding,
               ),
-              TextInputNoIcon(
-                textTheme: textTheme,
-                text: cardNumber,
-                controller: contactController,
-                inputType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-                onChanged: _onChangeHandler,
-                icon: inkWell(
-                  onTap: () async {
-                    final PhoneContact contact =
-                        await FlutterContactPicker.pickPhoneContact();
-                    setState(() {
-                      contactController.text = contact.phoneNumber!.number!;
-                    });
-                  },
-                  child: SvgPicture.asset(
-                    AssetPaths.contactBook,
-                    fit: BoxFit.scaleDown,
-                  ),
-                ),
-              ),
-              ref.watch(validateUtilitiesProvider).when(done: (done) {
-                if (done != null) {
-                  error = "";
-                  return Row(
-                    children: [
-                      Text(
-                        done,
-                        style: textTheme.headline4!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                        ),
-                      )
-                    ],
-                  );
-                } else
-                  return SizedBox();
-              }, loading: () {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SpinKitThreeBounce(
-                      color: kPrimaryColor,
-                      size: 15.0,
-                    ),
-                  ],
-                );
-              }, error: (val) {
-                error = val ?? "";
-                return Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        val ?? "",
-                        style: textTheme.headline4!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: kColorRed),
-                      ),
-                    )
-                  ],
-                );
-              }),
-              SizedBox(
-                height: kSmallPadding,
-              ),
+
               Text(
                 subType,
                 style: textTheme.headline6,
@@ -253,8 +187,8 @@ class _BuyCableState extends ConsumerState<BuyCable> {
               ),
               ref.watch(getDiscountProvider).when(done: (done) {
                 if (done != null) {
-                  threshold = done.data!.threshold ?? "0";
-                  discountValue = done.data!.discountValue ?? "0";
+                  threshold = (done.data!.threshold == null || done.data == null) ? "0" : done.data!.threshold;
+                  discountValue = (done.data!.discountValue == null || done.data == null) ? "0" : done.data!.discountValue;
                   return SizedBox();
                 } else {
                   return SizedBox();
@@ -272,7 +206,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                                 threshold: threshold));
                         if (result != null) {
                           setState(() => paymentType = result);
-                          search("");
+                          // search("");
                         }
                       },
                 child: Container(
@@ -356,6 +290,79 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: kMicroPadding,
+              ),
+              TextInputNoIcon(
+                textTheme: textTheme,
+                addSpace: false,
+                text: cardNumber,
+                read: (utilitiesData == null || paymentType == null),
+                controller: contactController,
+                inputType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                onChanged: _onChangeHandler,
+                icon:  inkWell(
+                  onTap: utilitiesData == null && paymentType == null ? null :  () async {
+                    final PhoneContact contact =
+                    await FlutterContactPicker.pickPhoneContact();
+                    setState(() {
+                      contactController.text = contact.phoneNumber!.number!;
+                    });
+                  },
+                  child: SvgPicture.asset(
+                    AssetPaths.contactBook,
+                    fit: BoxFit.scaleDown,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: kPadding,
+              ),
+              ref.watch(validateUtilitiesProvider).when(done: (done) {
+                if (done != null) {
+                  error = "";
+                  return Row(
+                    children: [
+                      Text(
+                        done,
+                        style: textTheme.headline4!.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                      )
+                    ],
+                  );
+                } else
+                  return SizedBox();
+              }, loading: () {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SpinKitThreeBounce(
+                      color: kPrimaryColor,
+                      size: 15.0,
+                    ),
+                  ],
+                );
+              }, error: (val) {
+                error = val ?? "";
+                return Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        val ?? "",
+                        style: textTheme.headline4!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: kColorRed),
+                      ),
+                    )
+                  ],
+                );
+              }),
               SizedBox(
                 height: kMicroPadding,
               ),

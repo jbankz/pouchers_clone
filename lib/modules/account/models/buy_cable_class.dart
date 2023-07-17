@@ -127,7 +127,9 @@ class SubscriptionModal extends StatefulWidget {
 class _SubscriptionModalState extends State<SubscriptionModal> {
   @override
   Widget build(BuildContext context) {
+    print("subscription modal${widget.threshold}");
     TextTheme textTheme = Theme.of(context).textTheme;
+    print(widget.threshold);
     return makeDismissible(
       context: context,
       child: DraggableScrollableSheet(

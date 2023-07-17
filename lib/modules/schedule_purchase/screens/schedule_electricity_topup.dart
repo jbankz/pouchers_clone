@@ -195,6 +195,7 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
                                 context,
                                 SubscriptionModal(
                                   paymentItem: utilitiesType,
+                                  threshold: "0",
                                 ));
                             if (result != null) {
                               setState(() => paymentType = result);

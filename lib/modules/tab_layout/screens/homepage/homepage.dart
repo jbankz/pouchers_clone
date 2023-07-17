@@ -310,22 +310,33 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                 fontSize: 30,
                                               ),
                                               children: [
-                                                TextSpan(
-                                                    text: ref.watch(
-                                                            checkObscureProvider)
-                                                        ? kPriceFormatter(double
-                                                            .parse(SessionManager
-                                                                    .getWalletBalance() ??
-                                                                "0.00"))
-                                                        : "***** ",
-                                                    style: textTheme.bodyText2!
-                                                        .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 32,
-                                                      height: 1.5,
-                                                      fontFamily: "DMSans",
-                                                    ))
+                                                ref.watch(checkObscureProvider)
+                                                    ? TextSpan(
+                                                        text: kPriceFormatter(
+                                                            double.parse(
+                                                                SessionManager
+                                                                        .getWalletBalance() ??
+                                                                    "0.00")),
+                                                        style: textTheme
+                                                            .bodyText2!
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontSize: 32,
+                                                          height: 1.5,
+                                                          fontFamily: "DMSans",
+                                                        ))
+                                                    : TextSpan(
+                                                        text: "***** ",
+                                                        style: textTheme
+                                                            .bodyText2!
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontSize: 32,
+                                                          height: 2,
+                                                          fontFamily: "DMSans",
+                                                        ))
                                               ],
                                             ),
                                           );

@@ -47,36 +47,36 @@ class _BettingState extends ConsumerState<Betting> {
 
   Timer? searchOnStoppedTyping;
 
-  _onChangeHandler(value) {
-    if (value!.isEmpty) {
-      setState(() => contactController.text = "");
-    } else {
-      setState(() {
-        contactController.text = value;
-        contactController.selection = TextSelection.fromPosition(
-            TextPosition(offset: contactController.text.length));
-      });
-      const duration = Duration(seconds: 1);
-      if (searchOnStoppedTyping != null) {
-        setState(() => searchOnStoppedTyping!.cancel()); // clear timer
-      }
-      setState(() => searchOnStoppedTyping = new Timer(duration, () {
-        FocusScope.of(context).unfocus();
-        search(value);
-      }));
-    }
-  }
+  // _onChangeHandler(value) {
+  //   if (value!.isEmpty) {
+  //     setState(() => contactController.text = "");
+  //   } else {
+  //     setState(() {
+  //       contactController.text = value;
+  //       contactController.selection = TextSelection.fromPosition(
+  //           TextPosition(offset: contactController.text.length));
+  //     });
+  //     const duration = Duration(seconds: 1);
+  //     if (searchOnStoppedTyping != null) {
+  //       setState(() => searchOnStoppedTyping!.cancel()); // clear timer
+  //     }
+  //     setState(() => searchOnStoppedTyping = new Timer(duration, () {
+  //       FocusScope.of(context).unfocus();
+  //       // search(value);
+  //     }));
+  //   }
+  // }
 
-  search(value) {
-    if (utilitiesData != null && contactController.text.isNotEmpty) {
-      ref.read(validateUtilitiesProvider.notifier).validateUtilities(
-          merchantAccount: utilitiesData!.operatorpublicid!,
-          merchantReferenceNumber: contactController.text, merchantProductCode: ""
-      );
-    } else {
-      showErrorBar(context, "Please choose a provider or account ID");
-    }
-  }
+  // search(value) {
+  //   if (utilitiesData != null && contactController.text.isNotEmpty) {
+  //     ref.read(validateUtilitiesProvider.notifier).validateUtilities(
+  //         merchantAccount: utilitiesData!.operatorpublicid!,
+  //         merchantReferenceNumber: contactController.text, merchantProductCode: ""
+  //     );
+  //   } else {
+  //     showErrorBar(context, "Please choose a provider or account ID");
+  //   }
+  // }
 
   @override
   void initState() {
@@ -112,7 +112,7 @@ class _BettingState extends ConsumerState<Betting> {
                       setState(() {
                         utilitiesData = result;
                       });
-                      search("");
+                      // search("");
                       ref
                           .read(getUtilitiesTypeProvider.notifier)
                           .getUtilitiesType(
@@ -177,7 +177,7 @@ class _BettingState extends ConsumerState<Betting> {
                   text: accountId,
                   controller: contactController,
                   hintText: "Enter $accountId",
-                  onChanged: _onChangeHandler,
+                  // onChanged: _onChangeHandler,
                   inputType: TextInputType.number,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
@@ -199,48 +199,48 @@ class _BettingState extends ConsumerState<Betting> {
                     ),
                   ),
                 ),
-                ref.watch(validateUtilitiesProvider).when(done: (done) {
-                  if (done != null) {
-                    error = "";
-                    return Row(
-                      children: [
-                        Text(
-                          done,
-                          style: textTheme.headline4!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                          ),
-                        )
-                      ],
-                    );
-                  } else
-                    return SizedBox();
-                }, loading: () {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SpinKitThreeBounce(
-                        color: kPrimaryColor,
-                        size: 15.0,
-                      ),
-                    ],
-                  );
-                }, error: (val) {
-                  error = val ?? "";
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          val ?? "",
-                          style: textTheme.headline4!.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                              color: kColorRed),
-                        ),
-                      )
-                    ],
-                  );
-                }),
+                // ref.watch(validateUtilitiesProvider).when(done: (done) {
+                //   if (done != null) {
+                //     error = "";
+                //     return Row(
+                //       children: [
+                //         Text(
+                //           done,
+                //           style: textTheme.headline4!.copyWith(
+                //             fontWeight: FontWeight.w500,
+                //             fontSize: 16,
+                //           ),
+                //         )
+                //       ],
+                //     );
+                //   } else
+                //     return SizedBox();
+                // }, loading: () {
+                //   return Row(
+                //     mainAxisAlignment: MainAxisAlignment.end,
+                //     children: [
+                //       SpinKitThreeBounce(
+                //         color: kPrimaryColor,
+                //         size: 15.0,
+                //       ),
+                //     ],
+                //   );
+                // }, error: (val) {
+                //   error = val ?? "";
+                //   return Row(
+                //     children: [
+                //       Expanded(
+                //         child: Text(
+                //           val ?? "",
+                //           style: textTheme.headline4!.copyWith(
+                //               fontWeight: FontWeight.w500,
+                //               fontSize: 14,
+                //               color: kColorRed),
+                //         ),
+                //       )
+                //     ],
+                //   );
+                // }),
                 ref.watch(getDiscountProvider).when(
                     loading: () {
                       return SpinKitDemo();
@@ -484,13 +484,18 @@ class _BettingState extends ConsumerState<Betting> {
             disableColor: (amountController.text.isEmpty ||
                     _amount.isEmpty || utilitiesData == null ||
                     contactController.text.isEmpty ||
-                    _amount.startsWith("0") || error.isNotEmpty)
+                    _amount.startsWith("0")
+                // || error.isNotEmpty
+            )
                 ? kPurpleColor100
                 : kPrimaryColor,
             outlineButton: false,
             onPressed: amountController.text.isEmpty ||
                     _amount.isEmpty || utilitiesData == null ||
-                    contactController.text.isEmpty ||  error.isNotEmpty ||
+                    contactController.text.isEmpty
+                ||
+                // error.isNotEmpty ||
+
                     _amount.startsWith("0")
                 ? () {}
                 : () {

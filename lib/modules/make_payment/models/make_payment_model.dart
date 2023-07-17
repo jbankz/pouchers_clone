@@ -532,6 +532,11 @@ class NotificationResponse {
     "code": code,
     "data": data!.toJson(),
   };
+
+  @override
+  String toString() {
+    return 'NotificationResponse{status: $status, message: $message, code: $code, data: $data}';
+  }
 }
 
 class NotificationData {
@@ -546,16 +551,21 @@ class NotificationData {
   });
 
   factory NotificationData.fromJson(Map<String, dynamic> json) => NotificationData(
-    notifications: json["notfications"] == null ? [] : List<Notification>.from(json["notfications"].map((x) => Notification.fromJson(x))),
+    notifications: json["notifications"] == null ? [] : List<Notification>.from(json["notifications"].map((x) => Notification.fromJson(x))),
     total: json["total"],
     page: json["page"],
   );
 
   Map<String, dynamic> toJson() => {
-    "notfications": List<dynamic>.from(notifications.map((x) => x.toJson())),
+    "notifications": List<dynamic>.from(notifications.map((x) => x.toJson())),
     "total": total,
     "page": page,
   };
+
+  @override
+  String toString() {
+    return 'NotificationData{notifications: $notifications, total: $total, page: $page}';
+  }
 }
 
 class Notification {
@@ -580,6 +590,11 @@ class Notification {
     "body": body,
     "created_at": createdAt!.toIso8601String(),
   };
+
+  @override
+  String toString() {
+    return 'Notification{title: $title, body: $body, createdAt: $createdAt}';
+  }
 }
 
 

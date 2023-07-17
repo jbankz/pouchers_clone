@@ -61,7 +61,7 @@ class _ResetPasswordCodeState extends ConsumerState<ResetPasswordCode> {
                 height: kPadding,
               ),
               Text(
-                (widget.isChangePhone! || widget.isChangePassword!)
+                (widget.isChangePhone! || widget.isChangePassword! || widget.forgot!)
                     ? enterCodeSent
                     : verifySub,
                 style: textTheme.bodyText1!.copyWith(

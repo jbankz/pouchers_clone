@@ -149,7 +149,7 @@ class InitialPage extends StatelessWidget {
               color: titleColor ?? kPrimaryTextColor),
         ),
         centerTitle: title != null ? true : false,
-        backgroundColor: kTransparent,
+        backgroundColor: Colors.transparent,
         leading: noBackButton
             ? SizedBox()
             : IconButton(

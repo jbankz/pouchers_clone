@@ -63,7 +63,7 @@ Future<void> main() async {
   await Hive.openBox(k2FACodeBox);
   await Hive.openBox(kBiometricsBox);
   SessionManager.initSharedPreference().then((value) {
-    return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+    return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
         .then((_) {
       runApp(new MyApp());
     });
@@ -89,6 +89,7 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
             title: "Pouchers",
             theme: kThemeData,
             debugShowCheckedModeBanner: false,
+            themeMode: ThemeMode.light,
             home: OnBoardingPage(),
             routes: appRoutes),
       ),
