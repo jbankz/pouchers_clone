@@ -44,7 +44,7 @@ class _ChangePhoneNumberState extends State<ChangePhoneNumber> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  changePhoneCaps,
+                  changePhone,
                   style: textTheme.headline1,
                 ),
                 SizedBox(

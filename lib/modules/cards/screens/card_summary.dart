@@ -25,7 +25,8 @@ class CardSummary extends ConsumerStatefulWidget {
   final bool? isFundCard;
   final bool? isNaira;
   final bool? isFundNaira;
-  final AddressClass? addressDetails;
+  final String? country;
+  final String? bvn;
   final String? amount;
 
   static const String routeName = "cardSummary";
@@ -34,7 +35,8 @@ class CardSummary extends ConsumerStatefulWidget {
       {Key? key,
       this.amount,
       this.isFundCard,
-      this.addressDetails,
+      this.country,
+      this.bvn,
       this.isNaira,
       this.isFundNaira})
       : super(key: key);
@@ -151,7 +153,8 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                         AirtimeRow(
                           textTheme: textTheme,
                           text: amountText,
-                          subText: kPriceFormatter(double.parse(widget.amount!)),
+                          subText:
+                              kPriceFormatter(double.parse(widget.amount!)),
                           isCopyIcon: false,
                           isNaira: (widget.isNaira! || widget.isFundNaira!)
                               ? true
@@ -220,8 +223,9 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                         widget.isFundCard!
                             ? AirtimeRow(
                                 textTheme: textTheme,
-                                text:
-                                    widget.isFundNaira! ? total : totalInDollars,
+                                text: widget.isFundNaira!
+                                    ? total
+                                    : totalInDollars,
                                 subText: (widget.isFundNaira!)
                                     ? kPriceFormatter(double.parse(
                                             widget.amount!) +
@@ -273,7 +277,8 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                                 text: (widget.isNaira! || widget.isFundNaira!)
                                     ? total
                                     : totalInDollars,
-                                subText: (widget.isNaira! || widget.isFundNaira!)
+                                subText: (widget.isNaira! ||
+                                        widget.isFundNaira!)
                                     ? kPriceFormatter(
                                         double.parse(widget.amount!) +
                                             nairaCreationTotalFee.toDouble())
@@ -283,9 +288,10 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                                 isCopyIcon: false,
                                 noSymbol: false,
                                 isBold: true,
-                                isNaira: (widget.isNaira! || widget.isFundNaira!)
-                                    ? true
-                                    : false,
+                                isNaira:
+                                    (widget.isNaira! || widget.isFundNaira!)
+                                        ? true
+                                        : false,
                                 style: textTheme.headline4!
                                     .copyWith(fontWeight: FontWeight.w700),
                               ),
@@ -400,15 +406,17 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                                   style: textTheme.headline3!.copyWith(
                                       color: kPrimaryTextColor,
                                       fontWeight: FontWeight.bold)),
-                          TextSpan(text: debitText3, style: textTheme.headline3),
+                          TextSpan(
+                              text: debitText3, style: textTheme.headline3),
                         ]),
                   ),
                   SizedBox(
                     height: kSupremePadding,
                   ),
-                  ref.watch(getWalletProvider).data == null
-                      ? SizedBox()
-                      : BalanceWidget(
+                  // ref.watch(getWalletProvider).data == null
+                  //     ? SizedBox()
+                  //     :
+                  BalanceWidget(
                           textTheme: textTheme,
                           text: ref.watch(getWalletProvider).data == null
                               ? "0"
@@ -460,10 +468,13 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                       title: fundCard,
                       onPressed: checkBalance() == true
                           ? () async {
-                              if (
-                              ref.watch(biometricProvider).isPaymentBiometricActive == null || !ref.watch(biometricProvider).isPaymentBiometricActive!
-
-                              ) {
+                              if (ref
+                                          .watch(biometricProvider)
+                                          .isPaymentBiometricActive ==
+                                      null ||
+                                  !ref
+                                      .watch(biometricProvider)
+                                      .isPaymentBiometricActive!) {
                                 final result = await buildShowModalBottomSheet(
                                   context,
                                   TransactionPinContainer(
@@ -476,14 +487,18 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                                   ref
                                       .read(fundVirtualCardProvider.notifier)
                                       .fundVirtualCard(
-                                          type:
-                                              widget.isFundNaira! ? "NGN" : "USD",
-                                          amount: (double.parse(widget.amount!)),
+                                          type: widget.isFundNaira!
+                                              ? "NGN"
+                                              : "USD",
+                                          amount:
+                                              (double.parse(widget.amount!)),
                                           transactionPin: result);
                                 }
                               } else {
-                                if(cred?.transactionPin == null || cred?.transactionPin == ""){
-                                  final result = await buildShowModalBottomSheet(
+                                if (cred?.transactionPin == null ||
+                                    cred?.transactionPin == "") {
+                                  final result =
+                                      await buildShowModalBottomSheet(
                                     context,
                                     TransactionPinContainer(
                                       isData: false,
@@ -495,12 +510,15 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                                     ref
                                         .read(fundVirtualCardProvider.notifier)
                                         .fundVirtualCard(
-                                        type:
-                                        widget.isFundNaira! ? "NGN" : "USD",
-                                        amount: (double.parse(widget.amount!)),
-                                        transactionPin: result);
+                                            type: widget.isFundNaira!
+                                                ? "NGN"
+                                                : "USD",
+                                            amount:
+                                                (double.parse(widget.amount!)),
+                                            transactionPin: result);
                                   }
-                                }else checkBiometric(context);
+                                } else
+                                  checkBiometric(context);
                               }
                             }
                           : () {},
@@ -543,8 +561,13 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                           widget.isNaira!),
                       onPressed: checkBalance() == true
                           ? () async {
-                              if ( ref.watch(biometricProvider).isPaymentBiometricActive == null || !ref.watch(biometricProvider).isPaymentBiometricActive!
-                              ) {
+                              if (ref
+                                          .watch(biometricProvider)
+                                          .isPaymentBiometricActive ==
+                                      null ||
+                                  !ref
+                                      .watch(biometricProvider)
+                                      .isPaymentBiometricActive!) {
                                 final result = await buildShowModalBottomSheet(
                                   context,
                                   TransactionPinContainer(
@@ -557,16 +580,16 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                                   ref
                                       .read(createVirtualCardProvider.notifier)
                                       .createVirtualCard(
-                                          address: widget.addressDetails!.address,
-                                          city: widget.addressDetails!.city,
-                                          residentState: widget
-                                              .addressDetails!.residentState,
-                                          country: widget.addressDetails!.country,
-                                          postalCode:
-                                              widget.addressDetails!.postalCode,
+                                          // address: widget.addressDetails!.address,
+                                          // city: widget.addressDetails!.city,
+                                          // residentState: widget
+                                          //     .addressDetails!.residentState,
+                                          country: widget.country!,
+                                          // postalCode:
+                                          //     widget.addressDetails!.postalCode,
                                           currency:
                                               widget.isNaira! ? "NGN" : "USD",
-                                          bvn: widget.addressDetails!.bvn,
+                                          bvn: widget.bvn!,
                                           brand: widget.isNaira!
                                               ? "Verve"
                                               : "MasterCard",
@@ -574,8 +597,10 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                                           transactionPin: result);
                                 }
                               } else {
-                                if(cred?.transactionPin == null || cred?.transactionPin == ""){
-                                  final result = await buildShowModalBottomSheet(
+                                if (cred?.transactionPin == null ||
+                                    cred?.transactionPin == "") {
+                                  final result =
+                                      await buildShowModalBottomSheet(
                                     context,
                                     TransactionPinContainer(
                                       isData: false,
@@ -585,25 +610,28 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                                   );
                                   if (result != null) {
                                     ref
-                                        .read(createVirtualCardProvider.notifier)
+                                        .read(
+                                            createVirtualCardProvider.notifier)
                                         .createVirtualCard(
-                                        address: widget.addressDetails!.address,
-                                        city: widget.addressDetails!.city,
-                                        residentState: widget
-                                            .addressDetails!.residentState,
-                                        country: widget.addressDetails!.country,
-                                        postalCode:
-                                        widget.addressDetails!.postalCode,
-                                        currency:
-                                        widget.isNaira! ? "NGN" : "USD",
-                                        bvn: widget.addressDetails!.bvn,
-                                        brand: widget.isNaira!
-                                            ? "Verve"
-                                            : "MasterCard",
-                                        amount: double.parse(widget.amount!),
-                                        transactionPin: result);
+                                            // address: widget.addressDetails!.address,
+                                            // city: widget.addressDetails!.city,
+                                            // residentState: widget
+                                            //     .addressDetails!.residentState,
+                                            country: widget.country!,
+                                            // postalCode:
+                                            // widget.addressDetails!.postalCode,
+                                            currency:
+                                                widget.isNaira! ? "NGN" : "USD",
+                                            bvn: widget.bvn!,
+                                            brand: widget.isNaira!
+                                                ? "Verve"
+                                                : "MasterCard",
+                                            amount:
+                                                double.parse(widget.amount!),
+                                            transactionPin: result);
                                   }
-                                }else checkBiometric(context);
+                                } else
+                                  checkBiometric(context);
                               }
                             }
                           : () {},
@@ -888,13 +916,13 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
               amount: (double.parse(widget.amount!)),
               transactionPin: cred!.transactionPin!)
           : ref.read(createVirtualCardProvider.notifier).createVirtualCard(
-              address: widget.addressDetails!.address,
-              city: widget.addressDetails!.city,
-              residentState: widget.addressDetails!.residentState,
-              country: widget.addressDetails!.country,
-              postalCode: widget.addressDetails!.postalCode,
+              // address: widget.addressDetails!.address,
+              // city: widget.addressDetails!.city,
+              // residentState: widget.addressDetails!.residentState,
+              country: widget.country!,
+              // postalCode: widget.addressDetails!.postalCode,
               currency: widget.isNaira! ? "NGN" : "USD",
-              bvn: widget.addressDetails!.bvn,
+              bvn: widget.bvn!,
               brand: widget.isNaira! ? "Verve" : "MasterCard",
               amount: double.parse(widget.amount!),
               transactionPin: cred!.transactionPin!);

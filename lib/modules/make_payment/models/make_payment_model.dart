@@ -320,7 +320,7 @@ class AccountDetailsData {
 
   factory AccountDetailsData.fromJson(Map<String, dynamic> json) =>
       AccountDetailsData(
-        transactionFee: json["transactionFee"],
+        transactionFee: json["transactionFee"].toDouble(),
         destinationBankUUID: json["destinationBankUUID"],
         accountName: json["accountName"],
       );
@@ -344,15 +344,14 @@ class GetAllBanksResponse {
   String status;
   String message;
   int code;
-  List<GetAllBanksResponseData> data;
+  GetAllBanksResponseData? data;
 
   factory GetAllBanksResponse.fromJson(Map<String, dynamic> json) =>
       GetAllBanksResponse(
         status: json["status"],
         message: json["message"],
         code: json["code"],
-        data: json["data"] == null ? [] : List<GetAllBanksResponseData>.from(
-            json["data"].map((x) => GetAllBanksResponseData.fromJson(x))),
+        data: GetAllBanksResponseData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() =>
@@ -360,42 +359,72 @@ class GetAllBanksResponse {
         "status": status,
         "message": message,
         "code": code,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": data!.toJson(),
       };
 }
 
 class GetAllBanksResponseData {
+  List<GetAllBanksDetail>? data;
+
   GetAllBanksResponseData({
-    required this.name,
-    required this.uuid,
-    this.interInstitutionCode,
-    this.sortCode,
-    this.ussdCode,
+     this.data,
   });
 
-  String name;
-  String uuid;
-  String? interInstitutionCode;
-  String? sortCode;
-  String? ussdCode;
+  factory GetAllBanksResponseData.fromJson(Map<String, dynamic> json) => GetAllBanksResponseData(
+    data: List<GetAllBanksDetail>.from(json["data"].map((x) => GetAllBanksDetail.fromJson(x))),
+  );
 
-  factory GetAllBanksResponseData.fromJson(Map<String, dynamic> json) =>
-      GetAllBanksResponseData(
-        name: json["name"],
-        uuid: json["uuid"],
-        interInstitutionCode: json["interInstitutionCode"],
-        sortCode: json["sortCode"],
-        ussdCode: json["ussdCode"],
-      );
+  Map<String, dynamic> toJson() => {
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+  };
+}
 
-  Map<String, dynamic> toJson() =>
-      {
-        "name": name,
-        "uuid": uuid,
-        "interInstitutionCode": interInstitutionCode,
-        "sortCode": sortCode,
-        "ussdCode": ussdCode,
-      };
+class GetAllBanksDetail {
+  String? id;
+  String? type;
+  Attributes? attributes;
+
+  GetAllBanksDetail({
+      this.id,
+      this.type,
+      this.attributes,
+  });
+
+  factory GetAllBanksDetail.fromJson(Map<String, dynamic> json) => GetAllBanksDetail(
+    id: json["id"],
+    type: json["type"],
+    attributes: Attributes.fromJson(json["attributes"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "type": type,
+    "attributes": attributes!.toJson(),
+  };
+}
+
+class Attributes {
+  String? nipCode;
+  String? name;
+  String? cbnCode;
+
+  Attributes({
+      this.nipCode,
+      this.name,
+    this.cbnCode,
+  });
+
+  factory Attributes.fromJson(Map<String, dynamic> json) => Attributes(
+    nipCode: json["nipCode"],
+    name: json["name"],
+    cbnCode: json["cbnCode"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "nipCode": nipCode,
+    "name": name,
+    "cbnCode": cbnCode,
+  };
 }
 
 class TransferModel {

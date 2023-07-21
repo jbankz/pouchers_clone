@@ -19,7 +19,8 @@ class CreateVirtualCard extends ConsumerStatefulWidget {
   static const String routeName = "createVirtualCard";
   final bool? isFundCard;
   final bool? isFundNaira;
-  final AddressClass? addressDetails;
+  final String? bvn;
+  final String? country;
 
 //naira_card_funding_fee : 30
   // dollar_card_funding_fee : 2
@@ -28,7 +29,8 @@ class CreateVirtualCard extends ConsumerStatefulWidget {
       this.isNaira,
       this.isFundCard,
       this.isFundNaira,
-      this.addressDetails})
+        this.country,
+      this.bvn})
       : super(key: key);
 
   @override
@@ -391,7 +393,8 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
                                         isFundCard: widget.isFundCard,
                                         isFundNaira: widget.isFundNaira,
                                         isNaira: widget.isNaira,
-                                        addressDetails: widget.addressDetails,
+                                        bvn: widget.bvn,
+                                        country: widget.country,
                                         amount: "$wholeText.$decimalText"),
                                     settings: const RouteSettings(
                                       name: CardSummary.routeName,
@@ -416,7 +419,8 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
                                   isFundCard: widget.isFundCard,
                                   isFundNaira: widget.isFundNaira,
                                   isNaira: widget.isNaira,
-                                  addressDetails: widget.addressDetails,
+                                  bvn: widget.bvn,
+                                  country: widget.country,
                                   amount: "$wholeText.$decimalText"),
                               settings: const RouteSettings(
                                 name: CardSummary.routeName,
@@ -434,7 +438,8 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
                                     isFundCard: widget.isFundCard,
                                     isFundNaira: widget.isFundNaira,
                                     isNaira: widget.isNaira,
-                                    addressDetails: widget.addressDetails,
+                                    bvn: widget.bvn,
+                                    country: widget.country,
                                     amount: "$wholeText.$decimalText"),
                                 settings: const RouteSettings(
                                   name: CardSummary.routeName,
@@ -451,7 +456,8 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
                                         isFundCard: widget.isFundCard,
                                         isFundNaira: widget.isFundNaira,
                                         isNaira: widget.isNaira,
-                                        addressDetails: widget.addressDetails,
+                                        bvn: widget.bvn,
+                                        country: widget.country,
                                         amount: "$wholeText.$decimalText"),
                                     settings: const RouteSettings(
                                       name: CardSummary.routeName,

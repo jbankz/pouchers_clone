@@ -53,11 +53,12 @@ class CreateVirtualCardNotifier extends StateNotifier<NotifierState<String>>
   CreateVirtualCardNotifier(this._repo) : super(NotifierState());
 
   void createVirtualCard(
-      {required String address,
-      required String city,
-      required String residentState,
+      {
+      //   required String address,
+      // required String city,
+      // required String residentState,
       required String country,
-      required String postalCode,
+      // required String postalCode,
       required String currency,
       required String bvn,
         required String brand,
@@ -66,11 +67,11 @@ class CreateVirtualCardNotifier extends StateNotifier<NotifierState<String>>
       Function()? then}) async {
     state = notifyLoading();
     state = await _repo.createVirtualCards(
-        address: address,
-        city: city,
-        state: residentState,
+        // address: address,
+        // city: city,
+        // state: residentState,
         country: country,
-        postalCode: postalCode,
+        // postalCode: postalCode,
         currency: currency,
         brand: brand,
         bvn: bvn,

@@ -1,3 +1,4 @@
+import 'package:Pouchers/modules/cards/providers/cards_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -36,22 +37,32 @@ class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
         return ref.watch(getReferralProvider).when(
             done: (referralData) {
               if (referralData != null) {
-                // double amount = referralData.data!.fold<double>(
-                //     0,
-                //     (double sum, element) =>
-                //         sum + (double.parse(element.referralAmount!)));
+                List<bool> isPaid = [];
+                referralData.data!.referralTrail!.forEach((element) {
+                  if (element.isPaid!) {
+                    isPaid.add(element.isPaid!);
+                  }
+                });
+                print(isPaid.length);
+                // double amount = referralData.data!.referralTrail!
+                //     .fold<double>(0, (double sum, element) {
+                //       element.isPaid = false;
+                // return  sum + (double.parse(element.referralAmount!));
+                // });
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     RewardsContainer(
                       textTheme: textTheme,
                       icon: SvgPicture.asset(AssetPaths.ticketStarIcon),
+                      referralBonusAmount:
+                          "${isPaid.length * int.parse(ref.watch(getAllFeesProvider).data!.data!.firstWhere((element) => element.name == "referral_bonus_amount").value!)}",
                       widget: Column(
                         children: [
                           NairaWidget(
-                              text: kPriceFormatter(double.parse(
-                                   referralData.data!.earning![0].totalEarnings ?? "0"
-                                     )),
+                              text: kPriceFormatter(double.parse(referralData
+                                      .data!.earning![0].totalEarnings ??
+                                  "0")),
                               textStyle1: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: kPrimaryTextColor,
@@ -59,7 +70,10 @@ class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
                                 fontSize: 34,
                               ),
                               textStyle2: textTheme.headline4!.copyWith(
-                                  fontSize: 34, fontWeight: FontWeight.w700, overflow: TextOverflow.ellipsis, )),
+                                fontSize: 34,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.ellipsis,
+                              )),
                           Text(
                             bonusEarned,
                             style: textTheme.headline3,
@@ -114,13 +128,13 @@ class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
                                   children: [
                                     Text(
                                       inviteeName,
-                                      style: textTheme.headline4!
-                                          .copyWith(fontWeight: FontWeight.w700),
+                                      style: textTheme.headline4!.copyWith(
+                                          fontWeight: FontWeight.w700),
                                     ),
                                     Text(
                                       date,
-                                      style: textTheme.headline4!
-                                          .copyWith(fontWeight: FontWeight.w500),
+                                      style: textTheme.headline4!.copyWith(
+                                          fontWeight: FontWeight.w500),
                                     )
                                   ],
                                 ),
@@ -132,11 +146,12 @@ class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
                                     vertical: kRegularPadding,
                                   ),
                                   decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: kLightPurple, width: 1),
+                                    border: Border.all(
+                                        color: kLightPurple, width: 1),
                                     color: kPrimaryWhite,
                                     borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(kSmallPadding),
+                                      bottomLeft:
+                                          Radius.circular(kSmallPadding),
                                       bottomRight: Radius.circular(
                                         kSmallPadding,
                                       ),
@@ -190,6 +205,18 @@ class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
+                                referralBonusAmount:
+                                    ref.watch(getAllFeesProvider).data == null
+                                        ? "0"
+                                        : ref
+                                            .watch(getAllFeesProvider)
+                                            .data!
+                                            .data!
+                                            .firstWhere((element) =>
+                                                element.name ==
+                                                "referral_bonus_amount")
+                                            .value!,
+                                invite: true,
                                 icon: Icon(Icons.person_add_alt_1),
                               ),
                             ],
@@ -201,7 +228,8 @@ class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
                                 vertical: kRegularPadding,
                               ),
                               decoration: BoxDecoration(
-                                border: Border.all(color: kLightPurple, width: 1),
+                                border:
+                                    Border.all(color: kLightPurple, width: 1),
                                 color: Color.fromRGBO(100, 99, 253, 0.1),
                                 borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(kSmallPadding),
@@ -211,7 +239,8 @@ class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
                                 ),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     inviteeName,
@@ -239,7 +268,8 @@ class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
                                   top: kMacroPadding,
                                   bottom: kRegularPadding),
                               decoration: BoxDecoration(
-                                border: Border.all(color: kLightPurple, width: 1),
+                                border:
+                                    Border.all(color: kLightPurple, width: 1),
                                 color: kPrimaryWhite,
                                 borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(kSmallPadding),
@@ -253,7 +283,9 @@ class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
                                     .map((e) => Column(
                                           children: [
                                             Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Expanded(
                                                   flex: 2,
@@ -266,7 +298,8 @@ class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
                                                                 FontWeight.w500,
                                                             fontSize: 16),
                                                     softWrap: true,
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
                                                 ),
                                                 Text(
@@ -276,22 +309,27 @@ class _ReferralRewardsState extends ConsumerState<ReferralRewards> {
                                                 Expanded(
                                                   flex: 1,
                                                   child: Align(
-                                                    alignment: Alignment.centerRight,
+                                                    alignment:
+                                                        Alignment.centerRight,
                                                     child: Container(
-                                                      padding:
-                                                          EdgeInsets.all(kPadding),
+                                                      padding: EdgeInsets.all(
+                                                          kPadding),
                                                       decoration: BoxDecoration(
-                                                          shape: BoxShape.circle,
+                                                          shape:
+                                                              BoxShape.circle,
                                                           color: e.isPaid!
                                                               ? kColorGreen
-                                                                  .withOpacity(0.2)
+                                                                  .withOpacity(
+                                                                      0.2)
                                                               : kLightYellow100
-                                                                  .withOpacity(0.2)),
+                                                                  .withOpacity(
+                                                                      0.2)),
                                                       child: Container(
                                                         height: 10,
                                                         width: 10,
                                                         decoration: BoxDecoration(
-                                                            shape: BoxShape.circle,
+                                                            shape:
+                                                                BoxShape.circle,
                                                             color: e.isPaid!
                                                                 ? kColorGreen
                                                                 : kLightYellow100),

@@ -34,6 +34,7 @@ class _VouchersState extends ConsumerState<Vouchers> {
       ref.read(fetchVoucherProvider.notifier).fetchVoucher(
           status: "active",
           then: (voucher) {
+
             voucherList = voucher.length;
             voucher.fold(0.0, (double? sum, element) {
               voucherAmount = sum! + double.parse(element.amount);

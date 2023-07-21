@@ -1,3 +1,5 @@
+import 'package:Pouchers/modules/cards/providers/cards_providers.dart';
+import 'package:Pouchers/modules/profile/profile_kyc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,6 +56,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       checkProvider();
       ref.read(getWalletProvider.notifier).getWalletDetails();
       ref.read(getBannerProvider.notifier).getBanner();
+      ref.read(getAllFeesProvider.notifier).getAllFees(amount: 0);
       UserCredentials? cred = await getUserCredentials();
       print(cred);
     });
@@ -67,6 +70,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(SessionManager.getWalletBalance());
     TextTheme textTheme = Theme.of(context).textTheme;
     SizeConfig().init(context);
     return Padding(
@@ -237,10 +241,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                               onTap: () {
                                 pushTo(
                                   context,
-                                  AccountVerificationStatus(from: "homepage"),
+                                  ProfileKYC(),
                                   settings: const RouteSettings(
                                       name:
-                                          AccountVerificationStatus.routeName),
+                                      ProfileKYC.routeName),
                                 );
                               },
                               child: Container(
@@ -297,52 +301,48 @@ class _HomePageState extends ConsumerState<HomePage> {
                               children: [
                                 ref.watch(getWalletProvider).when(
                                       done: (done) {
-                                        if (done != null) {
-                                          return RichText(
-                                            text: TextSpan(
-                                              text: ref.watch(
-                                                      checkObscureProvider)
-                                                  ? "₦"
-                                                  : "",
-                                              style: TextStyle(
-                                                color: kPrimaryWhite,
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 30,
-                                              ),
-                                              children: [
-                                                ref.watch(checkObscureProvider)
-                                                    ? TextSpan(
-                                                        text: kPriceFormatter(
-                                                            double.parse(
-                                                                SessionManager
-                                                                        .getWalletBalance() ??
-                                                                    "0.00")),
-                                                        style: textTheme
-                                                            .bodyText2!
-                                                            .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          fontSize: 32,
-                                                          height: 1.5,
-                                                          fontFamily: "DMSans",
-                                                        ))
-                                                    : TextSpan(
-                                                        text: "***** ",
-                                                        style: textTheme
-                                                            .bodyText2!
-                                                            .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          fontSize: 32,
-                                                          height: 2,
-                                                          fontFamily: "DMSans",
-                                                        ))
-                                              ],
-                                            ),
-                                          );
-                                        } else {
-                                          return SizedBox();
-                                        }
+                                       return RichText(
+                                         text: TextSpan(
+                                           text: ref.watch(
+                                               checkObscureProvider)
+                                               ? "₦"
+                                               : "",
+                                           style: TextStyle(
+                                             color: kPrimaryWhite,
+                                             fontWeight: FontWeight.w700,
+                                             fontSize: 30,
+                                           ),
+                                           children: [
+                                             ref.watch(checkObscureProvider)
+                                                 ? TextSpan(
+                                                 text: kPriceFormatter(
+                                                     double.parse(
+                                                         SessionManager
+                                                             .getWalletBalance() ??
+                                                             "0.00")),
+                                                 style: textTheme
+                                                     .bodyText2!
+                                                     .copyWith(
+                                                   fontWeight:
+                                                   FontWeight.w700,
+                                                   fontSize: 32,
+                                                   height: 1.5,
+                                                   fontFamily: "DMSans",
+                                                 ))
+                                                 : TextSpan(
+                                                 text: "***** ",
+                                                 style: textTheme
+                                                     .bodyText2!
+                                                     .copyWith(
+                                                   fontWeight:
+                                                   FontWeight.w700,
+                                                   fontSize: 32,
+                                                   height: 2,
+                                                   fontFamily: "DMSans",
+                                                 ))
+                                           ],
+                                         ),
+                                       );
                                       },
                                       loading: () => SpinKitDemo(
                                         size: kMacroPadding,

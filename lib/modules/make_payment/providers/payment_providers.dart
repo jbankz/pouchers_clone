@@ -208,6 +208,9 @@ class GetWalletNotifier
       }
     } else if (state.noAuth) {
       if (noAuth != null) noAuth(state.noAuth);
+    }else if(state.message == "User wallet not found"){
+      print("got here");
+      SessionManager.setWalletBalance("0.00");
     }
   }
 }

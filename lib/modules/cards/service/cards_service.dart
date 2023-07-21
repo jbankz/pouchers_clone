@@ -11,11 +11,11 @@ import 'package:Pouchers/utils/logger.dart';
 class CardsService {
   static Future<ServiceResponse<String>> createVirtualCard(
       {required String token,
-      required String address,
-      required String city,
-      required String state,
+      // required String address,
+      // required String city,
+      // required String state,
       required String country,
-      required String postalCode,
+     // required String postalCode,
       required String currency,
       required String bvn,
       required String brand,
@@ -28,11 +28,11 @@ class CardsService {
     };
 
     Map<String, dynamic> body = {
-      "line1": address,
-      "city": city,
-      "state": state,
+      // "line1": address,
+      // "city": city,
+      // "state": state,
       "country": country,
-      "postalCode": postalCode,
+      // "postalCode": postalCode,
       "currency": currency,
       "brand": brand,
       "bvn": bvn,

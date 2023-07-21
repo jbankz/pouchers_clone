@@ -572,8 +572,8 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
   String wholeText = "0";
   String decimalText = "00";
   FocusNode _focusNode = FocusNode();
-  GetAllBanksResponseData? _selectedBank;
-  List<GetAllBanksResponseData> banks = [];
+  GetAllBanksDetail? _selectedBank;
+  List<GetAllBanksDetail> banks = [];
   String? _accNo;
   TextEditingController amountController = TextEditingController();
   TextEditingController accNumberController = TextEditingController();
@@ -850,13 +850,13 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
               return ref.watch(getAllBanksProvider).when(
                     done: (data) {
                       if (data != null) {
-                        data.data.forEach((element) {
+                        data.data!.data!.forEach((element) {
                           banks.add(element);
                         });
                         var seen = Set<String>();
-                        List<GetAllBanksResponseData> uniquelist =
-                            banks.where((bank) => seen.add(bank.name)).toList();
-                        uniquelist.sort((a,b) => a.name.toUpperCase().compareTo(b.name.toUpperCase()));
+                        List<GetAllBanksDetail> uniquelist =
+                            banks.where((bank) => seen.add(bank.attributes?.name ?? "")).toList();
+                        uniquelist.sort((a,b) => a.attributes!.name!.toUpperCase().compareTo(b.attributes!.name!.toUpperCase()));
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -887,7 +887,7 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                                   underline: const SizedBox(),
                                   menuMaxHeight:
                                   MediaQuery.of(context).size.height / 2,
-                                  onChanged: (GetAllBanksResponseData? val) {
+                                  onChanged: (GetAllBanksDetail? val) {
                                     setState(() {
                                       _selectedBank = val;
                                           if (accNumberController.text.isNotEmpty &&
@@ -897,14 +897,14 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                                                 .getAccountDetails(
                                                     accountNumber: accNumberController.text,
                                                     amount: "100.00",
-                                                    bankName: _selectedBank!.name);
+                                                    bankName: _selectedBank!.attributes!.name ?? "");
                                           }
                                     });
 
                                   },
                                   items: uniquelist
                                       .map((e) => DropdownMenuItem(
-                                    child: Text(e.name),
+                                    child: Text(e.attributes?.name ?? ""),
                                     value: e,
                                   ))
                                       .toList(),
@@ -940,7 +940,7 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                       }
                     },
                     loading: () => _widget,
-                    error: (val) => FormDropdown<GetAllBanksResponseData>(
+                    error: (val) => FormDropdown<GetAllBanksDetail>(
                       hint: selectBankText,
                       value: _selectedBank,
                       onChanged: null,
@@ -971,7 +971,7 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                           .getAccountDetails(
                               accountNumber: val,
                               amount: "100.00",
-                              bankName: _selectedBank!.name);
+                              bankName: _selectedBank!.attributes?.name ?? "");
                     } else {
                       showErrorBar(context, "Please select a bank");
                     }
@@ -1071,7 +1071,7 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                       pushTo(
                           context,
                           TransferSummary(
-                              transferName: _selectedBank!.name,
+                              transferName: _selectedBank!.attributes?.name ,
                               accNo: _accNo,
                               amount: _amount,
                               fee: fee ?? 0,

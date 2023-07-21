@@ -8,10 +8,14 @@ class RewardsContainer extends StatelessWidget {
       {Key? key,
       required this.textTheme,
       required this.widget,
+        this.referralBonusAmount,
+        this.invite = false,
       required this.icon})
       : super(key: key);
 
   final TextTheme textTheme;
+  final bool invite;
+  final String? referralBonusAmount;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +40,7 @@ class RewardsContainer extends StatelessWidget {
                 ),
               ),
               child: icon),
+          SizedBox(width: invite ? kMediumPadding : 0,),
           Expanded(child: widget),
           Container(
             padding: EdgeInsets.symmetric(
@@ -66,7 +71,7 @@ class RewardsContainer extends StatelessWidget {
                   width: kSmallPadding,
                 ),
                 Text(
-                  "10",
+                 referralBonusAmount ?? "10",
                   style: textTheme.headline2!.copyWith(
                     fontWeight: FontWeight.w500,
                     fontSize: 18,

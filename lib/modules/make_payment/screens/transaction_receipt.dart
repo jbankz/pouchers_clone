@@ -81,7 +81,7 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                             horizontal: kMacroPadding,
                             vertical: kRegularPadding),
                         decoration: BoxDecoration(
-                            color: kColorBackgroundLight300,
+                            color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(
                               kMediumPadding,
                             )),
@@ -208,53 +208,53 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                           ],
                         ),
                       ),
-                      Positioned(
-                          left: 0,
-                          top: 0,
-                          bottom: 0,
-                          child: Center(
-                            child: Container(
-                                height: kLargePadding,
-                                width: kLargePadding,
-                                decoration: BoxDecoration(
-                                  color: kBackgroundColor,
-                                  shape: BoxShape.circle,
-                                )),
-                          )),
-                      Positioned(
-                          right: 0,
-                          top: 0,
-                          bottom: 0,
-                          child: Center(
-                            child: Container(
-                                height: kLargePadding,
-                                width: kLargePadding,
-                                decoration: BoxDecoration(
-                                  color: kBackgroundColor,
-                                  shape: BoxShape.circle,
-                                )),
-                          )),
-                      Positioned(
-                        bottom: 0,
-                        left: 30,
-                        right: 30,
-                        child: Container(
-                          width: size / 1.2,
-                          //color: Colors.red,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: List.generate(
-                                5,
-                                (index) => Container(
-                                    height: kLargePadding,
-                                    width: kLargePadding,
-                                    decoration: BoxDecoration(
-                                      color: kBackgroundColor,
-                                      shape: BoxShape.circle,
-                                    )),
-                              )),
-                        ),
-                      )
+                      // Positioned(
+                      //     left: 0,
+                      //     top: 0,
+                      //     bottom: 0,
+                      //     child: Center(
+                      //       child: Container(
+                      //           height: kLargePadding,
+                      //           width: kLargePadding,
+                      //           decoration: BoxDecoration(
+                      //             color: kBackgroundColor,
+                      //             shape: BoxShape.circle,
+                      //           )),
+                      //     )),
+                      // Positioned(
+                      //     right: 0,
+                      //     top: 0,
+                      //     bottom: 0,
+                      //     child: Center(
+                      //       child: Container(
+                      //           height: kLargePadding,
+                      //           width: kLargePadding,
+                      //           decoration: BoxDecoration(
+                      //             color: kBackgroundColor,
+                      //             shape: BoxShape.circle,
+                      //           )),
+                      //     )),
+                      // Positioned(
+                      //   bottom: 0,
+                      //   left: 30,
+                      //   right: 30,
+                      //   child: Container(
+                      //     width: size / 1.2,
+                      //     //color: Colors.red,
+                      //     child: Row(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //         children: List.generate(
+                      //           5,
+                      //           (index) => Container(
+                      //               height: kLargePadding,
+                      //               width: kLargePadding,
+                      //               decoration: BoxDecoration(
+                      //                 color: kBackgroundColor,
+                      //                 shape: BoxShape.circle,
+                      //               )),
+                      //         )),
+                      //   ),
+                      // )
                     ],
                   ),
                 ],

@@ -20,6 +20,7 @@ import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/input_formatters.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../providers/utilities_provider.dart';
 import 'package:local_auth_android/local_auth_android.dart';
@@ -470,31 +471,38 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
                     loading: () => SpinKitDemo(),
                     error: (val) => _widget);
               }),
-              // SizedBox(
-              //   height: kMicroPadding,
-              // ),
-              // Text(
-              //   sendCodeVia,
-              //   style: textTheme.headline6!.copyWith(color: kIconGrey),
-              //   textAlign: TextAlign.center,
-              // ),
-              // SizedBox(
-              //   height: kPadding,
-              // ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     SvgPicture.asset(AssetPaths.facebookIcon),
-              //     SizedBox(
-              //       width: kSmallPadding,
-              //     ),
-              //     SvgPicture.asset(AssetPaths.whatsappIcon),
-              //     SizedBox(
-              //       width: kSmallPadding,
-              //     ),
-              //     SvgPicture.asset(AssetPaths.instagramIcon),
-              //   ],
-              // )
+              SizedBox(
+                height: kMicroPadding,
+              ),
+              Text(
+                sendCodeVia,
+                style: textTheme.headline6!.copyWith(color: kIconGrey),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: kPadding,
+              ),
+              inkWell(
+                onTap: _value.code == "#12345647" ? (){
+                  showErrorBar(context, "Please select a voucher code to gift");
+                } : (){
+                  Share.share("You’ve been gifted a voucher- ${_value.code}");
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(AssetPaths.facebookIcon),
+                    SizedBox(
+                      width: kSmallPadding,
+                    ),
+                    SvgPicture.asset(AssetPaths.whatsappIcon),
+                    SizedBox(
+                      width: kSmallPadding,
+                    ),
+                    SvgPicture.asset(AssetPaths.instagramIcon),
+                  ],
+                ),
+              )
             ],
           ),
         ),

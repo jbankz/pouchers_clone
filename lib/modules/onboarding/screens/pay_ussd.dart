@@ -48,9 +48,8 @@ class PayWithUssd extends ConsumerStatefulWidget {
 class _PayWithUssdState extends ConsumerState<PayWithUssd> {
   String? selectedBank;
 
-  // List<String> banks = ["Access", "UBA", "Sterling"];
-  GetAllBanksResponseData? _selectedBank;
-  List<GetAllBanksResponseData> banks = [];
+  GetAllBanksDetail? _selectedBank;
+  List<GetAllBanksDetail> banks = [];
   String? referenceNo;
 
   @override
@@ -111,17 +110,17 @@ class _PayWithUssdState extends ConsumerState<PayWithUssd> {
                   return ref.watch(getAllBanksProvider).when(
                         done: (data) {
                           if (data != null) {
-                            data.data.forEach((element) {
+                            data.data!.data!.forEach((element) {
                               banks.add(element);
                             });
                             var seen = Set<String>();
-                            List<GetAllBanksResponseData> uniquelist = banks
-                                .where((bank) => seen.add(bank.name))
+                            List<GetAllBanksDetail> uniquelist = banks
+                                .where((bank) => seen.add(bank.attributes?.name ?? ""))
                                 .toList();
-                            return FormDropdown<GetAllBanksResponseData>(
+                            return FormDropdown<GetAllBanksDetail>(
                                 hint: selectBankText,
                                 value: _selectedBank,
-                                onChanged: (GetAllBanksResponseData? val) {
+                                onChanged: (GetAllBanksDetail? val) {
                                   setState(() => _selectedBank = val);
                                   print("selected bank$_selectedBank");
                                   print(widget.isUtility);
@@ -143,7 +142,7 @@ class _PayWithUssdState extends ConsumerState<PayWithUssd> {
                                               ],
                                               merchantReferenceNumber:
                                                   widget.cardNumber!,
-                                              bank: _selectedBank!.name,
+                                              bank: _selectedBank!.attributes!.name,
                                               error: (val) =>
                                                   showErrorBar(context, val))
                                       : ref
@@ -156,7 +155,7 @@ class _PayWithUssdState extends ConsumerState<PayWithUssd> {
                                             category: widget.category!,
                                             mobileOperatorServiceId:
                                                 widget.serviceId,
-                                            bank: _selectedBank!.name,
+                                            bank: _selectedBank!.attributes!.name,
                                             destinationPhoneNumber:
                                                 widget.cardNumber!,
                                             mobileOperatorPublicId:
@@ -169,8 +168,8 @@ class _PayWithUssdState extends ConsumerState<PayWithUssd> {
                                 },
                                 items: uniquelist
                                     .map((e) => DropdownMenuItem<
-                                            GetAllBanksResponseData>(
-                                          child: Text(e.name),
+                                    GetAllBanksDetail>(
+                                          child: Text(e.attributes?.name ?? ""),
                                           value: e,
                                         ))
                                     .toList());
@@ -179,7 +178,7 @@ class _PayWithUssdState extends ConsumerState<PayWithUssd> {
                           }
                         },
                         loading: () => _widget,
-                        error: (val) => FormDropdown<GetAllBanksResponseData>(
+                        error: (val) => FormDropdown<GetAllBanksDetail>(
                           hint: selectBankText,
                           value: _selectedBank,
                           onChanged: null,

@@ -18,11 +18,12 @@ class CardsRepository {
   CardsRepository(this.ref);
 
   Future<NotifierState<String>> createVirtualCards(
-      {required String address,
-      required String city,
-      required String state,
+      {
+      //   required String address,
+      // required String city,
+      // required String state,
       required String country,
-      required String postalCode,
+      // required String postalCode,
       required String currency,
       required String bvn,
       required double amount,
@@ -31,32 +32,34 @@ class CardsRepository {
     ServiceResponse<String> createCard;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     createCard = await CardsService.createVirtualCard(
-        address: address,
+        // address: address,
         token: userProfile.token!,
         amount: amount,
         transactionPin: transactionPin,
         bvn: bvn,
-        city: city,
+        // city: city,
         country: country,
         brand: brand,
         currency: currency,
-        postalCode: postalCode,
-        state: state);
+        // postalCode: postalCode,
+        // state: state
+    );
     if (createCard.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
       createCard = await CardsService.createVirtualCard(
-          address: address,
+          // address: address,
           token: userProfiles.token!,
           amount: amount,
           transactionPin: transactionPin,
           bvn: bvn,
-          city: city,
+          // city: city,
           country: country,
           brand: brand,
           currency: currency,
-          postalCode: postalCode,
-          state: state);
+          // postalCode: postalCode,
+          // state: state
+      );
     }
     return createCard.toNotifierState();
   }
