@@ -36,7 +36,6 @@ Future<void> saveUserCredential({
           key: userCredentialKey, value: credentials.serialize());
       print("object$transactionPin");
     } else {
-      print("na here i dey");
       await _secureStorage.write(
           key: userCredentialKey,
           value: existingCredentials

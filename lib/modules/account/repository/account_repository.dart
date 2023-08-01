@@ -455,4 +455,28 @@ class AccountRepository {
     }
     return getUserProfile.toNotifierState();
   }
+
+  Future<NotifierState<ManageRequestResponse>> manageRequest({required String type,
+    required int page, String? status}) async {
+    ServiceResponse<ManageRequestResponse> manageRequest;
+    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    manageRequest = await AccountService.manageRequest(
+      token: userProfile.token!,
+      page: page,
+      type: type,
+      status: status
+    );
+
+    if (manageRequest.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      manageRequest = await AccountService.manageRequest(
+        token: userProfiles.token!,
+          page: page,
+          type: type,
+          status: status
+      );
+    }
+    return manageRequest.toNotifierState();
+  }
 }

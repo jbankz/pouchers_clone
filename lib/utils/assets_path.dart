@@ -66,6 +66,7 @@ class AssetPaths {
    static String helpIcon = "${iconPath}help_icon.svg";
    static String legalIcon = "${iconPath}legal_icon.svg";
    static String referralIcon = "${iconPath}referral_icon.svg";
+   static String requestIcon = "${iconPath}request.svg";
    // Not in use this savedCardIco remove on production
    static String savedCardIcon = "${iconPath}saved_card_icon.svg";
    static String pouIcon = "${iconPath}pou_logo.svg";

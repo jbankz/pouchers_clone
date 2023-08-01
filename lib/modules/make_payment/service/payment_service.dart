@@ -125,13 +125,12 @@ class PaymentService {
     }
   }
 
-  static Future<ServiceResponse<P2PResponse>> p2p({
-    required String token,
-    required String tag,
-    required String amount,
-    required String note,
-    required String transactionPin
-  }) async {
+  static Future<ServiceResponse<P2PResponse>> p2p(
+      {required String token,
+      required String tag,
+      required String amount,
+      required String note,
+      required String transactionPin}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
@@ -149,7 +148,7 @@ class PaymentService {
       "tag": tag,
       "amount": amount,
       "note": note,
-      "transactionPin" : transactionPin
+      "transactionPin": transactionPin
     };
 
     try {
@@ -171,7 +170,6 @@ class PaymentService {
     }
   }
 
-
   static Future<ServiceResponse<AccountDetailsResponse>> accountDetails({
     required String token,
     required String accountNumber,
@@ -184,15 +182,18 @@ class PaymentService {
       HttpHeaders.authorizationHeader: "Bearer $token"
     };
 
-    String url = "${baseUrl()}/payment/bank-account?account_number=$accountNumber&amount=$amount&bank_name=$bankName";
+    String url =
+        "${baseUrl()}/payment/bank-account?account_number=$accountNumber&amount=$amount&bank_name=$bankName";
 
     logPrint(url);
     logPrint(accountNumber);
     logPrint(amount);
 
     try {
-      http.Response response = await http.get(Uri.parse(url),
-        headers: _authHeaders,);
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: _authHeaders,
+      );
       logResponse(response);
       var responseBody = jsonDecode(response.body);
       if (response.statusCode >= 300 && response.statusCode <= 520) {
@@ -220,8 +221,10 @@ class PaymentService {
     logPrint(url);
 
     try {
-      http.Response response = await http.get(Uri.parse(url),
-          headers: _authHeaders,);
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: _authHeaders,
+      );
       logResponse(response);
       var responseBody = jsonDecode(response.body);
       if (response.statusCode >= 300 && response.statusCode <= 520) {
@@ -238,13 +241,12 @@ class PaymentService {
     }
   }
 
-  static Future<ServiceResponse<LocalTransferResponse>> localBankTransfer({
-    required String token,
-    required String accountNumber,
-    required String bankName,
-    required String amount,
-    required String transactionPin
-  }) async {
+  static Future<ServiceResponse<LocalTransferResponse>> localBankTransfer(
+      {required String token,
+      required String accountNumber,
+      required String bankName,
+      required String amount,
+      required String transactionPin}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
@@ -257,7 +259,7 @@ class PaymentService {
       "account_number": accountNumber,
       "amount": amount,
       "bank_name": bankName,
-      "transactionPin" : transactionPin
+      "transactionPin": transactionPin
     };
 
     logPrint(url);
@@ -265,7 +267,7 @@ class PaymentService {
 
     try {
       http.Response response = await http.post(Uri.parse(url),
-        headers: _authHeaders, body: jsonEncode(body));
+          headers: _authHeaders, body: jsonEncode(body));
       logResponse(response);
       var responseBody = jsonDecode(response.body);
       if (response.statusCode >= 300 && response.statusCode <= 520) {
@@ -295,8 +297,10 @@ class PaymentService {
 
     logPrint(url);
     try {
-      http.Response response = await http.get(Uri.parse(url),
-          headers: _authHeaders,);
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: _authHeaders,
+      );
       logResponse(response);
       var responseBody = jsonDecode(response.body);
       if (response.statusCode >= 300 && response.statusCode <= 520) {
@@ -313,7 +317,6 @@ class PaymentService {
     }
   }
 
-
   static Future<ServiceResponse<NotificationResponse>> getNotifications({
     required String token,
   }) async {
@@ -327,8 +330,10 @@ class PaymentService {
 
     logPrint(url);
     try {
-      http.Response response = await http.get(Uri.parse(url),
-          headers: _authHeaders,);
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: _authHeaders,
+      );
       logResponse(response);
       var responseBody = jsonDecode(response.body);
       if (response.statusCode >= 300 && response.statusCode <= 520) {
@@ -342,6 +347,55 @@ class PaymentService {
       logPrint(error);
       logPrint(stack);
       return processServiceError<NotificationResponse>(error, stack);
+    }
+  }
+
+  static Future<ServiceResponse<MoneyRequestResponse>> moneyRequestStatus({
+    required String token,
+    required String action,
+    required double amount,
+    required String requestId,
+    required String pin,
+    String? note,
+  }) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    };
+
+    String url = "${baseUrl()}/payment/request";
+
+    logPrint(url);
+    logPrint(requestId);
+
+    Map<String, dynamic> body = {
+      "action": action,
+      "amount": amount,
+      "requestId": requestId,
+      "transactionPin": pin
+    };
+    if (note != null) {
+      body["reason"] = note;
+    }
+    logPrint(body);
+
+    try {
+      http.Response response = await http.patch(Uri.parse(url),
+          headers: _authHeaders, body: jsonEncode(body));
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<MoneyRequestResponse>(
+            data: MoneyRequestResponse.fromJson(responseBody),
+            message: responseBody["message"]);
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<MoneyRequestResponse>(error, stack);
     }
   }
 }

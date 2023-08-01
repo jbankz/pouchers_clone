@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ffi';
 
+import 'package:Pouchers/modules/account/screens/request/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -334,6 +335,21 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               },
             ),
             ProfileRoleWidget(
+              text: requestText,
+              subText: requestTextSub,
+              icon: SvgPicture.asset(
+                AssetPaths.requestIcon,
+              ),
+              textTheme: textTheme,
+              onTap: () {
+                pushTo(
+                  context,
+                  ManageRequest(),
+                  settings: RouteSettings(name: ManageRequest.routeName),
+                );
+              },
+            ),
+            ProfileRoleWidget(
               text: accountSetting,
               subText: accountSettingSub,
               textTheme: textTheme,
@@ -406,15 +422,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             //   icon: SvgPicture.asset(AssetPaths.legalIcon),
             //   onTap: () {},
             // ),
-            ProfileRoleWidget(
-              text: aboutPouchers,
-              subText: aboutPouchersSub,
-              icon: SvgPicture.asset(AssetPaths.pouIcon),
-              textTheme: textTheme,
-              onTap: () {
-                pushTo(context, AboutPouchers());
-              },
-            ),
+            // ProfileRoleWidget(
+            //   text: aboutPouchers,
+            //   subText: aboutPouchersSub,
+            //   icon: SvgPicture.asset(AssetPaths.pouIcon),
+            //   textTheme: textTheme,
+            //   onTap: () {
+            //     pushTo(context, AboutPouchers());
+            //   },
+            // ),
             ProfileRoleWidget(
               text: logOut,
               subText: "",

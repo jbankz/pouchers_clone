@@ -1,3 +1,5 @@
+import 'package:Pouchers/modules/account/screens/request/received_details.dart';
+import 'package:Pouchers/modules/account/screens/request/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:Pouchers/modules/account/screens/account_settings/biometric_settings.dart';
 import 'package:Pouchers/modules/account/screens/account_settings/change_pin.dart';
@@ -155,5 +157,6 @@ Map<String, WidgetBuilder> appRoutes = {
   TransactionReceipt.routeName : (context) => TransactionReceipt(),
   Analytics.routeName : (context) => Analytics(),
   Referral.routeName : (context) => Referral(),
-  SuccessMessage.routeName: (context) => SuccessMessage()
+  SuccessMessage.routeName: (context) => SuccessMessage(),
+  ManageRequest.routeName: (context) => ManageRequest(),
 };

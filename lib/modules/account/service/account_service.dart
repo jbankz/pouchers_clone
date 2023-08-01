@@ -8,7 +8,6 @@ import 'package:Pouchers/modules/account/models/security_question.dart';
 import 'package:Pouchers/modules/account/models/tier_list.dart';
 import 'package:Pouchers/utils/extras.dart';
 import 'package:Pouchers/utils/logger.dart';
-import 'package:Pouchers/utils/strings.dart';
 import 'package:http/http.dart' as http;
 
 class AccountService {
@@ -864,6 +863,42 @@ class AccountService {
       logPrint(error);
       logPrint(stack);
       return processServiceError<EditProfileResponse>(error, stack);
+    }
+  }
+
+
+  static Future<ServiceResponse<ManageRequestResponse>> manageRequest({
+    required String token,required String type, String? status,
+    required int page,
+  }) async {
+    Map<String, String> _authHeaders = {
+      HttpHeaders.connectionHeader: "keep-alive",
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    };
+
+    String url = status == null  ? "${baseUrl()}/payment/requests?page=$page&type=$type" : "${baseUrl()}/payment/requests?page=$page&type=$type&status=$status";
+
+    logPrint(url);
+
+    try {
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: _authHeaders,
+      );
+      logResponse(response);
+      var responseBody = jsonDecode(response.body);
+      if (response.statusCode >= 300 && response.statusCode <= 520) {
+        throw Failure.fromJson(responseBody);
+      } else {
+        return serveSuccess<ManageRequestResponse>(
+            data: ManageRequestResponse.fromJson(responseBody),
+            message: responseBody["message"]);
+      }
+    } catch (error, stack) {
+      logPrint(error);
+      logPrint(stack);
+      return processServiceError<ManageRequestResponse>(error, stack);
     }
   }
 }

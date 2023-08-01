@@ -458,7 +458,6 @@ class TransferModel {
   }
 }
 
-
 class GetWalletResponse {
   GetWalletResponse({
     required this.status,
@@ -625,6 +624,92 @@ class Notification {
     return 'Notification{title: $title, body: $body, createdAt: $createdAt}';
   }
 }
+
+
+class MoneyRequestResponse {
+  String? status;
+  String? message;
+  int? code;
+  MoneyRequestData? data;
+
+  MoneyRequestResponse({
+      this.status,
+      this.message,
+      this.code,
+      this.data,
+  });
+
+  factory MoneyRequestResponse.fromJson(Map<String, dynamic> json) => MoneyRequestResponse(
+    status: json["status"],
+    message: json["message"],
+    code: json["code"],
+    data: MoneyRequestData.fromJson(json["data"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "message": message,
+    "code": code,
+    "data": data!.toJson(),
+  };
+}
+
+class MoneyRequestData {
+  int? id;
+  String? requestId;
+  String? requesterUserId;
+  String? requesteeUserId;
+  String? note;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? amount;
+  String? status;
+  String? fulfilledAmount;
+  String? reason;
+
+  MoneyRequestData({
+      this.id,
+      this.requestId,
+      this.requesterUserId,
+      this.requesteeUserId,
+      this.note,
+      this.createdAt,
+      this.updatedAt,
+      this.amount,
+      this.status,
+       this.fulfilledAmount,
+      this.reason,
+  });
+
+  factory MoneyRequestData.fromJson(Map<String, dynamic> json) => MoneyRequestData(
+    id: json["id"],
+    requestId: json["request_id"],
+    requesterUserId: json["requester_user_id"],
+    requesteeUserId: json["requestee_user_id"],
+    note: json["note"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+    amount: json["amount"],
+    status: json["status"],
+    fulfilledAmount: json["fulfilled_amount"],
+    reason: json["reason"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "request_id": requestId,
+    "requester_user_id": requesterUserId,
+    "requestee_user_id": requesteeUserId,
+    "note": note,
+    "created_at": createdAt!.toIso8601String(),
+    "updated_at": updatedAt!.toIso8601String(),
+    "amount": amount,
+    "status": status,
+    "fulfilled_amount": fulfilledAmount,
+    "reason": reason,
+  };
+}
+
 
 
 

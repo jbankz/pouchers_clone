@@ -142,6 +142,7 @@ String selectRecipient = "Select Recipient";
 String voucher = "Vouchers";
 String buyVoucher = "Buy Vouchers";
 String noTrans = "Sorry, you have no transaction";
+String noRequest = "Sorry, you have no requests";
 String noVouchers = "Sorry, you have no avaliable Vouchers";
 String transSuccessful = "Transaction Successful";
 String transSummary = "Below is your transaction summary.";
@@ -288,6 +289,7 @@ String schedule = "Schedule";
 String scheduleTransfer = "Schedule transfer";
 String transferCompletedSub = "Your money has been successfully delivered!";
 String requestCompletedSub = "Your have successfully sent a money request!";
+String moneyRequest = "Money Request";
 String accountId = "Account ID";
 String betting = "Betting";
 String settings = "Settings";
@@ -511,6 +513,8 @@ String joinPouchers2 = " deals and discounts ";
 String joinPouchers3 =
     "on airtime, data, internet, betting and many other bill purchases.";
 String referralText = "Referral";
+String requestText = "Request";
+String requestTextSub = "Easily manage and track all your request money transactions in one place";
 String savedCard = "Saved cards";
 String selectPaymentOption = "Select payment option";
 String savedCardSub = "Managed linked cards";
@@ -597,6 +601,8 @@ String noTransaction = "No transactions yet";
 String transaction = "Transactions";
 String virtualNairaCard = "Virtual Naira Card";
 String virtualDollarCard = "Virtual Dollar Card";
+String sentText = "Sent";
+String receivedText = "Received";
 
 List<String> nigeriaStates = [
   "Abuja",

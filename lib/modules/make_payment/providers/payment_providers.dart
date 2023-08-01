@@ -21,6 +21,11 @@ final requestMoneyProvider = StateNotifierProvider.autoDispose<
   return RequestMoneyNotifier(ref.read(paymentRepoProvider));
 });
 
+final moneyRequestStatusProvider = StateNotifierProvider.autoDispose<
+    MoneyRequestNotifier, NotifierState<MoneyRequestResponse>>((ref) {
+  return MoneyRequestNotifier(ref.read(paymentRepoProvider));
+});
+
 final p2pMoneyProvider = StateNotifierProvider.autoDispose<P2PMoneyNotifier,
     NotifierState<P2PResponse>>((ref) {
   return P2PMoneyNotifier(ref.read(paymentRepoProvider));
@@ -99,6 +104,28 @@ class RequestMoneyNotifier
   }) async {
     state = notifyLoading();
     state = await _repo.requestMoney(tag: tag, note: note, amount: amount);
+    if (state.status == NotifierStatus.done) {
+      if (then != null) then();
+    }
+  }
+}
+
+class MoneyRequestNotifier
+    extends StateNotifier<NotifierState<MoneyRequestResponse>> {
+  final PaymentRepository _repo;
+
+  MoneyRequestNotifier(this._repo) : super(NotifierState());
+
+  void moneyRequestStatus({
+    Function()? then,
+    required String action,
+    required double amount,
+    required String requestId,
+    required String pin,
+    String? note,
+  }) async {
+    state = notifyLoading();
+    state = await _repo.moneyRequestStatus(action: action, note: note, amount: amount, requestId: requestId, pin: pin);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }

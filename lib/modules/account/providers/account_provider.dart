@@ -167,6 +167,16 @@ final getUserProfileProvider = StateNotifierProvider<GetUserProfileNotifier,
   return GetUserProfileNotifier(ref.read(accountRepoProvider));
 });
 
+final manageRequestProvider = StateNotifierProvider<ManageRequestNotifier,
+    NotifierState<ManageRequestResponse>>((ref) {
+  return ManageRequestNotifier(ref.read(accountRepoProvider));
+});
+
+final manageReceivedRequestProvider = StateNotifierProvider<ManageRequestNotifier,
+    NotifierState<ManageRequestResponse>>((ref) {
+  return ManageRequestNotifier(ref.read(accountRepoProvider));
+});
+
 class AccountNotifier extends StateNotifier<NotifierState<String>> {
   final AccountRepository _repo;
 
@@ -586,6 +596,27 @@ class GetUserProfileNotifier
     state = await _repo.getUserProfile();
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
+    }
+  }
+}
+
+
+class ManageRequestNotifier
+    extends StateNotifier<NotifierState<ManageRequestResponse>> {
+  final AccountRepository _repo;
+
+  ManageRequestNotifier(this._repo) : super(NotifierState());
+
+  void manageRequest({
+    Function(ManageRequestData)? then,
+    required String type,
+     String? status,
+    required int page,
+  }) async {
+    state = notifyLoading();
+    state = await _repo.manageRequest(type: type, page: page, status: status);
+    if (state.status == NotifierStatus.done) {
+      if (then != null) then(state.data!.data!);
     }
   }
 }

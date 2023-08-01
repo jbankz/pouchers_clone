@@ -256,6 +256,7 @@ String changeCatNme(String name, String currency, String subCat, String benefici
     case "referral-bonus-payment":
       cat = "Referral Bonus ($beneficiary)";
       break;
+    default: cat = name;
   }
   return cat;
 }
