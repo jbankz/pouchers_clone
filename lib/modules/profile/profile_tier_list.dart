@@ -1,3 +1,4 @@
+import 'package:Pouchers/modules/account/models/tier_list.dart';
 import 'package:Pouchers/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,12 +29,22 @@ class _PouchersTierListState extends ConsumerState<PouchersTierList> {
   HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
   int? userTierLevel;
   int? hiveTierLevel;
+  List<MapEntry<String, String>> tiersList = [];
+
+
+
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      ref.read(getTiersProvider.notifier).getTierList();
+      ref.read(getTiersProvider.notifier).getTierList(then: (val){
+        for (var item in val.data){
+          if (item.name!.startsWith('tier')){
+            tiersList.add(MapEntry(item.name!, item.value!));
+          }
+        }
+      });
       await checkTierLevel();
       setState(() {});
     });
@@ -48,6 +59,12 @@ class _PouchersTierListState extends ConsumerState<PouchersTierList> {
      child: ref.watch(getTiersProvider).when(
           done: (done) {
             if (done != null) {
+              var tier1Limit = tiersList.firstWhere((element) => element.key.startsWith('tier1_daily')).value;
+              var tier1Bal = tiersList.firstWhere((element) => element.key.startsWith('tier1_maximum')).value;
+              var tier2Limit = tiersList.firstWhere((element) => element.key.startsWith('tier2_daily')).value;
+              var tier2Bal = tiersList.firstWhere((element) => element.key.startsWith('tier2_maximum')).value;
+              var tier3Limit = tiersList.firstWhere((element) => element.key.startsWith('tier3_daily')).value;
+              var tier3Bal = tiersList.firstWhere((element) => element.key.startsWith('tier3_maximum')).value;
               return ListView(
                 children: [
                   Padding(
@@ -93,54 +110,34 @@ class _PouchersTierListState extends ConsumerState<PouchersTierList> {
                         Expanded(
                           child: Column(
                             children: [
-                              done.data!.tier1 == null
-                                  ? TiersContainer(
-                                      text1: "50,000",
-                                      text2: "50,000",
-                                      maxbalance: "50,000",
-                                      tier: "$tier 1",
-                                    )
-                                  : TiersContainer(
-                                      maxbalance: done.data!.tier1!.maxBalance!,
-                                      text1: done.data!.tier1!.dailyTxLimit!,
-                                      text2: done.data!.tier1!.maxBalance!,
-                                      tier: "$tier 1",
-                                    ),
+                                TiersContainer(
+                                maxbalance: tier1Bal,
+                                text1: tier1Limit,
+                                tier: "$tier 1",text2: tier1Bal,
+                              ),
+
                               SizedBox(
                                 height: kMediumPadding,
                               ),
-                              done.data!.tier2 == null
-                                  ? TiersContainer(
-                                      text1: "50,000",
-                                      text2: "50,000",
-                                      tier: tier2,
-                                      maxbalance: "50,000",
-                                    )
-                                  : TiersContainer(
-                                      maxbalance: done.data!.tier2!.maxBalance!,
-                                      text1: done.data!.tier2!.dailyTxLimit!,
-                                      text2: done.data!.tier2!.maxBalance!,
-                                      tier: tier2,
-                                    ),
+                               TiersContainer(
+                                maxbalance: tier2Bal,
+                                text1: tier2Limit,
+                                text2: tier2Bal,
+                                tier: tier2,
+                              ),
                               SizedBox(
                                 height: kMediumPadding,
                               ),
-                              done.data!.tier3 == null
-                                  ? TiersContainer(
-                                      text1: "50,000",
-                                      text2: "50,000",
-                                      tier: tier3,
-                                      maxbalance: "50,000",
-                                    )
-                                  : TiersContainer(
-                                      bgColor: kPrimaryColor,
-                                      textColor: kPrimaryColor,
-                                      color: kPrimaryWhite,
-                                      maxbalance: done.data!.tier3!.maxBalance!,
-                                      text1: done.data!.tier3!.dailyTxLimit!,
-                                      text2: done.data!.tier3!.maxBalance!,
-                                      tier: tier3,
-                                    ),
+                              TiersContainer(
+                                bgColor: kPrimaryColor,
+                                textColor: kPrimaryColor,
+                                color: kPrimaryWhite,
+                                maxbalance: tier3Bal,
+                                text1: tier3Limit,
+                                text2:tier3Bal,
+                                tier: tier3,
+                              ),
+
                             ],
                           ),
                         ),
@@ -200,7 +197,8 @@ class _PouchersTierListState extends ConsumerState<PouchersTierList> {
 
 class TiersContainer extends StatelessWidget {
   final Color? bgColor, color, textColor;
-  final String text1, text2, tier, maxbalance;
+  final String text1,  tier, maxbalance;
+  final String? text2;
 
   const TiersContainer(
       {Key? key,
@@ -210,7 +208,7 @@ class TiersContainer extends StatelessWidget {
       required this.text1,
       required this.tier,
       required this.maxbalance,
-      required this.text2})
+       this.text2})
       : super(key: key);
 
   @override
@@ -266,26 +264,29 @@ class TiersContainer extends StatelessWidget {
               SizedBox(
                 height: kRegularPadding,
               ),
-              Text(
-                maxBalance,
-                style: textTheme.headline2!.copyWith(
-                    fontSize: 14,
-                    color: tier == tier3 ? kPrimaryWhite : kPrimaryColor),
+              Expanded(
+                child: Text(
+                  maxBalance,
+                  style: textTheme.headline2!.copyWith(
+                      fontSize: 14,
+                      color: tier == tier3 ? kPrimaryWhite : kPrimaryColor),
+                ),
               ),
               SizedBox(
                 height: kPadding,
               ),
               maxbalance == "unlimited"
-                  ? Text(
-                      maxbalance,
+                  ?
+                   Text(
+                     capitalize(maxbalance),
                       style: textTheme.headline2!.copyWith(
                         fontWeight: FontWeight.w700,
                         color: tier == tier3 ? kPrimaryWhite : kPrimaryColor,
-                        fontSize: 18,
+                        fontSize: 16,
                       ),
                     )
                   : buildRichText(
-                      textTheme, text2, tier == tier3 ? true : false),
+                      textTheme, "${text2}", tier == tier3 ? true : false),
             ],
           )
         ],
@@ -350,4 +351,13 @@ class TrianglePainter extends CustomPainter {
         oldDelegate.paintingStyle != paintingStyle ||
         oldDelegate.strokeWidth != strokeWidth;
   }
+}
+
+String getValue(List<TierListResponseData> data, String targetName) {
+  for (var item in data) {
+    if (item.name == targetName) {
+      return item.value!;
+    }
+  }
+  return "Value not found";
 }

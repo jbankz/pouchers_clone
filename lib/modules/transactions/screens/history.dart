@@ -33,13 +33,67 @@ class _HistoryState extends ConsumerState<History> {
   String dateFormatter = 'MMM dd, yyy';
   List<GetTransactionsData> transactionData = [];
 
+  GetTransactions? currentPage;
+  bool hasMoreItems = true, loadingTransaction = false;
+
+  void setTransactionList(GetTransactions? raw) {
+    setState(() {
+      loadingTransaction = false;
+    });
+    if (raw != null) {
+      if (raw.page == "1") {
+        transactionData.clear();
+      }
+      setState(() {
+        transactionData.addAll(raw.history!);
+      });
+      currentPage = raw;
+      if (transactionData.length >= int.parse(currentPage!.total!)) {
+        setState(() {
+          hasMoreItems = false;
+        });
+      }
+    }
+  }
+
+  void refreshTransaction({bool showLoading = false, int pageNum = 1}) {
+    setState(() {
+      loadingTransaction = true;
+    });
+    ref
+        .read(getTransactionHistoryProvider.notifier)
+        .getTransactionHistory(status: "",page: pageNum,then: (val){
+      setTransactionList(val.data);
+      if (val != null) {
+        if (transactionData.length >= int.parse(val.data!.total!)) {
+          setState(() {
+            hasMoreItems = false;
+          });
+          return;
+        } else {
+          int currenntPage = int.parse(val.data!.page!);
+          refreshTransaction(pageNum: ++currenntPage);
+        }
+      }
+    });
+  }
+
+  bool onScroll(ScrollUpdateNotification info) {
+    if (info.metrics.pixels >= info.metrics.maxScrollExtent - 10) {
+      if (hasMoreItems && !loadingTransaction) {
+        int p = int.parse(currentPage!.page!);
+        // refreshProducts(pageNum: ++p);
+      }
+      return true;
+    }
+    return false;
+  }
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref
-          .read(getTransactionHistoryProvider.notifier)
-          .getTransactionHistory(status: "");
+     refreshTransaction(showLoading: true,pageNum: 1);
     });
   }
 
@@ -124,7 +178,7 @@ class _HistoryState extends ConsumerState<History> {
         ref.watch(getTransactionHistoryProvider).when(
             done: (data) {
               if (data != null) {
-                transactionData = data.data!.toList();
+                transactionData = data.data!.history!.toList();
                 return transactionData.isEmpty
                     ? Container(
                         height: 300,

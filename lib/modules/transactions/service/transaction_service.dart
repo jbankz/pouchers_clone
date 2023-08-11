@@ -13,6 +13,7 @@ class TransactionService {
       getTransactionHistory({
     required String status,
     required String token,
+    int? page
   }) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
@@ -21,8 +22,8 @@ class TransactionService {
     };
 
     String url = status == ""
-        ? "${baseUrl()}/user/transaction-history"
-        : "${baseUrl()}/user/transaction-history?category=$status";
+        ? "${baseUrl()}/user/transaction-history?page=$page"
+        : "${baseUrl()}/user/transaction-history?page=$page&category=$status";
 
     logPrint(url);
 

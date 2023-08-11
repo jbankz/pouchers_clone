@@ -47,7 +47,7 @@ class WelcomeGuest extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: kMacroPadding,
+                      height: kMediumPadding,
                     ),
                     Text(selectPayment,
                         style: textTheme.subtitle1!.copyWith(

@@ -192,4 +192,8 @@ extension DateHelper on DateTime {
     final now = DateTime.now();
     return now.difference(this).inDays;
   }
+
+  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 }
+
+

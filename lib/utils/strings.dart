@@ -45,7 +45,7 @@ String transfer = "Transfers";
 String transfer1 = "Transfer";
 String onBoardingSubTitle =
     "Service your bills, transfer money to friends, top-up your phone and many more have never been easier and faster.";
-String logIn = "Login";
+String logIn = "Log In";
 String logInPoucher = "Log In to Pouchers";
 String register = "Register";
 String guestLogin = "Continue as guest";
@@ -94,7 +94,7 @@ String noAccount = "Don’t have an account? ";
 String forgotPassword = "Forgot Password";
 String filterBy = "Filter by";
 String forgotPasswordSub =
-    "Enter your email and we’ll send you a link to reset your password.";
+    "Enter your email address and we’ll send you a link to reset your password.";
 String recoverPassword = "Recover Password";
 String resetPassword = "Reset Password";
 String resetPasswordCodeSub =
@@ -340,7 +340,7 @@ String firstQuestion = "First Question";
 String secondQuestion = "Second Question";
 String answer = "Answer";
 String enterAnswer = "Enter Answer";
-String enterYourEmail = "Enter your email address";
+String enterYourEmail = "Enter Your Email Address";
 String enterEmail = "Enter Email Address";
 String sendCodeVia = "Or send code via";
 String guestEnterEmail =
@@ -450,7 +450,7 @@ String changePhoneSub =
     "To change your phone number, a code will be sent to the email associated with this account.";
 String successResetPassword = "Your password has been reset successfully";
 String successResetPin = "Your pin has been reset successfully";
-String enterCodeSent = "Enter the code sent to your email address.";
+String enterCodeSent = "Enter The 6 Digit Code We Sent To Your Email.";
 String transferSuccess =
     "Your transfer is successful and the beneficiary’s account has been credited.";
 String yourEmailAddress = "Your Email Address";

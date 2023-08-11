@@ -13,6 +13,7 @@ import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({Key? key}) : super(key: key);
@@ -122,7 +123,7 @@ class _CreateAccountState extends State<CreateAccount> {
               validator: (val) {
                 if (val!.isEmpty) {
                   return emptyField;
-                } else if(val.length != 11){
+                } else if (val.length != 11) {
                   return elevenDigits;
                 } else {
                   return null;
@@ -155,19 +156,18 @@ class _CreateAccountState extends State<CreateAccount> {
               },
               onSaved: (val) => setState(() => _password = val),
               icon: InkWell(
-                onTap: () {
-                  setState(() {
-                    obscure = !obscure;
-                  });
-                },
-                child: obscure
-                    ? Icon(
-                  Icons.visibility_outlined,
-                  color: kSecondaryTextColor,
-                )
-                    : Icon(Icons.visibility_off_outlined,
-                    color: kSecondaryTextColor)
-              ),
+                  onTap: () {
+                    setState(() {
+                      obscure = !obscure;
+                    });
+                  },
+                  child: obscure
+                      ? Icon(
+                          Icons.visibility_outlined,
+                          color: kSecondaryTextColor,
+                        )
+                      : Icon(Icons.visibility_off_outlined,
+                          color: kSecondaryTextColor)),
             ),
             Text(
               passwordValidation,
@@ -251,13 +251,16 @@ class _CreateAccountState extends State<CreateAccount> {
                       style: textTheme.headline6!.copyWith(fontSize: 16),
                       children: [
                         TextSpan(
-                          text: " $termsOfUse",
-                          style: textTheme.headline6!.copyWith(
-                            fontSize: 16,
-                            color: kPrimaryColor,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                            text: " $termsOfUse",
+                            style: textTheme.headline6!.copyWith(
+                              fontSize: 16,
+                              color: kPrimaryColor,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            recognizer: new TapGestureRecognizer()
+                              ..onTap = () {
+                                launchUrl(Uri.parse('https://pouchers.io/terms-of-use'));
+                              }),
                         TextSpan(
                           text: " $andText",
                           style: textTheme.headline6!.copyWith(fontSize: 16),
@@ -269,6 +272,10 @@ class _CreateAccountState extends State<CreateAccount> {
                             color: kPrimaryColor,
                             fontWeight: FontWeight.w700,
                           ),
+                            recognizer: new TapGestureRecognizer()
+                              ..onTap = () {
+                                launchUrl(Uri.parse('https://pouchers.io/privacy-policy'));
+                              },
                         ),
                       ])),
             ),
