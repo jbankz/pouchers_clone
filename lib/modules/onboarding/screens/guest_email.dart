@@ -60,7 +60,7 @@ class _GetGuestEmailState extends State<GetGuestEmail> {
                       TextInputNoIcon(
                         textTheme: textTheme,
                         text: yourEmailAddress,
-                        hintText: enterYourEmail,
+                        hintText: "Enter Your Email Address",
                         controller: controller,
                         onChanged: (val) {
                           if (val!.isNotEmpty) {
@@ -85,8 +85,8 @@ class _GetGuestEmailState extends State<GetGuestEmail> {
                       ),
                       TextInputNoIcon(
                         textTheme: textTheme,
-                        text: "Your name",
-                        hintText: "Enter your name",
+                        text: "Your Full Name",
+                        hintText: "Enter Your Full Name",
                         controller: nameController,
                         onChanged: (val) {
                           if (val!.isNotEmpty) {

@@ -62,7 +62,7 @@ class _ResetPasswordCodeState extends ConsumerState<ResetPasswordCode> {
               ),
               Text(
                 (widget.isChangePhone! || widget.isChangePassword! || widget.forgot!)
-                    ? enterCodeSent
+                    ? "Enter The 6 Digit Code We Sent To Your Email."
                     : verifySub,
                 style: textTheme.bodyText1!.copyWith(
                   fontWeight: FontWeight.normal,

@@ -300,7 +300,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                     }
                   });
                   var _widget = LargeButton(
-                    title: logIn,
+                    title: "Log In",
                     onPressed: () async{
                       FocusScope.of(context).unfocus();
                       if (_formKey.currentState!.validate()) {

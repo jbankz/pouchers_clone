@@ -1,4 +1,5 @@
 import 'package:Pouchers/modules/cards/providers/cards_providers.dart';
+import 'package:Pouchers/modules/profile/profile_bvn.dart';
 import 'package:Pouchers/modules/profile/profile_kyc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -237,14 +238,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ),
                       ref.watch(editProfileInHouseProvider).tierLevels == 3
                           ? SizedBox()
-                          : inkWell(
+                      : ref.watch(editProfileInHouseProvider).tierLevels == 1?
+                           inkWell(
                               onTap: () {
                                 pushTo(
                                   context,
-                                  ProfileKYC(),
+                                  BVNPage(),
                                   settings: const RouteSettings(
                                       name:
-                                      ProfileKYC.routeName),
+                                      BVNPage.routeName),
                                 );
                               },
                               child: Container(
@@ -265,7 +267,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     ),
                                     Expanded(
                                       child: Text(
-                                        completeSetUp,
+                                        "Please verify your BVN",
                                         style: textTheme.headline2!.copyWith(
                                           color: kLightOrange300,
                                         ),
@@ -276,7 +278,46 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   ],
                                 ),
                               ),
-                            ),
+                            ): inkWell(
+                        onTap: () {
+                          pushTo(
+                            context,
+                            ProfileKYC(),
+                            settings: const RouteSettings(
+                                name:
+                                ProfileKYC.routeName),
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: kRegularPadding,
+                              vertical: kSmallPadding),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                              BorderRadius.circular(kSmallPadding),
+                              color: kLightOrange100,
+                              border: Border.all(
+                                  color: kLightOrange200, width: 1)),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(AssetPaths.shieldIcon),
+                              SizedBox(
+                                width: kPadding,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  completeSetUp,
+                                  style: textTheme.headline2!.copyWith(
+                                    color: kLightOrange300,
+                                  ),
+                                ),
+                              ),
+                              Icon(Icons.arrow_forward_ios,
+                                  color: kLightOrange200, size: 18)
+                            ],
+                          ),
+                        ),
+                      ),
                       SizedBox(
                         height: kMediumPadding,
                       ),

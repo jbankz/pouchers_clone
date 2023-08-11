@@ -2,26 +2,19 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-// import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
-
-// import 'package:media_storage/media_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:Pouchers/app/common/listener.dart';
 import 'package:Pouchers/app/helpers/size_config.dart';
 import 'package:Pouchers/modules/login/models/login_response.dart';
-import 'package:Pouchers/modules/reuseables/components.dart';
 import 'package:Pouchers/modules/transactions/components/transaction_components.dart';
 import 'package:Pouchers/modules/transactions/model/transaction_model.dart';
-import 'package:Pouchers/modules/utilities/screens/voucher/voucher_widgets.dart';
 import 'package:Pouchers/utils/assets_path.dart';
 import 'package:Pouchers/utils/components.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/flushbar.dart';
-import 'package:Pouchers/utils/input_formatters.dart';
 import 'package:Pouchers/utils/logger.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/utils.dart';

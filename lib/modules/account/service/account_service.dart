@@ -606,7 +606,7 @@ class AccountService {
       HttpHeaders.authorizationHeader: "Bearer $token"
     };
 
-    String url = "${baseUrl()}/user/tiers";
+    String url = "${baseUrl()}/admin-settings/envs";
 
     logPrint(url);
 

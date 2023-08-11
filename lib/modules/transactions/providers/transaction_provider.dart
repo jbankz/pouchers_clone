@@ -22,11 +22,11 @@ class TransactionHistoryNotifier
 
   TransactionHistoryNotifier(this._repo) : super(NotifierState());
 
-  void getTransactionHistory({required String status, Function()? then}) async {
+  void getTransactionHistory({required String status, Function(GetTransactionsResponse)? then,int page=1}) async {
     state = notifyLoading();
-    state = await _repo.getTransactionHistory(status: status);
+    state = await _repo.getTransactionHistory(status: status,page: page);
     if (state.status == NotifierStatus.done) {
-      if (then != null) then();
+      if (then != null) then(state.data!);
     }
   }
 }

@@ -17,12 +17,12 @@ class TransactionRepository {
   TransactionRepository(this.ref);
 
   Future<NotifierState<GetTransactionsResponse>> getTransactionHistory(
-      {required String status}) async {
+      {required String status,int? page}) async {
 
     ServiceResponse<GetTransactionsResponse> getTransaction;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     getTransaction = await TransactionService.getTransactionHistory(
-        token: userProfile.token!, status: status,);
+        token: userProfile.token!, status: status,page: page);
 
     if (getTransaction.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);

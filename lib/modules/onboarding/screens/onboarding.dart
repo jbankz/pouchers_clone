@@ -218,91 +218,93 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               Expanded(
                 child: Container(
                   padding: EdgeInsets.all(kMediumPadding),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(onBoardingTitle,
-                          style: textTheme.headline1!.copyWith(
-                              height: 1.3,
-                              fontSize: SizeConfig.blockSizeVertical! * 3)),
-                      Text(onBoardingSubTitle,
-                          style: textTheme.bodyText1!.copyWith(
-                              height: 1.5,
-                              fontSize: SizeConfig.blockSizeVertical! * 2.5)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: LargeButton(
-                              title: logIn,
-                              outlineButton: true,
-                              whiteButton: true,
-                              onPressed: () {
-                                pushTo(
-                                  context,
-                                  LogInAccount(),
-                                  settings: RouteSettings(
-                                      name: LogInAccount.routeName),
-                                );
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: kMediumPadding,
-                          ),
-                          Expanded(
-                            child: LargeButton(
-                              title: register,
-                              onPressed: () {
-                                pushTo(context, CreateAccount(),
-                                    settings: const RouteSettings(
-                                        name: CreateAccount.routeName));
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      // SizedBox(
-                      //   height: kMicroPadding,
-                      // ),
-                      inkWell(
-                        onTap: () {
-                          pushTo(context, WelcomeGuest(),
-                              settings: const RouteSettings(
-                                  name: WelcomeGuest.routeName));
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(onBoardingTitle,
+                            style: textTheme.headline1!.copyWith(
+                                height: 1.3,
+                                fontSize: SizeConfig.blockSizeVertical! * 3)),
+                        Text(onBoardingSubTitle,
+                            style: textTheme.bodyText1!.copyWith(
+                                height: 1.5,
+                                fontSize: SizeConfig.blockSizeVertical! * 2.5)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "${guestLogin}",
-                              style: textTheme.subtitle2!.copyWith(
-                                fontFamily: "DMSans",
-                                fontSize: 18,
+                            Expanded(
+                              child: LargeButton(
+                                title: logIn,
+                                outlineButton: true,
+                                whiteButton: true,
+                                onPressed: () {
+                                  pushTo(
+                                    context,
+                                    LogInAccount(),
+                                    settings: RouteSettings(
+                                        name: LogInAccount.routeName),
+                                  );
+                                },
                               ),
-                              textAlign: TextAlign.center,
                             ),
-                            Container(
-                              width: 20,
-                              child: Stack(
-                                children: [
-                                  Icon(Icons.arrow_forward_ios,
-                                      size: 15, color: kPrimaryColor),
-                                  Positioned(
-                                    left: 5,
-                                    child: Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 15,
-                                      color: kPrimaryColor,
-                                    ),
-                                  )
-                                ],
+                            SizedBox(
+                              width: kMediumPadding,
+                            ),
+                            Expanded(
+                              child: LargeButton(
+                                title: register,
+                                onPressed: () {
+                                  pushTo(context, CreateAccount(),
+                                      settings: const RouteSettings(
+                                          name: CreateAccount.routeName));
+                                },
                               ),
-                            )
+                            ),
                           ],
                         ),
-                      )
-                    ],
+                        // SizedBox(
+                        //   height: kMicroPadding,
+                        // ),
+                        inkWell(
+                          onTap: () {
+                            pushTo(context, WelcomeGuest(),
+                                settings: const RouteSettings(
+                                    name: WelcomeGuest.routeName));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "${guestLogin}",
+                                style: textTheme.subtitle2!.copyWith(
+                                  fontFamily: "DMSans",
+                                  fontSize: 18,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              Container(
+                                width: 20,
+                                child: Stack(
+                                  children: [
+                                    Icon(Icons.arrow_forward_ios,
+                                        size: 15, color: kPrimaryColor),
+                                    Positioned(
+                                      left: 5,
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 15,
+                                        color: kPrimaryColor,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               )

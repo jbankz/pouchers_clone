@@ -476,12 +476,12 @@ class GetTiersNotifier extends StateNotifier<NotifierState<TierListResponse>> {
   GetTiersNotifier(this._repo) : super(NotifierState());
 
   void getTierList({
-    Function()? then,
+    Function(TierListResponse)? then,
   }) async {
     state = notifyLoading();
     state = await _repo.getTierList();
     if (state.status == NotifierStatus.done) {
-      if (then != null) then();
+      if (then != null) then(state.data!);
     }
   }
 }
