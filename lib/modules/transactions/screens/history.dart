@@ -93,7 +93,9 @@ class _HistoryState extends ConsumerState<History> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-     refreshTransaction(showLoading: true,pageNum: 1);
+      ref.read(getTransactionHistoryProvider.notifier)
+          .getTransactionHistory(status: "",page: 1);
+     //refreshTransaction(showLoading: true,pageNum: 1);
     });
   }
 

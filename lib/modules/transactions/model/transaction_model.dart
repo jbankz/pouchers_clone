@@ -177,7 +177,7 @@ class GetTransactionsData {
 }
 
 class ExtraDetails {
-  String? originalAmountSent;
+  dynamic originalAmountSent;
   String? senderName;
   String? senderBank;
   String? senderAccountNumber;

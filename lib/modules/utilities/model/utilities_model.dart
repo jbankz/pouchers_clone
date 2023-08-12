@@ -35,7 +35,7 @@ class GetVoucherResponseData {
   });
 
   List<Voucher> vouchers;
-  int total;
+  dynamic total;
   String page;
 
   factory GetVoucherResponseData.fromJson(Map<String, dynamic> json) =>
