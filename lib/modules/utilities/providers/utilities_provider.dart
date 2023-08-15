@@ -109,11 +109,11 @@ class FetchVoucherNotifier
 
   FetchVoucherNotifier(this._repo) : super(NotifierState());
 
-  void fetchVoucher({required String status, Function(List<Voucher>)? then}) async {
+  void fetchVoucher({required String status, Function(GetVoucherResponseData)? then, int page =1}) async {
     state = notifyLoading();
-    state = await _repo.fetchVoucher(status: status);
+    state = await _repo.fetchVoucher(status: status,page: page);
     if (state.status == NotifierStatus.done) {
-      if (then != null) then(state.data!.data!.vouchers);
+      if (then != null) then(state.data!.data!);
     }
   }
 }

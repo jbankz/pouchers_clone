@@ -4,6 +4,8 @@ import 'package:Pouchers/modules/transactions/model/transaction_model.dart';
 import 'package:Pouchers/modules/transactions/repository/transaction_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../screens/history.dart';
+
 final getTransactionHistoryProvider = StateNotifierProvider<
     TransactionHistoryNotifier, NotifierState<GetTransactionsResponse>>((ref) {
   return TransactionHistoryNotifier(ref.read(transactionRepoProvider));
@@ -22,7 +24,7 @@ class TransactionHistoryNotifier
 
   TransactionHistoryNotifier(this._repo) : super(NotifierState());
 
-  void getTransactionHistory({required String status, Function(GetTransactionsResponse)? then,int page=1}) async {
+  void getTransactionHistory({OrderHistoryStatus? status, Function(GetTransactionsResponse)? then,int page=1}) async {
     state = notifyLoading();
     state = await _repo.getTransactionHistory(status: status,page: page);
     if (state.status == NotifierStatus.done) {

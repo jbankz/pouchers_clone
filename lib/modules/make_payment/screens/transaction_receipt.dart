@@ -106,11 +106,11 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                             ),
                             TransactionReceiptItems(
                               text: sender,
-                              subText: widget.senderName!.toTitleCase2() ?? "No name",
+                              subText: widget.senderName?.toTitleCase2() ?? "No name",
                             ),
                             TransactionReceiptItems(
                               text: beneficiary,
-                              subText: widget.beneficiary!.toTitleCase2() ?? "No name",
+                              subText: widget.beneficiary?.toTitleCase2() ?? "No name",
                             ),
                             widget.typeOfTransfer == "localBank"
                                 ? TransactionReceiptItems(

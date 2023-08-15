@@ -1,3 +1,4 @@
+import 'package:Pouchers/modules/transactions/screens/history.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:Pouchers/app/helpers/network_helpers.dart';
@@ -17,7 +18,7 @@ class TransactionRepository {
   TransactionRepository(this.ref);
 
   Future<NotifierState<GetTransactionsResponse>> getTransactionHistory(
-      {required String status,int? page}) async {
+      {OrderHistoryStatus? status,int? page}) async {
 
     ServiceResponse<GetTransactionsResponse> getTransaction;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);

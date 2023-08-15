@@ -36,11 +36,11 @@ class UtilitiesRepository {
   }
 
   Future<NotifierState<GetVoucherResponse>> fetchVoucher(
-      {required String status}) async {
+      {required String status,int? page}) async {
     ServiceResponse<GetVoucherResponse> fetchVoucher;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     fetchVoucher = await UtilitiesService.fetchVouchers(
-      token: userProfile.token!, status: status,
+      token: userProfile.token!, status: status,page: page
     );
 
     if (fetchVoucher.notAuthenticated) {

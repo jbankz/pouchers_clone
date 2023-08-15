@@ -35,8 +35,8 @@ class _VouchersState extends ConsumerState<Vouchers> {
           status: "active",
           then: (voucher) {
 
-            voucherList = voucher.length;
-            voucher.fold(0.0, (double? sum, element) {
+            voucherList = voucher.vouchers.length;
+            voucher.vouchers.fold(0.0, (double? sum, element) {
               voucherAmount = sum! + double.parse(element.amount);
               return voucherAmount;
             });
