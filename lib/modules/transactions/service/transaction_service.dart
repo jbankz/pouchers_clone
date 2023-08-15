@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:Pouchers/app/helpers/service_constants.dart';
 import 'package:Pouchers/app/helpers/service_response.dart';
 import 'package:Pouchers/modules/transactions/model/transaction_model.dart';
+import 'package:Pouchers/modules/transactions/screens/history.dart';
 import 'package:Pouchers/utils/extras.dart';
 import 'package:Pouchers/utils/logger.dart';
 import 'package:http/http.dart' as http;
@@ -11,7 +12,7 @@ import 'package:http/http.dart' as http;
 class TransactionService {
   static Future<ServiceResponse<GetTransactionsResponse>>
       getTransactionHistory({
-    required String status,
+    OrderHistoryStatus? status,
     required String token,
     int? page
   }) async {
@@ -20,10 +21,19 @@ class TransactionService {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $token"
     };
+    String queryParams = "";
 
-    String url = status == ""
-        ? "${baseUrl()}/user/transaction-history?page=$page"
-        : "${baseUrl()}/user/transaction-history?page=$page&category=$status";
+    if (orderStatusToString(status).isNotEmpty) {
+      queryParams += "category=${orderStatusToString(status)}";
+    }
+    // String url = status == ""
+    //     ? "${baseUrl()}/user/transaction-history?page=$page"
+    //     : "${baseUrl()}/user/transaction-history?page=$page&category=${orderStatusToString(status)}";
+
+    String url = "${baseUrl()}/user/transaction-history?page=$page";
+    if (queryParams.isNotEmpty) {
+      url += "&${queryParams}";
+    }
 
     logPrint(url);
 

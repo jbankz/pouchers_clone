@@ -98,13 +98,13 @@ class FundWallet extends ConsumerWidget {
                               textTheme,
                               accName,
                               ref.watch(getWalletProvider).data == null
-                                  ? "Paga"
+                                  ? ""
                                   : ref
                                           .watch(getWalletProvider)
                                           .data!
                                           .data!
                                           .accountName ??
-                                      "Paga"),
+                                      ""),
                           SizedBox(
                             height: kMediumPadding,
                           ),
@@ -112,12 +112,12 @@ class FundWallet extends ConsumerWidget {
                               textTheme,
                               bankName,
                               ref.watch(getWalletProvider).data == null
-                                  ? "Paga"
+                                  ? ""
                                   : ref
                                           .watch(getWalletProvider)
                                           .data!
                                           .data!
-                                          .bankProvider == "" ? "Paga" : ref
+                                          .bankProvider == "" ? "" : ref
                                   .watch(getWalletProvider)
                                   .data!
                                   .data!
@@ -187,7 +187,7 @@ class FundWallet extends ConsumerWidget {
                     ),
                     CopyCodeRow(
                       textTheme: textTheme,
-                      text: selectBank,
+                      text:"Select Bank",
                     ),
                     SizedBox(
                       height: kMediumPadding,

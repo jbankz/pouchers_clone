@@ -48,15 +48,22 @@ class UtilitiesService {
   }
 
   static Future<ServiceResponse<GetVoucherResponse>> fetchVouchers(
-      {required String status, required String token}) async {
+      {required String status, required String token,int? page}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $token"
     };
 
+
+    String queryParams = "";
+
+    if (status.isNotEmpty) {
+      queryParams += "status=${status}";
+    }
+
     String url = status == ""
-        ? "${baseUrl()}/voucher"
+        ? "${baseUrl()}/voucher?page=$page"
         : "${baseUrl()}/voucher?status=$status";
 
     logPrint(url);

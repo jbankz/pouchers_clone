@@ -32,9 +32,17 @@ class _HistoryState extends ConsumerState<History> {
   int currentIndex = 0;
   String dateFormatter = 'MMM dd, yyy';
   List<GetTransactionsData> transactionData = [];
-
   GetTransactions? currentPage;
   bool hasMoreItems = true, loadingTransaction = false;
+  int? nextPage;
+  OrderHistoryStatus filterStatus = OrderHistoryStatus.all;
+
+
+  void onFilterStatus(OrderHistoryStatus? status) {
+    nextPage = null;
+    refreshTransaction(showLoading: true,pageNum: 1);
+  }
+
 
   void setTransactionList(GetTransactions? raw) {
     setState(() {
@@ -56,13 +64,13 @@ class _HistoryState extends ConsumerState<History> {
     }
   }
 
-  void refreshTransaction({bool showLoading = false, int pageNum = 1}) {
+  void refreshTransaction({bool showLoading = false, int pageNum = 1,OrderHistoryStatus? status}) {
     setState(() {
       loadingTransaction = true;
     });
     ref
         .read(getTransactionHistoryProvider.notifier)
-        .getTransactionHistory(status: "",page: pageNum,then: (val){
+        .getTransactionHistory(status:filterStatus,page: pageNum,then: (val){
       setTransactionList(val.data);
       if (val != null) {
         if (transactionData.length >= int.parse(val.data!.total!)) {
@@ -72,7 +80,7 @@ class _HistoryState extends ConsumerState<History> {
           return;
         } else {
           int currenntPage = int.parse(val.data!.page!);
-          refreshTransaction(pageNum: ++currenntPage);
+          //refreshTransaction(pageNum: ++currenntPage);
         }
       }
     });
@@ -82,7 +90,7 @@ class _HistoryState extends ConsumerState<History> {
     if (info.metrics.pixels >= info.metrics.maxScrollExtent - 10) {
       if (hasMoreItems && !loadingTransaction) {
         int p = int.parse(currentPage!.page!);
-        // refreshProducts(pageNum: ++p);
+        refreshTransaction(pageNum: ++p,showLoading: false);
       }
       return true;
     }
@@ -93,9 +101,7 @@ class _HistoryState extends ConsumerState<History> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(getTransactionHistoryProvider.notifier)
-          .getTransactionHistory(status: "",page: 1);
-     //refreshTransaction(showLoading: true,pageNum: 1);
+     refreshTransaction(showLoading: true,pageNum: 1);
     });
   }
 
@@ -180,7 +186,7 @@ class _HistoryState extends ConsumerState<History> {
         ref.watch(getTransactionHistoryProvider).when(
             done: (data) {
               if (data != null) {
-                transactionData = data.data!.history!.toList();
+               // transactionData = data.data!.history!.toList();
                 return transactionData.isEmpty
                     ? Container(
                         height: 300,
@@ -190,149 +196,152 @@ class _HistoryState extends ConsumerState<History> {
                         ),
                       )
                     : Expanded(
-                        child: RefreshIndicator(
-                          onRefresh:  refresh,
-                          color: kPrimaryColor,
-                          child: ListView.builder(
-                            itemCount: transactionData.length,
-                            itemBuilder: (_, index) {
-                              bool isSameDate = true;
-                              final DateTime date =
-                                  transactionData[index].createdAt!;
-                              final item = transactionData[index];
-                              if (index == 0) {
-                                isSameDate = false;
-                              } else {
-                                final DateTime prevDate =
-                                    transactionData[index - 1].createdAt!;
-                                isSameDate = date.isSameDate(prevDate);
-                              }
-                              var _widget = inkWell(
-                                onTap: () {
-                                  if (transactionData[index]
-                                      .transactionCategory!
-                                      .contains("p2p")) {
-                                    // if (transactionData[index]
-                                    //         .transactionType ==
-                                    //     "debit") {
+                        child: NotificationListener<ScrollUpdateNotification>(
+                          onNotification: onScroll,
+                          child: RefreshIndicator(
+                            onRefresh:  refresh,
+                            color: kPrimaryColor,
+                            child: ListView.builder(
+                              itemCount: transactionData.length,
+                              itemBuilder: (_, index) {
+                                bool isSameDate = true;
+                                final DateTime date =
+                                    transactionData[index].createdAt!;
+                                final item = transactionData[index];
+                                if (index == 0) {
+                                  isSameDate = false;
+                                } else {
+                                  final DateTime prevDate =
+                                      transactionData[index - 1].createdAt!;
+                                  isSameDate = date.isSameDate(prevDate);
+                                }
+                                var _widget = inkWell(
+                                  onTap: () {
+                                    if (transactionData[index]
+                                        .transactionCategory!
+                                        .contains("p2p")) {
+                                      // if (transactionData[index]
+                                      //         .transactionType ==
+                                      //     "debit") {
+                                        pushTo(
+                                            context,
+                                            TransactionReceipt(
+                                                typeOfTransfer: "p2p",
+                                                accNo: "",
+                                                fromWhere: "history",
+                                                status: transactionData[index]
+                                                    .status!
+                                                    .toCapitalized(),
+                                                tag: transactionData[index]
+                                                    .extraDetails!
+                                                    .receiverTag,
+                                                transactionId:
+                                                    transactionData[index]
+                                                        .transactionId,
+                                                transactionTime:
+                                                    transactionData[index]
+                                                        .createdAt!,
+                                                senderName: transactionData[index]
+                                                    .extraDetails!
+                                                    .senderName,
+                                                transferStatus: transactionData[index].transactionType,
+                                                amount:
+                                                    transactionData[index].amount,
+                                                transferName: "",
+                                                beneficiary:
+                                                    transactionData[index]
+                                                            .beneficiaryName ??
+                                                        "No name"),
+                                            settings: RouteSettings(
+                                                name: TransactionReceipt
+                                                    .routeName));
+                                     // }
+                                    } else {
                                       pushTo(
                                           context,
-                                          TransactionReceipt(
-                                              typeOfTransfer: "p2p",
-                                              accNo: "",
-                                              fromWhere: "history",
-                                              status: transactionData[index]
-                                                  .status!
-                                                  .toCapitalized(),
-                                              tag: transactionData[index]
-                                                  .extraDetails!
-                                                  .receiverTag,
-                                              transactionId:
-                                                  transactionData[index]
-                                                      .transactionId,
-                                              transactionTime:
-                                                  transactionData[index]
-                                                      .createdAt!,
-                                              senderName: transactionData[index]
-                                                  .extraDetails!
-                                                  .senderName,
-                                              transferStatus: transactionData[index].transactionType,
-                                              amount:
-                                                  transactionData[index].amount,
-                                              transferName: "",
-                                              beneficiary:
-                                                  transactionData[index]
-                                                          .beneficiaryName ??
-                                                      "No name"),
+                                          HistoryDetail(
+                                            item: transactionData[index],
+                                          ),
                                           settings: RouteSettings(
-                                              name: TransactionReceipt
-                                                  .routeName));
-                                   // }
-                                  } else {
-                                    pushTo(
-                                        context,
-                                        HistoryDetail(
-                                          item: transactionData[index],
-                                        ),
-                                        settings: RouteSettings(
-                                            name: HistoryDetail.routeName));
-                                  }
-                                },
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            // item.transactionCategory!
-                                            //         .contains("transfer")
-                                            //     ? item.beneficiaryName ??
-                                                changeCatNme(item
-                                                        .transactionCategory ?? "", item.currency ?? "", item.extraDetails!.subCategory ?? "", item.beneficiaryName ?? "" ),
-                                                // : changeCatNme(
-                                                //  item.transactionCategory!, item.currency!, item.extraDetails!.subCategory ?? "" ),
-                                            style:
-                                                textTheme.bodyText1!.copyWith(
-                                              color: kBlueColorDark,
+                                              name: HistoryDetail.routeName));
+                                    }
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              // item.transactionCategory!
+                                              //         .contains("transfer")
+                                              //     ? item.beneficiaryName ??
+                                                  changeCatNme(item
+                                                          .transactionCategory ?? "", item.currency ?? "", item.extraDetails!.subCategory ?? "", item.beneficiaryName ?? "" ),
+                                                  // : changeCatNme(
+                                                  //  item.transactionCategory!, item.currency!, item.extraDetails!.subCategory ?? "" ),
+                                              style:
+                                                  textTheme.bodyText1!.copyWith(
+                                                color: kBlueColorDark,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        NairaWidget(
-                                          text: kPriceFormatter(
-                                              double.parse(item.amount!)),
-                                          textStyle1: TextStyle(
-                                              fontSize: 16,
-                                              color: item.transactionType ==
-                                                      "debit"
-                                                  ? kColorRedDeep
-                                                  : kColorGreen),
-                                          textStyle2: textTheme.headline3!
-                                              .copyWith(
-                                                  color: item.transactionType ==
-                                                          "debit"
-                                                      ? kColorRedDeep
-                                                      : kColorGreen),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: kRegularPadding,
-                                    ),
-                                    Divider(
-                                      thickness: 1,
-                                      color: kContainerColor,
-                                    ),
-                                    SizedBox(
-                                      height: kRegularPadding,
-                                    ),
-                                  ],
-                                ),
-                              );
-                              if (index == 0 || !(isSameDate)) {
-                                return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        date.formatDate(dateFormatter),
-                                        style: textTheme.headline6,
+                                          NairaWidget(
+                                            text: kPriceFormatter(
+                                                double.parse(item.amount!)),
+                                            textStyle1: TextStyle(
+                                                fontSize: 16,
+                                                color: item.transactionType ==
+                                                        "debit"
+                                                    ? kColorRedDeep
+                                                    : kColorGreen),
+                                            textStyle2: textTheme.headline3!
+                                                .copyWith(
+                                                    color: item.transactionType ==
+                                                            "debit"
+                                                        ? kColorRedDeep
+                                                        : kColorGreen),
+                                          ),
+                                        ],
                                       ),
                                       SizedBox(
-                                        height: kPadding,
+                                        height: kRegularPadding,
                                       ),
                                       Divider(
                                         thickness: 1,
                                         color: kContainerColor,
                                       ),
                                       SizedBox(
-                                        height: kPadding,
+                                        height: kRegularPadding,
                                       ),
-                                      _widget,
-                                    ]);
-                              } else {
-                                return _widget;
-                              }
-                            },
+                                    ],
+                                  ),
+                                );
+                                if (index == 0 || !(isSameDate)) {
+                                  return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          date.formatDate(dateFormatter),
+                                          style: textTheme.headline6,
+                                        ),
+                                        SizedBox(
+                                          height: kPadding,
+                                        ),
+                                        Divider(
+                                          thickness: 1,
+                                          color: kContainerColor,
+                                        ),
+                                        SizedBox(
+                                          height: kPadding,
+                                        ),
+                                        _widget,
+                                      ]);
+                                } else {
+                                  return _widget;
+                                }
+                              },
+                            ),
                           ),
                         ),
                       );
@@ -340,7 +349,7 @@ class _HistoryState extends ConsumerState<History> {
                 return SizedBox();
               }
             },
-            loading: () => SpinKitDemo())
+            loading: () => Expanded(child: Align(alignment: Alignment.bottomCenter, child: SpinKitDemo())))
       ],
     );
   }
@@ -350,64 +359,111 @@ class _HistoryState extends ConsumerState<History> {
   checkingIndex(){
     switch (currentIndex) {
       case 0:
-        ref
-            .read(
-            getTransactionHistoryProvider.notifier)
-            .getTransactionHistory(status: "");
+        refreshTransaction(showLoading: true,pageNum: 1);
         break;
       case 1:
-        ref
-            .read(
-            getTransactionHistoryProvider.notifier)
-            .getTransactionHistory(status: "transfer");
+        filterStatus = OrderHistoryStatus.transfer;
+        onFilterStatus(filterStatus);
         break;
       case 2:
-        ref
-            .read(
-            getTransactionHistoryProvider.notifier)
-            .getTransactionHistory(status: "airtime");
+        filterStatus = OrderHistoryStatus.airtime;
+        onFilterStatus(filterStatus);
         break;
       case 3:
-        ref
-            .read(
-            getTransactionHistoryProvider.notifier)
-            .getTransactionHistory(status: "data");
+        filterStatus = OrderHistoryStatus.data;
+        onFilterStatus(filterStatus);
         break;
       case 4:
-        ref
-            .read(
-            getTransactionHistoryProvider.notifier)
-            .getTransactionHistory(status: "cable");
+        filterStatus = OrderHistoryStatus.cable;
+        onFilterStatus(filterStatus);
         break;
       case 5:
-        ref
-            .read(
-            getTransactionHistoryProvider.notifier)
-            .getTransactionHistory(
-            status: "electricity");
+        filterStatus = OrderHistoryStatus.electricity;
+        onFilterStatus(filterStatus);
         break;
       case 6:
-        ref
-            .read(
-            getTransactionHistoryProvider.notifier)
-            .getTransactionHistory(status: "internet");
+        filterStatus = OrderHistoryStatus.internet;
+        onFilterStatus(filterStatus);
         break;
       case 7:
-        ref
-            .read(
-            getTransactionHistoryProvider.notifier)
-            .getTransactionHistory(status: "voucher");
+        filterStatus = OrderHistoryStatus.voucher;
+        onFilterStatus(filterStatus);
         break;
       case 8:
-        ref
-            .read(
-            getTransactionHistoryProvider.notifier)
-            .getTransactionHistory(status: "betting");
+        filterStatus = OrderHistoryStatus.betting;
+        onFilterStatus(filterStatus);
         break;
     }
   }
 
   Future refresh() async {
-    checkingIndex();
+    switch (currentIndex) {
+      case 0:
+        refreshTransaction(showLoading: true,pageNum: 1);
+        break;
+      case 1:
+        refreshTransaction(showLoading: true,pageNum: 1,status: OrderHistoryStatus.transfer);
+        break;
+      case 2:
+        refreshTransaction(showLoading: true,pageNum: 1,status: OrderHistoryStatus.airtime);
+        break;
+      case 3:
+        refreshTransaction(showLoading: true,pageNum: 1,status: OrderHistoryStatus.data);
+        break;
+      case 4:
+        refreshTransaction(showLoading: true,pageNum: 1,status: OrderHistoryStatus.cable);
+        break;
+      case 5:
+        refreshTransaction(showLoading: true,pageNum: 1,status: OrderHistoryStatus.electricity);
+        break;
+      case 6:
+        refreshTransaction(showLoading: true,pageNum: 1,status: OrderHistoryStatus.internet);
+        break;
+      case 7:
+        refreshTransaction(showLoading: true,pageNum: 1,status:OrderHistoryStatus.voucher);
+        break;
+      case 8:
+        refreshTransaction(showLoading: true,pageNum: 1,status: OrderHistoryStatus.betting);
+        break;
+    }
+
+  }
+}
+
+
+
+enum OrderHistoryStatus {
+  all,
+  data,
+  cable,
+  electricity,
+  internet,
+  voucher,
+  betting,
+  airtime,
+  transfer
+
+}
+
+String orderStatusToString(OrderHistoryStatus? stat, {bool isParam = false}) {
+  switch (stat) {
+    case OrderHistoryStatus.data:
+      return "data";
+    case OrderHistoryStatus.internet:
+      return "internet";
+    case OrderHistoryStatus.voucher:
+      return "voucher";
+    case OrderHistoryStatus.betting:
+      return "betting";
+    case OrderHistoryStatus.electricity:
+      return "electricity";
+    case OrderHistoryStatus.cable:
+      return "cable";
+    case OrderHistoryStatus.airtime:
+      return "airtime";
+    case OrderHistoryStatus.transfer:
+      return "transfer";
+    default:
+      return "" ;
   }
 }

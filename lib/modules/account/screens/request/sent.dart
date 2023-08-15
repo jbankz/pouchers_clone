@@ -307,6 +307,7 @@ class _SentRequestsState extends ConsumerState<SentRequests> {
                                             )}",
                                             style:
                                                 textTheme.headline2!.copyWith(
+                                                  fontFamily: "Altone",
                                               fontWeight: FontWeight.w500,
                                               fontSize: 14,
                                             ),
@@ -346,7 +347,7 @@ class _SentRequestsState extends ConsumerState<SentRequests> {
                                                   : request[index].status ==
                                                           "accepted"
                                                       ? Color(0xffE5F9F0)
-                                                      : kColorOrange100),
+                                                      :  Color(0xffFFECE8)),
                                       child: Text(
                                         capitalize(request[index].status ?? ""),
                                         style: textTheme.headline4!.copyWith(
