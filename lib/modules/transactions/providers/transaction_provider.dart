@@ -18,15 +18,18 @@ final getTransactionAnalyticsProvider = StateNotifierProvider.autoDispose<
 });
 
 class TransactionHistoryNotifier
-    extends StateNotifier<NotifierState<GetTransactionsResponse>>
-    {
+    extends StateNotifier<NotifierState<GetTransactionsResponse>> {
   final TransactionRepository _repo;
 
   TransactionHistoryNotifier(this._repo) : super(NotifierState());
 
-  void getTransactionHistory({OrderHistoryStatus? status, Function(GetTransactionsResponse)? then,int page=1}) async {
-    state = notifyLoading();
-    state = await _repo.getTransactionHistory(status: status,page: page);
+  void getTransactionHistory(
+      {bool showLoading = false,
+      OrderHistoryStatus? status,
+      Function(GetTransactionsResponse)? then,
+      int page = 1}) async {
+    if (showLoading) state = notifyLoading();
+    state = await _repo.getTransactionHistory(status: status, page: page);
     if (state.status == NotifierStatus.done) {
       if (then != null) then(state.data!);
     }
@@ -34,8 +37,7 @@ class TransactionHistoryNotifier
 }
 
 class TransactionAnalyticsNotifier
-    extends StateNotifier<NotifierState<TransactionAnalyticsResponse>>
-    {
+    extends StateNotifier<NotifierState<TransactionAnalyticsResponse>> {
   final TransactionRepository _repo;
 
   TransactionAnalyticsNotifier(this._repo) : super(NotifierState());
@@ -49,5 +51,3 @@ class TransactionAnalyticsNotifier
     }
   }
 }
-
-

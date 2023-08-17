@@ -65,7 +65,7 @@ class _VoucherHistoryState extends ConsumerState<VoucherHistory> {
     });
     ref
         .read(fetchVoucherProvider.notifier)
-        .fetchVoucher(status:"",page: pageNum,then: (val){
+        .fetchVoucher(showLoading: showLoading, status:"",page: pageNum,then: (val){
       setVoucherList(val);
       if (val != null) {
         if (vouchers.length >= int.parse(val.total!)) {
@@ -152,8 +152,14 @@ class _VoucherHistoryState extends ConsumerState<VoucherHistory> {
                                 refreshVouchers(showLoading: true, pageNum: 1);
                               },
                               child: ListView.builder(
-                                  itemCount: filterBy().length,
+                                  itemCount: filterBy().length + 1,
                                   itemBuilder: (_, index) {
+                                    if (index == filterBy().length) {
+                                      if (loadingTransaction)
+                                        return SpinKitDemo();
+                                      else
+                                        return SizedBox();
+                                    }
                                     bool isSameDate = true;
                                     final DateTime date =
                                         filterBy()[index].createdAt;

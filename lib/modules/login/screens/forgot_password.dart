@@ -42,7 +42,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               height: kPadding,
             ),
             Text(
-              "Enter your email address and we’ll send you a link to reset your password.",
+              "Enter your email address and we’ll send you a code to reset your password.",
               style: textTheme.bodyText1!
                   .copyWith(fontWeight: FontWeight.normal, height: 1.6),
             ),

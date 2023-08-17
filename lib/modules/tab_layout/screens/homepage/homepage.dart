@@ -267,7 +267,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     ),
                                     Expanded(
                                       child: Text(
-                                        "Please verify your BVN",
+                                        "Upgrade to Tier 1 to Activate Your Wallet - Please verify your BVN",
                                         style: textTheme.headline2!.copyWith(
                                           color: kLightOrange300,
                                         ),
@@ -491,7 +491,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     guestHomeClass[index].title == "More"
                                         ? showSuccessBar(context,
                                             "More Products will be added soon...")
-                                        : pushTo(context,
+                                        : ref.watch(editProfileInHouseProvider).tierLevels == 1? showSuccessBar(context,
+                                        "Please verify your BVN to proceed."):
+                                    pushTo(context,
                                             guestHomeClass[index].page);
                                   },
                                   child: Container(
