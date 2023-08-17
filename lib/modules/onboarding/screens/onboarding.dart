@@ -230,6 +230,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             style: textTheme.bodyText1!.copyWith(
                                 height: 1.5,
                                 fontSize: SizeConfig.blockSizeVertical! * 2.5)),
+                        SizedBox(
+                          height: kMediumPadding,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -266,6 +269,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         // SizedBox(
                         //   height: kMicroPadding,
                         // ),
+                        SizedBox(
+                          height: kMediumPadding,
+                        ),
                         inkWell(
                           onTap: () {
                             pushTo(context, WelcomeGuest(),

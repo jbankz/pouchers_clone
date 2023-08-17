@@ -1,24 +1,13 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:Pouchers/app/common/credentials.dart';
-import 'package:Pouchers/app/common/model.dart';
 import 'package:Pouchers/app/helpers/notifiers.dart';
-import 'package:Pouchers/app/helpers/response_handler.dart';
-import 'package:Pouchers/app/navigators/navigators.dart';
 import 'package:Pouchers/modules/account/models/profile_model.dart';
-import 'package:Pouchers/modules/account/models/ui_models_class.dart';
 import 'package:Pouchers/modules/account/providers/account_provider.dart';
-import 'package:Pouchers/modules/account/screens/two_factor_auth/two_factor.dart';
 import 'package:Pouchers/modules/login/models/login_response.dart';
-import 'package:Pouchers/modules/login/screens/login.dart';
 import 'package:Pouchers/modules/tab_layout/two_fa_modal.dart';
 import 'package:Pouchers/utils/assets_path.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';

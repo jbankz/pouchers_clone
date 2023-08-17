@@ -37,12 +37,10 @@ class _HistoryState extends ConsumerState<History> {
   int? nextPage;
   OrderHistoryStatus filterStatus = OrderHistoryStatus.all;
 
-
   void onFilterStatus(OrderHistoryStatus? status) {
     nextPage = null;
-    refreshTransaction(showLoading: true,pageNum: 1);
+    refreshTransaction(showLoading: true, pageNum: 1);
   }
-
 
   void setTransactionList(GetTransactions? raw) {
     setState(() {
@@ -64,33 +62,36 @@ class _HistoryState extends ConsumerState<History> {
     }
   }
 
-  void refreshTransaction({bool showLoading = false, int pageNum = 1,OrderHistoryStatus? status}) {
+  void refreshTransaction(
+      {bool showLoading = false, int pageNum = 1, OrderHistoryStatus? status}) {
     setState(() {
       loadingTransaction = true;
     });
-    ref
-        .read(getTransactionHistoryProvider.notifier)
-        .getTransactionHistory(status:filterStatus,page: pageNum,then: (val){
-      setTransactionList(val.data);
-      if (val != null) {
-        if (transactionData.length >= int.parse(val.data!.total!)) {
-          setState(() {
-            hasMoreItems = false;
-          });
-          return;
-        } else {
-          int currenntPage = int.parse(val.data!.page!);
-          //refreshTransaction(pageNum: ++currenntPage);
-        }
-      }
-    });
+    ref.read(getTransactionHistoryProvider.notifier).getTransactionHistory(
+        status: filterStatus,
+        page: pageNum,
+        showLoading: showLoading,
+        then: (val) {
+          setTransactionList(val.data);
+          if (val != null) {
+            if (transactionData.length >= int.parse(val.data!.total!)) {
+              setState(() {
+                hasMoreItems = false;
+              });
+              return;
+            } else {
+              int currenntPage = int.parse(val.data!.page!);
+              //refreshTransaction(pageNum: ++currenntPage);
+            }
+          }
+        });
   }
 
   bool onScroll(ScrollUpdateNotification info) {
     if (info.metrics.pixels >= info.metrics.maxScrollExtent - 10) {
       if (hasMoreItems && !loadingTransaction) {
         int p = int.parse(currentPage!.page!);
-        refreshTransaction(pageNum: ++p,showLoading: false);
+        refreshTransaction(pageNum: ++p, showLoading: false);
       }
       return true;
     }
@@ -101,7 +102,7 @@ class _HistoryState extends ConsumerState<History> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-     refreshTransaction(showLoading: true,pageNum: 1);
+      refreshTransaction(showLoading: true, pageNum: 1);
     });
   }
 
@@ -186,7 +187,7 @@ class _HistoryState extends ConsumerState<History> {
         ref.watch(getTransactionHistoryProvider).when(
             done: (data) {
               if (data != null) {
-               // transactionData = data.data!.history!.toList();
+                // transactionData = data.data!.history!.toList();
                 return transactionData.isEmpty
                     ? Container(
                         height: 300,
@@ -199,11 +200,17 @@ class _HistoryState extends ConsumerState<History> {
                         child: NotificationListener<ScrollUpdateNotification>(
                           onNotification: onScroll,
                           child: RefreshIndicator(
-                            onRefresh:  refresh,
+                            onRefresh: refresh,
                             color: kPrimaryColor,
                             child: ListView.builder(
-                              itemCount: transactionData.length,
+                              itemCount: transactionData.length + 1,
                               itemBuilder: (_, index) {
+                                if (index == transactionData.length) {
+                                  if (loadingTransaction)
+                                    return SpinKitDemo();
+                                  else
+                                    return SizedBox();
+                                }
                                 bool isSameDate = true;
                                 final DateTime date =
                                     transactionData[index].createdAt!;
@@ -223,39 +230,41 @@ class _HistoryState extends ConsumerState<History> {
                                       // if (transactionData[index]
                                       //         .transactionType ==
                                       //     "debit") {
-                                        pushTo(
-                                            context,
-                                            TransactionReceipt(
-                                                typeOfTransfer: "p2p",
-                                                accNo: "",
-                                                fromWhere: "history",
-                                                status: transactionData[index]
-                                                    .status!
-                                                    .toCapitalized(),
-                                                tag: transactionData[index]
-                                                    .extraDetails!
-                                                    .receiverTag,
-                                                transactionId:
-                                                    transactionData[index]
-                                                        .transactionId,
-                                                transactionTime:
-                                                    transactionData[index]
-                                                        .createdAt!,
-                                                senderName: transactionData[index]
-                                                    .extraDetails!
-                                                    .senderName,
-                                                transferStatus: transactionData[index].transactionType,
-                                                amount:
-                                                    transactionData[index].amount,
-                                                transferName: "",
-                                                beneficiary:
-                                                    transactionData[index]
-                                                            .beneficiaryName ??
-                                                        "No name"),
-                                            settings: RouteSettings(
-                                                name: TransactionReceipt
-                                                    .routeName));
-                                     // }
+                                      pushTo(
+                                          context,
+                                          TransactionReceipt(
+                                              typeOfTransfer: "p2p",
+                                              accNo: "",
+                                              fromWhere: "history",
+                                              status: transactionData[index]
+                                                  .status!
+                                                  .toCapitalized(),
+                                              tag: transactionData[index]
+                                                  .extraDetails!
+                                                  .receiverTag,
+                                              transactionId:
+                                                  transactionData[index]
+                                                      .transactionId,
+                                              transactionTime:
+                                                  transactionData[index]
+                                                      .createdAt!,
+                                              senderName: transactionData[index]
+                                                  .extraDetails!
+                                                  .senderName,
+                                              transferStatus:
+                                                  transactionData[index]
+                                                      .transactionType,
+                                              amount:
+                                                  transactionData[index].amount,
+                                              transferName: "",
+                                              beneficiary:
+                                                  transactionData[index]
+                                                          .beneficiaryName ??
+                                                      "No name"),
+                                          settings: RouteSettings(
+                                              name: TransactionReceipt
+                                                  .routeName));
+                                      // }
                                     } else {
                                       pushTo(
                                           context,
@@ -275,10 +284,16 @@ class _HistoryState extends ConsumerState<History> {
                                               // item.transactionCategory!
                                               //         .contains("transfer")
                                               //     ? item.beneficiaryName ??
-                                                  changeCatNme(item
-                                                          .transactionCategory ?? "", item.currency ?? "", item.extraDetails!.subCategory ?? "", item.beneficiaryName ?? "" ),
-                                                  // : changeCatNme(
-                                                  //  item.transactionCategory!, item.currency!, item.extraDetails!.subCategory ?? "" ),
+                                              changeCatNme(
+                                                  item.transactionCategory ??
+                                                      "",
+                                                  item.currency ?? "",
+                                                  item.extraDetails!
+                                                          .subCategory ??
+                                                      "",
+                                                  item.beneficiaryName ?? ""),
+                                              // : changeCatNme(
+                                              //  item.transactionCategory!, item.currency!, item.extraDetails!.subCategory ?? "" ),
                                               style:
                                                   textTheme.bodyText1!.copyWith(
                                                 color: kBlueColorDark,
@@ -296,10 +311,11 @@ class _HistoryState extends ConsumerState<History> {
                                                     : kColorGreen),
                                             textStyle2: textTheme.headline3!
                                                 .copyWith(
-                                                    color: item.transactionType ==
-                                                            "debit"
-                                                        ? kColorRedDeep
-                                                        : kColorGreen),
+                                                    color:
+                                                        item.transactionType ==
+                                                                "debit"
+                                                            ? kColorRedDeep
+                                                            : kColorGreen),
                                           ),
                                         ],
                                       ),
@@ -349,17 +365,17 @@ class _HistoryState extends ConsumerState<History> {
                 return SizedBox();
               }
             },
-            loading: () => Expanded(child: Align(alignment: Alignment.bottomCenter, child: SpinKitDemo())))
+            loading: () => Expanded(
+                child: Align(
+                    alignment: Alignment.bottomCenter, child: SpinKitDemo())))
       ],
     );
   }
 
-
-
-  checkingIndex(){
+  checkingIndex() {
     switch (currentIndex) {
       case 0:
-        refreshTransaction(showLoading: true,pageNum: 1);
+        refreshTransaction(showLoading: true, pageNum: 1);
         break;
       case 1:
         filterStatus = OrderHistoryStatus.transfer;
@@ -399,38 +415,45 @@ class _HistoryState extends ConsumerState<History> {
   Future refresh() async {
     switch (currentIndex) {
       case 0:
-        refreshTransaction(showLoading: true,pageNum: 1);
+        refreshTransaction(showLoading: true, pageNum: 1);
         break;
       case 1:
-        refreshTransaction(showLoading: true,pageNum: 1,status: OrderHistoryStatus.transfer);
+        refreshTransaction(
+            showLoading: true, pageNum: 1, status: OrderHistoryStatus.transfer);
         break;
       case 2:
-        refreshTransaction(showLoading: true,pageNum: 1,status: OrderHistoryStatus.airtime);
+        refreshTransaction(
+            showLoading: true, pageNum: 1, status: OrderHistoryStatus.airtime);
         break;
       case 3:
-        refreshTransaction(showLoading: true,pageNum: 1,status: OrderHistoryStatus.data);
+        refreshTransaction(
+            showLoading: true, pageNum: 1, status: OrderHistoryStatus.data);
         break;
       case 4:
-        refreshTransaction(showLoading: true,pageNum: 1,status: OrderHistoryStatus.cable);
+        refreshTransaction(
+            showLoading: true, pageNum: 1, status: OrderHistoryStatus.cable);
         break;
       case 5:
-        refreshTransaction(showLoading: true,pageNum: 1,status: OrderHistoryStatus.electricity);
+        refreshTransaction(
+            showLoading: true,
+            pageNum: 1,
+            status: OrderHistoryStatus.electricity);
         break;
       case 6:
-        refreshTransaction(showLoading: true,pageNum: 1,status: OrderHistoryStatus.internet);
+        refreshTransaction(
+            showLoading: true, pageNum: 1, status: OrderHistoryStatus.internet);
         break;
       case 7:
-        refreshTransaction(showLoading: true,pageNum: 1,status:OrderHistoryStatus.voucher);
+        refreshTransaction(
+            showLoading: true, pageNum: 1, status: OrderHistoryStatus.voucher);
         break;
       case 8:
-        refreshTransaction(showLoading: true,pageNum: 1,status: OrderHistoryStatus.betting);
+        refreshTransaction(
+            showLoading: true, pageNum: 1, status: OrderHistoryStatus.betting);
         break;
     }
-
   }
 }
-
-
 
 enum OrderHistoryStatus {
   all,
@@ -442,7 +465,6 @@ enum OrderHistoryStatus {
   betting,
   airtime,
   transfer
-
 }
 
 String orderStatusToString(OrderHistoryStatus? stat, {bool isParam = false}) {
@@ -464,6 +486,6 @@ String orderStatusToString(OrderHistoryStatus? stat, {bool isParam = false}) {
     case OrderHistoryStatus.transfer:
       return "transfer";
     default:
-      return "" ;
+      return "";
   }
 }

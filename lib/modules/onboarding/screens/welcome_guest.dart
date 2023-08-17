@@ -103,15 +103,19 @@ class WelcomeGuest extends StatelessWidget {
                   ],
                 ),
               ),
+              SizedBox(
+                height: kMacroPadding,
+              ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   color: kColorBackgroundLight100,
+                  height: MediaQuery.of(context).size.height/3.0,
                   padding: EdgeInsets.symmetric(
                       horizontal: kMediumPadding, vertical: kMediumPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         onBoardingTitle,
@@ -120,11 +124,11 @@ class WelcomeGuest extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: kRegularPadding,
+                        height: kMacroPadding,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        //crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Expanded(
                             child: LargeButton(

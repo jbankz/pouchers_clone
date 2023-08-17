@@ -24,7 +24,7 @@ import 'package:Pouchers/utils/strings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load();
+  await dotenv.load(fileName: ".env");
   await Intercom.instance.initialize(interComAppId,
       iosApiKey: interComIOSKey, androidApiKey: interComAndroidKey);
   Env.setEnvironment(EnvState.production);

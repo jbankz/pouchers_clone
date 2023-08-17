@@ -169,11 +169,11 @@ class _CreateAccountState extends State<CreateAccount> {
                       : Icon(Icons.visibility_off_outlined,
                           color: kSecondaryTextColor)),
             ),
-            Text(
-              passwordValidation,
-              style: textTheme.subtitle1!.copyWith(
-                  fontSize: 16, color: kPrimaryTextColor.withOpacity(0.8)),
-            ),
+            // Text(
+            //   passwordValidation,
+            //   style: textTheme.subtitle1!.copyWith(
+            //       fontSize: 16, color: kPrimaryTextColor.withOpacity(0.8)),
+            // ),
             SizedBox(
               height: kMacroPadding,
             ),
