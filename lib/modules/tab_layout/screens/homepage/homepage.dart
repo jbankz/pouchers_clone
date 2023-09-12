@@ -44,6 +44,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   PageController _controller = PageController(viewportFraction: 0.8);
   HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  bool showSecondGrid = false;
 
   Future refresh() async {
     SessionManager.setWalletBalance("");
@@ -61,6 +62,22 @@ class _HomePageState extends ConsumerState<HomePage> {
       UserCredentials? cred = await getUserCredentials();
       print(cred);
     });
+  }
+
+  void toggleGrid() {
+    setState(() {
+      showSecondGrid = !showSecondGrid;
+    });
+  }
+
+  void onGuestTap(int index) {
+    guestHomeClass[index].title == "More"
+        ? toggleGrid()
+        // showSuccessBar(context,
+        //         "More Products Will Be Added Soon...")
+        : ref.watch(editProfileInHouseProvider).tierLevels == 1
+            ? showSuccessBar(context, "Please Verify Your BVN To Proceed.")
+            : pushTo(context, guestHomeClass[index].page);
   }
 
   @override
@@ -238,86 +255,88 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ),
                       ref.watch(editProfileInHouseProvider).tierLevels == 3
                           ? SizedBox()
-                      : ref.watch(editProfileInHouseProvider).tierLevels == 1?
-                           inkWell(
-                              onTap: () {
-                                pushTo(
-                                  context,
-                                  BVNPage(),
-                                  settings: const RouteSettings(
-                                      name:
-                                      BVNPage.routeName),
-                                );
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: kRegularPadding,
-                                    vertical: kSmallPadding),
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.circular(kSmallPadding),
-                                    color: kLightOrange100,
-                                    border: Border.all(
-                                        color: kLightOrange200, width: 1)),
-                                child: Row(
-                                  children: [
-                                    SvgPicture.asset(AssetPaths.shieldIcon),
-                                    SizedBox(
-                                      width: kPadding,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        "Upgrade To Tier 2 T o Activate Your Wallet - Please Verify Your BVN",
-                                        style: textTheme.headline2!.copyWith(
-                                          color: kLightOrange300,
+                          : ref.watch(editProfileInHouseProvider).tierLevels ==
+                                  1
+                              ? inkWell(
+                                  onTap: () {
+                                    pushTo(
+                                      context,
+                                      BVNPage(),
+                                      settings: const RouteSettings(
+                                          name: BVNPage.routeName),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: kRegularPadding,
+                                        vertical: kSmallPadding),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            kSmallPadding),
+                                        color: kLightOrange100,
+                                        border: Border.all(
+                                            color: kLightOrange200, width: 1)),
+                                    child: Row(
+                                      children: [
+                                        SvgPicture.asset(AssetPaths.shieldIcon),
+                                        SizedBox(
+                                          width: kPadding,
                                         ),
-                                      ),
+                                        Expanded(
+                                          child: Text(
+                                            "Upgrade To Tier 2 To Activate Your Wallet - Please Verify Your BVN",
+                                            style:
+                                                textTheme.headline2!.copyWith(
+                                              color: kLightOrange300,
+                                            ),
+                                          ),
+                                        ),
+                                        Icon(Icons.arrow_forward_ios,
+                                            color: kLightOrange200, size: 18)
+                                      ],
                                     ),
-                                    Icon(Icons.arrow_forward_ios,
-                                        color: kLightOrange200, size: 18)
-                                  ],
-                                ),
-                              ),
-                            ): inkWell(
-                        onTap: () {
-                          pushTo(
-                            context,
-                            ProfileKYC(),
-                            settings: const RouteSettings(
-                                name:
-                                ProfileKYC.routeName),
-                          );
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: kRegularPadding,
-                              vertical: kSmallPadding),
-                          decoration: BoxDecoration(
-                              borderRadius:
-                              BorderRadius.circular(kSmallPadding),
-                              color: kLightOrange100,
-                              border: Border.all(
-                                  color: kLightOrange200, width: 1)),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(AssetPaths.shieldIcon),
-                              SizedBox(
-                                width: kPadding,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  completeSetUp,
-                                  style: textTheme.headline2!.copyWith(
-                                    color: kLightOrange300,
+                                  ),
+                                )
+                              : inkWell(
+                                  onTap: () {
+                                    pushTo(
+                                      context,
+                                      ProfileKYC(),
+                                      settings: const RouteSettings(
+                                          name: ProfileKYC.routeName),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: kRegularPadding,
+                                        vertical: kSmallPadding),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            kSmallPadding),
+                                        color: kLightOrange100,
+                                        border: Border.all(
+                                            color: kLightOrange200, width: 1)),
+                                    child: Row(
+                                      children: [
+                                        SvgPicture.asset(AssetPaths.shieldIcon),
+                                        SizedBox(
+                                          width: kPadding,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            completeSetUp,
+                                            style:
+                                                textTheme.headline2!.copyWith(
+                                              color: kLightOrange300,
+                                            ),
+                                          ),
+                                        ),
+                                        Icon(Icons.arrow_forward_ios,
+                                            color: kLightOrange200, size: 18)
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Icon(Icons.arrow_forward_ios,
-                                  color: kLightOrange200, size: 18)
-                            ],
-                          ),
-                        ),
-                      ),
                       SizedBox(
                         height: kMediumPadding,
                       ),
@@ -337,82 +356,86 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 color: kPurpleLight,
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ref.watch(getWalletProvider).when(
-                                      done: (done) {
-                                       return RichText(
-                                         text: TextSpan(
-                                           text: ref.watch(
-                                               checkObscureProvider)
-                                               ? "₦"
-                                               : "",
-                                           style: TextStyle(
-                                             color: kPrimaryWhite,
-                                             fontWeight: FontWeight.w700,
-                                             fontSize: 30,
-                                           ),
-                                           children: [
-                                             ref.watch(checkObscureProvider)
-                                                 ? TextSpan(
-                                                 text: kPriceFormatter(
-                                                     double.parse(
-                                                         SessionManager
-                                                             .getWalletBalance() ??
-                                                             "0.00")),
-                                                 style: textTheme
-                                                     .bodyText2!
-                                                     .copyWith(
-                                                   fontWeight:
-                                                   FontWeight.w700,
-                                                   fontSize: 32,
-                                                   height: 1.5,
-                                                   fontFamily: "DMSans",
-                                                 ))
-                                                 : TextSpan(
-                                                 text: "***** ",
-                                                 style: textTheme
-                                                     .bodyText2!
-                                                     .copyWith(
-                                                   fontWeight:
-                                                   FontWeight.w700,
-                                                   fontSize: 32,
-                                                   height: 2,
-                                                   fontFamily: "DMSans",
-                                                 ))
-                                           ],
-                                         ),
-                                       );
-                                      },
-                                      loading: () => SpinKitDemo(
-                                        size: kMacroPadding,
-                                        color: kPrimaryWhite,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ref.watch(getWalletProvider).when(
+                                        done: (done) {
+                                          return RichText(
+                                            text: TextSpan(
+                                              text: ref.watch(
+                                                      checkObscureProvider)
+                                                  ? "₦"
+                                                  : "",
+                                              style: TextStyle(
+                                                color: kPrimaryWhite,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 30,
+                                              ),
+                                              children: [
+                                                ref.watch(checkObscureProvider)
+                                                    ? TextSpan(
+                                                        text: kPriceFormatter(
+                                                            double.parse(
+                                                                SessionManager
+                                                                        .getWalletBalance() ??
+                                                                    "0.00")),
+                                                        style: textTheme
+                                                            .bodyText2!
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontSize: 32,
+                                                          height: 1.5,
+                                                          fontFamily: "DMSans",
+                                                        ))
+                                                    : TextSpan(
+                                                        text: "***** ",
+                                                        style: textTheme
+                                                            .bodyText2!
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontSize: 32,
+                                                          height: 2,
+                                                          fontFamily: "DMSans",
+                                                        ))
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                        loading: () => SpinKitDemo(
+                                          size: kMacroPadding,
+                                          color: kPrimaryWhite,
+                                        ),
                                       ),
-                                    ),
-                                SizedBox(
-                                  width: kPadding,
-                                ),
-                                InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        ref
-                                                .read(checkObscureProvider.notifier)
-                                                .state =
-                                            !ref
-                                                .read(checkObscureProvider
-                                                    .notifier)
-                                                .state;
-                                      });
-                                    },
-                                    child: ref.watch(checkObscureProvider)
-                                        ? Icon(
-                                            Icons.visibility_off_outlined,
-                                            color: kSecondaryTextColor,
-                                          )
-                                        : Icon(Icons.visibility_outlined,
-                                            color: kSecondaryTextColor)),
-                              ],
+                                  SizedBox(
+                                    width: kPadding,
+                                  ),
+                                  InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          ref
+                                                  .read(checkObscureProvider
+                                                      .notifier)
+                                                  .state =
+                                              !ref
+                                                  .read(checkObscureProvider
+                                                      .notifier)
+                                                  .state;
+                                        });
+                                      },
+                                      child: ref.watch(checkObscureProvider)
+                                          ? Icon(
+                                              Icons.visibility_off_outlined,
+                                              color: kSecondaryTextColor,
+                                            )
+                                          : Icon(Icons.visibility_outlined,
+                                              color: kSecondaryTextColor)),
+                                ],
+                              ),
                             ),
                             SizedBox(
                               height: kMacroPadding,
@@ -487,22 +510,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                             return Column(
                               children: [
                                 inkWell(
-                                  onTap: () {
-                                    guestHomeClass[index].title == "More"
-                                        ? showSuccessBar(context,
-                                            "More Products Will Be Added Soon...")
-                                        : ref.watch(editProfileInHouseProvider).tierLevels == 1? showSuccessBar(context,
-                                        "Please Verify Your BVN To Proceed."):
-                                    pushTo(context,
-                                            guestHomeClass[index].page);
-                                  },
+                                  onTap: () => onGuestTap(index),
                                   child: Container(
                                     height: 70,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: kColorBackgroundLight,
                                     ),
-                                    padding: EdgeInsets.all(kMediumPadding),
+                                    padding:
+                                    EdgeInsets.all(kMediumPadding),
                                     child: SvgPicture.asset(
                                       guestHomeClass[index].icon,
                                     ),

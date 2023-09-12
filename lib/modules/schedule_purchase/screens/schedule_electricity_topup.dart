@@ -124,7 +124,8 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
                             .read(getUtilitiesTypeProvider.notifier)
                             .getUtilitiesType(
                                 merchantServiceId:
-                                    utilitiesData!.operatorpublicid!);
+                                    utilitiesData!.operatorpublicid!,
+                            categoeyName: utilitiesData!.category!);
                       }
                     },
                     child: Container(

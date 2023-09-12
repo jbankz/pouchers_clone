@@ -204,10 +204,10 @@ class GetUtilitiesTypeNotifier
   GetUtilitiesTypeNotifier(this._repo) : super(NotifierState());
 
   void getUtilitiesType(
-      {required String merchantServiceId, Function()? then}) async {
+      {required String merchantServiceId, Function()? then,required String categoeyName}) async {
     state = notifyLoading();
     state = await _repo.getUtilitiesType(
-      merchantServiceId: merchantServiceId,
+      merchantServiceId: merchantServiceId, categoryName: categoeyName,
     );
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
@@ -306,12 +306,13 @@ class ValidateUtilitiesNotifier extends StateNotifier<NotifierState<String>>
       required String merchantAccount,
       required String merchantReferenceNumber,
         required String merchantProductCode,
+  required String category,
         Function()? then,
       Function(String)? error}) async {
     state = notifyLoading();
     state = await _repo.validateUtilities(
         merchantReferenceNumber: merchantReferenceNumber,
-        merchantAccount: merchantAccount, merchantProductCode: merchantProductCode);
+        merchantAccount: merchantAccount, merchantProductCode: merchantProductCode, category:category );
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     } else if (state.status == NotifierStatus.error) {

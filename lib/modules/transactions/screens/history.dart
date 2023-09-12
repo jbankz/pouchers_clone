@@ -265,6 +265,48 @@ class _HistoryState extends ConsumerState<History> {
                                               name: TransactionReceipt
                                                   .routeName));
                                       // }
+                                    } else if (transactionData[index]
+                                        .transactionCategory!
+                                        .contains("transfer")) {
+                                      pushTo(
+                                          context,
+                                          TransactionReceipt(
+                                            transactionFee:double.parse( transactionData[index].transactionFee!),
+                                              typeOfTransfer: "localBank",
+                                              accNo:transactionData[index]
+                                                  .extraDetails!
+                                                  .receiverAccountNumber,
+                                              fromWhere: "history",
+                                              status: transactionData[index]
+                                                  .status!
+                                                  .toCapitalized(),
+                                              tag: transactionData[index]
+                                                  .extraDetails!
+                                                  .senderTag,
+                                              transactionId:
+                                                  transactionData[index]
+                                                      .transactionId,
+                                              transactionTime:
+                                                  transactionData[index]
+                                                      .createdAt!,
+                                              senderName: transactionData[index]
+                                                  .extraDetails!
+                                                  .senderName,
+                                              transferStatus:
+                                                  transactionData[index]
+                                                      .transactionType,
+                                              amount:
+                                                  transactionData[index].amount,
+                                              transferName:transactionData[index]
+                                                  .extraDetails!
+                                              .bankName,
+                                              beneficiary:
+                                                  transactionData[index]
+                                                          .beneficiaryName ??
+                                                      "No name"),
+                                          settings: RouteSettings(
+                                              name: TransactionReceipt
+                                                  .routeName));
                                     } else {
                                       pushTo(
                                           context,
@@ -375,7 +417,9 @@ class _HistoryState extends ConsumerState<History> {
   checkingIndex() {
     switch (currentIndex) {
       case 0:
-        refreshTransaction(showLoading: true, pageNum: 1);
+        filterStatus = OrderHistoryStatus.all;
+        onFilterStatus(filterStatus);
+        //refreshTransaction(showLoading: true, pageNum: 1);
         break;
       case 1:
         filterStatus = OrderHistoryStatus.transfer;
@@ -407,6 +451,18 @@ class _HistoryState extends ConsumerState<History> {
         break;
       case 8:
         filterStatus = OrderHistoryStatus.betting;
+        onFilterStatus(filterStatus);
+        break;
+      case 9:
+        filterStatus = OrderHistoryStatus.education;
+        onFilterStatus(filterStatus);
+        break;
+      case 10:
+        filterStatus = OrderHistoryStatus.admincredit;
+        onFilterStatus(filterStatus);
+        break;
+      case 11:
+        filterStatus = OrderHistoryStatus.admindebit;
         onFilterStatus(filterStatus);
         break;
     }
@@ -451,6 +507,24 @@ class _HistoryState extends ConsumerState<History> {
         refreshTransaction(
             showLoading: true, pageNum: 1, status: OrderHistoryStatus.betting);
         break;
+      case 9:
+        refreshTransaction(
+            showLoading: true,
+            pageNum: 1,
+            status: OrderHistoryStatus.education);
+        break;
+      case 10:
+        refreshTransaction(
+            showLoading: true,
+            pageNum: 1,
+            status: OrderHistoryStatus.admincredit);
+        break;
+      case 11:
+        refreshTransaction(
+            showLoading: true,
+            pageNum: 1,
+            status: OrderHistoryStatus.admindebit);
+        break;
     }
   }
 }
@@ -464,7 +538,10 @@ enum OrderHistoryStatus {
   voucher,
   betting,
   airtime,
-  transfer
+  transfer,
+  education,
+  admincredit,
+  admindebit
 }
 
 String orderStatusToString(OrderHistoryStatus? stat, {bool isParam = false}) {
@@ -485,7 +562,15 @@ String orderStatusToString(OrderHistoryStatus? stat, {bool isParam = false}) {
       return "airtime";
     case OrderHistoryStatus.transfer:
       return "transfer";
-    default:
+    case OrderHistoryStatus.education:
+      return "education";
+    case OrderHistoryStatus.admincredit:
+      return "admin-credit-wallet";
+    case OrderHistoryStatus.admindebit:
+      return "admin-debit-wallet";
+    case OrderHistoryStatus.all:
       return "";
+    default:
+      return " ";
   }
 }

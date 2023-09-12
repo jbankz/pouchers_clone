@@ -251,13 +251,13 @@ class UtilitiesService {
   }
 
   static Future<ServiceResponse<GetUtilitiesTypesResponse>> getUtilitiesType(
-      {required String merchantServiceId}) async {
+      {required String merchantServiceId, required String categoryName}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
     };
 
-    String url = "${baseUrl()}/utility/merchantServices/$merchantServiceId";
+    String url = "${baseUrl()}/utility/merchantServices/$merchantServiceId/$categoryName";
 
     logPrint(url);
     logPrint("what is body $merchantServiceId");
@@ -353,6 +353,7 @@ class UtilitiesService {
         required String merchantAccount,
         required String merchantReferenceNumber,
         required String merchantProductCode,
+        required String category
       }) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
@@ -364,7 +365,8 @@ class UtilitiesService {
     Map<String, dynamic> _body =  {
       "merchantAccount": merchantAccount,
       "merchantReferenceNumber": merchantReferenceNumber,
-      "merchantServiceProductCode": merchantProductCode
+      "merchantServiceProductCode": merchantProductCode,
+      "category":category
     };
 
     logPrint(url);

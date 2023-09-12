@@ -1,5 +1,6 @@
 import 'package:Pouchers/modules/login/models/login_response.dart';
 import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/input_formatters.dart';
 import 'package:pdf/pdf.dart' as pdfSaver;
 import 'package:pdf/widgets.dart' as pdfWidget;
 import 'package:flutter/services.dart' show ByteData, Uint8List, rootBundle;
@@ -16,7 +17,7 @@ class PdfInvoiceApi {
       String transferName,
       String accNo,
       String amount, DateTime transactionTime, String tag, String transactionId, double _transactionFee) async {
-    final ByteData bytes = await rootBundle.load(AssetPaths.poucherLogo);
+    final ByteData bytes = await rootBundle.load(AssetPaths.pouchersLogo);
     final Uint8List poucherLogo = bytes.buffer.asUint8List();
     final font = await rootBundle.load("assets/fonts/DMSans-Bold.ttf");
     final font2 = await rootBundle.load("assets/fonts/Inter.ttf");
@@ -119,7 +120,7 @@ class PdfInvoiceApi {
                   ) : pdfWidget.SizedBox(),
                   transferType == "localBank"
                       ? pdfWidget.Column(children: [
-                    widget(text: bankName, subText: transferName),
+                    widget(text: bankName, subText: transferName.toCapitalized()),
                     widget(text: accNumber, subText: accNo),
                   ])
                       : pdfWidget.SizedBox(),

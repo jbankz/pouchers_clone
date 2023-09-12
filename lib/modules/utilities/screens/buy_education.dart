@@ -1,21 +1,18 @@
 import 'dart:async';
 
+import 'package:Pouchers/modules/utilities/model/education_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:Pouchers/app/common/listener.dart';
 import 'package:Pouchers/app/helpers/notifiers.dart';
 import 'package:Pouchers/app/navigators/navigators.dart';
 import 'package:Pouchers/modules/account/models/buy_cable_class.dart';
 import 'package:Pouchers/modules/account/models/ui_models_class.dart';
-import 'package:Pouchers/modules/schedule_purchase/schedule_widget_constants.dart';
-import 'package:Pouchers/modules/schedule_purchase/screens/schedule_cable_topup.dart';
+import 'package:Pouchers/modules/onboarding/screens/guest_widget.dart';
 import 'package:Pouchers/modules/tab_layout/screens/tab_layout.dart';
 import 'package:Pouchers/modules/utilities/model/utilities_model.dart';
-import 'package:Pouchers/modules/utilities/providers/utilities_provider.dart';
 import 'package:Pouchers/utils/assets_path.dart';
 import 'package:Pouchers/utils/components.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
@@ -24,91 +21,101 @@ import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/utils.dart';
 import 'package:Pouchers/utils/widgets.dart';
 
-class BuyCable extends ConsumerStatefulWidget {
-  static const String routeName = "buyCable";
+import '../providers/utilities_provider.dart';
+
+class BuyEducation extends ConsumerStatefulWidget {
+  static const String routeName = "buyEducation";
   final bool? isGuest;
   final String? name, email;
 
-  const BuyCable({Key? key, this.isGuest, this.name, this.email})
+  const BuyEducation({Key? key, this.isGuest, this.name, this.email})
       : super(key: key);
 
   @override
-  ConsumerState<BuyCable> createState() => _BuyCableState();
+  ConsumerState<BuyEducation> createState() => _BuyElectricityState();
 }
 
-class _BuyCableState extends ConsumerState<BuyCable> {
-  TextEditingController contactController = TextEditingController();
+class _BuyElectricityState extends ConsumerState<BuyEducation> {
   bool _saveBeneficiary = false;
+  TextEditingController acctController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
   GetUtilitiesData? utilitiesData;
   List<GetUtilitiesData> utilities = [];
+  String _amount = "";
+  String amoutString = "";
   List<Service> utilitiesType = [];
   Service? paymentType;
-  String cardNo = "";
   String? threshold;
   String? discountValue;
-  String error = "";
 
   Timer? searchOnStoppedTyping;
+  String error = "";
 
-  _onChangeHandler(value) {
-    if (value!.isEmpty) {
-      setState(() => cardNo = "");
-    } else {
-      setState(() {
-        cardNo = value;
-      });
-      const duration = Duration(seconds: 1);
-      if (searchOnStoppedTyping != null) {
-        setState(() => searchOnStoppedTyping!.cancel()); // clear timer
-      }
-      setState(() => searchOnStoppedTyping = new Timer(duration, () {
-            FocusScope.of(context).unfocus();
-            search(value);
-          }));
-    }
-  }
-
-  search(value) {
-    if (utilitiesData != null && cardNo.isNotEmpty && paymentType != null) {
-      ref.read(validateUtilitiesProvider.notifier).validateUtilities(
-          merchantAccount: utilitiesData!.operatorpublicid!,
-          merchantReferenceNumber: cardNo,
-          merchantProductCode: paymentType!.code!,
-      category: utilitiesData!.category!);
-    } else {
-      showErrorBar(context, "Please choose a provider, type or card number");
-    }
-  }
+  // _onChangeHandler(value) {
+  //   if (value!.isEmpty) {
+  //     setState(() => _acctNo = "");
+  //   } else {
+  //     setState(() {
+  //       _acctNo = value;
+  //     });
+  //     const duration = Duration(
+  //         seconds:
+  //             1); // set the duration that you want call search() after that.
+  //     if (searchOnStoppedTyping != null) {
+  //       setState(() => searchOnStoppedTyping!.cancel()); // clear timer
+  //     }
+  //     setState(() => searchOnStoppedTyping = new Timer(duration, () {
+  //           FocusScope.of(context).unfocus();
+  //           search(value);
+  //         }));
+  //   }
+  // }
+  //
+  // search(value) {
+  //   if (utilitiesData != null && paymentType != null) {
+  //     ref.read(validateUtilitiesProvider.notifier).validateUtilities(
+  //         merchantAccount: utilitiesData!.operatorpublicid!,
+  //         merchantReferenceNumber: "yyuu",
+  //         merchantProductCode: paymentType!.code!,
+  //         category: utilitiesData!.category!);
+  //   } else {
+  //     showErrorBar(context, "Please choose a provider, type or meter number");
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(getUtilitiesProvider.notifier).getUtilities(utility: "cable");
-      ref.read(getDiscountProvider.notifier).getDiscount(utility: "cable");
+      // amountController.text = paymentType?.price != null? paymentType!.price.toString() :"";
+      ref
+          .read(getUtilitiesProvider.notifier)
+          .getUtilities(utility: "education");
+      ref.read(getDiscountProvider.notifier).getDiscount(utility: "education");
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    print(threshold);
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
-      title: cable,
+      title: education,
       child: widget.isGuest!
-          ? cableColumn(context, textTheme)
-          : ListenerPage(child: cableColumn(context, textTheme)),
+          ? educationColumn(context, textTheme)
+          : ListenerPage(child: educationColumn(context, textTheme)),
     );
   }
 
-  Column cableColumn(BuildContext context, TextTheme textTheme) {
+  Column educationColumn(BuildContext context, TextTheme textTheme) {
     return Column(
       children: [
         Expanded(
           child: ListView(
             children: [
+              //selsct a provider
               inkWell(
                 onTap: () async {
+                  //selsct a provider endpoint
                   final result = await buildShowModalBottomSheet(
                       context, UtilityModal(utilities: utilities));
                   if (result != null) {
@@ -120,9 +127,8 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                     ref
                         .read(getUtilitiesTypeProvider.notifier)
                         .getUtilitiesType(
-                            merchantServiceId:
-                                utilitiesData!.operatorpublicid!,
-                        categoeyName: utilitiesData!.category!);
+                            merchantServiceId: utilitiesData!.operatorpublicid!,
+                            categoeyName: utilitiesData!.category!);
                   }
                 },
                 child: Container(
@@ -133,24 +139,23 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: kMediumPadding),
-                        child: Row(
-                          children: [
-                            Text(
-                                utilitiesData == null
-                                    ? selectProvider
-                                    : utilitiesData!.displayName!,
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: true,
-                                style: utilitiesData == null
-                                    ? textTheme.bodyText1!.copyWith(
-                                        color: kSecondaryTextColor
-                                            .withOpacity(0.7),
-                                        fontWeight: FontWeight.w300,
-                                      )
-                                    : textTheme.subtitle1),
-                          ],
+                      Expanded(
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: kMediumPadding),
+                          child: Text(
+                              utilitiesData == null
+                                  ? selectProvider
+                                  : utilitiesData!.name!,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: true,
+                              style: utilitiesData == null
+                                  ? textTheme.bodyText1!.copyWith(
+                                      color:
+                                          kSecondaryTextColor.withOpacity(0.7),
+                                      fontWeight: FontWeight.w300,
+                                    )
+                                  : textTheme.subtitle1),
                         ),
                       ),
                       Consumer(builder: (context, ref, _) {
@@ -177,37 +182,41 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                 ),
               ),
               SizedBox(
-                height: kMediumPadding,
-              ),
-
-              Text(
-                subType,
-                style: textTheme.headline6,
-              ),
-              SizedBox(
-                height: kSmallPadding,
+                height: kMicroPadding,
               ),
               ref.watch(getDiscountProvider).when(done: (done) {
                 if (done != null) {
-                  threshold = (done.data!.threshold == null || done.data == null) ? "0" : done.data!.threshold;
-                  discountValue = (done.data!.discountValue == null || done.data == null) ? "0" : done.data!.discountValue;
+                  threshold = done.data!.threshold ?? "0";
+                  discountValue = done.data!.discountValue ?? "0";
                   return SizedBox();
                 } else {
                   return SizedBox();
                 }
               }),
-              InkWell(
+              Text(
+                subscriptionType,
+                style: textTheme.headline6,
+              ),
+              SizedBox(
+                height: kSmallPadding,
+              ),
+              inkWell(
+                //subscription endpoint
                 onTap: (utilitiesData == null)
                     ? null
                     : () async {
                         final result = await buildShowModalBottomSheet(
                             context,
                             SubscriptionModal(
-                                paymentItem: utilitiesType,
-                                discountValue: discountValue ?? "0",
-                                threshold: threshold??"0"));
+                              paymentItem: utilitiesType,
+                              threshold: threshold,
+                              discountValue: discountValue,
+                            ));
                         if (result != null) {
                           setState(() => paymentType = result);
+                          amountController.text = paymentType?.price != null
+                              ? paymentType!.price.toString()
+                              : "";
                           // search("");
                         }
                       },
@@ -246,26 +255,6 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                       Consumer(builder: (context, ref, _) {
                         var _widget = Row(
                           children: [
-                            paymentType == null
-                                ? SizedBox()
-                                : RichText(
-                                    text: TextSpan(
-                                      text: "₦",
-                                      style: TextStyle(
-                                        color: kPrimaryTextColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 18,
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                            text: kPriceFormatter(paymentType!
-                                                    .price!
-                                                    .toDouble())
-                                                .replaceAll(".00", ""),
-                                            style: textTheme.subtitle1)
-                                      ],
-                                    ),
-                                  ),
                             Icon(
                               Icons.keyboard_arrow_down,
                               size: 30,
@@ -295,33 +284,79 @@ class _BuyCableState extends ConsumerState<BuyCable> {
               SizedBox(
                 height: kMicroPadding,
               ),
-              TextInputNoIcon(
-                textTheme: textTheme,
-                addSpace: false,
-                text: cardNumber,
-                read: (utilitiesData == null || paymentType == null),
-                controller: contactController,
-                inputType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-                onChanged: _onChangeHandler,
-                icon:  inkWell(
-                  onTap: utilitiesData == null && paymentType == null ? null :  () async {
-                    final PhoneContact contact =
-                    await FlutterContactPicker.pickPhoneContact();
-                    setState(() {
-                      contactController.text = contact.phoneNumber!.number!;
-                    });
-                  },
-                  child: SvgPicture.asset(
-                    AssetPaths.contactBook,
-                    fit: BoxFit.scaleDown,
+              Container(
+                child: TextFormField(
+                  keyboardType: TextInputType.text,
+                  readOnly: true,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
+                  cursorColor: kPrimaryColor,
+                  controller: amountController,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  // validator: (val) {
+                  //   if (val != null || val!.isNotEmpty) if (val
+                  //       .startsWith("0")) {
+                  //     return "Amount cannot start with zero";
+                  //   } else
+                  //     return null;
+                  // },
+                  // onChanged: (val) {
+                  //   if (val.isEmpty) {
+                  //     setState(() => paymentType!.price);
+                  //   } else {
+                  //     setState(() {
+                  //       paymentType!.price = val.toString();
+                  //     });
+                  //   }
+                  //   ;
+                  // },
+                  decoration: InputDecoration(
+                    filled: true,
+                    isDense: true,
+                    hintText: enterAmount,
+                    hintStyle: textTheme.headline6!.copyWith(
+                        color: kSecondaryTextColor.withOpacity(0.7),
+                        fontSize: 18),
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.only(left: kSmallPadding),
+                      child: Align(
+                        widthFactor: 0,
+                        alignment: Alignment.centerLeft,
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text: "₦  ",
+                            style: TextStyle(
+                              color: kPrimaryTextColor,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    fillColor: kBackgroundColor,
+                    border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(style: BorderStyle.none),
+                      borderRadius: BorderRadius.circular(kSmallPadding),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: kPrimaryColor),
+                      borderRadius: BorderRadius.circular(kSmallPadding),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(kSmallPadding),
+                      borderSide: BorderSide(color: kColorRed),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(kSmallPadding),
+                      borderSide: BorderSide(color: kColorRed),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: kPadding,
               ),
               ref.watch(validateUtilitiesProvider).when(done: (done) {
                 if (done != null) {
@@ -366,53 +401,18 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                 );
               }),
               SizedBox(
-                height: kMicroPadding,
+                height: kSmallPadding,
               ),
-              widget.isGuest!
-                  ? SizedBox()
-                  : Scheduling(
-                      text: scheduleCable,
-                      subtext: scheduleCableSub,
-                      onTap: () => pushTo(
-                          context,
-                          ScheduleCableTopUp(
-                            utility: utilitiesData,
-                            paymentType: paymentType,
-                            cardNo: contactController.text,
-                          ),
-                          settings: RouteSettings(
-                              name: ScheduleCableTopUp.routeName)),
-                    ),
             ],
           ),
         ),
         SizedBox(
           height: kRegularPadding,
         ),
-        widget.isGuest!
-            ? SizedBox()
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    saveBeneficiary,
-                    style: textTheme.headline2!.copyWith(
-                      color: kIconGrey,
-                    ),
-                  ),
-                  FlutterSwitchClass(
-                    saveBeneficiary: _saveBeneficiary,
-                    onToggle: (val) {
-                      setState(() {
-                        _saveBeneficiary = val;
-                      });
-                    },
-                  )
-                ],
-              ),
-        SizedBox(
-          height: kLargePadding,
-        ),
+       // widget.isGuest! ? SizedBox() : SizedBox(),
+       //  SizedBox(
+       //    height: kLargePadding,
+       //  ),
         Consumer(builder: (context, ref, _) {
           ref.listen(buyUtilitiesProvider,
               (previous, NotifierState<String> next) {
@@ -438,35 +438,40 @@ class _BuyCableState extends ConsumerState<BuyCable> {
           var _widget = LargeButton(
             title: continueText,
             disableColor: (paymentType == null ||
-                    cardNo == "" ||
                     utilitiesData == null ||
                     error.isNotEmpty)
                 ? kBackgroundColor
                 : kPrimaryColor,
             onPressed: (paymentType == null ||
-                    cardNo == "" ||
                     utilitiesData == null ||
                     error.isNotEmpty)
                 ? () {}
                 : () {
-                    buildShowModalBottomSheet(
-                      context,
-                      RechargeSummary(
-                        billerName: utilitiesData!.displayName!,
-                        billerId: utilitiesData!.operatorpublicid!,
-                        utility: true,
-                        amount: "${paymentType!.price!}",
-                        billerLogo: "",
-                        threshold: threshold,
-                        name: widget.name,
-                        email: widget.email,
-                        category: "cable-purchase",
-                        billerCode: paymentType!.code,
-                        recipientNo: contactController.text,
-                        textTheme: textTheme,
-                        isGuest: widget.isGuest!,
-                      ),
-                    );
+                    FocusScope.of(context).unfocus();
+                    if (paymentType!.price! > 10000 && widget.isGuest!) {
+                      buildShowModalBottomSheet(
+                          context, GuestMaximumAmountModal());
+                    } else {
+                      buildShowModalBottomSheet(
+                        context,
+                        EducationSummary(
+                          billerName: utilitiesData!.displayName!,
+                          billerId: utilitiesData!.operatorpublicid!,
+                          utility: true,
+                          isGuest: widget.isGuest!,
+                          email: widget.email,
+                          name: widget.name,
+                          threshold: threshold,
+                          category: "education-purchase",
+                          amount: "${paymentType!.price!}",
+                          billerLogo: "",
+                          billerCode: paymentType!.code,
+                          recipientNo: paymentType!.name!,
+                          textTheme: textTheme,
+                        ),
+                      );
+                    }
+                    ;
                   },
           );
           return ref.watch(buyUtilitiesProvider).when(
@@ -474,7 +479,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                 loading: () => SpinKitDemo(),
                 error: (val) => _widget,
               );
-        })
+        }),
       ],
     );
   }

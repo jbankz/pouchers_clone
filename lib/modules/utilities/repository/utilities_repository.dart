@@ -129,9 +129,9 @@ class UtilitiesRepository {
   }
 
   Future<NotifierState<GetUtilitiesTypesResponse>> getUtilitiesType(
-      {required String merchantServiceId}) async {
+      {required String merchantServiceId,required String categoryName}) async {
     return (await UtilitiesService.getUtilitiesType(
-      merchantServiceId: merchantServiceId,
+      merchantServiceId: merchantServiceId, categoryName: categoryName,
     ))
         .toNotifierState();
   }
@@ -186,7 +186,8 @@ class UtilitiesRepository {
   Future<NotifierState<String>> validateUtilities({
     required String merchantAccount,
     required String merchantReferenceNumber,
-    required String merchantProductCode,
+    required String merchantProductCode,required String category
+
 
   }) async {
 
@@ -195,7 +196,7 @@ class UtilitiesRepository {
     validateUtilities = await UtilitiesService.validateUtilities(
       merchantAccount: merchantAccount,
       merchantReferenceNumber: merchantReferenceNumber,
-      merchantProductCode: merchantProductCode
+      merchantProductCode: merchantProductCode, category:category
     );
 
     if (validateUtilities.notAuthenticated) {
@@ -203,7 +204,7 @@ class UtilitiesRepository {
       validateUtilities = await UtilitiesService.validateUtilities(
         merchantAccount: merchantAccount,
         merchantReferenceNumber: merchantReferenceNumber,
-        merchantProductCode: merchantProductCode
+        merchantProductCode: merchantProductCode, category: category
        );
     }
     return  validateUtilities.toNotifierState();

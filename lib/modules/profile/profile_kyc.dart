@@ -164,70 +164,10 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(116),
-                              child: ref
-                                          .watch(editProfileInHouseProvider)
-                                          .profilePicture ==
+                              child: ref.watch(editProfileInHouseProvider)
+                                          .profilePicture !=
                                       null
-                                  ? Container(
-                                      padding: EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: kPurple300),
-                                      child: Container(
-                                          padding: EdgeInsets.all(8),
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: kPrimaryWhite),
-                                          child: Container(
-                                              padding:
-                                                  EdgeInsets.all(kSmallPadding),
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: kPrimaryTextColor
-                                                      .withOpacity(0.05)),
-                                              child: Container(
-                                                  padding: EdgeInsets.all(8),
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: kPurpleColor600,
-                                                  ),
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                        height: kRegularPadding,
-                                                        width: kRegularPadding,
-                                                        decoration: BoxDecoration(
-                                                            shape:
-                                                                BoxShape.circle,
-                                                            color:
-                                                                kPrimaryTextColor),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 7,
-                                                      ),
-                                                      Container(
-                                                        height: kRegularPadding,
-                                                        width: 35,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.only(
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        kSmallPadding),
-                                                                bottomLeft: Radius
-                                                                    .circular(
-                                                                        kPadding),
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        kSmallPadding),
-                                                                bottomRight: Radius
-                                                                    .circular(
-                                                                        kPadding)),
-                                                            color:
-                                                                kPurpleColor500),
-                                                      )
-                                                    ],
-                                                  )))))
-                                  : Image.network(
+                                  ? Image.network(
                                       ref
                                               .watch(editProfileInHouseProvider)
                                               .profilePicture ??
@@ -321,15 +261,71 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                                           ),
                                         );
                                       },
-                                    ),
+                                    ):Container(
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: kPurple300),
+                                  child: Container(
+                                      padding: EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: kPrimaryWhite),
+                                      child: Container(
+                                          padding:
+                                          EdgeInsets.all(kSmallPadding),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: kPrimaryTextColor
+                                                  .withOpacity(0.05)),
+                                          child: Container(
+                                              padding: EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: kPurpleColor600,
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    height: kRegularPadding,
+                                                    width: kRegularPadding,
+                                                    decoration: BoxDecoration(
+                                                        shape:
+                                                        BoxShape.circle,
+                                                        color:
+                                                        kPrimaryTextColor),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 7,
+                                                  ),
+                                                  Container(
+                                                    height: kRegularPadding,
+                                                    width: 35,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.only(
+                                                            topLeft: Radius
+                                                                .circular(
+                                                                kSmallPadding),
+                                                            bottomLeft: Radius
+                                                                .circular(
+                                                                kPadding),
+                                                            topRight: Radius
+                                                                .circular(
+                                                                kSmallPadding),
+                                                            bottomRight: Radius
+                                                                .circular(
+                                                                kPadding)),
+                                                        color:
+                                                        kPurpleColor500),
+                                                  )
+                                                ],
+                                              ))))),
                             ),
                             Positioned(
                               bottom: 0,
                               right: 0,
-                              left: ref
-                                          .watch(editProfileInHouseProvider)
-                                          .profilePicture ==
-                                      null
+                              left: ref.watch(editProfileInHouseProvider)
+                                          .profilePicture == null
                                   ? 80
                                   : 90,
                               child: Icon(
@@ -570,6 +566,7 @@ class _ProfileKYCState extends ConsumerState<ProfileKYC> {
                     },
                   ),
                   KYCColumn(
+                    isTag: true,
                     textTheme: textTheme,
                     title: poucherTag,
                     subTitle: "@${userProfile.tag}",

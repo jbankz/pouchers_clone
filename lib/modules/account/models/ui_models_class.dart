@@ -1,5 +1,7 @@
+import 'package:Pouchers/app/helpers/session_manager.dart';
 import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:local_auth/local_auth.dart';
@@ -412,18 +414,20 @@ class AirtimeRow extends StatelessWidget {
       this.isBold = false,
       required this.isCopyIcon,
       required this.noSymbol,
-      required this.style})
+      required this.style, this.copyText})
       : super(key: key);
 
   final TextTheme textTheme;
   final String text, subText;
   final TextStyle style;
   final bool isNaira, isBold, isCopyIcon, noSymbol;
+  final String? copyText;
+
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: Text(
@@ -433,6 +437,7 @@ class AirtimeRow extends StatelessWidget {
             ),
           ),
         ),
+        Spacer(),
         !noSymbol
             ? RichText(
                 text: TextSpan(
@@ -457,7 +462,10 @@ class AirtimeRow extends StatelessWidget {
         SizedBox(
           width: kSmallPadding,
         ),
-        isCopyIcon ? SvgPicture.asset(AssetPaths.copyIcon) : SizedBox()
+        isCopyIcon ? inkWell( onTap: (){
+          Clipboard.setData(ClipboardData(text:copyText ?? ""),);
+          showSuccessBar(context, "Copied");
+        }, child: SvgPicture.asset(AssetPaths.copyIcon)) : SizedBox()
       ],
     );
   }
@@ -502,6 +510,7 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
   bool? _canCheckBiometrics;
   bool isAuth = false;
   UserCredentials? cred;
+  int failedAttempts = 0;
 
   @override
   void initState() {
@@ -837,8 +846,8 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                             ? () {}
                             : () async {
                                 if (ref
-                                                .watch(biometricProvider)
-                                                .isPaymentBiometricActive ==
+                                    .watch(biometricProvider)
+                                    .isPaymentBiometricActive ==
                                             null ||
                                         !ref
                                             .watch(biometricProvider)
@@ -867,7 +876,7 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                                     ? []
                                                     : [widget.billerCode!],
                                             applyDiscount: double.parse(
-                                                        widget.threshold!) <=
+                                                        widget.threshold ?? "0") <=
                                                     double.parse(widget.amount)
                                                 ? true
                                                 : false,
@@ -1183,6 +1192,19 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
       ),
     );
   }
+  Future<void> _incrementFailedAttempts() async {
+    setState(() {
+      failedAttempts++;
+    });
+    SessionManager.setFailedAttempt(failedAttempts);
+  }
+
+  Future<void> _resetFailedAttempts() async {
+    setState(() {
+      failedAttempts = 0;
+    });
+    SessionManager.setFailedAttempt(failedAttempts);
+  }
 
   Future<void> checkBiometric(BuildContext context) async {
     final LocalAuthentication auth = LocalAuthentication();
@@ -1235,6 +1257,7 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
       isAuth = authenticated ? true : false;
     });
     if (isAuth) {
+      await _incrementFailedAttempts();
       widget.utility
           ? ref.read(buyUtilitiesProvider.notifier).buyUtilities(
               amount: double.parse(widget.amount),
@@ -1299,6 +1322,87 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                         }));
               },
               error: (val) => showErrorBar(context, val));
+    }
+    else {
+      if (failedAttempts >= 3) {
+        final result = await buildShowModalBottomSheet(
+          context,
+          TransactionPinContainer(
+            isData: false,
+            isCard: false,
+            isFundCard: false,
+          ),
+        );
+        if (result != null) {
+          widget.utility
+              ? ref.read(buyUtilitiesProvider.notifier).buyUtilities(
+              amount: double.parse(widget.amount),
+              isSchedule: false,
+              merchantAccount: widget.billerId,
+              merchantReferenceNumber: widget.recipientNo,
+              merchantService:
+              widget.billerCode == null ? [] : [widget.billerCode!],
+              applyDiscount:
+              double.parse(widget.threshold!) <= double.parse(widget.amount)
+                  ? true
+                  : false,
+              subCategory: widget.billerName,
+              transactionPin: result,
+              category: "cable-purchase",
+              then: () {
+                ref.read(getWalletProvider.notifier).getWalletDetails();
+                pushTo(
+                  context,
+                  SuccessMessage(
+                    text: dataSuccess,
+                    subText: deliveredPurchase,
+                    onTap: () {
+                      pushToAndClearStack(
+                        context,
+                        TabLayout(
+                          gottenIndex: 0,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+              error: (val) => showErrorBar(context, val))
+              : ref.read(buyAirtimeProvider.notifier).buyAirtime(
+              subCategory: widget.billerName,
+              amount: widget.amount,
+              applyDiscount:
+              double.parse(widget.threshold!) <= double.parse(widget.amount)
+                  ? true
+                  : false,
+              category: widget.category!,
+              isAirtime: widget.category!.contains("airtime") ? true : false,
+              mobileOperatorServiceId: widget.mobileOperatorServiceId,
+              destinationPhoneNumber: widget.recipientNo,
+              transactionPin: result,
+              mobileOperatorPublicId: widget.billerId,
+              then: () {
+                ref.read(getWalletProvider.notifier).getWalletDetails();
+                pushTo(
+                    context,
+                    SuccessMessage(
+                        text: rechargeSuccessful,
+                        subText: rechargeSuccessfulSub,
+                        onTap: () {
+                          pushToAndClearStack(
+                            context,
+                            TabLayout(
+                              gottenIndex: 0,
+                            ),
+                          );
+                        }));
+              },
+              error: (val) => showErrorBar(context, val));
+
+        }
+      }else{
+        print('authentication failed');
+      }
     }
   }
 }

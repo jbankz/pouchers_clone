@@ -346,6 +346,7 @@ class CardDetails extends StatelessWidget {
                   text: cardNumber,
                   isCopyIcon: true,
                   noSymbol: true,
+                  copyText:cardData.maskedPan! ,
                   subText: cardData.maskedPan!,
                   style: textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
@@ -359,6 +360,7 @@ class CardDetails extends StatelessWidget {
                   subText: cardCvv ?? "",
                   noSymbol: true,
                   isCopyIcon: true,
+                  copyText:cardCvv ,
                   style: textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
@@ -371,6 +373,7 @@ class CardDetails extends StatelessWidget {
                   subText: "${cardData.expiryMonth}/${cardData.expiryYear}",
                   noSymbol: true,
                   isCopyIcon: true,
+                  copyText:"${cardData.expiryMonth}/${cardData.expiryYear}" ,
                   style: textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
@@ -383,6 +386,7 @@ class CardDetails extends StatelessWidget {
                   subText: cardData.account!.accountName!,
                   noSymbol: true,
                   isCopyIcon: true,
+                  copyText:cardData.account!.accountName ,
                   style: textTheme.headline4!.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -409,6 +413,8 @@ class CardDetails extends StatelessWidget {
                       "${cardData.customer!.billingAddress!.line1}",
                   noSymbol: true,
                   isCopyIcon: true,
+                  copyText:cardData.customer == null ? "" :
+                  "${cardData.customer!.billingAddress!.line1}" ,
                   style: textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
@@ -421,6 +427,7 @@ class CardDetails extends StatelessWidget {
                   subText: "${cardData.customer!.billingAddress!.postalCode}",
                   noSymbol: true,
                   isCopyIcon: true,
+                  copyText:"${cardData.customer!.billingAddress!.postalCode}" ,
                   style: textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
@@ -433,6 +440,7 @@ class CardDetails extends StatelessWidget {
                   subText: "${cardData.customer!.billingAddress!.city}",
                   noSymbol: true,
                   isCopyIcon: true,
+                  copyText:"${cardData.customer!.billingAddress!.city}" ,
                   style: textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
@@ -444,6 +452,7 @@ class CardDetails extends StatelessWidget {
                   text: state,
                   isCopyIcon: true,
                   noSymbol: true,
+                  copyText:"${cardData.customer!.billingAddress!.state}" ,
                   subText: "${cardData.customer!.billingAddress!.state}",
                   style: textTheme.headline4!.copyWith(
                     fontWeight: FontWeight.w500,

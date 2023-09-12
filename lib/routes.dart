@@ -1,5 +1,6 @@
 import 'package:Pouchers/modules/account/screens/request/received_details.dart';
 import 'package:Pouchers/modules/account/screens/request/requests.dart';
+import 'package:Pouchers/modules/utilities/screens/buy_education.dart';
 import 'package:flutter/material.dart';
 import 'package:Pouchers/modules/account/screens/account_settings/biometric_settings.dart';
 import 'package:Pouchers/modules/account/screens/account_settings/change_pin.dart';
@@ -112,6 +113,7 @@ Map<String, WidgetBuilder> appRoutes = {
   Betting.routeName: (context) => Betting(),
   BuyAirtime.routeName: (context) => BuyAirtime(),
   BuyCable.routeName: (context) => BuyCable(),
+  BuyEducation.routeName: (context)=>BuyEducation(),
   BuyData.routeName: (context) => BuyData(),
   BuyElectricity.routeName: (context) => BuyElectricity(),
   BuyInternet.routeName: (context) => BuyInternet(),

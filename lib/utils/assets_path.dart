@@ -8,7 +8,7 @@ class AssetPaths {
    // static String send = "${imgPath}send.png";
    static String airplane = "${imgPath}airplane.png";
    static String pageImage = "${imgPath}page_image.png";
-   // static String poucherLogo = "${imgPath}pouchers_logo.png";
+    static String pouchersLogo = "${imgPath}poucher.png";
    static String fingerprint = "${imgPath}fingerprint.png";
    static String dstv = "${imgPath}dstv.png";
    static String twoFactor = "${imgPath}two_factor.png";
@@ -103,4 +103,5 @@ class AssetPaths {
    static String dollarCardIcon = "${iconPath}dollar_card_icon.svg";
    static String send = "${iconPath}send.svg";
  static String poucherLogo = "${iconPath}pouchers_logo.svg";
+   static String education = "${iconPath}education.svg";
 }
