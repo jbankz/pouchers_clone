@@ -190,6 +190,7 @@ class _TransferSummaryState extends ConsumerState<TransferSummary> {
                     pushTo(
                         context,
                         TransferSuccess(
+                          transactionId: next.data!.data!.transactionId,
                             text: "bank",
                             isRequest: false,
                             typeOfTransfer: "localBank",

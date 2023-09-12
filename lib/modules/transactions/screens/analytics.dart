@@ -382,6 +382,42 @@ class _AnalyticsState extends ConsumerState<Analytics> {
                                   ? "0"
                                   : data.data!.analytics![0].voucherPercentage
                                       .toString(),
+                        ),
+                        TransactionsAnalytics(
+                          title: "Education",
+                          image: AssetPaths.educationIcon,
+                          amount: kPriceFormatter(double.parse(
+                              data.data!.analytics![0].totalEducationPurchased ??
+                                  "0")),
+                          percent:
+                          data.data!.analytics![0].educationPercentage == null
+                              ? "0"
+                              : data.data!.analytics![0].educationPercentage
+                              .toString(),
+                        ),
+                        TransactionsAnalytics(
+                          title: "Admin-Credit-Wallet",
+                          image: AssetPaths.voucherIcon,
+                          amount: kPriceFormatter(double.parse(
+                              data.data!.analytics![0].totalAdminCreditWallet ??
+                                  "0")),
+                          percent:
+                          data.data!.analytics![0].adminCreditWalletPercentage == null
+                              ? "0"
+                              : data.data!.analytics![0].adminCreditWalletPercentage
+                              .toString(),
+                        ),
+                        TransactionsAnalytics(
+                          title: "Admin-Debit-Wallet",
+                          image: AssetPaths.voucherIcon,
+                          amount: kPriceFormatter(double.parse(
+                              data.data!.analytics![0].totalAdminDebitWallet ??
+                                  "0")),
+                          percent:
+                          data.data!.analytics![0].adminDebitWalletPercentage == null
+                              ? "0"
+                              : data.data!.analytics![0].adminDebitWalletPercentage
+                              .toString(),
                         )
                       ],
                     );

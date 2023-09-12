@@ -89,6 +89,7 @@ class _CardHomeState extends ConsumerState<CardHome> {
                         return SizedBox();
                       }, done: (data) {
                         if (data != null) {
+                          print("cardurl$data");
                           fetch(data);
                           return SizedBox();
                         } else {
@@ -459,6 +460,9 @@ class _CardHomeState extends ConsumerState<CardHome> {
         "https://tntpaxvvvet.live.verygoodproxy.com/cards/${widget.cardInfo!.cardId}/secure-data/cvv2";
     final url2 =
         "https://tntpaxvvvet.live.verygoodproxy.com/cards/${widget.cardInfo!.cardId}/secure-data/number";
+    logPrint("url${url}");
+    logPrint("$url2{url2}");
+
 
     http.Response response = await http.get(
       Uri.parse(url),

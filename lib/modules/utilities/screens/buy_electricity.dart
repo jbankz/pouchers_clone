@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Pouchers/modules/utilities/model/electricity_summary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -79,7 +80,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
     if(utilitiesData != null && _meterNo.isNotEmpty && paymentType != null){
       ref.read(validateUtilitiesProvider.notifier).validateUtilities(
           merchantAccount: utilitiesData!.operatorpublicid!,
-          merchantReferenceNumber: _meterNo,  merchantProductCode: paymentType!.code!);
+          merchantReferenceNumber: _meterNo,  merchantProductCode: paymentType!.code!, category: utilitiesData!.category!);
     }else{
       showErrorBar(context, "Please choose a provider, type or meter number");
     }
@@ -128,7 +129,8 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                         .read(getUtilitiesTypeProvider.notifier)
                         .getUtilitiesType(
                             merchantServiceId:
-                                utilitiesData!.operatorpublicid!);
+                                utilitiesData!.operatorpublicid!,
+                        categoeyName: utilitiesData!.category!);
                   }
                 },
                 child: Container(
@@ -521,7 +523,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                     } else {
                       buildShowModalBottomSheet(
                         context,
-                        RechargeSummary(
+                        ElectricitySummary(
                           billerName: utilitiesData!.displayName!,
                           billerId: utilitiesData!.operatorpublicid!,
                           utility: true,
@@ -530,7 +532,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                           name: widget.name,
                           threshold: threshold,
                           category: "electricity-purchase",
-                          amount: "${paymentType!.price!}",
+                          amount: "${paymentType!.price ?? _amount}",
                           billerLogo: "",
                           billerCode: paymentType!.code,
                           recipientNo: contactController.text,

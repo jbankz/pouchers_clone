@@ -100,20 +100,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         ),
                         child: Center(
                           child: Text(
-                              ref
-                                          .watch(editProfileInHouseProvider)
+                              ref.watch(editProfileInHouseProvider)
                                           .profilePicture ==
                                       null
                                   ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
                                   : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
-                              style: textTheme.bodyText2!
-                                  .copyWith(fontSize: 22)),
+                              style:
+                                  textTheme.bodyText2!.copyWith(fontSize: 22)),
                         ),
                       )
                     : Image.network(
-                        ref
-                                .watch(editProfileInHouseProvider)
-                                .profilePicture ??
+                        ref.watch(editProfileInHouseProvider).profilePicture ??
                             "",
                         fit: BoxFit.cover,
                         height: 100,
@@ -129,8 +126,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             child: Center(
                               child: Text(
                                   ref
-                                              .watch(
-                                                  editProfileInHouseProvider)
+                                              .watch(editProfileInHouseProvider)
                                               .profilePicture ==
                                           null
                                       ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
@@ -145,8 +141,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           if (loadingProgress == null) return child;
                           return Center(
                             child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes !=
-                                      null
+                              value: loadingProgress.expectedTotalBytes != null
                                   ? loadingProgress.cumulativeBytesLoaded /
                                       loadingProgress.expectedTotalBytes!
                                   : null,

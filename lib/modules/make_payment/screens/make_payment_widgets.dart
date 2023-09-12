@@ -957,6 +957,7 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
               addSpace: false,
               hintText: enterAccNumber,
               controller: accNumberController,
+              inputType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
                 LengthLimitingTextInputFormatter(10)

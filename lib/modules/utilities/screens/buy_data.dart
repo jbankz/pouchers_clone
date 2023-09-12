@@ -153,7 +153,9 @@ class _BuyDataState extends ConsumerState<BuyData>
                                               ? kLightPurple
                                               : kContainerColor,
                                           shape: BoxShape.circle),
-                                      child: CachedNetworkImage(
+                                      child:
+
+                                      CachedNetworkImage(
                                         imageUrl: element.logoUrl == null
                                             ? ""
                                             : element.logoUrl!,
@@ -211,7 +213,8 @@ class _BuyDataState extends ConsumerState<BuyData>
                                                   fontSize:
                                                   10)),
                                         ),
-                                      )),
+                                      )
+                                  ),
                                   currentIndex == index
                                       ? Positioned(
                                     bottom: 0,

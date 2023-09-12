@@ -46,17 +46,22 @@ class TransactionDetails extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              text,
-              style: textTheme.headline3!.copyWith(
-                fontWeight: FontWeight.w500,
+            Expanded(
+              child: Text(
+                
+                text,
+                style: textTheme.headline3!.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-            Text(
-              subText,
-              style: textTheme.subtitle1!.copyWith(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
+            Expanded(
+              child: Text(
+                subText,
+                style: textTheme.subtitle1!.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
               ),
             ),
           ],
@@ -138,10 +143,12 @@ class TransactionReceiptItems extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              text,
-              style: textTheme.headline3!.copyWith(
-                fontWeight: FontWeight.w500,
+            Expanded(
+              child: Text(
+                text,
+                style: textTheme.headline3!.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             hasSymbol
@@ -241,6 +248,9 @@ String changeCatNme(String name, String currency, String subCat, String benefici
     case "fund-wallet":
       cat = "Wallet Funding";
       break;
+    case "education-purchase":
+      cat = "Education Purchase";
+      break;
     case "create-virtual-card":
       cat = "Virtual Card Created ($currency)";
       break;
@@ -250,8 +260,14 @@ String changeCatNme(String name, String currency, String subCat, String benefici
     case "local-bank-transfer":
       cat = "Money Transfer (Bank)";
       break;
-    case "betting_purchase":
+    case "betting-purchase":
       cat = "Betting Purchase ($subCat)";
+      break;
+    case "admin-debit-wallet":
+      cat = "Admin Debit Wallet";
+      break;
+    case "admin-credit-wallet":
+      cat = "Admin Credit Wallet";
       break;
     case "referral-bonus-payment":
       cat = "Referral Bonus ($beneficiary)";

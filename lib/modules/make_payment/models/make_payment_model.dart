@@ -232,9 +232,10 @@ class LocalTransferData {
      this.transactionAmount,
      this.transactionFee,
      this.referenceNumber,
-     this.pagaTransactionId,
+     this.transactionId,
      this.currency,
      this.transactionDate,
+    this.anchorTransactionId
   });
 
   String? senderName;
@@ -244,9 +245,10 @@ class LocalTransferData {
   String? transactionAmount;
   double? transactionFee;
   String? referenceNumber;
-  String? pagaTransactionId;
+  String? transactionId;
   String? currency;
   String? transactionDate;
+  String? anchorTransactionId;
 
   factory LocalTransferData.fromJson(Map<String, dynamic> json) => LocalTransferData(
     senderName: json["sender_name"],
@@ -256,9 +258,10 @@ class LocalTransferData {
     transactionAmount: json["transaction_amount"],
     transactionFee: json["transaction_fee"]?.toDouble(),
     referenceNumber: json["referenceNumber"],
-    pagaTransactionId: json["pagaTransactionId"],
+    transactionId: json["transactionId"],
     currency: json["currency"],
     transactionDate: json["transaction_date"],
+      anchorTransactionId:json["anchorTransactionId"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -269,9 +272,10 @@ class LocalTransferData {
     "transaction_amount": transactionAmount,
     "transaction_fee": transactionFee,
     "referenceNumber": referenceNumber,
-    "pagaTransactionId": pagaTransactionId,
+    "transactionId": transactionId,
     "currency": currency,
     "transaction_date": transactionDate,
+    "anchorTransactionId":anchorTransactionId
   };
 }
 

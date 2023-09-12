@@ -52,10 +52,6 @@ List<VoucherItems> analyticsTransactions = [
   ),
 ];
 
-
-
-
-
 class GetTransactionsResponse {
   String? status;
   String? message;
@@ -69,19 +65,22 @@ class GetTransactionsResponse {
     this.data,
   });
 
-  factory GetTransactionsResponse.fromJson(Map<String, dynamic> json) => GetTransactionsResponse(
-    status: json["status"],
-    message: json["message"],
-    code: json["code"],
-    data: json["data"] == null ? null : GetTransactions.fromJson(json["data"]),
-  );
+  factory GetTransactionsResponse.fromJson(Map<String, dynamic> json) =>
+      GetTransactionsResponse(
+        status: json["status"],
+        message: json["message"],
+        code: json["code"],
+        data: json["data"] == null
+            ? null
+            : GetTransactions.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "code": code,
-    "data": data?.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "code": code,
+        "data": data?.toJson(),
+      };
 }
 
 class GetTransactions {
@@ -95,17 +94,23 @@ class GetTransactions {
     this.page,
   });
 
-  factory GetTransactions.fromJson(Map<String, dynamic> json) => GetTransactions(
-    history: json["history"] == null ? [] : List<GetTransactionsData>.from(json["history"]!.map((x) => GetTransactionsData.fromJson(x))),
-    total: json["total"],
-    page: json["page"],
-  );
+  factory GetTransactions.fromJson(Map<String, dynamic> json) =>
+      GetTransactions(
+        history: json["history"] == null
+            ? []
+            : List<GetTransactionsData>.from(
+                json["history"]!.map((x) => GetTransactionsData.fromJson(x))),
+        total: json["total"],
+        page: json["page"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "history": history == null ? [] : List<dynamic>.from(history!.map((x) => x.toJson())),
-    "total": total,
-    "page": page,
-  };
+        "history": history == null
+            ? []
+            : List<dynamic>.from(history!.map((x) => x.toJson())),
+        "total": total,
+        "page": page,
+      };
 }
 
 class GetTransactionsData {
@@ -141,39 +146,46 @@ class GetTransactionsData {
     this.updatedAt,
   });
 
-  factory GetTransactionsData.fromJson(Map<String, dynamic> json) => GetTransactionsData(
-    transactionId: json["transaction_id"],
-    userId: json["user_id"],
-    amount: json["amount"],
-    transactionFee: json["transaction_fee"],
-    currency: json["currency"],
-    transactionType: json["transaction_type"],
-    transactionCategory: json["transaction_category"],
-    transactionReference: json["transaction_reference"],
-    beneficiaryName: json["beneficiary_name"],
-    extraDetails: json["extra_details"] == null ? null : ExtraDetails.fromJson(json["extra_details"]),
-    remarks: json["remarks"],
-    status: json["status"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-  );
+  factory GetTransactionsData.fromJson(Map<String, dynamic> json) =>
+      GetTransactionsData(
+        transactionId: json["transaction_id"],
+        userId: json["user_id"],
+        amount: json["amount"],
+        transactionFee: json["transaction_fee"],
+        currency: json["currency"],
+        transactionType: json["transaction_type"],
+        transactionCategory: json["transaction_category"],
+        transactionReference: json["transaction_reference"],
+        beneficiaryName: json["beneficiary_name"],
+        extraDetails: json["extra_details"] == null
+            ? null
+            : ExtraDetails.fromJson(json["extra_details"]),
+        remarks: json["remarks"],
+        status: json["status"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "transaction_id": transactionId,
-    "user_id": userId,
-    "amount": amount,
-    "transaction_fee": transactionFee,
-    "currency": currency,
-    "transaction_type": transactionType,
-    "transaction_category": transactionCategory,
-    "transaction_reference": transactionReference,
-    "beneficiary_name": beneficiaryName,
-    "extra_details": extraDetails?.toJson(),
-    "remarks": remarks,
-    "status": status,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-  };
+        "transaction_id": transactionId,
+        "user_id": userId,
+        "amount": amount,
+        "transaction_fee": transactionFee,
+        "currency": currency,
+        "transaction_type": transactionType,
+        "transaction_category": transactionCategory,
+        "transaction_reference": transactionReference,
+        "beneficiary_name": beneficiaryName,
+        "extra_details": extraDetails?.toJson(),
+        "remarks": remarks,
+        "status": status,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
 }
 
 class ExtraDetails {
@@ -193,64 +205,58 @@ class ExtraDetails {
   double? amount;
   String? receiverPicture;
 
-
-  ExtraDetails({
-    this.originalAmountSent,
-    this.senderName,
-    this.senderBank,
-    this.senderAccountNumber,
-    this.extraDetailsSenderName,
-    this.senderTag,
-    this.bankName,
-    this.receiverAccountNumber,
-    this.receiverAccountName,
-    this.phoneNumber,
-    this.category,
-    this.subCategory,
-    this.amount,
-    this.receiverTag,
-    this.receiverPicture
-  });
+  ExtraDetails(
+      {this.originalAmountSent,
+      this.senderName,
+      this.senderBank,
+      this.senderAccountNumber,
+      this.extraDetailsSenderName,
+      this.senderTag,
+      this.bankName,
+      this.receiverAccountNumber,
+      this.receiverAccountName,
+      this.phoneNumber,
+      this.category,
+      this.subCategory,
+      this.amount,
+      this.receiverTag,
+      this.receiverPicture});
 
   factory ExtraDetails.fromJson(Map<String, dynamic> json) => ExtraDetails(
-    originalAmountSent: json["originalAmountSent"],
-    senderName: json["senderName"],
-    senderBank: json["senderBank"],
-    senderAccountNumber: json["senderAccountNumber"],
-    extraDetailsSenderName: json["sender_name"],
-    senderTag: json["sender_tag"],
+      originalAmountSent: json["originalAmountSent"],
+      senderName: json["sender_name"],
+      senderBank: json["senderBank"],
+      senderAccountNumber: json["senderAccountNumber"],
+      extraDetailsSenderName: json["senderName"],
+      senderTag: json["sender_tag"],
       receiverTag: json["receiver_tag"],
-    bankName: json["bank_name"],
-    receiverAccountNumber: json["receiver_account_number"],
-    receiverAccountName: json["receiver_account_name"],
-    phoneNumber: json["phoneNumber"],
-    category: json["category"],
-    subCategory: json["subCategory"],
-    amount: json["amount"]?.toDouble(),
-    receiverPicture: json["receiver_picture"]
-  );
+      bankName: json["bank_name"],
+      receiverAccountNumber: json["receiver_account_number"],
+      receiverAccountName: json["receiver_account_name"],
+      phoneNumber: json["phoneNumber"],
+      category: json["category"],
+      subCategory: json["subCategory"],
+      amount: json["amount"]?.toDouble(),
+      receiverPicture: json["receiver_picture"]);
 
   Map<String, dynamic> toJson() => {
-    "originalAmountSent": originalAmountSent,
-    "senderName": senderName,
-    "senderBank": senderBank,
-    "senderAccountNumber": senderAccountNumber,
-    "sender_name": extraDetailsSenderName,
-    "sender_tag": senderTag,
-    "receiver_tag":receiverTag,
-    "bank_name": bankName,
-    "receiver_account_number": receiverAccountNumber,
-    "receiver_account_name": receiverAccountName,
-    "phoneNumber": phoneNumber,
-    "category": category,
-    "subCategory": subCategory,
-    "amount": amount,
-    "receiver_picture":receiverPicture
-
-  };
+        "originalAmountSent": originalAmountSent,
+        "sender_name": senderName,
+        "senderBank": senderBank,
+        "senderAccountNumber": senderAccountNumber,
+        "senderName": extraDetailsSenderName,
+        "sender_tag": senderTag,
+        "receiver_tag": receiverTag,
+        "bank_name": bankName,
+        "receiver_account_number": receiverAccountNumber,
+        "receiver_account_name": receiverAccountName,
+        "phoneNumber": phoneNumber,
+        "category": category,
+        "subCategory": subCategory,
+        "amount": amount,
+        "receiver_picture": receiverPicture
+      };
 }
-
-
 
 class TransactionAnalyticsResponse {
   TransactionAnalyticsResponse({
@@ -306,27 +312,32 @@ class TransactionAnalyticsData {
 }
 
 class Analytics {
-  Analytics({
-    this.totalSpending,
-    this.totalInflow,
-    this.totalOutflow,
-    this.totalTransfers,
-    this.transferPercentage,
-    this.totalVoucherPurchased,
-    this.voucherPercentage,
-    this.totalAirtimePurchased,
-    this.airtimePercentage,
-    this.totalDataPurchased,
-    this.dataPercentage,
-    this.totalInternetPurchased,
-    this.internetPercentage,
-    this.totalCablePurchased,
-    this.cablePercentage,
-    this.totalElectricityPurchased,
-    this.electricityPercentage,
-    this.totalBettingPurchased,
-    this.bettingPercentage,
-  });
+  Analytics(
+      {this.totalSpending,
+      this.totalInflow,
+      this.totalOutflow,
+      this.totalTransfers,
+      this.transferPercentage,
+      this.totalVoucherPurchased,
+      this.voucherPercentage,
+      this.totalAirtimePurchased,
+      this.airtimePercentage,
+      this.totalDataPurchased,
+      this.dataPercentage,
+      this.totalInternetPurchased,
+      this.internetPercentage,
+      this.totalCablePurchased,
+      this.cablePercentage,
+      this.totalElectricityPurchased,
+      this.electricityPercentage,
+      this.totalBettingPurchased,
+      this.bettingPercentage,
+      this.totalAdminCreditWallet,
+      this.adminCreditWalletPercentage,
+      this.totalAdminDebitWallet,
+      this.adminDebitWalletPercentage,
+      this.totalEducationPurchased,
+      this.educationPercentage});
 
   String? totalSpending;
   String? totalInflow;
@@ -347,28 +358,39 @@ class Analytics {
   dynamic electricityPercentage;
   dynamic totalBettingPurchased;
   dynamic bettingPercentage;
+  dynamic totalAdminCreditWallet;
+  dynamic adminCreditWalletPercentage;
+  dynamic totalAdminDebitWallet;
+  dynamic adminDebitWalletPercentage;
+  dynamic totalEducationPurchased;
+  dynamic educationPercentage;
 
   factory Analytics.fromJson(Map<String, dynamic> json) => Analytics(
-        totalSpending: json["total_spending"],
-        totalInflow: json["total_inflow"],
-        totalOutflow: json["total_outflow"],
-        totalTransfers: json["total_transfers"],
-        transferPercentage: json["transfer_percentage"],
-        totalVoucherPurchased: json["total_voucher_purchased"],
-        voucherPercentage: json["voucher_percentage"],
-        totalAirtimePurchased: json["total_airtime_purchased"],
-        airtimePercentage: json["airtime_percentage"],
-        totalDataPurchased: json["total_data_purchased"],
-        dataPercentage: json["data_percentage"],
-        totalInternetPurchased: json["total_internet_purchased"],
-        internetPercentage: json["internet_percentage"],
-        totalCablePurchased: json["total_cable_purchased"],
-        cablePercentage: json["cable_percentage"],
-        totalElectricityPurchased: json["total_electricity_purchased"],
-        electricityPercentage: json["electricity_percentage"],
-        totalBettingPurchased: json["total_betting_purchased"],
-        bettingPercentage: json["betting_percentage"],
-      );
+      totalSpending: json["total_spending"],
+      totalInflow: json["total_inflow"],
+      totalOutflow: json["total_outflow"],
+      totalTransfers: json["total_transfers"],
+      transferPercentage: json["transfer_percentage"],
+      totalVoucherPurchased: json["total_voucher_purchased"],
+      voucherPercentage: json["voucher_percentage"],
+      totalAirtimePurchased: json["total_airtime_purchased"],
+      airtimePercentage: json["airtime_percentage"],
+      totalDataPurchased: json["total_data_purchased"],
+      dataPercentage: json["data_percentage"],
+      totalInternetPurchased: json["total_internet_purchased"],
+      internetPercentage: json["internet_percentage"],
+      totalCablePurchased: json["total_cable_purchased"],
+      cablePercentage: json["cable_percentage"],
+      totalElectricityPurchased: json["total_electricity_purchased"],
+      electricityPercentage: json["electricity_percentage"],
+      totalBettingPurchased: json["total_betting_purchased"],
+      bettingPercentage: json["betting_percentage"],
+      totalAdminCreditWallet: json["total_admin_credit_wallet"],
+      adminCreditWalletPercentage: json["admin_credit_wallet_percentage"],
+      totalAdminDebitWallet: json["total_admin_debit_wallet"],
+      adminDebitWalletPercentage: json["admin_debit_wallet_percentage"],
+      totalEducationPurchased: json["total_education_purchased"],
+      educationPercentage: json["education_percentage"]);
 
   Map<String, dynamic> toJson() => {
         "total_spending": totalSpending,
@@ -390,6 +412,12 @@ class Analytics {
         "electricity_percentage": electricityPercentage,
         "total_betting_purchased": totalBettingPurchased,
         "betting_percentage": bettingPercentage,
+        "total_admin_credit_wallet": totalAdminCreditWallet,
+        "admin_credit_wallet_percentage": adminCreditWalletPercentage,
+        "total_admin_debit_wallet": totalAdminDebitWallet,
+        "admin_debit_wallet_percentage": adminDebitWalletPercentage,
+        "total_education_purchased": totalEducationPurchased,
+        "education_percentage": educationPercentage
       };
 }
 
@@ -405,7 +433,7 @@ class AnalyticsSummary {
   factory AnalyticsSummary.fromJson(Map<String, dynamic> json) =>
       AnalyticsSummary(
         day: json["day"],
-        totalOutflow:  json["total_outflow"],
+        totalOutflow: json["total_outflow"],
       );
 
   Map<String, dynamic> toJson() => {

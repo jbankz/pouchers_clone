@@ -1,3 +1,4 @@
+import 'package:Pouchers/modules/utilities/screens/buy_education.dart';
 import 'package:flutter/material.dart';
 import 'package:Pouchers/modules/account/models/ui_models_class.dart';
 import 'package:Pouchers/modules/onboarding/model/onboarding_model.dart';
@@ -157,10 +158,28 @@ final List<GuestClass> guestHomeClass = [
       isGuest: false,
     ),
   ),
-  GuestClass("More", AssetPaths.moreIcon,
-      page: Container(
-        color: Colors.white,
-      )),
+  GuestClass("Education", AssetPaths.education,
+    page: BuyEducation(
+      isGuest: false,
+    ),
+  // GuestClass("More", AssetPaths.moreIcon,
+  //     page: BuyEducation(
+  //       isGuest: false,
+  //     ),
+
+      // Container(
+      //   color: Colors.white,
+      // )
+  ),
+];
+
+
+final List<GuestClass> guestHome2Class = [
+  GuestClass("Education", AssetPaths.education,
+    page: BuyEducation(
+      isGuest: false,
+    ),
+  ),
 ];
 
 final List<GuestClass> voucherClass = [

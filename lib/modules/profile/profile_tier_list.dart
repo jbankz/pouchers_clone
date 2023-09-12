@@ -275,7 +275,7 @@ class TiersContainer extends StatelessWidget {
               SizedBox(
                 height: kPadding,
               ),
-              maxbalance == "unlimited"
+              maxbalance == "Unlimited"
                   ?
                    Text(
                      capitalize(maxbalance),

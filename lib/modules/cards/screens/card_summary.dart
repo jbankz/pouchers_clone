@@ -1,4 +1,4 @@
-import 'package:Pouchers/modules/account/providers/account_provider.dart';
+  import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_auth/local_auth.dart';

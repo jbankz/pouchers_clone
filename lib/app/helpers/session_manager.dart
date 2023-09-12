@@ -23,6 +23,7 @@ class SessionManager {
   static String refreshAccessToken = "refreshAccessToken";
   static String fingerPrint = "fingerPrint";
   static String inactivityTime = "inactiveTime";
+  static String failedBio = "failedAttempts";
 
 
   /// SETTERS
@@ -32,6 +33,10 @@ class SessionManager {
 
   static void setInactiveTime(DateTime time) {
     SessionManager.prefs.setString(inactivityTime, time.toIso8601String());
+  }
+
+  static void setFailedAttempt(int failedAttempt) async {
+    await SessionManager.prefs.setInt(failedBio, failedAttempt);
   }
 
   static DateTime? getInactiveTime() {
@@ -82,8 +87,14 @@ class SessionManager {
   static bool? getFingerPrint() {
     return SessionManager.prefs.getBool(fingerPrint);
   }
+  static int? getFailedAttempt(){
+    return SessionManager.prefs.getInt(failedBio) ?? 0;
+  }
 
+  
   static void clear() {
     SessionManager.prefs.remove(sessionToken);
   }
+  
+  
 }

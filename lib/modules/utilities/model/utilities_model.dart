@@ -128,7 +128,8 @@ class GetUtilitiesData {
     this.name,
     this.displayName,
     this.category,
-    this.status,
+    this.categoryName,
+    this.categoryid,
     this.logoUrl,
     this.operatorpublicid,
   });
@@ -136,7 +137,8 @@ class GetUtilitiesData {
   String? name;
   String? displayName;
   String? category;
-  String? status;
+  String? categoryName;
+  String? categoryid;
   String? logoUrl;
   String? operatorpublicid;
 
@@ -145,7 +147,8 @@ class GetUtilitiesData {
         name: json["name"],
         displayName: json["display_name"],
         category: json["category"],
-        status: json["status"],
+        categoryName: json["categoryname"],
+        categoryid: json["categoryid"],
         logoUrl: json["logo_url"],
         operatorpublicid: json["operatorpublicid"],
       );
@@ -154,8 +157,9 @@ class GetUtilitiesData {
         "name": name,
         "display_name": displayName,
         "category": category,
-        "status": status,
-    "logo_url" : logoUrl,
+        "categoryname": categoryName,
+        "categoryid": categoryid,
+        "logo_url": logoUrl,
         "operatorpublicid": operatorpublicid,
       };
 }
@@ -236,12 +240,24 @@ class Service {
   int? price;
   String? shortCode;
 
-  factory Service.fromJson(Map<String, dynamic> json) => Service(
-        name: json["name"],
-        code: json["code"],
-        price: json["price"],
-        shortCode: json["shortCode"],
-      );
+  factory Service.fromJson(Map<String, dynamic> json) {
+    dynamic priceValue = json["price"];
+    int? parsedPrice;
+    if (priceValue is int) {
+      parsedPrice = priceValue;
+    } else if (priceValue is String) {
+      parsedPrice = int.tryParse(priceValue);
+    }
+
+    return Service(
+      name: json["name"],
+      code: json["code"],
+      price: parsedPrice,
+      shortCode: json["shortCode"],
+    );
+  }
+
+
 
   Map<String, dynamic> toJson() => {
         "name": name,
@@ -254,10 +270,10 @@ class Service {
 
 class DataBundleResponse {
   DataBundleResponse({
-     this.status,
-     this.message,
-     this.code,
-     this.data,
+    this.status,
+    this.message,
+    this.code,
+    this.data,
   });
 
   String? status;
@@ -265,19 +281,20 @@ class DataBundleResponse {
   int? code;
   BundleData? data;
 
-  factory DataBundleResponse.fromJson(Map<String, dynamic> json) => DataBundleResponse(
-    status: json["status"],
-    message: json["message"],
-    code: json["code"],
-    data: BundleData.fromJson(json["data"]),
-  );
+  factory DataBundleResponse.fromJson(Map<String, dynamic> json) =>
+      DataBundleResponse(
+        status: json["status"],
+        message: json["message"],
+        code: json["code"],
+        data: BundleData.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "code": code,
-    "data": data!.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "code": code,
+        "data": data!.toJson(),
+      };
 }
 
 class BundleData {
@@ -294,26 +311,29 @@ class BundleData {
   List<MobileOperatorService>? mobileOperatorServices;
 
   factory BundleData.fromJson(Map<String, dynamic> json) => BundleData(
-    responseCode: json["responseCode"],
-    responseCategoryCode: json["responseCategoryCode"],
-    message: json["message"],
-    mobileOperatorServices: List<MobileOperatorService>.from(json["mobileOperatorServices"].map((x) => MobileOperatorService.fromJson(x))),
-  );
+        responseCode: json["responseCode"],
+        responseCategoryCode: json["responseCategoryCode"],
+        message: json["message"],
+        mobileOperatorServices: List<MobileOperatorService>.from(
+            json["mobileOperatorServices"]
+                .map((x) => MobileOperatorService.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "responseCode": responseCode,
-    "responseCategoryCode": responseCategoryCode,
-    "message": message,
-    "mobileOperatorServices": List<dynamic>.from(mobileOperatorServices!.map((x) => x.toJson())),
-  };
+        "responseCode": responseCode,
+        "responseCategoryCode": responseCategoryCode,
+        "message": message,
+        "mobileOperatorServices":
+            List<dynamic>.from(mobileOperatorServices!.map((x) => x.toJson())),
+      };
 }
 
 class MobileOperatorService {
   MobileOperatorService({
-     this.mobileOperatorId,
-     this.servicePrice,
-     this.serviceName,
-     this.serviceId,
+    this.mobileOperatorId,
+    this.servicePrice,
+    this.serviceName,
+    this.serviceId,
   });
 
   int? mobileOperatorId;
@@ -321,28 +341,28 @@ class MobileOperatorService {
   String? serviceName;
   int? serviceId;
 
-  factory MobileOperatorService.fromJson(Map<String, dynamic> json) => MobileOperatorService(
-    mobileOperatorId: json["mobileOperatorId"],
-    servicePrice: json["servicePrice"].toDouble(),
-    serviceName: json["serviceName"],
-    serviceId: json["serviceId"],
-  );
+  factory MobileOperatorService.fromJson(Map<String, dynamic> json) =>
+      MobileOperatorService(
+        mobileOperatorId: json["mobileOperatorId"],
+        servicePrice: json["servicePrice"].toDouble(),
+        serviceName: json["serviceName"],
+        serviceId: json["serviceId"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "mobileOperatorId": mobileOperatorId,
-    "servicePrice": servicePrice,
-    "serviceName": serviceName,
-    "serviceId": serviceId,
-  };
+        "mobileOperatorId": mobileOperatorId,
+        "servicePrice": servicePrice,
+        "serviceName": serviceName,
+        "serviceId": serviceId,
+      };
 }
-
 
 class GetAllScheduleResponse {
   GetAllScheduleResponse({
-     this.status,
-     this.message,
-     this.code,
-     this.data,
+    this.status,
+    this.message,
+    this.code,
+    this.data,
   });
 
   String? status;
@@ -350,31 +370,33 @@ class GetAllScheduleResponse {
   int? code;
   List<GetAllScheduleData>? data;
 
-  factory GetAllScheduleResponse.fromJson(Map<String, dynamic> json) => GetAllScheduleResponse(
-    status: json["status"],
-    message: json["message"],
-    code: json["code"],
-    data: List<GetAllScheduleData>.from(json["data"].map((x) => GetAllScheduleData.fromJson(x))),
-  );
+  factory GetAllScheduleResponse.fromJson(Map<String, dynamic> json) =>
+      GetAllScheduleResponse(
+        status: json["status"],
+        message: json["message"],
+        code: json["code"],
+        data: List<GetAllScheduleData>.from(
+            json["data"].map((x) => GetAllScheduleData.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "code": code,
-    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
-  };
+        "status": status,
+        "message": message,
+        "code": code,
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+      };
 }
 
 class GetAllScheduleData {
   GetAllScheduleData({
     this.scheduleId,
-     this.amount,
-     this.recipient,
-     this.category,
-     this.subCategory,
-     this.frequency,
+    this.amount,
+    this.recipient,
+    this.category,
+    this.subCategory,
+    this.frequency,
     this.bankName,
-     this.createdAt,
+    this.createdAt,
     this.beneficiaryAccountName,
   });
 
@@ -388,39 +410,40 @@ class GetAllScheduleData {
   DateTime? createdAt;
   dynamic beneficiaryAccountName;
 
-
-  factory GetAllScheduleData.fromJson(Map<String, dynamic> json) => GetAllScheduleData(
-    scheduleId: json["schedule_id"],
-    amount: json["amount"].toString(),
-    recipient: json["recipient"],
-    category: json["category"],
-    subCategory: json["sub_category"],
-    frequency: json["frequency"],
-    bankName: json["bank_name"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    beneficiaryAccountName: json["beneficiary_account_name"],
-  );
+  factory GetAllScheduleData.fromJson(Map<String, dynamic> json) =>
+      GetAllScheduleData(
+        scheduleId: json["schedule_id"],
+        amount: json["amount"].toString(),
+        recipient: json["recipient"],
+        category: json["category"],
+        subCategory: json["sub_category"],
+        frequency: json["frequency"],
+        bankName: json["bank_name"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        beneficiaryAccountName: json["beneficiary_account_name"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "schedule_id": scheduleId,
-    "amount": amount,
-    "recipient": recipient,
-    "category": category,
-    "sub_category": subCategory,
-    "frequency": frequency,
-    "bank_name": bankName,
-    "created_at": createdAt!.toIso8601String(),
-    "beneficiary_account_name": beneficiaryAccountName,
-  };
+        "schedule_id": scheduleId,
+        "amount": amount,
+        "recipient": recipient,
+        "category": category,
+        "sub_category": subCategory,
+        "frequency": frequency,
+        "bank_name": bankName,
+        "created_at": createdAt!.toIso8601String(),
+        "beneficiary_account_name": beneficiaryAccountName,
+      };
 }
-
 
 class DiscountResponse {
   DiscountResponse({
-     this.status,
-     this.message,
-     this.code,
-     this.data,
+    this.status,
+    this.message,
+    this.code,
+    this.data,
   });
 
   String? status;
@@ -428,31 +451,32 @@ class DiscountResponse {
   int? code;
   DiscountResponseData? data;
 
-  factory DiscountResponse.fromJson(Map<String, dynamic> json) => DiscountResponse(
-    status: json["status"],
-    message: json["message"],
-    code: json["code"],
-    data: DiscountResponseData.fromJson(json["data"]),
-  );
+  factory DiscountResponse.fromJson(Map<String, dynamic> json) =>
+      DiscountResponse(
+        status: json["status"],
+        message: json["message"],
+        code: json["code"],
+        data: DiscountResponseData.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "code": code,
-    "data": data!.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "code": code,
+        "data": data!.toJson(),
+      };
 }
 
 class DiscountResponseData {
   DiscountResponseData({
-     this.productCategory,
-     this.discountValue,
-     this.discountType,
-     this.threshold,
-     this.frequency,
-     this.status,
-     this.startDate,
-     this.endDate,
+    this.productCategory,
+    this.discountValue,
+    this.discountType,
+    this.threshold,
+    this.frequency,
+    this.status,
+    this.startDate,
+    this.endDate,
   });
 
   String? productCategory;
@@ -464,28 +488,29 @@ class DiscountResponseData {
   DateTime? startDate;
   DateTime? endDate;
 
-  factory DiscountResponseData.fromJson(Map<String, dynamic> json) => DiscountResponseData(
-    productCategory: json["product_category"],
-    discountValue: json["discount_value"],
-    discountType: json["discount_type"],
-    threshold: json["threshold"],
-    frequency: json["frequency"],
-    status: json["status"],
-    startDate: json["start_date"] == null ? null : DateTime.parse(json["start_date"]),
-    endDate: json["end_date"] == null ? null : DateTime.parse(json["end_date"]),
-  );
+  factory DiscountResponseData.fromJson(Map<String, dynamic> json) =>
+      DiscountResponseData(
+        productCategory: json["product_category"],
+        discountValue: json["discount_value"],
+        discountType: json["discount_type"],
+        threshold: json["threshold"],
+        frequency: json["frequency"],
+        status: json["status"],
+        startDate: json["start_date"] == null
+            ? null
+            : DateTime.parse(json["start_date"]),
+        endDate:
+            json["end_date"] == null ? null : DateTime.parse(json["end_date"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "product_category": productCategory,
-    "discount_value": discountValue,
-    "discount_type": discountType,
-    "threshold": threshold,
-    "frequency": frequency,
-    "status": status,
-    "start_date": startDate!.toIso8601String(),
-    "end_date": endDate!.toIso8601String(),
-  };
+        "product_category": productCategory,
+        "discount_value": discountValue,
+        "discount_type": discountType,
+        "threshold": threshold,
+        "frequency": frequency,
+        "status": status,
+        "start_date": startDate!.toIso8601String(),
+        "end_date": endDate!.toIso8601String(),
+      };
 }
-
-
-

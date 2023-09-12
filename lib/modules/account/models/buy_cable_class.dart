@@ -82,9 +82,11 @@ class _UtilityModalState extends State<UtilityModal> {
                                       },
                                       child: Row(
                                         children: [
-                                          Text(
-                                            e.name!,
-                                            style: textTheme.subtitle1,
+                                          Expanded(
+                                            child: Text(
+                                              e.name!,
+                                              style: textTheme.subtitle1,
+                                            ),
                                           )
                                         ],
                                       ),
@@ -129,7 +131,7 @@ class _SubscriptionModalState extends State<SubscriptionModal> {
   Widget build(BuildContext context) {
     print("subscription modal${widget.threshold}");
     TextTheme textTheme = Theme.of(context).textTheme;
-    print(widget.threshold);
+    print(widget.discountValue);
     return makeDismissible(
       context: context,
       child: DraggableScrollableSheet(
@@ -215,7 +217,7 @@ class _SubscriptionModalState extends State<SubscriptionModal> {
                                                 ),
                                                 children: [
                                                   TextSpan(
-                                                    text: "${e.price!}",
+                                                    text: "${e.price?? "0"}",
                                                     style: textTheme.subtitle1!
                                                         .copyWith(
                                                             fontWeight:
@@ -229,7 +231,7 @@ class _SubscriptionModalState extends State<SubscriptionModal> {
                                                     widget.discountValue == "0"
                                                 ? SizedBox()
                                                 : double.parse(widget
-                                                            .threshold!) <=
+                                                            .threshold ?? "0") <=
                                                         e.price!
                                                     ? Container(
                                                         padding: EdgeInsets.all(
@@ -242,7 +244,7 @@ class _SubscriptionModalState extends State<SubscriptionModal> {
                                                           color: kPurpleColor,
                                                         ),
                                                         child: Text(
-                                                          "${widget.discountValue}% cashback",
+                                                          "${widget.discountValue ?? 0}% cashback",
                                                           style: textTheme
                                                               .headline4!
                                                               .copyWith(

@@ -59,6 +59,9 @@ class _CreateAccountState extends State<CreateAccount> {
                     textTheme: textTheme,
                     text: firstName,
                     hintText: enterName,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(onlyTextDashValues),
+                    ],
                     onSaved: (val) => setState(() => _firstName = val),
                     validator: (val) {
                       if (val!.isEmpty) {
@@ -79,6 +82,9 @@ class _CreateAccountState extends State<CreateAccount> {
                     textTheme: textTheme,
                     text: lastName,
                     hintText: enterName,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(onlyTextDashValues),
+                    ],
                     onSaved: (val) => setState(() => _lastName = val),
                     validator: (val) {
                       if (val!.isEmpty) {

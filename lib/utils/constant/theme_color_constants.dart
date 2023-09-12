@@ -6,6 +6,8 @@ Duration requestDuration = const Duration(seconds: 60);
 bool isFirstTime = true;
 
 RegExp onlyTextValues = RegExp(r'[a-zA-Z]');
+RegExp onlyTextDashValues = RegExp(r'^[A-Za-z\-]+$');
+
 
 
 bool isPassword(String password) {

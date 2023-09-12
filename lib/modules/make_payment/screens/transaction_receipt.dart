@@ -112,18 +112,18 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                               text: beneficiary,
                               subText: widget.beneficiary?.toTitleCase2() ?? "No name",
                             ),
-                            widget.typeOfTransfer == "localBank"
-                                ? TransactionReceiptItems(
-                                    text: beneficiary,
-                                    subText: widget.beneficiary ?? "",
-                                  )
-                                : SizedBox(),
+                            // widget.typeOfTransfer == "localBank"
+                            //     ? TransactionReceiptItems(
+                            //         text: beneficiary,
+                            //         subText: widget.beneficiary ?? "",
+                            //       )
+                            //     : SizedBox(),
                             widget.typeOfTransfer == "localBank"
                                 ? Column(
                                     children: [
                                       TransactionReceiptItems(
                                         text: bankName,
-                                        subText: widget.transferName ?? "",
+                                        subText: widget.transferName?.toCapitalized() ?? "",
                                       ),
                                       TransactionReceiptItems(
                                         text: accNumber,
@@ -154,7 +154,7 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                             widget.typeOfTransfer == "localBank"
                                 ? TransactionReceiptItems(
                                     text: transactionFee,
-                                    subText: widget.transactionFee.toString(),
+                                    subText: widget.transactionFee?.toString() ?? "0",
                                     hasSymbol: true,
                                   )
                                 : SizedBox(),
@@ -262,8 +262,7 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
             ),
           ),
 
-                  widget.transferStatus ==
-              "debit" ?
+                  widget.transferStatus == "debit" ?
           widget.fromWhere == "history"
               ? Padding(
                   padding: const EdgeInsets.all(kMediumPadding),
@@ -286,7 +285,8 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                         );
                       }),
                 )
-              : Container(
+              : SizedBox():
+          Container(
                   padding: EdgeInsets.symmetric(
                       vertical: kSmallPadding, horizontal: kMediumPadding),
                   decoration: BoxDecoration(
@@ -379,7 +379,7 @@ class _TransactionReceiptState extends State<TransactionReceipt> {
                       ),
                     ],
                   ),
-                ) : SizedBox()
+                )
         ],
       ),
     );

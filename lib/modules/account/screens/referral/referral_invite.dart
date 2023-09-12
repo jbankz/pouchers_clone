@@ -89,15 +89,15 @@ class ReferralInvite extends StatelessWidget {
           SizedBox(
             height: kRegularPadding,
           ),
-           Text(
-              tapCopyCode,
-              style: textTheme.subtitle1,
-            ),
+          //  Text(
+          //     tapCopyCode,
+          //     style: textTheme.subtitle1,
+          //   ),
           SizedBox(
             height: kLargePadding,
           ),
           LargeButton(
-            title: sendInvite,
+            title:"COPY CODE" ,
             onPressed: () {
               Share.share(userProfile.referralCode ?? "");
             },
