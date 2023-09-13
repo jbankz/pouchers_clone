@@ -532,7 +532,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                           name: widget.name,
                           threshold: threshold,
                           category: "electricity-purchase",
-                          amount: "${paymentType!.price ?? _amount}",
+                          amount: "${   _amount}",
                           billerLogo: "",
                           billerCode: paymentType!.code,
                           recipientNo: contactController.text,
