@@ -140,10 +140,10 @@ class _NotificationPageState extends ConsumerState<NotificationPage> {
                             SizedBox(
                               height: kSmallPadding,
                             ),
-                            Text(
-                              "View all notifications",
-                              style: textTheme.headline2,
-                            )
+                            // Text(
+                            //   "View all notifications",
+                            //   style: textTheme.headline2,
+                            // )
                           ],
                         );
                 } else {

@@ -128,7 +128,7 @@ class _PouchersTierListState extends ConsumerState<PouchersTierList> {
                               SizedBox(
                                 height: kMediumPadding,
                               ),
-                              TiersContainer(
+                               TiersContainer(
                                 bgColor: kPrimaryColor,
                                 textColor: kPrimaryColor,
                                 color: kPrimaryWhite,
@@ -275,7 +275,7 @@ class TiersContainer extends StatelessWidget {
               SizedBox(
                 height: kPadding,
               ),
-              maxbalance == "Unlimited"
+              maxbalance == "Unlimited " || maxbalance== "Unlimited"
                   ?
                    Text(
                      capitalize(maxbalance),
