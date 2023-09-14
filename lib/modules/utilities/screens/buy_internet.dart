@@ -294,7 +294,10 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
-                onChanged: _onChangeHandler,
+                onEditingComplete: () {
+                  _onChangeHandler(contactController.text);
+                },
+               // onChanged: _onChangeHandler,
                 icon: inkWell(
                   onTap: utilitiesData == null && paymentType == null ? null : () async {
                     final PhoneContact contact =

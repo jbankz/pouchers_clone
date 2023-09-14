@@ -292,7 +292,10 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
-                onChanged: _onChangeHandler,
+                onEditingComplete: () {
+                  _onChangeHandler(contactController.text);
+                },
+                //onChanged: _onChangeHandler,
                 icon: inkWell(
                   onTap: utilitiesData == null && paymentType == null ? null :  () async {
                     final PhoneContact contact =
@@ -532,7 +535,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                           name: widget.name,
                           threshold: threshold,
                           category: "electricity-purchase",
-                          amount: "${   _amount}",
+                          amount: "${ _amount}",
                           billerLogo: "",
                           billerCode: paymentType!.code,
                           recipientNo: contactController.text,
