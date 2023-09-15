@@ -48,7 +48,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
   String? discountValue;
   String error = "";
 
-  Timer? searchOnStoppedTyping;
+  Timer? _debounce;
 
   _onChangeHandler(value) {
     if (value!.isEmpty) {
@@ -57,14 +57,10 @@ class _BuyCableState extends ConsumerState<BuyCable> {
       setState(() {
         cardNo = value;
       });
-      const duration = Duration(seconds: 1);
-      if (searchOnStoppedTyping != null) {
-        setState(() => searchOnStoppedTyping!.cancel()); // clear timer
-      }
-      setState(() => searchOnStoppedTyping = new Timer(duration, () {
-            FocusScope.of(context).unfocus();
-            search(value);
-          }));
+      if (_debounce?.isActive ?? false) _debounce?.cancel();
+      _debounce = Timer(const Duration(milliseconds: 500), () {
+        search(value);
+      });
     }
   }
 
@@ -87,6 +83,12 @@ class _BuyCableState extends ConsumerState<BuyCable> {
       ref.read(getUtilitiesProvider.notifier).getUtilities(utility: "cable");
       ref.read(getDiscountProvider.notifier).getDiscount(utility: "cable");
     });
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
   }
 
   @override
@@ -246,7 +248,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                       Consumer(builder: (context, ref, _) {
                         var _widget = Row(
                           children: [
-                            paymentType == null
+                            paymentType?.price == null || paymentType?.price == 0
                                 ? SizedBox()
                                 : RichText(
                                     text: TextSpan(
@@ -305,10 +307,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
-                onEditingComplete: () {
-                  _onChangeHandler(contactController.text);
-                },
-                //onChanged: _onChangeHandler,
+                onChanged: _onChangeHandler,
                 icon:  inkWell(
                   onTap: utilitiesData == null && paymentType == null ? null :  () async {
                     final PhoneContact contact =
@@ -336,6 +335,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                         style: textTheme.headline4!.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
+                            color: done == "Account not found" ? kColorRed : null
                         ),
                       )
                     ],

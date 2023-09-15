@@ -245,6 +245,7 @@ class VerifyEmailResponseData {
         "email": email,
         "first_name": firstName,
         "last_name": lastName,
+        "address": address,
         "verification_token": verificationToken,
         "verification_token_expires": verificationTokenExpires,
         "tier_levels": tierLevels,

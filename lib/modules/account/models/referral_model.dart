@@ -250,27 +250,31 @@ class BannerData {
      this.id,
      this.imageUrl,
      this.type,
+    this.routingUrl,
   });
 
   String? id;
   String? imageUrl;
   String? type;
+  String? routingUrl;
 
   factory BannerData.fromJson(Map<String, dynamic> json) => BannerData(
     id: json["id"],
     imageUrl: json["image_url"],
     type: json["type"],
+      routingUrl: json["routing_url"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "image_url": imageUrl,
     "type": type,
+    "routing_url": routingUrl,
   };
 
   @override
   String toString() {
-    return 'BannerData{id: $id, imageUrl: $imageUrl, type: $type}';
+    return 'BannerData{id: $id, imageUrl: $imageUrl, type: $type, routing_url: $routingUrl}';
   }
 }
 

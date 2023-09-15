@@ -53,7 +53,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
   String? threshold;
   String? discountValue;
 
-  Timer? searchOnStoppedTyping;
+  Timer? _debounce;
   String error = "";
 
   _onChangeHandler(value) {
@@ -63,16 +63,11 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
       setState(() {
         _meterNo = value;
       });
-      const duration = Duration(
-          seconds:
-          1); // set the duration that you want call search() after that.
-      if (searchOnStoppedTyping != null) {
-        setState(() => searchOnStoppedTyping!.cancel()); // clear timer
-      }
-      setState(() => searchOnStoppedTyping = new Timer(duration, () {
-        FocusScope.of(context).unfocus();
+
+      if (_debounce?.isActive ?? false) _debounce?.cancel();
+      _debounce = Timer(const Duration(milliseconds: 500), () {
         search(value);
-      }));
+      });
     }
   }
 
@@ -98,6 +93,12 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
           .read(getDiscountProvider.notifier)
           .getDiscount(utility: "electricity");
     });
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
   }
 
   @override
@@ -292,10 +293,10 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
-                onEditingComplete: () {
-                  _onChangeHandler(contactController.text);
-                },
-                //onChanged: _onChangeHandler,
+                // onEditingComplete: () {
+                //   _onChangeHandler(contactController.text);
+                // },
+                onChanged: _onChangeHandler,
                 icon: inkWell(
                   onTap: utilitiesData == null && paymentType == null ? null :  () async {
                     final PhoneContact contact =
@@ -320,6 +321,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                         style: textTheme.headline4!.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
+                          color: done == "Account not found" ? kColorRed : null
                         ),
                       )
                     ],

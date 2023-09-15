@@ -381,7 +381,7 @@ class UtilitiesService {
         throw Failure.fromJson(responseBody);
       } else {
         return serveSuccess<String>(
-          data: responseBody["data"]["customerName"],
+          data: responseBody["data"]["customerName"] ?? "Account not found",
           message: responseBody["message"],
         );
       }

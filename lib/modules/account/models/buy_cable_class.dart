@@ -207,7 +207,7 @@ class _SubscriptionModalState extends State<SubscriptionModal> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,
                                           children: [
-                                            RichText(
+                                            e.price != null && e.price != 0 ? RichText(
                                               text: TextSpan(
                                                 text: "₦",
                                                 style: TextStyle(
@@ -226,7 +226,7 @@ class _SubscriptionModalState extends State<SubscriptionModal> {
                                                   )
                                                 ],
                                               ),
-                                            ),
+                                            ) : const SizedBox(),
                                             widget.threshold == "0" ||
                                                     widget.discountValue == "0"
                                                 ? SizedBox()

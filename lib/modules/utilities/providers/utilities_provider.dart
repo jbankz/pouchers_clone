@@ -36,7 +36,7 @@ final getDiscountProvider = StateNotifierProvider.autoDispose<
   return GetDiscountNotifier(ref.read(utilitiesRepoProvider));
 });
 
-final getUtilitiesTypeProvider = StateNotifierProvider.autoDispose<
+final getUtilitiesTypeProvider = StateNotifierProvider<
     GetUtilitiesTypeNotifier, NotifierState<GetUtilitiesTypesResponse>>((ref) {
   return GetUtilitiesTypeNotifier(ref.read(utilitiesRepoProvider));
 });

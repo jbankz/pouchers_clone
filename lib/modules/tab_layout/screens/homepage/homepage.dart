@@ -92,8 +92,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     TextTheme textTheme = Theme.of(context).textTheme;
     SizeConfig().init(context);
     return Padding(
-      padding: EdgeInsets.only(
-          left: kMediumPadding, right: kMediumPadding, top: kSmallPadding),
+      padding: EdgeInsets.only(left: kMediumPadding, right: kMediumPadding, top: kSmallPadding),
       child: Column(
         children: [
           inkWell(
@@ -109,8 +108,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(116),
-                  child: ref.watch(editProfileInHouseProvider).profilePicture ==
-                          null
+                  child: ref.watch(editProfileInHouseProvider).profilePicture == null
                       ? Container(
                           height: 50,
                           width: 50,
@@ -120,21 +118,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                           ),
                           child: Center(
                             child: Text(
-                                ref
-                                            .watch(editProfileInHouseProvider)
-                                            .profilePicture ==
-                                        null
+                                ref.watch(editProfileInHouseProvider).profilePicture == null
                                     ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
                                     : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
-                                style: textTheme.bodyText2!
-                                    .copyWith(fontSize: 22)),
+                                style: textTheme.bodyText2!.copyWith(fontSize: 22)),
                           ),
                         )
                       : Image.network(
-                          ref
-                                  .watch(editProfileInHouseProvider)
-                                  .profilePicture ??
-                              "",
+                          ref.watch(editProfileInHouseProvider).profilePicture ?? "",
                           errorBuilder: (BuildContext context, _, stackTrace) {
                             return Container(
                               height: 50,
@@ -145,31 +136,21 @@ class _HomePageState extends ConsumerState<HomePage> {
                               ),
                               child: Center(
                                 child: Text(
-                                    ref
-                                                .watch(
-                                                    editProfileInHouseProvider)
-                                                .profilePicture ==
-                                            null
+                                    ref.watch(editProfileInHouseProvider).profilePicture == null
                                         ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
                                         : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
-                                    style: textTheme.bodyText2!
-                                        .copyWith(fontSize: 22)),
+                                    style: textTheme.bodyText2!.copyWith(fontSize: 22)),
                               ),
                             );
                           },
                           fit: BoxFit.cover,
                           height: 50,
                           width: 50,
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent? loadingProgress) {
+                          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                             if (loadingProgress == null) return child;
                             return Center(
                               child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
+                                value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
                               ),
                             );
                           },
@@ -184,31 +165,21 @@ class _HomePageState extends ConsumerState<HomePage> {
                     children: [
                       RichText(
                           text: TextSpan(
-                              text: "$welcome ",
+                              text: "Hello ",
                               style: textTheme.headline3!.copyWith(
                                 color: kDarkFill,
                               ),
                               children: [
                             TextSpan(
-                              text: ref
-                                          .watch(editProfileInHouseProvider)
-                                          .firstName ==
-                                      null
+                              text: ref.watch(editProfileInHouseProvider).firstName == null
                                   ? "${userProfile.firstName}"
                                   : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).firstName!.substring(1).toLowerCase()}.",
-                              style: textTheme.headline3!.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: kDarkFill),
+                              style: textTheme.headline3!.copyWith(fontWeight: FontWeight.w700, color: kDarkFill),
                             )
                           ])),
                       Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: kSmallPadding, vertical: 2),
-                        decoration: BoxDecoration(
-                            color: kColorBackgroundLight,
-                            border:
-                                Border.all(color: kPurpleColor700, width: 0.7),
-                            borderRadius: BorderRadius.circular(kSmallPadding)),
+                        padding: EdgeInsets.symmetric(horizontal: kSmallPadding, vertical: 2),
+                        decoration: BoxDecoration(color: kColorBackgroundLight, border: Border.all(color: kPurpleColor700, width: 0.7), borderRadius: BorderRadius.circular(kSmallPadding)),
                         child: Text(
                           "$tier ${ref.watch(editProfileInHouseProvider).tierLevels}",
                           style: textTheme.headline4!.copyWith(
@@ -228,8 +199,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     padding: const EdgeInsets.only(right: kPadding),
                     child: Container(
                       padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: kBackgroundColor),
+                      decoration: BoxDecoration(shape: BoxShape.circle, color: kBackgroundColor),
                       child: SvgPicture.asset(
                         AssetPaths.notification,
                         fit: BoxFit.scaleDown,
@@ -255,27 +225,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ),
                       ref.watch(editProfileInHouseProvider).tierLevels == 3
                           ? SizedBox()
-                          : ref.watch(editProfileInHouseProvider).tierLevels ==
-                                  1
+                          : ref.watch(editProfileInHouseProvider).tierLevels == 1
                               ? inkWell(
                                   onTap: () {
                                     pushTo(
                                       context,
                                       BVNPage(),
-                                      settings: const RouteSettings(
-                                          name: BVNPage.routeName),
+                                      settings: const RouteSettings(name: BVNPage.routeName),
                                     );
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: kRegularPadding,
-                                        vertical: kSmallPadding),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            kSmallPadding),
-                                        color: kLightOrange100,
-                                        border: Border.all(
-                                            color: kLightOrange200, width: 1)),
+                                    padding: EdgeInsets.symmetric(horizontal: kRegularPadding, vertical: kSmallPadding),
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(kSmallPadding), color: kLightOrange100, border: Border.all(color: kLightOrange200, width: 1)),
                                     child: Row(
                                       children: [
                                         SvgPicture.asset(AssetPaths.shieldIcon),
@@ -285,14 +246,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         Expanded(
                                           child: Text(
                                             "Upgrade To Tier 2 To Activate Your Wallet - Please Verify Your BVN",
-                                            style:
-                                                textTheme.headline2!.copyWith(
+                                            style: textTheme.headline2!.copyWith(
                                               color: kLightOrange300,
                                             ),
                                           ),
                                         ),
-                                        Icon(Icons.arrow_forward_ios,
-                                            color: kLightOrange200, size: 18)
+                                        Icon(Icons.arrow_forward_ios, color: kLightOrange200, size: 18)
                                       ],
                                     ),
                                   ),
@@ -302,20 +261,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     pushTo(
                                       context,
                                       ProfileKYC(),
-                                      settings: const RouteSettings(
-                                          name: ProfileKYC.routeName),
+                                      settings: const RouteSettings(name: ProfileKYC.routeName),
                                     );
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: kRegularPadding,
-                                        vertical: kSmallPadding),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            kSmallPadding),
-                                        color: kLightOrange100,
-                                        border: Border.all(
-                                            color: kLightOrange200, width: 1)),
+                                    padding: EdgeInsets.symmetric(horizontal: kRegularPadding, vertical: kSmallPadding),
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(kSmallPadding), color: kLightOrange100, border: Border.all(color: kLightOrange200, width: 1)),
                                     child: Row(
                                       children: [
                                         SvgPicture.asset(AssetPaths.shieldIcon),
@@ -325,14 +276,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         Expanded(
                                           child: Text(
                                             completeSetUp,
-                                            style:
-                                                textTheme.headline2!.copyWith(
+                                            style: textTheme.headline2!.copyWith(
                                               color: kLightOrange300,
                                             ),
                                           ),
                                         ),
-                                        Icon(Icons.arrow_forward_ios,
-                                            color: kLightOrange200, size: 18)
+                                        Icon(Icons.arrow_forward_ios, color: kLightOrange200, size: 18)
                                       ],
                                     ),
                                   ),
@@ -365,10 +314,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         done: (done) {
                                           return RichText(
                                             text: TextSpan(
-                                              text: ref.watch(
-                                                      checkObscureProvider)
-                                                  ? "₦"
-                                                  : "",
+                                              text: ref.watch(checkObscureProvider) ? "₦" : "",
                                               style: TextStyle(
                                                 color: kPrimaryWhite,
                                                 fontWeight: FontWeight.w700,
@@ -377,27 +323,17 @@ class _HomePageState extends ConsumerState<HomePage> {
                                               children: [
                                                 ref.watch(checkObscureProvider)
                                                     ? TextSpan(
-                                                        text: kPriceFormatter(
-                                                            double.parse(
-                                                                SessionManager
-                                                                        .getWalletBalance() ??
-                                                                    "0.00")),
-                                                        style: textTheme
-                                                            .bodyText2!
-                                                            .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.w700,
+                                                        text: kPriceFormatter(double.parse(SessionManager.getWalletBalance() ?? "0.00")),
+                                                        style: textTheme.bodyText2!.copyWith(
+                                                          fontWeight: FontWeight.w700,
                                                           fontSize: 32,
                                                           height: 1.5,
                                                           fontFamily: "DMSans",
                                                         ))
                                                     : TextSpan(
                                                         text: "***** ",
-                                                        style: textTheme
-                                                            .bodyText2!
-                                                            .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.w700,
+                                                        style: textTheme.bodyText2!.copyWith(
+                                                          fontWeight: FontWeight.w700,
                                                           fontSize: 32,
                                                           height: 2,
                                                           fontFamily: "DMSans",
@@ -417,14 +353,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   InkWell(
                                       onTap: () {
                                         setState(() {
-                                          ref
-                                                  .read(checkObscureProvider
-                                                      .notifier)
-                                                  .state =
-                                              !ref
-                                                  .read(checkObscureProvider
-                                                      .notifier)
-                                                  .state;
+                                          ref.read(checkObscureProvider.notifier).state = !ref.read(checkObscureProvider.notifier).state;
                                         });
                                       },
                                       child: ref.watch(checkObscureProvider)
@@ -432,8 +361,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                               Icons.visibility_off_outlined,
                                               color: kSecondaryTextColor,
                                             )
-                                          : Icon(Icons.visibility_outlined,
-                                              color: kSecondaryTextColor)),
+                                          : Icon(Icons.visibility_outlined, color: kSecondaryTextColor)),
                                 ],
                               ),
                             ),
@@ -446,19 +374,16 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 HomeIcons(
                                   icon: AssetPaths.walletIcon,
                                   onTap: () {
-                                    pushTo(context, FundWallet(),
-                                            settings: const RouteSettings(
-                                                name: FundWallet.routeName))
-                                        .then((value) => ref
-                                            .read(getWalletProvider.notifier)
-                                            .getWalletDetails());
+                                    pushTo(context, FundWallet(), settings: const RouteSettings(name: FundWallet.routeName)).then((value) => ref.read(getWalletProvider.notifier).getWalletDetails());
                                   },
                                   text: fundWallet,
                                 ),
                                 HomeIcons(
                                   icon: AssetPaths.swapIcon,
                                   onTap: () {
-                                    buildShowModalBottomSheet(
+                                    ref.watch(editProfileInHouseProvider).tierLevels == 1
+                                        ? showSuccessBar(context, "Please Verify Your BVN To Proceed.")
+                                        : buildShowModalBottomSheet(
                                       context,
                                       HomeModal(),
                                     );
@@ -468,15 +393,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 HomeIcons(
                                   icon: AssetPaths.moneyBagIcon,
                                   onTap: () {
-                                    pushTo(
-                                      context,
-                                      TransferPoucherFriend(
-                                        isRequestMoney: true,
-                                      ),
-                                      settings: const RouteSettings(
-                                          name:
-                                              TransferPoucherFriend.routeName),
-                                    );
+                                    ref.watch(editProfileInHouseProvider).tierLevels == 1
+                                        ? showSuccessBar(context, "Please Verify Your BVN To Proceed.")
+                                        : pushTo(
+                                            context,
+                                            TransferPoucherFriend(
+                                              isRequestMoney: true,
+                                            ),
+                                            settings: const RouteSettings(name: TransferPoucherFriend.routeName),
+                                          );
                                   },
                                   text: request,
                                 ),
@@ -517,8 +442,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       shape: BoxShape.circle,
                                       color: kColorBackgroundLight,
                                     ),
-                                    padding:
-                                    EdgeInsets.all(kMediumPadding),
+                                    padding: EdgeInsets.all(kMediumPadding),
                                     child: SvgPicture.asset(
                                       guestHomeClass[index].icon,
                                     ),
@@ -544,7 +468,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                         return ref.watch(getBannerProvider).when(
                             done: (done) {
                               if (done != null) {
-                                return ProductImageSlider(images: done.data!);
+
+                                if (done.data != null && done.data!.isNotEmpty) {
+                                  return ProductImageSlider(images: done.data!);
+                                }
+                                return SizedBox();
                               } else
                                 return SizedBox();
                             },
@@ -567,62 +495,47 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   checkProvider() {
     if (ref.watch(editProfileInHouseProvider).firstName == null) {
-      ref.read(editProfileInHouseProvider.notifier).state = ref
-          .read(editProfileInHouseProvider.notifier)
-          .state
-          .copyWith(
-              profilePicture: userProfile.profilePicture,
-              firstName: userProfile.firstName,
-              lastName: userProfile.lastName,
-              tierLevels: userProfile.tierLevels,
-              address: userProfile.address,
-              gender: userProfile.gender,
-              tag: userProfile.tag,
-              dob: userProfile.dob,
-              phoneNumber: userProfile.phoneNumber,
-              email: userProfile.email,
-              utilityBill: userProfile.utilityBill,
-              isLoginBiometricActive: userProfile.isLoginBiometricActive,
-              isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
-              isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
+      ref.read(editProfileInHouseProvider.notifier).state = ref.read(editProfileInHouseProvider.notifier).state.copyWith(
+          profilePicture: userProfile.profilePicture,
+          firstName: userProfile.firstName,
+          lastName: userProfile.lastName,
+          tierLevels: userProfile.tierLevels,
+          address: userProfile.address,
+          gender: userProfile.gender,
+          tag: userProfile.tag,
+          dob: userProfile.dob,
+          phoneNumber: userProfile.phoneNumber,
+          email: userProfile.email,
+          utilityBill: userProfile.utilityBill,
+          isLoginBiometricActive: userProfile.isLoginBiometricActive,
+          isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+          isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
 
-      ref.read(biometricProvider.notifier).state =
-          ref.read(biometricProvider.notifier).state.copyWith(
-                isLoginBiometricActive: userProfile.isLoginBiometricActive,
-                isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
-              );
+      ref.read(biometricProvider.notifier).state = ref.read(biometricProvider.notifier).state.copyWith(
+            isLoginBiometricActive: userProfile.isLoginBiometricActive,
+            isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+          );
     } else {
-      ref.read(editProfileInHouseProvider.notifier).state = ref
-          .read(editProfileInHouseProvider.notifier)
-          .state
-          .copyWith(
-              profilePicture:
-                  ref.watch(editProfileInHouseProvider).profilePicture,
-              firstName: ref.watch(editProfileInHouseProvider).firstName,
-              lastName: ref.watch(editProfileInHouseProvider).lastName,
-              tierLevels: ref.watch(editProfileInHouseProvider).tierLevels,
-              address: ref.watch(editProfileInHouseProvider).address,
-              gender: ref.watch(editProfileInHouseProvider).gender,
-              tag: ref.watch(editProfileInHouseProvider).tag,
-              dob: ref.watch(editProfileInHouseProvider).dob,
-              phoneNumber: ref.watch(editProfileInHouseProvider).phoneNumber,
-              email: ref.watch(editProfileInHouseProvider).email,
-              utilityBill: ref.watch(editProfileInHouseProvider).utilityBill,
-              isLoginBiometricActive:
-                  ref.watch(editProfileInHouseProvider).isLoginBiometricActive,
-              isPaymentBiometricActive: ref
-                  .watch(editProfileInHouseProvider)
-                  .isPaymentBiometricActive,
-              isUploadedIdentityCard:
-                  ref.watch(editProfileInHouseProvider).isUploadedIdentityCard);
+      ref.read(editProfileInHouseProvider.notifier).state = ref.read(editProfileInHouseProvider.notifier).state.copyWith(
+          profilePicture: ref.watch(editProfileInHouseProvider).profilePicture,
+          firstName: ref.watch(editProfileInHouseProvider).firstName,
+          lastName: ref.watch(editProfileInHouseProvider).lastName,
+          tierLevels: ref.watch(editProfileInHouseProvider).tierLevels,
+          address: ref.watch(editProfileInHouseProvider).address,
+          gender: ref.watch(editProfileInHouseProvider).gender,
+          tag: ref.watch(editProfileInHouseProvider).tag,
+          dob: ref.watch(editProfileInHouseProvider).dob,
+          phoneNumber: ref.watch(editProfileInHouseProvider).phoneNumber,
+          email: ref.watch(editProfileInHouseProvider).email,
+          utilityBill: ref.watch(editProfileInHouseProvider).utilityBill,
+          isLoginBiometricActive: ref.watch(editProfileInHouseProvider).isLoginBiometricActive,
+          isPaymentBiometricActive: ref.watch(editProfileInHouseProvider).isPaymentBiometricActive,
+          isUploadedIdentityCard: ref.watch(editProfileInHouseProvider).isUploadedIdentityCard);
 
-      ref.read(biometricProvider.notifier).state =
-          ref.read(biometricProvider.notifier).state.copyWith(
-                isLoginBiometricActive:
-                    ref.watch(biometricProvider).isLoginBiometricActive,
-                isPaymentBiometricActive:
-                    ref.watch(biometricProvider).isPaymentBiometricActive,
-              );
+      ref.read(biometricProvider.notifier).state = ref.read(biometricProvider.notifier).state.copyWith(
+            isLoginBiometricActive: ref.watch(biometricProvider).isLoginBiometricActive,
+            isPaymentBiometricActive: ref.watch(biometricProvider).isPaymentBiometricActive,
+          );
     }
     ;
   }

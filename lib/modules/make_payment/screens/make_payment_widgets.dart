@@ -156,16 +156,17 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                                       NotifierState<Map<String, dynamic>> next) {
                                 if (next.status == NotifierStatus.done) {
                                   setState(() {
+
                                     _errorText = "";
                                     contactInfo["phoneNumber"] =
-                                        next.data!["phoneNumber"];
+                                        next.data!["phoneNumber"] ?? "";
                                     contactInfo["firstName"] =
-                                        next.data!["firstName"];
+                                        next.data!["firstName"] ?? "";
                                     contactInfo["lastName"] =
-                                        next.data!["lastName"];
+                                        next.data!["lastName"] ?? "";
                                     contactInfo["profilePicture"] =
-                                        next.data!["profilePicture"];
-                                    contactInfo["tag"] = next.data!["tag"];
+                                        next.data!["profilePicture"] ?? "";
+                                    contactInfo["tag"] = next.data!["tag"] ?? "";
                                   });
 
                                   print(next.data);
@@ -227,18 +228,17 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                               },
                               child: Row(
                                 children: [
-                                  contactInfo["profilePicture"] == null
-                                      ? SizedBox()
-                                      : ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(116),
-                                          child: CachedNetworkImage(
-                                            height: 40,
-                                            width: 40,
-                                            imageUrl:
-                                                contactInfo["profilePicture"],
-                                            placeholder: (context, url) =>
-                                                Container(
+                                  contactInfo["profilePicture"] != null && contactInfo["profilePicture"].isNotEmpty
+                                      ? ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.circular(116),
+                                      child: CachedNetworkImage(
+                                        height: 40,
+                                        width: 40,
+                                        imageUrl:
+                                        contactInfo["profilePicture"],
+                                        placeholder: (context, url) =>
+                                            Container(
                                               color: Colors.transparent,
                                               height: 40,
                                               width: 40,
@@ -246,51 +246,52 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                                                 child: CircularProgressIndicator(
                                                   strokeWidth: 2,
                                                   valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                          Color>(kPrimaryColor),
+                                                  AlwaysStoppedAnimation<
+                                                      Color>(kPrimaryColor),
                                                 ),
                                               ),
                                             ),
-                                            fit: BoxFit.cover,
-                                            errorWidget: (context, url, error) =>
-                                                contactInfo["profilePicture"] !=
-                                                        null
-                                                    ? Image.network(
-                                                        contactInfo[
-                                                            "profilePicture"],
-                                                        fit: BoxFit.fill,
-                                                        loadingBuilder: (BuildContext
-                                                                context,
-                                                            Widget child,
-                                                            ImageChunkEvent?
-                                                                loadingProgress) {
-                                                          if (loadingProgress ==
-                                                              null) return child;
-                                                          return Center(
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              value: loadingProgress
-                                                                          .expectedTotalBytes !=
-                                                                      null
-                                                                  ? loadingProgress
-                                                                          .cumulativeBytesLoaded /
-                                                                      loadingProgress
-                                                                          .expectedTotalBytes!
-                                                                  : null,
-                                                            ),
-                                                          );
-                                                        },
-                                                      )
-                                                    : Center(
-                                                        child: Text(
-                                                            "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}",
-                                                            style: textTheme
-                                                                .bodyText2!
-                                                                .copyWith(
-                                                                    fontSize:
-                                                                        22)),
-                                                      ),
-                                          )),
+                                        fit: BoxFit.cover,
+                                        errorWidget: (context, url, error) =>
+                                        contactInfo["profilePicture"] !=
+                                            null
+                                            ? Image.network(
+                                          contactInfo[
+                                          "profilePicture"],
+                                          fit: BoxFit.fill,
+                                          loadingBuilder: (BuildContext
+                                          context,
+                                              Widget child,
+                                              ImageChunkEvent?
+                                              loadingProgress) {
+                                            if (loadingProgress ==
+                                                null) return child;
+                                            return Center(
+                                              child:
+                                              CircularProgressIndicator(
+                                                value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                    null
+                                                    ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes!
+                                                    : null,
+                                              ),
+                                            );
+                                          },
+                                        )
+                                            : Center(
+                                          child: Text(
+                                              "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}",
+                                              style: textTheme
+                                                  .bodyText2!
+                                                  .copyWith(
+                                                  fontSize:
+                                                  22)),
+                                        ),
+                                      ))
+                                      : SizedBox(),
                                   SizedBox(
                                     width: kRegularPadding,
                                   ),

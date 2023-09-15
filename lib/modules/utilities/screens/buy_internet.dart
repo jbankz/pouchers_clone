@@ -45,7 +45,7 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
 
   String error = "";
 
-  Timer? searchOnStoppedTyping;
+  Timer? _debounce;
 
   _onChangeHandler(value) {
     if (value!.isEmpty) {
@@ -54,14 +54,11 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
       setState(() {
         accId = value;
       });
-      const duration = Duration(seconds: 1);
-      if (searchOnStoppedTyping != null) {
-        setState(() => searchOnStoppedTyping!.cancel()); // clear timer
-      }
-      setState(() => searchOnStoppedTyping = new Timer(duration, () {
-        FocusScope.of(context).unfocus();
+
+      if (_debounce?.isActive ?? false) _debounce?.cancel();
+      _debounce = Timer(const Duration(milliseconds: 500), () {
         search(value);
-      }));
+      });
     }
   }
 
@@ -84,6 +81,12 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
       ref.read(getUtilitiesProvider.notifier).getUtilities(utility: "internet");
       ref.read(getDiscountProvider.notifier).getDiscount(utility: "internet");
     });
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
   }
 
   @override
@@ -171,7 +174,7 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                 height: kMediumPadding,
               ),
 
-              ref.watch(getDiscountProvider).when(done: (done){
+              ref.watch(getDiscountProvider).when( done: (done){
                 if(done != null){
                   threshold = done.data!.threshold ?? "0";
                   discountValue = done.data!.discountValue ?? "0";
@@ -234,7 +237,7 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                       Consumer(builder: (context, ref, _) {
                         var _widget = Row(
                           children: [
-                            paymentType == null
+                            paymentType?.price == null || paymentType?.price == 0
                                 ? SizedBox()
                                 : RichText(
                                     text: TextSpan(
@@ -294,10 +297,7 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
-                onEditingComplete: () {
-                  _onChangeHandler(contactController.text);
-                },
-               // onChanged: _onChangeHandler,
+               onChanged: _onChangeHandler,
                 icon: inkWell(
                   onTap: utilitiesData == null && paymentType == null ? null : () async {
                     final PhoneContact contact =
@@ -325,6 +325,7 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                         style: textTheme.headline4!.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
+                            color: done == "Account not found" ? kColorRed : null
                         ),
                       )
                     ],

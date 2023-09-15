@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ffi';
 
 import 'package:Pouchers/modules/account/screens/request/requests.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,6 +29,7 @@ import 'dart:math' as math;
 
 import 'package:Pouchers/utils/widgets.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   static const String routeName = "profilePage";
@@ -89,8 +91,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(116),
-                child: ref.watch(editProfileInHouseProvider).profilePicture ==
-                        null
+                child: ref.watch(editProfileInHouseProvider).profilePicture == null
                     ? Container(
                         height: 105,
                         width: 105,
@@ -100,18 +101,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         ),
                         child: Center(
                           child: Text(
-                              ref.watch(editProfileInHouseProvider)
-                                          .profilePicture ==
-                                      null
+                              ref.watch(editProfileInHouseProvider).profilePicture == null
                                   ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
                                   : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
-                              style:
-                                  textTheme.bodyText2!.copyWith(fontSize: 22)),
+                              style: textTheme.bodyText2!.copyWith(fontSize: 22)),
                         ),
                       )
                     : Image.network(
-                        ref.watch(editProfileInHouseProvider).profilePicture ??
-                            "",
+                        ref.watch(editProfileInHouseProvider).profilePicture ?? "",
                         fit: BoxFit.cover,
                         height: 100,
                         width: 100,
@@ -125,26 +122,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             ),
                             child: Center(
                               child: Text(
-                                  ref
-                                              .watch(editProfileInHouseProvider)
-                                              .profilePicture ==
-                                          null
+                                  ref.watch(editProfileInHouseProvider).profilePicture == null
                                       ? "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(0, 1).toUpperCase()}"
                                       : "${ref.watch(editProfileInHouseProvider).firstName!.substring(0, 1).toUpperCase()}${ref.watch(editProfileInHouseProvider).lastName!.substring(0, 1).toLowerCase()}",
-                                  style: textTheme.bodyText2!
-                                      .copyWith(fontSize: 22)),
+                                  style: textTheme.bodyText2!.copyWith(fontSize: 22)),
                             ),
                           );
                         },
-                        loadingBuilder: (BuildContext context, Widget child,
-                            ImageChunkEvent? loadingProgress) {
+                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                           if (loadingProgress == null) return child;
                           return Center(
                             child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
-                                  : null,
+                              value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
                             ),
                           );
                         },
@@ -268,12 +257,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kSmallPadding, vertical: 2),
-                  decoration: BoxDecoration(
-                      color: kColorBackgroundLight,
-                      border: Border.all(color: kPurpleColor700, width: 0.7),
-                      borderRadius: BorderRadius.circular(kSmallPadding)),
+                  padding: EdgeInsets.symmetric(horizontal: kSmallPadding, vertical: 2),
+                  decoration: BoxDecoration(color: kColorBackgroundLight, border: Border.all(color: kPurpleColor700, width: 0.7), borderRadius: BorderRadius.circular(kSmallPadding)),
                   child: Text(
                     "$tier ${ref.watch(editProfileInHouseProvider).tierLevels}",
                     style: textTheme.headline4!.copyWith(
@@ -456,48 +441,37 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   checkProvider() {
     if (ref.watch(editProfileInHouseProvider).firstName == null) {
-      ref.read(editProfileInHouseProvider.notifier).state = ref
-          .read(editProfileInHouseProvider.notifier)
-          .state
-          .copyWith(
-              profilePicture: userProfile.profilePicture,
-              firstName: userProfile.firstName,
-              lastName: userProfile.lastName,
-              tierLevels: userProfile.tierLevels,
-              address: userProfile.address,
-              gender: userProfile.gender,
-              tag: userProfile.tag,
-              dob: userProfile.dob,
-              phoneNumber: userProfile.phoneNumber,
-              email: userProfile.email,
-              isLoginBiometricActive: userProfile.isLoginBiometricActive,
-              isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
-              utilityBill: userProfile.utilityBill,
-              isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
+      ref.read(editProfileInHouseProvider.notifier).state = ref.read(editProfileInHouseProvider.notifier).state.copyWith(
+          profilePicture: userProfile.profilePicture,
+          firstName: userProfile.firstName,
+          lastName: userProfile.lastName,
+          tierLevels: userProfile.tierLevels,
+          address: userProfile.address,
+          gender: userProfile.gender,
+          tag: userProfile.tag,
+          dob: userProfile.dob,
+          phoneNumber: userProfile.phoneNumber,
+          email: userProfile.email,
+          isLoginBiometricActive: userProfile.isLoginBiometricActive,
+          isPaymentBiometricActive: userProfile.isPaymentBiometricActive,
+          utilityBill: userProfile.utilityBill,
+          isUploadedIdentityCard: userProfile.isUploadedIdentityCard);
     } else {
-      ref.read(editProfileInHouseProvider.notifier).state = ref
-          .read(editProfileInHouseProvider.notifier)
-          .state
-          .copyWith(
-              profilePicture:
-                  ref.watch(editProfileInHouseProvider).profilePicture,
-              firstName: ref.watch(editProfileInHouseProvider).firstName,
-              lastName: ref.watch(editProfileInHouseProvider).lastName,
-              tierLevels: ref.watch(editProfileInHouseProvider).tierLevels,
-              address: ref.watch(editProfileInHouseProvider).address,
-              gender: ref.watch(editProfileInHouseProvider).gender,
-              tag: ref.watch(editProfileInHouseProvider).tag,
-              dob: ref.watch(editProfileInHouseProvider).dob,
-              phoneNumber: ref.watch(editProfileInHouseProvider).phoneNumber,
-              email: ref.watch(editProfileInHouseProvider).email,
-              utilityBill: ref.watch(editProfileInHouseProvider).utilityBill,
-              isLoginBiometricActive:
-                  ref.watch(editProfileInHouseProvider).isLoginBiometricActive,
-              isPaymentBiometricActive: ref
-                  .watch(editProfileInHouseProvider)
-                  .isPaymentBiometricActive,
-              isUploadedIdentityCard:
-                  ref.watch(editProfileInHouseProvider).isUploadedIdentityCard);
+      ref.read(editProfileInHouseProvider.notifier).state = ref.read(editProfileInHouseProvider.notifier).state.copyWith(
+          profilePicture: ref.watch(editProfileInHouseProvider).profilePicture,
+          firstName: ref.watch(editProfileInHouseProvider).firstName,
+          lastName: ref.watch(editProfileInHouseProvider).lastName,
+          tierLevels: ref.watch(editProfileInHouseProvider).tierLevels,
+          address: ref.watch(editProfileInHouseProvider).address,
+          gender: ref.watch(editProfileInHouseProvider).gender,
+          tag: ref.watch(editProfileInHouseProvider).tag,
+          dob: ref.watch(editProfileInHouseProvider).dob,
+          phoneNumber: ref.watch(editProfileInHouseProvider).phoneNumber,
+          email: ref.watch(editProfileInHouseProvider).email,
+          utilityBill: ref.watch(editProfileInHouseProvider).utilityBill,
+          isLoginBiometricActive: ref.watch(editProfileInHouseProvider).isLoginBiometricActive,
+          isPaymentBiometricActive: ref.watch(editProfileInHouseProvider).isPaymentBiometricActive,
+          isUploadedIdentityCard: ref.watch(editProfileInHouseProvider).isUploadedIdentityCard);
     }
   }
 
@@ -507,22 +481,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     userTierLevel = userProfile.tierLevels;
     if (hiveTierLevel != null) {
       if (userTierLevel! > hiveTierLevel!) {
-        ref.read(editProfileInHouseProvider.notifier).state = ref
-            .read(editProfileInHouseProvider.notifier)
-            .state
-            .copyWith(tierLevels: userProfile.tierLevels);
+        ref.read(editProfileInHouseProvider.notifier).state = ref.read(editProfileInHouseProvider.notifier).state.copyWith(tierLevels: userProfile.tierLevels);
       } else {
         setState(() {
           hiveTierLevel = ref.watch(editProfileInHouseProvider).tierLevels;
         });
       }
     } else {
-      ref.read(editProfileInHouseProvider.notifier).state = ref
-          .read(editProfileInHouseProvider.notifier)
-          .state
-          .copyWith(
-              tierLevels: userProfile.tierLevels,
-              utilityBill: userProfile.utilityBill);
+      ref.read(editProfileInHouseProvider.notifier).state = ref.read(editProfileInHouseProvider.notifier).state.copyWith(tierLevels: userProfile.tierLevels, utilityBill: userProfile.utilityBill);
       setState(() {
         hiveTierLevel = ref.watch(editProfileInHouseProvider).tierLevels;
       });
@@ -593,62 +559,38 @@ class _ProductImageSliderState extends State<ProductImageSlider> {
             controller: _controller,
             itemCount: widget.images.length,
             itemBuilder: (context, index) {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(kMediumPadding),
-                // child: CachedNetworkImage(
-                //     // height: 100,
-                //     // width: 150,
-                //     imageUrl: widget.images[index].imageUrl ?? "",
-                //     placeholder: (context, url) => Container(
-                //           color: Colors.transparent,
-                //           height: 150,
-                //           width: 150,
-                //           child: const Center(
-                //             child: CircularProgressIndicator(
-                //               strokeWidth: 2,
-                //               valueColor:
-                //                   AlwaysStoppedAnimation<Color>(kPrimaryColor),
-                //             ),
-                //           ),
-                //         ),
-                //     fit: BoxFit.scaleDown,
-                //     errorWidget: (context, url, error) => Image.network(
-                //           widget.images[index].imageUrl!,
-                //           fit: BoxFit.fill,
-                //           loadingBuilder: (BuildContext context, Widget child,
-                //               ImageChunkEvent? loadingProgress) {
-                //             if (loadingProgress == null) return child;
-                //             return Center(
-                //               child: CircularProgressIndicator(
-                //                 value: loadingProgress.expectedTotalBytes !=
-                //                         null
-                //                     ? loadingProgress.cumulativeBytesLoaded /
-                //                         loadingProgress.expectedTotalBytes!
-                //                     : null,
-                //               ),
-                //             );
-                //           },
-                //         )),
-                child: Container(
-                  margin: EdgeInsets.only(right: 10),
-                  child: Image.network(
-                    widget.images[index].imageUrl!,
-                    fit: BoxFit.fill,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      );
-                    },
+              final bannerImage = widget.images[index];
+
+              if (bannerImage.imageUrl != null && bannerImage.imageUrl!.isNotEmpty) {
+                return InkWell(
+                  borderRadius: BorderRadius.circular(kMediumPadding),
+                  onTap: () async {
+                    if (bannerImage.routingUrl != null && !await launchUrl(Uri.parse(bannerImage.routingUrl!), mode: LaunchMode.externalApplication)) {
+                      throw Exception('Could not launch url');
+                    }
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(kMediumPadding),
+                    child: Container(
+                      margin: EdgeInsets.only(right: 10),
+                      child: Image.network(
+                        widget.images[index].imageUrl!,
+                        fit: BoxFit.fill,
+                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
-                ),
-              );
+                );
+              }
+
+              return SizedBox();
             },
           ),
         ),
