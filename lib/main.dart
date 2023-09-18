@@ -24,10 +24,14 @@ import 'package:Pouchers/utils/strings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
-  await Intercom.instance.initialize(interComAppId,
-      iosApiKey: interComIOSKey, androidApiKey: interComAndroidKey);
+  await Intercom.instance.initialize(interComAppId, iosApiKey: interComIOSKey, androidApiKey: interComAndroidKey);
   Env.setEnvironment(EnvState.production);
+
+  if (Env.getEnvironment() == EnvState.production) {
+    await dotenv.load(fileName: ".env.production");
+  } else {
+    await dotenv.load(fileName: ".env.staging");
+  }
   await Firebase.initializeApp();
   Directory directory = await path.getApplicationDocumentsDirectory();
   // await FlutterDownloader.initialize(
@@ -55,16 +59,14 @@ Future<void> main() async {
   final key = await secureStorage.read(key: kHiveEncryptionKey);
   if (key != null) {
     final hiveEncryptionKey = base64Url.decode(key);
-    await Hive.openBox(kTokenBox,
-        encryptionCipher: HiveAesCipher(hiveEncryptionKey));
+    await Hive.openBox(kTokenBox, encryptionCipher: HiveAesCipher(hiveEncryptionKey));
   }
 
   await Hive.openBox(kUserBox);
   await Hive.openBox(k2FACodeBox);
   await Hive.openBox(kBiometricsBox);
   SessionManager.initSharedPreference().then((value) {
-    return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
-        .then((_) {
+    return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
       runApp(new MyApp());
     });
   });
@@ -85,13 +87,7 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
         ProviderLogger(),
       ],
       child: OverlaySupport.global(
-        child: MaterialApp(
-            title: "Pouchers",
-            theme: kThemeData,
-            debugShowCheckedModeBanner: false,
-            themeMode: ThemeMode.light,
-            home: OnBoardingPage(),
-            routes: appRoutes),
+        child: MaterialApp(title: "Pouchers", theme: kThemeData, debugShowCheckedModeBanner: false, themeMode: ThemeMode.light, home: OnBoardingPage(), routes: appRoutes),
       ),
     );
     //  );

@@ -5,18 +5,19 @@ import 'package:Pouchers/utils/components.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
+import 'package:collection/collection.dart';
 
-class ProfileModal extends StatefulWidget {
-  final List<String> methods;
+class IdModal extends StatefulWidget {
+  final List<String> idTypes;
 
-  const ProfileModal({Key? key, required this.methods}) : super(key: key);
+  const IdModal({Key? key, required this.idTypes}) : super(key: key);
 
   @override
-  State<ProfileModal> createState() => _ProfileModalState();
+  State<IdModal> createState() => _IdModalState();
 }
 
-class _ProfileModalState extends State<ProfileModal> {
-  String _prefixText = "";
+class _IdModalState extends State<IdModal> {
+  String _selectedIdType = "";
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +25,8 @@ class _ProfileModalState extends State<ProfileModal> {
     return makeDismissible(
       context: context,
       child: DraggableScrollableSheet(
-        initialChildSize: Platform.isIOS ? 0.38  :0.53,
-        maxChildSize:  Platform.isIOS ? 0.38  : 0.53,
+        initialChildSize: Platform.isIOS ? 0.38 : 0.53,
+        maxChildSize: Platform.isIOS ? 0.38 : 0.53,
         builder: (_, controller) => Container(
           padding: const EdgeInsets.only(top: 10),
           decoration: BoxDecoration(
@@ -61,19 +62,19 @@ class _ProfileModalState extends State<ProfileModal> {
               const SizedBox(
                 height: kMediumPadding,
               ),
-              ...widget.methods.map(
-                (e) => Padding(
-                  padding: const EdgeInsets.only(bottom: kRegularPadding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: kMediumPadding),
-                        child: inkWell(
-                          onTap: () {
-                            setState(() => _prefixText = e);
-                            Navigator.pop(context, _prefixText);
-                          },
+              ...widget.idTypes.mapIndexed(
+                (index, e) => inkWell(
+                  onTap: () {
+                    setState(() => _selectedIdType = e);
+                    Navigator.pop(context, _selectedIdType);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.only(top: kMediumPadding),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: kMediumPadding),
                           child: Text(
                             e,
                             style: textTheme.headline4,
@@ -81,15 +82,16 @@ class _ProfileModalState extends State<ProfileModal> {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: kSmallPadding,
-                      ),
-                      Divider(
-                        color: kLightPurple,
-                        thickness: 1,
-                      )
-                    ],
+                        SizedBox(
+                          height: kMediumPadding,
+                        ),
+                        Divider(
+                          color: kLightPurple,
+                          thickness: 1,
+                          height: 0,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               )

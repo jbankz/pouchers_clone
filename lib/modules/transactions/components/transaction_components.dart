@@ -170,7 +170,6 @@ class TransactionReceiptItems extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                         color: color ?? kPrimaryTextColor,
                         fontSize: 16,
-                        overflow: TextOverflow.ellipsis
                       ),
               textAlign: TextAlign.right,
               softWrap: true,

@@ -1,4 +1,6 @@
+import 'package:Pouchers/app/helpers/service_constants.dart';
 import 'package:Pouchers/utils/assets_path.dart';
+import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,7 +29,7 @@ class ValidId extends ConsumerStatefulWidget {
 }
 
 class _ValidIdState extends ConsumerState<ValidId> {
-  String _prefixText = idMethod;
+  String? _selectedMethod;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _id;
   String error = "";
@@ -58,30 +60,24 @@ class _ValidIdState extends ConsumerState<ValidId> {
                       onTap: () async {
                         var result = await buildShowModalBottomSheet(
                             context,
-                            ProfileModal(
-                              methods: idMethodList,
+                            IdModal(
+                              idTypes: idTypesList,
                             ));
                         if (result != null) {
-                          if (result.contains("VNIN")) {
-                            setState(() => _prefixText = "Virtual NIN");
-                          } else {
-                            setState(() => _prefixText = result);
-                          }
+                          setState(() {
+                            _selectedMethod = result;
+                          });
                         }
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: kRegularPadding,
-                            vertical: kRegularPadding),
-                        decoration: BoxDecoration(
-                            color: kBackgroundColor,
-                            borderRadius: BorderRadius.circular(kSmallPadding)),
+                        padding: EdgeInsets.symmetric(horizontal: kRegularPadding, vertical: kRegularPadding),
+                        decoration: BoxDecoration(color: kBackgroundColor, borderRadius: BorderRadius.circular(kSmallPadding)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
                               child: Text(
-                                _prefixText,
+                                _selectedMethod ?? "Select Identification Method",
                                 style: textTheme.subtitle1,
                                 softWrap: true,
                                 overflow: TextOverflow.ellipsis,
@@ -120,8 +116,7 @@ class _ValidIdState extends ConsumerState<ValidId> {
                         ? SizedBox()
                         : Text(
                             error,
-                            style: textTheme.headline3!
-                                .copyWith(color: kLightOrange),
+                            style: textTheme.headline3!.copyWith(color: kLightOrange),
                           ),
                     SizedBox(
                       height: kSmallPadding,
@@ -137,45 +132,55 @@ class _ValidIdState extends ConsumerState<ValidId> {
                     Center(
                       child: inkWell(
                         onTap: () async {
-                          var result = await startDojahWidget(
-                            context,
-                            type: "custom",
-                            config: configObj,
-                          );
-                          if (result != null) {
-                            ref.read(validateIDProvider.notifier).validateID(
-                                isUpload: true,
-                                firstName: result["firstName"],
-                                lastName: result["lastName"],
-                                dob: result["dob"],
-                                idType: result["docType"]
-                                        .toString()
-                                        .contains("Driving")
-                                    ? "drivers_license"
-                                    : result["docType"]
-                                            .toString()
-                                            .contains("Voter Card")
-                                        ? "voters_card"
-                                        : result["docType"]
-                                                .toString()
-                                                .contains("Passport")
-                                            ? "passport"
-                                            : result["docType"]
-                                                    .toString()
-                                                    .contains("Id Card")
-                                                ? "virtual nin"
-                                                : _prefixText.toLowerCase(),
-                                idNumber: result["docNo"]);
+                          if (_selectedMethod != null && _selectedMethod!.isNotEmpty) {
+                            final fName = ref.watch(editProfileInHouseProvider).firstName;
+                            final lName = ref.watch(editProfileInHouseProvider).lastName;
+                            final dob = ref.watch(editProfileInHouseProvider).dob;
+                            var result = await startDojahWidget(
+                              context,
+                              type: "custom",
+                              userData: fName != null && fName.isNotEmpty && lName != null && lName.isNotEmpty && dob != null && dob.isNotEmpty
+                                  ? {
+                                      "first_name": fName,
+                                      "last_name": lName,
+                                      "dob": "${dob.split("-")[2]}-${dob.split("-")[1]}-${dob.split("-")[0]}",
+                                    }
+                                  : null,
+                              config: {
+                                "debug": false,
+                                "mobile": true,
+                                "widget_id": getWidgetId(_selectedMethod!),
+                              },
+                              govtDataVerification: _selectedMethod == "Driver’s license" || _selectedMethod == "VNIN" || _selectedMethod == "NIN",
+                            );
+                            if (result != null) {
+                              ref.read(validateIDProvider.notifier).validateID(
+                                  isUpload: true,
+                                  firstName: result["firstName"],
+                                  lastName: result["lastName"],
+                                  dob: result["dob"],
+                                  idType: result["docType"].toString().contains("Driving") || result["docType"].toString().contains("dl")
+                                      ? "drivers_license"
+                                      : result["docType"].toString().contains("Voter Card")
+                                          ? "voters_card"
+                                          : result["docType"].toString().contains("Passport")
+                                              ? "passport"
+                                              : result["docType"].toString() == "nin"
+                                                  ? "nin"
+                                                  : result["docType"].toString() == "vnin"
+                                                      ? "vnin"
+                                                      : result["docType"].toString(),
+                                  idNumber: result["docNo"]);
+                            }
+                          } else {
+                            showErrorBar(context, "Kindly select a means of Identification");
                           }
                         },
                         child: Container(
                           width: 130,
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(kRegularPadding),
-                          decoration: BoxDecoration(
-                              borderRadius: kBorderRadius,
-                              border:
-                                  Border.all(color: kLightPurple, width: 1)),
+                          decoration: BoxDecoration(borderRadius: kBorderRadius, border: Border.all(color: kLightPurple, width: 1)),
                           child: Row(
                             children: [
                               SvgPicture.asset(AssetPaths.uploadIcon),
@@ -184,8 +189,7 @@ class _ValidIdState extends ConsumerState<ValidId> {
                               ),
                               Text(
                                 "Upload ID",
-                                style:
-                                    textTheme.headline2!.copyWith(fontSize: 14),
+                                style: textTheme.headline2!.copyWith(fontSize: 14),
                               )
                             ],
                           ),
@@ -195,7 +199,7 @@ class _ValidIdState extends ConsumerState<ValidId> {
                   ],
                 ),
               ),
-              _prefixText == "Virtual NIN"
+              _selectedMethod == "VNIN"
                   ? Expanded(
                       child: ListView(
                         children: [
@@ -243,8 +247,7 @@ class _ValidIdState extends ConsumerState<ValidId> {
                 height: kMediumPadding,
               ),
               Consumer(builder: (context, ref, _) {
-                ref.listen(validateIDProvider,
-                    (previous, NotifierState<EditProfileResponse> next) {
+                ref.listen(validateIDProvider, (previous, NotifierState<EditProfileResponse> next) {
                   if (next.status == NotifierStatus.done) {
                     pushTo(
                         context,
@@ -252,10 +255,8 @@ class _ValidIdState extends ConsumerState<ValidId> {
                           from: widget.from,
                           message: idSuccess,
                         ),
-                        settings: const RouteSettings(
-                            name: ProfileSuccessful.routeName));
-                    ref.read(editProfileInHouseProvider.notifier).state =
-                        EditProfileData.fromJson(next.data!.data!.toJson());
+                        settings: const RouteSettings(name: ProfileSuccessful.routeName));
+                    ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
                   } else if (next.status == NotifierStatus.error) {
                     setState(() {
                       error = next.message ?? "";
@@ -272,21 +273,23 @@ class _ValidIdState extends ConsumerState<ValidId> {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         ref.read(validateIDProvider.notifier).validateID(
-                            isUpload: false,
-                            idType: _prefixText == "Driver’s license"
-                                ? "drivers_license"
-                                : _prefixText == "Voter’s card"
-                                    ? "voters_card"
-                                    : _prefixText.contains("passport")
-                                        ? "passport"
-                                        : _prefixText.toLowerCase(),
-                            idNumber: _id!);
+                              isUpload: false,
+                              idType: _selectedMethod == "Driver’s license"
+                                  ? "drivers_license"
+                                  : _selectedMethod == "Voter’s card"
+                                      ? "voters_card"
+                                      : _selectedMethod == "International passport"
+                                          ? "passport"
+                                          : _selectedMethod == "NIN"
+                                              ? "nin"
+                                              : _selectedMethod == "VNIN"
+                                                  ? "vnin"
+                                                  : "",
+                              idNumber: _id!,
+                            );
                       }
                     });
-                return ref.watch(validateIDProvider).when(
-                    done: (done) => _widget,
-                    loading: () => SpinKitDemo(),
-                    error: (val) => _widget);
+                return ref.watch(validateIDProvider).when(done: (done) => _widget, loading: () => SpinKitDemo(), error: (val) => _widget);
               }),
             ],
           ),
@@ -294,4 +297,44 @@ class _ValidIdState extends ConsumerState<ValidId> {
       ),
     );
   }
+}
+
+String? getWidgetId(String idSelection) {
+  final testEnv = Env.getEnvironment() == EnvState.test;
+  if (idSelection == "Driver’s license") {
+    if (testEnv) {
+      return "6508474a05a8aa004199cdcc";
+    }
+    return "6504156005a8aa0041787e21";
+  }
+
+  if (idSelection == "Voter’s card") {
+    if (testEnv) {
+      return "6508485633cd05004305b933";
+    }
+    return "6504160d05a8aa0041788d37";
+  }
+
+  if (idSelection == "International passport") {
+    if (testEnv) {
+      return "6508485633cd05004305b933";
+    }
+    return "6504232033cd050043e590c8";
+  }
+
+  if (idSelection == "VNIN") {
+    if (testEnv) {
+      return "6508474a05a8aa004199cdcc";
+    }
+    return "6504224805a8aa004179a3bc";
+  }
+
+  if (idSelection == "NIN") {
+    if (testEnv) {
+      return "6508474a05a8aa004199cdcc";
+    }
+    return "6508466205a8aa004199a494";
+  }
+
+  return null;
 }

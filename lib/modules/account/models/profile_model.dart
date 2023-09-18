@@ -198,7 +198,7 @@ class EditProfileData {
   }
 }
 
-List<String> idMethodList = ["Driver’s license", "VNIN", "Voter’s card", "International passport"];
+List<String> idTypesList = ["Driver’s license", "NIN", "VNIN", "Voter’s card", "International passport"];
 
 class ManageRequestResponse {
   String? status;

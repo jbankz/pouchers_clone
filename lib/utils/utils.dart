@@ -19,9 +19,7 @@ class Utils {
     } else if (e is TimeoutException) {
       logTimeoutException(e);
       return "Request timed out, please try again";
-    } else if (e is FormatException ||
-        e is ClientException ||
-        e is HandshakeException) {
+    } else if (e is FormatException || e is ClientException || e is HandshakeException) {
       logPrint(e);
       return "Something went wrong, please try again";
     } else {
@@ -32,11 +30,9 @@ class Utils {
 
 String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
-String kPriceFormatter(double price) =>
-    NumberFormat("#,##0.00", "en_US").format(price);
+String kPriceFormatter(double price) => NumberFormat("#,##0.00", "en_US").format(price);
 
-String formatTime(int seconds) =>
-    '${(Duration(seconds: seconds))}'.split('.').first.substring(2);
+String formatTime(int seconds) => '${(Duration(seconds: seconds))}'.split('.').first.substring(2);
 
 class ClientException implements Exception {
   final String message;
@@ -54,6 +50,7 @@ Future<Map<String, dynamic>?> startDojahWidget(
   Map<String, dynamic>? userData,
   Map<String, dynamic>? config,
   Map<String, dynamic>? metadata,
+  required bool govtDataVerification,
 }) async {
   final DojahKYC dojahKyc = DojahKYC(
     appId: dotenv.get(kDojahAppId),
@@ -65,7 +62,10 @@ Future<Map<String, dynamic>?> startDojahWidget(
   );
 
   Map<String, dynamic>? result;
-  Map<String, dynamic> submittedSuccessfully = {};
+  final Completer<Map<String, dynamic>?> submittedSuccessfully = Completer<Map<String, dynamic>?>();
+
+  debugPrint("user response: $userData");
+
 
   await dojahKyc.open(
     context,
@@ -74,58 +74,38 @@ Future<Map<String, dynamic>?> startDojahWidget(
       String prettyResponse = encoder.convert(response);
       debugPrint("dojah response: $prettyResponse");
 
-      // exit kyc widget
-
-      //context.popRoute();
+      Navigator.of(context).pop();
 
       List<dynamic> responseList = response;
-      Map<String, dynamic> responseBody =
-          jsonDecode(jsonEncode(responseList[0]));
+      Map<String, dynamic> responseBody = jsonDecode(jsonEncode(responseList[0]));
 
       result = responseBody;
-      responseBody["status"];
-      submittedSuccessfully = {
-        "firstName": responseBody["data"]["id"]["data"]["idData"]["last_name"]
-            .toString()
-            .split(" ")
-            .first,
-        "lastName": responseBody["data"]["id"]["data"]["idData"]["first_name"],
-        "dob": responseBody["data"]["id"]["data"]["idData"]["date_of_birth"],
-        "docType": responseBody["data"]["id"]["data"]["idData"]["document_type"],
-        "docNo": responseBody["data"]["id"]["data"]["idData"]["document_number"]
 
-      };
+      if (govtDataVerification) {
+        final String? idType = responseBody["idType"];
+        final String? idNumber = responseBody["value"];
 
-      Navigator.pop(context, submittedSuccessfully);
-      final idData = IdCheckResponse.fromJson(responseBody["idData"]);
-      final String? idImageUrl = responseBody["idUrl"];
-      final String? verificationUrl = responseBody["verificationUrl"];
+        if (idType != null && idNumber != null) {
+          submittedSuccessfully.complete({
+            "firstName": responseBody["data"]["government-data"]["data"]["entity"]["first_name"],
+            "lastName": responseBody["data"]["government-data"]["data"]["entity"]["last_name"],
+            "dob": responseBody["data"]["government-data"]["data"]["entity"]["date_of_birth"],
+            "docType": idType,
+            "docNo": idNumber,
+          });
+        }
+      } else {
+        final idData = IdCheckResponse.fromJson(responseBody["idData"]);
 
-      // no need to check if dateIssued and expiryDate are not null as some IDs may not have them
-      if (idImageUrl != null &&
-          verificationUrl != null &&
-          idData.documentType != null &&
-          idData.documentNumber != null) {
-        ///send d info to backend
-        // final payload = IdVerificationPayload(
-        //   idType: idData.documentType!,
-        //   cardNumber: idData.documentNumber!,
-        //   imageUrl: idImageUrl,
-        //   verificationUrl: verificationUrl,
-        //   issuedDate: idData.dateIssued,
-        //   expiryDate: idData.expiryDate,
-        // );
-
-        // context
-        //     .pushRoute(
-        //         HandleIdUploadRoute(payload: payload, onboarding: onboarding))
-        //     .then((value) {
-        //   if (value is bool) {
-        //     submittedSuccessfully.complete(value);
-        //   } else {
-        //     submittedSuccessfully.complete(null);
-        //   }
-        // });
+        if (idData.documentType != null && idData.documentNumber != null) {
+          submittedSuccessfully.complete({
+            "firstName": responseBody["data"]["government-data"]["data"]["entity"]["first_name"],
+            "lastName": responseBody["data"]["government-data"]["data"]["entity"]["last_name"],
+            "dob": responseBody["data"]["government-data"]["data"]["entity"]["date_of_birth"],
+            "docType": idData.documentType,
+            "docNo": idData.documentNumber,
+          });
+        }
       }
     },
     onClose: (_) {
@@ -143,36 +123,8 @@ Future<Map<String, dynamic>?> startDojahWidget(
   );
 
   debugPrint("returned function");
-  // return submittedSuccessfully;
-   return submittedSuccessfully;
-
+  return await submittedSuccessfully.future;
 }
-
-final configObj = {
-  "debug": false,
-  "mobile": true,
-  // "review_process": "Automatic",
-  "pages": [
-    {
-      "page": "user-data",
-      "config": {"enabled": false}
-    },
-    {
-      "page": "countries",
-      "config": {"enabled": false}
-    },
-    {
-      "page": "id",
-      "config": {
-        "passport": true,
-        "dl": true,
-        "nin": true,
-        "voter": true,
-        "custom": true
-      }
-    }
-  ]
-};
 
 String dateFormatter2 = 'dd MMM yyy';
 
@@ -183,9 +135,7 @@ extension DateHelper on DateTime {
   }
 
   bool isSameDate(DateTime other) {
-    return this.year == other.year &&
-        this.month == other.month &&
-        this.day == other.day;
+    return this.year == other.year && this.month == other.month && this.day == other.day;
   }
 
   int getDifferenceInDaysWithNow() {
@@ -195,5 +145,3 @@ extension DateHelper on DateTime {
 
   String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 }
-
-
