@@ -42,7 +42,6 @@ class _TransferModalState extends ConsumerState<TransferModal> {
   List<ContactListData> contactData = [];
   String? lastInputValue;
 
-
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -110,8 +109,7 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                       child: TextFormField(
                         keyboardType: TextInputType.text,
                         inputFormatters: [
-                          FilteringTextInputFormatter.deny(
-                              RegExp(r'\s')),
+                          FilteringTextInputFormatter.deny(RegExp(r'\s')),
                         ],
                         style:
                             textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
@@ -129,7 +127,8 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                               lastInputValue = inputValue;
                               ref
                                   .read(getContactByPoucherTagProvider.notifier)
-                                  .getContactByPoucherTag(poucherTag: inputValue);
+                                  .getContactByPoucherTag(
+                                      poucherTag: inputValue);
                             }
                           }
                           // if (val.isNotEmpty) {
@@ -144,7 +143,8 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                           filled: true,
                           isDense: true,
                           hintText: enterPoucherTag,
-                          hintStyle: textTheme.headline6!.copyWith(fontSize: 18),
+                          hintStyle:
+                              textTheme.headline6!.copyWith(fontSize: 18),
                           prefixText: "@  ",
                           prefixStyle: textTheme.subtitle1!.copyWith(
                             color: kPrimaryTextColor.withOpacity(0.7),
@@ -153,10 +153,10 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                             builder: (context, ref, _) {
                               ref.listen(getContactByPoucherTagProvider,
                                   (previous,
-                                      NotifierState<Map<String, dynamic>> next) {
+                                      NotifierState<Map<String, dynamic>>
+                                          next) {
                                 if (next.status == NotifierStatus.done) {
                                   setState(() {
-
                                     _errorText = "";
                                     contactInfo["phoneNumber"] =
                                         next.data!["phoneNumber"] ?? "";
@@ -166,11 +166,13 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                                         next.data!["lastName"] ?? "";
                                     contactInfo["profilePicture"] =
                                         next.data!["profilePicture"] ?? "";
-                                    contactInfo["tag"] = next.data!["tag"] ?? "";
+                                    contactInfo["tag"] =
+                                        next.data!["tag"] ?? "";
                                   });
 
                                   print(next.data);
-                                } else if (next.status == NotifierStatus.error) {
+                                } else if (next.status ==
+                                    NotifierStatus.error) {
                                   setState(() {
                                     _errorText = next.message ?? "";
                                   });
@@ -218,7 +220,8 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                   _errorText != ""
                       ? Text(
                           _errorText!,
-                          style: textTheme.bodyText1!.copyWith(color: kColorRed),
+                          style:
+                              textTheme.bodyText1!.copyWith(color: kColorRed),
                         )
                       : contactInfo.isEmpty
                           ? SizedBox()
@@ -228,69 +231,75 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                               },
                               child: Row(
                                 children: [
-                                  contactInfo["profilePicture"] != null && contactInfo["profilePicture"].isNotEmpty
+                                  contactInfo["profilePicture"] != null &&
+                                          contactInfo["profilePicture"]
+                                              .isNotEmpty
                                       ? ClipRRect(
-                                      borderRadius:
-                                      BorderRadius.circular(116),
-                                      child: CachedNetworkImage(
-                                        height: 40,
-                                        width: 40,
-                                        imageUrl:
-                                        contactInfo["profilePicture"],
-                                        placeholder: (context, url) =>
-                                            Container(
+                                          borderRadius:
+                                              BorderRadius.circular(116),
+                                          child: CachedNetworkImage(
+                                            height: 40,
+                                            width: 40,
+                                            imageUrl:
+                                                contactInfo["profilePicture"],
+                                            placeholder: (context, url) =>
+                                                Container(
                                               color: Colors.transparent,
                                               height: 40,
                                               width: 40,
                                               child: const Center(
-                                                child: CircularProgressIndicator(
+                                                child:
+                                                    CircularProgressIndicator(
                                                   strokeWidth: 2,
                                                   valueColor:
-                                                  AlwaysStoppedAnimation<
-                                                      Color>(kPrimaryColor),
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(kPrimaryColor),
                                                 ),
                                               ),
                                             ),
-                                        fit: BoxFit.cover,
-                                        errorWidget: (context, url, error) =>
-                                        contactInfo["profilePicture"] !=
-                                            null
-                                            ? Image.network(
-                                          contactInfo[
-                                          "profilePicture"],
-                                          fit: BoxFit.fill,
-                                          loadingBuilder: (BuildContext
-                                          context,
-                                              Widget child,
-                                              ImageChunkEvent?
-                                              loadingProgress) {
-                                            if (loadingProgress ==
-                                                null) return child;
-                                            return Center(
-                                              child:
-                                              CircularProgressIndicator(
-                                                value: loadingProgress
-                                                    .expectedTotalBytes !=
-                                                    null
-                                                    ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                    loadingProgress
-                                                        .expectedTotalBytes!
-                                                    : null,
-                                              ),
-                                            );
-                                          },
-                                        )
-                                            : Center(
-                                          child: Text(
-                                              "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}",
-                                              style: textTheme
-                                                  .bodyText2!
-                                                  .copyWith(
-                                                  fontSize:
-                                                  22)),
-                                        ),
-                                      ))
+                                            fit: BoxFit.cover,
+                                            errorWidget: (context, url,
+                                                    error) =>
+                                                contactInfo["profilePicture"] !=
+                                                        null
+                                                    ? Image.network(
+                                                        contactInfo[
+                                                            "profilePicture"],
+                                                        fit: BoxFit.fill,
+                                                        loadingBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                Widget child,
+                                                                ImageChunkEvent?
+                                                                    loadingProgress) {
+                                                          if (loadingProgress ==
+                                                              null)
+                                                            return child;
+                                                          return Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              value: loadingProgress
+                                                                          .expectedTotalBytes !=
+                                                                      null
+                                                                  ? loadingProgress
+                                                                          .cumulativeBytesLoaded /
+                                                                      loadingProgress
+                                                                          .expectedTotalBytes!
+                                                                  : null,
+                                                            ),
+                                                          );
+                                                        },
+                                                      )
+                                                    : Center(
+                                                        child: Text(
+                                                            "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}",
+                                                            style: textTheme
+                                                                .bodyText2!
+                                                                .copyWith(
+                                                                    fontSize:
+                                                                        22)),
+                                                      ),
+                                          ))
                                       : SizedBox(),
                                   SizedBox(
                                     width: kRegularPadding,
@@ -368,7 +377,7 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                                     List<String> phones = [];
                                     allContact.forEach((element) {
                                       setState(() {
-                                        phones.addAll(element.phones);
+                                        // phones.addAll(element.phones);
                                       });
                                     });
                                     if (phones.isNotEmpty) {
@@ -377,8 +386,8 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                                       phones.forEach((element) {
                                         // element.replaceAll("234", "0");
                                         // element.replaceAll(" ", "");
-                                        phoneReplaced
-                                            .add(element.replaceAll("+234", "0"));
+                                        phoneReplaced.add(
+                                            element.replaceAll("+234", "0"));
                                       });
                                       phoneReplaced.forEach((element) {
                                         phoneReplaced1
@@ -437,7 +446,8 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                                         height: 40,
                                         width: 40,
                                         imageUrl: e.profilePicture ?? "",
-                                        placeholder: (context, url) => Container(
+                                        placeholder: (context, url) =>
+                                            Container(
                                           color: Colors.transparent,
                                           height: 40,
                                           width: 40,
@@ -451,41 +461,41 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                                           ),
                                         ),
                                         fit: BoxFit.cover,
-                                        errorWidget: (context, url, error) =>
-                                            e.profilePicture != null
-                                                ? Image.network(
-                                                    e.profilePicture!,
-                                                    fit: BoxFit.fill,
-                                                    loadingBuilder:
-                                                        (BuildContext context,
-                                                            Widget child,
-                                                            ImageChunkEvent?
-                                                                loadingProgress) {
-                                                      if (loadingProgress == null)
-                                                        return child;
-                                                      return Center(
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          value: loadingProgress
-                                                                      .expectedTotalBytes !=
-                                                                  null
-                                                              ? loadingProgress
-                                                                      .cumulativeBytesLoaded /
-                                                                  loadingProgress
-                                                                      .expectedTotalBytes!
-                                                              : null,
-                                                        ),
-                                                      );
-                                                    },
-                                                  )
-                                                : Center(
-                                                    child: Text(
-                                                        "${e.firstName!.substring(0, 1).toUpperCase()}${e.lastName!.substring(0, 1).toUpperCase()}",
-                                                        style: textTheme
-                                                            .bodyText2!
-                                                            .copyWith(
-                                                                fontSize: 22)),
-                                                  ),
+                                        errorWidget: (context, url, error) => e
+                                                    .profilePicture !=
+                                                null
+                                            ? Image.network(
+                                                e.profilePicture!,
+                                                fit: BoxFit.fill,
+                                                loadingBuilder:
+                                                    (BuildContext context,
+                                                        Widget child,
+                                                        ImageChunkEvent?
+                                                            loadingProgress) {
+                                                  if (loadingProgress == null)
+                                                    return child;
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      value: loadingProgress
+                                                                  .expectedTotalBytes !=
+                                                              null
+                                                          ? loadingProgress
+                                                                  .cumulativeBytesLoaded /
+                                                              loadingProgress
+                                                                  .expectedTotalBytes!
+                                                          : null,
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            : Center(
+                                                child: Text(
+                                                    "${e.firstName!.substring(0, 1).toUpperCase()}${e.lastName!.substring(0, 1).toUpperCase()}",
+                                                    style: textTheme.bodyText2!
+                                                        .copyWith(
+                                                            fontSize: 22)),
+                                              ),
                                       ),
                                     ),
                                     SizedBox(
@@ -498,7 +508,8 @@ class _TransferModalState extends ConsumerState<TransferModal> {
                                         children: [
                                           Text(
                                             "${e.firstName} ${e.lastName}",
-                                            style: textTheme.headline4!.copyWith(
+                                            style:
+                                                textTheme.headline4!.copyWith(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 16,
                                             ),
@@ -554,7 +565,8 @@ class _TransferModalState extends ConsumerState<TransferModal> {
       isGranted = await Permission.contacts.request().isGranted;
     }
     if (isGranted) {
-      return await FastContacts.allContacts;
+      // return await FastContacts.allContacts;
+      return [];
     }
     return [];
   }
@@ -855,16 +867,21 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                           banks.add(element);
                         });
                         var seen = Set<String>();
-                        List<GetAllBanksDetail> uniquelist =
-                            banks.where((bank) => seen.add(bank.attributes?.name ?? "")).toList();
-                        uniquelist.sort((a,b) => a.attributes!.name!.toUpperCase().compareTo(b.attributes!.name!.toUpperCase()));
+                        List<GetAllBanksDetail> uniquelist = banks
+                            .where(
+                                (bank) => seen.add(bank.attributes?.name ?? ""))
+                            .toList();
+                        uniquelist.sort((a, b) => a.attributes!.name!
+                            .toUpperCase()
+                            .compareTo(b.attributes!.name!.toUpperCase()));
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Container(
                               height: 60,
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(horizontal: 15),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
                               decoration: BoxDecoration(
                                 borderRadius: kBorderSmallRadius,
                                 color: kBackgroundColor,
@@ -880,62 +897,69 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                                   borderRadius: kBorderMidRadius,
                                   hint: Text(
                                     selectBankText,
-                                    style: textTheme.subtitle1!.copyWith(
-                                        color: kIconGrey),
+                                    style: textTheme.subtitle1!
+                                        .copyWith(color: kIconGrey),
                                   ),
-                                  style: textTheme.bodyText2!.copyWith(color: kPrimaryBlack),
-                                  icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                                  style: textTheme.bodyText2!
+                                      .copyWith(color: kPrimaryBlack),
+                                  icon: const Icon(
+                                      Icons.keyboard_arrow_down_rounded),
                                   underline: const SizedBox(),
                                   menuMaxHeight:
-                                  MediaQuery.of(context).size.height / 2,
+                                      MediaQuery.of(context).size.height / 2,
                                   onChanged: (GetAllBanksDetail? val) {
                                     setState(() {
                                       _selectedBank = val;
-                                          if (accNumberController.text.isNotEmpty &&
-                                              accNumberController.text.length == 10) {
-                                            ref
-                                                .read(getAccountDetailsProvider.notifier)
-                                                .getAccountDetails(
-                                                    accountNumber: accNumberController.text,
-                                                    amount: "100.00",
-                                                    bankName: _selectedBank!.attributes!.name ?? "");
-                                          }
+                                      if (accNumberController.text.isNotEmpty &&
+                                          accNumberController.text.length ==
+                                              10) {
+                                        ref
+                                            .read(getAccountDetailsProvider
+                                                .notifier)
+                                            .getAccountDetails(
+                                                accountNumber:
+                                                    accNumberController.text,
+                                                amount: "100.00",
+                                                bankName: _selectedBank!
+                                                        .attributes!.name ??
+                                                    "");
+                                      }
                                     });
-
                                   },
                                   items: uniquelist
                                       .map((e) => DropdownMenuItem(
-                                    child: Text(e.attributes?.name ?? ""),
-                                    value: e,
-                                  ))
+                                            child:
+                                                Text(e.attributes?.name ?? ""),
+                                            value: e,
+                                          ))
                                       .toList(),
                                 ),
                               ),
                             ),
                           ],
                         );
-                          // FormDropdown<GetAllBanksResponseData>(
-                          //   hint: selectBankText,
-                          //   value: _selectedBank,
-                          //   onChanged: (GetAllBanksResponseData? val) {
-                          //     _selectedBank = val;
-                          //     if (accNumberController.text.isNotEmpty &&
-                          //         accNumberController.text.length == 10) {
-                          //       ref
-                          //           .read(getAccountDetailsProvider.notifier)
-                          //           .getAccountDetails(
-                          //               accountNumber: accNumberController.text,
-                          //               amount: "100.00",
-                          //               bankName: _selectedBank!.name);
-                          //     }
-                          //   },
-                          //   items: uniquelist
-                          //       .map((e) =>
-                          //           DropdownMenuItem<GetAllBanksResponseData>(
-                          //             child: Text(e.name),
-                          //             value: e,
-                          //           ))
-                          //       .toList());
+                        // FormDropdown<GetAllBanksResponseData>(
+                        //   hint: selectBankText,
+                        //   value: _selectedBank,
+                        //   onChanged: (GetAllBanksResponseData? val) {
+                        //     _selectedBank = val;
+                        //     if (accNumberController.text.isNotEmpty &&
+                        //         accNumberController.text.length == 10) {
+                        //       ref
+                        //           .read(getAccountDetailsProvider.notifier)
+                        //           .getAccountDetails(
+                        //               accountNumber: accNumberController.text,
+                        //               amount: "100.00",
+                        //               bankName: _selectedBank!.name);
+                        //     }
+                        //   },
+                        //   items: uniquelist
+                        //       .map((e) =>
+                        //           DropdownMenuItem<GetAllBanksResponseData>(
+                        //             child: Text(e.name),
+                        //             value: e,
+                        //           ))
+                        //       .toList());
                       } else {
                         return _widget;
                       }
@@ -1073,7 +1097,7 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
                       pushTo(
                           context,
                           TransferSummary(
-                              transferName: _selectedBank!.attributes?.name ,
+                              transferName: _selectedBank!.attributes?.name,
                               accNo: _accNo,
                               amount: _amount,
                               fee: fee ?? 0,
@@ -1124,15 +1148,14 @@ class TransferRowWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(
-           vertical: kRegularPadding),
+        padding: EdgeInsets.symmetric(vertical: kRegularPadding),
         decoration: BoxDecoration(
           color: kContainerColor,
           borderRadius: BorderRadius.circular(kSmallPadding),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             icon,
             SizedBox(
@@ -1142,9 +1165,10 @@ class TransferRowWidget extends StatelessWidget {
               child: Text(
                 text,
                 style: textTheme.headline2!.copyWith(
-                    fontWeight: FontWeight.w500,
-                    overflow: TextOverflow.ellipsis,
-                    fontSize: 14, ),
+                  fontWeight: FontWeight.w500,
+                  overflow: TextOverflow.ellipsis,
+                  fontSize: 14,
+                ),
                 // textAlign: TextAlign.center,
               ),
             )

@@ -1,30 +1,35 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Pouchers/app/helpers/response_handler.dart';
+import 'package:Pouchers/app/helpers/service_constants.dart';
+import 'package:Pouchers/app/helpers/session_manager.dart';
+import 'package:Pouchers/modules/login/models/login_response.dart';
+import 'package:Pouchers/modules/onboarding/screens/onboarding.dart';
+import 'package:Pouchers/routes.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/logger.dart';
+import 'package:Pouchers/utils/strings.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:path_provider/path_provider.dart' as path;
-import 'package:Pouchers/app/helpers/response_handler.dart';
-import 'package:Pouchers/app/helpers/service_constants.dart';
-import 'package:Pouchers/app/helpers/session_manager.dart';
-import 'package:Pouchers/routes.dart';
-import 'package:Pouchers/modules/login/models/login_response.dart';
-import 'package:Pouchers/modules/onboarding/screens/onboarding.dart';
-import 'package:Pouchers/utils/constant/theme_color_constants.dart';
-import 'package:Pouchers/utils/logger.dart';
-import 'package:Pouchers/utils/strings.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import 'app/app.router.dart';
+import 'app/core/constants/app_constants.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Intercom.instance.initialize(interComAppId, iosApiKey: interComIOSKey, androidApiKey: interComAndroidKey);
+  await Intercom.instance.initialize(interComAppId,
+      iosApiKey: interComIOSKey, androidApiKey: interComAndroidKey);
   Env.setEnvironment(EnvState.production);
 
   if (Env.getEnvironment() == EnvState.production) {
@@ -59,15 +64,18 @@ Future<void> main() async {
   final key = await secureStorage.read(key: kHiveEncryptionKey);
   if (key != null) {
     final hiveEncryptionKey = base64Url.decode(key);
-    await Hive.openBox(kTokenBox, encryptionCipher: HiveAesCipher(hiveEncryptionKey));
+    await Hive.openBox(kTokenBox,
+        encryptionCipher: HiveAesCipher(hiveEncryptionKey));
   }
 
   await Hive.openBox(kUserBox);
   await Hive.openBox(k2FACodeBox);
   await Hive.openBox(kBiometricsBox);
   SessionManager.initSharedPreference().then((value) {
-    return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
-      runApp(new MyApp());
+    return SystemChrome.setPreferredOrientations(
+            [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+        .then((_) {
+      runApp(const MyApp());
     });
   });
 }
@@ -83,11 +91,24 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
-      observers: [
-        ProviderLogger(),
-      ],
-      child: OverlaySupport.global(
-        child: MaterialApp(title: "Pouchers", theme: kThemeData, debugShowCheckedModeBanner: false, themeMode: ThemeMode.light, home: OnBoardingPage(), routes: appRoutes),
+      observers: [ProviderLogger()],
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        child: OverlaySupport.global(
+          child: MaterialApp(
+              title: AppConstants.appName,
+              theme: kThemeData,
+              darkTheme: kThemeData,
+              debugShowCheckedModeBanner: false,
+              themeMode: ThemeMode.light,
+              navigatorKey: StackedService.navigatorKey,
+              onGenerateRoute: StackedRouter().onGenerateRoute,
+              routes: {
+                ...appRoutes,
+              }),
+        ),
       ),
     );
     //  );

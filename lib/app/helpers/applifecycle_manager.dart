@@ -17,7 +17,6 @@ class AppLifeCycleManager extends StatefulWidget {
 
 class _AppLifeCycleManagerState extends State<AppLifeCycleManager>
     with WidgetsBindingObserver, ResponseHandler {
-
   void trackInactiveTime() {
     if (!isTracking) {
       logPrint("Tracking inactive time");
@@ -53,6 +52,8 @@ class _AppLifeCycleManagerState extends State<AppLifeCycleManager>
       case AppLifecycleState.resumed:
         checkResumedTime();
         break;
+      case AppLifecycleState.hidden:
+      // TODO: Handle this case.
     }
     super.didChangeAppLifecycleState(state);
   }
