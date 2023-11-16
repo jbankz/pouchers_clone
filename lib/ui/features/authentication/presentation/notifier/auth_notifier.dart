@@ -8,11 +8,13 @@ import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../app/app.logger.dart';
+import '../../../../../app/app.router.dart';
 import '../../../../../app/core/manager/biometric_manager.dart';
 import '../../../../../app/core/manager/secure_manager.dart';
 import '../../../../../app/core/state/app_state.dart';
 import '../../../../../app/navigators/navigators.dart';
 import '../../../../../modules/create_account/screens/verify_account.dart';
+import '../../../../../modules/tab_layout/screens/tab_layout.dart';
 import '../../../../notification/notification_tray.dart';
 import '../view/otp/notifier/module.dart';
 import 'module/module.dart';
@@ -58,17 +60,29 @@ class AuthNotifier extends _$AuthNotifier {
     try {
       state = state.copyWith(isBusy: true);
 
-      await ref.read(signInUserProvider
+      final response = await ref.read(signInUserProvider
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
 
-      if (!isBiometricAuth && await _biometricManager.isBiometricEnabled()) {
-        // PageRouter.pushReplacement(Routes.biometricView);
+      if (response?.data?.tag == null) {
+        PageRouter.pushNamed(Routes.tagView,
+            args: TagViewArguments(callback: () => signInUser(parameter)));
+        state = state.copyWith(isBusy: false);
+        return;
+      }
+      if (response?.data?.iscreatedpin == false) {
+        PageRouter.pushNamed(Routes.createPinView);
+        state = state.copyWith(isBusy: false);
         return;
       }
 
-      /// navigate
-      // PageRouter.pushNamed(Routes.dashboardView);
+      if (!isBiometricAuth && await _biometricManager.isBiometricEnabled()) {
+        PageRouter.pushReplacement(Routes.biometricView);
+        state = state.copyWith(isBusy: false);
+        return;
+      }
+
+      PageRouter.pushReplacement(Routes.dashboardView);
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(),
@@ -114,13 +128,20 @@ class AuthNotifier extends _$AuthNotifier {
     state = state.copyWith(isBusy: false);
   }
 
-  Future<void> createTag(AuthDto parameter, [CancelToken? cancelToken]) async {
+  Future<void> createTag(AuthDto parameter,
+      {Function()? callback, CancelToken? cancelToken}) async {
     try {
       state = state.copyWith(isBusy: true);
 
       await ref.read(createTagProvider
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
+
+      if (callback != null) {
+        callback();
+        state = state.copyWith(isBusy: false);
+        return;
+      }
 
       // PageRouter.pushNamed(Routes.createPinView);
     } catch (e) {
@@ -132,7 +153,7 @@ class AuthNotifier extends _$AuthNotifier {
   }
 
   Future<void> createTransactionPin(AuthDto parameter,
-      [CancelToken? cancelToken]) async {
+      {CancelToken? cancelToken}) async {
     try {
       state = state.copyWith(isBusy: true);
 
@@ -143,11 +164,13 @@ class AuthNotifier extends _$AuthNotifier {
       triggerNotificationTray(response?.message ?? '');
 
       if (await _biometricManager.isBiometricEnabled()) {
-        // PageRouter.pushReplacement(Routes.biometricView);
+        PageRouter.pushReplacement(Routes.biometricView);
         return;
       }
 
-      // PageRouter.pushReplacement(Routes.dashboardView);
+      ///TODO: Don't use 'BuildContext's across async gaps.
+      ///Try rewriting the code to not reference the 'BuildContext'.
+      pushToAndClearStack(PageRouter.globalContext, TabLayout());
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(),

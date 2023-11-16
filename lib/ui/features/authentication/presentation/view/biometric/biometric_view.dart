@@ -68,7 +68,7 @@ class BiometricView extends ConsumerWidget {
                   title: AppString.proceed),
               const Gap(height: 20),
               InkWell(
-                // onTap: () => PageRouter.pushNamed(Routes.dashboardView),
+                onTap: ref.read(biometricNotifier.notifier).skip,
                 child: Text(AppString.skip,
                     style: context.titleLarge?.copyWith(
                         fontWeight: FontWeight.w700,

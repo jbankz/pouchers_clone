@@ -16,8 +16,8 @@ class LogInService {
     required String password,
     required bool isEmail,
   }) async {
-    await Hive.openBox(kTokenBox);
-    await Hive.openBox(kUserBox);
+    // await Hive.openBox(kTokenBox);
+    // await Hive.openBox(kUserBox);
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
@@ -25,13 +25,11 @@ class LogInService {
 
     String url = "${baseUrl()}/auth/login";
 
-    logPrint(url);
+    print('JAY=asdasdad');
 
     Map<String, dynamic> body = isEmail
         ? {"email": phoneNumber, "password": password}
         : {"phone_number": phoneNumber, "password": password};
-
-    logPrint("what is body $body");
 
     try {
       http.Response response = await http.post(
@@ -39,29 +37,25 @@ class LogInService {
         headers: _authHeaders,
         body: jsonEncode(body),
       );
+
       logResponse(response);
       var responseBody = jsonDecode(response.body);
       if (response.statusCode >= 300 && response.statusCode <= 520) {
         throw Failure.fromJson(responseBody);
       } else {
-        logPrint("before ${responseBody}");
         //Start with new slate in case where a user account logs in on a new device that was in use by another device
 
-        logPrint("after ${responseBody}");
         return serveSuccess<VerifyEmailResponse>(
             data: VerifyEmailResponse.fromJson(responseBody),
             message: responseBody["message"]);
       }
     } catch (error, stack) {
-      logPrint(error);
-      logPrint(stack);
       return processServiceError<VerifyEmailResponse>(error, stack);
     }
   }
 
   static Future<ServiceResponse<String>> forgotPassword(
       {required String email}) async {
-    print("got here");
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",

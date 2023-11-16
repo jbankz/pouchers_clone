@@ -25,7 +25,6 @@ Future<void> saveUserCredential({
   String? transactionPin,
   String? email,
 }) async {
-  print("got here");
   try {
     final existingCredentials = await getUserCredentials();
     print(existingCredentials?.transactionPin);
@@ -34,7 +33,7 @@ Future<void> saveUserCredential({
           password: password, transactionPin: transactionPin, email: email);
       await _secureStorage.write(
           key: userCredentialKey, value: credentials.serialize());
-      print("object$transactionPin");
+      print("obj212ect$transactionPin");
     } else {
       await _secureStorage.write(
           key: userCredentialKey,

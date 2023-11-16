@@ -11,13 +11,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:stacked/stacked_annotations.dart';
 
+import '../../../../../../app/core/router/page_router.dart';
 import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
+import 'sign_in_view.form.dart';
 
+@FormView(
+    fields: [FormTextField(name: 'email'), FormTextField(name: 'password')])
 class SignInView extends ConsumerStatefulWidget {
   const SignInView({super.key});
 
@@ -25,7 +30,7 @@ class SignInView extends ConsumerStatefulWidget {
   ConsumerState<SignInView> createState() => _SignInViewState();
 }
 
-class _SignInViewState extends ConsumerState<SignInView> {
+class _SignInViewState extends ConsumerState<SignInView> with $SignInView {
   final formKey = GlobalKey<FormState>();
 
   bool _obscureText = true;
@@ -34,15 +39,9 @@ class _SignInViewState extends ConsumerState<SignInView> {
 
   final CancelToken _cancelToken = CancelToken();
 
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-  final FocusNode _emailFocusNode = FocusNode();
-  final FocusNode _passwordFocusNode = FocusNode();
-
   @override
   void initState() {
-    _emailFocusNode.requestFocus();
+    emailFocusNode.requestFocus();
     _authNotifier = ref.read(authNotifierProvider.notifier);
     super.initState();
   }
@@ -51,10 +50,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
   void dispose() {
     super.dispose();
     _cancelToken.cancel();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _emailFocusNode.dispose();
-    _passwordFocusNode.dispose();
+    disposeForm();
   }
 
   @override
@@ -85,19 +81,18 @@ class _SignInViewState extends ConsumerState<SignInView> {
                   readOnly: appState.isBusy,
                   title: AppString.loginEmail,
                   label: AppString.loginEmailInstruction,
-                  controller: _emailController,
-                  focusNode: _emailFocusNode,
+                  controller: emailController,
+                  focusNode: emailFocusNode,
                   keyboardType: TextInputType.emailAddress,
                   validator: FieldValidator.validateString(),
-                  onFieldSubmitted: (_) =>
-                      context.nextFocus(_passwordFocusNode)),
+                  onFieldSubmitted: (_) => context.nextFocus(emailFocusNode)),
               const Gap(height: 16),
               EditTextFieldWidget(
                   readOnly: appState.isBusy,
                   title: AppString.password,
                   label: AppString.passwordInstruction,
-                  controller: _passwordController,
-                  focusNode: _passwordFocusNode,
+                  controller: passwordController,
+                  focusNode: passwordFocusNode,
                   obscureText: _obscureText,
                   validator: FieldValidator.validateSpecialPassword(),
                   suffixIcon: CupertinoButton(
@@ -134,7 +129,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
                             ?.copyWith(color: AppColors.kPrimaryGrey)),
                   ),
                   InkWell(
-                    // onTap: () => PageRouter.pushNamed(Routes.signUpView),
+                    onTap: () => PageRouter.pushNamed(Routes.signUpView),
                     child: Text(AppString.createOne,
                         style: context.headlineMedium?.copyWith(
                             fontWeight: FontWeight.w700,
@@ -168,8 +163,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
     if (!formKey.currentState!.validate()) return;
 
     _authNotifier.signInUser(
-        AuthDto(
-            email: _emailController.text, password: _passwordController.text),
+        AuthDto(email: emailController.text, password: passwordController.text),
         _cancelToken);
   }
 

@@ -12,7 +12,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../app/core/theme/light_theme.dart';
 import '../../../../../app/navigators/navigators.dart';
-import '../../../../../modules/login/screens/login.dart';
 import '../../../../../modules/onboarding/screens/welcome_guest.dart';
 import '../../../../widgets/elevated_button_widget.dart';
 import '../../../../widgets/gap.dart';
@@ -78,10 +77,8 @@ class _OnboardingViewState extends ConsumerState<OnboardingView> {
                     Expanded(
                         child: OutlineButtonWidget(
                             title: AppString.login,
-                            onPressed: () => pushTo(
-                                context, const LogInAccount(),
-                                settings: const RouteSettings(
-                                    name: LogInAccount.routeName)))),
+                            onPressed: () =>
+                                PageRouter.pushNamed(Routes.signInView))),
                     const Gap(width: 17),
                     Expanded(
                       child: ElevatedButtonWidget(

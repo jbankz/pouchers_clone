@@ -17,7 +17,8 @@ import 'tag_view.form.dart';
 
 @FormView(fields: [FormTextField(name: 'tag')])
 class TagView extends ConsumerStatefulWidget {
-  const TagView({super.key});
+  const TagView({super.key, this.callback});
+  final Function()? callback;
 
   @override
   ConsumerState<TagView> createState() => _TagViewState();
@@ -71,26 +72,29 @@ class _TagViewState extends ConsumerState<TagView> with $TagView {
                         controller: tagController,
                         focusNode: tagFocusNode,
                         keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.done,
                         prefix: Text('@ ',
                             style: context.titleLarge
                                 ?.copyWith(color: AppColors.kPrimaryTextColor)),
                         validator: FieldValidator.validateString(),
-                        onFieldSubmitted: (_) {}),
+                        onFieldSubmitted: (_) => _submit()),
                   ],
                 ),
               ),
               ElevatedButtonWidget(
                   title: AppString.createTag,
                   loading: appState.isBusy,
-                  onPressed: () {
-                    if (!formKey.currentState!.validate()) return;
-                    _authNotifier.createTag(
-                        AuthDto(tag: tagController.text), _cancelToken);
-                  }),
+                  onPressed: _submit),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _submit() {
+    if (!formKey.currentState!.validate()) return;
+    _authNotifier.createTag(AuthDto(tag: tagController.text),
+        cancelToken: _cancelToken, callback: widget.callback);
   }
 }

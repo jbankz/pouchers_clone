@@ -98,4 +98,10 @@ class AppImage {
   static String bag = "${_iconPath}bag.svg";
   static String coin = "${_imagePath}coin.png";
   static String shield = "${_iconPath}shield.svg";
+  static String savedCard = "${_iconPath}saved_card.svg";
+  static String sync = "${_iconPath}sync.svg";
+  static String user = "${_iconPath}user.svg";
+  static String customerService = "${_iconPath}customer_service.svg";
+  static String logo = "${_iconPath}logo.svg";
+  static String logOut = "${_iconPath}log_out.svg";
 }

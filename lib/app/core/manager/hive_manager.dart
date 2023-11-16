@@ -1,6 +1,11 @@
 import 'package:hive_flutter/adapters.dart';
 import 'package:flutter/material.dart';
 
+import '../../../modules/login/models/login_response.dart';
+import '../../../ui/features/profile/data/dao/user_dao.dart';
+import '../../../ui/features/profile/data/dao/wallet_dao.dart';
+import '../../../ui/features/profile/domain/model/user.dart';
+import '../../../ui/features/profile/domain/model/wallet.dart';
 import '../../app.locator.dart';
 
 /// initialize local data storage
@@ -9,20 +14,20 @@ Future<void> initializeDB() async {
 
   await locator<HiveManager>().openAllBox();
 
-  // Hive
-  //   ..registerAdapter(UserAdapter())
-  //   ..registerAdapter(WalletAdapter())
-  //   ..registerAdapter(HiveStoreResponseDataAdapter());
+  Hive
+    ..registerAdapter(UserAdapter())
+    ..registerAdapter(WalletAdapter())
+    ..registerAdapter(HiveStoreResponseDataAdapter());
 }
 
 class HiveManager {
   Future openAllBox() async {
-    // userDao = UserDao();
-    // walletDao = WalletDao();
+    userDao = UserDao();
+    walletDao = WalletDao();
   }
 
   Future clearAllBox() async {
-    // await userDao.truncate();
+    await userDao.truncate();
     // await walletDao.truncate();
   }
 

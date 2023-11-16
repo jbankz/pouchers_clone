@@ -3,7 +3,13 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../ui/features/authentication/presentation/view/biometric/biometric_view.dart';
+import '../ui/features/authentication/presentation/view/pin/cofirm_pin_view.dart';
+import '../ui/features/authentication/presentation/view/pin/create_pin_view.dart';
+import '../ui/features/authentication/presentation/view/signin/sign_in_view.dart';
 import '../ui/features/authentication/presentation/view/signup/sign_up_view.dart';
+import '../ui/features/authentication/presentation/view/tag/tag_view.dart';
+import '../ui/features/dashboard/views/dashboard_view.dart';
 import '../ui/features/onboarding/presentation/views/onboarding_view.dart';
 import 'core/manager/biometric_manager.dart';
 import 'core/manager/hive_manager.dart';
@@ -21,30 +27,30 @@ import 'core/manager/session_manager.dart';
         page: SignUpView,
         opaque: false,
         transitionsBuilder: TransitionsBuilders.fadeIn),
-    // CustomRoute(
-    //     page: SignInView,
-    //     opaque: false,
-    //     transitionsBuilder: TransitionsBuilders.fadeIn),
+    CustomRoute(
+        page: SignInView,
+        opaque: false,
+        transitionsBuilder: TransitionsBuilders.fadeIn),
     // CustomRoute(
     //     page: SuccessState,
     //     opaque: false,
     //     transitionsBuilder: TransitionsBuilders.slideBottom),
-    // CustomRoute(
-    //     page: DashboardView,
-    //     opaque: false,
-    //     transitionsBuilder: TransitionsBuilders.fadeIn),
+    CustomRoute(
+        page: DashboardView,
+        opaque: false,
+        transitionsBuilder: TransitionsBuilders.fadeIn),
     // AdaptiveRoute(page: GuestView),
     // AdaptiveRoute(page: GetGuestEmailView),
     // AdaptiveRoute(page: AirtimeView),
     // AdaptiveRoute(page: DebitCardView),
     // AdaptiveRoute(page: OtpView),
-    // AdaptiveRoute(page: TagView),
-    // AdaptiveRoute(page: CreatePinView),
-    // AdaptiveRoute(page: ConfirmPinView),
+    AdaptiveRoute(page: TagView),
+    AdaptiveRoute(page: CreatePinView),
+    AdaptiveRoute(page: ConfirmPinView),
     // AdaptiveRoute(page: ForgotPasswordView),
     // AdaptiveRoute(page: SetNewPasswordView),
     // AdaptiveRoute(page: VerifyPasswordAccountView),
-    // AdaptiveRoute(page: BiometricView),
+    AdaptiveRoute(page: BiometricView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

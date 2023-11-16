@@ -261,3 +261,19 @@ extension ContextExtensions on BuildContext {
 
   TextInputFormatter get digitsOnly => FilteringTextInputFormatter.digitsOnly;
 }
+
+extension DynamicMapExtension on Map<dynamic, dynamic> {
+  Map<String, dynamic> convertToTypedMap() {
+    final Map<String, dynamic> typedMap = {};
+
+    forEach((key, value) {
+      if (key is String) {
+        typedMap[key] = value;
+      } else {
+        typedMap[key.toString()] = value;
+      }
+    });
+
+    return typedMap;
+  }
+}

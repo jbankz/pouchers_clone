@@ -27,7 +27,9 @@ import 'package:stacked_services/stacked_services.dart';
 import 'app/app.router.dart';
 import 'app/config/app_config.dart';
 import 'app/core/constants/app_constants.dart';
+import 'app/core/manager/hive_manager.dart';
 import 'app/core/manager/session_manager.dart' as core;
+import 'ui/features/dashboard/views/account/views/account_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +40,8 @@ Future<void> main() async {
 
   await setupLocator();
   await locator<core.SessionManager>().initializeSession();
+
+  initializeDB();
 
   await Intercom.instance.initialize(interComAppId,
       iosApiKey: interComIOSKey, androidApiKey: interComAndroidKey);
@@ -113,6 +117,7 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
               darkTheme: kThemeData,
               debugShowCheckedModeBanner: false,
               themeMode: ThemeMode.light,
+              home: AccountView(),
               navigatorKey: StackedService.navigatorKey,
               onGenerateRoute: StackedRouter().onGenerateRoute,
               routes: {

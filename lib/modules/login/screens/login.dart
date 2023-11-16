@@ -289,7 +289,6 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                         }
                       }
                     } else if (next.status == NotifierStatus.error) {
-                      print("here");
                       if (next.message!.startsWith("User is not verified")) {
                         showErrorBar(context, "next.message!");
                         Future.delayed(Duration(seconds: 2)).then(

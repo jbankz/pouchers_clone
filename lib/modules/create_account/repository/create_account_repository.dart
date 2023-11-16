@@ -57,7 +57,6 @@ class CreateAccountRepository {
         .toNotifierState();
   }
 
-
   Future<NotifierState<String>> resendVerificationEmail({
     required String email,
   }) async {

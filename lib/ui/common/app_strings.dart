@@ -138,4 +138,20 @@ class AppString {
   static String localizedReason = 'To authenticate and login into the app';
   static String signInTitle = 'Oops! Biometric authentication required!';
   static String cancelButton = 'No thanks';
+  static String upgradeNow = 'Upgrade Now';
+  static String referral = 'Referral';
+  static String referralInstruction =
+      'Earn money when your friends join Pouchers';
+  static String savedCards = 'Saved cards';
+  static String savedCardsInstruction = 'Managed linked cards';
+  static String scheduledPayments = 'Scheduled payments';
+  static String scheduledPaymentsInstruction =
+      'Manage weekly and monthly recurring payments';
+  static String accountSettings = 'Account settings ';
+  static String accountSettingsInstruction = 'Manage your account and security';
+  static String helpAndSupport = 'Help & support';
+  static String helpAndSupportInstruction = 'Send feedback or get support';
+  static String aboutPourcher = 'About Pouchers';
+  static String aboutPourcherInstruction = 'Learn more about Pouchers';
+  static String logOut = 'Logout';
 }

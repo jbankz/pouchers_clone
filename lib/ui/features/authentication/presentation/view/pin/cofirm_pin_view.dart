@@ -91,8 +91,8 @@ class _ConfirmPinViewState extends ConsumerState<ConfirmPinView> {
                       onTyping: () => setState(() => _hasError = false),
                       onComplete: (String pin) {
                         if (pin == _pinNotifier.pin) {
-                          _authNotifier.createTransactionPin(
-                              AuthDto(pin: pin), _cancelToken);
+                          _authNotifier.createTransactionPin(AuthDto(pin: pin),
+                              cancelToken: _cancelToken);
                         } else {
                           setState(() => _hasError = true);
                           triggerNotificationTray(AppString.pinNotMatch,

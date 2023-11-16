@@ -37,6 +37,8 @@ class AuthSourceImpl implements AuthSource {
         requestType: RequestType.post,
         data: authDto.toJson(),
         cancelToken: cancelToken);
+    response.data?['tag'] = null;
+
     return SignInModel.fromJson(response.data as Map<String, dynamic>);
   }
 
@@ -70,6 +72,7 @@ class AuthSourceImpl implements AuthSource {
         requestType: RequestType.post,
         data: authDto.toJson(),
         cancelToken: cancelToken);
+
     return CreateTagModel.fromJson(response.data as Map<String, dynamic>);
   }
 

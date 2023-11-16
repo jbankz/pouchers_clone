@@ -79,4 +79,5 @@ class AppColors {
   static const Color kGreyScale = Color(0xFFEFF0F6);
   static const Color kDanger = Color(0xffE20010);
   static const Color kUnknownColor = Color(0xffEDEAF9);
+  static const Color kUnknownColor1 = Color(0xffF5F3FC);
 }
