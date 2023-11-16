@@ -1,8 +1,9 @@
+import 'package:Pouchers/app/app.router.dart';
+import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:Pouchers/app/navigators/navigators.dart';
 import 'package:Pouchers/modules/account/models/ui_models_class.dart';
-import 'package:Pouchers/modules/create_account/screens/create_account.dart';
 import 'package:Pouchers/modules/onboarding/screens/pay_card.dart';
 import 'package:Pouchers/modules/onboarding/screens/pay_ussd.dart';
 import 'package:Pouchers/utils/assets_path.dart';
@@ -177,8 +178,7 @@ class GuestDiscountModal extends StatelessWidget {
                   title: createAccountText,
                   onPressed: () {
                     Navigator.pop(context);
-                    pushTo(context, CreateAccount(),
-                        settings: RouteSettings(name: CreateAccount.routeName));
+                    PageRouter.pushNamed(Routes.signUpView);
                   }),
               SizedBox(
                 height: kMediumPadding,
@@ -288,8 +288,7 @@ class GuestMaximumAmountModal extends StatelessWidget {
                   title: createAccountText,
                   onPressed: () {
                     Navigator.pop(context);
-                    pushTo(context, CreateAccount(),
-                        settings: RouteSettings(name: CreateAccount.routeName));
+                    PageRouter.pushNamed(Routes.signUpView);
                   }),
               SizedBox(
                 height: kMediumPadding,
@@ -569,13 +568,13 @@ class _GuestRechargeSummaryState extends State<GuestRechargeSummary> {
             title: continueText,
             onPressed: () {
               _payWith == payWithCard
-                  ? pushTo(context, PayWithCard(
-                isCable: true,
-              ),
+                  ? pushTo(
+                      context,
+                      PayWithCard(
+                        isCable: true,
+                      ),
                       settings: RouteSettings(name: PayWithCard.routeName))
-                  : pushTo(context, PayWithUssd(
-
-              ),
+                  : pushTo(context, PayWithUssd(),
                       settings: RouteSettings(name: PayWithUssd.routeName));
             },
           )

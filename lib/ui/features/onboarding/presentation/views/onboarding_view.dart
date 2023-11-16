@@ -1,3 +1,5 @@
+import 'package:Pouchers/app/app.router.dart';
+import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/onboarding/presentation/notifier/module/module.dart';
@@ -10,7 +12,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../app/core/theme/light_theme.dart';
 import '../../../../../app/navigators/navigators.dart';
-import '../../../../../modules/create_account/screens/create_account.dart';
 import '../../../../../modules/login/screens/login.dart';
 import '../../../../../modules/onboarding/screens/welcome_guest.dart';
 import '../../../../widgets/elevated_button_widget.dart';
@@ -85,10 +86,8 @@ class _OnboardingViewState extends ConsumerState<OnboardingView> {
                     Expanded(
                       child: ElevatedButtonWidget(
                           title: AppString.register,
-                          onPressed: () => pushTo(
-                              context, const CreateAccount(),
-                              settings: const RouteSettings(
-                                  name: CreateAccount.routeName))),
+                          onPressed: () =>
+                              PageRouter.pushNamed(Routes.signUpView)),
                     ),
                   ],
                 ),

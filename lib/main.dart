@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/helpers/response_handler.dart';
 import 'package:Pouchers/app/helpers/service_constants.dart';
 import 'package:Pouchers/app/helpers/session_manager.dart';
 import 'package:Pouchers/modules/login/models/login_response.dart';
-import 'package:Pouchers/modules/onboarding/screens/onboarding.dart';
 import 'package:Pouchers/routes.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/logger.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -24,19 +25,30 @@ import 'package:path_provider/path_provider.dart' as path;
 import 'package:stacked_services/stacked_services.dart';
 
 import 'app/app.router.dart';
+import 'app/config/app_config.dart';
 import 'app/core/constants/app_constants.dart';
+import 'app/core/manager/session_manager.dart' as core;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  AppConfig.setAppEnv(kDebugMode ? AppEnv.staging : AppEnv.production);
+
+  await dotenv.load(fileName: AppConfig.fileName);
+
+  await setupLocator();
+  await locator<core.SessionManager>().initializeSession();
+
   await Intercom.instance.initialize(interComAppId,
       iosApiKey: interComIOSKey, androidApiKey: interComAndroidKey);
-  Env.setEnvironment(EnvState.production);
+  // Env.setEnvironment(EnvState.production);
 
-  if (Env.getEnvironment() == EnvState.production) {
-    await dotenv.load(fileName: ".env.production");
-  } else {
-    await dotenv.load(fileName: ".env.staging");
-  }
+  // if (Env.getEnvironment() == EnvState.production) {
+  //   await dotenv.load(fileName: ".env.production");
+  // } else {
+  //   await dotenv.load(fileName: ".env.staging");
+  // }
+
   await Firebase.initializeApp();
   Directory directory = await path.getApplicationDocumentsDirectory();
   // await FlutterDownloader.initialize(
@@ -71,13 +83,12 @@ Future<void> main() async {
   await Hive.openBox(kUserBox);
   await Hive.openBox(k2FACodeBox);
   await Hive.openBox(kBiometricsBox);
-  SessionManager.initSharedPreference().then((value) {
-    return SystemChrome.setPreferredOrientations(
-            [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
-        .then((_) {
-      runApp(const MyApp());
-    });
-  });
+  SessionManager.initSharedPreference().then((value) =>
+      SystemChrome.setPreferredOrientations(
+              [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+          .then((_) {
+        runApp(const MyApp());
+      }));
 }
 
 class MyApp extends StatefulWidget {
@@ -91,7 +102,6 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
-      observers: [ProviderLogger()],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
         minTextAdapt: true,

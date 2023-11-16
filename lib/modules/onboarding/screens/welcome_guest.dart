@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:Pouchers/app/helpers/size_config.dart';
 import 'package:Pouchers/app/navigators/navigators.dart';
-import 'package:Pouchers/modules/create_account/screens/create_account.dart';
 import 'package:Pouchers/modules/login/screens/login.dart';
 import 'package:Pouchers/modules/onboarding/screens/guest_widget.dart';
 import 'package:Pouchers/utils/components.dart';
@@ -10,6 +9,9 @@ import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/constant/ui_constants.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
+
+import '../../../app/app.router.dart';
+import '../../../app/core/router/page_router.dart';
 
 class WelcomeGuest extends StatelessWidget {
   static const String routeName = "welcomeGuest";
@@ -78,14 +80,14 @@ class WelcomeGuest extends StatelessWidget {
                           child: Column(
                             children: [
                               Container(
-                                  height: 70,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: kColorBackgroundLight,
-                                  ),
-                                  padding: EdgeInsets.all(kMediumPadding),
-                                  child:
-                                      SvgPicture.asset(guestClass[index].icon),),
+                                height: 70,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: kColorBackgroundLight,
+                                ),
+                                padding: EdgeInsets.all(kMediumPadding),
+                                child: SvgPicture.asset(guestClass[index].icon),
+                              ),
                               SizedBox(
                                 height: kRegularPadding,
                               ),
@@ -110,12 +112,12 @@ class WelcomeGuest extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   color: kColorBackgroundLight100,
-                  height: MediaQuery.of(context).size.height/3.0,
+                  height: MediaQuery.of(context).size.height / 3.0,
                   padding: EdgeInsets.symmetric(
                       horizontal: kMediumPadding, vertical: kMediumPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         onBoardingTitle,
@@ -149,9 +151,7 @@ class WelcomeGuest extends StatelessWidget {
                             child: LargeButton(
                               title: register,
                               onPressed: () {
-                                pushTo(context, CreateAccount(),
-                                    settings: const RouteSettings(
-                                        name: CreateAccount.routeName));
+                                PageRouter.pushNamed(Routes.signUpView);
                               },
                             ),
                           ),

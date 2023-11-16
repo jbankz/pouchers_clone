@@ -17,7 +17,6 @@ import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:Pouchers/modules/account/screens/two_factor_auth/security_modal.dart';
 import 'package:Pouchers/modules/create_account/models/create_account_response.dart';
 import 'package:Pouchers/modules/create_account/screens/biometrics_page.dart';
-import 'package:Pouchers/modules/create_account/screens/create_account.dart';
 import 'package:Pouchers/modules/create_account/screens/create_pin.dart';
 import 'package:Pouchers/modules/create_account/screens/poucher_tag.dart';
 import 'package:Pouchers/modules/create_account/screens/verify_account.dart';
@@ -32,6 +31,9 @@ import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
+
+import '../../../app/app.router.dart';
+import '../../../app/core/router/page_router.dart';
 
 class LogInAccount extends ConsumerStatefulWidget {
   static const String routeName = "logIn";
@@ -231,13 +233,18 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                         nowDate = DateTime.now().add(Duration(minutes: 5));
                       });
 
-                      ref.read(biometricProvider.notifier).state =
-                          ref.read(biometricProvider.notifier).state.copyWith(
-                            isLoginBiometricActive: next.data!.data!.isLoginBiometricActive,
-                            isPaymentBiometricActive: next.data!.data!.isPaymentBiometricActive
-                          );
-                      Hive.box(kBiometricsBox).put(kBiometricsKey, next.data!.data!.isLoginBiometricActive! ? 1 : 0);
-                      Hive.box(kBiometricsBox).put(kPayBiometricsKey, next.data!.data!.isPaymentBiometricActive! ? 1 : 0);
+                      ref.read(biometricProvider.notifier).state = ref
+                          .read(biometricProvider.notifier)
+                          .state
+                          .copyWith(
+                              isLoginBiometricActive:
+                                  next.data!.data!.isLoginBiometricActive,
+                              isPaymentBiometricActive:
+                                  next.data!.data!.isPaymentBiometricActive);
+                      Hive.box(kBiometricsBox).put(kBiometricsKey,
+                          next.data!.data!.isLoginBiometricActive! ? 1 : 0);
+                      Hive.box(kBiometricsBox).put(kPayBiometricsKey,
+                          next.data!.data!.isPaymentBiometricActive! ? 1 : 0);
                       if (next.data!.data!.tag == null) {
                         pushTo(
                             context,
@@ -301,7 +308,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                   });
                   var _widget = LargeButton(
                     title: "Log In",
-                    onPressed: () async{
+                    onPressed: () async {
                       FocusScope.of(context).unfocus();
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
@@ -337,7 +344,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                         TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              pushTo(context, CreateAccount());
+                              PageRouter.pushNamed(Routes.signUpView);
                             },
                           text: create,
                           style: textTheme.headline6!.copyWith(

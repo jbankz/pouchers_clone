@@ -22,7 +22,6 @@ import 'package:Pouchers/modules/account/screens/two_factor_auth/success_auth_pa
 import 'package:Pouchers/modules/account/screens/two_factor_auth/two_factor.dart';
 import 'package:Pouchers/modules/account/screens/two_factor_auth/two_factor_disable.dart';
 import 'package:Pouchers/modules/login/screens/reset_password_code.dart';
-import 'package:Pouchers/modules/onboarding/screens/onboarding.dart';
 import 'package:Pouchers/modules/onboarding/screens/pay_ussd.dart';
 import 'package:Pouchers/modules/profile/profile_utility_bill.dart';
 import 'package:Pouchers/modules/transactions/screens/analytics.dart';
@@ -45,7 +44,6 @@ import 'modules/cards/screens/card_summary.dart';
 import 'modules/cards/screens/create_card.dart';
 import 'modules/cards/screens/create_virtual_card.dart';
 import 'modules/create_account/screens/biometrics_page.dart';
-import 'modules/create_account/screens/create_account.dart';
 import 'modules/create_account/screens/create_pin.dart';
 import 'modules/create_account/screens/poucher_tag.dart';
 import 'modules/create_account/screens/verify_account.dart';
@@ -82,7 +80,6 @@ import 'modules/transactions/screens/transactions.dart';
 
 Map<String, WidgetBuilder> appRoutes = {
   BiometricsPage.routeName: (context) => BiometricsPage(),
-  CreateAccount.routeName: (context) => CreateAccount(),
   PoucherTag.routeName: (context) => PoucherTag(),
   VerifyAccount.routeName: (context) => VerifyAccount(),
   ForgotPassword.routeName: (context) => ForgotPassword(),
@@ -90,7 +87,6 @@ Map<String, WidgetBuilder> appRoutes = {
   ResetPasswordCode.routeName: (context) => ResetPasswordCode(),
   ResetSuccessful.routeName: (context) => ResetSuccessful(),
   SetPassword.routeName: (context) => SetPassword(),
-  OnBoardingPage.routeName: (context) => OnBoardingPage(),
   WelcomeGuest.routeName: (context) => WelcomeGuest(),
   ChangePassword.routeName: (context) => ChangePassword(),
   DeleteAccount.routeName: (context) => DeleteAccount(),
@@ -113,7 +109,7 @@ Map<String, WidgetBuilder> appRoutes = {
   Betting.routeName: (context) => Betting(),
   BuyAirtime.routeName: (context) => BuyAirtime(),
   BuyCable.routeName: (context) => BuyCable(),
-  BuyEducation.routeName: (context)=>BuyEducation(),
+  BuyEducation.routeName: (context) => BuyEducation(),
   BuyData.routeName: (context) => BuyData(),
   BuyElectricity.routeName: (context) => BuyElectricity(),
   BuyInternet.routeName: (context) => BuyInternet(),
@@ -156,9 +152,9 @@ Map<String, WidgetBuilder> appRoutes = {
   Transactions.routeName: (context) => Transactions(),
   History.routeName: (context) => History(),
   HistoryDetail.routeName: (context) => HistoryDetail(),
-  TransactionReceipt.routeName : (context) => TransactionReceipt(),
-  Analytics.routeName : (context) => Analytics(),
-  Referral.routeName : (context) => Referral(),
+  TransactionReceipt.routeName: (context) => TransactionReceipt(),
+  Analytics.routeName: (context) => Analytics(),
+  Referral.routeName: (context) => Referral(),
   SuccessMessage.routeName: (context) => SuccessMessage(),
   ManageRequest.routeName: (context) => ManageRequest(),
 };

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
 
@@ -251,4 +252,12 @@ extension ContextExtensions on BuildContext {
       FocusScope.of(this).unfocus();
 
   void dismissTrey() => OverlaySupportEntry.of(this)!.dismiss();
+
+  FilteringTextInputFormatter get charactersOnly =>
+      FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]"));
+
+  LengthLimitingTextInputFormatter limit({int max = 11}) =>
+      LengthLimitingTextInputFormatter(max);
+
+  TextInputFormatter get digitsOnly => FilteringTextInputFormatter.digitsOnly;
 }

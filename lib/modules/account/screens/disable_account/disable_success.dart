@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:Pouchers/ui/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:Pouchers/app/common/listener.dart';
 import 'package:Pouchers/app/navigators/navigators.dart';
 import 'package:Pouchers/modules/login/screens/login.dart';
-import 'package:Pouchers/modules/onboarding/screens/onboarding.dart';
 import 'package:Pouchers/utils/assets_path.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/strings.dart';
@@ -46,7 +46,7 @@ class _DisableSuccessfulState extends State<DisableSuccessful> {
         Future.delayed(Duration(seconds: 2)).then(
           (value) => pushToAndClearStack(
             context,
-            widget.isDelete! ? OnBoardingPage() : LogInAccount(),
+            widget.isDelete! ? OnboardingView() : LogInAccount(),
           ),
         );
       } else {
@@ -63,7 +63,7 @@ class _DisableSuccessfulState extends State<DisableSuccessful> {
     return InitialPage(
         onTap: () {
           widget.isDelete!
-              ? pushToAndClearStack(context, OnBoardingPage())
+              ? pushToAndClearStack(context, OnboardingView())
               : pushToAndClearUntil(context, LogInAccount(),
                   routeName: LogInAccount.routeName);
         },

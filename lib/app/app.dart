@@ -3,6 +3,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../ui/features/authentication/presentation/view/signup/sign_up_view.dart';
 import '../ui/features/onboarding/presentation/views/onboarding_view.dart';
 import 'core/manager/biometric_manager.dart';
 import 'core/manager/hive_manager.dart';
@@ -16,10 +17,10 @@ import 'core/manager/session_manager.dart';
         opaque: false,
         initial: true,
         transitionsBuilder: TransitionsBuilders.fadeIn),
-    // CustomRoute(
-    //     page: SignUpView,
-    //     opaque: false,
-    //     transitionsBuilder: TransitionsBuilders.fadeIn),
+    CustomRoute(
+        page: SignUpView,
+        opaque: false,
+        transitionsBuilder: TransitionsBuilders.fadeIn),
     // CustomRoute(
     //     page: SignInView,
     //     opaque: false,
