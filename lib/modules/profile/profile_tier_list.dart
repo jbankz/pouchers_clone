@@ -1,4 +1,5 @@
 import 'package:Pouchers/modules/account/models/tier_list.dart';
+import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,21 +27,18 @@ class PouchersTierList extends ConsumerStatefulWidget {
 }
 
 class _PouchersTierListState extends ConsumerState<PouchersTierList> {
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
   int? userTierLevel;
   int? hiveTierLevel;
   List<MapEntry<String, String>> tiersList = [];
-
-
-
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      ref.read(getTiersProvider.notifier).getTierList(then: (val){
-        for (var item in val.data){
-          if (item.name!.startsWith('tier')){
+      ref.read(getTiersProvider.notifier).getTierList(then: (val) {
+        for (var item in val.data) {
+          if (item.name!.startsWith('tier')) {
             tiersList.add(MapEntry(item.name!, item.value!));
           }
         }
@@ -54,122 +52,141 @@ class _PouchersTierListState extends ConsumerState<PouchersTierList> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return InitialPage(
-      title: pouchertier,
-      child: ListenerPage(
-     child: ref.watch(getTiersProvider).when(
-          done: (done) {
-            if (done != null) {
-              var tier1Limit = tiersList.firstWhere((element) => element.key.startsWith('tier1_daily')).value;
-              var tier1Bal = tiersList.firstWhere((element) => element.key.startsWith('tier1_maximum')).value;
-              var tier2Limit = tiersList.firstWhere((element) => element.key.startsWith('tier2_daily')).value;
-              var tier2Bal = tiersList.firstWhere((element) => element.key.startsWith('tier2_maximum')).value;
-              var tier3Limit = tiersList.firstWhere((element) => element.key.startsWith('tier3_daily')).value;
-              var tier3Bal = tiersList.firstWhere((element) => element.key.startsWith('tier3_maximum')).value;
-              return ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: kSmallPadding),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: kSmallPadding,
-                          height: 580,
-                          decoration: BoxDecoration(
-                            color: kLight100,
-                            borderRadius: BorderRadius.circular(kSmallPadding),
-                          ),
-                          child: Align(
-                            alignment: Alignment.topCenter,
-                            child: Container(
-                              height: hiveTierLevel == 1
-                                  ? 93
-                                  : hiveTierLevel == 2
-                                      ? 292
-                                      : 490,
+        title: pouchertier,
+        child: ListenerPage(
+          child: ref.watch(getTiersProvider).when(
+              done: (done) {
+                if (done != null) {
+                  var tier1Limit = tiersList
+                      .firstWhere(
+                          (element) => element.key.startsWith('tier1_daily'))
+                      .value;
+                  var tier1Bal = tiersList
+                      .firstWhere(
+                          (element) => element.key.startsWith('tier1_maximum'))
+                      .value;
+                  var tier2Limit = tiersList
+                      .firstWhere(
+                          (element) => element.key.startsWith('tier2_daily'))
+                      .value;
+                  var tier2Bal = tiersList
+                      .firstWhere(
+                          (element) => element.key.startsWith('tier2_maximum'))
+                      .value;
+                  var tier3Limit = tiersList
+                      .firstWhere(
+                          (element) => element.key.startsWith('tier3_daily'))
+                      .value;
+                  var tier3Bal = tiersList
+                      .firstWhere(
+                          (element) => element.key.startsWith('tier3_maximum'))
+                      .value;
+                  return ListView(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: kSmallPadding),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: kSmallPadding,
+                              height: 580,
                               decoration: BoxDecoration(
-                                color: kLightYellow200,
+                                color: kLight100,
                                 borderRadius:
                                     BorderRadius.circular(kSmallPadding),
                               ),
+                              child: Align(
+                                alignment: Alignment.topCenter,
+                                child: Container(
+                                  height: hiveTierLevel == 1
+                                      ? 93
+                                      : hiveTierLevel == 2
+                                          ? 292
+                                          : 490,
+                                  decoration: BoxDecoration(
+                                    color: kLightYellow200,
+                                    borderRadius:
+                                        BorderRadius.circular(kSmallPadding),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            Container(
+                              height: hiveTierLevel == 1
+                                  ? 106
+                                  : hiveTierLevel == 2
+                                      ? 305
+                                      : 505,
+                              alignment: Alignment.bottomLeft,
+                              child: SvgPicture.asset(AssetPaths.tierIcon),
+                            ),
+                            SizedBox(
+                              width: kSmallPadding,
+                            ),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  TiersContainer(
+                                    maxbalance: tier1Bal,
+                                    text1: tier1Limit,
+                                    tier: "$tier 1",
+                                    text2: tier1Bal,
+                                  ),
+                                  SizedBox(
+                                    height: kMediumPadding,
+                                  ),
+                                  TiersContainer(
+                                    maxbalance: tier2Bal,
+                                    text1: tier2Limit,
+                                    text2: tier2Bal,
+                                    tier: tier2,
+                                  ),
+                                  SizedBox(
+                                    height: kMediumPadding,
+                                  ),
+                                  TiersContainer(
+                                    bgColor: kPrimaryColor,
+                                    textColor: kPrimaryColor,
+                                    color: kPrimaryWhite,
+                                    maxbalance: tier3Bal,
+                                    text1: tier3Limit,
+                                    text2: tier3Bal,
+                                    tier: tier3,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        Container(
-                          height: hiveTierLevel == 1
-                              ? 105
-                              : hiveTierLevel == 2
-                                  ? 305
-                                  : 505,
-                          alignment: Alignment.bottomLeft,
-                          child: SvgPicture.asset(AssetPaths.tierIcon),
-                        ),
-                        SizedBox(
-                          width: kSmallPadding,
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                                TiersContainer(
-                                maxbalance: tier1Bal,
-                                text1: tier1Limit,
-                                tier: "$tier 1",text2: tier1Bal,
-                              ),
-
-                              SizedBox(
-                                height: kMediumPadding,
-                              ),
-                               TiersContainer(
-                                maxbalance: tier2Bal,
-                                text1: tier2Limit,
-                                text2: tier2Bal,
-                                tier: tier2,
-                              ),
-                              SizedBox(
-                                height: kMediumPadding,
-                              ),
-                               TiersContainer(
-                                bgColor: kPrimaryColor,
-                                textColor: kPrimaryColor,
-                                color: kPrimaryWhite,
-                                maxbalance: tier3Bal,
-                                text1: tier3Limit,
-                                text2:tier3Bal,
-                                tier: tier3,
-                              ),
-
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: kLargePadding,
-                  ),
-                  LargeButton(
-                    title: upgrade,
-                    onPressed: () {
-                      pushTo(
-                        context,
-                        AccountVerificationStatus(),
-                        settings: const RouteSettings(
-                            name: AccountVerificationStatus.routeName),
-                      ).then(
-                        (value) => checkTierLevel(),
-                      );
-                    },
-                  )
-                ],
-              );
-            } else
-              return SizedBox();
-          },
-          loading: () => SpinKitDemo()),
-    ));
+                      ),
+                      SizedBox(
+                        height: kLargePadding,
+                      ),
+                      LargeButton(
+                        title: upgrade,
+                        onPressed: () {
+                          pushTo(
+                            context,
+                            AccountVerificationStatus(),
+                            settings: const RouteSettings(
+                                name: AccountVerificationStatus.routeName),
+                          ).then(
+                            (value) => checkTierLevel(),
+                          );
+                        },
+                      )
+                    ],
+                  );
+                } else
+                  return SizedBox();
+              },
+              loading: () => SpinKitDemo()),
+        ));
   }
 
   checkTierLevel() {
+    final userProfile = userDao.returnUser(userDao.box);
     hiveTierLevel = ref.watch(editProfileInHouseProvider).tierLevels;
     userTierLevel = userProfile.tierLevels;
     if (hiveTierLevel != null) {
@@ -197,7 +214,7 @@ class _PouchersTierListState extends ConsumerState<PouchersTierList> {
 
 class TiersContainer extends StatelessWidget {
   final Color? bgColor, color, textColor;
-  final String text1,  tier, maxbalance;
+  final String text1, tier, maxbalance;
   final String? text2;
 
   const TiersContainer(
@@ -208,7 +225,7 @@ class TiersContainer extends StatelessWidget {
       required this.text1,
       required this.tier,
       required this.maxbalance,
-       this.text2})
+      this.text2})
       : super(key: key);
 
   @override
@@ -275,10 +292,9 @@ class TiersContainer extends StatelessWidget {
               SizedBox(
                 height: kPadding,
               ),
-              maxbalance == "Unlimited " || maxbalance== "Unlimited"
-                  ?
-                   Text(
-                     capitalize(maxbalance),
+              maxbalance == "Unlimited " || maxbalance == "Unlimited"
+                  ? Text(
+                      capitalize(maxbalance),
                       style: textTheme.headline2!.copyWith(
                         fontWeight: FontWeight.w700,
                         color: tier == tier3 ? kPrimaryWhite : kPrimaryColor,

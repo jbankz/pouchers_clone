@@ -19,7 +19,9 @@ class Utils {
     } else if (e is TimeoutException) {
       logTimeoutException(e);
       return "Request timed out, please try again";
-    } else if (e is FormatException || e is ClientException || e is HandshakeException) {
+    } else if (e is FormatException ||
+        e is ClientException ||
+        e is HandshakeException) {
       logPrint(e);
       return "Something went wrong, please try again";
     } else {
@@ -30,9 +32,11 @@ class Utils {
 
 String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
-String kPriceFormatter(double price) => NumberFormat("#,##0.00", "en_US").format(price);
+String kPriceFormatter(double price) =>
+    NumberFormat("#,##0.00", "en_US").format(price);
 
-String formatTime(int seconds) => '${(Duration(seconds: seconds))}'.split('.').first.substring(2);
+String formatTime(int seconds) =>
+    '${(Duration(seconds: seconds))}'.split('.').first.substring(2);
 
 class ClientException implements Exception {
   final String message;
@@ -62,10 +66,10 @@ Future<Map<String, dynamic>?> startDojahWidget(
   );
 
   Map<String, dynamic>? result;
-  final Completer<Map<String, dynamic>?> submittedSuccessfully = Completer<Map<String, dynamic>?>();
+  final Completer<Map<String, dynamic>?> submittedSuccessfully =
+      Completer<Map<String, dynamic>?>();
 
   debugPrint("user response: $userData");
-
 
   await dojahKyc.open(
     context,
@@ -77,7 +81,8 @@ Future<Map<String, dynamic>?> startDojahWidget(
       Navigator.of(context).pop();
 
       List<dynamic> responseList = response;
-      Map<String, dynamic> responseBody = jsonDecode(jsonEncode(responseList[0]));
+      Map<String, dynamic> responseBody =
+          jsonDecode(jsonEncode(responseList[0]));
 
       result = responseBody;
 
@@ -87,9 +92,12 @@ Future<Map<String, dynamic>?> startDojahWidget(
 
         if (idType != null && idNumber != null) {
           submittedSuccessfully.complete({
-            "firstName": responseBody["data"]["government-data"]["data"]["entity"]["first_name"],
-            "lastName": responseBody["data"]["government-data"]["data"]["entity"]["last_name"],
-            "dob": responseBody["data"]["government-data"]["data"]["entity"]["date_of_birth"],
+            "firstName": responseBody["data"]["government-data"]["data"]
+                ["entity"]["first_name"],
+            "lastName": responseBody["data"]["government-data"]["data"]
+                ["entity"]["last_name"],
+            "dob": responseBody["data"]["government-data"]["data"]["entity"]
+                ["date_of_birth"],
             "docType": idType,
             "docNo": idNumber,
           });
@@ -99,9 +107,12 @@ Future<Map<String, dynamic>?> startDojahWidget(
 
         if (idData.documentType != null && idData.documentNumber != null) {
           submittedSuccessfully.complete({
-            "firstName": responseBody["data"]["government-data"]["data"]["entity"]["first_name"],
-            "lastName": responseBody["data"]["government-data"]["data"]["entity"]["last_name"],
-            "dob": responseBody["data"]["government-data"]["data"]["entity"]["date_of_birth"],
+            "firstName": responseBody["data"]["government-data"]["data"]
+                ["entity"]["first_name"],
+            "lastName": responseBody["data"]["government-data"]["data"]
+                ["entity"]["last_name"],
+            "dob": responseBody["data"]["government-data"]["data"]["entity"]
+                ["date_of_birth"],
             "docType": idData.documentType,
             "docNo": idData.documentNumber,
           });
@@ -135,7 +146,9 @@ extension DateHelper on DateTime {
   }
 
   bool isSameDate(DateTime other) {
-    return this.year == other.year && this.month == other.month && this.day == other.day;
+    return this.year == other.year &&
+        this.month == other.month &&
+        this.day == other.day;
   }
 
   int getDifferenceInDaysWithNow() {

@@ -24,9 +24,12 @@ class TwoFactorPinModal extends ConsumerStatefulWidget {
   final int? lengthOfQuestion;
   final Function()? doBiom;
 
-
   const TwoFactorPinModal(
-      {Key? key, this.lengthOfQuestion, this.isDisable = false, this.doBiom, this.isBiometric = false})
+      {Key? key,
+      this.lengthOfQuestion,
+      this.isDisable = false,
+      this.doBiom,
+      this.isBiometric = false})
       : super(key: key);
 
   @override
@@ -108,20 +111,20 @@ class _TwoFactorPinModalState extends ConsumerState<TwoFactorPinModal> {
                   if (widget.isBiometric!) {
                     Navigator.pop(context, pinPicked);
                     widget.doBiom!();
-                  }else{
+                  } else {
                     ref.watch(calculateQuestionProvider) == 0
                         ? pushTo(context, SecurityQuestion(),
-                        settings: const RouteSettings(
-                            name: SecurityQuestion.routeName))
+                            settings: const RouteSettings(
+                                name: SecurityQuestion.routeName))
                         : ref.watch(calculateQuestionProvider) == 1
-                        ? pushTo(context, SecondSecurityQuestion(),
-                        settings: const RouteSettings(
-                            name: SecondSecurityQuestion.routeName))
-                        : pushTo(context, GoogleAuthenticatorDownload(),
-                        settings: const RouteSettings(
-                            name: GoogleAuthenticatorDownload.routeName));
+                            ? pushTo(context, SecondSecurityQuestion(),
+                                settings: const RouteSettings(
+                                    name: SecondSecurityQuestion.routeName))
+                            : pushTo(context, GoogleAuthenticatorDownload(),
+                                settings: const RouteSettings(
+                                    name:
+                                        GoogleAuthenticatorDownload.routeName));
                   }
-
                 } else if (next.status == NotifierStatus.error) {
                   showErrorBar(context, next.message ?? next.data!);
                 }

@@ -55,7 +55,6 @@ class TransferSuccess extends StatelessWidget {
     return InitialPage(
         noBackButton: true,
         child: ListenerPage(
-
           child: Column(
             children: [
               Expanded(

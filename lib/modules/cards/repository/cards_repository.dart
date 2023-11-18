@@ -32,8 +32,24 @@ class CardsRepository {
     ServiceResponse<String> createCard;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     createCard = await CardsService.createVirtualCard(
+      // address: address,
+      token: userProfile.token!,
+      amount: amount,
+      transactionPin: transactionPin,
+      bvn: bvn,
+      // city: city,
+      country: country,
+      brand: brand,
+      currency: currency,
+      // postalCode: postalCode,
+      // state: state
+    );
+    if (createCard.notAuthenticated) {
+      await refreshToken(refreshToken: userProfile.refreshToken!);
+      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      createCard = await CardsService.createVirtualCard(
         // address: address,
-        token: userProfile.token!,
+        token: userProfiles.token!,
         amount: amount,
         transactionPin: transactionPin,
         bvn: bvn,
@@ -43,22 +59,6 @@ class CardsRepository {
         currency: currency,
         // postalCode: postalCode,
         // state: state
-    );
-    if (createCard.notAuthenticated) {
-      await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
-      createCard = await CardsService.createVirtualCard(
-          // address: address,
-          token: userProfiles.token!,
-          amount: amount,
-          transactionPin: transactionPin,
-          bvn: bvn,
-          // city: city,
-          country: country,
-          brand: brand,
-          currency: currency,
-          // postalCode: postalCode,
-          // state: state
       );
     }
     return createCard.toNotifierState();
@@ -67,7 +67,7 @@ class CardsRepository {
   Future<NotifierState<GetAllCardsResponse>> getAllVirtualCards() async {
     ServiceResponse<GetAllCardsResponse> cardsResponse;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-     print("access Token ${userProfile.token}");
+    print("access Token ${userProfile.token}");
     print("refresh Token ${userProfile.refreshToken}");
     cardsResponse = await CardsService.getAllVirtualCards(
         token: userProfile.token!, userId: userProfile.userId!);
@@ -77,7 +77,7 @@ class CardsRepository {
       cardsResponse = await CardsService.getAllVirtualCards(
           token: userProfiles.token!, userId: userProfiles.userId!);
     }
-      print("cardsResponse${cardsResponse.notAuthenticated}");
+    print("cardsResponse${cardsResponse.notAuthenticated}");
     return cardsResponse.toNotifierState();
   }
 

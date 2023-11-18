@@ -61,14 +61,16 @@ class FlutterSwitchClass extends StatelessWidget {
   final bool saveBeneficiary;
   final Function(bool) onToggle;
 
-  const FlutterSwitchClass(
-      {Key? key, required this.saveBeneficiary, required this.onToggle,})
-      : super(key: key);
+  const FlutterSwitchClass({
+    Key? key,
+    required this.saveBeneficiary,
+    required this.onToggle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FlutterSwitch(
-        width:  65.0,
+        width: 65.0,
         height: 40.0,
         valueFontSize: 25.0,
         toggleSize: 30.0,

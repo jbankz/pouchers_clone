@@ -80,19 +80,18 @@ class _DeleteConfirmState extends State<DeleteConfirm> {
                       },
                       onSaved: (val) => setState(() => _password = val),
                       icon: InkWell(
-                        onTap: () {
-                          setState(() {
-                            obscure = !obscure;
-                          });
-                        },
-                        child: obscure
-                            ? Icon(
-                          Icons.visibility_outlined,
-                          color: kSecondaryTextColor,
-                        )
-                            : Icon(Icons.visibility_off_outlined,
-                            color: kSecondaryTextColor)
-                      ),
+                          onTap: () {
+                            setState(() {
+                              obscure = !obscure;
+                            });
+                          },
+                          child: obscure
+                              ? Icon(
+                                  Icons.visibility_outlined,
+                                  color: kSecondaryTextColor,
+                                )
+                              : Icon(Icons.visibility_off_outlined,
+                                  color: kSecondaryTextColor)),
                     ),
                   ],
                 ),

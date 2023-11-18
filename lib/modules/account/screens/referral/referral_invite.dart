@@ -62,7 +62,8 @@ class ReferralInvite extends StatelessWidget {
           ),
           inkWell(
             onTap: () {
-              Clipboard.setData(ClipboardData(text: userProfile.referralCode ?? ""));
+              Clipboard.setData(
+                  ClipboardData(text: userProfile.referralCode ?? ""));
               showSuccessBar(context, "Copied");
             },
             child: DottedBorder(
@@ -74,8 +75,7 @@ class ReferralInvite extends StatelessWidget {
                 dashPattern: [9],
                 child: Container(
                   width: double.infinity,
-                  padding:
-                  EdgeInsets.symmetric(vertical: kMacroPadding),
+                  padding: EdgeInsets.symmetric(vertical: kMacroPadding),
                   child: Text(
                     userProfile.referralCode ?? "",
                     style: textTheme.headline4!.copyWith(
@@ -97,7 +97,7 @@ class ReferralInvite extends StatelessWidget {
             height: kLargePadding,
           ),
           LargeButton(
-            title:"COPY CODE" ,
+            title: "COPY CODE",
             onPressed: () {
               Share.share(userProfile.referralCode ?? "");
             },

@@ -140,7 +140,7 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       lastName: json['last_name'] as String?,
       verificationToken: json['verification_token'] as String?,
       verificationTokenExpires: json['verification_token_expires'] as String?,
-      tierLevels: json['tier_levels'] as int?,
+      tierLevels: json['tier_levels'] as int? ?? 1,
       passwordResetToken: json['password_reset_token'] as String?,
       passwordResetTokenExpires:
           json['password_reset_token_expires'] as String?,

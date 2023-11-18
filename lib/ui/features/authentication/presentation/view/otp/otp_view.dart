@@ -140,7 +140,8 @@ class _OtpViewState extends ConsumerState<OtpView> with $OtpView {
                     ),
                   ),
                 ],
-              )
+              ),
+              const Gap(height: 16),
             ],
           ),
         ),

@@ -16,7 +16,7 @@ import 'package:Pouchers/utils/widgets.dart';
 
 class BVNPage extends StatefulWidget {
   static const String routeName = "bVNPage";
- final String? from;
+  final String? from;
   const BVNPage({Key? key, this.from}) : super(key: key);
 
   @override
@@ -104,7 +104,8 @@ class _BVNPageState extends State<BVNPage> {
                         ),
                         settings: const RouteSettings(
                             name: ProfileSuccessful.routeName));
-                    ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
+                    ref.read(editProfileInHouseProvider.notifier).state =
+                        EditProfileData.fromJson(next.data!.data!.toJson());
                   } else if (next.status == NotifierStatus.error) {
                     showErrorBar(context, next.message!);
                   }

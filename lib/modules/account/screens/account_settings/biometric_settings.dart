@@ -33,7 +33,7 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
   int id = -1;
   bool? _canCheckBiometrics;
   bool isAuth = false;
-   String? userPin;
+  String? userPin;
 
   @override
   void initState() {
@@ -108,27 +108,24 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
                   activeColor: kPrimaryColor,
                   value: ref.watch(biometricProvider).isPaymentBiometricActive!,
                   borderRadius: 30.0,
-                  onToggle: (val) async{
-                   // await saveUserCredential(transactionPin: "6032");
-                   //  UserCredentials? cred = await getUserCredentials();
-                   //  print("credential: ${cred?.transactionPin}");
+                  onToggle: (val) async {
+                    // await saveUserCredential(transactionPin: "6032");
+                    //  UserCredentials? cred = await getUserCredentials();
+                    //  print("credential: ${cred?.transactionPin}");
 
-                    final  result  = await  buildShowModalBottomSheet(
-                          context,
-                          TwoFactorPinModal(
-                            isBiometric: true,
-                            doBiom: () {
-                              checkBiometric(context, payBiometric);
-                            },
-                          ));
-                      if(result != null){
-                        setState(() {
-                          userPin = result.join("");
-                        });
-                      }
-
-
-
+                    final result = await buildShowModalBottomSheet(
+                        context,
+                        TwoFactorPinModal(
+                          isBiometric: true,
+                          doBiom: () {
+                            checkBiometric(context, payBiometric);
+                          },
+                        ));
+                    if (result != null) {
+                      setState(() {
+                        userPin = result.join("");
+                      });
+                    }
                   })),
         ],
       ),
@@ -177,7 +174,9 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
           ),
           authMessages: const <AuthMessages>[
             AndroidAuthMessages(
-                signInTitle: "Biometrics login", cancelButton: "Cancel", ),
+              signInTitle: "Biometrics login",
+              cancelButton: "Cancel",
+            ),
             IOSAuthMessages()
           ]);
     } catch (e) {}
@@ -192,14 +191,13 @@ class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
                 !ref.watch(biometricProvider).isPaymentBiometricActive!,
             isLoginBiometricActive:
                 ref.watch(biometricProvider).isLoginBiometricActive,
-          then: () async{
-              if(ref.watch(biometricProvider).isPaymentBiometricActive!){
+            then: () async {
+              if (ref.watch(biometricProvider).isPaymentBiometricActive!) {
                 await saveUserCredential(transactionPin: userPin);
-              }else{
+              } else {
                 await saveUserCredential(transactionPin: null);
               }
-          }
-           );
+            });
       } else {
         ref.read(editProfileProvider.notifier).editProfile(
               isLoginBiometricActive:

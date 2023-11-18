@@ -29,8 +29,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
         child: SingleChildScrollView(
-      child: ListenerPage
-        (
+      child: ListenerPage(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -95,8 +94,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         isChangePhone: false,
                         forgot: true,
                       ),
-                      settings:
-                          const RouteSettings(name: ResetPasswordCode.routeName));
+                      settings: const RouteSettings(
+                          name: ResetPasswordCode.routeName));
                 } else if (next.status == NotifierStatus.error) {
                   showErrorBar(context, next.message!);
                 }

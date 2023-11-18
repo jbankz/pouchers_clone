@@ -18,7 +18,8 @@ class SuccessAuthPage extends StatelessWidget {
     return InitialPage(
         title: factorAuth,
         onTap: () {
-          Navigator.popUntil(context, (route) => route.settings.name == AccountSettings.routeName);
+          Navigator.popUntil(context,
+              (route) => route.settings.name == AccountSettings.routeName);
           // pushToAndClearUntil(
           //   context,
           //   TabLayout(
@@ -53,7 +54,10 @@ class SuccessAuthPage extends StatelessWidget {
               LargeButton(
                 title: dataSuccess,
                 onPressed: () {
-                  Navigator.popUntil(context, (route) => route.settings.name == AccountSettings.routeName);
+                  Navigator.popUntil(
+                      context,
+                      (route) =>
+                          route.settings.name == AccountSettings.routeName);
                 },
               )
             ],

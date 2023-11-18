@@ -15,8 +15,8 @@ final getAllVirtualCardProvider = StateNotifierProvider.autoDispose<
   return GetAllVirtualCardNotifier(ref.read(cardsRepoProvider));
 });
 
-final getAllFeesProvider = StateNotifierProvider<
-    GetAllFeesNotifier, NotifierState<FetchEnvs>>((ref) {
+final getAllFeesProvider =
+    StateNotifierProvider<GetAllFeesNotifier, NotifierState<FetchEnvs>>((ref) {
   return GetAllFeesNotifier(ref.read(cardsRepoProvider));
 });
 
@@ -30,24 +30,22 @@ final getCardDetailsProvider = StateNotifierProvider.autoDispose<
   return GetDetailsCardNotifier(ref.read(cardsRepoProvider));
 });
 
-final getCardTokenProvider = StateNotifierProvider<
-    GetCardTokenNotifier, NotifierState<String>>((ref) {
+final getCardTokenProvider =
+    StateNotifierProvider<GetCardTokenNotifier, NotifierState<String>>((ref) {
   return GetCardTokenNotifier(ref.read(cardsRepoProvider));
 });
 
-
-final freezeCardProvider = StateNotifierProvider.autoDispose<
-    FreezeCardNotifier, NotifierState<String>>((ref) {
+final freezeCardProvider = StateNotifierProvider.autoDispose<FreezeCardNotifier,
+    NotifierState<String>>((ref) {
   return FreezeCardNotifier(ref.read(cardsRepoProvider));
 });
 
-final getCardBalanceProvider = StateNotifierProvider<
-    GetCardBalanceNotifier, NotifierState<String>>((ref) {
+final getCardBalanceProvider =
+    StateNotifierProvider<GetCardBalanceNotifier, NotifierState<String>>((ref) {
   return GetCardBalanceNotifier(ref.read(cardsRepoProvider));
 });
 
-class CreateVirtualCardNotifier extends StateNotifier<NotifierState<String>>
-  {
+class CreateVirtualCardNotifier extends StateNotifier<NotifierState<String>> {
   final CardsRepository _repo;
 
   CreateVirtualCardNotifier(this._repo) : super(NotifierState());
@@ -61,7 +59,7 @@ class CreateVirtualCardNotifier extends StateNotifier<NotifierState<String>>
       // required String postalCode,
       required String currency,
       required String bvn,
-        required String brand,
+      required String brand,
       required double amount,
       required String transactionPin,
       Function()? then}) async {
@@ -84,8 +82,7 @@ class CreateVirtualCardNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class GetAllVirtualCardNotifier
-    extends StateNotifier<NotifierState<GetAllCardsResponse>>
-     {
+    extends StateNotifier<NotifierState<GetAllCardsResponse>> {
   final CardsRepository _repo;
 
   GetAllVirtualCardNotifier(this._repo) : super(NotifierState());
@@ -95,16 +92,13 @@ class GetAllVirtualCardNotifier
     state = await _repo.getAllVirtualCards();
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
-    }else if(state.noAuth){
-
+    } else if (state.noAuth) {
       print("nkjgnjkg");
     }
   }
 }
 
-class GetAllFeesNotifier
-    extends StateNotifier<NotifierState<FetchEnvs>>
-  {
+class GetAllFeesNotifier extends StateNotifier<NotifierState<FetchEnvs>> {
   final CardsRepository _repo;
 
   GetAllFeesNotifier(this._repo) : super(NotifierState());
@@ -120,11 +114,7 @@ class GetAllFeesNotifier
   }
 }
 
-
-
-
-class FundVirtualCardNotifier extends StateNotifier<NotifierState<String>>
-     {
+class FundVirtualCardNotifier extends StateNotifier<NotifierState<String>> {
   final CardsRepository _repo;
 
   FundVirtualCardNotifier(this._repo) : super(NotifierState());
@@ -144,8 +134,7 @@ class FundVirtualCardNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class GetDetailsCardNotifier
-    extends StateNotifier<NotifierState<GetCardDetailsResponse>>
-     {
+    extends StateNotifier<NotifierState<GetCardDetailsResponse>> {
   final CardsRepository _repo;
 
   GetDetailsCardNotifier(this._repo) : super(NotifierState());
@@ -159,9 +148,7 @@ class GetDetailsCardNotifier
   }
 }
 
-class GetCardTokenNotifier
-    extends StateNotifier<NotifierState<String>>
-    {
+class GetCardTokenNotifier extends StateNotifier<NotifierState<String>> {
   final CardsRepository _repo;
 
   GetCardTokenNotifier(this._repo) : super(NotifierState());
@@ -175,9 +162,7 @@ class GetCardTokenNotifier
   }
 }
 
-class GetCardBalanceNotifier
-    extends StateNotifier<NotifierState<String>>
-     {
+class GetCardBalanceNotifier extends StateNotifier<NotifierState<String>> {
   final CardsRepository _repo;
 
   GetCardBalanceNotifier(this._repo) : super(NotifierState());
@@ -191,8 +176,7 @@ class GetCardBalanceNotifier
   }
 }
 
-class FreezeCardNotifier extends StateNotifier<NotifierState<String>>
-    {
+class FreezeCardNotifier extends StateNotifier<NotifierState<String>> {
   final CardsRepository _repo;
 
   FreezeCardNotifier(this._repo) : super(NotifierState());

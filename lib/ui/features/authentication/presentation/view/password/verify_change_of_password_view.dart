@@ -1,0 +1,160 @@
+import 'dart:async';
+
+import 'package:Pouchers/app/app.router.dart';
+import 'package:Pouchers/app/core/router/page_router.dart';
+import 'package:Pouchers/ui/common/app_colors.dart';
+import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
+import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
+import 'package:Pouchers/utils/extension.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:stacked/stacked_annotations.dart';
+
+import '../../../../../common/app_strings.dart';
+import '../../../../../widgets/elevated_button_widget.dart';
+import '../../../../../widgets/gap.dart';
+import '../../../../../widgets/pin_code_widget.dart';
+import '../../notifier/auth_notifier.dart';
+import '../otp/notifier/module.dart';
+import '../otp/notifier/timer_notifier.dart';
+import 'verify_change_of_password_view.form.dart';
+
+@FormView(fields: [FormTextField(name: 'otp')])
+class VerifyChangeOfPasswordView extends ConsumerStatefulWidget {
+  const VerifyChangeOfPasswordView({super.key});
+
+  @override
+  ConsumerState<VerifyChangeOfPasswordView> createState() =>
+      _VerifyChangeOfPasswordViewState();
+}
+
+class _VerifyChangeOfPasswordViewState
+    extends ConsumerState<VerifyChangeOfPasswordView>
+    with $VerifyChangeOfPasswordView {
+  final formKey = GlobalKey<FormState>();
+
+  late AuthNotifier _authNotifier;
+  late OtpTimerNotifier _otpTimerNotifier;
+  final StreamController<ErrorAnimationType> _errorController =
+      StreamController<ErrorAnimationType>();
+
+  @override
+  void initState() {
+    otpFocusNode.requestFocus();
+    _authNotifier = ref.read(authNotifierProvider.notifier);
+    _otpTimerNotifier = ref.read(otpTimerModule.notifier);
+    _otpTimerNotifier.startTimer();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _otpTimerNotifier.cancelTimer();
+    disposeForm();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final timerState = ref.watch(otpTimerModule);
+    final authState = ref.watch(authNotifierProvider);
+    return ValueListenableBuilder<Box>(
+        valueListenable: userDao.getListenable(),
+        builder: (_, box, __) {
+          final user = userDao.returnUser(box);
+
+          return Scaffold(
+            appBar: AppBar(),
+            body: SafeArea(
+              minimum: const EdgeInsets.symmetric(horizontal: 16),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView(
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
+                        children: [
+                          Text(AppString.verifyAccount,
+                              style: context.headlineMedium?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 24.sp)),
+                          const Gap(height: 8),
+                          RichText(
+                              text: TextSpan(
+                                  text: AppString.changePasswordVerification,
+                                  style: context.titleLarge
+                                      ?.copyWith(fontSize: 16))),
+                          const Gap(height: 32),
+                          PinCodeWidget(
+                              errorAnimationController: _errorController,
+                              controller: otpController,
+                              focusNode: otpFocusNode)
+                        ],
+                      ),
+                    ),
+                    ElevatedButtonWidget(
+                        title: AppString.confirm,
+                        loading: authState.isBusy,
+                        onPressed: timerState.isTimerFinished
+                            ? null
+                            : () {
+                                if (!formKey.currentState!.validate()) return;
+                                PageRouter.pushNamed(Routes.setNewPasswordView,
+                                    args: SetNewPasswordViewArguments(
+                                        email: user.email ?? ''));
+                                // _authNotifier.verifyAccountEmail(
+                                //     AuthDto(otp: otpController.text), () {
+                                //   _errorController.add(ErrorAnimationType.shake);
+                                //   otpController.clear();
+                                //   otpFocusNode.requestFocus();
+                                //   setState(() {});
+                                // });
+                              }),
+                    const Gap(height: 24),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(AppString.noCode, style: context.titleLarge),
+                        const Gap(width: 8),
+                        InkWell(
+                          onTap: !timerState.isTimerFinished
+                              ? null
+                              : () => _authNotifier
+                                  .requestOtp(AuthDto(email: user.email)),
+                          borderRadius: BorderRadius.circular(20.r),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 14.w, vertical: 4.h),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.r),
+                                color: timerState.isTimerFinished
+                                    ? AppColors.kPurpleColor.withOpacity(.1)
+                                    : context.inputDecorationTheme.fillColor),
+                            child: Text(
+                                timerState.isTimerFinished
+                                    ? AppString.resend
+                                    : '${AppString.resend} in ${timerState.timerCount}s',
+                                style: context.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 12,
+                                    color: timerState.isTimerFinished
+                                        ? AppColors.kPrimaryColor
+                                        : null)),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Gap(height: 16),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+}

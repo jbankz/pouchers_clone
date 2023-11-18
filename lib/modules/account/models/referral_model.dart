@@ -8,8 +8,8 @@ class RewardsContainer extends StatelessWidget {
       {Key? key,
       required this.textTheme,
       required this.widget,
-        this.referralBonusAmount,
-        this.invite = false,
+      this.referralBonusAmount,
+      this.invite = false,
       required this.icon})
       : super(key: key);
 
@@ -40,7 +40,9 @@ class RewardsContainer extends StatelessWidget {
                 ),
               ),
               child: icon),
-          SizedBox(width: invite ? kMediumPadding : 0,),
+          SizedBox(
+            width: invite ? kMediumPadding : 0,
+          ),
           Expanded(child: widget),
           Container(
             padding: EdgeInsets.symmetric(
@@ -71,7 +73,7 @@ class RewardsContainer extends StatelessWidget {
                   width: kSmallPadding,
                 ),
                 Text(
-                 referralBonusAmount ?? "10",
+                  referralBonusAmount ?? "10",
                   style: textTheme.headline2!.copyWith(
                     fontWeight: FontWeight.w500,
                     fontSize: 18,
@@ -219,10 +221,10 @@ class ReferralTrail {
 
 class BannerResponse {
   BannerResponse({
-     this.status,
-     this.message,
-     this.code,
-     this.data,
+    this.status,
+    this.message,
+    this.code,
+    this.data,
   });
 
   String? status;
@@ -231,25 +233,28 @@ class BannerResponse {
   List<BannerData>? data;
 
   factory BannerResponse.fromJson(Map<String, dynamic> json) => BannerResponse(
-    status: json["status"],
-    message: json["message"],
-    code: json["code"],
-    data: json["data"] == null ? null : List<BannerData>.from(json["data"].map((x) => BannerData.fromJson(x))),
-  );
+        status: json["status"],
+        message: json["message"],
+        code: json["code"],
+        data: json["data"] == null
+            ? null
+            : List<BannerData>.from(
+                json["data"].map((x) => BannerData.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "code": code,
-    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
-  };
+        "status": status,
+        "message": message,
+        "code": code,
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+      };
 }
 
 class BannerData {
   BannerData({
-     this.id,
-     this.imageUrl,
-     this.type,
+    this.id,
+    this.imageUrl,
+    this.type,
     this.routingUrl,
   });
 
@@ -259,22 +264,21 @@ class BannerData {
   String? routingUrl;
 
   factory BannerData.fromJson(Map<String, dynamic> json) => BannerData(
-    id: json["id"],
-    imageUrl: json["image_url"],
-    type: json["type"],
-      routingUrl: json["routing_url"],
-  );
+        id: json["id"],
+        imageUrl: json["image_url"],
+        type: json["type"],
+        routingUrl: json["routing_url"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "image_url": imageUrl,
-    "type": type,
-    "routing_url": routingUrl,
-  };
+        "id": id,
+        "image_url": imageUrl,
+        "type": type,
+        "routing_url": routingUrl,
+      };
 
   @override
   String toString() {
     return 'BannerData{id: $id, imageUrl: $imageUrl, type: $type, routing_url: $routingUrl}';
   }
 }
-

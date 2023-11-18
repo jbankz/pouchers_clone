@@ -70,7 +70,6 @@ class ScheduleRepository {
     required String transactionPin,
     required String serviceId,
   }) async {
-
     ServiceResponse<String> scheduleUtility;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     scheduleUtility = await ScheduleService.scheduleUtility(
@@ -111,7 +110,6 @@ class ScheduleRepository {
       required String transactionPin,
       String? status,
       String? scheduleId}) async {
-
     ServiceResponse<String> scheduleLocalTransfer;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     scheduleLocalTransfer = await ScheduleService.scheduleLocalTransfer(
@@ -145,7 +143,6 @@ class ScheduleRepository {
   Future<NotifierState<GetAllScheduleResponse>> getSchedule({
     required String category,
   }) async {
-
     ServiceResponse<GetAllScheduleResponse> getSchedule;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     getSchedule = await ScheduleService.getSchedule(
@@ -169,7 +166,6 @@ class ScheduleRepository {
       required String transactionPin,
       required String scheduleId,
       required String status}) async {
-
     ServiceResponse<String> editSchedule;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     editSchedule = await ScheduleService.editSchedule(
@@ -198,7 +194,6 @@ class ScheduleRepository {
     required String transactionPin,
     required String scheduleId,
   }) async {
-
     ServiceResponse<String> deleteSchedule;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     deleteSchedule = await ScheduleService.deleteSchedule(

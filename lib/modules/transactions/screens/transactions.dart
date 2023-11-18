@@ -74,11 +74,7 @@ class _TransactionsState extends State<Transactions>
           SizedBox(
             height: kRegularPadding,
           ),
-          Expanded(
-              child: tabIndex == 0
-                  ? History()
-                  : Analytics()
-            )
+          Expanded(child: tabIndex == 0 ? History() : Analytics())
         ],
       ),
     );

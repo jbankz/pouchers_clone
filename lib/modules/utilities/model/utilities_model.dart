@@ -257,8 +257,6 @@ class Service {
     );
   }
 
-
-
   Map<String, dynamic> toJson() => {
         "name": name,
         "code": code,
@@ -266,7 +264,6 @@ class Service {
         "shortCode": shortCode,
       };
 }
-
 
 class DataBundleResponse {
   DataBundleResponse({

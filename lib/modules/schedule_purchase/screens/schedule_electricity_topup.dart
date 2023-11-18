@@ -125,11 +125,12 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
                             .getUtilitiesType(
                                 merchantServiceId:
                                     utilitiesData!.operatorpublicid!,
-                            categoeyName: utilitiesData!.category!);
+                                categoeyName: utilitiesData!.category!);
                       }
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: kRegularPadding),
                       decoration: BoxDecoration(
                           color: kBackgroundColor,
                           borderRadius: BorderRadius.circular(kSmallPadding)),
@@ -138,8 +139,8 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding:
-                                  EdgeInsets.symmetric(vertical: kMediumPadding),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: kMediumPadding),
                               child: Text(
                                   utilitiesData == null
                                       ? selectProvider
@@ -203,7 +204,8 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
                             }
                           },
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: kRegularPadding),
                       decoration: BoxDecoration(
                           color: kBackgroundColor,
                           borderRadius: BorderRadius.circular(kSmallPadding)),
@@ -211,8 +213,8 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding:
-                                  EdgeInsets.symmetric(vertical: kMediumPadding),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: kMediumPadding),
                               child: Row(
                                 children: [
                                   Expanded(
@@ -479,7 +481,8 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
                                   ref
                                       .read(buyUtilitiesProvider.notifier)
                                       .buyUtilities(
-                                          amount: paymentType!.price!.toDouble(),
+                                          amount:
+                                              paymentType!.price!.toDouble(),
                                           isSchedule: true,
                                           merchantAccount:
                                               utilitiesData!.operatorpublicid!,
@@ -493,7 +496,8 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
                                           category: "electricity-purchase",
                                           then: () {
                                             ref
-                                                .read(getWalletProvider.notifier)
+                                                .read(
+                                                    getWalletProvider.notifier)
                                                 .getWalletDetails();
                                             pushTo(
                                               context,
@@ -546,13 +550,15 @@ class _ScheduleElectricityState extends ConsumerState<ScheduleElectricity> {
                               isCard: false,
                               isFundCard: false,
                               doSchedule: () {
-                                showSuccessBar(
-                                    context, "Auto top-up successfully created");
+                                showSuccessBar(context,
+                                    "Auto top-up successfully created");
                               },
                             ),
                           );
                           if (result != null) {
-                            ref.read(deleteScheduleProvider.notifier).deleteSchedule(
+                            ref
+                                .read(deleteScheduleProvider.notifier)
+                                .deleteSchedule(
                                   scheduleId: widget.id!,
                                   transactionPin: result,
                                   error: (val) => showErrorBar(context, val),

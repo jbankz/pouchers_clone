@@ -52,9 +52,8 @@ final getWalletProvider =
   return GetWalletNotifier(ref.read(paymentRepoProvider));
 });
 
-final getNotificationProvider =
-    StateNotifierProvider<GetNotificationNotifier, NotifierState<NotificationResponse>>(
-        (ref) {
+final getNotificationProvider = StateNotifierProvider<GetNotificationNotifier,
+    NotifierState<NotificationResponse>>((ref) {
   return GetNotificationNotifier(ref.read(paymentRepoProvider));
 });
 
@@ -125,7 +124,12 @@ class MoneyRequestNotifier
     String? note,
   }) async {
     state = notifyLoading();
-    state = await _repo.moneyRequestStatus(action: action, note: note, amount: amount, requestId: requestId, pin: pin);
+    state = await _repo.moneyRequestStatus(
+        action: action,
+        note: note,
+        amount: amount,
+        requestId: requestId,
+        pin: pin);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }
@@ -235,7 +239,7 @@ class GetWalletNotifier
       }
     } else if (state.noAuth) {
       if (noAuth != null) noAuth(state.noAuth);
-    }else if(state.message == "User wallet not found"){
+    } else if (state.message == "User wallet not found") {
       print("got here");
       SessionManager.setWalletBalance("0.00");
     }

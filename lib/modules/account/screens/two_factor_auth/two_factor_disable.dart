@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:Pouchers/app/common/listener.dart';
@@ -52,25 +51,22 @@ class TwoFactorDisable extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          factorAuthentication,
-                          style: textTheme.subtitle1
-                        ),
+                        Text(factorAuthentication, style: textTheme.subtitle1),
                         FlutterSwitchClass(
                           saveBeneficiary: true,
                           onToggle: (val) {
                             showDialog(
                                 context: context,
                                 builder: (ctx) {
-                                  return  Container(
-                                      color: Color.fromRGBO(6, 6, 40, 0.7),
-                                      child: SecurityModal(
-                                        textTheme: Theme.of(context).textTheme,
-                                        title: urgent,
-                                        message: urgentSub,
-                                        button: urgentButton,
-                                        color: kLightOrange,
-                                      ),
+                                  return Container(
+                                    color: Color.fromRGBO(6, 6, 40, 0.7),
+                                    child: SecurityModal(
+                                      textTheme: Theme.of(context).textTheme,
+                                      title: urgent,
+                                      message: urgentSub,
+                                      button: urgentButton,
+                                      color: kLightOrange,
+                                    ),
                                   );
                                 });
                           },

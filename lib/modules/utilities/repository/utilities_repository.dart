@@ -10,7 +10,7 @@ import 'package:Pouchers/modules/utilities/service/utilities_service.dart';
 import 'package:Pouchers/utils/strings.dart';
 
 final utilitiesRepoProvider = Provider.autoDispose<UtilitiesRepository>(
-        (ref) => UtilitiesRepository(ref));
+    (ref) => UtilitiesRepository(ref));
 
 class UtilitiesRepository {
   final ProviderRef ref;
@@ -22,40 +22,46 @@ class UtilitiesRepository {
     ServiceResponse<String> buyVoucher;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     buyVoucher = await UtilitiesService.buyVoucher(
-      token: userProfile.token!, amount: amount,
-      transactionPin: transactionPin,);
+      token: userProfile.token!,
+      amount: amount,
+      transactionPin: transactionPin,
+    );
 
     if (buyVoucher.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
       buyVoucher = await UtilitiesService.buyVoucher(
-        token: userProfiles.token!, amount: amount,
-        transactionPin: transactionPin,);
+        token: userProfiles.token!,
+        amount: amount,
+        transactionPin: transactionPin,
+      );
     }
     return buyVoucher.toNotifierState();
   }
 
   Future<NotifierState<GetVoucherResponse>> fetchVoucher(
-      {required String status,int? page}) async {
+      {required String status, int? page}) async {
     ServiceResponse<GetVoucherResponse> fetchVoucher;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     fetchVoucher = await UtilitiesService.fetchVouchers(
-      token: userProfile.token!, status: status,page: page
-    );
+        token: userProfile.token!, status: status, page: page);
 
     if (fetchVoucher.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
       fetchVoucher = await UtilitiesService.fetchVouchers(
-        token: userProfiles.token!, status: status,);
+        token: userProfiles.token!,
+        status: status,
+      );
     }
     return fetchVoucher.toNotifierState();
   }
 
-  Future<NotifierState<String>> giftVoucher({String? email,
-    String? tag,
-    required String transactionPin,
-    required String code}) async {
+  Future<NotifierState<String>> giftVoucher(
+      {String? email,
+      String? tag,
+      required String transactionPin,
+      required String code}) async {
     ServiceResponse<String> giftVoucher;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     giftVoucher = await UtilitiesService.giftVoucher(
@@ -70,23 +76,24 @@ class UtilitiesRepository {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
       giftVoucher = await UtilitiesService.giftVoucher(
-          token: userProfiles.token!,
-          email: email,
-          tag: tag,
-          code: code,
-          transactionPin: transactionPin,);
+        token: userProfiles.token!,
+        email: email,
+        tag: tag,
+        code: code,
+        transactionPin: transactionPin,
+      );
     }
     return giftVoucher.toNotifierState();
   }
 
   Future<NotifierState<String>> redeemVoucher(
       {required String transactionPin, required String code}) async {
-
     ServiceResponse<String> redeemVoucher;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     redeemVoucher = await UtilitiesService.redeemVoucher(
       token: userProfile.token!,
-      code: code, transactionPin: transactionPin,
+      code: code,
+      transactionPin: transactionPin,
     );
 
     if (redeemVoucher.notAuthenticated) {
@@ -94,7 +101,9 @@ class UtilitiesRepository {
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
       redeemVoucher = await UtilitiesService.redeemVoucher(
         token: userProfiles.token!,
-        code: code, transactionPin: transactionPin,);
+        code: code,
+        transactionPin: transactionPin,
+      );
     }
     return redeemVoucher.toNotifierState();
   }
@@ -109,7 +118,6 @@ class UtilitiesRepository {
 
   Future<NotifierState<DiscountResponse>> getDiscount(
       {required String utility}) async {
-
     ServiceResponse<DiscountResponse> getDiscount;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     getDiscount = await UtilitiesService.getDiscount(
@@ -122,16 +130,17 @@ class UtilitiesRepository {
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
       getDiscount = await UtilitiesService.getDiscount(
         token: userProfiles.token!,
-          utility: utility,);
+        utility: utility,
+      );
     }
     return getDiscount.toNotifierState();
-
   }
 
   Future<NotifierState<GetUtilitiesTypesResponse>> getUtilitiesType(
-      {required String merchantServiceId,required String categoryName}) async {
+      {required String merchantServiceId, required String categoryName}) async {
     return (await UtilitiesService.getUtilitiesType(
-      merchantServiceId: merchantServiceId, categoryName: categoryName,
+      merchantServiceId: merchantServiceId,
+      categoryName: categoryName,
     ))
         .toNotifierState();
   }
@@ -145,9 +154,9 @@ class UtilitiesRepository {
     required String merchantReferenceNumber,
     required String category,
     String? frequency,
-    required bool isSchedule, bool? applyDiscount,
+    required bool isSchedule,
+    bool? applyDiscount,
   }) async {
-
     ServiceResponse<String> buyUtilities;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     buyUtilities = await UtilitiesService.buyUtilities(
@@ -178,36 +187,34 @@ class UtilitiesRepository {
         category: category,
         applyDiscount: applyDiscount,
         frequency: frequency,
-        isSchedule: isSchedule,);
+        isSchedule: isSchedule,
+      );
     }
     return buyUtilities.toNotifierState();
   }
 
-  Future<NotifierState<String>> validateUtilities({
-    required String merchantAccount,
-    required String merchantReferenceNumber,
-    required String merchantProductCode,required String category
-
-
-  }) async {
-
+  Future<NotifierState<String>> validateUtilities(
+      {required String merchantAccount,
+      required String merchantReferenceNumber,
+      required String merchantProductCode,
+      required String category}) async {
     ServiceResponse<String> validateUtilities;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     validateUtilities = await UtilitiesService.validateUtilities(
-      merchantAccount: merchantAccount,
-      merchantReferenceNumber: merchantReferenceNumber,
-      merchantProductCode: merchantProductCode, category:category
-    );
+        merchantAccount: merchantAccount,
+        merchantReferenceNumber: merchantReferenceNumber,
+        merchantProductCode: merchantProductCode,
+        category: category);
 
     if (validateUtilities.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       validateUtilities = await UtilitiesService.validateUtilities(
-        merchantAccount: merchantAccount,
-        merchantReferenceNumber: merchantReferenceNumber,
-        merchantProductCode: merchantProductCode, category: category
-       );
+          merchantAccount: merchantAccount,
+          merchantReferenceNumber: merchantReferenceNumber,
+          merchantProductCode: merchantProductCode,
+          category: category);
     }
-    return  validateUtilities.toNotifierState();
+    return validateUtilities.toNotifierState();
   }
 
   Future<NotifierState<String>> buyAirtime({
@@ -221,7 +228,6 @@ class UtilitiesRepository {
     required bool applyDiscount,
     String? mobileOperatorServiceId,
   }) async {
-
     ServiceResponse<String> buyAirtime;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     buyAirtime = await UtilitiesService.buyAirtime(
@@ -250,21 +256,23 @@ class UtilitiesRepository {
         applyDiscount: applyDiscount,
         mobileOperatorServiceId: mobileOperatorServiceId,
         mobileOperatorPublicId: mobileOperatorPublicId,
-        destinationPhoneNumber: destinationPhoneNumber,);
+        destinationPhoneNumber: destinationPhoneNumber,
+      );
     }
     return buyAirtime.toNotifierState();
   }
 
-  Future<NotifierState<String>> isGuestBuyAirtime({required String subCategory,
-    required String amount,
-    required String category,
-    required String destinationPhoneNumber,
-    required String mobileOperatorPublicId,
-    required bool isAirtime,
-    String? mobileOperatorServiceId,
-    email,
-    bank,
-    name}) async {
+  Future<NotifierState<String>> isGuestBuyAirtime(
+      {required String subCategory,
+      required String amount,
+      required String category,
+      required String destinationPhoneNumber,
+      required String mobileOperatorPublicId,
+      required bool isAirtime,
+      String? mobileOperatorServiceId,
+      email,
+      bank,
+      name}) async {
     return (await UtilitiesService.isGuestBuyAirtime(
       amount: amount,
       subCategory: subCategory,
@@ -280,16 +288,17 @@ class UtilitiesRepository {
         .toNotifierState();
   }
 
-  Future<NotifierState<UssdResponse>> isGuestUssd({required String subCategory,
-    required String amount,
-    required String category,
-    required String destinationPhoneNumber,
-    required String mobileOperatorPublicId,
-    required bool isAirtime,
-    String? mobileOperatorServiceId,
-    email,
-    bank,
-    name}) async {
+  Future<NotifierState<UssdResponse>> isGuestUssd(
+      {required String subCategory,
+      required String amount,
+      required String category,
+      required String destinationPhoneNumber,
+      required String mobileOperatorPublicId,
+      required bool isAirtime,
+      String? mobileOperatorServiceId,
+      email,
+      bank,
+      name}) async {
     return (await UtilitiesService.isGuestUssd(
       amount: amount,
       subCategory: subCategory,
@@ -317,15 +326,15 @@ class UtilitiesRepository {
     bank,
   }) async {
     return (await UtilitiesService.isGuestUtilityUssd(
-        merchantService: merchantService,
-        merchantReferenceNumber: merchantReferenceNumber,
-        amount: amount,
-        subCategory: subCategory,
-        category: category,
-        email: email,
-        name: name,
-        bank: bank,
-        merchantAccount: merchantAccount))
+            merchantService: merchantService,
+            merchantReferenceNumber: merchantReferenceNumber,
+            amount: amount,
+            subCategory: subCategory,
+            category: category,
+            email: email,
+            name: name,
+            bank: bank,
+            merchantAccount: merchantAccount))
         .toNotifierState();
   }
 

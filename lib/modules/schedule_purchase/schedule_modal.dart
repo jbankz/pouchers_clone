@@ -250,7 +250,8 @@ class _ScheduleModalState extends State<ScheduleModal>
                               context,
                               tabIndex == 0
                                   ? days[dayIndex]
-                                  : ordinal_suffix_of(generateNumbers()[monthIndex]));
+                                  : ordinal_suffix_of(
+                                      generateNumbers()[monthIndex]));
                         },
                   disableColor: dayIndex == -1 && monthIndex == -1
                       ? kPurpleColor100
@@ -331,7 +332,7 @@ class _ScheduleOnlyMonthState extends State<ScheduleOnlyMonth> {
                   mainAxisSpacing: 15,
                   children: List.generate(
                     generateNumbers().length,
-                        (index) => inkWell(
+                    (index) => inkWell(
                       onTap: () {
                         setState(() {
                           monthIndex = index;
@@ -363,13 +364,13 @@ class _ScheduleOnlyMonthState extends State<ScheduleOnlyMonth> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: kMediumPadding),
-                child:  monthIndex == -1
+                child: monthIndex == -1
                     ? SizedBox()
                     : Text(
-                  "$topUp2${ordinal_suffix_of(generateNumbers()[monthIndex])} $topUp3",
-                  style: textTheme.headline4,
-                  textAlign: TextAlign.center,
-                ),
+                        "$topUp2${ordinal_suffix_of(generateNumbers()[monthIndex])} $topUp3",
+                        style: textTheme.headline4,
+                        textAlign: TextAlign.center,
+                      ),
               ),
               SizedBox(
                 height: kRegularPadding,
@@ -381,13 +382,11 @@ class _ScheduleOnlyMonthState extends State<ScheduleOnlyMonth> {
                   onPressed: (monthIndex == -1)
                       ? () {}
                       : () {
-                    Navigator.pop(
-                        context,
-                       ordinal_suffix_of(generateNumbers()[monthIndex]));
-                  },
-                  disableColor:  monthIndex == -1
-                      ? kPurpleColor100
-                      : kPrimaryColor,
+                          Navigator.pop(context,
+                              ordinal_suffix_of(generateNumbers()[monthIndex]));
+                        },
+                  disableColor:
+                      monthIndex == -1 ? kPurpleColor100 : kPrimaryColor,
                 ),
               )
             ],
@@ -397,4 +396,3 @@ class _ScheduleOnlyMonthState extends State<ScheduleOnlyMonth> {
     );
   }
 }
-

@@ -9,7 +9,7 @@ class SessionManager {
 
   static Future reloadSharedPreference() async {
     prefs = await SharedPreferences.getInstance();
-   await prefs.reload();
+    await prefs.reload();
   }
 
   ///User setters
@@ -24,7 +24,6 @@ class SessionManager {
   static String fingerPrint = "fingerPrint";
   static String inactivityTime = "inactiveTime";
   static String failedBio = "failedAttempts";
-
 
   /// SETTERS
   static void setUserId(String value) {
@@ -62,6 +61,7 @@ class SessionManager {
     SessionManager.prefs.setString(refreshAccessToken, value);
     // reloadSharedPreference();
   }
+
   //62eaf
   static void setFingerPrint(bool value) {
     SessionManager.prefs.setBool(fingerPrint, value);
@@ -87,14 +87,12 @@ class SessionManager {
   static bool? getFingerPrint() {
     return SessionManager.prefs.getBool(fingerPrint);
   }
-  static int? getFailedAttempt(){
+
+  static int? getFailedAttempt() {
     return SessionManager.prefs.getInt(failedBio) ?? 0;
   }
 
-  
   static void clear() {
     SessionManager.prefs.remove(sessionToken);
   }
-  
-  
 }

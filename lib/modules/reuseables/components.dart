@@ -8,7 +8,6 @@ import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/utils.dart';
 
-
 class PdfInvoiceApi {
   static Future<Uint8List> generate(
       HiveStoreResponseData userProfile,
@@ -16,7 +15,11 @@ class PdfInvoiceApi {
       String transferType,
       String transferName,
       String accNo,
-      String amount, DateTime transactionTime, String tag, String transactionId, double _transactionFee) async {
+      String amount,
+      DateTime transactionTime,
+      String tag,
+      String transactionId,
+      double _transactionFee) async {
     final ByteData bytes = await rootBundle.load(AssetPaths.pouchersLogo);
     final Uint8List poucherLogo = bytes.buffer.asUint8List();
     final font = await rootBundle.load("assets/fonts/DMSans-Bold.ttf");
@@ -27,9 +30,9 @@ class PdfInvoiceApi {
 
     pdfWidget.Widget widget(
         {String? color,
-          required String text,
-          required String subText,
-          bool hasSymbol = false}) {
+        required String text,
+        required String subText,
+        bool hasSymbol = false}) {
       var _widget = pdfWidget.Column(children: [
         pdfWidget.Row(
           mainAxisAlignment: pdfWidget.MainAxisAlignment.spaceBetween,
@@ -43,29 +46,33 @@ class PdfInvoiceApi {
                 )),
             hasSymbol
                 ? pdfWidget.RichText(
-              text: pdfWidget.TextSpan(text: "₦", children: [
-                pdfWidget.TextSpan(
-                    text: subText,
+                    text: pdfWidget.TextSpan(
+                        text: "₦",
+                        children: [
+                          pdfWidget.TextSpan(
+                              text: subText,
+                              style: pdfWidget.TextStyle(
+                                fontWeight: pdfWidget.FontWeight.bold,
+                                font: ttf,
+                                color: pdfSaver.PdfColor.fromHex(
+                                    color ?? "060628"),
+                                fontSize: 18,
+                              ))
+                        ],
+                        style: pdfWidget.TextStyle(
+                          fontWeight: pdfWidget.FontWeight.bold,
+                          font: nairaTtf,
+                          color: pdfSaver.PdfColor.fromHex(color ?? "060628"),
+                          fontSize: 18,
+                        )),
+                  )
+                : pdfWidget.Text(subText,
                     style: pdfWidget.TextStyle(
                       fontWeight: pdfWidget.FontWeight.bold,
-                      font: ttf,
+                      font: null,
                       color: pdfSaver.PdfColor.fromHex(color ?? "060628"),
                       fontSize: 18,
-                    ))
-              ], style: pdfWidget.TextStyle(
-                fontWeight: pdfWidget.FontWeight.bold,
-                font: nairaTtf,
-                color: pdfSaver.PdfColor.fromHex(color ?? "060628"),
-                fontSize: 18,
-              ) ),
-            )
-                : pdfWidget.Text(subText,
-                style: pdfWidget.TextStyle(
-                  fontWeight: pdfWidget.FontWeight.bold,
-                  font: null,
-                  color: pdfSaver.PdfColor.fromHex(color ?? "060628"),
-                  fontSize: 18,
-                )),
+                    )),
           ],
         ),
         pdfWidget.SizedBox(height: kMicroPadding)
@@ -101,7 +108,6 @@ class PdfInvoiceApi {
                     child: pdfWidget.Image(pdfWidget.MemoryImage(poucherLogo),
                         height: 80),
                   ),
-
                   pdfWidget.SizedBox(
                     height: kLargePadding,
                   ),
@@ -112,59 +118,71 @@ class PdfInvoiceApi {
                           .toString()),
                   widget(
                     text: sender,
-                    subText: "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.firstName!.substring(1).toLowerCase()} ${userProfile.lastName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(1).toLowerCase()}",
+                    subText:
+                        "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.firstName!.substring(1).toLowerCase()} ${userProfile.lastName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(1).toLowerCase()}",
                   ),
-                  transferType == "localBank" ? widget(
-                    text: beneficiary,
-                    subText: beneficiaryName,
-                  ) : pdfWidget.SizedBox(),
+                  transferType == "localBank"
+                      ? widget(
+                          text: beneficiary,
+                          subText: beneficiaryName,
+                        )
+                      : pdfWidget.SizedBox(),
                   transferType == "localBank"
                       ? pdfWidget.Column(children: [
-                    widget(text: bankName, subText: transferName.toCapitalized()),
-                    widget(text: accNumber, subText: accNo),
-                  ])
+                          widget(
+                              text: bankName,
+                              subText: transferName.toCapitalized()),
+                          widget(text: accNumber, subText: accNo),
+                        ])
                       : pdfWidget.SizedBox(),
                   transferType == "localBank"
                       ? pdfWidget.SizedBox()
                       : widget(text: poucherTag, subText: "@$tag"),
-                  widget(text: transactionAmount, subText: amount, hasSymbol: true),
+                  widget(
+                      text: transactionAmount,
+                      subText: amount,
+                      hasSymbol: true),
                   transferType == "localBank"
-                      ? widget(text: transactionFee, subText: _transactionFee.toString(), hasSymbol: true)
-                      : widget(
-                      text: status, subText: "Sent", color: "00BB64"),
+                      ? widget(
+                          text: transactionFee,
+                          subText: _transactionFee.toString(),
+                          hasSymbol: true)
+                      : widget(text: status, subText: "Sent", color: "00BB64"),
                   pdfWidget.SizedBox(
                     height: kRegularPadding,
                   ),
-                transactionId == "" ? pdfWidget.SizedBox() :  pdfWidget.Center(
-                    child: pdfWidget.Column(
-                      children: [
-                        pdfWidget.Text(
-                          "Transaction Number",
-                          style: pdfWidget.TextStyle(
-                            fontWeight: pdfWidget.FontWeight.bold,
-                            font: ttf,
-                            color: pdfSaver.PdfColor.fromHex("8F8E9B"),
-                            fontSize: 18,
+                  transactionId == ""
+                      ? pdfWidget.SizedBox()
+                      : pdfWidget.Center(
+                          child: pdfWidget.Column(
+                            children: [
+                              pdfWidget.Text(
+                                "Transaction Number",
+                                style: pdfWidget.TextStyle(
+                                  fontWeight: pdfWidget.FontWeight.bold,
+                                  font: ttf,
+                                  color: pdfSaver.PdfColor.fromHex("8F8E9B"),
+                                  fontSize: 18,
+                                ),
+                              ),
+                              pdfWidget.SizedBox(
+                                height: kPadding,
+                              ),
+                              pdfWidget.Text(transactionId,
+                                  style: pdfWidget.TextStyle(
+                                    fontWeight: pdfWidget.FontWeight.bold,
+                                    font: ttf,
+                                    color: pdfSaver.PdfColor.fromHex("060628"),
+                                    fontSize: 18,
+                                  )),
+                            ],
                           ),
                         ),
-                        pdfWidget.SizedBox(height: kPadding,),
-                        pdfWidget.Text(
-                          transactionId,
-                            style: pdfWidget.TextStyle(
-                              fontWeight: pdfWidget.FontWeight.bold,
-                              font: ttf,
-                              color: pdfSaver.PdfColor.fromHex("060628"),
-                              fontSize: 18,
-                            )
-                        ),
-                      ],
-                    ),
-                  ),
                   pdfWidget.Container(
                       decoration: pdfWidget.BoxDecoration(
-                        border: pdfWidget.Border.all(
-                            style: pdfWidget.BorderStyle.dashed, width: 2),
-                      )),
+                    border: pdfWidget.Border.all(
+                        style: pdfWidget.BorderStyle.dashed, width: 2),
+                  )),
                   pdfWidget.SizedBox(
                     height: kMacroPadding,
                   ),
@@ -184,7 +202,6 @@ class PdfInvoiceApi {
                 ],
               ),
             ),
-
           ],
         ),
       );

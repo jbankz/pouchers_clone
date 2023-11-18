@@ -283,20 +283,18 @@ class ScheduleService {
     }
   }
 
-  static Future<ServiceResponse<String>> deleteSchedule(
-      {required String token,
-        required String transactionPin,
-        required String scheduleId,
-        }) async {
+  static Future<ServiceResponse<String>> deleteSchedule({
+    required String token,
+    required String transactionPin,
+    required String scheduleId,
+  }) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $token"
     };
 
-    Map<String, dynamic> body = {
-      "transactionPin": transactionPin
-    };
+    Map<String, dynamic> body = {"transactionPin": transactionPin};
 
     String url = "${baseUrl()}/payment/schedule/$scheduleId";
 

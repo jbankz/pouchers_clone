@@ -70,14 +70,19 @@ class _ValidIdState extends ConsumerState<ValidId> {
                         }
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: kRegularPadding, vertical: kRegularPadding),
-                        decoration: BoxDecoration(color: kBackgroundColor, borderRadius: BorderRadius.circular(kSmallPadding)),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: kRegularPadding,
+                            vertical: kRegularPadding),
+                        decoration: BoxDecoration(
+                            color: kBackgroundColor,
+                            borderRadius: BorderRadius.circular(kSmallPadding)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
                               child: Text(
-                                _selectedMethod ?? "Select Identification Method",
+                                _selectedMethod ??
+                                    "Select Identification Method",
                                 style: textTheme.subtitle1,
                                 softWrap: true,
                                 overflow: TextOverflow.ellipsis,
@@ -116,7 +121,8 @@ class _ValidIdState extends ConsumerState<ValidId> {
                         ? SizedBox()
                         : Text(
                             error,
-                            style: textTheme.headline3!.copyWith(color: kLightOrange),
+                            style: textTheme.headline3!
+                                .copyWith(color: kLightOrange),
                           ),
                     SizedBox(
                       height: kSmallPadding,
@@ -132,18 +138,28 @@ class _ValidIdState extends ConsumerState<ValidId> {
                     Center(
                       child: inkWell(
                         onTap: () async {
-                          if (_selectedMethod != null && _selectedMethod!.isNotEmpty) {
-                            final fName = ref.watch(editProfileInHouseProvider).firstName;
-                            final lName = ref.watch(editProfileInHouseProvider).lastName;
-                            final dob = ref.watch(editProfileInHouseProvider).dob;
+                          if (_selectedMethod != null &&
+                              _selectedMethod!.isNotEmpty) {
+                            final fName =
+                                ref.watch(editProfileInHouseProvider).firstName;
+                            final lName =
+                                ref.watch(editProfileInHouseProvider).lastName;
+                            final dob =
+                                ref.watch(editProfileInHouseProvider).dob;
                             var result = await startDojahWidget(
                               context,
                               type: "custom",
-                              userData: fName != null && fName.isNotEmpty && lName != null && lName.isNotEmpty && dob != null && dob.isNotEmpty
+                              userData: fName != null &&
+                                      fName.isNotEmpty &&
+                                      lName != null &&
+                                      lName.isNotEmpty &&
+                                      dob != null &&
+                                      dob.isNotEmpty
                                   ? {
                                       "first_name": fName,
                                       "last_name": lName,
-                                      "dob": "${dob.split("-")[2]}-${dob.split("-")[1]}-${dob.split("-")[0]}",
+                                      "dob":
+                                          "${dob.split("-")[2]}-${dob.split("-")[1]}-${dob.split("-")[0]}",
                                     }
                                   : null,
                               config: {
@@ -151,7 +167,10 @@ class _ValidIdState extends ConsumerState<ValidId> {
                                 "mobile": true,
                                 "widget_id": getWidgetId(_selectedMethod!),
                               },
-                              govtDataVerification: _selectedMethod == "Driver’s license" || _selectedMethod == "VNIN" || _selectedMethod == "NIN",
+                              govtDataVerification:
+                                  _selectedMethod == "Driver’s license" ||
+                                      _selectedMethod == "VNIN" ||
+                                      _selectedMethod == "NIN",
                             );
                             if (result != null) {
                               ref.read(validateIDProvider.notifier).validateID(
@@ -159,28 +178,45 @@ class _ValidIdState extends ConsumerState<ValidId> {
                                   firstName: result["firstName"],
                                   lastName: result["lastName"],
                                   dob: result["dob"],
-                                  idType: result["docType"].toString().contains("Driving") || result["docType"].toString().contains("dl")
+                                  idType: result["docType"]
+                                              .toString()
+                                              .contains("Driving") ||
+                                          result["docType"]
+                                              .toString()
+                                              .contains("dl")
                                       ? "drivers_license"
-                                      : result["docType"].toString().contains("Voter Card")
+                                      : result["docType"]
+                                              .toString()
+                                              .contains("Voter Card")
                                           ? "voters_card"
-                                          : result["docType"].toString().contains("Passport")
+                                          : result["docType"]
+                                                  .toString()
+                                                  .contains("Passport")
                                               ? "passport"
-                                              : result["docType"].toString() == "nin"
+                                              : result["docType"].toString() ==
+                                                      "nin"
                                                   ? "nin"
-                                                  : result["docType"].toString() == "vnin"
+                                                  : result["docType"]
+                                                              .toString() ==
+                                                          "vnin"
                                                       ? "vnin"
-                                                      : result["docType"].toString(),
+                                                      : result["docType"]
+                                                          .toString(),
                                   idNumber: result["docNo"]);
                             }
                           } else {
-                            showErrorBar(context, "Kindly select a means of Identification");
+                            showErrorBar(context,
+                                "Kindly select a means of Identification");
                           }
                         },
                         child: Container(
                           width: 130,
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(kRegularPadding),
-                          decoration: BoxDecoration(borderRadius: kBorderRadius, border: Border.all(color: kLightPurple, width: 1)),
+                          decoration: BoxDecoration(
+                              borderRadius: kBorderRadius,
+                              border:
+                                  Border.all(color: kLightPurple, width: 1)),
                           child: Row(
                             children: [
                               SvgPicture.asset(AssetPaths.uploadIcon),
@@ -189,7 +225,8 @@ class _ValidIdState extends ConsumerState<ValidId> {
                               ),
                               Text(
                                 "Upload ID",
-                                style: textTheme.headline2!.copyWith(fontSize: 14),
+                                style:
+                                    textTheme.headline2!.copyWith(fontSize: 14),
                               )
                             ],
                           ),
@@ -247,7 +284,8 @@ class _ValidIdState extends ConsumerState<ValidId> {
                 height: kMediumPadding,
               ),
               Consumer(builder: (context, ref, _) {
-                ref.listen(validateIDProvider, (previous, NotifierState<EditProfileResponse> next) {
+                ref.listen(validateIDProvider,
+                    (previous, NotifierState<EditProfileResponse> next) {
                   if (next.status == NotifierStatus.done) {
                     pushTo(
                         context,
@@ -255,8 +293,10 @@ class _ValidIdState extends ConsumerState<ValidId> {
                           from: widget.from,
                           message: idSuccess,
                         ),
-                        settings: const RouteSettings(name: ProfileSuccessful.routeName));
-                    ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
+                        settings: const RouteSettings(
+                            name: ProfileSuccessful.routeName));
+                    ref.read(editProfileInHouseProvider.notifier).state =
+                        EditProfileData.fromJson(next.data!.data!.toJson());
                   } else if (next.status == NotifierStatus.error) {
                     setState(() {
                       error = next.message ?? "";
@@ -278,7 +318,8 @@ class _ValidIdState extends ConsumerState<ValidId> {
                                   ? "drivers_license"
                                   : _selectedMethod == "Voter’s card"
                                       ? "voters_card"
-                                      : _selectedMethod == "International passport"
+                                      : _selectedMethod ==
+                                              "International passport"
                                           ? "passport"
                                           : _selectedMethod == "NIN"
                                               ? "nin"
@@ -289,7 +330,10 @@ class _ValidIdState extends ConsumerState<ValidId> {
                             );
                       }
                     });
-                return ref.watch(validateIDProvider).when(done: (done) => _widget, loading: () => SpinKitDemo(), error: (val) => _widget);
+                return ref.watch(validateIDProvider).when(
+                    done: (done) => _widget,
+                    loading: () => SpinKitDemo(),
+                    error: (val) => _widget);
               }),
             ],
           ),

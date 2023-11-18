@@ -71,13 +71,7 @@ class _ManageRequestState extends ConsumerState<ManageRequest>
             SizedBox(
               height: kRegularPadding,
             ),
-            tabIndex == 0
-                ? SentRequests(
-
-                  )
-                : ReceivedRequests(
-
-                  )
+            tabIndex == 0 ? SentRequests() : ReceivedRequests()
           ],
         ),
       ),

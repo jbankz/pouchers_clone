@@ -9,13 +9,12 @@ import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/widgets.dart';
 
 mixin ResponseHandler {
-
   void restartApplication(BuildContext context, String? message) {
     SessionManager.clear();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(
         const Duration(milliseconds: 1000),
-            () => pushToAndClearStack(
+        () => pushToAndClearStack(
           context,
           const LogInAccount(),
         ),
@@ -25,14 +24,17 @@ mixin ResponseHandler {
 //10:28 am
   //iphone 11
 
-  handleExpiredToken(BuildContext context, ) async {
-    _showLogoutDialog(context );
+  handleExpiredToken(
+    BuildContext context,
+  ) async {
+    _showLogoutDialog(context);
   }
 
   void _showLogoutDialog(BuildContext context) {
-    var content = const Text('Your session has expired', style: TextStyle(
-      color: kPrimaryColor
-    ),);
+    var content = const Text(
+      'Your session has expired',
+      style: TextStyle(color: kPrimaryColor),
+    );
     if (Platform.isIOS) {
       showDialog(
           context: context,
@@ -42,13 +44,12 @@ mixin ResponseHandler {
               content: content,
               actions: <Widget>[
                 CupertinoDialogAction(
-                  child: const Text('OK'),
-                  isDefaultAction: true,
-                  onPressed: (){
-                    Navigator.pop(context);
-                    // pushToAndClearStack(context, LogInAccount());
-                  }
-                ),
+                    child: const Text('OK'),
+                    isDefaultAction: true,
+                    onPressed: () {
+                      Navigator.pop(context);
+                      // pushToAndClearStack(context, LogInAccount());
+                    }),
               ],
             );
           });
@@ -59,10 +60,10 @@ mixin ResponseHandler {
           builder: (BuildContext context) {
             return AlertDialog(
               content: content,
-backgroundColor: kPrimaryWhite,
+              backgroundColor: kPrimaryWhite,
               actions: <Widget>[
                 LargeButton(
-                  onPressed: (){
+                  onPressed: () {
                     Navigator.pop(context);
                     // pushToAndClearStack(context, LogInAccount());
                   },

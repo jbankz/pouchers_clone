@@ -27,7 +27,8 @@ class SecurityQuestion extends ConsumerStatefulWidget {
 }
 
 class _SecurityQuestionState extends ConsumerState<SecurityQuestion> {
-  SecurityQuestionData _prefixText = SecurityQuestionData(question: selectQuestion);
+  SecurityQuestionData _prefixText =
+      SecurityQuestionData(question: selectQuestion);
   List<SecurityQuestionData> questionData = [];
   TextEditingController answerController = TextEditingController();
 
@@ -116,11 +117,12 @@ class _SecurityQuestionState extends ConsumerState<SecurityQuestion> {
                             });
                             var _widget = inkWell(
                                 onTap: () async {
-                                  final result = await buildShowModalBottomSheet(
-                                      context,
-                                      QuestionModal(
-                                        question: questionData,
-                                      ));
+                                  final result =
+                                      await buildShowModalBottomSheet(
+                                          context,
+                                          QuestionModal(
+                                            question: questionData,
+                                          ));
                                   if (result != null) {
                                     setState(() => _prefixText = result);
                                   }
@@ -157,11 +159,12 @@ class _SecurityQuestionState extends ConsumerState<SecurityQuestion> {
             Consumer(
               builder: (context, ref, _) {
                 ref.listen(setQuestionProvider,
-                    (previous, NotifierState<String> next) async{
+                    (previous, NotifierState<String> next) async {
                   await Hive.openBox(k2FACodeBox);
                   if (next.status == NotifierStatus.done) {
                     Hive.box(k2FACodeBox).put(kSetQuestion, 1);
-                    ref.read(calculateQuestionProvider.notifier).state = Hive.box(k2FACodeBox).get(kSetQuestion);
+                    ref.read(calculateQuestionProvider.notifier).state =
+                        Hive.box(k2FACodeBox).get(kSetQuestion);
                     print("security2 ${ref.watch(calculateQuestionProvider)}");
                     pushTo(
                       context,
@@ -180,10 +183,12 @@ class _SecurityQuestionState extends ConsumerState<SecurityQuestion> {
                     FocusScope.of(context).unfocus();
                     if (_prefixText.id != null &&
                         answerController.text.isNotEmpty) {
-                      ref.read(setQuestionProvider.notifier).setSecurityQuestion(
-                          questionId: _prefixText.id!,
-                          answer: answerController.text,
-                          isValidate: false);
+                      ref
+                          .read(setQuestionProvider.notifier)
+                          .setSecurityQuestion(
+                              questionId: _prefixText.id!,
+                              answer: answerController.text,
+                              isValidate: false);
                     } else {
                       showErrorBar(context, emptyField);
                     }

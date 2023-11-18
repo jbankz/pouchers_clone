@@ -41,7 +41,7 @@ class _ResidentialAddressState extends State<ResidentialAddress> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title:
-      headerText(widget.isFundCard!, widget.isFundNaira!, widget.isNaira!),
+          headerText(widget.isFundCard!, widget.isFundNaira!, widget.isNaira!),
       child: ListenerPage(
         child: Form(
           key: _formKey,

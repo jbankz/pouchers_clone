@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -118,10 +117,10 @@ class _ConfirmAuthPinState extends ConsumerState<ConfirmAuthPin> {
                     Hive.box(k2FACodeBox).put(k2FACode, true);
                     ref.read(authFactorProvider.notifier).state = true;
                     pushTo(context, SuccessAuthPage(),
-                        settings:
-                            const RouteSettings(name: SuccessAuthPage.routeName));
+                        settings: const RouteSettings(
+                            name: SuccessAuthPage.routeName));
                   }
-                }else if(next.status == NotifierStatus.error) {
+                } else if (next.status == NotifierStatus.error) {
                   print("here");
                   showErrorBar(
                       context, "This pin has expired please input a new one");
@@ -138,9 +137,10 @@ class _ConfirmAuthPinState extends ConsumerState<ConfirmAuthPin> {
                           .validate2FA(userToken: _pin!);
                     }
                   });
-              return ref
-                  .watch(validate2FAProvider)
-                  .when(done: (done) => _widget, loading: () => SpinKitDemo(), error: (val)=> _widget);
+              return ref.watch(validate2FAProvider).when(
+                  done: (done) => _widget,
+                  loading: () => SpinKitDemo(),
+                  error: (val) => _widget);
             }),
           ],
         ),

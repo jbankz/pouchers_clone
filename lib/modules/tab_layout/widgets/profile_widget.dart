@@ -27,7 +27,8 @@ class KYCColumn extends StatelessWidget {
       required this.title,
       required this.subTitle,
       this.tierLevel,
-      this.onTap, this.isTag = false})
+      this.onTap,
+      this.isTag = false})
       : super(key: key);
 
   final TextTheme textTheme;
@@ -72,7 +73,7 @@ class KYCColumn extends StatelessWidget {
               SizedBox(
                 width: kSmallPadding,
               ),
-              (title == idVerification && tierLevel == 3) ||isTag == true
+              (title == idVerification && tierLevel == 3) || isTag == true
                   ? SizedBox()
                   : Icon(
                       Icons.arrow_forward_ios,

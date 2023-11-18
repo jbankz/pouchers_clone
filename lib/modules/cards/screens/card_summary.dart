@@ -1,4 +1,4 @@
-  import 'package:Pouchers/modules/account/providers/account_provider.dart';
+import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_auth/local_auth.dart';
@@ -417,15 +417,15 @@ class _CardSummaryState extends ConsumerState<CardSummary> {
                   //     ? SizedBox()
                   //     :
                   BalanceWidget(
-                          textTheme: textTheme,
-                          text: ref.watch(getWalletProvider).data == null
-                              ? "0"
-                              : kPriceFormatter(double.parse(ref
-                                  .watch(getWalletProvider)
-                                  .data!
-                                  .data!
-                                  .balance!)),
-                          hasBalance: checkBalance()),
+                      textTheme: textTheme,
+                      text: ref.watch(getWalletProvider).data == null
+                          ? "0"
+                          : kPriceFormatter(double.parse(ref
+                              .watch(getWalletProvider)
+                              .data!
+                              .data!
+                              .balance!)),
+                      hasBalance: checkBalance()),
                 ],
               ),
             ),

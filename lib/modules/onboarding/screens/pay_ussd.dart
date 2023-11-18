@@ -115,7 +115,8 @@ class _PayWithUssdState extends ConsumerState<PayWithUssd> {
                             });
                             var seen = Set<String>();
                             List<GetAllBanksDetail> uniquelist = banks
-                                .where((bank) => seen.add(bank.attributes?.name ?? ""))
+                                .where((bank) =>
+                                    seen.add(bank.attributes?.name ?? ""))
                                 .toList();
                             return FormDropdown<GetAllBanksDetail>(
                                 hint: selectBankText,
@@ -142,7 +143,8 @@ class _PayWithUssdState extends ConsumerState<PayWithUssd> {
                                               ],
                                               merchantReferenceNumber:
                                                   widget.cardNumber!,
-                                              bank: _selectedBank!.attributes!.name,
+                                              bank: _selectedBank!
+                                                  .attributes!.name,
                                               error: (val) =>
                                                   showErrorBar(context, val))
                                       : ref
@@ -155,7 +157,8 @@ class _PayWithUssdState extends ConsumerState<PayWithUssd> {
                                             category: widget.category!,
                                             mobileOperatorServiceId:
                                                 widget.serviceId,
-                                            bank: _selectedBank!.attributes!.name,
+                                            bank:
+                                                _selectedBank!.attributes!.name,
                                             destinationPhoneNumber:
                                                 widget.cardNumber!,
                                             mobileOperatorPublicId:
@@ -167,8 +170,8 @@ class _PayWithUssdState extends ConsumerState<PayWithUssd> {
                                           );
                                 },
                                 items: uniquelist
-                                    .map((e) => DropdownMenuItem<
-                                    GetAllBanksDetail>(
+                                    .map((e) =>
+                                        DropdownMenuItem<GetAllBanksDetail>(
                                           child: Text(e.attributes?.name ?? ""),
                                           value: e,
                                         ))
@@ -252,9 +255,10 @@ class _PayWithUssdState extends ConsumerState<PayWithUssd> {
                                 return SizedBox();
                               }
                             },
-                            loading: ()  {
+                            loading: () {
                               print("loading");
-                              return SpinKitDemo();},
+                              return SpinKitDemo();
+                            },
                             error: (val) => SizedBox())
                         : ref.watch(guestUssdProvider).when(
                             done: (done) {

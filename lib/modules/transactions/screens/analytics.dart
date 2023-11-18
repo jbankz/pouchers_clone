@@ -166,7 +166,8 @@ class _AnalyticsState extends ConsumerState<Analytics> {
                   analyticsSummary.add(element);
                 });
                 _maxNumber = analyticsSummary
-                    .map<double>((e) => e.totalOutflow == null ? 0 : e.totalOutflow!.toDouble() )
+                    .map<double>((e) =>
+                        e.totalOutflow == null ? 0 : e.totalOutflow!.toDouble())
                     .reduce(max);
               }
             });
@@ -206,17 +207,13 @@ class _AnalyticsState extends ConsumerState<Analytics> {
                           child: Container(
                             height: 150,
                             width: MediaQuery.of(context).size.width,
-                            child: BarChart(
-
-                                BarChartData(
-
+                            child: BarChart(BarChartData(
                               alignment: BarChartAlignment.spaceAround,
                               maxY: _maxNumber,
                               barTouchData: BarTouchData(
                                 enabled: false,
                               ),
                               titlesData: FlTitlesData(
-
                                 show: true,
                                 leftTitles: AxisTitles(
                                     sideTitles: SideTitles(showTitles: false)),
@@ -254,7 +251,6 @@ class _AnalyticsState extends ConsumerState<Analytics> {
                               groupsSpace: kRegularPadding,
                               barGroups: getData(data.data!.analyticsSummary!),
                             )),
-
                           ),
                         ),
                         SizedBox(
@@ -386,14 +382,15 @@ class _AnalyticsState extends ConsumerState<Analytics> {
                         TransactionsAnalytics(
                           title: "Education",
                           image: AssetPaths.educationIcon,
-                          amount: kPriceFormatter(double.parse(
-                              data.data!.analytics![0].totalEducationPurchased ??
-                                  "0")),
+                          amount: kPriceFormatter(double.parse(data.data!
+                                  .analytics![0].totalEducationPurchased ??
+                              "0")),
                           percent:
-                          data.data!.analytics![0].educationPercentage == null
-                              ? "0"
-                              : data.data!.analytics![0].educationPercentage
-                              .toString(),
+                              data.data!.analytics![0].educationPercentage ==
+                                      null
+                                  ? "0"
+                                  : data.data!.analytics![0].educationPercentage
+                                      .toString(),
                         ),
                         TransactionsAnalytics(
                           title: "Admin-Credit-Wallet",
@@ -401,11 +398,13 @@ class _AnalyticsState extends ConsumerState<Analytics> {
                           amount: kPriceFormatter(double.parse(
                               data.data!.analytics![0].totalAdminCreditWallet ??
                                   "0")),
-                          percent:
-                          data.data!.analytics![0].adminCreditWalletPercentage == null
+                          percent: data.data!.analytics![0]
+                                      .adminCreditWalletPercentage ==
+                                  null
                               ? "0"
-                              : data.data!.analytics![0].adminCreditWalletPercentage
-                              .toString(),
+                              : data.data!.analytics![0]
+                                  .adminCreditWalletPercentage
+                                  .toString(),
                         ),
                         TransactionsAnalytics(
                           title: "Admin-Debit-Wallet",
@@ -413,11 +412,13 @@ class _AnalyticsState extends ConsumerState<Analytics> {
                           amount: kPriceFormatter(double.parse(
                               data.data!.analytics![0].totalAdminDebitWallet ??
                                   "0")),
-                          percent:
-                          data.data!.analytics![0].adminDebitWalletPercentage == null
+                          percent: data.data!.analytics![0]
+                                      .adminDebitWalletPercentage ==
+                                  null
                               ? "0"
-                              : data.data!.analytics![0].adminDebitWalletPercentage
-                              .toString(),
+                              : data.data!.analytics![0]
+                                  .adminDebitWalletPercentage
+                                  .toString(),
                         )
                       ],
                     );

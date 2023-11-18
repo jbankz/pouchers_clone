@@ -174,13 +174,12 @@ class _RedeemVoucherState extends ConsumerState<RedeemVoucher> {
                     FocusScope.of(context).unfocus();
                     if (_value.code != "#12345647") {
                       if (ref
-                                      .watch(biometricProvider)
-                                      .isPaymentBiometricActive ==
-                                  null ||
-                              !ref
                                   .watch(biometricProvider)
-                                  .isPaymentBiometricActive!
-                          ) {
+                                  .isPaymentBiometricActive ==
+                              null ||
+                          !ref
+                              .watch(biometricProvider)
+                              .isPaymentBiometricActive!) {
                         var result = await buildShowModalBottomSheet(
                           context,
                           TransactionPinContainer(
@@ -197,7 +196,8 @@ class _RedeemVoucherState extends ConsumerState<RedeemVoucher> {
                                   transactionPin: result, code: _value.code);
                         }
                       } else {
-                        if(cred?.transactionPin == null || cred?.transactionPin == ""){
+                        if (cred?.transactionPin == null ||
+                            cred?.transactionPin == "") {
                           var result = await buildShowModalBottomSheet(
                             context,
                             TransactionPinContainer(
@@ -211,9 +211,10 @@ class _RedeemVoucherState extends ConsumerState<RedeemVoucher> {
                             ref
                                 .read(redeemVoucherProvider.notifier)
                                 .redeemVoucher(
-                                transactionPin: result, code: _value.code);
+                                    transactionPin: result, code: _value.code);
                           }
-                        }else checkBiometric(context);
+                        } else
+                          checkBiometric(context);
                       }
                     } else {
                       showErrorBar(context, "Please select a voucher code");

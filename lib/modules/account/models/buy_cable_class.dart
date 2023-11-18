@@ -207,31 +207,39 @@ class _SubscriptionModalState extends State<SubscriptionModal> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,
                                           children: [
-                                            e.price != null && e.price != 0 ? RichText(
-                                              text: TextSpan(
-                                                text: "₦",
-                                                style: TextStyle(
-                                                  color: kIconGrey,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 18,
-                                                ),
-                                                children: [
-                                                  TextSpan(
-                                                    text: "${e.price?? "0"}",
-                                                    style: textTheme.subtitle1!
-                                                        .copyWith(
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: kIconGrey),
+                                            e.price != null && e.price != 0
+                                                ? RichText(
+                                                    text: TextSpan(
+                                                      text: "₦",
+                                                      style: TextStyle(
+                                                        color: kIconGrey,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 18,
+                                                      ),
+                                                      children: [
+                                                        TextSpan(
+                                                          text:
+                                                              "${e.price ?? "0"}",
+                                                          style: textTheme
+                                                              .subtitle1!
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color:
+                                                                      kIconGrey),
+                                                        )
+                                                      ],
+                                                    ),
                                                   )
-                                                ],
-                                              ),
-                                            ) : const SizedBox(),
+                                                : const SizedBox(),
                                             widget.threshold == "0" ||
                                                     widget.discountValue == "0"
                                                 ? SizedBox()
-                                                : double.parse(widget
-                                                            .threshold ?? "0") <=
+                                                : double.parse(
+                                                            widget.threshold ??
+                                                                "0") <=
                                                         e.price!
                                                     ? Container(
                                                         padding: EdgeInsets.all(
@@ -293,8 +301,6 @@ class DataModal extends StatefulWidget {
 }
 
 class _DataModalState extends State<DataModal> {
-
-
   @override
   Widget build(BuildContext context) {
     print("data${widget.threshold}");
@@ -395,7 +401,8 @@ class _DataModalState extends State<DataModal> {
                                                 ],
                                               ),
                                             ),
-                                            widget.threshold == "0" || widget.threshold == null ||
+                                            widget.threshold == "0" ||
+                                                    widget.threshold == null ||
                                                     widget.discountValue == "0"
                                                 ? SizedBox()
                                                 : double.parse(widget

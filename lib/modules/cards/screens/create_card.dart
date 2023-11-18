@@ -47,8 +47,7 @@ class _CreateCardState extends ConsumerState<CreateCard> {
                 width: double.infinity,
                 height: 300,
                 decoration: BoxDecoration(),
-                child:
-                Stack(
+                child: Stack(
                   children: [
                     Positioned(
                       child: SvgPicture.asset(AssetPaths.nairaCardIcon),
@@ -199,10 +198,9 @@ class _CreateCardState extends ConsumerState<CreateCard> {
                                                     cardType: e.currency!,
                                                     cardInfo: e,
                                                   ),
-                                                  settings:
-                                                      const RouteSettings(
-                                                          name: CardHome
-                                                              .routeName));
+                                                  settings: const RouteSettings(
+                                                      name:
+                                                          CardHome.routeName));
                                             },
                                       child: Stack(
                                         children: [
@@ -211,8 +209,7 @@ class _CreateCardState extends ConsumerState<CreateCard> {
                                               Container(
                                                 child: SvgPicture.asset(
                                                   e.currency == "NGN"
-                                                      ? AssetPaths
-                                                          .cardNairaIcon
+                                                      ? AssetPaths.cardNairaIcon
                                                       : AssetPaths
                                                           .cardDollarIcon,
                                                   fit: BoxFit.fill,
@@ -226,7 +223,8 @@ class _CreateCardState extends ConsumerState<CreateCard> {
                                             right: kRegularPadding,
                                             child: SvgPicture.asset(
                                               e.currency == "NGN"
-                                                  ?  AssetPaths.verveIcon : AssetPaths.masterCardIcon,
+                                                  ? AssetPaths.verveIcon
+                                                  : AssetPaths.masterCardIcon,
                                               height: 30,
                                             ),
                                           ),
@@ -248,8 +246,7 @@ class _CreateCardState extends ConsumerState<CreateCard> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .end,
+                                                          MainAxisAlignment.end,
                                                       children: [
                                                         Text(
                                                           e.currency == "NGN"
@@ -261,8 +258,7 @@ class _CreateCardState extends ConsumerState<CreateCard> {
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
-                                                                  fontSize:
-                                                                      20),
+                                                                  fontSize: 20),
                                                         ),
                                                         SizedBox(
                                                           height: kPadding,

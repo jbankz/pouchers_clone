@@ -70,7 +70,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
           merchantAccount: utilitiesData!.operatorpublicid!,
           merchantReferenceNumber: cardNo,
           merchantProductCode: paymentType!.code!,
-      category: utilitiesData!.category!);
+          category: utilitiesData!.category!);
     } else {
       showErrorBar(context, "Please choose a provider, type or card number");
     }
@@ -122,9 +122,8 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                     ref
                         .read(getUtilitiesTypeProvider.notifier)
                         .getUtilitiesType(
-                            merchantServiceId:
-                                utilitiesData!.operatorpublicid!,
-                        categoeyName: utilitiesData!.category!);
+                            merchantServiceId: utilitiesData!.operatorpublicid!,
+                            categoeyName: utilitiesData!.category!);
                   }
                 },
                 child: Container(
@@ -181,7 +180,6 @@ class _BuyCableState extends ConsumerState<BuyCable> {
               SizedBox(
                 height: kMediumPadding,
               ),
-
               Text(
                 subType,
                 style: textTheme.headline6,
@@ -191,8 +189,14 @@ class _BuyCableState extends ConsumerState<BuyCable> {
               ),
               ref.watch(getDiscountProvider).when(done: (done) {
                 if (done != null) {
-                  threshold = (done.data!.threshold == null || done.data == null) ? "0" : done.data!.threshold;
-                  discountValue = (done.data!.discountValue == null || done.data == null) ? "0" : done.data!.discountValue;
+                  threshold =
+                      (done.data!.threshold == null || done.data == null)
+                          ? "0"
+                          : done.data!.threshold;
+                  discountValue =
+                      (done.data!.discountValue == null || done.data == null)
+                          ? "0"
+                          : done.data!.discountValue;
                   return SizedBox();
                 } else {
                   return SizedBox();
@@ -207,7 +211,7 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                             SubscriptionModal(
                                 paymentItem: utilitiesType,
                                 discountValue: discountValue ?? "0",
-                                threshold: threshold??"0"));
+                                threshold: threshold ?? "0"));
                         if (result != null) {
                           setState(() => paymentType = result);
                           // search("");
@@ -248,7 +252,8 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                       Consumer(builder: (context, ref, _) {
                         var _widget = Row(
                           children: [
-                            paymentType?.price == null || paymentType?.price == 0
+                            paymentType?.price == null ||
+                                    paymentType?.price == 0
                                 ? SizedBox()
                                 : RichText(
                                     text: TextSpan(
@@ -308,14 +313,17 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 onChanged: _onChangeHandler,
-                icon:  inkWell(
-                  onTap: utilitiesData == null && paymentType == null ? null :  () async {
-                    final PhoneContact contact =
-                    await FlutterContactPicker.pickPhoneContact();
-                    setState(() {
-                      contactController.text = contact.phoneNumber!.number!;
-                    });
-                  },
+                icon: inkWell(
+                  onTap: utilitiesData == null && paymentType == null
+                      ? null
+                      : () async {
+                          final PhoneContact contact =
+                              await FlutterContactPicker.pickPhoneContact();
+                          setState(() {
+                            contactController.text =
+                                contact.phoneNumber!.number!;
+                          });
+                        },
                   child: SvgPicture.asset(
                     AssetPaths.contactBook,
                     fit: BoxFit.scaleDown,
@@ -333,10 +341,10 @@ class _BuyCableState extends ConsumerState<BuyCable> {
                       Text(
                         done,
                         style: textTheme.headline4!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                            color: done == "Account not found" ? kColorRed : null
-                        ),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color:
+                                done == "Account not found" ? kColorRed : null),
                       )
                     ],
                   );

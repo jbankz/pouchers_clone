@@ -104,4 +104,6 @@ class AppImage {
   static String customerService = "${_iconPath}customer_service.svg";
   static String logo = "${_iconPath}logo.svg";
   static String logOut = "${_iconPath}log_out.svg";
+  static String pointedArrow = "${_iconPath}pointed_arrow.svg";
+  static String exclamation = "${_iconPath}exclamation.svg";
 }

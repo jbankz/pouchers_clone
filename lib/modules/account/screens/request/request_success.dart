@@ -18,12 +18,10 @@ import 'dart:math' as math;
 class RequestSuccess extends StatelessWidget {
   final String text;
 
-
-  const RequestSuccess(
-      {Key? key,
-        required this.text,
-      })
-      : super(key: key);
+  const RequestSuccess({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +40,18 @@ class RequestSuccess extends StatelessWidget {
                       height: kMacroPadding,
                     ),
                     Text(
-                      text == "decline" ? "Request declined" : "Payment successful",
+                      text == "decline"
+                          ? "Request declined"
+                          : "Payment successful",
                       style: textTheme.headline1,
                     ),
                     SizedBox(
                       height: kPadding,
                     ),
                     Text(
-                      text == "decline" ? "Your have successfully declined the money request!" :  "Your have successfully paid the money request!",
+                      text == "decline"
+                          ? "Your have successfully declined the money request!"
+                          : "Your have successfully paid the money request!",
                       textAlign: TextAlign.center,
                       style: textTheme.bodyText1!
                           .copyWith(fontWeight: FontWeight.normal, height: 1.6),

@@ -48,13 +48,12 @@ class UtilitiesService {
   }
 
   static Future<ServiceResponse<GetVoucherResponse>> fetchVouchers(
-      {required String status, required String token,int? page}) async {
+      {required String status, required String token, int? page}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $token"
     };
-
 
     String queryParams = "";
 
@@ -257,7 +256,8 @@ class UtilitiesService {
       HttpHeaders.contentTypeHeader: "application/json",
     };
 
-    String url = "${baseUrl()}/utility/merchantServices/$merchantServiceId/$categoryName";
+    String url =
+        "${baseUrl()}/utility/merchantServices/$merchantServiceId/$categoryName";
 
     logPrint(url);
     logPrint("what is body $merchantServiceId");
@@ -286,19 +286,19 @@ class UtilitiesService {
     }
   }
 
-  static Future<ServiceResponse<String>> buyUtilities(
-      {required List<String> merchantService,
-      required double amount,
-      required String merchantAccount,
-      required String transactionPin,
-      required String subCategory,
-      required String merchantReferenceNumber,
-      required String category,
-      String? frequency,
-      required String token,
-      required bool isSchedule,
-       bool? applyDiscount,
-     }) async {
+  static Future<ServiceResponse<String>> buyUtilities({
+    required List<String> merchantService,
+    required double amount,
+    required String merchantAccount,
+    required String transactionPin,
+    required String subCategory,
+    required String merchantReferenceNumber,
+    required String category,
+    String? frequency,
+    required String token,
+    required bool isSchedule,
+    bool? applyDiscount,
+  }) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
@@ -307,16 +307,16 @@ class UtilitiesService {
 
     String url = isSchedule
         ? "${baseUrl()}/utility/schedule"
-        :  "${baseUrl()}/utility/merchantPayment";
-    Map<String, dynamic> _body =  {
-            "category": category,
-            "amount": amount,
-            "merchantAccount": merchantAccount,
-            "transactionPin": transactionPin,
-            "sub_category": subCategory,
-            "apply_discount" : applyDiscount,
-            "merchantReferenceNumber": merchantReferenceNumber,
-          };
+        : "${baseUrl()}/utility/merchantPayment";
+    Map<String, dynamic> _body = {
+      "category": category,
+      "amount": amount,
+      "merchantAccount": merchantAccount,
+      "transactionPin": transactionPin,
+      "sub_category": subCategory,
+      "apply_discount": applyDiscount,
+      "merchantReferenceNumber": merchantReferenceNumber,
+    };
 
     if (frequency != null) {
       _body["frequency"] = frequency;
@@ -349,24 +349,22 @@ class UtilitiesService {
   }
 
   static Future<ServiceResponse<String>> validateUtilities(
-      {
-        required String merchantAccount,
-        required String merchantReferenceNumber,
-        required String merchantProductCode,
-        required String category
-      }) async {
+      {required String merchantAccount,
+      required String merchantReferenceNumber,
+      required String merchantProductCode,
+      required String category}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
       // HttpHeaders.authorizationHeader: "Bearer $token"
     };
 
-    String url =  "${baseUrl()}/utility/customer-validation";
-    Map<String, dynamic> _body =  {
+    String url = "${baseUrl()}/utility/customer-validation";
+    Map<String, dynamic> _body = {
       "merchantAccount": merchantAccount,
       "merchantReferenceNumber": merchantReferenceNumber,
       "merchantServiceProductCode": merchantProductCode,
-      "category":category
+      "category": category
     };
 
     logPrint(url);
@@ -400,7 +398,7 @@ class UtilitiesService {
       required String transactionPin,
       required String mobileOperatorPublicId,
       required bool isAirtime,
-        required bool applyDiscount,
+      required bool applyDiscount,
       String? mobileOperatorServiceId,
       required String token}) async {
     Map<String, String> _authHeaders = {
@@ -415,7 +413,7 @@ class UtilitiesService {
       "amount": double.parse(amount),
       "sub_category": subCategory,
       "transactionPin": transactionPin,
-      "apply_discount" : applyDiscount,
+      "apply_discount": applyDiscount,
       "destinationPhoneNumber": destinationPhoneNumber,
       "mobileOperatorPublicId": mobileOperatorPublicId
     };

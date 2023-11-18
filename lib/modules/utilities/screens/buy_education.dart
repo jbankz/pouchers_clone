@@ -409,10 +409,10 @@ class _BuyElectricityState extends ConsumerState<BuyEducation> {
         SizedBox(
           height: kRegularPadding,
         ),
-       // widget.isGuest! ? SizedBox() : SizedBox(),
-       //  SizedBox(
-       //    height: kLargePadding,
-       //  ),
+        // widget.isGuest! ? SizedBox() : SizedBox(),
+        //  SizedBox(
+        //    height: kLargePadding,
+        //  ),
         Consumer(builder: (context, ref, _) {
           ref.listen(buyUtilitiesProvider,
               (previous, NotifierState<String> next) {

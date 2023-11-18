@@ -76,12 +76,15 @@ class AppString {
   static String lastNameInstruction = "Last First Name";
   static String signUpLegalInfo =
       "Your full name should be as they are on your legal documents and BVN.";
+  static String bvnInst = "Enter BVN";
   static String phoneNumber = "Phone Number";
   static String phoneNumberInstruction = "Enter phone number";
   static String referralCode = "Referral code (optional)";
   static String referralCodeInstruction = "Enter referral code";
   static String password = "Password";
   static String passwordInstruction = "Enter password";
+  static String passwordInstruction2 =
+      "Enter the password for this account to reset transaction pin";
   static String newPassword = "New Password";
   static String newPasswordInstruction = "New password";
   static String passwordHint = "Password must contain alphabets and numbers";
@@ -95,6 +98,8 @@ class AppString {
   static String wait = "Please wait...";
   static String verificationSubText =
       "Please check your email, a code to verify your account was sent to ";
+  static String changePasswordVerification =
+      "Enter the password reset code sent to your email address.";
   static String verificationSubTextOne =
       "Enter the password reset code sent to your email address.";
   static String resetCode = "Reset Code";
@@ -148,10 +153,45 @@ class AppString {
   static String scheduledPaymentsInstruction =
       'Manage weekly and monthly recurring payments';
   static String accountSettings = 'Account settings ';
+  static String accountVerification = 'Account verification ';
   static String accountSettingsInstruction = 'Manage your account and security';
   static String helpAndSupport = 'Help & support';
   static String helpAndSupportInstruction = 'Send feedback or get support';
   static String aboutPourcher = 'About Pouchers';
   static String aboutPourcherInstruction = 'Learn more about Pouchers';
-  static String logOut = 'Logout';
+  static String logOut = 'Log out';
+  static String changePassword = 'Change password';
+  static String changePasswordInstruction = 'Update your password to a new one';
+  static String changeTransactionPin = 'Change transaction pin';
+  static String changeTransactionPinInstruction =
+      'Update your transaction pin to a new one';
+  static String biometricAuth = 'Biometric authentication';
+  static String biometricAuthInstruction = 'Manage biometric authentications';
+  static String disableAccount = 'Disable my account';
+  static String deleteAccount = 'Delete my account';
+  static String confirm = 'Confirm';
+  static String goHome = 'Go home';
+  static String transactionPin = 'Transaction pin';
+  static String newPin = 'New pin';
+  static String confirmNewPin = 'Confirm pin';
+  static String savePin = 'Save pin';
+  static String tiers = 'Pouchers Tiers';
+  static String dailyLimit = 'Daily transaction limit';
+  static String maximumBalance = 'Maximum balance';
+  static String upgrade = 'Upgrade';
+  static String completedVerificationProcess =
+      'Complete the account verification process to upgrade your account and remove all restrictions.';
+  static String bvn = 'BVN';
+  static String bvnVerify = 'Verify your Bank Verification Number';
+  static String validId = 'Valid ID card';
+  static String validIdVerify = 'Submit a valid means of identification';
+  static String utilityBill = 'Utility bill';
+  static String utilityBillVerify = 'Upload and verify utility bill';
+  static String verifyBVN = 'Verify BVN';
+  static String bvnReminder = 'Can’t remember BVN code?';
+  static String bvnHint1 =
+      'Please ensure your registered first name and last name matches with your BVN.';
+  static String bvnHint2 = 'Retrieve your BVN code by dialing ';
+  static String getBVN = 'Get BVN';
+  static String cancel = 'Cancel';
 }

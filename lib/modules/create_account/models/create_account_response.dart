@@ -1,4 +1,3 @@
-
 class CreateAccountResponse {
   CreateAccountResponse({
     this.status,
@@ -73,11 +72,14 @@ class CreateAccountResponseData {
         tag: json["tag"],
         referralCode: json["referral_code"],
         verificationToken: json["verification_token"],
-        verificationTokenExpires:
-        json["verification_token_expires"] == null ? null : DateTime.parse(json["verification_token_expires"]),
+        verificationTokenExpires: json["verification_token_expires"] == null
+            ? null
+            : DateTime.parse(json["verification_token_expires"]),
         isDeleted: json["is_deleted"],
         otp: json["otp"],
-        expirationTime: json["expirationTime"] == null ? null :  DateTime.parse(json["expirationTime"]),
+        expirationTime: json["expirationTime"] == null
+            ? null
+            : DateTime.parse(json["expirationTime"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -134,40 +136,39 @@ class VerifyEmailResponse {
 }
 
 class VerifyEmailResponseData {
-  VerifyEmailResponseData({
-    this.id,
-    this.phoneNumber,
-    this.userId,
-    this.email,
-    this.firstName,
-    this.lastName,
-    this.verificationToken,
-    this.verificationTokenExpires,
-    this.tierLevels,
-    this.passwordResetToken,
-    this.passwordResetTokenExpires,
-    this.pinResetToken,
-    this.pinResetTokenExpires,
-    this.status,
-    this.deviceToken,
-    this.fcmToken,
-    this.isUploadedIdentityCard,
-    this.isDeleted,
-    this.referralCode,
-    this.tag,
-    this.token,
-    this.refreshToken,
-    this.tokenExpireAt,
-    this.dob,
-    this.address,
-    this.profilePicture,
-    this.gender,
-    this.isCreatedPin,
-    this.is2faActive,
-    this.isLoginBiometricActive,
-    this.isPaymentBiometricActive,
-    this.utilityBill
-  });
+  VerifyEmailResponseData(
+      {this.id,
+      this.phoneNumber,
+      this.userId,
+      this.email,
+      this.firstName,
+      this.lastName,
+      this.verificationToken,
+      this.verificationTokenExpires,
+      this.tierLevels,
+      this.passwordResetToken,
+      this.passwordResetTokenExpires,
+      this.pinResetToken,
+      this.pinResetTokenExpires,
+      this.status,
+      this.deviceToken,
+      this.fcmToken,
+      this.isUploadedIdentityCard,
+      this.isDeleted,
+      this.referralCode,
+      this.tag,
+      this.token,
+      this.refreshToken,
+      this.tokenExpireAt,
+      this.dob,
+      this.address,
+      this.profilePicture,
+      this.gender,
+      this.isCreatedPin,
+      this.is2faActive,
+      this.isLoginBiometricActive,
+      this.isPaymentBiometricActive,
+      this.utilityBill});
 
   int? id;
   String? phoneNumber;
@@ -204,39 +205,38 @@ class VerifyEmailResponseData {
 
   factory VerifyEmailResponseData.fromJson(Map<String, dynamic> json) =>
       VerifyEmailResponseData(
-        id: json["id"],
-        phoneNumber: json["phone_number"],
-        userId: json["user_id"],
-        email: json["email"],
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-        verificationToken: json["verification_token"],
-        verificationTokenExpires: json["verification_token_expires"],
-        tierLevels: json["tier_levels"],
-        passwordResetToken: json["password_reset_token"],
-        passwordResetTokenExpires: json["password_reset_token_expires"],
-        pinResetToken: json["pin_reset_token"],
-        pinResetTokenExpires: json["pin_reset_token_expires"],
-        status: json["status"],
-        deviceToken: json["device_token"],
-        fcmToken: json["fcm_token"],
-        isUploadedIdentityCard: json["is_uploaded_identity_card"],
-        isDeleted: json["is_deleted"],
-        referralCode: json["referral_code"],
-        tag: json["tag"],
-        token: json["token"],
-        refreshToken: json["refreshToken"],
-        tokenExpireAt: DateTime.parse(json["tokenExpireAt"]),
-        dob: json["dob"],
-        address: json["address"],
-        profilePicture: json["profile_picture"],
-        gender: json["gender"],
-        isCreatedPin: json["iscreatedpin"],
-        is2faActive: json["is_2fa_active"],
-        isLoginBiometricActive: json["is_login_biometric_active"],
-        isPaymentBiometricActive: json["is_payment_biometric_active"],
-        utilityBill: json["utility_bill"]
-      );
+          id: json["id"],
+          phoneNumber: json["phone_number"],
+          userId: json["user_id"],
+          email: json["email"],
+          firstName: json["first_name"],
+          lastName: json["last_name"],
+          verificationToken: json["verification_token"],
+          verificationTokenExpires: json["verification_token_expires"],
+          tierLevels: json["tier_levels"],
+          passwordResetToken: json["password_reset_token"],
+          passwordResetTokenExpires: json["password_reset_token_expires"],
+          pinResetToken: json["pin_reset_token"],
+          pinResetTokenExpires: json["pin_reset_token_expires"],
+          status: json["status"],
+          deviceToken: json["device_token"],
+          fcmToken: json["fcm_token"],
+          isUploadedIdentityCard: json["is_uploaded_identity_card"],
+          isDeleted: json["is_deleted"],
+          referralCode: json["referral_code"],
+          tag: json["tag"],
+          token: json["token"],
+          refreshToken: json["refreshToken"],
+          tokenExpireAt: DateTime.parse(json["tokenExpireAt"]),
+          dob: json["dob"],
+          address: json["address"],
+          profilePicture: json["profile_picture"],
+          gender: json["gender"],
+          isCreatedPin: json["iscreatedpin"],
+          is2faActive: json["is_2fa_active"],
+          isLoginBiometricActive: json["is_login_biometric_active"],
+          isPaymentBiometricActive: json["is_payment_biometric_active"],
+          utilityBill: json["utility_bill"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -259,7 +259,7 @@ class VerifyEmailResponseData {
         "is_uploaded_identity_card": isUploadedIdentityCard,
         "is_deleted": isDeleted,
         "referral_code": referralCode,
-    "utility_bill" : utilityBill,
+        "utility_bill": utilityBill,
         "tag": tag,
         "token": token,
         "refreshToken": refreshToken,
@@ -271,8 +271,7 @@ class VerifyEmailResponseData {
         "is_2fa_active": is2faActive,
         "is_login_biometric_active": isLoginBiometricActive,
         "is_payment_biometric_active": isPaymentBiometricActive,
-
-  };
+      };
 
   @override
   String toString() {

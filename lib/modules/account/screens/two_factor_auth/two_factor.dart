@@ -30,67 +30,67 @@ class _TwoFactorState extends ConsumerState<TwoFactor> {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
-      title: factorAuth,
-      child: ListenerPage(
-        child:
-      ref.watch(getSelectedQuestionsProvider).when(
-          loading: () => Center(
-                child: SpinKitDemo(),
-              ),
-          done: (done) {
-            if(done != null){
-              return Column(
-                children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: Image.asset(
-                            AssetPaths.twoFactor,
-                          ),
-                        ),
-                        SizedBox(
-                          height: kFullPadding,
-                        ),
-                        Text(
-                          factor2Authentication,
-                          style: textTheme.subtitle1!.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        SizedBox(
-                          height: kSmallPadding,
-                        ),
-                        Text(
-                          factorAuthSub,
-                          style: textTheme.headline2!.copyWith(
-                            color: kIconGrey,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(
-                          height: kMacroPadding,
-                        ),
-                      ],
-                    ),
+        title: factorAuth,
+        child: ListenerPage(
+          child: ref.watch(getSelectedQuestionsProvider).when(
+              loading: () => Center(
+                    child: SpinKitDemo(),
                   ),
-                  LargeButton(
-                    title: setUpFactorAuth,
-                    onPressed: () {
-                      buildShowModalBottomSheet(context, TwoFactorPinModal(
-                        lengthOfQuestion: done.data!.length,
-                      ));
-                    },
-                  )
-                ],
-              );
-            }else{
-              return SizedBox();
-            }
-
-          }),
-    ));
+              done: (done) {
+                if (done != null) {
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Image.asset(
+                                AssetPaths.twoFactor,
+                              ),
+                            ),
+                            SizedBox(
+                              height: kFullPadding,
+                            ),
+                            Text(
+                              factor2Authentication,
+                              style: textTheme.subtitle1!.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            SizedBox(
+                              height: kSmallPadding,
+                            ),
+                            Text(
+                              factorAuthSub,
+                              style: textTheme.headline2!.copyWith(
+                                color: kIconGrey,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: kMacroPadding,
+                            ),
+                          ],
+                        ),
+                      ),
+                      LargeButton(
+                        title: setUpFactorAuth,
+                        onPressed: () {
+                          buildShowModalBottomSheet(
+                              context,
+                              TwoFactorPinModal(
+                                lengthOfQuestion: done.data!.length,
+                              ));
+                        },
+                      )
+                    ],
+                  );
+                } else {
+                  return SizedBox();
+                }
+              }),
+        ));
   }
 }

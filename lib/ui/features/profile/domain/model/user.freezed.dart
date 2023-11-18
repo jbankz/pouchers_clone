@@ -41,7 +41,7 @@ mixin _$User {
   @JsonKey(name: 'verification_token_expires')
   @HiveField(6)
   String? get verificationTokenExpires => throw _privateConstructorUsedError;
-  @JsonKey(name: 'tier_levels')
+  @JsonKey(name: 'tier_levels', defaultValue: 1)
   @HiveField(7)
   int? get tierLevels => throw _privateConstructorUsedError;
   @JsonKey(name: 'password_reset_token')
@@ -129,7 +129,9 @@ abstract class $UserCopyWith<$Res> {
       @JsonKey(name: 'verification_token_expires')
       @HiveField(6)
       String? verificationTokenExpires,
-      @JsonKey(name: 'tier_levels') @HiveField(7) int? tierLevels,
+      @JsonKey(name: 'tier_levels', defaultValue: 1)
+      @HiveField(7)
+      int? tierLevels,
       @JsonKey(name: 'password_reset_token')
       @HiveField(8)
       String? passwordResetToken,
@@ -375,7 +377,9 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       @JsonKey(name: 'verification_token_expires')
       @HiveField(6)
       String? verificationTokenExpires,
-      @JsonKey(name: 'tier_levels') @HiveField(7) int? tierLevels,
+      @JsonKey(name: 'tier_levels', defaultValue: 1)
+      @HiveField(7)
+      int? tierLevels,
       @JsonKey(name: 'password_reset_token')
       @HiveField(8)
       String? passwordResetToken,
@@ -613,7 +617,9 @@ class _$UserImpl implements _User {
       @JsonKey(name: 'verification_token_expires')
       @HiveField(6)
       this.verificationTokenExpires,
-      @JsonKey(name: 'tier_levels') @HiveField(7) this.tierLevels,
+      @JsonKey(name: 'tier_levels', defaultValue: 1)
+      @HiveField(7)
+      this.tierLevels,
       @JsonKey(name: 'password_reset_token')
       @HiveField(8)
       this.passwordResetToken,
@@ -687,7 +693,7 @@ class _$UserImpl implements _User {
   @HiveField(6)
   final String? verificationTokenExpires;
   @override
-  @JsonKey(name: 'tier_levels')
+  @JsonKey(name: 'tier_levels', defaultValue: 1)
   @HiveField(7)
   final int? tierLevels;
   @override
@@ -913,7 +919,9 @@ abstract class _User implements User {
       @JsonKey(name: 'verification_token_expires')
       @HiveField(6)
       final String? verificationTokenExpires,
-      @JsonKey(name: 'tier_levels') @HiveField(7) final int? tierLevels,
+      @JsonKey(name: 'tier_levels', defaultValue: 1)
+      @HiveField(7)
+      final int? tierLevels,
       @JsonKey(name: 'password_reset_token')
       @HiveField(8)
       final String? passwordResetToken,
@@ -990,7 +998,7 @@ abstract class _User implements User {
   @HiveField(6)
   String? get verificationTokenExpires;
   @override
-  @JsonKey(name: 'tier_levels')
+  @JsonKey(name: 'tier_levels', defaultValue: 1)
   @HiveField(7)
   int? get tierLevels;
   @override

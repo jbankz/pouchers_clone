@@ -15,6 +15,7 @@ import '../../../../../app/core/state/app_state.dart';
 import '../../../../../app/navigators/navigators.dart';
 import '../../../../../modules/create_account/screens/verify_account.dart';
 import '../../../../../modules/tab_layout/screens/tab_layout.dart';
+import '../../../../common/app_strings.dart';
 import '../../../../notification/notification_tray.dart';
 import '../view/otp/notifier/module.dart';
 import 'module/module.dart';
@@ -82,7 +83,8 @@ class AuthNotifier extends _$AuthNotifier {
         return;
       }
 
-      PageRouter.pushReplacement(Routes.dashboardView);
+      // PageRouter.pushReplacement(Routes.dashboardView);
+      pushToAndClearStack(PageRouter.globalContext, TabLayout());
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(),
@@ -218,7 +220,7 @@ class AuthNotifier extends _$AuthNotifier {
   }
 
   Future<void> resetPassword(AuthDto parameter,
-      [CancelToken? cancelToken]) async {
+      {CancelToken? cancelToken, String? route = Routes.signInView}) async {
     try {
       state = state.copyWith(isBusy: true);
 
@@ -231,7 +233,7 @@ class AuthNotifier extends _$AuthNotifier {
       //         title: AppString.resetSuccessful,
       //         message: AppString.resetSuccessfulMessage,
       //         btnTitle: AppString.login,
-      //         tap: () => PageRouter.pushReplacement(Routes.signInView)));
+      //         tap: () => PageRouter.pushReplacement(route ?? '')));
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(),

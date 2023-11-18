@@ -58,396 +58,402 @@ class _CardHomeState extends ConsumerState<CardHome> {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
-      title: widget.cardType == "NGN" ? nairaVirtualCard : dollarVirtualCard,
-      child:  ListenerPage(
-        child:
-      ref.watch(getCardDetailsProvider).when(
-            done: (data) {
-              if (data == null) {
-                return SizedBox();
-              } else {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      balance,
-                      style: textTheme.headline6!.copyWith(
-                        color: kIconGrey,
-                      ),
-                    ),
-                    Consumer(builder: (context, ref, _) {
-                      return ref.watch(getCardTokenProvider).when(loading: () {
-                        return Container(
-                          width: 50,
-                          height: 50,
-                          child: SpinKitDemo(
-                            color: Colors.white,
-                          ),
-                        );
-                      }, error: (err) {
-                        logPrint("Card token err: $err");
-                        return SizedBox();
-                      }, done: (data) {
-                        if (data != null) {
-                          print("cardurl$data");
-                          fetch(data);
-                          return SizedBox();
-                        } else {
-                          return SizedBox();
-                        }
-                      });
-                    }),
-                    ref.watch(getCardBalanceProvider).when(done: (done) {
-                      if (done != null) {
-                        return RichText(
-                          text: TextSpan(
-                            text: widget.cardType == "NGN" ? "₦" : "\$",
-                            style: TextStyle(
-                              color: kPrimaryTextColor,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 26,
-                            ),
-                            children: [
-                              TextSpan(
-                                  text: kPriceFormatter(
-                                    double.parse(done),
-                                  ),
-                                  style: textTheme.headline1)
-                            ],
-                          ),
-                        );
-                      } else {
-                        return SizedBox();
-                      }
-                    }),
-                    SizedBox(
-                      height: kSmallPadding,
-                    ),
-                    AnimatedSwitcher(
-                      duration: Duration(milliseconds: 800),
-                      layoutBuilder: (widget, list) =>
-                          Stack(children: [widget!, ...list]),
-                      transitionBuilder:
-                          (Widget widget, Animation<double> animation) {
-                        final rotateAnim =
-                            Tween(begin: pi, end: 0.0).animate(animation);
-                        return AnimatedBuilder(
-                          animation: rotateAnim,
-                          child: widget,
-                          builder: (context, widget) {
-                            final isUnder = (ValueKey(
-                                  frontCard(textTheme, data.data!),
-                                ) !=
-                                widget!.key);
-                            var tilt =
-                                ((animation.value - 0.5).abs() - 0.5) * 0.003;
-                            tilt *= isUnder ? 1.0 : -1.0;
-                            final value = isUnder
-                                ? min(rotateAnim.value, pi / 2)
-                                : rotateAnim.value;
-                            return Transform(
-                              transform:
-                                  // _flipXAxis
-                                  //     ?
-                                  (Matrix4.rotationY(value)
-                                    ..setEntry(3, 0, tilt)),
-                              // (Matrix4.rotationX(value)..setEntry(3, 1, tilt)),
-                              child: widget,
-                              alignment: Alignment.center,
-                            );
-                          },
-                        );
-                      },
-                      switchInCurve: Curves.easeInBack,
-                      switchOutCurve: Curves.easeInBack.flipped,
-                      child: _switchSides
-                          ? rearCard(textTheme)
-                          : frontCard(textTheme, data.data!),
-                    ),
-                    SizedBox(
-                      height: kSmallPadding,
-                    ),
-                    inkWell(
-                      onTap: () => setState(() {
-                        _switchSides = !_switchSides;
-                        // _flipXAxis = !_flipXAxis;
-                      }),
-                      child: Text(
-                        flipCard,
-                        style: textTheme.headline3!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: kIconGrey,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(
-                      height: kMacroPadding,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        title: widget.cardType == "NGN" ? nairaVirtualCard : dollarVirtualCard,
+        child: ListenerPage(
+          child: ref.watch(getCardDetailsProvider).when(
+                done: (data) {
+                  if (data == null) {
+                    return SizedBox();
+                  } else {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        CardColumn(
-                            onTap: () {
-                              pushTo(
-                                      context,
-                                      CreateVirtualCard(
-                                        isFundCard: true,
-                                        isNaira: widget.cardType == "NGN"
-                                            ? true
-                                            : false,
-                                        isFundNaira: widget.cardType == "NGN"
-                                            ? true
-                                            : false,
-                                      ),
-                                      settings: const RouteSettings(
-                                          name: CreateVirtualCard.routeName))
-                                  .then((value) {
-                                ref
-                                    .read(getCardDetailsProvider.notifier)
-                                    .getCardDetails(
-                                        cardId: widget.cardInfo!.cardId);
-                                ref
-                                    .read(getCardBalanceProvider.notifier)
-                                    .getCardBalance(
-                                      cardId: widget.cardInfo!.accountId,
-                                    );
-                                ref.read(getCardTokenProvider.notifier).getCardToken(
-                                  cardId: widget.cardInfo!.cardId,
-                                );
-                              });
-                            },
-                            textTheme: textTheme,
-                            text: fundCard,
-                            icon: AssetPaths.fundCardIcon),
-                        CardColumn(
-                            onTap: () {
-                              buildShowModalBottomSheet(
-                                context,
-                                CardDetails(
-                                  cardData: data.data!,
-                                  cardCvv: cardCvv,
-                                ),
-                              );
-                            },
-                            textTheme: textTheme,
-                            text: cardDetails,
-                            icon: AssetPaths.cardDetailIcon),
-                        CardColumn(
-                            textTheme: textTheme,
-                            text: manage,
-                            onTap: () {
-                              buildShowModalBottomSheet(
-                                context,
-                                ManageCard(cardData: data.data!),
-                              );
-                            },
-                            icon: AssetPaths.manageIcon)
-                      ],
-                    ),
-                    SizedBox(
-                      height: kLargePadding,
-                    ),
-                    Text(
-                      transHistory,
-                      style: textTheme.headline2!.copyWith(
-                          fontWeight: FontWeight.w700, color: kDarkFill),
-                    ),
-                    Expanded(
-                      child: ListView(
-                        children: [
-                          SizedBox(
-                            height: kFullPadding,
+                        Text(
+                          balance,
+                          style: textTheme.headline6!.copyWith(
+                            color: kIconGrey,
                           ),
-                          Center(
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                  top: 13,
-                                  left: kSmallPadding,
-                                  right: kSmallPadding,
-                                  bottom: kMediumPadding),
-                              decoration: BoxDecoration(
-                                  color: kContainerColor,
-                                  borderRadius:
-                                      BorderRadius.circular(kSmallPadding)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                        Consumer(builder: (context, ref, _) {
+                          return ref.watch(getCardTokenProvider).when(
+                              loading: () {
+                            return Container(
+                              width: 50,
+                              height: 50,
+                              child: SpinKitDemo(
+                                color: Colors.white,
+                              ),
+                            );
+                          }, error: (err) {
+                            logPrint("Card token err: $err");
+                            return SizedBox();
+                          }, done: (data) {
+                            if (data != null) {
+                              print("cardurl$data");
+                              fetch(data);
+                              return SizedBox();
+                            } else {
+                              return SizedBox();
+                            }
+                          });
+                        }),
+                        ref.watch(getCardBalanceProvider).when(done: (done) {
+                          if (done != null) {
+                            return RichText(
+                              text: TextSpan(
+                                text: widget.cardType == "NGN" ? "₦" : "\$",
+                                style: TextStyle(
+                                  color: kPrimaryTextColor,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 26,
+                                ),
                                 children: [
-                                  Container(
-                                    height: kSmallPadding,
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                        color: kSecondaryTextColor,
-                                        borderRadius:
-                                            BorderRadius.circular(kPadding)),
-                                  ),
-                                  SizedBox(
-                                    height: kSmallPadding,
-                                  ),
-                                  Container(
-                                    height: kSmallPadding,
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                        color: kSecondaryTextColor,
-                                        borderRadius:
-                                            BorderRadius.circular(kPadding)),
-                                  ),
-                                  SizedBox(
-                                    height: kRegularPadding,
-                                  ),
-                                  Container(
-                                    height: kSmallPadding,
-                                    width: kLargePadding,
-                                    decoration: BoxDecoration(
-                                      color: kLightColor200,
-                                      borderRadius:
-                                          BorderRadius.circular(kPadding),
-                                    ),
-                                  )
+                                  TextSpan(
+                                      text: kPriceFormatter(
+                                        double.parse(done),
+                                      ),
+                                      style: textTheme.headline1)
                                 ],
                               ),
+                            );
+                          } else {
+                            return SizedBox();
+                          }
+                        }),
+                        SizedBox(
+                          height: kSmallPadding,
+                        ),
+                        AnimatedSwitcher(
+                          duration: Duration(milliseconds: 800),
+                          layoutBuilder: (widget, list) =>
+                              Stack(children: [widget!, ...list]),
+                          transitionBuilder:
+                              (Widget widget, Animation<double> animation) {
+                            final rotateAnim =
+                                Tween(begin: pi, end: 0.0).animate(animation);
+                            return AnimatedBuilder(
+                              animation: rotateAnim,
+                              child: widget,
+                              builder: (context, widget) {
+                                final isUnder = (ValueKey(
+                                      frontCard(textTheme, data.data!),
+                                    ) !=
+                                    widget!.key);
+                                var tilt =
+                                    ((animation.value - 0.5).abs() - 0.5) *
+                                        0.003;
+                                tilt *= isUnder ? 1.0 : -1.0;
+                                final value = isUnder
+                                    ? min(rotateAnim.value, pi / 2)
+                                    : rotateAnim.value;
+                                return Transform(
+                                  transform:
+                                      // _flipXAxis
+                                      //     ?
+                                      (Matrix4.rotationY(value)
+                                        ..setEntry(3, 0, tilt)),
+                                  // (Matrix4.rotationX(value)..setEntry(3, 1, tilt)),
+                                  child: widget,
+                                  alignment: Alignment.center,
+                                );
+                              },
+                            );
+                          },
+                          switchInCurve: Curves.easeInBack,
+                          switchOutCurve: Curves.easeInBack.flipped,
+                          child: _switchSides
+                              ? rearCard(textTheme)
+                              : frontCard(textTheme, data.data!),
+                        ),
+                        SizedBox(
+                          height: kSmallPadding,
+                        ),
+                        inkWell(
+                          onTap: () => setState(() {
+                            _switchSides = !_switchSides;
+                            // _flipXAxis = !_flipXAxis;
+                          }),
+                          child: Text(
+                            flipCard,
+                            style: textTheme.headline3!.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: kIconGrey,
                             ),
+                            textAlign: TextAlign.center,
                           ),
-                          SizedBox(
-                            height: kMediumPadding,
-                          ),
-                          Center(
-                            child: Text(
-                              noTransaction,
-                              style: textTheme.headline4!.copyWith(
-                                fontSize: 16,
+                        ),
+                        SizedBox(
+                          height: kMacroPadding,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CardColumn(
+                                onTap: () {
+                                  pushTo(
+                                          context,
+                                          CreateVirtualCard(
+                                            isFundCard: true,
+                                            isNaira: widget.cardType == "NGN"
+                                                ? true
+                                                : false,
+                                            isFundNaira:
+                                                widget.cardType == "NGN"
+                                                    ? true
+                                                    : false,
+                                          ),
+                                          settings: const RouteSettings(
+                                              name:
+                                                  CreateVirtualCard.routeName))
+                                      .then((value) {
+                                    ref
+                                        .read(getCardDetailsProvider.notifier)
+                                        .getCardDetails(
+                                            cardId: widget.cardInfo!.cardId);
+                                    ref
+                                        .read(getCardBalanceProvider.notifier)
+                                        .getCardBalance(
+                                          cardId: widget.cardInfo!.accountId,
+                                        );
+                                    ref
+                                        .read(getCardTokenProvider.notifier)
+                                        .getCardToken(
+                                          cardId: widget.cardInfo!.cardId,
+                                        );
+                                  });
+                                },
+                                textTheme: textTheme,
+                                text: fundCard,
+                                icon: AssetPaths.fundCardIcon),
+                            CardColumn(
+                                onTap: () {
+                                  buildShowModalBottomSheet(
+                                    context,
+                                    CardDetails(
+                                      cardData: data.data!,
+                                      cardCvv: cardCvv,
+                                    ),
+                                  );
+                                },
+                                textTheme: textTheme,
+                                text: cardDetails,
+                                icon: AssetPaths.cardDetailIcon),
+                            CardColumn(
+                                textTheme: textTheme,
+                                text: manage,
+                                onTap: () {
+                                  buildShowModalBottomSheet(
+                                    context,
+                                    ManageCard(cardData: data.data!),
+                                  );
+                                },
+                                icon: AssetPaths.manageIcon)
+                          ],
+                        ),
+                        SizedBox(
+                          height: kLargePadding,
+                        ),
+                        Text(
+                          transHistory,
+                          style: textTheme.headline2!.copyWith(
+                              fontWeight: FontWeight.w700, color: kDarkFill),
+                        ),
+                        Expanded(
+                          child: ListView(
+                            children: [
+                              SizedBox(
+                                height: kFullPadding,
                               ),
-                            ),
+                              Center(
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      top: 13,
+                                      left: kSmallPadding,
+                                      right: kSmallPadding,
+                                      bottom: kMediumPadding),
+                                  decoration: BoxDecoration(
+                                      color: kContainerColor,
+                                      borderRadius:
+                                          BorderRadius.circular(kSmallPadding)),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: kSmallPadding,
+                                        width: 70,
+                                        decoration: BoxDecoration(
+                                            color: kSecondaryTextColor,
+                                            borderRadius: BorderRadius.circular(
+                                                kPadding)),
+                                      ),
+                                      SizedBox(
+                                        height: kSmallPadding,
+                                      ),
+                                      Container(
+                                        height: kSmallPadding,
+                                        width: 70,
+                                        decoration: BoxDecoration(
+                                            color: kSecondaryTextColor,
+                                            borderRadius: BorderRadius.circular(
+                                                kPadding)),
+                                      ),
+                                      SizedBox(
+                                        height: kRegularPadding,
+                                      ),
+                                      Container(
+                                        height: kSmallPadding,
+                                        width: kLargePadding,
+                                        decoration: BoxDecoration(
+                                          color: kLightColor200,
+                                          borderRadius:
+                                              BorderRadius.circular(kPadding),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: kMediumPadding,
+                              ),
+                              Center(
+                                child: Text(
+                                  noTransaction,
+                                  style: textTheme.headline4!.copyWith(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              // Row(
+                              //   crossAxisAlignment: CrossAxisAlignment.start,
+                              //   children: [
+                              //     Container(
+                              //       decoration: BoxDecoration(
+                              //           shape: BoxShape.circle,
+                              //           color: kContainerColor),
+                              //       alignment: Alignment.center,
+                              //       padding: EdgeInsets.all(10),
+                              //       child: RotationTransition(
+                              //         child: Icon(
+                              //           Icons.send_rounded,
+                              //           color: kColorGreen,
+                              //           size: 17,
+                              //         ),
+                              //         turns: AlwaysStoppedAnimation(0.9),
+                              //       ),
+                              //     ),
+                              //     SizedBox(
+                              //       width: kSmallPadding,
+                              //     ),
+                              //     Expanded(
+                              //         child: Column(
+                              //       crossAxisAlignment: CrossAxisAlignment.start,
+                              //       children: [
+                              //         Text(
+                              //           "Card funding",
+                              //           style: textTheme.subtitle1!
+                              //               .copyWith(fontWeight: FontWeight.w500),
+                              //         ),
+                              //         SizedBox(
+                              //           height: 2,
+                              //         ),
+                              //         Text(
+                              //           "12 sep, 2022",
+                              //           style: textTheme.headline3,
+                              //         )
+                              //       ],
+                              //     )),
+                              //     Row(
+                              //       children: [
+                              //         Text(
+                              //           "+ ",
+                              //           style: textTheme.subtitle1!
+                              //               .copyWith(fontSize: 16),
+                              //         ),
+                              //         RichText(
+                              //           text: TextSpan(
+                              //             text: "₦",
+                              //             style: TextStyle(
+                              //               color: kPrimaryTextColor,
+                              //               fontWeight: FontWeight.normal,
+                              //               fontSize: 16,
+                              //             ),
+                              //             children: [
+                              //               TextSpan(
+                              //                 text: "407,000.00",
+                              //                 style: textTheme.subtitle1!.copyWith(
+                              //                   fontSize: 16,
+                              //                 ),
+                              //               )
+                              //             ],
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     )
+                              //   ],
+                              // ),
+                              // SizedBox(height: kRegularPadding),
+                              // Divider(
+                              //   thickness: 1,
+                              //   color: kLight100,
+                              // ),
+                              // Row(
+                              //   crossAxisAlignment: CrossAxisAlignment.start,
+                              //   children: [
+                              //     Container(
+                              //       decoration: BoxDecoration(
+                              //           shape: BoxShape.circle,
+                              //           color: kContainerColor),
+                              //       alignment: Alignment.center,
+                              //       padding: EdgeInsets.all(10),
+                              //       child: RotationTransition(
+                              //         child: Icon(
+                              //           Icons.send_rounded,
+                              //           color: kColorOrange,
+                              //           size: 17,
+                              //         ),
+                              //         turns: AlwaysStoppedAnimation(1.4),
+                              //       ),
+                              //     ),
+                              //     SizedBox(
+                              //       width: kSmallPadding,
+                              //     ),
+                              //     Expanded(
+                              //         child: Column(
+                              //       crossAxisAlignment: CrossAxisAlignment.start,
+                              //       children: [
+                              //         Text(
+                              //           "Card funding",
+                              //           style: textTheme.subtitle1!
+                              //               .copyWith(fontWeight: FontWeight.w500),
+                              //         ),
+                              //         SizedBox(
+                              //           height: 2,
+                              //         ),
+                              //         Text(
+                              //           "12 sep, 2022",
+                              //           style: textTheme.headline3,
+                              //         )
+                              //       ],
+                              //     )),
+                              //     Text(
+                              //       "- \$407,000.00",
+                              //       style:
+                              //           textTheme.subtitle1!.copyWith(fontSize: 16),
+                              //     )
+                              //   ],
+                              // ),
+                            ],
                           ),
-                          // Row(
-                          //   crossAxisAlignment: CrossAxisAlignment.start,
-                          //   children: [
-                          //     Container(
-                          //       decoration: BoxDecoration(
-                          //           shape: BoxShape.circle,
-                          //           color: kContainerColor),
-                          //       alignment: Alignment.center,
-                          //       padding: EdgeInsets.all(10),
-                          //       child: RotationTransition(
-                          //         child: Icon(
-                          //           Icons.send_rounded,
-                          //           color: kColorGreen,
-                          //           size: 17,
-                          //         ),
-                          //         turns: AlwaysStoppedAnimation(0.9),
-                          //       ),
-                          //     ),
-                          //     SizedBox(
-                          //       width: kSmallPadding,
-                          //     ),
-                          //     Expanded(
-                          //         child: Column(
-                          //       crossAxisAlignment: CrossAxisAlignment.start,
-                          //       children: [
-                          //         Text(
-                          //           "Card funding",
-                          //           style: textTheme.subtitle1!
-                          //               .copyWith(fontWeight: FontWeight.w500),
-                          //         ),
-                          //         SizedBox(
-                          //           height: 2,
-                          //         ),
-                          //         Text(
-                          //           "12 sep, 2022",
-                          //           style: textTheme.headline3,
-                          //         )
-                          //       ],
-                          //     )),
-                          //     Row(
-                          //       children: [
-                          //         Text(
-                          //           "+ ",
-                          //           style: textTheme.subtitle1!
-                          //               .copyWith(fontSize: 16),
-                          //         ),
-                          //         RichText(
-                          //           text: TextSpan(
-                          //             text: "₦",
-                          //             style: TextStyle(
-                          //               color: kPrimaryTextColor,
-                          //               fontWeight: FontWeight.normal,
-                          //               fontSize: 16,
-                          //             ),
-                          //             children: [
-                          //               TextSpan(
-                          //                 text: "407,000.00",
-                          //                 style: textTheme.subtitle1!.copyWith(
-                          //                   fontSize: 16,
-                          //                 ),
-                          //               )
-                          //             ],
-                          //           ),
-                          //         ),
-                          //       ],
-                          //     )
-                          //   ],
-                          // ),
-                          // SizedBox(height: kRegularPadding),
-                          // Divider(
-                          //   thickness: 1,
-                          //   color: kLight100,
-                          // ),
-                          // Row(
-                          //   crossAxisAlignment: CrossAxisAlignment.start,
-                          //   children: [
-                          //     Container(
-                          //       decoration: BoxDecoration(
-                          //           shape: BoxShape.circle,
-                          //           color: kContainerColor),
-                          //       alignment: Alignment.center,
-                          //       padding: EdgeInsets.all(10),
-                          //       child: RotationTransition(
-                          //         child: Icon(
-                          //           Icons.send_rounded,
-                          //           color: kColorOrange,
-                          //           size: 17,
-                          //         ),
-                          //         turns: AlwaysStoppedAnimation(1.4),
-                          //       ),
-                          //     ),
-                          //     SizedBox(
-                          //       width: kSmallPadding,
-                          //     ),
-                          //     Expanded(
-                          //         child: Column(
-                          //       crossAxisAlignment: CrossAxisAlignment.start,
-                          //       children: [
-                          //         Text(
-                          //           "Card funding",
-                          //           style: textTheme.subtitle1!
-                          //               .copyWith(fontWeight: FontWeight.w500),
-                          //         ),
-                          //         SizedBox(
-                          //           height: 2,
-                          //         ),
-                          //         Text(
-                          //           "12 sep, 2022",
-                          //           style: textTheme.headline3,
-                          //         )
-                          //       ],
-                          //     )),
-                          //     Text(
-                          //       "- \$407,000.00",
-                          //       style:
-                          //           textTheme.subtitle1!.copyWith(fontSize: 16),
-                          //     )
-                          //   ],
-                          // ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              }
-            },
-            loading: () => SpinKitDemo(),
-          ),
-    ));
+                        ),
+                      ],
+                    );
+                  }
+                },
+                loading: () => SpinKitDemo(),
+              ),
+        ));
   }
 
   Future fetch(String cardUrl) async {
@@ -462,7 +468,6 @@ class _CardHomeState extends ConsumerState<CardHome> {
         "https://tntpaxvvvet.live.verygoodproxy.com/cards/${widget.cardInfo!.cardId}/secure-data/number";
     logPrint("url${url}");
     logPrint("$url2{url2}");
-
 
     http.Response response = await http.get(
       Uri.parse(url),
@@ -508,7 +513,8 @@ class _CardHomeState extends ConsumerState<CardHome> {
           right: kRegularPadding,
           child: SvgPicture.asset(
             widget.cardType == "NGN"
-                ?  AssetPaths.verveIcon : AssetPaths.masterCardIcon,
+                ? AssetPaths.verveIcon
+                : AssetPaths.masterCardIcon,
             height: 30,
           ),
         ),

@@ -25,7 +25,8 @@ class BuyInternet extends ConsumerStatefulWidget {
   final bool? isGuest;
   final String? name, email;
 
-  const BuyInternet({Key? key, this.isGuest, this.name, this.email}) : super(key: key);
+  const BuyInternet({Key? key, this.isGuest, this.name, this.email})
+      : super(key: key);
 
   @override
   ConsumerState<BuyInternet> createState() => _BuyInternetState();
@@ -66,13 +67,13 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
     if (utilitiesData != null && accId.isNotEmpty && paymentType != null) {
       ref.read(validateUtilitiesProvider.notifier).validateUtilities(
           merchantAccount: utilitiesData!.operatorpublicid!,
-          merchantReferenceNumber: accId, merchantProductCode: paymentType!.code!,
+          merchantReferenceNumber: accId,
+          merchantProductCode: paymentType!.code!,
           category: utilitiesData!.category!);
     } else {
       showErrorBar(context, "Please choose a provider, type or account ID");
     }
   }
-
 
   @override
   void initState() {
@@ -94,7 +95,9 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: internet,
-      child: widget.isGuest! ? internetColumn(context, textTheme) : ListenerPage(child: internetColumn(context, textTheme)),
+      child: widget.isGuest!
+          ? internetColumn(context, textTheme)
+          : ListenerPage(child: internetColumn(context, textTheme)),
     );
   }
 
@@ -117,8 +120,8 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                     ref
                         .read(getUtilitiesTypeProvider.notifier)
                         .getUtilitiesType(
-                            merchantServiceId:
-                                utilitiesData!.operatorpublicid!, categoeyName: utilitiesData!.category!);
+                            merchantServiceId: utilitiesData!.operatorpublicid!,
+                            categoeyName: utilitiesData!.category!);
                   }
                 },
                 child: Container(
@@ -131,8 +134,7 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                     children: [
                       Expanded(
                           child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: kMediumPadding),
+                        padding: EdgeInsets.symmetric(vertical: kMediumPadding),
                         child: Text(
                             utilitiesData == null
                                 ? selectProvider
@@ -141,8 +143,7 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                             softWrap: true,
                             style: utilitiesData == null
                                 ? textTheme.bodyText1!.copyWith(
-                                    color:
-                                        kSecondaryTextColor.withOpacity(0.7),
+                                    color: kSecondaryTextColor.withOpacity(0.7),
                                     fontWeight: FontWeight.w300,
                                   )
                                 : textTheme.subtitle1),
@@ -173,13 +174,12 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
               SizedBox(
                 height: kMediumPadding,
               ),
-
-              ref.watch(getDiscountProvider).when( done: (done){
-                if(done != null){
+              ref.watch(getDiscountProvider).when(done: (done) {
+                if (done != null) {
                   threshold = done.data!.threshold ?? "0";
                   discountValue = done.data!.discountValue ?? "0";
                   return SizedBox();
-                }else{
+                } else {
                   return SizedBox();
                 }
               }),
@@ -196,7 +196,11 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                     : () async {
                         final result = await buildShowModalBottomSheet(
                             context,
-                            SubscriptionModal(paymentItem: utilitiesType, threshold: threshold, discountValue: discountValue,));
+                            SubscriptionModal(
+                              paymentItem: utilitiesType,
+                              threshold: threshold,
+                              discountValue: discountValue,
+                            ));
                         if (result != null) {
                           setState(() => paymentType = result);
                           // search("");
@@ -237,7 +241,8 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                       Consumer(builder: (context, ref, _) {
                         var _widget = Row(
                           children: [
-                            paymentType?.price == null || paymentType?.price == 0
+                            paymentType?.price == null ||
+                                    paymentType?.price == 0
                                 ? SizedBox()
                                 : RichText(
                                     text: TextSpan(
@@ -297,15 +302,18 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
-               onChanged: _onChangeHandler,
+                onChanged: _onChangeHandler,
                 icon: inkWell(
-                  onTap: utilitiesData == null && paymentType == null ? null : () async {
-                    final PhoneContact contact =
-                    await FlutterContactPicker.pickPhoneContact();
-                    setState(() {
-                      contactController.text = contact.phoneNumber!.number!;
-                    });
-                  },
+                  onTap: utilitiesData == null && paymentType == null
+                      ? null
+                      : () async {
+                          final PhoneContact contact =
+                              await FlutterContactPicker.pickPhoneContact();
+                          setState(() {
+                            contactController.text =
+                                contact.phoneNumber!.number!;
+                          });
+                        },
                   child: SvgPicture.asset(
                     AssetPaths.contactBook,
                     fit: BoxFit.scaleDown,
@@ -323,10 +331,10 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
                       Text(
                         done,
                         style: textTheme.headline4!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                            color: done == "Account not found" ? kColorRed : null
-                        ),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color:
+                                done == "Account not found" ? kColorRed : null),
                       )
                     ],
                   );
@@ -391,34 +399,38 @@ class _BuyInternetState extends ConsumerState<BuyInternet> {
         Consumer(builder: (context, ref, _) {
           var _widget = LargeButton(
             title: continueText,
-            disableColor:
-                (paymentType == null || accId == "" || utilitiesData == null || error.isNotEmpty)
-                    ? kBackgroundColor
-                    : kPrimaryColor,
-            onPressed:
-                (paymentType == null || accId == "" || utilitiesData == null || error.isNotEmpty)
-                    ? () {}
-                    : () {
-                        FocusScope.of(context).unfocus();
-                        buildShowModalBottomSheet(
-                          context,
-                          RechargeSummary(
-                                  billerName: utilitiesData!.displayName!,
-                                  billerId: utilitiesData!.operatorpublicid!,
-                                  utility: true,
-                                  isGuest: widget.isGuest!,
-                                  name: widget.name,
-                                  email: widget.email,
-                                  threshold: threshold,
-                                  category: "internet-purchase",
-                                  amount: "${paymentType!.price!}",
-                                  billerLogo: "",
-                                  billerCode: paymentType!.code,
-                                  recipientNo: contactController.text,
-                                  textTheme: textTheme,
-                                ),
-                        );
-                      },
+            disableColor: (paymentType == null ||
+                    accId == "" ||
+                    utilitiesData == null ||
+                    error.isNotEmpty)
+                ? kBackgroundColor
+                : kPrimaryColor,
+            onPressed: (paymentType == null ||
+                    accId == "" ||
+                    utilitiesData == null ||
+                    error.isNotEmpty)
+                ? () {}
+                : () {
+                    FocusScope.of(context).unfocus();
+                    buildShowModalBottomSheet(
+                      context,
+                      RechargeSummary(
+                        billerName: utilitiesData!.displayName!,
+                        billerId: utilitiesData!.operatorpublicid!,
+                        utility: true,
+                        isGuest: widget.isGuest!,
+                        name: widget.name,
+                        email: widget.email,
+                        threshold: threshold,
+                        category: "internet-purchase",
+                        amount: "${paymentType!.price!}",
+                        billerLogo: "",
+                        billerCode: paymentType!.code,
+                        recipientNo: contactController.text,
+                        textTheme: textTheme,
+                      ),
+                    );
+                  },
           );
           return ref.watch(buyUtilitiesProvider).when(
                 done: (data) => _widget,

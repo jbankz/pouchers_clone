@@ -23,7 +23,6 @@ const String kAnswerQuestion = "answerQuestion";
 const String userPinBox = "userPinBox";
 const String userCredentialKey = "userCredentialKey";
 
-
 String imgPath = "assets/images/";
 String iconPath = "assets/icons/";
 String onBoardingText = "5,000";
@@ -188,7 +187,8 @@ String transactionReceipt = "Transaction Receipt";
 String accNumberValidation = "Number must be 10 digits";
 String invalidEmail = "Invalid Email";
 String invalidTag = "Invalid Tag";
-String invalidPassword = "Password must be 6 or more characters and must contain alphabets & numbers";
+String invalidPassword =
+    "Password must be 6 or more characters and must contain alphabets & numbers";
 String pinMismatch = "Pin must match";
 String enableBiometrics = "Enable Biometrics";
 String enableBiometricsSub = "This is faster and more secure";
@@ -256,9 +256,9 @@ String saveBeneficiary = "Save as beneficiary";
 String beneficiary = "Beneficiary";
 String deliveredPurchase = "Your purchase has been delivered";
 String electricity = "Electricity";
-String education="Education";
-String adminCrebit= "Admin-Crebit-Wallet";
-String adminDebit= "Admin-Debit-Wallet";
+String education = "Education";
+String adminCrebit = "Admin-Crebit-Wallet";
+String adminDebit = "Admin-Debit-Wallet";
 String meterNo = "Meter Number";
 String enterMeterNo = "Enter Meter Number";
 String acctNo = "Account Number";
@@ -392,7 +392,8 @@ String deleteAccountTextSub = "Why do you want to delete your account?";
 String sendCode = "Send Code";
 String sendCodeSub =
     "To change your password, a code will be sent to the email associated with this account.";
-String sendPinCodeSub = "To reset your pin, a code will be sent to the email associated with this account.";
+String sendPinCodeSub =
+    "To reset your pin, a code will be sent to the email associated with this account.";
 
 String confirm = "Confirm";
 String goHome = "Go Home";
@@ -464,7 +465,7 @@ String phoneNumberText = "Phone Number";
 String idVerification = "ID Verification";
 String dateOfBirth = "Date of birth";
 String addressStr = "Address/Street ";
-String country =  "Country";
+String country = "Country";
 String cityState = "City/State";
 String noRewards = "You have no rewards.";
 String noInvite = "It seems that you haven’t invited someone yet.";
@@ -520,7 +521,8 @@ String joinPouchers3 =
     "on airtime, data, internet, betting and many other bill purchases.";
 String referralText = "Referral";
 String requestText = "Request";
-String requestTextSub = "Easily manage and track all your request money transactions in one place";
+String requestTextSub =
+    "Easily manage and track all your request money transactions in one place";
 String savedCard = "Saved cards";
 String selectPaymentOption = "Select payment option";
 String savedCardSub = "Managed linked cards";
@@ -535,7 +537,8 @@ String legalSub = "Contractual agreements with you";
 String aboutPouchers = "About Pouchers";
 String aboutUs = "About Us";
 String wePouchers = "We're Pouchers";
-String wePouchersSub = "We're Pouchers, and we're on a mission to make mobile payments less of a pain in the neck.\n\nPouchers was founded by a team of Nigerians with a passion for solving the pain points of Nigerian consumers faced with the lack of digital payment solutions and fast, convenient ways to make payments. We believe there should be an affordable solution for remittances and bill payments that serves all segments—formal and informal.\n\nWe have built Pouchers with our customers in mind. We know that people want fast, convenient ways to pay their bills and make secure payments online, but they don't want to spend hours online trying to figure out how it all works. That's why we have web and mobile interfaces that are easy to use and intuitive so that everyone can enjoy the benefits of digital payments without spending hours learning how it works!";
+String wePouchersSub =
+    "We're Pouchers, and we're on a mission to make mobile payments less of a pain in the neck.\n\nPouchers was founded by a team of Nigerians with a passion for solving the pain points of Nigerian consumers faced with the lack of digital payment solutions and fast, convenient ways to make payments. We believe there should be an affordable solution for remittances and bill payments that serves all segments—formal and informal.\n\nWe have built Pouchers with our customers in mind. We know that people want fast, convenient ways to pay their bills and make secure payments online, but they don't want to spend hours online trying to figure out how it all works. That's why we have web and mobile interfaces that are easy to use and intuitive so that everyone can enjoy the benefits of digital payments without spending hours learning how it works!";
 String aboutPouchersSub = "Learn more about Pouchers";
 String referEarn = "Refer & Earn";
 String tapCopyCode = "Tap above to copy the code";
@@ -570,7 +573,8 @@ String dialCode2 = "Tap the button below after completing payment.";
 String logToApp = "Login to your bank app";
 String completedPayment = "I have completed payment";
 String selectBank = "Select Bank";
-String vNin1 = "To use NIN- user needs to generate their virtual NIN via the NIMC Mobile App or the NIMC USSD code - *346*3*11digit NIN*1138183#";
+String vNin1 =
+    "To use NIN- user needs to generate their virtual NIN via the NIMC Mobile App or the NIMC USSD code - *346*3*11digit NIN*1138183#";
 String vNin2 = "Enterprise code - 1138183";
 String vNin3 = "The generated VNIN is valid for only 72 hours";
 String vNin4 = "The vNIN is designed to replace the 11-digit NIN";

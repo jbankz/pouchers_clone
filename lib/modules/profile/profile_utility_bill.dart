@@ -84,7 +84,8 @@ class _ProfileUtilityBillState extends ConsumerState<ProfileUtilityBill> {
                                   var _widget = Align(
                                     alignment: Alignment.centerLeft,
                                     child: Container(
-                                      width: SizeConfig.blockSizeHorizontal! * 35,
+                                      width:
+                                          SizeConfig.blockSizeHorizontal! * 35,
                                       padding: EdgeInsets.symmetric(
                                         horizontal: 12,
                                         vertical: kRegularPadding,
@@ -96,7 +97,8 @@ class _ProfileUtilityBillState extends ConsumerState<ProfileUtilityBill> {
                                       ),
                                       child: Row(
                                         children: [
-                                          SvgPicture.asset(AssetPaths.uploadIcon),
+                                          SvgPicture.asset(
+                                              AssetPaths.uploadIcon),
                                           SizedBox(
                                             width: kSmallPadding,
                                           ),
@@ -143,23 +145,24 @@ class _ProfileUtilityBillState extends ConsumerState<ProfileUtilityBill> {
             ),
             Consumer(builder: (context, ref, _) {
               ref.listen(editProfileProvider,
-                      (previous, NotifierState<EditProfileResponse> next) {
-                    if (next.status == NotifierStatus.done) {
-                      pushTo(
-                          context,
-                          ProfileSuccessful(
-                            from: widget.from,
-                            message: idSuccess,
-                          ),
-                          settings: const RouteSettings(
-                              name: ProfileSuccessful.routeName));
-                      // Navigator.pop(context);
-                      // showSuccessBar(context, next.data!.message);
-                      ref.read(editProfileInHouseProvider.notifier).state = EditProfileData.fromJson(next.data!.data!.toJson());
-                    } else if (next.status == NotifierStatus.error) {
-                      showErrorBar(context, next.message!);
-                    }
-                  });
+                  (previous, NotifierState<EditProfileResponse> next) {
+                if (next.status == NotifierStatus.done) {
+                  pushTo(
+                      context,
+                      ProfileSuccessful(
+                        from: widget.from,
+                        message: idSuccess,
+                      ),
+                      settings: const RouteSettings(
+                          name: ProfileSuccessful.routeName));
+                  // Navigator.pop(context);
+                  // showSuccessBar(context, next.data!.message);
+                  ref.read(editProfileInHouseProvider.notifier).state =
+                      EditProfileData.fromJson(next.data!.data!.toJson());
+                } else if (next.status == NotifierStatus.error) {
+                  showErrorBar(context, next.message!);
+                }
+              });
               var _widget = LargeButton(
                   title: submit,
                   disableColor:

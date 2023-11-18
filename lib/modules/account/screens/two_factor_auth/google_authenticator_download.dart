@@ -21,11 +21,12 @@ class GoogleAuthenticatorDownload extends ConsumerStatefulWidget {
   const GoogleAuthenticatorDownload({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<GoogleAuthenticatorDownload> createState() => _GoogleAuthenticatorDownloadState();
+  ConsumerState<GoogleAuthenticatorDownload> createState() =>
+      _GoogleAuthenticatorDownloadState();
 }
 
-class _GoogleAuthenticatorDownloadState extends ConsumerState<GoogleAuthenticatorDownload> {
-
+class _GoogleAuthenticatorDownloadState
+    extends ConsumerState<GoogleAuthenticatorDownload> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -43,13 +44,15 @@ class _GoogleAuthenticatorDownloadState extends ConsumerState<GoogleAuthenticato
     TextTheme textTheme = Theme.of(context).textTheme;
     return WillPopScope(
       onWillPop: () async {
-        Navigator.popUntil(context, (route) => route.settings.name == TwoFactor.routeName);
+        Navigator.popUntil(
+            context, (route) => route.settings.name == TwoFactor.routeName);
         return true;
-      } ,
+      },
       child: InitialPage(
           title: factorAuth,
           onTap: () {
-            Navigator.popUntil(context, (route) => route.settings.name == TwoFactor.routeName);
+            Navigator.popUntil(
+                context, (route) => route.settings.name == TwoFactor.routeName);
           },
           child: ListenerPage(
             child: Center(
@@ -109,7 +112,8 @@ class _GoogleAuthenticatorDownloadState extends ConsumerState<GoogleAuthenticato
                     download: true,
                     onPressed: () {
                       pushTo(context, CopyCode(),
-                          settings: const RouteSettings(name: CopyCode.routeName));
+                          settings:
+                              const RouteSettings(name: CopyCode.routeName));
                     },
                   ),
                   SizedBox(

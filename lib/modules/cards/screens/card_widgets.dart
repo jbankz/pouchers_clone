@@ -228,8 +228,8 @@ class VirtualCardType extends StatelessWidget {
                   SizedBox(
                     height: kMicroPadding,
                   ),
-                  Consumer(builder: (context, ref, _){
-                    return  RichText(
+                  Consumer(builder: (context, ref, _) {
+                    return RichText(
                       text: TextSpan(
                         text: isNaira ? "₦" : "\$",
                         style: TextStyle(
@@ -239,7 +239,23 @@ class VirtualCardType extends StatelessWidget {
                         ),
                         children: [
                           TextSpan(
-                            text: isNaira ? ref.watch(getAllFeesProvider).data!.data!.firstWhere((element) => element.name == "naira_card_creation_fee").value :  ref.watch(getAllFeesProvider).data!.data!.firstWhere((element) => element.name == "dollar_card_creation_fee").value,
+                            text: isNaira
+                                ? ref
+                                    .watch(getAllFeesProvider)
+                                    .data!
+                                    .data!
+                                    .firstWhere((element) =>
+                                        element.name ==
+                                        "naira_card_creation_fee")
+                                    .value
+                                : ref
+                                    .watch(getAllFeesProvider)
+                                    .data!
+                                    .data!
+                                    .firstWhere((element) =>
+                                        element.name ==
+                                        "dollar_card_creation_fee")
+                                    .value,
                             style: textTheme.headline6!.copyWith(
                               fontWeight: FontWeight.w700,
                               color: Color.fromRGBO(255, 255, 255, 0.9),
@@ -249,7 +265,6 @@ class VirtualCardType extends StatelessWidget {
                       ),
                     );
                   }),
-
                   SizedBox(
                     height: kPadding,
                   ),
@@ -290,7 +305,8 @@ class CardDetails extends StatelessWidget {
   final GetCardDetailsData cardData;
   final String? cardCvv;
 
-  const CardDetails({Key? key, required this.cardData, this.cardCvv}) : super(key: key);
+  const CardDetails({Key? key, required this.cardData, this.cardCvv})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -346,7 +362,7 @@ class CardDetails extends StatelessWidget {
                   text: cardNumber,
                   isCopyIcon: true,
                   noSymbol: true,
-                  copyText:cardData.maskedPan! ,
+                  copyText: cardData.maskedPan!,
                   subText: cardData.maskedPan!,
                   style: textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
@@ -360,7 +376,7 @@ class CardDetails extends StatelessWidget {
                   subText: cardCvv ?? "",
                   noSymbol: true,
                   isCopyIcon: true,
-                  copyText:cardCvv ,
+                  copyText: cardCvv,
                   style: textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
@@ -373,7 +389,7 @@ class CardDetails extends StatelessWidget {
                   subText: "${cardData.expiryMonth}/${cardData.expiryYear}",
                   noSymbol: true,
                   isCopyIcon: true,
-                  copyText:"${cardData.expiryMonth}/${cardData.expiryYear}" ,
+                  copyText: "${cardData.expiryMonth}/${cardData.expiryYear}",
                   style: textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
@@ -386,7 +402,7 @@ class CardDetails extends StatelessWidget {
                   subText: cardData.account!.accountName!,
                   noSymbol: true,
                   isCopyIcon: true,
-                  copyText:cardData.account!.accountName ,
+                  copyText: cardData.account!.accountName,
                   style: textTheme.headline4!.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -409,12 +425,14 @@ class CardDetails extends StatelessWidget {
                 AirtimeRow(
                   textTheme: textTheme,
                   text: billingAddress,
-                  subText: cardData.customer == null ? "" :
-                      "${cardData.customer!.billingAddress!.line1}",
+                  subText: cardData.customer == null
+                      ? ""
+                      : "${cardData.customer!.billingAddress!.line1}",
                   noSymbol: true,
                   isCopyIcon: true,
-                  copyText:cardData.customer == null ? "" :
-                  "${cardData.customer!.billingAddress!.line1}" ,
+                  copyText: cardData.customer == null
+                      ? ""
+                      : "${cardData.customer!.billingAddress!.line1}",
                   style: textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
@@ -427,7 +445,7 @@ class CardDetails extends StatelessWidget {
                   subText: "${cardData.customer!.billingAddress!.postalCode}",
                   noSymbol: true,
                   isCopyIcon: true,
-                  copyText:"${cardData.customer!.billingAddress!.postalCode}" ,
+                  copyText: "${cardData.customer!.billingAddress!.postalCode}",
                   style: textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
@@ -440,7 +458,7 @@ class CardDetails extends StatelessWidget {
                   subText: "${cardData.customer!.billingAddress!.city}",
                   noSymbol: true,
                   isCopyIcon: true,
-                  copyText:"${cardData.customer!.billingAddress!.city}" ,
+                  copyText: "${cardData.customer!.billingAddress!.city}",
                   style: textTheme.headline4!
                       .copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
@@ -452,7 +470,7 @@ class CardDetails extends StatelessWidget {
                   text: state,
                   isCopyIcon: true,
                   noSymbol: true,
-                  copyText:"${cardData.customer!.billingAddress!.state}" ,
+                  copyText: "${cardData.customer!.billingAddress!.state}",
                   subText: "${cardData.customer!.billingAddress!.state}",
                   style: textTheme.headline4!.copyWith(
                     fontWeight: FontWeight.w500,
@@ -559,7 +577,7 @@ class _ManageCardState extends State<ManageCard> {
                         TabLayout(
                           gottenIndex: 1,
                         ));
-                  }else if(next.status == NotifierStatus.error){
+                  } else if (next.status == NotifierStatus.error) {
                     setState(() {
                       _freezeCard = false;
                     });

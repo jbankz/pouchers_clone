@@ -198,7 +198,13 @@ class EditProfileData {
   }
 }
 
-List<String> idTypesList = ["Driver’s license", "NIN", "VNIN", "Voter’s card", "International passport"];
+List<String> idTypesList = [
+  "Driver’s license",
+  "NIN",
+  "VNIN",
+  "Voter’s card",
+  "International passport"
+];
 
 class ManageRequestResponse {
   String? status;
@@ -207,25 +213,26 @@ class ManageRequestResponse {
   ManageRequestData? data;
 
   ManageRequestResponse({
-      this.status,
-      this.message,
-      this.code,
-      this.data,
+    this.status,
+    this.message,
+    this.code,
+    this.data,
   });
 
-  factory ManageRequestResponse.fromJson(Map<String, dynamic> json) => ManageRequestResponse(
-    status: json["status"],
-    message: json["message"],
-    code: json["code"],
-    data: ManageRequestData.fromJson(json["data"]),
-  );
+  factory ManageRequestResponse.fromJson(Map<String, dynamic> json) =>
+      ManageRequestResponse(
+        status: json["status"],
+        message: json["message"],
+        code: json["code"],
+        data: ManageRequestData.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "code": code,
-    "data": data!.toJson(),
-  };
+        "status": status,
+        "message": message,
+        "code": code,
+        "data": data!.toJson(),
+      };
 }
 
 class ManageRequestData {
@@ -234,22 +241,24 @@ class ManageRequestData {
   String? page;
 
   ManageRequestData({
-      this.requests,
-      this.total,
-      this.page,
+    this.requests,
+    this.total,
+    this.page,
   });
 
-  factory ManageRequestData.fromJson(Map<String, dynamic> json) => ManageRequestData(
-    requests: List<Request>.from(json["requests"].map((x) => Request.fromJson(x))),
-    total: json["total"].toString(),
-    page: json["page"].toString(),
-  );
+  factory ManageRequestData.fromJson(Map<String, dynamic> json) =>
+      ManageRequestData(
+        requests: List<Request>.from(
+            json["requests"].map((x) => Request.fromJson(x))),
+        total: json["total"].toString(),
+        page: json["page"].toString(),
+      );
 
   Map<String, dynamic> toJson() => {
-    "requests": List<dynamic>.from(requests!.map((x) => x.toJson())),
-    "total": total,
-    "page": page,
-  };
+        "requests": List<dynamic>.from(requests!.map((x) => x.toJson())),
+        "total": total,
+        "page": page,
+      };
 }
 
 class Request {
@@ -267,49 +276,49 @@ class Request {
   dynamic profilePicture;
 
   Request({
-      this.requestId,
-      this.requesteeUserId,
-      this.requesterUserId,
-      this.amount,
-      this.createdAt,
-      this.fulfilledAmount,
+    this.requestId,
+    this.requesteeUserId,
+    this.requesterUserId,
+    this.amount,
+    this.createdAt,
+    this.fulfilledAmount,
     this.note,
-      this.status,
+    this.status,
     this.reason,
-      this.firstName,
-      this.lastName,
+    this.firstName,
+    this.lastName,
     this.profilePicture,
   });
 
   factory Request.fromJson(Map<String, dynamic> json) => Request(
-    requestId: json["request_id"],
-    requesteeUserId: json["requestee_user_id"],
-    requesterUserId: json["requester_user_id"],
-    amount: json["amount"],
-    createdAt: DateTime.parse(json["created_at"]),
-    fulfilledAmount: json["fulfilled_amount"],
-    note: json["note"],
-    status: json["status"],
-    reason: json["reason"],
-    firstName: json["first_name"],
-    lastName: json["last_name"],
-    profilePicture: json["profile_picture"],
-  );
+        requestId: json["request_id"],
+        requesteeUserId: json["requestee_user_id"],
+        requesterUserId: json["requester_user_id"],
+        amount: json["amount"],
+        createdAt: DateTime.parse(json["created_at"]),
+        fulfilledAmount: json["fulfilled_amount"],
+        note: json["note"],
+        status: json["status"],
+        reason: json["reason"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        profilePicture: json["profile_picture"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "request_id": requestId,
-    "requestee_user_id": requesteeUserId,
-    "requester_user_id": requesterUserId,
-    "amount": amount,
-    "created_at": createdAt?.toIso8601String(),
-    "fulfilled_amount": fulfilledAmount,
-    "note": note,
-    "status": status,
-    "reason": reason,
-    "first_name": firstName,
-    "last_name": lastName,
-    "profile_picture": profilePicture,
-  };
+        "request_id": requestId,
+        "requestee_user_id": requesteeUserId,
+        "requester_user_id": requesterUserId,
+        "amount": amount,
+        "created_at": createdAt?.toIso8601String(),
+        "fulfilled_amount": fulfilledAmount,
+        "note": note,
+        "status": status,
+        "reason": reason,
+        "first_name": firstName,
+        "last_name": lastName,
+        "profile_picture": profilePicture,
+      };
 
   @override
   String toString() {

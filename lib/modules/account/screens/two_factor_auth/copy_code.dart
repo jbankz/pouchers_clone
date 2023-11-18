@@ -15,7 +15,6 @@ import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
 
-
 class CopyCode extends ConsumerStatefulWidget {
   static const String routeName = "copyCode";
 

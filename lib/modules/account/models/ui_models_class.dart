@@ -370,7 +370,6 @@ class _TransactionPinContainerState
                                 ref.read(phoneProvider.notifier).state =
                                     pinPicked.length;
                                 if (ref.watch(phoneProvider) == 4) {
-
                                   Navigator.pop(context, pinPicked.join(""));
                                   // ref
                                   //     .read(validatePinProvider.notifier)
@@ -414,7 +413,8 @@ class AirtimeRow extends StatelessWidget {
       this.isBold = false,
       required this.isCopyIcon,
       required this.noSymbol,
-      required this.style, this.copyText})
+      required this.style,
+      this.copyText})
       : super(key: key);
 
   final TextTheme textTheme;
@@ -423,11 +423,10 @@ class AirtimeRow extends StatelessWidget {
   final bool isNaira, isBold, isCopyIcon, noSymbol;
   final String? copyText;
 
-
   @override
   Widget build(BuildContext context) {
     return Row(
-       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: Text(
@@ -462,10 +461,16 @@ class AirtimeRow extends StatelessWidget {
         SizedBox(
           width: kSmallPadding,
         ),
-        isCopyIcon ? inkWell( onTap: (){
-          Clipboard.setData(ClipboardData(text:copyText ?? ""),);
-          showSuccessBar(context, "Copied");
-        }, child: SvgPicture.asset(AssetPaths.copyIcon)) : SizedBox()
+        isCopyIcon
+            ? inkWell(
+                onTap: () {
+                  Clipboard.setData(
+                    ClipboardData(text: copyText ?? ""),
+                  );
+                  showSuccessBar(context, "Copied");
+                },
+                child: SvgPicture.asset(AssetPaths.copyIcon))
+            : SizedBox()
       ],
     );
   }
@@ -526,9 +531,7 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
 
   @override
   Widget build(BuildContext context) {
-    print(ref
-        .watch(biometricProvider)
-        .isPaymentBiometricActive);
+    print(ref.watch(biometricProvider).isPaymentBiometricActive);
     return Container(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 20),
       decoration: BoxDecoration(
@@ -846,13 +849,12 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                             ? () {}
                             : () async {
                                 if (ref
-                                    .watch(biometricProvider)
-                                    .isPaymentBiometricActive ==
-                                            null ||
-                                        !ref
                                             .watch(biometricProvider)
-                                            .isPaymentBiometricActive!
-                                    ) {
+                                            .isPaymentBiometricActive ==
+                                        null ||
+                                    !ref
+                                        .watch(biometricProvider)
+                                        .isPaymentBiometricActive!) {
                                   final result =
                                       await buildShowModalBottomSheet(
                                     context,
@@ -876,7 +878,8 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                                     ? []
                                                     : [widget.billerCode!],
                                             applyDiscount: double.parse(
-                                                        widget.threshold ?? "0") <=
+                                                        widget.threshold ??
+                                                            "0") <=
                                                     double.parse(widget.amount)
                                                 ? true
                                                 : false,
@@ -1059,9 +1062,9 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                                 transactionPin: result,
                                                 mobileOperatorPublicId:
                                                     widget.billerId,
-                                                then: () async{
+                                                then: () async {
                                                   await saveUserCredential(
-                                                  transactionPin: result);
+                                                      transactionPin: result);
                                                   ref
                                                       .read(getWalletProvider
                                                           .notifier)
@@ -1082,12 +1085,12 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                                             );
                                                           }));
                                                 },
-                                                error: (val) async{
-                                                  if(val.contains("Invalid transaction pin")){
-
-                                                  }else{
+                                                error: (val) async {
+                                                  if (val.contains(
+                                                      "Invalid transaction pin")) {
+                                                  } else {
                                                     await saveUserCredential(
-                                                    transactionPin: result);
+                                                        transactionPin: result);
                                                   }
                                                   showErrorBar(context, val);
                                                 });
@@ -1096,7 +1099,7 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                       if (cred?.transactionPin == null ||
                                           cred?.transactionPin == "") {
                                         print("touched here");
-                                        print(cred?.transactionPin );
+                                        print(cred?.transactionPin);
                                         final result =
                                             await buildShowModalBottomSheet(
                                           context,
@@ -1132,9 +1135,9 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                                   transactionPin: result,
                                                   mobileOperatorPublicId:
                                                       widget.billerId,
-                                                  then: () async{
+                                                  then: () async {
                                                     await saveUserCredential(
-                                                    transactionPin: result);
+                                                        transactionPin: result);
                                                     ref
                                                         .read(getWalletProvider
                                                             .notifier)
@@ -1156,23 +1159,22 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                                               );
                                                             }));
                                                   },
-                                                  error: (val) async{
-                                                    if(val.contains("Invalid transaction pin")){
-
-                                                    }else{
+                                                  error: (val) async {
+                                                    if (val.contains(
+                                                        "Invalid transaction pin")) {
+                                                    } else {
                                                       await saveUserCredential(
-                                                      transactionPin: result);
+                                                          transactionPin:
+                                                              result);
                                                     }
                                                     print("val ,mkkdkue$val");
-                                                    showErrorBar(
-                                                        context, val);
+                                                    showErrorBar(context, val);
                                                   });
                                         }
-                                      } else{
-                                        print(cred?.transactionPin );
-                                         checkBiometric(context);
+                                      } else {
+                                        print(cred?.transactionPin);
+                                        checkBiometric(context);
                                       }
-
                                     }
                                   }
                                 : () {},
@@ -1192,6 +1194,7 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
       ),
     );
   }
+
   Future<void> _incrementFailedAttempts() async {
     setState(() {
       failedAttempts++;
@@ -1322,8 +1325,7 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                         }));
               },
               error: (val) => showErrorBar(context, val));
-    }
-    else {
+    } else {
       if (failedAttempts >= 3) {
         final result = await buildShowModalBottomSheet(
           context,
@@ -1336,58 +1338,26 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
         if (result != null) {
           widget.utility
               ? ref.read(buyUtilitiesProvider.notifier).buyUtilities(
-              amount: double.parse(widget.amount),
-              isSchedule: false,
-              merchantAccount: widget.billerId,
-              merchantReferenceNumber: widget.recipientNo,
-              merchantService:
-              widget.billerCode == null ? [] : [widget.billerCode!],
-              applyDiscount:
-              double.parse(widget.threshold!) <= double.parse(widget.amount)
-                  ? true
-                  : false,
-              subCategory: widget.billerName,
-              transactionPin: result,
-              category: "cable-purchase",
-              then: () {
-                ref.read(getWalletProvider.notifier).getWalletDetails();
-                pushTo(
-                  context,
-                  SuccessMessage(
-                    text: dataSuccess,
-                    subText: deliveredPurchase,
-                    onTap: () {
-                      pushToAndClearStack(
-                        context,
-                        TabLayout(
-                          gottenIndex: 0,
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
-              error: (val) => showErrorBar(context, val))
-              : ref.read(buyAirtimeProvider.notifier).buyAirtime(
-              subCategory: widget.billerName,
-              amount: widget.amount,
-              applyDiscount:
-              double.parse(widget.threshold!) <= double.parse(widget.amount)
-                  ? true
-                  : false,
-              category: widget.category!,
-              isAirtime: widget.category!.contains("airtime") ? true : false,
-              mobileOperatorServiceId: widget.mobileOperatorServiceId,
-              destinationPhoneNumber: widget.recipientNo,
-              transactionPin: result,
-              mobileOperatorPublicId: widget.billerId,
-              then: () {
-                ref.read(getWalletProvider.notifier).getWalletDetails();
-                pushTo(
-                    context,
-                    SuccessMessage(
-                        text: rechargeSuccessful,
-                        subText: rechargeSuccessfulSub,
+                  amount: double.parse(widget.amount),
+                  isSchedule: false,
+                  merchantAccount: widget.billerId,
+                  merchantReferenceNumber: widget.recipientNo,
+                  merchantService:
+                      widget.billerCode == null ? [] : [widget.billerCode!],
+                  applyDiscount: double.parse(widget.threshold!) <=
+                          double.parse(widget.amount)
+                      ? true
+                      : false,
+                  subCategory: widget.billerName,
+                  transactionPin: result,
+                  category: "cable-purchase",
+                  then: () {
+                    ref.read(getWalletProvider.notifier).getWalletDetails();
+                    pushTo(
+                      context,
+                      SuccessMessage(
+                        text: dataSuccess,
+                        subText: deliveredPurchase,
                         onTap: () {
                           pushToAndClearStack(
                             context,
@@ -1395,12 +1365,44 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                               gottenIndex: 0,
                             ),
                           );
-                        }));
-              },
-              error: (val) => showErrorBar(context, val));
-
+                        },
+                      ),
+                    );
+                  },
+                  error: (val) => showErrorBar(context, val))
+              : ref.read(buyAirtimeProvider.notifier).buyAirtime(
+                  subCategory: widget.billerName,
+                  amount: widget.amount,
+                  applyDiscount: double.parse(widget.threshold!) <=
+                          double.parse(widget.amount)
+                      ? true
+                      : false,
+                  category: widget.category!,
+                  isAirtime:
+                      widget.category!.contains("airtime") ? true : false,
+                  mobileOperatorServiceId: widget.mobileOperatorServiceId,
+                  destinationPhoneNumber: widget.recipientNo,
+                  transactionPin: result,
+                  mobileOperatorPublicId: widget.billerId,
+                  then: () {
+                    ref.read(getWalletProvider.notifier).getWalletDetails();
+                    pushTo(
+                        context,
+                        SuccessMessage(
+                            text: rechargeSuccessful,
+                            subText: rechargeSuccessfulSub,
+                            onTap: () {
+                              pushToAndClearStack(
+                                context,
+                                TabLayout(
+                                  gottenIndex: 0,
+                                ),
+                              );
+                            }));
+                  },
+                  error: (val) => showErrorBar(context, val));
         }
-      }else{
+      } else {
         print('authentication failed');
       }
     }

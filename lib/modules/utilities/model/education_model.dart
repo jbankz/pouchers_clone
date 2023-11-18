@@ -583,55 +583,51 @@ class _RechargeSummaryState extends ConsumerState<EducationSummary> {
                 cancelButton: "Cancel"),
             IOSAuthMessages()
           ]);
-    } catch (e) {
-
-    }
+    } catch (e) {}
 
     setState(() {
       isAuth = authenticated ? true : false;
     });
 
-
     if (isAuth) {
       print('Fingerprint authentication');
-       await _incrementFailedAttempts();
+      await _incrementFailedAttempts();
       ref.read(buyUtilitiesProvider.notifier).buyUtilities(
-                amount: double.parse(widget.amount),
-                isSchedule: false,
-                merchantAccount: widget.billerId,
-                merchantReferenceNumber: "education",
-                merchantService:
-                    widget.billerCode == null ? [] : [widget.billerCode!],
-                applyDiscount:
-                    double.parse(widget.threshold!) <= double.parse(widget.amount)
-                        ? true
-                        : false,
-                subCategory: widget.category!,
-                transactionPin: cred!.transactionPin!,
-                category: "education-purchase",
-                then: () {
-                  ref.read(getWalletProvider.notifier).getWalletDetails();
-                  pushTo(
+          amount: double.parse(widget.amount),
+          isSchedule: false,
+          merchantAccount: widget.billerId,
+          merchantReferenceNumber: "education",
+          merchantService:
+              widget.billerCode == null ? [] : [widget.billerCode!],
+          applyDiscount:
+              double.parse(widget.threshold!) <= double.parse(widget.amount)
+                  ? true
+                  : false,
+          subCategory: widget.category!,
+          transactionPin: cred!.transactionPin!,
+          category: "education-purchase",
+          then: () {
+            ref.read(getWalletProvider.notifier).getWalletDetails();
+            pushTo(
+              context,
+              SuccessMessage(
+                text: dataSuccess,
+                subText: deliveredPurchase,
+                onTap: () {
+                  pushToAndClearStack(
                     context,
-                    SuccessMessage(
-                      text: dataSuccess,
-                      subText: deliveredPurchase,
-                      onTap: () {
-                        pushToAndClearStack(
-                          context,
-                          TabLayout(
-                            gottenIndex: 0,
-                          ),
-                        );
-                      },
+                    TabLayout(
+                      gottenIndex: 0,
                     ),
                   );
                 },
-                error: (val) => showErrorBar(context, val));
+              ),
+            );
+          },
+          error: (val) => showErrorBar(context, val));
     } else {
       if (failedAttempts >= 3) {
-        final result =
-        await buildShowModalBottomSheet(
+        final result = await buildShowModalBottomSheet(
           context,
           TransactionPinContainer(
             isData: false,
@@ -639,34 +635,23 @@ class _RechargeSummaryState extends ConsumerState<EducationSummary> {
             isFundCard: false,
           ),
         );
-        if (result != null)  {
-          ref
-              .read(buyUtilitiesProvider.notifier)
-              .buyUtilities(
-              amount:
-              double.parse(widget.amount),
+        if (result != null) {
+          ref.read(buyUtilitiesProvider.notifier).buyUtilities(
+              amount: double.parse(widget.amount),
               isSchedule: false,
               merchantAccount: widget.billerId,
-              merchantReferenceNumber:
-              widget.recipientNo,
+              merchantReferenceNumber: widget.recipientNo,
               merchantService:
-              widget.billerCode == null
-                  ? []
-                  : [widget.billerCode!],
-              applyDiscount: double.parse(
-                  widget.threshold!) <=
-                  double.parse(
-                      widget.amount)
-                  ? true
-                  : false,
+                  widget.billerCode == null ? [] : [widget.billerCode!],
+              applyDiscount:
+                  double.parse(widget.threshold!) <= double.parse(widget.amount)
+                      ? true
+                      : false,
               subCategory: widget.billerName,
               transactionPin: result,
               category: "electricity-purchase",
               then: () {
-                ref
-                    .read(getWalletProvider
-                    .notifier)
-                    .getWalletDetails();
+                ref.read(getWalletProvider.notifier).getWalletDetails();
                 pushTo(
                   context,
                   SuccessMessage(
@@ -683,10 +668,9 @@ class _RechargeSummaryState extends ConsumerState<EducationSummary> {
                   ),
                 );
               },
-              error: (val) =>
-                  showErrorBar(context, val));
+              error: (val) => showErrorBar(context, val));
         }
-      }else{
+      } else {
         print('authentication failed');
       }
     }

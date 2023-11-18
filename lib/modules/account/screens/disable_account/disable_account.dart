@@ -44,7 +44,8 @@ class _DisableAccountState extends State<DisableAccount> {
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: kRegularPadding, vertical: kRegularPadding),
+                          horizontal: kRegularPadding,
+                          vertical: kRegularPadding),
                       decoration: BoxDecoration(
                           color: kBackgroundColor,
                           borderRadius: BorderRadius.circular(kSmallPadding)),
@@ -96,16 +97,17 @@ class _DisableAccountState extends State<DisableAccount> {
               ),
               LargeButton(
                 title: disableAccountText,
-                disableColor:
-                    _prefixText == selectReason ? kPurpleColor100 : kPrimaryColor,
+                disableColor: _prefixText == selectReason
+                    ? kPurpleColor100
+                    : kPrimaryColor,
                 onPressed: _prefixText == selectReason
                     ? () {}
                     : () {
                         pushTo(
                           context,
                           DisableConfirm(reason: _prefixText),
-                          settings:
-                              const RouteSettings(name: DisableConfirm.routeName),
+                          settings: const RouteSettings(
+                              name: DisableConfirm.routeName),
                         );
                       },
               )

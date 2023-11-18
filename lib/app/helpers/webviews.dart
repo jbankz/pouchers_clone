@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:Pouchers/utils/logger.dart';
 
-
 class MyChromeSafariBrowser extends ChromeSafariBrowser {
   final VoidCallback onExitBrowser;
 

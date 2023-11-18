@@ -34,7 +34,6 @@ class _VouchersState extends ConsumerState<Vouchers> {
       ref.read(fetchVoucherProvider.notifier).fetchVoucher(
           status: "active",
           then: (voucher) {
-
             voucherList = voucher.vouchers.length;
             voucher.vouchers.fold(0.0, (double? sum, element) {
               voucherAmount = sum! + double.parse(element.amount);
@@ -82,12 +81,13 @@ class _VouchersState extends ConsumerState<Vouchers> {
                       (index) => inkWell(
                         onTap: () {
                           pushTo(context, voucherClass[index].page,
-                              settings:
-                                  RouteSettings(name: voucherClass[index].days));
+                              settings: RouteSettings(
+                                  name: voucherClass[index].days));
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(kSmallPadding),
+                              borderRadius:
+                                  BorderRadius.circular(kSmallPadding),
                               color: kBackgroundColor),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,

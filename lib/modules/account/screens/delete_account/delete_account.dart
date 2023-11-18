@@ -48,7 +48,8 @@ class _DeleteAccountState extends State<DeleteAccount> {
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: kRegularPadding, vertical: kRegularPadding),
+                          horizontal: kRegularPadding,
+                          vertical: kRegularPadding),
                       decoration: BoxDecoration(
                           color: kBackgroundColor,
                           borderRadius: BorderRadius.circular(kSmallPadding)),

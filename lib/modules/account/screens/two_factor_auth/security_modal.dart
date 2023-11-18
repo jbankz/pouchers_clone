@@ -10,14 +10,14 @@ class SecurityModal extends StatelessWidget {
   final String message, button;
   final Color? color;
 
-  const SecurityModal({
-    Key? key,
-    required this.textTheme,
-    required this.title,
-    required this.message,
-    required this.button,
-    this.color
-  }) : super(key: key);
+  const SecurityModal(
+      {Key? key,
+      required this.textTheme,
+      required this.title,
+      required this.message,
+      required this.button,
+      this.color})
+      : super(key: key);
 
   final TextTheme textTheme;
 
@@ -29,18 +29,13 @@ class SecurityModal extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
             color: kPrimaryWhite,
-            borderRadius:
-            BorderRadius.circular(kMediumPadding)),
+            borderRadius: BorderRadius.circular(kMediumPadding)),
         margin: EdgeInsets.symmetric(
-            horizontal: kSmallPadding,
-            vertical: kRegularPadding),
-        padding: EdgeInsets.symmetric(
-            horizontal: kMediumPadding,
-            vertical: 35),
+            horizontal: kSmallPadding, vertical: kRegularPadding),
+        padding: EdgeInsets.symmetric(horizontal: kMediumPadding, vertical: 35),
         child: Material(
           shape: RoundedRectangleBorder(
-              borderRadius:
-              BorderRadius.circular(kMediumPadding)),
+              borderRadius: BorderRadius.circular(kMediumPadding)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
@@ -58,26 +53,26 @@ class SecurityModal extends StatelessWidget {
               ),
               Text(
                 message,
-                style: textTheme.bodyText1!
-                    .copyWith(color: kIconGrey),
+                style: textTheme.bodyText1!.copyWith(color: kIconGrey),
               ),
               SizedBox(
                 height: kLargePadding,
               ),
               inkWell(
-                onTap: (){
-                  button == urgentButton ? pushTo(context, DisableAuthQuestion(),  settings: const RouteSettings(
-                      name: DisableAuthQuestion.routeName)) :
-                  Navigator.pop(context);
+                onTap: () {
+                  button == urgentButton
+                      ? pushTo(context, DisableAuthQuestion(),
+                          settings: const RouteSettings(
+                              name: DisableAuthQuestion.routeName))
+                      : Navigator.pop(context);
                 },
                 child: Center(
                   child: Text(
                     button,
                     style: textTheme.headline2!.copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      color: color ?? kPrimaryColor
-                    ),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: color ?? kPrimaryColor),
                     textAlign: TextAlign.center,
                   ),
                 ),

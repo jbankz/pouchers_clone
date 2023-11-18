@@ -60,7 +60,7 @@ class _ElectricityModalState extends State<ElectricityModal> {
                 height: 30,
               ),
               ...providerList.map(
-                    (e) => Padding(
+                (e) => Padding(
                   padding: const EdgeInsets.only(bottom: kRegularPadding),
                   child: Column(
                     children: [
@@ -69,29 +69,29 @@ class _ElectricityModalState extends State<ElectricityModal> {
                         child: inkWell(
                           onTap: () {
                             setState(() => _prefixIcon = Row(
-                              children: [
-                                Container(
-                                  height: 40,
-                                  width: 40,
-                                  margin:
-                                  EdgeInsets.symmetric(vertical: 10),
-                                  child: ClipRRect(
-                                    child: Image.asset(
-                                      e.icon,
+                                  children: [
+                                    Container(
+                                      height: 40,
+                                      width: 40,
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 10),
+                                      child: ClipRRect(
+                                        child: Image.asset(
+                                          e.icon,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(116),
+                                      ),
                                     ),
-                                    borderRadius:
-                                    BorderRadius.circular(116),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: kRegularPadding,
-                                ),
-                                Text(
-                                  e.title,
-                                  style: textTheme.subtitle1,
-                                )
-                              ],
-                            ));
+                                    SizedBox(
+                                      width: kRegularPadding,
+                                    ),
+                                    Text(
+                                      e.title,
+                                      style: textTheme.subtitle1,
+                                    )
+                                  ],
+                                ));
                             Navigator.pop(context, _prefixIcon);
                           },
                           child: Row(

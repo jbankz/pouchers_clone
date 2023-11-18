@@ -172,8 +172,8 @@ final manageRequestProvider = StateNotifierProvider<ManageRequestNotifier,
   return ManageRequestNotifier(ref.read(accountRepoProvider));
 });
 
-final manageReceivedRequestProvider = StateNotifierProvider<ManageRequestNotifier,
-    NotifierState<ManageRequestResponse>>((ref) {
+final manageReceivedRequestProvider = StateNotifierProvider<
+    ManageRequestNotifier, NotifierState<ManageRequestResponse>>((ref) {
   return ManageRequestNotifier(ref.read(accountRepoProvider));
 });
 
@@ -452,18 +452,19 @@ class ValidateIDNotifier
     required String idType,
     required String idNumber,
     required bool isUpload,
-    String? firstName, lastName, dob,
+    String? firstName,
+    lastName,
+    dob,
     Function()? then,
   }) async {
     state = notifyLoading();
     state = await _repo.validateId(
-      idNumber: idNumber,
-      idType: idType,
-      firstName: firstName,
-      lastName: lastName,
-      dob: dob,
-      isUpload: isUpload
-    );
+        idNumber: idNumber,
+        idType: idType,
+        firstName: firstName,
+        lastName: lastName,
+        dob: dob,
+        isUpload: isUpload);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     }
@@ -600,7 +601,6 @@ class GetUserProfileNotifier
   }
 }
 
-
 class ManageRequestNotifier
     extends StateNotifier<NotifierState<ManageRequestResponse>> {
   final AccountRepository _repo;
@@ -610,7 +610,7 @@ class ManageRequestNotifier
   void manageRequest({
     Function(ManageRequestData)? then,
     required String type,
-     String? status,
+    String? status,
     required int page,
   }) async {
     state = notifyLoading();

@@ -1,3 +1,5 @@
+import 'package:Pouchers/app/app.router.dart';
+import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
@@ -8,6 +10,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../../../app/core/manager/intercom_manager.dart';
+import '../../../../../../app/navigators/navigators.dart';
+import '../../../../../../modules/profile/profile_page.dart';
+import '../../../../../../modules/profile/profile_tier_list.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/profile_image.dart';
 import 'widgets/account_tile.dart';
@@ -16,8 +22,9 @@ class AccountView extends ConsumerWidget {
   const AccountView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) =>
-      ValueListenableBuilder<Box>(
+  Widget build(BuildContext context, WidgetRef ref) => 2 < 2
+      ? ProfilePage()
+      : ValueListenableBuilder<Box>(
           valueListenable: userDao.getListenable(),
           builder: (_, box, __) {
             final user = userDao.returnUser(box);
@@ -49,30 +56,33 @@ class AccountView extends ConsumerWidget {
                           color: AppColors.kIconGrey),
                       textAlign: TextAlign.center),
                   const Gap(height: 9),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 6.91.w, vertical: 1.38.h),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6.91.r),
-                            color: AppColors.kUnknownColor1,
-                            border:
-                                Border.all(color: AppColors.kPurpleColor700)),
-                        child: Text('Tier ${user.tierLevels}',
-                            style: context.displayMedium?.copyWith(
-                                fontSize: 8, fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.center),
-                      ),
-                      const Gap(width: 10),
-                      Flexible(
-                        child: Text(AppString.upgradeNow,
-                            style: context.displayMedium?.copyWith(
-                                fontSize: 12, fontWeight: FontWeight.w700),
-                            textAlign: TextAlign.center),
-                      ),
-                    ],
+                  GestureDetector(
+                    onTap: () => PageRouter.pushNamed(Routes.tierView),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 6.91.w, vertical: 1.38.h),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6.91.r),
+                              color: AppColors.kUnknownColor1,
+                              border:
+                                  Border.all(color: AppColors.kPurpleColor700)),
+                          child: Text('Tier ${user.tierLevels}',
+                              style: context.displayMedium?.copyWith(
+                                  fontSize: 8, fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.center),
+                        ),
+                        const Gap(width: 10),
+                        Flexible(
+                          child: Text(AppString.upgradeNow,
+                              style: context.displayMedium?.copyWith(
+                                  fontSize: 12, fontWeight: FontWeight.w700),
+                              textAlign: TextAlign.center),
+                        ),
+                      ],
+                    ),
                   ),
                   const Gap(height: 30),
                   AccountTile(
@@ -97,19 +107,20 @@ class AccountView extends ConsumerWidget {
                       icon: AppImage.user,
                       title: AppString.accountSettings,
                       desc: AppString.accountSettingsInstruction,
-                      tapped: () {}),
+                      tapped: () =>
+                          PageRouter.pushNamed(Routes.accountSettingsView)),
                   const Gap(height: 23),
                   AccountTile(
                       icon: AppImage.customerService,
                       title: AppString.helpAndSupport,
                       desc: AppString.helpAndSupportInstruction,
-                      tapped: () {}),
-                  const Gap(height: 23),
-                  AccountTile(
-                      icon: AppImage.logo,
-                      title: AppString.aboutPourcher,
-                      desc: AppString.aboutPourcherInstruction,
-                      tapped: () {}),
+                      tapped: IntercomManager.displayMessenger),
+                  // const Gap(height: 23),
+                  // AccountTile(
+                  //     icon: AppImage.logo,
+                  //     title: AppString.aboutPourcher,
+                  //     desc: AppString.aboutPourcherInstruction,
+                  //     tapped: () {}),
                   const Gap(height: 32),
                   AccountTile(
                       icon: AppImage.logOut,

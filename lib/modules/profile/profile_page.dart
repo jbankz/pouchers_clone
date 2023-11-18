@@ -1,34 +1,28 @@
 import 'dart:async';
-import 'dart:ffi';
+import 'dart:math' as math;
 
-import 'package:Pouchers/modules/account/screens/request/requests.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:Pouchers/app/helpers/network_helpers.dart';
 import 'package:Pouchers/app/helpers/session_manager.dart';
 import 'package:Pouchers/app/navigators/navigators.dart';
 import 'package:Pouchers/modules/account/models/referral_model.dart';
 import 'package:Pouchers/modules/account/providers/account_provider.dart';
-import 'package:Pouchers/modules/account/screens/about_Pouchers.dart';
 import 'package:Pouchers/modules/account/screens/account_settings/account_settings.dart';
 import 'package:Pouchers/modules/account/screens/account_settings/schedule_payments.dart';
 import 'package:Pouchers/modules/account/screens/referral/referral.dart';
-import 'package:Pouchers/modules/login/models/login_response.dart';
+import 'package:Pouchers/modules/account/screens/request/requests.dart';
 import 'package:Pouchers/modules/login/screens/login.dart';
 import 'package:Pouchers/modules/profile/profile_kyc.dart';
 import 'package:Pouchers/modules/profile/profile_tier_list.dart';
 import 'package:Pouchers/modules/tab_layout/widgets/profile_widget.dart';
+import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/utils/assets_path.dart';
 import 'package:Pouchers/utils/components.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/strings.dart';
-import 'dart:math' as math;
-
-import 'package:Pouchers/utils/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 

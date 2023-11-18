@@ -138,7 +138,8 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                           if (provider != null) {
                             return Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: provider.data!
                                     .mapIndexed(
                                       (index, element) => inkWell(
@@ -148,8 +149,8 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                                             billerData = element;
                                           });
                                           ref
-                                              .read(
-                                                  getDataBundleProvider.notifier)
+                                              .read(getDataBundleProvider
+                                                  .notifier)
                                               .getDataBundle(
                                                   merchantServiceId: billerData!
                                                       .operatorpublicid!);
@@ -157,8 +158,8 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                                         child: Stack(
                                           children: [
                                             Container(
-                                              padding:
-                                                  EdgeInsets.all(kRegularPadding),
+                                              padding: EdgeInsets.all(
+                                                  kRegularPadding),
                                               height: 70,
                                               width: 70,
                                               decoration: BoxDecoration(
@@ -177,10 +178,12 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                                                     child: Container(
                                                         padding:
                                                             EdgeInsets.all(3),
-                                                        decoration: BoxDecoration(
-                                                            color: kPurpleColor,
-                                                            shape:
-                                                                BoxShape.circle),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                color:
+                                                                    kPurpleColor,
+                                                                shape: BoxShape
+                                                                    .circle),
                                                         child: Icon(
                                                           Icons.check,
                                                           color: kPrimaryWhite,
@@ -230,7 +233,8 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                             }
                           },
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: kRegularPadding),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: kRegularPadding),
                       decoration: BoxDecoration(
                           color: kBackgroundColor,
                           borderRadius: BorderRadius.circular(kSmallPadding)),
@@ -238,8 +242,8 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                         children: [
                           Expanded(
                             child: Padding(
-                              padding:
-                                  EdgeInsets.symmetric(vertical: kMediumPadding),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: kMediumPadding),
                               child: Row(
                                 children: [
                                   Expanded(
@@ -634,11 +638,12 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                 : Consumer(builder: (context, ref, _) {
                     var _widget = LargeButton(
                         title: confirm,
-                        onPressed: frequency == "" || _mobileOperatorService == null
+                        onPressed: frequency == "" ||
+                                _mobileOperatorService == null
                             ? () {
-                          print("jjj");
-                          print(frequency);
-                          print(_mobileOperatorService);
+                                print("jjj");
+                                print(frequency);
+                                print(_mobileOperatorService);
                                 showErrorBar(context,
                                     "Please pick your Frequency or Plan");
                               }
@@ -664,13 +669,16 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                                           subCategory: billerData!.name!,
                                           frequency: frequency,
                                           customerId: contactController.text,
-                                          amount:
-                                          _mobileOperatorService!.servicePrice!.toString(),
-                                          paymentCode: _mobileOperatorService!.mobileOperatorId!
+                                          amount: _mobileOperatorService!
+                                              .servicePrice!
+                                              .toString(),
+                                          paymentCode: _mobileOperatorService!
+                                              .mobileOperatorId!
                                               .toString(),
                                           transactionPin: result,
-                                          serviceId:
-                                          _mobileOperatorService!.serviceId.toString(),
+                                          serviceId: _mobileOperatorService!
+                                              .serviceId
+                                              .toString(),
                                           then: () => pushTo(
                                                 context,
                                                 SuccessMessage(
@@ -721,8 +729,8 @@ class _ScheduleDataTopUpState extends ConsumerState<ScheduleDataTopUp>
                               isCard: false,
                               isFundCard: false,
                               doSchedule: () {
-                                showSuccessBar(
-                                    context, "Auto top-up successfully created");
+                                showSuccessBar(context,
+                                    "Auto top-up successfully created");
                               },
                             ),
                           );

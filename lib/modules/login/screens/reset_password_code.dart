@@ -61,7 +61,9 @@ class _ResetPasswordCodeState extends ConsumerState<ResetPasswordCode> {
                 height: kPadding,
               ),
               Text(
-                (widget.isChangePhone! || widget.isChangePassword! || widget.forgot!)
+                (widget.isChangePhone! ||
+                        widget.isChangePassword! ||
+                        widget.forgot!)
                     ? "Enter The 6 Digit Code We Sent To Your Email."
                     : verifySub,
                 style: textTheme.bodyText1!.copyWith(
@@ -171,9 +173,11 @@ class _ResetPasswordCodeState extends ConsumerState<ResetPasswordCode> {
                                       name: ChangePhoneNumber.routeName),
                                 )
                               : widget.isForgotPin!
-                                  ? pushTo(context, CreatePin(
-                            isForgot: true,
-                          ),
+                                  ? pushTo(
+                                      context,
+                                      CreatePin(
+                                        isForgot: true,
+                                      ),
                                       settings: const RouteSettings(
                                           name: CreatePin.routeName))
                                   : pushTo(

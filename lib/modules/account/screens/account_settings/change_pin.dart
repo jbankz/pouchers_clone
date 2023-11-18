@@ -27,7 +27,7 @@ class ChangeTransactionPin extends StatefulWidget {
   State<ChangeTransactionPin> createState() => _ChangeTransactionPinState();
 }
 
-class _ChangeTransactionPinState extends State<ChangeTransactionPin>{
+class _ChangeTransactionPinState extends State<ChangeTransactionPin> {
   bool obscure = true;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _password;
@@ -86,11 +86,11 @@ class _ChangeTransactionPinState extends State<ChangeTransactionPin>{
                           },
                           child: obscure
                               ? Icon(
-                            Icons.visibility_outlined,
-                            color: kSecondaryTextColor,
-                          )
+                                  Icons.visibility_outlined,
+                                  color: kSecondaryTextColor,
+                                )
                               : Icon(Icons.visibility_off_outlined,
-                              color: kSecondaryTextColor)),
+                                  color: kSecondaryTextColor)),
                     ),
                   ],
                 ),
@@ -113,9 +113,10 @@ class _ChangeTransactionPinState extends State<ChangeTransactionPin>{
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         ref.read(logInProvider.notifier).logIn(
-                            phoneNumber: userProfile.email!.trim(),
-                            password: _password!.trim(),
-                            isEmail: true,  );
+                              phoneNumber: userProfile.email!.trim(),
+                              password: _password!.trim(),
+                              isEmail: true,
+                            );
                       }
                     },
                   );

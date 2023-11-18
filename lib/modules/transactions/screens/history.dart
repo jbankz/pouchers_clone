@@ -271,9 +271,11 @@ class _HistoryState extends ConsumerState<History> {
                                       pushTo(
                                           context,
                                           TransactionReceipt(
-                                            transactionFee:double.parse( transactionData[index].transactionFee!),
+                                              transactionFee: double.parse(
+                                                  transactionData[index]
+                                                      .transactionFee!),
                                               typeOfTransfer: "localBank",
-                                              accNo:transactionData[index]
+                                              accNo: transactionData[index]
                                                   .extraDetails!
                                                   .receiverAccountNumber,
                                               fromWhere: "history",
@@ -297,16 +299,16 @@ class _HistoryState extends ConsumerState<History> {
                                                       .transactionType,
                                               amount:
                                                   transactionData[index].amount,
-                                              transferName:transactionData[index]
-                                                  .extraDetails!
-                                              .bankName,
-                                              beneficiary:
+                                              transferName:
                                                   transactionData[index]
-                                                          .beneficiaryName ??
-                                                      "No name"),
+                                                      .extraDetails!
+                                                      .bankName,
+                                              beneficiary: transactionData[index]
+                                                      .beneficiaryName ??
+                                                  "No name"),
                                           settings: RouteSettings(
-                                              name: TransactionReceipt
-                                                  .routeName));
+                                              name:
+                                                  TransactionReceipt.routeName));
                                     } else {
                                       pushTo(
                                           context,

@@ -15,7 +15,7 @@ class TransactionDate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding:
-      EdgeInsets.symmetric(horizontal: kSmallPadding, vertical: kPadding),
+          EdgeInsets.symmetric(horizontal: kSmallPadding, vertical: kPadding),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(kSmallPadding),
         border: Border.all(color: kSecondaryTextColor, width: 1),
@@ -31,9 +31,9 @@ class TransactionDate extends StatelessWidget {
 class TransactionDetails extends StatelessWidget {
   const TransactionDetails(
       {Key? key,
-        required this.textTheme,
-        required this.text,
-        required this.subText})
+      required this.textTheme,
+      required this.text,
+      required this.subText})
       : super(key: key);
 
   final TextTheme textTheme;
@@ -48,7 +48,6 @@ class TransactionDetails extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                
                 text,
                 style: textTheme.headline3!.copyWith(
                   fontWeight: FontWeight.w500,
@@ -74,18 +73,13 @@ class TransactionDetails extends StatelessWidget {
   }
 }
 
-
 class ShareTransactionReceiptOptions extends StatelessWidget {
   final String text;
   final Widget icon;
   final Function()? onTap;
-  const ShareTransactionReceiptOptions({
-    Key? key,
-    required this.text,
-    required this.icon,
-    this.onTap
-  }) : super(key: key);
-
+  const ShareTransactionReceiptOptions(
+      {Key? key, required this.text, required this.icon, this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -109,10 +103,11 @@ class ShareTransactionReceiptOptions extends StatelessWidget {
                 width: kSmallPadding,
               ),
               Text(
-                text, style: textTheme.headline2!.copyWith(
-                fontWeight: FontWeight.w500,
-                fontSize: 18,
-              ),
+                text,
+                style: textTheme.headline2!.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                ),
               )
             ],
           ),
@@ -121,7 +116,6 @@ class ShareTransactionReceiptOptions extends StatelessWidget {
     );
   }
 }
-
 
 class TransactionReceiptItems extends StatelessWidget {
   const TransactionReceiptItems(
@@ -154,9 +148,7 @@ class TransactionReceiptItems extends StatelessWidget {
             hasSymbol
                 ? NairaWidget(
                     text: subText,
-                    textStyle1: textTheme.subtitle1!.copyWith(
-                      fontFamily: ""
-                    ),
+                    textStyle1: textTheme.subtitle1!.copyWith(fontFamily: ""),
                     textStyle2: textTheme.subtitle1!.copyWith(
                       fontWeight: FontWeight.w500,
                       color: color ?? kPrimaryTextColor,
@@ -164,17 +156,17 @@ class TransactionReceiptItems extends StatelessWidget {
                     ),
                   )
                 : Flexible(
-                  child: Text(
+                    child: Text(
                       subText,
                       style: textTheme.subtitle1!.copyWith(
                         fontWeight: FontWeight.w500,
                         color: color ?? kPrimaryTextColor,
                         fontSize: 16,
                       ),
-              textAlign: TextAlign.right,
-              softWrap: true,
+                      textAlign: TextAlign.right,
+                      softWrap: true,
                     ),
-                ),
+                  ),
           ],
         ),
         SizedBox(
@@ -217,7 +209,8 @@ class MySeparator extends StatelessWidget {
   }
 }
 
-String changeCatNme(String name, String currency, String subCat, String beneficiary) {
+String changeCatNme(
+    String name, String currency, String subCat, String beneficiary) {
   String cat = "";
   switch (name) {
     case "airtime-purchase":
@@ -271,7 +264,8 @@ String changeCatNme(String name, String currency, String subCat, String benefici
     case "referral-bonus-payment":
       cat = "Referral Bonus ($beneficiary)";
       break;
-    default: cat = name;
+    default:
+      cat = name;
   }
   return cat;
 }

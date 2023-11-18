@@ -6,7 +6,6 @@ import 'package:Pouchers/utils/assets_path.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/strings.dart';
 
-
 class BiometricModal extends StatefulWidget {
   const BiometricModal({
     Key? key,
@@ -17,30 +16,22 @@ class BiometricModal extends StatefulWidget {
 }
 
 class _BiometricModalState extends State<BiometricModal> {
-
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return ListenerPage(
       child: Container(
-        padding: const EdgeInsets.only(
-            left: 20,
-            right: 20,
-            top: 10,
-            bottom: 20),
+        padding:
+            const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 20),
         decoration: BoxDecoration(
-            borderRadius:
-            const BorderRadius.only(
-              topLeft: Radius.circular(
-                  kMicroPadding),
-              topRight: Radius.circular(
-                  kMicroPadding),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(kMicroPadding),
+              topRight: Radius.circular(kMicroPadding),
             ),
             color: kPrimaryWhite),
         child: ListView(
           shrinkWrap: true,
-          physics:
-          NeverScrollableScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
           children: [
             Center(
               child: Container(
@@ -49,8 +40,7 @@ class _BiometricModalState extends State<BiometricModal> {
                 height: 5,
                 decoration: BoxDecoration(
                   color: kPurpleColor200,
-                  borderRadius:
-                  BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(4),
                 ),
               ),
             ),
@@ -66,12 +56,10 @@ class _BiometricModalState extends State<BiometricModal> {
                 shape: BoxShape.circle,
               ),
               child: Container(
-                padding: EdgeInsets.all(
-                    kMacroPadding),
+                padding: EdgeInsets.all(kMacroPadding),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: kPrimaryColor
-                        .withOpacity(
+                    color: kPrimaryColor.withOpacity(
                       0.2,
                     )),
                 child: Image.asset(
@@ -80,7 +68,8 @@ class _BiometricModalState extends State<BiometricModal> {
                       : AssetPaths.faceId,
                   color: kPrimaryColor,
                   fit: BoxFit.scaleDown,
-                  height: 75, width: 75,
+                  height: 75,
+                  width: 75,
                 ),
               ),
             ),
@@ -90,10 +79,7 @@ class _BiometricModalState extends State<BiometricModal> {
             Text(
               biometricLogin,
               style: textTheme.subtitle1!
-                  .copyWith(
-                  fontWeight:
-                  FontWeight.w500,
-                  fontSize: 20),
+                  .copyWith(fontWeight: FontWeight.w500, fontSize: 20),
               textAlign: TextAlign.center,
             ),
             SizedBox(
@@ -101,8 +87,7 @@ class _BiometricModalState extends State<BiometricModal> {
             ),
             Text(
               fingerprintSensor,
-              style:
-              textTheme.bodyText1!.copyWith(
+              style: textTheme.bodyText1!.copyWith(
                 color: kIconGrey,
               ),
               textAlign: TextAlign.center,

@@ -34,4 +34,7 @@ class ApiPath {
 
   /// Return users wallet
   static const String wallet = '$_apiVersionOne/payment/wallet';
+
+  /// Returns users tiers
+  static const String tiers = '$_apiVersionOne/user/tiers';
 }

@@ -307,7 +307,7 @@ class _SentRequestsState extends ConsumerState<SentRequests> {
                                             )}",
                                             style:
                                                 textTheme.headline2!.copyWith(
-                                                  fontFamily: "Altone",
+                                              fontFamily: "Altone",
                                               fontWeight: FontWeight.w500,
                                               fontSize: 14,
                                             ),
@@ -347,7 +347,7 @@ class _SentRequestsState extends ConsumerState<SentRequests> {
                                                   : request[index].status ==
                                                           "accepted"
                                                       ? Color(0xffE5F9F0)
-                                                      :  Color(0xffFFECE8)),
+                                                      : Color(0xffFFECE8)),
                                       child: Text(
                                         capitalize(request[index].status ?? ""),
                                         style: textTheme.headline4!.copyWith(
@@ -386,7 +386,7 @@ class _SentRequestsState extends ConsumerState<SentRequests> {
               }
             });
             return ref.watch(manageRequestProvider).when(
-                loading: () => loadNextPage  ? _widget : SpinKitDemo(),
+                loading: () => loadNextPage ? _widget : SpinKitDemo(),
                 done: (data) {
                   if (data != null) {
                     return _widget;
@@ -395,7 +395,6 @@ class _SentRequestsState extends ConsumerState<SentRequests> {
                 });
           }),
           loadNextPage ? SpinKitDemo() : SizedBox()
-
         ],
       ),
     );

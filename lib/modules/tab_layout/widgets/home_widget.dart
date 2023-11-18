@@ -71,7 +71,9 @@ class HomeModal extends StatelessWidget {
                     Navigator.pop(context);
                     pushTo(
                       context,
-                      TransferPoucherFriend(isRequestMoney: false,),
+                      TransferPoucherFriend(
+                        isRequestMoney: false,
+                      ),
                       settings: const RouteSettings(
                           name: TransferPoucherFriend.routeName),
                     );
@@ -170,5 +172,3 @@ class TransferRow extends StatelessWidget {
     );
   }
 }
-
-

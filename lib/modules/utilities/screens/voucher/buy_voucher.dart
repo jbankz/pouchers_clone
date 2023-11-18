@@ -86,8 +86,9 @@ class _BuyVouchersState extends ConsumerState<BuyVouchers> {
                             currentIndex = index;
                             amountController.text = buyVoucherList[index];
                           });
-                          amountController.selection = TextSelection.fromPosition(
-                              TextPosition(offset: amountController.text.length));
+                          amountController.selection =
+                              TextSelection.fromPosition(TextPosition(
+                                  offset: amountController.text.length));
                         },
                         child: Stack(
                           children: [
@@ -117,7 +118,8 @@ class _BuyVouchersState extends ConsumerState<BuyVouchers> {
                                             children: [
                                           TextSpan(
                                             text: buyVoucherList[index],
-                                            style: textTheme.bodyText1!.copyWith(
+                                            style:
+                                                textTheme.bodyText1!.copyWith(
                                               fontWeight: FontWeight.w500,
                                               color: currentIndex == index
                                                   ? kPrimaryColor
@@ -200,9 +202,13 @@ class _BuyVouchersState extends ConsumerState<BuyVouchers> {
                       if (amountController.text.isEmpty && currentIndex == -1) {
                         showErrorBar(context, "Please Input an amount");
                       } else {
-                        if (
-                        ref.watch(biometricProvider).isPaymentBiometricActive == null || !ref.watch(biometricProvider).isPaymentBiometricActive!
-                        ) {
+                        if (ref
+                                    .watch(biometricProvider)
+                                    .isPaymentBiometricActive ==
+                                null ||
+                            !ref
+                                .watch(biometricProvider)
+                                .isPaymentBiometricActive!) {
                           var result = await buildShowModalBottomSheet(
                               context,
                               TransactionPinContainer(
@@ -217,7 +223,8 @@ class _BuyVouchersState extends ConsumerState<BuyVouchers> {
                                 transactionPin: result);
                           }
                         } else {
-                          if(cred?.transactionPin == null || cred?.transactionPin == ""){
+                          if (cred?.transactionPin == null ||
+                              cred?.transactionPin == "") {
                             var result = await buildShowModalBottomSheet(
                                 context,
                                 TransactionPinContainer(
@@ -231,8 +238,8 @@ class _BuyVouchersState extends ConsumerState<BuyVouchers> {
                                   amount: amountController.text,
                                   transactionPin: result);
                             }
-                          }else
-                          checkBiometric(context);
+                          } else
+                            checkBiometric(context);
                         }
                       }
                     },

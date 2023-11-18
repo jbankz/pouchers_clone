@@ -42,9 +42,9 @@ class _AccountSettingsState extends ConsumerState<AccountSettings> {
 
   checkFactor() async {
     await Hive.openBox(k2FACodeBox);
-    if(Hive.box(k2FACodeBox).get(k2FACode) == null){
+    if (Hive.box(k2FACodeBox).get(k2FACode) == null) {
       ref.read(authFactorProvider.notifier).state = userProfile.is2faActive!;
-    }else{
+    } else {
       isAuthDisabled = Hive.box(k2FACodeBox).get(k2FACode);
       isAuthDisabled == true
           ? ref.read(authFactorProvider.notifier).state = true

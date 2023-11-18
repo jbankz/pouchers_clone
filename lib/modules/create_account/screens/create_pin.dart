@@ -24,7 +24,8 @@ class CreatePin extends ConsumerStatefulWidget {
   static const String routeName = "createPin";
   final bool? fromLogin;
   final bool isForgot;
-  const CreatePin({Key? key, this.fromLogin = false, this.isForgot = false}) : super(key: key);
+  const CreatePin({Key? key, this.fromLogin = false, this.isForgot = false})
+      : super(key: key);
 
   @override
   ConsumerState<CreatePin> createState() => _CreatePinState();

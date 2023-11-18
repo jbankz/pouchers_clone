@@ -151,11 +151,9 @@ class _VoucherModalState extends State<VoucherModal> {
                                             element.code,
                                             style: textTheme.headline2!
                                                 .copyWith(
-                                                    fontWeight:
-                                                        FontWeight.w700,
+                                                    fontWeight: FontWeight.w700,
                                                     fontSize: 18,
-                                                    color: currentIndex !=
-                                                            index
+                                                    color: currentIndex != index
                                                         ? kSecondaryTextColor
                                                         : kPrimaryColor),
                                           ),
@@ -164,8 +162,7 @@ class _VoucherModalState extends State<VoucherModal> {
                                             text: TextSpan(
                                                 text: "₦",
                                                 style: TextStyle(
-                                                  fontWeight:
-                                                      FontWeight.normal,
+                                                  fontWeight: FontWeight.normal,
                                                   color: kColorGreen,
                                                   fontSize: 16,
                                                 ),
@@ -264,13 +261,14 @@ class VoucherSuccessful extends StatelessWidget {
           isGift || isRedeem
               ? Lottie.asset(AssetPaths.success, height: 200, width: 200)
               : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: kMicroPadding),
-                child: VoucherImage(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: kMicroPadding),
+                  child: VoucherImage(
                     amount: amount!,
                     available: false,
                     voucherCode: voucherCode!,
                   ),
-              ),
+                ),
           SizedBox(
             height: kLargePadding,
           ),
@@ -318,12 +316,12 @@ class VoucherSuccessful extends StatelessWidget {
 }
 
 class VoucherImage extends StatelessWidget {
-  const VoucherImage({
-    Key? key,
-    required this.amount,
-    required this.voucherCode,
-     this.available = true
-  }) : super(key: key);
+  const VoucherImage(
+      {Key? key,
+      required this.amount,
+      required this.voucherCode,
+      this.available = true})
+      : super(key: key);
 
   final String amount;
   final String voucherCode;
@@ -411,7 +409,9 @@ class VoucherImage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Column(
-                            crossAxisAlignment: available ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+                            crossAxisAlignment: available
+                                ? CrossAxisAlignment.center
+                                : CrossAxisAlignment.start,
                             children: [
                               Text(
                                 available ? "Available vouchers" : "Code",

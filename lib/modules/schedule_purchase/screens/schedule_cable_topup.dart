@@ -104,8 +104,7 @@ class _ScheduleCableTopUpState extends ConsumerState<ScheduleCableTopUp> {
                             .getUtilitiesType(
                                 merchantServiceId:
                                     utilitiesData!.operatorpublicid!,
-                            categoeyName: utilitiesData!.category!
-                        );
+                                categoeyName: utilitiesData!.category!);
                       }
                     },
                     child: Container(

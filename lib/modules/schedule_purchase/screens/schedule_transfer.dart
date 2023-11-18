@@ -84,7 +84,8 @@ class _ScheduleTransferState extends ConsumerState<ScheduleTransfer> {
                     children: [
                       Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: kRegularPadding, vertical: kMacroPadding),
+                            horizontal: kRegularPadding,
+                            vertical: kMacroPadding),
                         margin: EdgeInsets.only(top: kMacroPadding),
                         decoration: BoxDecoration(
                           color: kContainerColor,
@@ -189,8 +190,9 @@ class _ScheduleTransferState extends ConsumerState<ScheduleTransfer> {
                                     child: const Center(
                                       child: CircularProgressIndicator(
                                         strokeWidth: 2,
-                                        valueColor: AlwaysStoppedAnimation<Color>(
-                                            kPrimaryColor),
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                kPrimaryColor),
                                       ),
                                     ),
                                   ),
@@ -201,22 +203,26 @@ class _ScheduleTransferState extends ConsumerState<ScheduleTransfer> {
                                       color: kPrimaryColor,
                                     ),
                                     child: ref
-                                                .watch(editProfileInHouseProvider)
+                                                .watch(
+                                                    editProfileInHouseProvider)
                                                 .profilePicture !=
                                             null
                                         ? Image.network(
                                             ref
-                                                .watch(editProfileInHouseProvider)
+                                                .watch(
+                                                    editProfileInHouseProvider)
                                                 .profilePicture!,
                                             fit: BoxFit.fill,
-                                            loadingBuilder: (BuildContext context,
-                                                Widget child,
-                                                ImageChunkEvent?
-                                                    loadingProgress) {
+                                            loadingBuilder:
+                                                (BuildContext context,
+                                                    Widget child,
+                                                    ImageChunkEvent?
+                                                        loadingProgress) {
                                               if (loadingProgress == null)
                                                 return child;
                                               return Center(
-                                                child: CircularProgressIndicator(
+                                                child:
+                                                    CircularProgressIndicator(
                                                   value: loadingProgress
                                                               .expectedTotalBytes !=
                                                           null
@@ -369,7 +375,8 @@ class _ScheduleTransferState extends ConsumerState<ScheduleTransfer> {
                           .read(scheduleLocalProvider.notifier)
                           .scheduleLocalTransfer(
                             frequency: frequency.startsWith(RegExp("[0-9:\s]"))
-                                ? frequency.replaceAll(RegExp("[a-zA-Z:\s]"), "")
+                                ? frequency.replaceAll(
+                                    RegExp("[a-zA-Z:\s]"), "")
                                 : frequency,
                             scheduleId: widget.id,
                             status: "active",
@@ -379,13 +386,16 @@ class _ScheduleTransferState extends ConsumerState<ScheduleTransfer> {
                             transactionPin: result,
                           );
                     } else {
-                      ref.read(scheduleP2PProvider.notifier).scheduleP2PTransfer(
+                      ref
+                          .read(scheduleP2PProvider.notifier)
+                          .scheduleP2PTransfer(
                             category: "p2p-transfer",
                             subCategory: "none",
                             scheduleId: widget.id,
                             status: "active",
                             frequency: frequency.startsWith(RegExp("[0-9:\s]"))
-                                ? frequency.replaceAll(RegExp("[a-zA-Z:\s]"), "")
+                                ? frequency.replaceAll(
+                                    RegExp("[a-zA-Z:\s]"), "")
                                 : frequency,
                             tag: widget.tag ?? "",
                             amount: double.parse(widget.amount ?? "0"),

@@ -55,6 +55,8 @@ dependencies:
   hive: ^2.2.3
   pdf: ^3.8.4
 
+  hooks_riverpod: ^2.4.6
+
   # Util
   flutter_screenutil: ^5.9.0
 
@@ -149,6 +151,10 @@ analyzer:
     - custom_lint
 
 scripts:
+  clean: 
+    - flutter clean
+    - flutter pub get
+    - dart run build_runner build --delete-conflicting-outputs
   build: dart run build_runner build --delete-conflicting-outputs
   watch: dart run build_runner watch
   lint:  dart run custom_lint

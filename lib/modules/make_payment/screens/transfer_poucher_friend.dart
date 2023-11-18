@@ -123,7 +123,9 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                     ),
                                     children: [
                                       TextSpan(
-                                        text: ref.watch(getWalletProvider).data ==
+                                        text: ref
+                                                    .watch(getWalletProvider)
+                                                    .data ==
                                                 null
                                             ? "0.00"
                                             : kPriceFormatter(double.parse(ref
@@ -165,7 +167,8 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                               bottom: kSmallPadding),
                           decoration: BoxDecoration(
                               color: kPrimaryWhite,
-                              borderRadius: BorderRadius.circular(kSmallPadding)),
+                              borderRadius:
+                                  BorderRadius.circular(kSmallPadding)),
                           child: Column(
                             children: [
                               contactInfo["phoneNumber"] == null
@@ -182,11 +185,13 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                             widget.isRequestMoney!
                                                 ? " $selectRecipient"
                                                 : " $enterPoucherTag",
-                                            style: textTheme.subtitle1!.copyWith(
-                                                fontWeight: FontWeight.w500,
-                                                color: widget.isRequestMoney!
-                                                    ? kPrimaryTextColor
-                                                    : kIconGrey),
+                                            style: textTheme.subtitle1!
+                                                .copyWith(
+                                                    fontWeight: FontWeight.w500,
+                                                    color:
+                                                        widget.isRequestMoney!
+                                                            ? kPrimaryTextColor
+                                                            : kIconGrey),
                                           ),
                                         ),
                                         Container(
@@ -253,13 +258,10 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                                                 return Center(
                                                                   child:
                                                                       CircularProgressIndicator(
-                                                                    value: loadingProgress
-                                                                                .expectedTotalBytes !=
+                                                                    value: loadingProgress.expectedTotalBytes !=
                                                                             null
-                                                                        ? loadingProgress
-                                                                                .cumulativeBytesLoaded /
-                                                                            loadingProgress
-                                                                                .expectedTotalBytes!
+                                                                        ? loadingProgress.cumulativeBytesLoaded /
+                                                                            loadingProgress.expectedTotalBytes!
                                                                         : null,
                                                                   ),
                                                                 );
@@ -282,7 +284,8 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                         Expanded(
                                           child: Text(
                                             "${contactInfo["firstName"].toString().toTitleCase2()} ${contactInfo["lastName"].toString().toTitleCase2()}",
-                                            style: textTheme.headline4!.copyWith(
+                                            style:
+                                                textTheme.headline4!.copyWith(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 16,
                                             ),
@@ -423,7 +426,8 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                               : setState(() {
                                                   if (decimalPinPicked
                                                       .isNotEmpty) {
-                                                    decimalPinPicked.removeLast();
+                                                    decimalPinPicked
+                                                        .removeLast();
                                                     if (decimalPinPicked
                                                         .isEmpty) {
                                                       decimalText = "00";
@@ -447,10 +451,12 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                                   ? setState(() {
                                                       pinPicked.add(
                                                         int.parse(
-                                                            guestNumberDot[index]
+                                                            guestNumberDot[
+                                                                    index]
                                                                 .title),
                                                       );
-                                                      if (pinPicked.first == 0) {
+                                                      if (pinPicked.first ==
+                                                          0) {
                                                         pinPicked.removeAt(0);
                                                         wholeText = "0";
                                                       } else {
@@ -483,10 +489,11 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                           width: 35,
                                           child: Text(
                                             guestNumberDot[index].title,
-                                            style: textTheme.headline4!.copyWith(
-                                                color: kPrimaryWhite,
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 22),
+                                            style: textTheme.headline4!
+                                                .copyWith(
+                                                    color: kPrimaryWhite,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 22),
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
@@ -498,8 +505,8 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                       ),
                       Consumer(builder: (context, ref, _) {
                         widget.isRequestMoney!
-                            ? ref.listen(requestMoneyProvider,
-                                (previous, NotifierState<RequestResponse> next) {
+                            ? ref.listen(requestMoneyProvider, (previous,
+                                NotifierState<RequestResponse> next) {
                                 if (next.status == NotifierStatus.done) {
                                   pushTo(
                                       context,
@@ -507,9 +514,10 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                         isRequest: true,
                                         text: "tag",
                                       ));
-                                } else if (next.status == NotifierStatus.error) {
-                                  showErrorBar(
-                                      context, next.message ?? "Try Again Later");
+                                } else if (next.status ==
+                                    NotifierStatus.error) {
+                                  showErrorBar(context,
+                                      next.message ?? "Try Again Later");
                                 }
                               })
                             : ref.listen(p2pMoneyProvider,
@@ -525,18 +533,20 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                         tag: next.data!.data!.receiverTag ?? "",
                                         amount: "$wholeText.$decimalText",
                                         note: noteText,
-                                        transactionId: next.data!.data!.transactionId,
+                                        transactionId:
+                                            next.data!.data!.transactionId,
                                         senderName: next.data!.data!.senderName,
                                         status: next.data!.data!.status,
                                         beneficiary:
                                             "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["firstName"]!.substring(1).toLowerCase()} ${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(1).toLowerCase()}",
                                       ));
-                                } else if (next.status == NotifierStatus.error) {
+                                } else if (next.status ==
+                                    NotifierStatus.error) {
                                   print(
                                       "${contactInfo["firstName"]!.substring(0, 1).toUpperCase()}${contactInfo["firstName"]!.substring(1).toLowerCase()}${contactInfo["lastName"]!.substring(0, 1).toUpperCase()}${contactInfo["lastName"]!.substring(1).toLowerCase()}");
 
-                                  showErrorBar(
-                                      context, next.message ?? "Try Again Later");
+                                  showErrorBar(context,
+                                      next.message ?? "Try Again Later");
                                 }
                               });
                         var _widget = LargeButton(
@@ -551,12 +561,13 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                               showErrorBar(context,
                                   "Please choose a user to request from");
                             else if ((double.parse(wholeText) >
-                                double.parse(ref
-                                        .watch(getWalletProvider)
-                                        .data!
-                                        .data!
-                                        .balance ??
-                                    "0" )) && !widget.isRequestMoney!){
+                                    double.parse(ref
+                                            .watch(getWalletProvider)
+                                            .data!
+                                            .data!
+                                            .balance ??
+                                        "0")) &&
+                                !widget.isRequestMoney!) {
                               showErrorBar(context, insufficient);
                             } else
                               buildShowModalBottomSheet(
@@ -586,15 +597,15 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                             ),
                                             TextSpan(
                                                 text: " to ",
-                                                style:
-                                                    textTheme.headline3!.copyWith(
+                                                style: textTheme.headline3!
+                                                    .copyWith(
                                                   color: kIconGrey,
                                                 )),
                                             TextSpan(
                                                 text:
                                                     "${contactInfo["firstName"].toString().toTitleCase2()} ${contactInfo["lastName"].toString().toTitleCase2()}",
-                                                style:
-                                                    textTheme.headline4!.copyWith(
+                                                style: textTheme.headline4!
+                                                    .copyWith(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500,
                                                 )),
@@ -613,9 +624,13 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                           note: noteText,
                                         );
                                   else {
-                                    if (
-                                    ref.watch(biometricProvider).isPaymentBiometricActive == null || !ref.watch(biometricProvider).isPaymentBiometricActive!
-                                    ) {
+                                    if (ref
+                                                .watch(biometricProvider)
+                                                .isPaymentBiometricActive ==
+                                            null ||
+                                        !ref
+                                            .watch(biometricProvider)
+                                            .isPaymentBiometricActive!) {
                                       final result =
                                           await buildShowModalBottomSheet(
                                               context,
@@ -630,12 +645,14 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                             .read(p2pMoneyProvider.notifier)
                                             .p2pMoney(
                                                 tag: contactInfo["tag"],
-                                                amount: "$wholeText.$decimalText",
+                                                amount:
+                                                    "$wholeText.$decimalText",
                                                 note: noteText,
                                                 transactionPin: result);
                                       }
                                     } else {
-                                      if(cred?.transactionPin == null || cred?.transactionPin == "") {
+                                      if (cred?.transactionPin == null ||
+                                          cred?.transactionPin == "") {
                                         final result =
                                             await buildShowModalBottomSheet(
                                                 context,
@@ -657,7 +674,6 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                         }
                                       } else
                                         checkBiometric(context);
-
                                     }
                                   }
                                 }
@@ -667,11 +683,13 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                         return widget.isRequestMoney!
                             ? ref.watch(requestMoneyProvider).when(
                                 done: (val) => _widget,
-                                loading: () => SpinKitDemo(color: kPrimaryWhite),
+                                loading: () =>
+                                    SpinKitDemo(color: kPrimaryWhite),
                                 error: (val) => _widget)
                             : ref.watch(p2pMoneyProvider).when(
                                 done: (val) => _widget,
-                                loading: () => SpinKitDemo(color: kPrimaryWhite),
+                                loading: () =>
+                                    SpinKitDemo(color: kPrimaryWhite),
                                 error: (val) => _widget);
                       }),
                       SizedBox(
@@ -705,7 +723,8 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
                                     });
                                     noteController.selection =
                                         TextSelection.fromPosition(TextPosition(
-                                            offset: noteController.text.length));
+                                            offset:
+                                                noteController.text.length));
                                   },
                                   child: Container(
                                       child: Text(e),

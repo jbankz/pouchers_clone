@@ -1,4 +1,3 @@
-
 class TierListResponse {
   String? status;
   String? message;
@@ -12,19 +11,24 @@ class TierListResponse {
     required this.data,
   });
 
-  factory TierListResponse.fromJson(Map<String, dynamic> json) => TierListResponse(
-    status: json["status"],
-    message: json["message"],
-    code: json["code"],
-    data: json["data"] == null ? [] : List<TierListResponseData>.from(json["data"]!.map((x) => TierListResponseData.fromJson(x))),
-  );
+  factory TierListResponse.fromJson(Map<String, dynamic> json) =>
+      TierListResponse(
+        status: json["status"],
+        message: json["message"],
+        code: json["code"],
+        data: json["data"] == null
+            ? []
+            : List<TierListResponseData>.from(
+                json["data"]!.map((x) => TierListResponseData.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "code": code,
-    "data": data == null ? [] : List<dynamic>.from(data.map((x) => x.toJson())),
-  };
+        "status": status,
+        "message": message,
+        "code": code,
+        "data":
+            data == null ? [] : List<dynamic>.from(data.map((x) => x.toJson())),
+      };
 }
 
 class TierListResponseData {
@@ -38,20 +42,21 @@ class TierListResponseData {
     this.updatedAt,
   });
 
-  factory TierListResponseData.fromJson(Map<String, dynamic> json) => TierListResponseData(
-    name: json["name"],
-    value: json["value"],
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-  );
+  factory TierListResponseData.fromJson(Map<String, dynamic> json) =>
+      TierListResponseData(
+        name: json["name"],
+        value: json["value"],
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "value": value,
-    "updated_at": updatedAt?.toIso8601String(),
-  };
+        "name": name,
+        "value": value,
+        "updated_at": updatedAt?.toIso8601String(),
+      };
 }
-
-
 
 // class TierListResponse {
 //   TierListResponse({
@@ -124,4 +129,3 @@ class TierListResponseData {
 //     "maxBalance": maxBalance,
 //   };
 // }
-

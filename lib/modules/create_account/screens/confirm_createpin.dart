@@ -65,10 +65,10 @@ class _ConfirmCreatePinState extends ConsumerState<ConfirmCreatePin> {
             ),
             Consumer(builder: (context, ref, _) {
               ref.listen(createPinProvider,
-                  (previous, NotifierState<TagResponse> next) async{
+                  (previous, NotifierState<TagResponse> next) async {
                 if (next.status == NotifierStatus.done) {
                   await saveUserCredential(
-                      transactionPin: pinPicked.join(""),
+                    transactionPin: pinPicked.join(""),
                   );
                   widget.isForgot
                       ? pushTo(

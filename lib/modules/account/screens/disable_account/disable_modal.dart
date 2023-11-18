@@ -63,35 +63,35 @@ class CommonModal extends StatelessWidget {
               SizedBox(
                 height: kLargePadding,
               ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              inkWell(
-                onTap: () => Navigator.pop(context, "no"),
-                child: Text(
-                  cancel,
-                  style: textTheme.bodyText1!.copyWith(
-                    fontWeight: FontWeight.w700,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  inkWell(
+                    onTap: () => Navigator.pop(context, "no"),
+                    child: Text(
+                      cancel,
+                      style: textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(
-                width: kMacroPadding,
-              ),
-              inkWell(
-                onTap: () =>  Navigator.pop(context, "yes"),
-                child: Text(
-                  buttonText,
-                  style: textTheme.bodyText1!.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: color,
+                  SizedBox(
+                    width: kMacroPadding,
                   ),
-                  textAlign: TextAlign.center,
-                ),
+                  inkWell(
+                    onTap: () => Navigator.pop(context, "yes"),
+                    child: Text(
+                      buttonText,
+                      style: textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: color,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                ],
               )
-            ],
-          )
             ],
           ),
         ),

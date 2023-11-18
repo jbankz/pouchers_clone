@@ -1,6 +1,4 @@
-
 class LivenessCheckResponse {
-
   LivenessCheckResponse({
     this.status,
     this.selfieUrl,
@@ -13,26 +11,23 @@ class LivenessCheckResponse {
   final int? verificationId;
   final String? verificationUrl;
 
-
-
-  factory LivenessCheckResponse.fromJson(Map<String, dynamic> json) => LivenessCheckResponse(
-    status: json["status"],
-    selfieUrl: json["selfieUrl"],
-    verificationId: json["verificationId"],
-    verificationUrl: json["verificationUrl"]
-  );
+  factory LivenessCheckResponse.fromJson(Map<String, dynamic> json) =>
+      LivenessCheckResponse(
+          status: json["status"],
+          selfieUrl: json["selfieUrl"],
+          verificationId: json["verificationId"],
+          verificationUrl: json["verificationUrl"]);
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "selfieUrl": selfieUrl,
-    "verificationId": verificationId,
-    "verificationUrl": verificationUrl,
-  };
-
+        "status": status,
+        "selfieUrl": selfieUrl,
+        "verificationId": verificationId,
+        "verificationUrl": verificationUrl,
+      };
 
   @override
-  List<Object?> get props => [status, selfieUrl, verificationId, verificationUrl];
-
+  List<Object?> get props =>
+      [status, selfieUrl, verificationId, verificationUrl];
 }
 
 class IdCheckResponse {
@@ -41,20 +36,23 @@ class IdCheckResponse {
   final String? dateIssued;
   final String? expiryDate;
 
-  factory IdCheckResponse.fromJson(Map<String, dynamic> json) => IdCheckResponse(
-      documentType: json["document_type"],
-      documentNumber: json["document_number"],
-      dateIssued: json["date_issued"],
-      expiryDate: json["expiry_date"]
-  );
+  factory IdCheckResponse.fromJson(Map<String, dynamic> json) =>
+      IdCheckResponse(
+          documentType: json["document_type"],
+          documentNumber: json["document_number"],
+          dateIssued: json["date_issued"],
+          expiryDate: json["expiry_date"]);
 
   Map<String, dynamic> toJson() => {
-    "document_type": documentType,
-    "document_number": documentNumber,
-    "date_issued": dateIssued,
-    "expiry_date": expiryDate,
-  };
+        "document_type": documentType,
+        "document_number": documentNumber,
+        "date_issued": dateIssued,
+        "expiry_date": expiryDate,
+      };
 
-  const IdCheckResponse({this.documentType, this.documentNumber, this.dateIssued, this.expiryDate});
-
+  const IdCheckResponse(
+      {this.documentType,
+      this.documentNumber,
+      this.dateIssued,
+      this.expiryDate});
 }

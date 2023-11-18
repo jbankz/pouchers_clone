@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -29,7 +30,8 @@ class AccountVerificationStatus extends ConsumerStatefulWidget {
 
 class _AccountVerificationStatusState
     extends ConsumerState<AccountVerificationStatus> {
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  final userProfile = userDao.returnUser(userDao.box);
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
   int? userTierLevel;
   int? hiveTierLevel;
 

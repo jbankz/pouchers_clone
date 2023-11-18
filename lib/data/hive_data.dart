@@ -4,5 +4,4 @@ import 'package:Pouchers/utils/strings.dart';
 
 Future<void> cacheUserProfile(HiveStoreResponseData userProfile) async {
   await Hive.box(kUserBox).put(kUserInfoKey, userProfile);
-
 }

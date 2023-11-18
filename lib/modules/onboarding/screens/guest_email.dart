@@ -127,41 +127,36 @@ class _GetGuestEmailState extends State<GetGuestEmail> {
                   pushTo(
                     context,
                     BuyAirtime(
-                      isGuest: true,
-                      name: nameController.text,
-                      email: controller.text
-                    ),
+                        isGuest: true,
+                        name: nameController.text,
+                        email: controller.text),
                     settings: const RouteSettings(name: BuyAirtime.routeName),
                   );
                 } else if (widget.name == BuyData.routeName) {
                   pushTo(
                     context,
                     BuyData(
-                      isGuest: true,
+                        isGuest: true,
                         name: nameController.text,
-                        email: controller.text
-                    ),
+                        email: controller.text),
                     settings: const RouteSettings(name: BuyData.routeName),
                   );
-                }
-                else if (widget.name == BuyCable.routeName) {
+                } else if (widget.name == BuyCable.routeName) {
                   pushTo(
                     context,
                     BuyCable(
-                      isGuest: true,
+                        isGuest: true,
                         name: nameController.text,
-                        email: controller.text
-                    ),
+                        email: controller.text),
                     settings: const RouteSettings(name: BuyCable.routeName),
                   );
                 } else if (widget.name == BuyElectricity.routeName) {
                   pushTo(
                     context,
                     BuyElectricity(
-                      isGuest: true,
+                        isGuest: true,
                         name: nameController.text,
-                        email: controller.text
-                    ),
+                        email: controller.text),
                     settings:
                         const RouteSettings(name: BuyElectricity.routeName),
                   );
@@ -169,10 +164,9 @@ class _GetGuestEmailState extends State<GetGuestEmail> {
                   pushTo(
                     context,
                     BuyInternet(
-                      isGuest: true,
+                        isGuest: true,
                         name: nameController.text,
-                        email: controller.text
-                    ),
+                        email: controller.text),
                     settings: const RouteSettings(name: BuyInternet.routeName),
                   );
                 } else if (widget.name == Betting.routeName) {

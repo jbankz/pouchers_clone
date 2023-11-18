@@ -33,8 +33,7 @@ final deleteScheduleProvider = StateNotifierProvider.autoDispose<
   return DeleteScheduleNotifier(ref.read(scheduleRepoProvider));
 });
 
-class ScheduleP2PNotifier extends StateNotifier<NotifierState<String>>
-     {
+class ScheduleP2PNotifier extends StateNotifier<NotifierState<String>> {
   final ScheduleRepository _repo;
 
   ScheduleP2PNotifier(this._repo) : super(NotifierState());
@@ -68,8 +67,7 @@ class ScheduleP2PNotifier extends StateNotifier<NotifierState<String>>
   }
 }
 
-class ScheduleUtilityNotifier extends StateNotifier<NotifierState<String>>
-    {
+class ScheduleUtilityNotifier extends StateNotifier<NotifierState<String>> {
   final ScheduleRepository _repo;
 
   ScheduleUtilityNotifier(this._repo) : super(NotifierState());
@@ -104,22 +102,20 @@ class ScheduleUtilityNotifier extends StateNotifier<NotifierState<String>>
   }
 }
 
-class ScheduleLocalNotifier extends StateNotifier<NotifierState<String>>
-     {
+class ScheduleLocalNotifier extends StateNotifier<NotifierState<String>> {
   final ScheduleRepository _repo;
 
   ScheduleLocalNotifier(this._repo) : super(NotifierState());
 
-  void scheduleLocalTransfer({
-    Function()? then,
-    required String frequency,
-    required String accountNumber,
-    required String bankName,
-    required double amount,
-    required String transactionPin,
-    String? status,
-    String? scheduleId
-  }) async {
+  void scheduleLocalTransfer(
+      {Function()? then,
+      required String frequency,
+      required String accountNumber,
+      required String bankName,
+      required double amount,
+      required String transactionPin,
+      String? status,
+      String? scheduleId}) async {
     state = notifyLoading();
     state = await _repo.scheduleLocalTransfer(
         frequency: frequency,
@@ -136,8 +132,7 @@ class ScheduleLocalNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class GetScheduleNotifier
-    extends StateNotifier<NotifierState<GetAllScheduleResponse>>
-   {
+    extends StateNotifier<NotifierState<GetAllScheduleResponse>> {
   final ScheduleRepository _repo;
 
   GetScheduleNotifier(this._repo) : super(NotifierState());
@@ -154,17 +149,18 @@ class GetScheduleNotifier
   }
 }
 
-class EditScheduleNotifier extends StateNotifier<NotifierState<String>>
-     {
+class EditScheduleNotifier extends StateNotifier<NotifierState<String>> {
   final ScheduleRepository _repo;
 
   EditScheduleNotifier(this._repo) : super(NotifierState());
 
   void editSchedule(
-      {Function()? then, Function(String)? error,
+      {Function()? then,
+      Function(String)? error,
       required String frequency,
       required String transactionPin,
-      required String scheduleId, required String status}) async {
+      required String scheduleId,
+      required String status}) async {
     state = notifyLoading();
     state = await _repo.editSchedule(
         frequency: frequency,
@@ -179,21 +175,20 @@ class EditScheduleNotifier extends StateNotifier<NotifierState<String>>
   }
 }
 
-class DeleteScheduleNotifier extends StateNotifier<NotifierState<String>>
-    {
+class DeleteScheduleNotifier extends StateNotifier<NotifierState<String>> {
   final ScheduleRepository _repo;
 
   DeleteScheduleNotifier(this._repo) : super(NotifierState());
 
-  void deleteSchedule(
-      {Function()? then, Function(String)? error,
-        required String transactionPin,
-        required String scheduleId,}) async {
+  void deleteSchedule({
+    Function()? then,
+    Function(String)? error,
+    required String transactionPin,
+    required String scheduleId,
+  }) async {
     state = notifyLoading();
     state = await _repo.deleteSchedule(
-
-        transactionPin: transactionPin,
-        scheduleId: scheduleId);
+        transactionPin: transactionPin, scheduleId: scheduleId);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     } else if (state.status == NotifierStatus.error) {
@@ -201,5 +196,3 @@ class DeleteScheduleNotifier extends StateNotifier<NotifierState<String>>
     }
   }
 }
-
-

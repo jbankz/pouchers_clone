@@ -1,5 +1,6 @@
 import 'package:Pouchers/data/fcmtoken.dart';
 import 'package:Pouchers/modules/account/providers/account_provider.dart';
+import 'package:Pouchers/ui/features/dashboard/views/account/views/account_view.dart';
 import 'package:Pouchers/utils/logger.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -43,11 +44,11 @@ class _TabLayoutState extends ConsumerState<TabLayout> with ResponseHandler {
   }
 
   List<Widget> items = [
-    HomePage(),
+    const HomePage(),
     //CardHome(),
-    CreateCard(),
-    Transactions(),
-    ProfilePage(),
+    const CreateCard(),
+    const Transactions(),
+    const AccountView(),
   ];
 
   void checkActivityTime() {}
@@ -87,58 +88,57 @@ class _TabLayoutState extends ConsumerState<TabLayout> with ResponseHandler {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return
-      // AppLifeCycleManager(
-      // child:
-      WillPopScope(
-          child: Scaffold(
-            body: SafeArea(
-              child: ListenerPage(
-                child: items[_selectedIndex],
-              ),
-            ),
-
-            bottomNavigationBar: BottomNavigationBar(
-              currentIndex: _selectedIndex,
-              onTap: _onItemTapped,
-              elevation: 0,
-              type: BottomNavigationBarType.fixed,
-              selectedFontSize: 12,
-              unselectedFontSize: 12,
-              selectedItemColor: kPrimaryColor,
-              unselectedItemColor: kDarkGrey,
-              unselectedLabelStyle: textTheme.headline2!
-                  .copyWith(fontWeight: FontWeight.w500, fontSize: 12),
-              selectedLabelStyle: textTheme.headline2!
-                  .copyWith(fontWeight: FontWeight.w500, fontSize: 12),
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: NavBarItem("nav_home.svg", false),
-                  activeIcon: NavBarItem("nav_home.svg", true),
-                  label: "Home",
-                ),
-                BottomNavigationBarItem(
-                  icon: NavBarItem("nav_card.svg", false),
-                  activeIcon: NavBarItem("nav_card.svg", true),
-                  label: "Cards",
-                ),
-                BottomNavigationBarItem(
-                  icon: NavBarItem("nav_swap.svg", false),
-                  activeIcon: NavBarItem("nav_swap.svg", true),
-                  label: "Transactions",
-                ),
-                BottomNavigationBarItem(
-                  icon: NavBarItem("nav_account.svg", false),
-                  activeIcon: NavBarItem("nav_account.svg", true),
-                  label: "Account",
-                )
-              ],
-            ),
+        // AppLifeCycleManager(
+        // child:
+        WillPopScope(
+      child: Scaffold(
+        body: SafeArea(
+          child: ListenerPage(
+            child: items[_selectedIndex],
           ),
-          onWillPop: _willPopCallback,
-        );
-      //);
-
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          elevation: 0,
+          type: BottomNavigationBarType.fixed,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          selectedItemColor: kPrimaryColor,
+          unselectedItemColor: kDarkGrey,
+          unselectedLabelStyle: textTheme.headline2!
+              .copyWith(fontWeight: FontWeight.w500, fontSize: 12),
+          selectedLabelStyle: textTheme.headline2!
+              .copyWith(fontWeight: FontWeight.w500, fontSize: 12),
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: NavBarItem("nav_home.svg", false),
+              activeIcon: NavBarItem("nav_home.svg", true),
+              label: "Home",
+            ),
+            BottomNavigationBarItem(
+              icon: NavBarItem("nav_card.svg", false),
+              activeIcon: NavBarItem("nav_card.svg", true),
+              label: "Cards",
+            ),
+            BottomNavigationBarItem(
+              icon: NavBarItem("nav_swap.svg", false),
+              activeIcon: NavBarItem("nav_swap.svg", true),
+              label: "Transactions",
+            ),
+            BottomNavigationBarItem(
+              icon: NavBarItem("nav_account.svg", false),
+              activeIcon: NavBarItem("nav_account.svg", true),
+              label: "Account",
+            )
+          ],
+        ),
+      ),
+      onWillPop: _willPopCallback,
+    );
+    //);
   }
+
   Future<void> _setupFCM() async {
     await FCManager.getInstance().requestPermission(
         alert: true,
@@ -165,18 +165,17 @@ class _TabLayoutState extends ConsumerState<TabLayout> with ResponseHandler {
     });
 
     FirebaseMessaging?.onBackgroundMessage(
-            (message) => myBackgroundMessageHandler(message.data));
+        (message) => myBackgroundMessageHandler(message.data));
 
     try {
       await FCManager.getInstance().getToken().then(
-            (String? token) {
+        (String? token) {
           assert(token != null);
           logPrint("tokehhghn$token");
-          ref.read(editProfileProvider.notifier).editProfile(
-              fcmToken: token);
+          ref.read(editProfileProvider.notifier).editProfile(fcmToken: token);
           //ref
-              // .read(sendFCMTokenProvider.notifier)
-              // .sendFCMToken(fcmToken: token!);
+          // .read(sendFCMTokenProvider.notifier)
+          // .sendFCMToken(fcmToken: token!);
         },
       );
     } catch (e, stack) {}
@@ -203,5 +202,4 @@ class _TabLayoutState extends ConsumerState<TabLayout> with ResponseHandler {
         background: kPrimaryColor,
         elevation: 0);
   }
-
 }

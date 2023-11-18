@@ -10,12 +10,8 @@ import 'package:Pouchers/utils/logger.dart';
 import 'package:http/http.dart' as http;
 
 class TransactionService {
-  static Future<ServiceResponse<GetTransactionsResponse>>
-      getTransactionHistory({
-    OrderHistoryStatus? status,
-    required String token,
-    int? page
-  }) async {
+  static Future<ServiceResponse<GetTransactionsResponse>> getTransactionHistory(
+      {OrderHistoryStatus? status, required String token, int? page}) async {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
@@ -59,7 +55,7 @@ class TransactionService {
   }
 
   static Future<ServiceResponse<TransactionAnalyticsResponse>>
-  getTransactionAnalytics({
+      getTransactionAnalytics({
     required String month,
     required String year,
     required String token,
@@ -70,7 +66,8 @@ class TransactionService {
       HttpHeaders.authorizationHeader: "Bearer $token"
     };
 
-    String url = "${baseUrl()}/user/transaction-analytics?month=$month&year=$year";
+    String url =
+        "${baseUrl()}/user/transaction-analytics?month=$month&year=$year";
 
     logPrint(url);
 

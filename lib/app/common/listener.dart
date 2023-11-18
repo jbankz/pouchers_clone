@@ -19,10 +19,8 @@ class _ListenerPageState extends State<ListenerPage> {
         if (nowDate.isBefore(whenTouchedDatetime)) {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (_) {
-                return LogInAccount(
-                    sessionTimeOut: true
-                );
-              }), (route) => false);
+            return LogInAccount(sessionTimeOut: true);
+          }), (route) => false);
 
           setState(() {
             nowDate = DateTime.now().add(Duration(minutes: 5));

@@ -264,6 +264,8 @@ ThemeData kThemeData = ThemeData.light().copyWith(
     dividerColor: kDarkGrey,
     primaryColor: kPrimaryColor,
     canvasColor: AppColors.white,
+    dividerTheme:
+        const DividerThemeData(color: AppColors.kLightPurple, thickness: 0.5),
     textSelectionTheme: const TextSelectionThemeData(
       selectionHandleColor: kColorGreen,
       cursorColor: kPrimaryColor,
@@ -326,9 +328,8 @@ ThemeData kThemeData = ThemeData.light().copyWith(
                     fontWeight: FontWeight.w700,
                     color: AppColors.white,
                     fontSize: 16)),
-            shape: MaterialStateProperty.resolveWith((states) =>
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r))),
+            shape: MaterialStateProperty.resolveWith((states) => RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r))),
             foregroundColor:
                 MaterialStateColor.resolveWith((states) => AppColors.white),
             side: MaterialStateBorderSide.resolveWith((states) {

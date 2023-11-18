@@ -124,7 +124,8 @@ class _ScheduleTopUpState extends ConsumerState<ScheduleAirtimeTopUp> {
                           if (provider != null) {
                             return Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: provider.data!
                                     .mapIndexed(
                                       (index, element) => inkWell(
@@ -137,8 +138,8 @@ class _ScheduleTopUpState extends ConsumerState<ScheduleAirtimeTopUp> {
                                         child: Stack(
                                           children: [
                                             Container(
-                                              padding:
-                                                  EdgeInsets.all(kRegularPadding),
+                                              padding: EdgeInsets.all(
+                                                  kRegularPadding),
                                               height: 70,
                                               width: 70,
                                               decoration: BoxDecoration(
@@ -157,10 +158,12 @@ class _ScheduleTopUpState extends ConsumerState<ScheduleAirtimeTopUp> {
                                                     child: Container(
                                                         padding:
                                                             EdgeInsets.all(3),
-                                                        decoration: BoxDecoration(
-                                                            color: kPurpleColor,
-                                                            shape:
-                                                                BoxShape.circle),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                color:
+                                                                    kPurpleColor,
+                                                                shape: BoxShape
+                                                                    .circle),
                                                         child: Icon(
                                                           Icons.check,
                                                           color: kPrimaryWhite,
@@ -371,8 +374,8 @@ class _ScheduleTopUpState extends ConsumerState<ScheduleAirtimeTopUp> {
                                       .scheduleUtility(
                                           category: "airtime-purchase",
                                           subCategory: billerData!.name!,
-                                          frequency: frequency
-                                                  .startsWith(RegExp("[0-9:\s]"))
+                                          frequency: frequency.startsWith(
+                                                  RegExp("[0-9:\s]"))
                                               ? frequency.replaceAll(
                                                   RegExp("[a-zA-Z:\s]"), "")
                                               : frequency,
@@ -433,13 +436,15 @@ class _ScheduleTopUpState extends ConsumerState<ScheduleAirtimeTopUp> {
                               isCard: false,
                               isFundCard: false,
                               doSchedule: () {
-                                showSuccessBar(
-                                    context, "Auto top-up successfully created");
+                                showSuccessBar(context,
+                                    "Auto top-up successfully created");
                               },
                             ),
                           );
                           if (result != null) {
-                            ref.read(deleteScheduleProvider.notifier).deleteSchedule(
+                            ref
+                                .read(deleteScheduleProvider.notifier)
+                                .deleteSchedule(
                                   scheduleId: widget.id!,
                                   transactionPin: result,
                                   error: (val) => showErrorBar(context, val),
@@ -447,7 +452,7 @@ class _ScheduleTopUpState extends ConsumerState<ScheduleAirtimeTopUp> {
                                     context,
                                     SuccessMessage(
                                       text: dataSuccess,
-                                      subText:  billDeleteSuccess ,
+                                      subText: billDeleteSuccess,
                                       onTap: () {
                                         Navigator.popUntil(
                                           context,

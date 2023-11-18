@@ -15,7 +15,7 @@ class CardsService {
       // required String city,
       // required String state,
       required String country,
-     // required String postalCode,
+      // required String postalCode,
       required String currency,
       required String bvn,
       required String brand,
@@ -308,5 +308,4 @@ class CardsService {
       return processServiceError<String>(error, stack);
     }
   }
-
 }

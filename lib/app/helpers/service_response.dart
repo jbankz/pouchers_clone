@@ -1,5 +1,3 @@
-
-
 import 'package:Pouchers/app/helpers/notifiers.dart';
 
 class ServiceRequest<T> {

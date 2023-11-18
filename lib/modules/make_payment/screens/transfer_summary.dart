@@ -18,7 +18,6 @@ import 'package:Pouchers/utils/widgets.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
 
-
 class TransferSummary extends ConsumerStatefulWidget {
   static const String routeName = "transferSummary";
   final String? transferName, accNo, amount, beneficiary;
@@ -38,8 +37,6 @@ class TransferSummary extends ConsumerStatefulWidget {
 }
 
 class _TransferSummaryState extends ConsumerState<TransferSummary> {
-
-
   bool? _canCheckBiometrics;
   bool isAuth = false;
   UserCredentials? cred;
@@ -137,7 +134,8 @@ class _TransferSummaryState extends ConsumerState<TransferSummary> {
                           AirtimeRow(
                             textTheme: textTheme,
                             text: total,
-                            subText: "${double.parse(widget.amount!) + widget.fee!.toDouble()}",
+                            subText:
+                                "${double.parse(widget.amount!) + widget.fee!.toDouble()}",
                             isCopyIcon: false,
                             noSymbol: false,
                             isNaira: true,
@@ -169,7 +167,8 @@ class _TransferSummaryState extends ConsumerState<TransferSummary> {
                               ),
                             ),
                             TextSpan(
-                                text: "${double.parse(widget.amount!) + widget.fee!.toDouble()}",
+                                text:
+                                    "${double.parse(widget.amount!) + widget.fee!.toDouble()}",
                                 style: textTheme.headline3!.copyWith(
                                     color: kPrimaryTextColor,
                                     fontWeight: FontWeight.bold)),
@@ -191,15 +190,16 @@ class _TransferSummaryState extends ConsumerState<TransferSummary> {
                         context,
                         TransferSuccess(
                           transactionId: next.data!.data!.transactionId,
-                            text: "bank",
-                            isRequest: false,
-                            typeOfTransfer: "localBank",
-                            amount: next.data!.data!.transactionAmount,
-                            accNo: next.data!.data!.receiverAccountNumber,
-                            senderName: next.data!.data!.senderName,
-                            transferName: widget.transferName,
-                            transactionFee: next.data!.data!.transactionFee,
-                            beneficiary: next.data!.data!.receiverName,));
+                          text: "bank",
+                          isRequest: false,
+                          typeOfTransfer: "localBank",
+                          amount: next.data!.data!.transactionAmount,
+                          accNo: next.data!.data!.receiverAccountNumber,
+                          senderName: next.data!.data!.senderName,
+                          transferName: widget.transferName,
+                          transactionFee: next.data!.data!.transactionFee,
+                          beneficiary: next.data!.data!.receiverName,
+                        ));
                   } else if (next.status == NotifierStatus.error) {
                     showErrorBar(context, next.message ?? "Error");
                   }
@@ -207,46 +207,53 @@ class _TransferSummaryState extends ConsumerState<TransferSummary> {
                 var _widget = LargeButton(
                     title: transfer.substring(0, 8),
                     onPressed: () async {
-    if ( ref.watch(biometricProvider).isPaymentBiometricActive == null || !ref.watch(biometricProvider).isPaymentBiometricActive!) {
-      final result = await buildShowModalBottomSheet(
-            context,
-            TransactionPinContainer(
-              isData: false,
-              isCard: false,
-              isFundCard: false,
-              isTransfer: true,
-            ));
-      if (result != null) {
-          ref
-              .read(localBankTransferProvider.notifier)
-              .localBankTransfer(
-              accountNumber: widget.accNo!,
-              bankName: widget.transferName!,
-              amount: widget.amount!,
-              transactionPin: result);
-      }
-    }else{
-      if(cred?.transactionPin == null || cred?.transactionPin == ""){
-        final result = await buildShowModalBottomSheet(
-            context,
-            TransactionPinContainer(
-              isData: false,
-              isCard: false,
-              isFundCard: false,
-              isTransfer: true,
-            ));
-        if (result != null) {
-          ref
-              .read(localBankTransferProvider.notifier)
-              .localBankTransfer(
-              accountNumber: widget.accNo!,
-              bankName: widget.transferName!,
-              amount: widget.amount!,
-              transactionPin: result);
-        }
-      }else checkBiometric(context);
-    }
-
+                      if (ref
+                                  .watch(biometricProvider)
+                                  .isPaymentBiometricActive ==
+                              null ||
+                          !ref
+                              .watch(biometricProvider)
+                              .isPaymentBiometricActive!) {
+                        final result = await buildShowModalBottomSheet(
+                            context,
+                            TransactionPinContainer(
+                              isData: false,
+                              isCard: false,
+                              isFundCard: false,
+                              isTransfer: true,
+                            ));
+                        if (result != null) {
+                          ref
+                              .read(localBankTransferProvider.notifier)
+                              .localBankTransfer(
+                                  accountNumber: widget.accNo!,
+                                  bankName: widget.transferName!,
+                                  amount: widget.amount!,
+                                  transactionPin: result);
+                        }
+                      } else {
+                        if (cred?.transactionPin == null ||
+                            cred?.transactionPin == "") {
+                          final result = await buildShowModalBottomSheet(
+                              context,
+                              TransactionPinContainer(
+                                isData: false,
+                                isCard: false,
+                                isFundCard: false,
+                                isTransfer: true,
+                              ));
+                          if (result != null) {
+                            ref
+                                .read(localBankTransferProvider.notifier)
+                                .localBankTransfer(
+                                    accountNumber: widget.accNo!,
+                                    bankName: widget.transferName!,
+                                    amount: widget.amount!,
+                                    transactionPin: result);
+                          }
+                        } else
+                          checkBiometric(context);
+                      }
                     });
                 return ref.watch(localBankTransferProvider).when(
                       done: (data) => _widget,
@@ -258,6 +265,7 @@ class _TransferSummaryState extends ConsumerState<TransferSummary> {
           ),
         ));
   }
+
   Future<void> checkBiometric(BuildContext context) async {
     final LocalAuthentication auth = LocalAuthentication();
     bool canCheckBiometrics = false;
@@ -309,15 +317,11 @@ class _TransferSummaryState extends ConsumerState<TransferSummary> {
       isAuth = authenticated ? true : false;
     });
     if (isAuth) {
-      ref
-          .read(localBankTransferProvider.notifier)
-          .localBankTransfer(
+      ref.read(localBankTransferProvider.notifier).localBankTransfer(
           accountNumber: widget.accNo!,
           bankName: widget.transferName!,
           amount: widget.amount!,
           transactionPin: cred!.transactionPin!);
-
     }
   }
-
 }

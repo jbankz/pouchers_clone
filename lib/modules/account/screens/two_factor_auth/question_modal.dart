@@ -5,13 +5,9 @@ import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/widgets.dart';
 
 class QuestionModal extends StatefulWidget {
+  final List<SecurityQuestionData> question;
 
- final List<SecurityQuestionData> question;
-
-  const QuestionModal({
-    Key? key,
-    required this.question
-  }) : super(key: key);
+  const QuestionModal({Key? key, required this.question}) : super(key: key);
 
   @override
   State<QuestionModal> createState() => _QuestionModalState();
@@ -93,15 +89,11 @@ class _QuestionModalState extends State<QuestionModal> {
   }
 }
 
-
 class QuestionStringModal extends StatefulWidget {
-
   final List<String> question;
 
-  const QuestionStringModal({
-    Key? key,
-    required this.question
-  }) : super(key: key);
+  const QuestionStringModal({Key? key, required this.question})
+      : super(key: key);
 
   @override
   State<QuestionStringModal> createState() => _QuestionStringModalState();
@@ -144,7 +136,7 @@ class _QuestionStringModalState extends State<QuestionStringModal> {
                 height: kMediumPadding,
               ),
               ...widget.question.map(
-                    (e) => Padding(
+                (e) => Padding(
                   padding: const EdgeInsets.only(bottom: kRegularPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

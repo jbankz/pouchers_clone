@@ -28,11 +28,8 @@ final resendEmailProvider = StateNotifierProvider.autoDispose<
   return ResendEmailNotifier(ref.read(createAccountRepoProvider));
 });
 
-
-
 class CreateAccountNotifier
-    extends StateNotifier<NotifierState<CreateAccountResponse>>
-     {
+    extends StateNotifier<NotifierState<CreateAccountResponse>> {
   final CreateAccountRepository _repo;
 
   CreateAccountNotifier(this._repo) : super(NotifierState());
@@ -59,8 +56,7 @@ class CreateAccountNotifier
 }
 
 class VerifyEmailNotifier
-    extends StateNotifier<NotifierState<VerifyEmailResponse>>
-     {
+    extends StateNotifier<NotifierState<VerifyEmailResponse>> {
   final CreateAccountRepository _repo;
 
   VerifyEmailNotifier(this._repo) : super(NotifierState());
@@ -74,8 +70,7 @@ class VerifyEmailNotifier
   }
 }
 
-class CreateTagNotifier extends StateNotifier<NotifierState<TagResponse>>
-   {
+class CreateTagNotifier extends StateNotifier<NotifierState<TagResponse>> {
   final CreateAccountRepository _repo;
 
   CreateTagNotifier(this._repo) : super(NotifierState());
@@ -89,8 +84,7 @@ class CreateTagNotifier extends StateNotifier<NotifierState<TagResponse>>
   }
 }
 
-class CreatePinNotifier extends StateNotifier<NotifierState<TagResponse>>
-     {
+class CreatePinNotifier extends StateNotifier<NotifierState<TagResponse>> {
   final CreateAccountRepository _repo;
 
   CreatePinNotifier(this._repo) : super(NotifierState());
@@ -104,10 +98,7 @@ class CreatePinNotifier extends StateNotifier<NotifierState<TagResponse>>
   }
 }
 
-
-
-class ResendEmailNotifier extends StateNotifier<NotifierState<String>>
-     {
+class ResendEmailNotifier extends StateNotifier<NotifierState<String>> {
   final CreateAccountRepository _repo;
 
   ResendEmailNotifier(this._repo) : super(NotifierState());

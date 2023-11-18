@@ -26,7 +26,6 @@ import '../../providers/utilities_provider.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
 
-
 class GiftVoucher extends ConsumerStatefulWidget {
   static const String routeName = "giftVoucher";
 
@@ -53,9 +52,6 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
   bool? _canCheckBiometrics;
   bool isAuth = false;
   UserCredentials? cred;
-
-
-
 
   @override
   void initState() {
@@ -115,8 +111,8 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
                       ),
                       Consumer(
                         builder: (context, ref, _) {
-                          ref.listen(fetchVoucherProvider,
-                              (previous, NotifierState<GetVoucherResponse> next) {
+                          ref.listen(fetchVoucherProvider, (previous,
+                              NotifierState<GetVoucherResponse> next) {
                             if (next.status == NotifierStatus.done) {
                               next.data!.data!.vouchers.forEach((element) {
                                 activeVouchers.add(element);
@@ -241,8 +237,9 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
               TextInputNoIcon(
                 textTheme: textTheme,
                 widget: SizedBox(),
-                hintText:
-                    _voucherType == onlyEmailText ? enterEmail : enterPoucherTag,
+                hintText: _voucherType == onlyEmailText
+                    ? enterEmail
+                    : enterPoucherTag,
                 controller: giftController,
                 suffixIcon: ref.watch(getContactByPoucherTagProvider).when(
                     done: (done) {
@@ -350,7 +347,8 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
                                                 child: Text(
                                                     "${done["firstName"]!.substring(0, 1).toUpperCase()}${done["lastName"]!.substring(0, 1).toUpperCase()}",
                                                     style: textTheme.bodyText2!
-                                                        .copyWith(fontSize: 22)),
+                                                        .copyWith(
+                                                            fontSize: 22)),
                                               ),
                                   ),
                                 ),
@@ -409,7 +407,13 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
                           showErrorBar(context, "Please select a voucher code");
                         } else {
                           if (giftController.text.isNotEmpty) {
-                            if (ref.watch(biometricProvider).isPaymentBiometricActive == null || !ref.watch(biometricProvider).isPaymentBiometricActive!) {
+                            if (ref
+                                        .watch(biometricProvider)
+                                        .isPaymentBiometricActive ==
+                                    null ||
+                                !ref
+                                    .watch(biometricProvider)
+                                    .isPaymentBiometricActive!) {
                               var result = await buildShowModalBottomSheet(
                                 context,
                                 TransactionPinContainer(
@@ -433,7 +437,8 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
                                         code: _value.code);
                               }
                             } else {
-                              if(cred?.transactionPin == null || cred?.transactionPin == ""){
+                              if (cred?.transactionPin == null ||
+                                  cred?.transactionPin == "") {
                                 var result = await buildShowModalBottomSheet(
                                   context,
                                   TransactionPinContainer(
@@ -447,17 +452,17 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
                                   ref
                                       .read(giftVoucherProvider.notifier)
                                       .giftVoucher(
-                                      email: _voucherType == onlyEmailText
-                                          ? giftController.text
-                                          : "",
-                                      tag: _voucherType == poucherTag
-                                          ? giftController.text
-                                          : "",
-                                      transactionPin: result,
-                                      code: _value.code);
+                                          email: _voucherType == onlyEmailText
+                                              ? giftController.text
+                                              : "",
+                                          tag: _voucherType == poucherTag
+                                              ? giftController.text
+                                              : "",
+                                          transactionPin: result,
+                                          code: _value.code);
                                 }
-                              }
-                             else checkBiometric(context);
+                              } else
+                                checkBiometric(context);
                             }
                           } else {
                             showErrorBar(
@@ -483,11 +488,15 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
                 height: kPadding,
               ),
               inkWell(
-                onTap: _value.code == "#12345647" ? (){
-                  showErrorBar(context, "Please select a voucher code to gift");
-                } : (){
-                  Share.share("You’ve been gifted a voucher- ${_value.code}");
-                },
+                onTap: _value.code == "#12345647"
+                    ? () {
+                        showErrorBar(
+                            context, "Please select a voucher code to gift");
+                      }
+                    : () {
+                        Share.share(
+                            "You’ve been gifted a voucher- ${_value.code}");
+                      },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -509,6 +518,7 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
       ),
     );
   }
+
   Future<void> checkBiometric(BuildContext context) async {
     final LocalAuthentication auth = LocalAuthentication();
     bool canCheckBiometrics = false;
@@ -560,19 +570,11 @@ class _GiftVoucherState extends ConsumerState<GiftVoucher> {
       isAuth = authenticated ? true : false;
     });
     if (isAuth) {
-      ref
-          .read(giftVoucherProvider.notifier)
-          .giftVoucher(
-          email: _voucherType == onlyEmailText
-              ? giftController.text
-              : "",
-          tag: _voucherType == poucherTag
-              ? giftController.text
-              : "",
+      ref.read(giftVoucherProvider.notifier).giftVoucher(
+          email: _voucherType == onlyEmailText ? giftController.text : "",
+          tag: _voucherType == poucherTag ? giftController.text : "",
           transactionPin: cred!.transactionPin!,
           code: _value.code);
-
     }
   }
-
 }

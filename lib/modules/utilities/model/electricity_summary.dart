@@ -1,4 +1,3 @@
-
 import 'package:Pouchers/app/common/credentials.dart';
 import 'package:Pouchers/app/common/model.dart';
 import 'package:Pouchers/app/helpers/session_manager.dart';
@@ -28,20 +27,20 @@ import 'package:local_auth_ios/local_auth_ios.dart';
 class ElectricitySummary extends ConsumerStatefulWidget {
   const ElectricitySummary(
       {Key? key,
-        required this.textTheme,
-        required this.billerName,
-        required this.billerLogo,
-        required this.recipientNo,
-        required this.billerId,
-        required this.amount,
-        this.utility = false,
-        this.billerCode,
-        this.category,
-        this.isGuest = false,
-        this.mobileOperatorServiceId,
-        this.email,
-        this.threshold,
-        this.name})
+      required this.textTheme,
+      required this.billerName,
+      required this.billerLogo,
+      required this.recipientNo,
+      required this.billerId,
+      required this.amount,
+      this.utility = false,
+      this.billerCode,
+      this.category,
+      this.isGuest = false,
+      this.mobileOperatorServiceId,
+      this.email,
+      this.threshold,
+      this.name})
       : super(key: key);
 
   final TextTheme textTheme;
@@ -80,9 +79,7 @@ class _RechargeSummaryState extends ConsumerState<ElectricitySummary> {
 
   @override
   Widget build(BuildContext context) {
-    print(ref
-        .watch(biometricProvider)
-        .isPaymentBiometricActive);
+    print(ref.watch(biometricProvider).isPaymentBiometricActive);
     return Container(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 20),
       decoration: BoxDecoration(
@@ -112,16 +109,16 @@ class _RechargeSummaryState extends ConsumerState<ElectricitySummary> {
           widget.billerLogo == ""
               ? SizedBox()
               : Container(
-            padding: EdgeInsets.all(kRegularPadding),
-            height: 70,
-            width: 70,
-            decoration: BoxDecoration(
-                color: kContainerColor, shape: BoxShape.circle),
-            child: SvgPicture.asset(
-              widget.billerLogo,
-              fit: BoxFit.scaleDown,
-            ),
-          ),
+                  padding: EdgeInsets.all(kRegularPadding),
+                  height: 70,
+                  width: 70,
+                  decoration: BoxDecoration(
+                      color: kContainerColor, shape: BoxShape.circle),
+                  child: SvgPicture.asset(
+                    widget.billerLogo,
+                    fit: BoxFit.scaleDown,
+                  ),
+                ),
           Text(
             widget.billerName,
             textAlign: TextAlign.center,
@@ -171,16 +168,16 @@ class _RechargeSummaryState extends ConsumerState<ElectricitySummary> {
                 widget.isGuest
                     ? SizedBox()
                     : AirtimeRow(
-                  textTheme: widget.textTheme,
-                  text: fee,
-                  subText: "0.00",
-                  isNaira: true,
-                  isCopyIcon: false,
-                  noSymbol: false,
-                  style: widget.textTheme.headline4!.copyWith(
-                    fontSize: 16,
-                  ),
-                ),
+                        textTheme: widget.textTheme,
+                        text: fee,
+                        subText: "0.00",
+                        isNaira: true,
+                        isCopyIcon: false,
+                        noSymbol: false,
+                        style: widget.textTheme.headline4!.copyWith(
+                          fontSize: 16,
+                        ),
+                      ),
                 SizedBox(
                   height: widget.isGuest ? 0 : kRegularPadding,
                 ),
@@ -205,543 +202,542 @@ class _RechargeSummaryState extends ConsumerState<ElectricitySummary> {
             return ref.watch(getWalletProvider).data == null
                 ? SizedBox()
                 : BalanceWidget(
-              hasBalance: double.parse(ref
-                  .watch(getWalletProvider)
-                  .data!
-                  .data!
-                  .balance!) >
-                  double.parse(widget.amount)
-                  ? true
-                  : false,
-              textTheme: widget.textTheme,
-              text: ref.watch(getWalletProvider).data == null
-                  ? ""
-                  : kPriceFormatter(double.parse(
-                  ref.watch(getWalletProvider).data!.data!.balance!)),
-            );
+                    hasBalance: double.parse(ref
+                                .watch(getWalletProvider)
+                                .data!
+                                .data!
+                                .balance!) >
+                            double.parse(widget.amount)
+                        ? true
+                        : false,
+                    textTheme: widget.textTheme,
+                    text: ref.watch(getWalletProvider).data == null
+                        ? ""
+                        : kPriceFormatter(double.parse(
+                            ref.watch(getWalletProvider).data!.data!.balance!)),
+                  );
           }),
           SizedBox(
             height: widget.isGuest ? kSmallPadding : kFullPadding,
           ),
           widget.isGuest
               ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                selectPaymentOption,
-                style: widget.textTheme.bodyText1!.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: kIconGrey,
-                ),
-              ),
-              SizedBox(
-                height: kMediumPadding,
-              ),
-              inkWell(
-                onTap: () {
-                  setState(() => _payWith = payWithCard);
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kMediumPadding,
-                      vertical: kRegularPadding),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(kSmallPadding),
-                    border: Border.all(
-                      color: _payWith == payWithCard
-                          ? kPrimaryColor
-                          : kLightPurple,
-                      width: 1,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      selectPaymentOption,
+                      style: widget.textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: kIconGrey,
+                      ),
                     ),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(4),
+                    SizedBox(
+                      height: kMediumPadding,
+                    ),
+                    inkWell(
+                      onTap: () {
+                        setState(() => _payWith = payWithCard);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: kMediumPadding,
+                            vertical: kRegularPadding),
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
+                          borderRadius: BorderRadius.circular(kSmallPadding),
                           border: Border.all(
                             color: _payWith == payWithCard
                                 ? kPrimaryColor
-                                : kPurpleColor400,
-                            width: 1.5,
+                                : kLightPurple,
+                            width: 1,
                           ),
                         ),
-                        child: _payWith == payWithCard
-                            ? Container(
-                          height: kSmallPadding,
-                          width: kSmallPadding,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: kPrimaryColor,
-                          ),
-                        )
-                            : SizedBox(
-                          height: kSmallPadding,
-                          width: kSmallPadding,
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: _payWith == payWithCard
+                                      ? kPrimaryColor
+                                      : kPurpleColor400,
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: _payWith == payWithCard
+                                  ? Container(
+                                      height: kSmallPadding,
+                                      width: kSmallPadding,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: kPrimaryColor,
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      height: kSmallPadding,
+                                      width: kSmallPadding,
+                                    ),
+                            ),
+                            SizedBox(
+                              width: kMediumPadding,
+                            ),
+                            Text(
+                              payWithCard,
+                              style: widget.textTheme.subtitle1!
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            )
+                          ],
                         ),
                       ),
-                      SizedBox(
-                        width: kMediumPadding,
-                      ),
-                      Text(
-                        payWithCard,
-                        style: widget.textTheme.subtitle1!
-                            .copyWith(fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: kMediumPadding,
-              ),
-              inkWell(
-                onTap: () {
-                  setState(() => _payWith = payWithUssd);
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kMediumPadding,
-                      vertical: kRegularPadding),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(kSmallPadding),
-                    border: Border.all(
-                      color: _payWith == payWithUssd
-                          ? kPrimaryColor
-                          : kLightPurple,
-                      width: 1,
                     ),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(4),
+                    SizedBox(
+                      height: kMediumPadding,
+                    ),
+                    inkWell(
+                      onTap: () {
+                        setState(() => _payWith = payWithUssd);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: kMediumPadding,
+                            vertical: kRegularPadding),
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
+                          borderRadius: BorderRadius.circular(kSmallPadding),
                           border: Border.all(
                             color: _payWith == payWithUssd
                                 ? kPrimaryColor
                                 : kLightPurple,
-                            width: 1.5,
+                            width: 1,
                           ),
                         ),
-                        child: _payWith == payWithUssd
-                            ? Container(
-                          height: kSmallPadding,
-                          width: kSmallPadding,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: kPrimaryColor,
-                          ),
-                        )
-                            : SizedBox(
-                          height: kSmallPadding,
-                          width: kSmallPadding,
-                        ),
-                      ),
-                      SizedBox(
-                        width: kMediumPadding,
-                      ),
-                      Text(
-                        payWithUssd,
-                        style: widget.textTheme.subtitle1!
-                            .copyWith(fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: kLargePadding,
-              ),
-              LargeButton(
-                title: continueText,
-                onPressed: () {
-                  _payWith == payWithCard
-                      ? pushTo(
-                      context,
-                      PayWithCard(
-                        isCable: true,
-                      ),
-                      settings:
-                      RouteSettings(name: PayWithCard.routeName))
-                      : pushTo(
-                      context,
-                      PayWithUssd(
-                          cardNumber: widget.recipientNo,
-                          category: widget.category,
-                          subCat: widget.billerName,
-                          amount: widget.amount,
-                          name: widget.name,
-                          email: widget.email,
-                          providerId: widget.billerId,
-                          isUtility: widget.utility,
-                          serviceId: widget.mobileOperatorServiceId,
-                          merchantService: widget.billerCode),
-                      settings:
-                      RouteSettings(name: PayWithUssd.routeName));
-                },
-              )
-            ],
-          )
-              : widget.utility
-              ? Consumer(builder: (context, ref, _) {
-            var _widget = PayWithAmount(
-              amount: kPriceFormatter(double.parse(widget.amount))
-                  .replaceAll(".00", ""),
-              text: "$pay ",
-              onTap: double.parse(ref
-                  .watch(getWalletProvider)
-                  .data!
-                  .data!
-                  .balance!) <=
-                  double.parse(widget.amount)
-                  ? () {}
-                  : () async {
-                if (ref
-                    .watch(biometricProvider)
-                    .isPaymentBiometricActive ==
-                    null ||
-                    !ref
-                        .watch(biometricProvider)
-                        .isPaymentBiometricActive!
-                ) {
-                  final result =
-                  await buildShowModalBottomSheet(
-                    context,
-                    TransactionPinContainer(
-                      isData: false,
-                      isCard: false,
-                      isFundCard: false,
-                    ),
-                  );
-                  if (result != null) {
-                    ref
-                        .read(buyUtilitiesProvider.notifier)
-                        .buyUtilities(
-                        amount: double.parse(widget.amount),
-                        isSchedule: false,
-                        merchantAccount: widget.billerId,
-                        merchantReferenceNumber:
-                        widget.recipientNo,
-                        merchantService:
-                        widget.billerCode == null
-                            ? []
-                            : [widget.billerCode!],
-                        applyDiscount: double.parse(
-                            widget.threshold ?? "0") <=
-                            double.parse(widget.amount)
-                            ? true
-                            : false,
-                        subCategory: widget.billerName,
-                        transactionPin: result,
-                        category: "electricity-purchase",
-                        then: () {
-                          ref
-                              .read(getWalletProvider
-                              .notifier)
-                              .getWalletDetails();
-                          pushTo(
-                            context,
-                            SuccessMessage(
-                              text: dataSuccess,
-                              subText: deliveredPurchase,
-                              onTap: () {
-                                pushToAndClearStack(
-                                  context,
-                                  TabLayout(
-                                    gottenIndex: 0,
-                                  ),
-                                );
-                              },
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: _payWith == payWithUssd
+                                      ? kPrimaryColor
+                                      : kLightPurple,
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: _payWith == payWithUssd
+                                  ? Container(
+                                      height: kSmallPadding,
+                                      width: kSmallPadding,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: kPrimaryColor,
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      height: kSmallPadding,
+                                      width: kSmallPadding,
+                                    ),
                             ),
-                          );
-                        },
-                        error: (val) =>
-                            showErrorBar(context, val));
-                  }
-                } else {
-                  if (cred?.transactionPin == null ||
-                      cred?.transactionPin == "") {
-                    final result =
-                    await buildShowModalBottomSheet(
-                      context,
-                      TransactionPinContainer(
-                        isData: false,
-                        isCard: false,
-                        isFundCard: false,
+                            SizedBox(
+                              width: kMediumPadding,
+                            ),
+                            Text(
+                              payWithUssd,
+                              style: widget.textTheme.subtitle1!
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
                       ),
-                    );
-                    if (result != null) {
-                      ref
-                          .read(buyUtilitiesProvider.notifier)
-                          .buyUtilities(
-                          amount:
-                          double.parse(widget.amount),
-                          isSchedule: false,
-                          merchantAccount: widget.billerId,
-                          merchantReferenceNumber:
-                          widget.recipientNo,
-                          merchantService:
-                          widget.billerCode == null
-                              ? []
-                              : [widget.billerCode!],
-                          applyDiscount: double.parse(
-                              widget.threshold!) <=
-                              double.parse(
-                                  widget.amount)
-                              ? true
-                              : false,
-                          subCategory: widget.billerName,
-                          transactionPin: result,
-                          category: "electricity-purchase",
-                          then: () {
-                            ref
-                                .read(getWalletProvider
-                                .notifier)
-                                .getWalletDetails();
-                            pushTo(
-                              context,
-                              SuccessMessage(
-                                text: dataSuccess,
-                                subText: deliveredPurchase,
-                                onTap: () {
-                                  pushToAndClearStack(
+                    ),
+                    SizedBox(
+                      height: kLargePadding,
+                    ),
+                    LargeButton(
+                      title: continueText,
+                      onPressed: () {
+                        _payWith == payWithCard
+                            ? pushTo(
+                                context,
+                                PayWithCard(
+                                  isCable: true,
+                                ),
+                                settings:
+                                    RouteSettings(name: PayWithCard.routeName))
+                            : pushTo(
+                                context,
+                                PayWithUssd(
+                                    cardNumber: widget.recipientNo,
+                                    category: widget.category,
+                                    subCat: widget.billerName,
+                                    amount: widget.amount,
+                                    name: widget.name,
+                                    email: widget.email,
+                                    providerId: widget.billerId,
+                                    isUtility: widget.utility,
+                                    serviceId: widget.mobileOperatorServiceId,
+                                    merchantService: widget.billerCode),
+                                settings:
+                                    RouteSettings(name: PayWithUssd.routeName));
+                      },
+                    )
+                  ],
+                )
+              : widget.utility
+                  ? Consumer(builder: (context, ref, _) {
+                      var _widget = PayWithAmount(
+                        amount: kPriceFormatter(double.parse(widget.amount))
+                            .replaceAll(".00", ""),
+                        text: "$pay ",
+                        onTap: double.parse(ref
+                                    .watch(getWalletProvider)
+                                    .data!
+                                    .data!
+                                    .balance!) <=
+                                double.parse(widget.amount)
+                            ? () {}
+                            : () async {
+                                if (ref
+                                            .watch(biometricProvider)
+                                            .isPaymentBiometricActive ==
+                                        null ||
+                                    !ref
+                                        .watch(biometricProvider)
+                                        .isPaymentBiometricActive!) {
+                                  final result =
+                                      await buildShowModalBottomSheet(
                                     context,
-                                    TabLayout(
-                                      gottenIndex: 0,
+                                    TransactionPinContainer(
+                                      isData: false,
+                                      isCard: false,
+                                      isFundCard: false,
                                     ),
                                   );
-                                },
-                              ),
-                            );
-                          },
-                          error: (val) =>
-                              showErrorBar(context, val));
-                    }
-                  } else
-                    checkBiometric(context);
-                }
-              },
-            );
-            return ref.watch(buyUtilitiesProvider).when(
-                done: (done) => _widget,
-                loading: () => SpinKitDemo(),
-                error: (val) => _widget);
-          })
-              : Consumer(builder: (context, ref, _) {
-            var _widget = PayWithAmount(
-              amount: kPriceFormatter(double.parse(widget.amount))
-                  .replaceAll(".00", ""),
-              text: "$pay ",
-              onTap: widget.isGuest
-                  ? () {
-                ref
-                    .read(guestAirtimeProvider.notifier)
-                    .guestAirtime(
-                    subCategory: widget.billerName,
-                    amount: widget.amount,
-                    category: widget.category!,
-                    name: widget.name,
-                    email: widget.email,
-                    isAirtime:
-                    widget.category!.contains("airtime")
-                        ? true
-                        : false,
-                    mobileOperatorServiceId:
-                    widget.mobileOperatorServiceId,
-                    destinationPhoneNumber:
-                    widget.recipientNo,
-                    mobileOperatorPublicId: widget.billerId,
-                    then: (val) {
-                      pushTo(
-                          context,
-                          WebViewPage(
-                            url: val,
-                          ));
-                      print("val$val");
-                    },
-                    error: (val) =>
-                        showErrorBar(context, val));
-              }
-                  : double.parse(ref
-                  .watch(getWalletProvider)
-                  .data!
-                  .data!
-                  .balance!) >
-                  double.parse(widget.amount)
-                  ? () async {
-                if (ref
-                    .watch(biometricProvider)
-                    .isPaymentBiometricActive ==
-                    null ||
-                    !ref
-                        .watch(biometricProvider)
-                        .isPaymentBiometricActive!) {
-                  final result =
-                  await buildShowModalBottomSheet(
-                    context,
-                    TransactionPinContainer(
-                      isData: false,
-                      isCard: false,
-                      isFundCard: false,
-                    ),
-                  );
-                  if (result != null) {
-                    ref
-                        .read(buyAirtimeProvider.notifier)
-                        .buyAirtime(
-                        subCategory: widget.billerName,
-                        amount: widget.amount,
-                        applyDiscount: double.parse(
-                            widget
-                                .threshold!) <=
-                            double.parse(
-                                widget.amount)
-                            ? true
-                            : false,
-                        category: widget.category!,
-                        isAirtime: widget.category!
-                            .contains("airtime")
-                            ? true
-                            : false,
-                        mobileOperatorServiceId: widget
-                            .mobileOperatorServiceId,
-                        destinationPhoneNumber:
-                        widget.recipientNo,
-                        transactionPin: result,
-                        mobileOperatorPublicId:
-                        widget.billerId,
-                        then: () async{
-                          await saveUserCredential(
-                              transactionPin: result);
-                          ref
-                              .read(getWalletProvider
-                              .notifier)
-                              .getWalletDetails();
-                          pushTo(
-                              context,
-                              SuccessMessage(
-                                  text:
-                                  rechargeSuccessful,
-                                  subText:
-                                  rechargeSuccessfulSub,
-                                  onTap: () {
-                                    pushToAndClearStack(
+                                  if (result != null) {
+                                    ref
+                                        .read(buyUtilitiesProvider.notifier)
+                                        .buyUtilities(
+                                            amount: double.parse(widget.amount),
+                                            isSchedule: false,
+                                            merchantAccount: widget.billerId,
+                                            merchantReferenceNumber:
+                                                widget.recipientNo,
+                                            merchantService:
+                                                widget.billerCode == null
+                                                    ? []
+                                                    : [widget.billerCode!],
+                                            applyDiscount: double.parse(
+                                                        widget.threshold ??
+                                                            "0") <=
+                                                    double.parse(widget.amount)
+                                                ? true
+                                                : false,
+                                            subCategory: widget.billerName,
+                                            transactionPin: result,
+                                            category: "electricity-purchase",
+                                            then: () {
+                                              ref
+                                                  .read(getWalletProvider
+                                                      .notifier)
+                                                  .getWalletDetails();
+                                              pushTo(
+                                                context,
+                                                SuccessMessage(
+                                                  text: dataSuccess,
+                                                  subText: deliveredPurchase,
+                                                  onTap: () {
+                                                    pushToAndClearStack(
+                                                      context,
+                                                      TabLayout(
+                                                        gottenIndex: 0,
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            },
+                                            error: (val) =>
+                                                showErrorBar(context, val));
+                                  }
+                                } else {
+                                  if (cred?.transactionPin == null ||
+                                      cred?.transactionPin == "") {
+                                    final result =
+                                        await buildShowModalBottomSheet(
                                       context,
-                                      TabLayout(
-                                        gottenIndex: 0,
+                                      TransactionPinContainer(
+                                        isData: false,
+                                        isCard: false,
+                                        isFundCard: false,
                                       ),
                                     );
-                                  }));
-                        },
-                        error: (val) async{
-                          if(val.contains("Invalid transaction pin")){
-
-                          }else{
-                            await saveUserCredential(
-                                transactionPin: result);
-                          }
-                          showErrorBar(context, val);
-                        });
-                  }
-                } else {
-                  if (cred?.transactionPin == null ||
-                      cred?.transactionPin == "") {
-                    print("touched here");
-                    print(cred?.transactionPin );
-                    final result =
-                    await buildShowModalBottomSheet(
-                      context,
-                      TransactionPinContainer(
-                        isData: false,
-                        isCard: false,
-                        isFundCard: false,
-                      ),
-                    );
-                    if (result != null) {
-                      ref
-                          .read(buyAirtimeProvider.notifier)
-                          .buyAirtime(
-                          subCategory:
-                          widget.billerName,
-                          amount: widget.amount,
-                          applyDiscount: double.parse(
-                              widget
-                                  .threshold!) <=
-                              double.parse(
-                                  widget.amount)
-                              ? true
-                              : false,
-                          category: widget.category!,
-                          isAirtime: widget.category!
-                              .contains("airtime")
-                              ? true
-                              : false,
-                          mobileOperatorServiceId: widget
-                              .mobileOperatorServiceId,
-                          destinationPhoneNumber:
-                          widget.recipientNo,
-                          transactionPin: result,
-                          mobileOperatorPublicId:
-                          widget.billerId,
-                          then: () async{
-                            await saveUserCredential(
-                                transactionPin: result);
-                            ref
-                                .read(getWalletProvider
-                                .notifier)
-                                .getWalletDetails();
-                            pushTo(
-                                context,
-                                SuccessMessage(
-                                    text:
-                                    rechargeSuccessful,
-                                    subText:
-                                    rechargeSuccessfulSub,
-                                    onTap: () {
-                                      pushToAndClearStack(
+                                    if (result != null) {
+                                      ref
+                                          .read(buyUtilitiesProvider.notifier)
+                                          .buyUtilities(
+                                              amount:
+                                                  double.parse(widget.amount),
+                                              isSchedule: false,
+                                              merchantAccount: widget.billerId,
+                                              merchantReferenceNumber:
+                                                  widget.recipientNo,
+                                              merchantService:
+                                                  widget.billerCode == null
+                                                      ? []
+                                                      : [widget.billerCode!],
+                                              applyDiscount: double.parse(
+                                                          widget.threshold!) <=
+                                                      double.parse(
+                                                          widget.amount)
+                                                  ? true
+                                                  : false,
+                                              subCategory: widget.billerName,
+                                              transactionPin: result,
+                                              category: "electricity-purchase",
+                                              then: () {
+                                                ref
+                                                    .read(getWalletProvider
+                                                        .notifier)
+                                                    .getWalletDetails();
+                                                pushTo(
+                                                  context,
+                                                  SuccessMessage(
+                                                    text: dataSuccess,
+                                                    subText: deliveredPurchase,
+                                                    onTap: () {
+                                                      pushToAndClearStack(
+                                                        context,
+                                                        TabLayout(
+                                                          gottenIndex: 0,
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                              error: (val) =>
+                                                  showErrorBar(context, val));
+                                    }
+                                  } else
+                                    checkBiometric(context);
+                                }
+                              },
+                      );
+                      return ref.watch(buyUtilitiesProvider).when(
+                          done: (done) => _widget,
+                          loading: () => SpinKitDemo(),
+                          error: (val) => _widget);
+                    })
+                  : Consumer(builder: (context, ref, _) {
+                      var _widget = PayWithAmount(
+                        amount: kPriceFormatter(double.parse(widget.amount))
+                            .replaceAll(".00", ""),
+                        text: "$pay ",
+                        onTap: widget.isGuest
+                            ? () {
+                                ref
+                                    .read(guestAirtimeProvider.notifier)
+                                    .guestAirtime(
+                                        subCategory: widget.billerName,
+                                        amount: widget.amount,
+                                        category: widget.category!,
+                                        name: widget.name,
+                                        email: widget.email,
+                                        isAirtime:
+                                            widget.category!.contains("airtime")
+                                                ? true
+                                                : false,
+                                        mobileOperatorServiceId:
+                                            widget.mobileOperatorServiceId,
+                                        destinationPhoneNumber:
+                                            widget.recipientNo,
+                                        mobileOperatorPublicId: widget.billerId,
+                                        then: (val) {
+                                          pushTo(
+                                              context,
+                                              WebViewPage(
+                                                url: val,
+                                              ));
+                                          print("val$val");
+                                        },
+                                        error: (val) =>
+                                            showErrorBar(context, val));
+                              }
+                            : double.parse(ref
+                                        .watch(getWalletProvider)
+                                        .data!
+                                        .data!
+                                        .balance!) >
+                                    double.parse(widget.amount)
+                                ? () async {
+                                    if (ref
+                                                .watch(biometricProvider)
+                                                .isPaymentBiometricActive ==
+                                            null ||
+                                        !ref
+                                            .watch(biometricProvider)
+                                            .isPaymentBiometricActive!) {
+                                      final result =
+                                          await buildShowModalBottomSheet(
                                         context,
-                                        TabLayout(
-                                          gottenIndex:
-                                          0,
+                                        TransactionPinContainer(
+                                          isData: false,
+                                          isCard: false,
+                                          isFundCard: false,
                                         ),
                                       );
-                                    }));
-                          },
-                          error: (val) async{
-                            if(val.contains("Invalid transaction pin")){
+                                      if (result != null) {
+                                        ref
+                                            .read(buyAirtimeProvider.notifier)
+                                            .buyAirtime(
+                                                subCategory: widget.billerName,
+                                                amount: widget.amount,
+                                                applyDiscount: double.parse(
+                                                            widget
+                                                                .threshold!) <=
+                                                        double.parse(
+                                                            widget.amount)
+                                                    ? true
+                                                    : false,
+                                                category: widget.category!,
+                                                isAirtime: widget.category!
+                                                        .contains("airtime")
+                                                    ? true
+                                                    : false,
+                                                mobileOperatorServiceId: widget
+                                                    .mobileOperatorServiceId,
+                                                destinationPhoneNumber:
+                                                    widget.recipientNo,
+                                                transactionPin: result,
+                                                mobileOperatorPublicId:
+                                                    widget.billerId,
+                                                then: () async {
+                                                  await saveUserCredential(
+                                                      transactionPin: result);
+                                                  ref
+                                                      .read(getWalletProvider
+                                                          .notifier)
+                                                      .getWalletDetails();
+                                                  pushTo(
+                                                      context,
+                                                      SuccessMessage(
+                                                          text:
+                                                              rechargeSuccessful,
+                                                          subText:
+                                                              rechargeSuccessfulSub,
+                                                          onTap: () {
+                                                            pushToAndClearStack(
+                                                              context,
+                                                              TabLayout(
+                                                                gottenIndex: 0,
+                                                              ),
+                                                            );
+                                                          }));
+                                                },
+                                                error: (val) async {
+                                                  if (val.contains(
+                                                      "Invalid transaction pin")) {
+                                                  } else {
+                                                    await saveUserCredential(
+                                                        transactionPin: result);
+                                                  }
+                                                  showErrorBar(context, val);
+                                                });
+                                      }
+                                    } else {
+                                      if (cred?.transactionPin == null ||
+                                          cred?.transactionPin == "") {
+                                        print("touched here");
+                                        print(cred?.transactionPin);
+                                        final result =
+                                            await buildShowModalBottomSheet(
+                                          context,
+                                          TransactionPinContainer(
+                                            isData: false,
+                                            isCard: false,
+                                            isFundCard: false,
+                                          ),
+                                        );
+                                        if (result != null) {
+                                          ref
+                                              .read(buyAirtimeProvider.notifier)
+                                              .buyAirtime(
+                                                  subCategory:
+                                                      widget.billerName,
+                                                  amount: widget.amount,
+                                                  applyDiscount: double.parse(
+                                                              widget
+                                                                  .threshold!) <=
+                                                          double.parse(
+                                                              widget.amount)
+                                                      ? true
+                                                      : false,
+                                                  category: widget.category!,
+                                                  isAirtime: widget.category!
+                                                          .contains("airtime")
+                                                      ? true
+                                                      : false,
+                                                  mobileOperatorServiceId: widget
+                                                      .mobileOperatorServiceId,
+                                                  destinationPhoneNumber:
+                                                      widget.recipientNo,
+                                                  transactionPin: result,
+                                                  mobileOperatorPublicId:
+                                                      widget.billerId,
+                                                  then: () async {
+                                                    await saveUserCredential(
+                                                        transactionPin: result);
+                                                    ref
+                                                        .read(getWalletProvider
+                                                            .notifier)
+                                                        .getWalletDetails();
+                                                    pushTo(
+                                                        context,
+                                                        SuccessMessage(
+                                                            text:
+                                                                rechargeSuccessful,
+                                                            subText:
+                                                                rechargeSuccessfulSub,
+                                                            onTap: () {
+                                                              pushToAndClearStack(
+                                                                context,
+                                                                TabLayout(
+                                                                  gottenIndex:
+                                                                      0,
+                                                                ),
+                                                              );
+                                                            }));
+                                                  },
+                                                  error: (val) async {
+                                                    if (val.contains(
+                                                        "Invalid transaction pin")) {
+                                                    } else {
+                                                      await saveUserCredential(
+                                                          transactionPin:
+                                                              result);
+                                                    }
+                                                    print("val ,mkkdkue$val");
+                                                    showErrorBar(context, val);
+                                                  });
+                                        }
+                                      } else {
+                                        print(cred?.transactionPin);
+                                        checkBiometric(context);
+                                      }
+                                    }
+                                  }
+                                : () {},
+                      );
 
-                            }else{
-                              await saveUserCredential(
-                                  transactionPin: result);
-                            }
-                            print("val ,mkkdkue$val");
-                            showErrorBar(
-                                context, val);
-                          });
-                    }
-                  } else{
-                    print(cred?.transactionPin );
-                    checkBiometric(context);
-                  }
-
-                }
-              }
-                  : () {},
-            );
-
-            return widget.isGuest
-                ? ref.watch(guestAirtimeProvider).when(
-                done: (done) => _widget,
-                loading: () => SpinKitDemo(),
-                error: (val) => _widget)
-                : ref.watch(buyAirtimeProvider).when(
-                done: (done) => _widget,
-                loading: () => SpinKitDemo(),
-                error: (val) => _widget);
-          })
+                      return widget.isGuest
+                          ? ref.watch(guestAirtimeProvider).when(
+                              done: (done) => _widget,
+                              loading: () => SpinKitDemo(),
+                              error: (val) => _widget)
+                          : ref.watch(buyAirtimeProvider).when(
+                              done: (done) => _widget,
+                              loading: () => SpinKitDemo(),
+                              error: (val) => _widget);
+                    })
         ],
       ),
     );
@@ -819,11 +815,11 @@ class _RechargeSummaryState extends ConsumerState<ElectricitySummary> {
           merchantAccount: widget.billerId,
           merchantReferenceNumber: widget.recipientNo,
           merchantService:
-          widget.billerCode == null ? [] : [widget.billerCode!],
+              widget.billerCode == null ? [] : [widget.billerCode!],
           applyDiscount:
-          double.parse(widget.threshold!) <= double.parse(widget.amount)
-              ? true
-              : false,
+              double.parse(widget.threshold!) <= double.parse(widget.amount)
+                  ? true
+                  : false,
           subCategory: widget.billerName,
           transactionPin: cred!.transactionPin!,
           category: "electricity-purchase",
@@ -846,9 +842,7 @@ class _RechargeSummaryState extends ConsumerState<ElectricitySummary> {
             );
           },
           error: (val) => showErrorBar(context, val));
-
-    }
-    else {
+    } else {
       if (failedAttempts >= 3) {
         final result = await buildShowModalBottomSheet(
           context,
@@ -859,30 +853,22 @@ class _RechargeSummaryState extends ConsumerState<ElectricitySummary> {
           ),
         );
         if (result != null) {
-          ref
-              .read(buyUtilitiesProvider.notifier)
-              .buyUtilities(
+          ref.read(buyUtilitiesProvider.notifier).buyUtilities(
               amount: double.parse(widget.amount),
               isSchedule: false,
               merchantAccount: widget.billerId,
               merchantReferenceNumber: "education",
               merchantService:
-              widget.billerCode == null
-                  ? []
-                  : [widget.billerCode!],
-              applyDiscount: double.parse(
-                  widget.threshold!) <=
-                  double.parse(widget.amount)
-                  ? true
-                  : false,
+                  widget.billerCode == null ? [] : [widget.billerCode!],
+              applyDiscount:
+                  double.parse(widget.threshold!) <= double.parse(widget.amount)
+                      ? true
+                      : false,
               subCategory: widget.category!,
               transactionPin: result,
               category: "education-purchase",
               then: () {
-                ref
-                    .read(
-                    getWalletProvider.notifier)
-                    .getWalletDetails();
+                ref.read(getWalletProvider.notifier).getWalletDetails();
                 pushTo(
                   context,
                   SuccessMessage(
@@ -899,10 +885,9 @@ class _RechargeSummaryState extends ConsumerState<ElectricitySummary> {
                   ),
                 );
               },
-              error: (val) =>
-                  showErrorBar(context, val));
+              error: (val) => showErrorBar(context, val));
         }
-      }else{
+      } else {
         print('authentication failed');
       }
     }

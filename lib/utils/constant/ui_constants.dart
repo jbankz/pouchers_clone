@@ -130,7 +130,10 @@ final List<GuestClass> guestHomeClass = [
       ),
       days: BuyAirtime.routeName),
   GuestClass("Data", AssetPaths.dataIcon,
-      page: BuyData( isGuest: false,), days: BuyData.routeName),
+      page: BuyData(
+        isGuest: false,
+      ),
+      days: BuyData.routeName),
   GuestClass("CableTV", AssetPaths.televisionIcon,
       page: BuyCable(
         isGuest: false,
@@ -158,24 +161,26 @@ final List<GuestClass> guestHomeClass = [
       isGuest: false,
     ),
   ),
-  GuestClass("Education", AssetPaths.education,
+  GuestClass(
+    "Education", AssetPaths.education,
     page: BuyEducation(
       isGuest: false,
     ),
-  // GuestClass("More", AssetPaths.moreIcon,
-  //     page: BuyEducation(
-  //       isGuest: false,
-  //     ),
+    // GuestClass("More", AssetPaths.moreIcon,
+    //     page: BuyEducation(
+    //       isGuest: false,
+    //     ),
 
-      // Container(
-      //   color: Colors.white,
-      // )
+    // Container(
+    //   color: Colors.white,
+    // )
   ),
 ];
 
-
 final List<GuestClass> guestHome2Class = [
-  GuestClass("Education", AssetPaths.education,
+  GuestClass(
+    "Education",
+    AssetPaths.education,
     page: BuyEducation(
       isGuest: false,
     ),

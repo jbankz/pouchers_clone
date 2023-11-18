@@ -1,17 +1,13 @@
-import 'dart:ffi';
-
 import 'package:Pouchers/app/common/credentials.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:Pouchers/app/helpers/network_helpers.dart';
 import 'package:Pouchers/app/helpers/notifiers.dart';
-import 'package:Pouchers/app/helpers/service_response.dart';
 import 'package:Pouchers/app/helpers/session_manager.dart';
 import 'package:Pouchers/data/hive_data.dart';
 import 'package:Pouchers/modules/create_account/models/create_account_response.dart';
 import 'package:Pouchers/modules/login/models/login_response.dart';
 import 'package:Pouchers/modules/login/service/log_in_service.dart';
-import 'package:Pouchers/utils/extras.dart';
 import 'package:Pouchers/utils/strings.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:riverpod/riverpod.dart';
 
 final logInRepoProvider =

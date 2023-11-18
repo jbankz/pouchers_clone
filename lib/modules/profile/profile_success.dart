@@ -12,29 +12,26 @@ import 'package:Pouchers/utils/widgets.dart';
 
 class ProfileSuccessful extends StatelessWidget {
   static const String routeName = "profileSuccessful";
-final String? from;
+  final String? from;
   final String? message;
 
-  const ProfileSuccessful({
-    Key? key,
-    this.message,
-    this.from
-  }) : super(key: key);
+  const ProfileSuccessful({Key? key, this.message, this.from})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
         onTap: () {
-          if(from == "homepage"){
+          if (from == "homepage") {
             pushToAndClearStack(context, TabLayout());
-          } else{
+          } else {
             Navigator.popUntil(
               context,
-                  (route) {
-                if(route.settings.name != ProfileKYC.routeName){
+              (route) {
+                if (route.settings.name != ProfileKYC.routeName) {
                   return route.settings.name == PouchersTierList.routeName;
-                }else {
+                } else {
                   return route.settings.name == ProfileKYC.routeName;
                 }
               },
@@ -74,15 +71,16 @@ final String? from;
               LargeButton(
                 title: continueText,
                 onPressed: () {
-                  if(from == "homepage"){
+                  if (from == "homepage") {
                     pushToAndClearStack(context, TabLayout());
-                  } else{
+                  } else {
                     Navigator.popUntil(
                       context,
-                          (route) {
-                        if(route.settings.name != ProfileKYC.routeName){
-                          return route.settings.name == PouchersTierList.routeName;
-                        }else {
+                      (route) {
+                        if (route.settings.name != ProfileKYC.routeName) {
+                          return route.settings.name ==
+                              PouchersTierList.routeName;
+                        } else {
                           return route.settings.name == ProfileKYC.routeName;
                         }
                       },

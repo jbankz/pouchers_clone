@@ -92,9 +92,7 @@ class _ReferralState extends ConsumerState<Referral> {
               SizedBox(
                 height: kMediumPadding,
               ),
-              refIndex == 0
-                  ? ReferralInvite()
-                  : ReferralRewards()
+              refIndex == 0 ? ReferralInvite() : ReferralRewards()
             ],
           ),
         ),
@@ -102,5 +100,3 @@ class _ReferralState extends ConsumerState<Referral> {
     );
   }
 }
-
-

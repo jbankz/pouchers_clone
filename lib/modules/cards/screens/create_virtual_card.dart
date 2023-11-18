@@ -29,7 +29,7 @@ class CreateVirtualCard extends ConsumerStatefulWidget {
       this.isNaira,
       this.isFundCard,
       this.isFundNaira,
-        this.country,
+      this.country,
       this.bvn})
       : super(key: key);
 
@@ -96,17 +96,18 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
                                   ),
                                   children: [
                                     TextSpan(
-                                      text: ref.watch(getAllFeesProvider).data ==
-                                              null
-                                          ? "0"
-                                          : ref
-                                              .watch(getAllFeesProvider)
-                                              .data!
-                                              .data!
-                                              .firstWhere((element) =>
-                                                  element.name ==
-                                                  "current_dollar_rate")
-                                              .value!,
+                                      text:
+                                          ref.watch(getAllFeesProvider).data ==
+                                                  null
+                                              ? "0"
+                                              : ref
+                                                  .watch(getAllFeesProvider)
+                                                  .data!
+                                                  .data!
+                                                  .firstWhere((element) =>
+                                                      element.name ==
+                                                      "current_dollar_rate")
+                                                  .value!,
                                       style: textTheme.bodyText2!.copyWith(
                                         fontFamily: "DMSans",
                                         fontSize: 16,
@@ -153,7 +154,6 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
                           )),
                     ]),
               ),
-
               SizedBox(
                 height: kSmallPadding,
               ),
@@ -252,8 +252,7 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
                                                     .data!
                                                     .data!
                                                     .firstWhere((element) =>
-                                                        element.name ==
-                                                        "sudo_dollar_card_creation_fee")
+                                                        element.name == "sudo_dollar_card_creation_fee")
                                                     .value!) +
                                                 double.parse(ref.watch(getAllFeesProvider).data!.data!.firstWhere((element) => element.name == "dollar_card_funding_fee").value!) +
                                                 double.parse(ref.watch(getAllFeesProvider).data!.data!.firstWhere((element) => element.name == "sudo_dollar_card_funding_fee").value!))
@@ -319,8 +318,8 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
                                       wholeTextString
                                           ? setState(() {
                                               pinPicked.add(
-                                                int.parse(
-                                                    guestNumberDot[index].title),
+                                                int.parse(guestNumberDot[index]
+                                                    .title),
                                               );
                                               if (pinPicked.first == 0) {
                                                 pinPicked.removeAt(0);
@@ -330,7 +329,8 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
                                               }
                                             })
                                           : setState(() {
-                                              if (decimalPinPicked.length != 2) {
+                                              if (decimalPinPicked.length !=
+                                                  2) {
                                                 decimalPinPicked.add(
                                                   int.parse(
                                                       guestNumber[index].title),
@@ -373,15 +373,16 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
                       showErrorBar(context, "Please input amount");
                     } else {
                       if (widget.isFundCard!) {
-                        if(!widget.isFundNaira!){
-                          if(double.parse(wholeText) > double.parse(ref
-                              .watch(getAllFeesProvider)
-                              .data!
-                              .data!
-                              .firstWhere((element) =>
-                          element.name ==
-                              "sudo_min_dollar_card_funding_amt")
-                              .value!)){
+                        if (!widget.isFundNaira!) {
+                          if (double.parse(wholeText) >
+                              double.parse(ref
+                                  .watch(getAllFeesProvider)
+                                  .data!
+                                  .data!
+                                  .firstWhere((element) =>
+                                      element.name ==
+                                      "sudo_min_dollar_card_funding_amt")
+                                  .value!)) {
                             ref.read(getAllFeesProvider.notifier).getAllFees(
                                 amount: double.parse(
                                   "$wholeText.$decimalText",
@@ -401,18 +402,20 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
                                     ),
                                   );
                                 });
-                          }else{
-                            showErrorBar(context, "Amount should exceed minimum amount");
+                          } else {
+                            showErrorBar(
+                                context, "Amount should exceed minimum amount");
                           }
-                             }else{
-                          if(double.parse(wholeText) > double.parse(ref
-                              .watch(getAllFeesProvider)
-                              .data!
-                              .data!
-                              .firstWhere((element) =>
-                          element.name ==
-                              "sudo_min_naira_card_funding_amt")
-                              .value!)){
+                        } else {
+                          if (double.parse(wholeText) >
+                              double.parse(ref
+                                  .watch(getAllFeesProvider)
+                                  .data!
+                                  .data!
+                                  .firstWhere((element) =>
+                                      element.name ==
+                                      "sudo_min_naira_card_funding_amt")
+                                  .value!)) {
                             pushTo(
                               context,
                               CardSummary(
@@ -426,10 +429,12 @@ class _CreateVirtualCardState extends ConsumerState<CreateVirtualCard> {
                                 name: CardSummary.routeName,
                               ),
                             );
-                          }else{
-                            showErrorBar(context, "Amount should exceed minimum amount");
+                          } else {
+                            showErrorBar(
+                                context, "Amount should exceed minimum amount");
                           }
-                            };
+                        }
+                        ;
                       } else {
                         widget.isNaira!
                             ? pushTo(

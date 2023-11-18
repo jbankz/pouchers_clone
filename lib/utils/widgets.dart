@@ -128,7 +128,7 @@ class InitialPage extends StatelessWidget {
       this.titleColor,
       this.onTap,
       this.color,
-        this.bottomSheet,
+      this.bottomSheet,
       this.addSpace = true,
       this.noBackButton = false})
       : super(key: key);
@@ -247,8 +247,7 @@ class OnBoardingWidget extends StatelessWidget {
                         color: kPrimaryWhite,
                       ),
                     ),
-                    child:
-                    SvgPicture.asset(
+                    child: SvgPicture.asset(
                       AssetPaths.send,
                     )),
               ),
@@ -386,11 +385,7 @@ class SuccessMessage extends StatelessWidget {
   final String? text, subText;
   final Function()? onTap;
 
-  const SuccessMessage(
-      {Key? key,
-       this.text,
-       this.subText,
-       this.onTap})
+  const SuccessMessage({Key? key, this.text, this.subText, this.onTap})
       : super(key: key);
 
   @override
@@ -544,4 +539,3 @@ class SlideBar extends StatelessWidget {
     }
   }
 }
-

@@ -80,7 +80,11 @@ class HistoryDetail extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      changeCatNme(item!.transactionCategory!, item!.currency!, item!.extraDetails!.subCategory ?? "", item!.beneficiaryName ?? ""),
+                      changeCatNme(
+                          item!.transactionCategory!,
+                          item!.currency!,
+                          item!.extraDetails!.subCategory ?? "",
+                          item!.beneficiaryName ?? ""),
                       style: textTheme.headline3!.copyWith(
                           color: kBlueColorDark, fontWeight: FontWeight.w500),
                     ),
@@ -377,7 +381,11 @@ class DownloadTransactionReceipt {
             children: [
               pdfWidget.Expanded(
                 child: pdfWidget.Text(
-                    changeCatNme(item.transactionCategory!, item.currency!, item.extraDetails!.subCategory ?? "", item.beneficiaryName ?? ""),
+                    changeCatNme(
+                        item.transactionCategory!,
+                        item.currency!,
+                        item.extraDetails!.subCategory ?? "",
+                        item.beneficiaryName ?? ""),
                     style: pdfWidget.TextStyle(
                       fontWeight: pdfWidget.FontWeight.bold,
                       font: ttf,

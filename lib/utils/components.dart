@@ -33,7 +33,8 @@ class TextInputNoIcon extends StatelessWidget {
       this.hintText,
       this.addSpace = true,
       this.focusNode,
-      this.onTap, this.onEditingComplete});
+      this.onTap,
+      this.onEditingComplete});
 
   final TextTheme textTheme;
   final String? text;
@@ -52,7 +53,7 @@ class TextInputNoIcon extends StatelessWidget {
   final Widget? widget;
   final TextCapitalization? textCapitalize;
   final FocusNode? focusNode;
-  final Function()? onTap,onEditingComplete;
+  final Function()? onTap, onEditingComplete;
 
   @override
   Widget build(BuildContext context) {

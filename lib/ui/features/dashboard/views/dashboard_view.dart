@@ -1,3 +1,4 @@
+import 'package:Pouchers/modules/tab_layout/screens/tab_layout.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/features/dashboard/model/bottom_nav.dart';
 import 'package:animations/animations.dart';
@@ -20,7 +21,7 @@ class _DashboardViewState extends State<DashboardView> {
   @override
   Widget build(BuildContext context) => Scaffold(
       body: PageTransitionSwitcher(
-        child: const AccountView(),
+        child: TabLayout(),
         // child: const HomeView(),
         transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
             SharedAxisTransition(

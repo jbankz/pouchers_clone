@@ -18,14 +18,19 @@ import 'package:Pouchers/utils/widgets.dart';
 class SecondSecurityQuestion extends ConsumerStatefulWidget {
   static const String routeName = "secondSecurityQuestion";
 
-  const SecondSecurityQuestion({Key? key,}) : super(key: key);
+  const SecondSecurityQuestion({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  ConsumerState<SecondSecurityQuestion> createState() => _SecondSecurityQuestionState();
+  ConsumerState<SecondSecurityQuestion> createState() =>
+      _SecondSecurityQuestionState();
 }
 
-class _SecondSecurityQuestionState extends ConsumerState<SecondSecurityQuestion> {
-  SecurityQuestionData _prefixText2 = SecurityQuestionData(question: selectQuestion);
+class _SecondSecurityQuestionState
+    extends ConsumerState<SecondSecurityQuestion> {
+  SecurityQuestionData _prefixText2 =
+      SecurityQuestionData(question: selectQuestion);
   TextEditingController answerController = TextEditingController();
   List<SecurityQuestionData> questionData = [];
 
@@ -42,8 +47,9 @@ class _SecondSecurityQuestionState extends ConsumerState<SecondSecurityQuestion>
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
         title: factorAuth,
-        onTap: (){
-          Navigator.popUntil(context, (route) => route.settings.name == TwoFactor.routeName);
+        onTap: () {
+          Navigator.popUntil(
+              context, (route) => route.settings.name == TwoFactor.routeName);
         },
         child: ListenerPage(
           child: Column(
@@ -70,14 +76,17 @@ class _SecondSecurityQuestionState extends ConsumerState<SecondSecurityQuestion>
                     ),
                     Text(
                       secondQuestion,
-                      style: textTheme.subtitle1!.copyWith( fontWeight: FontWeight.w700,),
+                      style: textTheme.subtitle1!.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     SizedBox(
                       height: kSmallPadding,
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: kRegularPadding, vertical: kRegularPadding),
+                          horizontal: kRegularPadding,
+                          vertical: kRegularPadding),
                       decoration: BoxDecoration(
                           color: kBackgroundColor,
                           borderRadius: BorderRadius.circular(kSmallPadding)),
@@ -94,8 +103,10 @@ class _SecondSecurityQuestionState extends ConsumerState<SecondSecurityQuestion>
                           ),
                           Consumer(
                             builder: (context, ref, _) {
-                              ref.listen(getSecurityQuestionsProvider, (previous,
-                                  NotifierState<SecurityQuestionResponse> next) {
+                              ref.listen(getSecurityQuestionsProvider,
+                                  (previous,
+                                      NotifierState<SecurityQuestionResponse>
+                                          next) {
                                 if (next.status == NotifierStatus.done) {
                                   next.data!.data!.forEach((element) {
                                     questionData.add(element);
@@ -104,11 +115,12 @@ class _SecondSecurityQuestionState extends ConsumerState<SecondSecurityQuestion>
                               });
                               var _widget = inkWell(
                                   onTap: () async {
-                                    final result = await buildShowModalBottomSheet(
-                                        context,
-                                        QuestionModal(
-                                          question: questionData,
-                                        ));
+                                    final result =
+                                        await buildShowModalBottomSheet(
+                                            context,
+                                            QuestionModal(
+                                              question: questionData,
+                                            ));
                                     if (result != null) {
                                       setState(() => _prefixText2 = result);
                                     }
@@ -118,13 +130,15 @@ class _SecondSecurityQuestionState extends ConsumerState<SecondSecurityQuestion>
                                     size: 30,
                                     color: kSecondaryTextColor,
                                   ));
-                              return ref.watch(getSecurityQuestionsProvider).when(
-                                done: (done) => _widget,
-                                loading: () => SpinKitDemo(
-                                  size: 35,
-                                ),
-                                error: (val) => _widget,
-                              );
+                              return ref
+                                  .watch(getSecurityQuestionsProvider)
+                                  .when(
+                                    done: (done) => _widget,
+                                    loading: () => SpinKitDemo(
+                                      size: 35,
+                                    ),
+                                    error: (val) => _widget,
+                                  );
                             },
                           ),
                         ],
@@ -144,30 +158,33 @@ class _SecondSecurityQuestionState extends ConsumerState<SecondSecurityQuestion>
               ),
               Consumer(builder: (context, ref, _) {
                 ref.listen(set2QuestionProvider,
-                        (previous, NotifierState<String> next) async{
-                          await Hive.openBox(k2FACodeBox);
-                      if (next.status == NotifierStatus.done) {
-                        pushTo(context, GoogleAuthenticatorDownload(),
-                            settings: const RouteSettings(
-                                name: GoogleAuthenticatorDownload.routeName));
-                      } else if (next.status == NotifierStatus.error) {
-                        showErrorBar(context, next.message!);
-                      }
-                    });
+                    (previous, NotifierState<String> next) async {
+                  await Hive.openBox(k2FACodeBox);
+                  if (next.status == NotifierStatus.done) {
+                    pushTo(context, GoogleAuthenticatorDownload(),
+                        settings: const RouteSettings(
+                            name: GoogleAuthenticatorDownload.routeName));
+                  } else if (next.status == NotifierStatus.error) {
+                    showErrorBar(context, next.message!);
+                  }
+                });
                 var _widget = LargeButton(
                   title: continueText,
                   onPressed: () {
                     // ref.read(calculateQuestionProvider.notifier).state = 2;
                     // print( ref.watch(calculateQuestionProvider));
-                    print("security numbe2r ${ref.watch(calculateQuestionProvider)}");
+                    print(
+                        "security numbe2r ${ref.watch(calculateQuestionProvider)}");
                     FocusScope.of(context).unfocus();
-                    if (_prefixText2.id != null && answerController.text.isNotEmpty) {
-                      ref.read(set2QuestionProvider.notifier).setSecurityQuestion(
-                        questionId: _prefixText2.id!,
-                        answer: answerController.text,
-                          isValidate: false
-                      );
-                    }else{
+                    if (_prefixText2.id != null &&
+                        answerController.text.isNotEmpty) {
+                      ref
+                          .read(set2QuestionProvider.notifier)
+                          .setSecurityQuestion(
+                              questionId: _prefixText2.id!,
+                              answer: answerController.text,
+                              isValidate: false);
+                    } else {
                       showErrorBar(context, emptyField);
                     }
                   },

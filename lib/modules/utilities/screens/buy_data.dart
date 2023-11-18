@@ -53,8 +53,8 @@ class _BuyDataState extends ConsumerState<BuyData>
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       widget.isGuest!
           ? null
-          :   ref.read(getDiscountProvider.notifier).getDiscount(utility: "data");
-       ref.read(getUtilitiesProvider.notifier).getUtilities(utility: "data");
+          : ref.read(getDiscountProvider.notifier).getDiscount(utility: "data");
+      ref.read(getUtilitiesProvider.notifier).getUtilities(utility: "data");
     });
   }
 
@@ -69,7 +69,9 @@ class _BuyDataState extends ConsumerState<BuyData>
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: data,
-      child: widget.isGuest! ? dataColumn(textTheme, context) : ListenerPage(child: dataColumn(textTheme, context)),
+      child: widget.isGuest!
+          ? dataColumn(textTheme, context)
+          : ListenerPage(child: dataColumn(textTheme, context)),
     );
   }
 
@@ -84,7 +86,10 @@ class _BuyDataState extends ConsumerState<BuyData>
                 text: mobileNumber,
                 controller: contactController,
                 inputType: TextInputType.number,
-                inputFormatters: [LengthLimitingTextInputFormatter(11), FilteringTextInputFormatter.digitsOnly],
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(11),
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 icon: inkWell(
                   onTap: () async {
                     final PhoneContact contact =
@@ -94,8 +99,8 @@ class _BuyDataState extends ConsumerState<BuyData>
                       String phoneReplaced1 = "";
                       String phoneReplaced2 = "";
 
-                      phoneReplaced = contact.phoneNumber!.number!
-                          .replaceAll("+234", "0");
+                      phoneReplaced =
+                          contact.phoneNumber!.number!.replaceAll("+234", "0");
                       phoneReplaced1 = phoneReplaced.replaceAll("234", "0");
                       phoneReplaced2 = phoneReplaced1.replaceAll(" ", "");
 
@@ -121,124 +126,116 @@ class _BuyDataState extends ConsumerState<BuyData>
               ref.watch(getUtilitiesProvider).when(
                     done: (provider) {
                       if (provider != null) {
-                        return  Row(
+                        return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: provider.data!
                               .mapIndexed(
                                 (index, element) => inkWell(
-                              onTap: () {
-                                setState(() {
-                                  currentIndex = index;
-                                  billerData = element;
-                                });
-                                ref
-                                    .read(
-                                    getDataBundleProvider.notifier)
-                                    .getDataBundle(
-                                  merchantServiceId:
-                                  billerData!.operatorpublicid!,
-                                );
-                              },
-                              child: Stack(
-                                children: [
-                                  Container(
-                                      padding: EdgeInsets.all(
-                                          kRegularPadding),
-                                      height: 70,
-                                      width: 70,
-                                      margin: EdgeInsets.only(
-                                          right: kSmallPadding),
-                                      decoration: BoxDecoration(
-                                          color: currentIndex == index
-                                              ? kLightPurple
-                                              : kContainerColor,
-                                          shape: BoxShape.circle),
-                                      child:
-
-                                      CachedNetworkImage(
-                                        imageUrl: element.logoUrl == null
-                                            ? ""
-                                            : element.logoUrl!,
-                                        placeholder: (context, url) =>
-                                            Container(
+                                  onTap: () {
+                                    setState(() {
+                                      currentIndex = index;
+                                      billerData = element;
+                                    });
+                                    ref
+                                        .read(getDataBundleProvider.notifier)
+                                        .getDataBundle(
+                                          merchantServiceId:
+                                              billerData!.operatorpublicid!,
+                                        );
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                          padding:
+                                              EdgeInsets.all(kRegularPadding),
+                                          height: 70,
+                                          width: 70,
+                                          margin: EdgeInsets.only(
+                                              right: kSmallPadding),
+                                          decoration: BoxDecoration(
+                                              color: currentIndex == index
+                                                  ? kLightPurple
+                                                  : kContainerColor,
+                                              shape: BoxShape.circle),
+                                          child: CachedNetworkImage(
+                                            imageUrl: element.logoUrl == null
+                                                ? ""
+                                                : element.logoUrl!,
+                                            placeholder: (context, url) =>
+                                                Container(
                                               color: Colors.transparent,
                                               child: const Center(
                                                 child:
-                                                CircularProgressIndicator(
+                                                    CircularProgressIndicator(
                                                   strokeWidth: 2,
                                                   valueColor:
-                                                  AlwaysStoppedAnimation<
-                                                      Color>(kPrimaryColor),
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(kPrimaryColor),
                                                 ),
                                               ),
                                             ),
-                                        fit: BoxFit.scaleDown,
-                                        errorWidget: (context, url,
-                                            error) =>
-                                        element.logoUrl != null
-                                            ? Image.network(
-                                          element.logoUrl!,
-                                          fit: BoxFit.fill,
-                                          loadingBuilder:
-                                              (BuildContext
-                                          context,
-                                              Widget child,
-                                              ImageChunkEvent?
-                                              loadingProgress) {
-                                            if (loadingProgress ==
-                                                null)
-                                              return child;
-                                            return Center(
-                                              child:
-                                              CircularProgressIndicator(
-                                                value: loadingProgress
-                                                    .expectedTotalBytes !=
-                                                    null
-                                                    ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                    loadingProgress
-                                                        .expectedTotalBytes!
-                                                    : null,
-                                              ),
-                                            );
-                                          },
-                                        )
-                                            : Center(
-                                          child: Text(
-                                              "${element.displayName}",
-                                              style: textTheme
-                                                  .headline4!
-                                                  .copyWith(
-                                                // color: kPrimaryColor,
-                                                  fontSize:
-                                                  10)),
-                                        ),
-                                      )
+                                            fit: BoxFit.scaleDown,
+                                            errorWidget: (context, url,
+                                                    error) =>
+                                                element.logoUrl != null
+                                                    ? Image.network(
+                                                        element.logoUrl!,
+                                                        fit: BoxFit.fill,
+                                                        loadingBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                Widget child,
+                                                                ImageChunkEvent?
+                                                                    loadingProgress) {
+                                                          if (loadingProgress ==
+                                                              null)
+                                                            return child;
+                                                          return Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              value: loadingProgress
+                                                                          .expectedTotalBytes !=
+                                                                      null
+                                                                  ? loadingProgress
+                                                                          .cumulativeBytesLoaded /
+                                                                      loadingProgress
+                                                                          .expectedTotalBytes!
+                                                                  : null,
+                                                            ),
+                                                          );
+                                                        },
+                                                      )
+                                                    : Center(
+                                                        child: Text(
+                                                            "${element.displayName}",
+                                                            style: textTheme
+                                                                .headline4!
+                                                                .copyWith(
+                                                                    // color: kPrimaryColor,
+                                                                    fontSize:
+                                                                        10)),
+                                                      ),
+                                          )),
+                                      currentIndex == index
+                                          ? Positioned(
+                                              bottom: 0,
+                                              right: 0,
+                                              child: Container(
+                                                  padding: EdgeInsets.all(3),
+                                                  decoration: BoxDecoration(
+                                                      color: kPurpleColor,
+                                                      shape: BoxShape.circle),
+                                                  child: Icon(
+                                                    Icons.check,
+                                                    color: kPrimaryWhite,
+                                                    size: 15,
+                                                  )),
+                                            )
+                                          : SizedBox(),
+                                    ],
                                   ),
-                                  currentIndex == index
-                                      ? Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: Container(
-                                        padding:
-                                        EdgeInsets.all(3),
-                                        decoration:
-                                        BoxDecoration(
-                                            color:
-                                            kPurpleColor,
-                                            shape: BoxShape
-                                                .circle),
-                                        child: Icon(
-                                          Icons.check,
-                                          color: kPrimaryWhite,
-                                          size: 15,
-                                        )),
-                                  )
-                                      : SizedBox(),
-                                ],
-                              ),
-                            ),
-                          )
+                                ),
+                              )
                               .toList(),
                         );
                       } else {
@@ -294,8 +291,7 @@ class _BuyDataState extends ConsumerState<BuyData>
                                 child: Text(
                                     _mobileOperatorService == null
                                         ? type
-                                        : _mobileOperatorService!
-                                            .serviceName!,
+                                        : _mobileOperatorService!.serviceName!,
                                     overflow: TextOverflow.ellipsis,
                                     softWrap: true,
                                     style: _mobileOperatorService == null
@@ -367,8 +363,7 @@ class _BuyDataState extends ConsumerState<BuyData>
               widget.isGuest!
                   ? SizedBox()
                   : Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: kPadding),
+                      padding: const EdgeInsets.symmetric(horizontal: kPadding),
                       child: Scheduling(
                           text: scheduleData,
                           subtext: scheduleDataSub,
@@ -387,7 +382,9 @@ class _BuyDataState extends ConsumerState<BuyData>
         LargeButton(
             title: continueText,
             onPressed: () {
-              if (contactController.text.isEmpty ||  billerData == null || _mobileOperatorService == null) {
+              if (contactController.text.isEmpty ||
+                  billerData == null ||
+                  _mobileOperatorService == null) {
                 showErrorBar(context, "Please fill all fields");
               } else {
                 buildShowModalBottomSheet(

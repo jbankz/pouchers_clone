@@ -16,7 +16,7 @@ Future<void> initializeDB() async {
 
   Hive
     ..registerAdapter(UserAdapter())
-    ..registerAdapter(WalletAdapter())
+    // ..registerAdapter(WalletAdapter())
     ..registerAdapter(HiveStoreResponseDataAdapter());
 }
 

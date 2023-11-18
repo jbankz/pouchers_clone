@@ -18,18 +18,19 @@ class TransactionRepository {
   TransactionRepository(this.ref);
 
   Future<NotifierState<GetTransactionsResponse>> getTransactionHistory(
-      {OrderHistoryStatus? status,int? page}) async {
-
+      {OrderHistoryStatus? status, int? page}) async {
     ServiceResponse<GetTransactionsResponse> getTransaction;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     getTransaction = await TransactionService.getTransactionHistory(
-        token: userProfile.token!, status: status,page: page);
+        token: userProfile.token!, status: status, page: page);
 
     if (getTransaction.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
       getTransaction = await TransactionService.getTransactionHistory(
-          token: userProfiles.token!, status: status,);
+        token: userProfiles.token!,
+        status: status,
+      );
     }
     return getTransaction.toNotifierState();
   }
@@ -38,17 +39,23 @@ class TransactionRepository {
     required String month,
     required String year,
   }) async {
-
     ServiceResponse<TransactionAnalyticsResponse> getTransactionAnalytics;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     getTransactionAnalytics = await TransactionService.getTransactionAnalytics(
-      token: userProfile.token!, month: month, year: year,);
+      token: userProfile.token!,
+      month: month,
+      year: year,
+    );
 
     if (getTransactionAnalytics.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
-      getTransactionAnalytics = await TransactionService.getTransactionAnalytics(
-        token: userProfiles.token!, month: month, year: year,);
+      getTransactionAnalytics =
+          await TransactionService.getTransactionAnalytics(
+        token: userProfiles.token!,
+        month: month,
+        year: year,
+      );
     }
     return getTransactionAnalytics.toNotifierState();
   }

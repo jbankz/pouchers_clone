@@ -866,9 +866,10 @@ class AccountService {
     }
   }
 
-
   static Future<ServiceResponse<ManageRequestResponse>> manageRequest({
-    required String token,required String type, String? status,
+    required String token,
+    required String type,
+    String? status,
     required int page,
   }) async {
     Map<String, String> _authHeaders = {
@@ -877,7 +878,9 @@ class AccountService {
       HttpHeaders.authorizationHeader: "Bearer $token"
     };
 
-    String url = status == null  ? "${baseUrl()}/payment/requests?page=$page&type=$type" : "${baseUrl()}/payment/requests?page=$page&type=$type&status=$status";
+    String url = status == null
+        ? "${baseUrl()}/payment/requests?page=$page&type=$type"
+        : "${baseUrl()}/payment/requests?page=$page&type=$type&status=$status";
 
     logPrint(url);
 

@@ -36,8 +36,8 @@ final getDiscountProvider = StateNotifierProvider.autoDispose<
   return GetDiscountNotifier(ref.read(utilitiesRepoProvider));
 });
 
-final getUtilitiesTypeProvider = StateNotifierProvider<
-    GetUtilitiesTypeNotifier, NotifierState<GetUtilitiesTypesResponse>>((ref) {
+final getUtilitiesTypeProvider = StateNotifierProvider<GetUtilitiesTypeNotifier,
+    NotifierState<GetUtilitiesTypesResponse>>((ref) {
   return GetUtilitiesTypeNotifier(ref.read(utilitiesRepoProvider));
 });
 
@@ -66,13 +66,14 @@ final checkStatusProvider = StateNotifierProvider.autoDispose<
   return CheckStatusNotifier(ref.read(utilitiesRepoProvider));
 });
 
-final guestAirtimeProvider = StateNotifierProvider<GuestAirtimeNotifier,
-    NotifierState<String>>((ref) {
+final guestAirtimeProvider =
+    StateNotifierProvider<GuestAirtimeNotifier, NotifierState<String>>((ref) {
   return GuestAirtimeNotifier(ref.read(utilitiesRepoProvider));
 });
 
-final guestUssdProvider = StateNotifierProvider<GuestUssdNotifier,
-    NotifierState<UssdResponse>>((ref) {
+final guestUssdProvider =
+    StateNotifierProvider<GuestUssdNotifier, NotifierState<UssdResponse>>(
+        (ref) {
   return GuestUssdNotifier(ref.read(utilitiesRepoProvider));
 });
 
@@ -81,10 +82,7 @@ final guestUtilityUssdProvider = StateNotifierProvider<GuestUtilityUssdNotifier,
   return GuestUtilityUssdNotifier(ref.read(utilitiesRepoProvider));
 });
 
-
-
-class BuyVoucherNotifier extends StateNotifier<NotifierState<String>>
-     {
+class BuyVoucherNotifier extends StateNotifier<NotifierState<String>> {
   final UtilitiesRepository _repo;
 
   BuyVoucherNotifier(this._repo) : super(NotifierState());
@@ -103,23 +101,25 @@ class BuyVoucherNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class FetchVoucherNotifier
-    extends StateNotifier<NotifierState<GetVoucherResponse>>
-   {
+    extends StateNotifier<NotifierState<GetVoucherResponse>> {
   final UtilitiesRepository _repo;
 
   FetchVoucherNotifier(this._repo) : super(NotifierState());
 
-  void fetchVoucher({ bool showLoading = false,required String status, Function(GetVoucherResponseData)? then, int page =1}) async {
+  void fetchVoucher(
+      {bool showLoading = false,
+      required String status,
+      Function(GetVoucherResponseData)? then,
+      int page = 1}) async {
     if (showLoading) state = notifyLoading();
-    state = await _repo.fetchVoucher(status: status,page: page);
+    state = await _repo.fetchVoucher(status: status, page: page);
     if (state.status == NotifierStatus.done) {
       if (then != null) then(state.data!.data!);
     }
   }
 }
 
-class GiftVoucherNotifier extends StateNotifier<NotifierState<String>>
-    {
+class GiftVoucherNotifier extends StateNotifier<NotifierState<String>> {
   final UtilitiesRepository _repo;
 
   GiftVoucherNotifier(this._repo) : super(NotifierState());
@@ -139,8 +139,7 @@ class GiftVoucherNotifier extends StateNotifier<NotifierState<String>>
   }
 }
 
-class RedeemVoucherNotifier extends StateNotifier<NotifierState<String>>
-    {
+class RedeemVoucherNotifier extends StateNotifier<NotifierState<String>> {
   final UtilitiesRepository _repo;
 
   RedeemVoucherNotifier(this._repo) : super(NotifierState());
@@ -159,8 +158,7 @@ class RedeemVoucherNotifier extends StateNotifier<NotifierState<String>>
 }
 
 class GetUtilitiesNotifier
-    extends StateNotifier<NotifierState<GetUtilitiesResponse>>
-   {
+    extends StateNotifier<NotifierState<GetUtilitiesResponse>> {
   final UtilitiesRepository _repo;
 
   GetUtilitiesNotifier(this._repo) : super(NotifierState());
@@ -177,8 +175,7 @@ class GetUtilitiesNotifier
 }
 
 class GetDiscountNotifier
-    extends StateNotifier<NotifierState<DiscountResponse>>
-     {
+    extends StateNotifier<NotifierState<DiscountResponse>> {
   final UtilitiesRepository _repo;
 
   GetDiscountNotifier(this._repo) : super(NotifierState());
@@ -194,20 +191,20 @@ class GetDiscountNotifier
   }
 }
 
-
-
 class GetUtilitiesTypeNotifier
-    extends StateNotifier<NotifierState<GetUtilitiesTypesResponse>>
-     {
+    extends StateNotifier<NotifierState<GetUtilitiesTypesResponse>> {
   final UtilitiesRepository _repo;
 
   GetUtilitiesTypeNotifier(this._repo) : super(NotifierState());
 
   void getUtilitiesType(
-      {required String merchantServiceId, Function()? then,required String categoeyName}) async {
+      {required String merchantServiceId,
+      Function()? then,
+      required String categoeyName}) async {
     state = notifyLoading();
     state = await _repo.getUtilitiesType(
-      merchantServiceId: merchantServiceId, categoryName: categoeyName,
+      merchantServiceId: merchantServiceId,
+      categoryName: categoeyName,
     );
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
@@ -216,27 +213,25 @@ class GetUtilitiesTypeNotifier
 }
 
 class GetDataBundleNotifier
-    extends StateNotifier<NotifierState<DataBundleResponse>>
-     {
+    extends StateNotifier<NotifierState<DataBundleResponse>> {
   final UtilitiesRepository _repo;
 
   GetDataBundleNotifier(this._repo) : super(NotifierState());
 
   void getDataBundle(
-      {required String merchantServiceId, Function(DataBundleResponse?)? then}) async {
+      {required String merchantServiceId,
+      Function(DataBundleResponse?)? then}) async {
     state = notifyLoading();
     state = await _repo.getDataBundles(
       merchantServiceId: merchantServiceId,
     );
     if (state.status == NotifierStatus.done) {
-      if (then != null) then(state.data );
+      if (then != null) then(state.data);
     }
   }
 }
 
-class CheckStatusNotifier
-    extends StateNotifier<NotifierState<String>>
-  {
+class CheckStatusNotifier extends StateNotifier<NotifierState<String>> {
   final UtilitiesRepository _repo;
 
   CheckStatusNotifier(this._repo) : super(NotifierState());
@@ -253,10 +248,7 @@ class CheckStatusNotifier
   }
 }
 
-
-
-class BuyUtilitiesNotifier extends StateNotifier<NotifierState<String>>
-   {
+class BuyUtilitiesNotifier extends StateNotifier<NotifierState<String>> {
   final UtilitiesRepository _repo;
 
   BuyUtilitiesNotifier(this._repo) : super(NotifierState());
@@ -269,7 +261,7 @@ class BuyUtilitiesNotifier extends StateNotifier<NotifierState<String>>
       required String subCategory,
       required String merchantReferenceNumber,
       required String category,
-         bool? applyDiscount,
+      bool? applyDiscount,
       required bool isSchedule,
       String? frequency,
       Function()? then,
@@ -281,7 +273,7 @@ class BuyUtilitiesNotifier extends StateNotifier<NotifierState<String>>
         transactionPin: transactionPin,
         isSchedule: isSchedule,
         amount: amount,
-        applyDiscount : applyDiscount,
+        applyDiscount: applyDiscount,
         frequency: frequency,
         subCategory: subCategory,
         merchantReferenceNumber: merchantReferenceNumber,
@@ -294,25 +286,24 @@ class BuyUtilitiesNotifier extends StateNotifier<NotifierState<String>>
   }
 }
 
-
-class ValidateUtilitiesNotifier extends StateNotifier<NotifierState<String>>
-   {
+class ValidateUtilitiesNotifier extends StateNotifier<NotifierState<String>> {
   final UtilitiesRepository _repo;
 
   ValidateUtilitiesNotifier(this._repo) : super(NotifierState());
 
   void validateUtilities(
-      {
-      required String merchantAccount,
+      {required String merchantAccount,
       required String merchantReferenceNumber,
-        required String merchantProductCode,
-  required String category,
-        Function()? then,
+      required String merchantProductCode,
+      required String category,
+      Function()? then,
       Function(String)? error}) async {
     state = notifyLoading();
     state = await _repo.validateUtilities(
         merchantReferenceNumber: merchantReferenceNumber,
-        merchantAccount: merchantAccount, merchantProductCode: merchantProductCode, category:category );
+        merchantAccount: merchantAccount,
+        merchantProductCode: merchantProductCode,
+        category: category);
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     } else if (state.status == NotifierStatus.error) {
@@ -321,8 +312,7 @@ class ValidateUtilitiesNotifier extends StateNotifier<NotifierState<String>>
   }
 }
 
-class BuyAirtimeNotifier extends StateNotifier<NotifierState<String>>
-    {
+class BuyAirtimeNotifier extends StateNotifier<NotifierState<String>> {
   final UtilitiesRepository _repo;
 
   BuyAirtimeNotifier(this._repo) : super(NotifierState());
@@ -335,7 +325,7 @@ class BuyAirtimeNotifier extends StateNotifier<NotifierState<String>>
       required String transactionPin,
       required String mobileOperatorPublicId,
       required bool isAirtime,
-        required bool applyDiscount,
+      required bool applyDiscount,
       String? mobileOperatorServiceId,
       Function()? then,
       Function(String)? error}) async {
@@ -359,22 +349,24 @@ class BuyAirtimeNotifier extends StateNotifier<NotifierState<String>>
   }
 }
 
-class GuestAirtimeNotifier extends StateNotifier<NotifierState<String>>
-     {
+class GuestAirtimeNotifier extends StateNotifier<NotifierState<String>> {
   final UtilitiesRepository _repo;
 
   GuestAirtimeNotifier(this._repo) : super(NotifierState());
 
   void guestAirtime(
       {required String subCategory,
-        required String amount,
-        required String category,
-        required String destinationPhoneNumber,
-        required String mobileOperatorPublicId,
-        required bool isAirtime,
-        String? mobileOperatorServiceId, email, name, bank,
-        Function(String)? then,
-        Function(String)? error}) async {
+      required String amount,
+      required String category,
+      required String destinationPhoneNumber,
+      required String mobileOperatorPublicId,
+      required bool isAirtime,
+      String? mobileOperatorServiceId,
+      email,
+      name,
+      bank,
+      Function(String)? then,
+      Function(String)? error}) async {
     state = notifyLoading();
     state = await _repo.isGuestBuyAirtime(
       destinationPhoneNumber: destinationPhoneNumber,
@@ -396,22 +388,24 @@ class GuestAirtimeNotifier extends StateNotifier<NotifierState<String>>
   }
 }
 
-class GuestUssdNotifier extends StateNotifier<NotifierState<UssdResponse>>
-     {
+class GuestUssdNotifier extends StateNotifier<NotifierState<UssdResponse>> {
   final UtilitiesRepository _repo;
 
   GuestUssdNotifier(this._repo) : super(NotifierState());
 
   void guestUssd(
       {required String subCategory,
-        required String amount,
-        required String category,
-        required String destinationPhoneNumber,
-        required String mobileOperatorPublicId,
-        required bool isAirtime,
-        String? mobileOperatorServiceId, email, name, bank,
-        Function()? then,
-        Function(String)? error}) async {
+      required String amount,
+      required String category,
+      required String destinationPhoneNumber,
+      required String mobileOperatorPublicId,
+      required bool isAirtime,
+      String? mobileOperatorServiceId,
+      email,
+      name,
+      bank,
+      Function()? then,
+      Function(String)? error}) async {
     state = notifyLoading();
     state = await _repo.isGuestUssd(
       destinationPhoneNumber: destinationPhoneNumber,
@@ -428,29 +422,29 @@ class GuestUssdNotifier extends StateNotifier<NotifierState<UssdResponse>>
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     } else if (state.status == NotifierStatus.error) {
-      if (error != null) error(state.message  ?? "");
+      if (error != null) error(state.message ?? "");
     }
   }
 }
 
-class GuestUtilityUssdNotifier extends StateNotifier<NotifierState<UssdResponse>>
-    {
+class GuestUtilityUssdNotifier
+    extends StateNotifier<NotifierState<UssdResponse>> {
   final UtilitiesRepository _repo;
 
   GuestUtilityUssdNotifier(this._repo) : super(NotifierState());
 
   void guestUtilityUssd(
       {required List<String> merchantService,
-        required double amount,
-        required String merchantAccount,
-        required String subCategory,
-        required String merchantReferenceNumber,
-        required String category,
-        String? email,
-        name,
-        bank,
-        Function()? then,
-        Function(String)? error}) async {
+      required double amount,
+      required String merchantAccount,
+      required String subCategory,
+      required String merchantReferenceNumber,
+      required String category,
+      String? email,
+      name,
+      bank,
+      Function()? then,
+      Function(String)? error}) async {
     state = notifyLoading();
     state = await _repo.isGuestUtilityUssd(
       merchantReferenceNumber: merchantReferenceNumber,
@@ -466,10 +460,7 @@ class GuestUtilityUssdNotifier extends StateNotifier<NotifierState<UssdResponse>
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
     } else if (state.status == NotifierStatus.error) {
-      if (error != null) error(state.message  ?? "");
+      if (error != null) error(state.message ?? "");
     }
   }
 }
-
-
-

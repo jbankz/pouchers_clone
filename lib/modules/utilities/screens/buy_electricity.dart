@@ -72,14 +72,15 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
   }
 
   search(value) {
-    if(utilitiesData != null && _meterNo.isNotEmpty && paymentType != null){
+    if (utilitiesData != null && _meterNo.isNotEmpty && paymentType != null) {
       ref.read(validateUtilitiesProvider.notifier).validateUtilities(
           merchantAccount: utilitiesData!.operatorpublicid!,
-          merchantReferenceNumber: _meterNo,  merchantProductCode: paymentType!.code!, category: utilitiesData!.category!);
-    }else{
+          merchantReferenceNumber: _meterNo,
+          merchantProductCode: paymentType!.code!,
+          category: utilitiesData!.category!);
+    } else {
       showErrorBar(context, "Please choose a provider, type or meter number");
     }
-
   }
 
   @override
@@ -106,7 +107,9 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return InitialPage(
       title: electricity,
-      child: widget.isGuest! ? electricityColumn(context, textTheme) : ListenerPage(child: electricityColumn(context, textTheme)),
+      child: widget.isGuest!
+          ? electricityColumn(context, textTheme)
+          : ListenerPage(child: electricityColumn(context, textTheme)),
     );
   }
 
@@ -129,9 +132,8 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                     ref
                         .read(getUtilitiesTypeProvider.notifier)
                         .getUtilitiesType(
-                            merchantServiceId:
-                                utilitiesData!.operatorpublicid!,
-                        categoeyName: utilitiesData!.category!);
+                            merchantServiceId: utilitiesData!.operatorpublicid!,
+                            categoeyName: utilitiesData!.category!);
                   }
                 },
                 child: Container(
@@ -154,8 +156,8 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                               softWrap: true,
                               style: utilitiesData == null
                                   ? textTheme.bodyText1!.copyWith(
-                                      color: kSecondaryTextColor
-                                          .withOpacity(0.7),
+                                      color:
+                                          kSecondaryTextColor.withOpacity(0.7),
                                       fontWeight: FontWeight.w300,
                                     )
                                   : textTheme.subtitle1),
@@ -298,13 +300,16 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                 // },
                 onChanged: _onChangeHandler,
                 icon: inkWell(
-                  onTap: utilitiesData == null && paymentType == null ? null :  () async {
-                    final PhoneContact contact =
-                        await FlutterContactPicker.pickPhoneContact();
-                    setState(() {
-                      contactController.text = contact.phoneNumber!.number!;
-                    });
-                  },
+                  onTap: utilitiesData == null && paymentType == null
+                      ? null
+                      : () async {
+                          final PhoneContact contact =
+                              await FlutterContactPicker.pickPhoneContact();
+                          setState(() {
+                            contactController.text =
+                                contact.phoneNumber!.number!;
+                          });
+                        },
                   child: SvgPicture.asset(
                     AssetPaths.contactBook,
                     fit: BoxFit.scaleDown,
@@ -319,10 +324,10 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                       Text(
                         done,
                         style: textTheme.headline4!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          color: done == "Account not found" ? kColorRed : null
-                        ),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color:
+                                done == "Account not found" ? kColorRed : null),
                       )
                     ],
                   );
@@ -445,12 +450,14 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                   : Scheduling(
                       text: scheduleElectricity,
                       subtext: scheduleElectricitySub,
-                      onTap: () => pushTo(context, ScheduleElectricity(
-                        utility: utilitiesData,
-                        paymentType: paymentType,
-                        cardNo: contactController.text,
-                        amount: amountController.text,
-                      ),
+                      onTap: () => pushTo(
+                          context,
+                          ScheduleElectricity(
+                            utility: utilitiesData,
+                            paymentType: paymentType,
+                            cardNo: contactController.text,
+                            amount: amountController.text,
+                          ),
                           settings: RouteSettings(
                               name: ScheduleElectricity.routeName)),
                     ),
@@ -511,13 +518,15 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
             disableColor: (paymentType == null ||
                     _meterNo == "" ||
                     utilitiesData == null ||
-                    _amount == "" || error.isNotEmpty)
+                    _amount == "" ||
+                    error.isNotEmpty)
                 ? kBackgroundColor
                 : kPrimaryColor,
             onPressed: (paymentType == null ||
                     _meterNo == "" ||
                     utilitiesData == null ||
-                    _amount == "" || error.isNotEmpty)
+                    _amount == "" ||
+                    error.isNotEmpty)
                 ? () {}
                 : () {
                     FocusScope.of(context).unfocus();
@@ -537,7 +546,7 @@ class _BuyElectricityState extends ConsumerState<BuyElectricity> {
                           name: widget.name,
                           threshold: threshold,
                           category: "electricity-purchase",
-                          amount: "${ _amount}",
+                          amount: "${_amount}",
                           billerLogo: "",
                           billerCode: paymentType!.code,
                           recipientNo: contactController.text,

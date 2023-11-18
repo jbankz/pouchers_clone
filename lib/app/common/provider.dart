@@ -12,12 +12,14 @@ class RefreshNotifier extends StateNotifier<NotifierState<String>> {
 
   RefreshNotifier(this._repo) : super(NotifierState());
 
-  void refresh({Function()? then, }) async {
+  void refresh({
+    Function()? then,
+  }) async {
     state = notifyLoading();
     state = await _repo.refreshTokenRepo();
     if (state.status == NotifierStatus.done) {
       if (then != null) then();
-    }else if(state.message!.contains("not exist")){
+    } else if (state.message!.contains("not exist")) {
       print("not exist");
       // pushToAndClearStack(context, LogInAccount(
       //   sessionTimeOut: true,
@@ -25,4 +27,3 @@ class RefreshNotifier extends StateNotifier<NotifierState<String>> {
     }
   }
 }
-

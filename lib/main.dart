@@ -59,9 +59,9 @@ Future<void> main() async {
   //     debug: true, // optional: set to false to disable printing logs to console (default: true)
   //     ignoreSsl: true // option: set to false to disable working with http links (default: false)
   // );
-  Hive
-    ..init(directory.path)
-    ..registerAdapter(HiveStoreResponseDataAdapter());
+  // Hive
+  //   ..init(directory.path)
+  //   ..registerAdapter(HiveStoreResponseDataAdapter());
 
   const secureStorage = FlutterSecureStorage();
   try {
@@ -117,7 +117,6 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
               darkTheme: kThemeData,
               debugShowCheckedModeBanner: false,
               themeMode: ThemeMode.light,
-              home: AccountView(),
               navigatorKey: StackedService.navigatorKey,
               onGenerateRoute: StackedRouter().onGenerateRoute,
               routes: {

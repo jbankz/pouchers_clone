@@ -63,7 +63,7 @@ class _BettingState extends ConsumerState<Betting> {
   }
 
   search(value) {
-    if (utilitiesData != null && contactController.text.isNotEmpty ) {
+    if (utilitiesData != null && contactController.text.isNotEmpty) {
       ref.read(validateUtilitiesProvider.notifier).validateUtilities(
           merchantAccount: utilitiesData!.operatorpublicid!,
           merchantReferenceNumber: contactController.text,
@@ -122,7 +122,8 @@ class _BettingState extends ConsumerState<Betting> {
                       ref
                           .read(getUtilitiesTypeProvider.notifier)
                           .getUtilitiesType(
-                              merchantServiceId: utilitiesData!.operatorpublicid!,
+                              merchantServiceId:
+                                  utilitiesData!.operatorpublicid!,
                               categoeyName: utilitiesData!.category!);
                     }
                   },
@@ -136,7 +137,8 @@ class _BettingState extends ConsumerState<Betting> {
                       children: [
                         Expanded(
                             child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: kMediumPadding),
+                          padding:
+                              EdgeInsets.symmetric(vertical: kMediumPadding),
                           child: Text(
                               utilitiesData == null
                                   ? selectProvider
@@ -145,7 +147,8 @@ class _BettingState extends ConsumerState<Betting> {
                               softWrap: true,
                               style: utilitiesData == null
                                   ? textTheme.bodyText1!.copyWith(
-                                      color: kSecondaryTextColor.withOpacity(0.7),
+                                      color:
+                                          kSecondaryTextColor.withOpacity(0.7),
                                       fontWeight: FontWeight.w300,
                                     )
                                   : textTheme.subtitle1),
@@ -398,19 +401,22 @@ class _BettingState extends ConsumerState<Betting> {
                                       },
                                       child: Container(
                                           decoration: BoxDecoration(
-                                              border:
-                                                  Border.all(color: kLightPurple),
+                                              border: Border.all(
+                                                  color: kLightPurple),
                                               color: currentIndex == index
                                                   ? kLightPurple
                                                   : kTransparent,
-                                              borderRadius: BorderRadius.circular(
-                                                  kSmallPadding)),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      kSmallPadding)),
                                           child: Column(
                                             children: [
                                               Container(
-                                                padding: EdgeInsets.all(kPadding),
+                                                padding:
+                                                    EdgeInsets.all(kPadding),
                                                 decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.only(
+                                                  borderRadius:
+                                                      BorderRadius.only(
                                                     topRight: Radius.circular(
                                                         kSmallPadding),
                                                     topLeft: Radius.circular(
@@ -425,7 +431,8 @@ class _BettingState extends ConsumerState<Betting> {
                                                             style: textTheme
                                                                 .headline4!
                                                                 .copyWith(
-                                                              color: kLightPurple,
+                                                              color:
+                                                                  kLightPurple,
                                                             ),
                                                           )
                                                         : Text(
@@ -433,15 +440,15 @@ class _BettingState extends ConsumerState<Betting> {
                                                                         .data!
                                                                         .threshold!) <=
                                                                     double.parse(
-                                                                        guestList[
-                                                                                index]
+                                                                        guestList[index]
                                                                             .icon)
                                                                 ? "${done.data!.discountValue}% cashback"
                                                                 : "0% cashback",
                                                             style: textTheme
                                                                 .headline4!
                                                                 .copyWith(
-                                                              color: kLightPurple,
+                                                              color:
+                                                                  kLightPurple,
                                                             ),
                                                           ),
                                               ),
@@ -458,8 +465,10 @@ class _BettingState extends ConsumerState<Betting> {
                                                   ),
                                                   children: [
                                                     TextSpan(
-                                                      text: guestList[index].icon,
-                                                      style: textTheme.subtitle1!
+                                                      text:
+                                                          guestList[index].icon,
+                                                      style: textTheme
+                                                          .subtitle1!
                                                           .copyWith(
                                                         fontWeight:
                                                             FontWeight.w500,

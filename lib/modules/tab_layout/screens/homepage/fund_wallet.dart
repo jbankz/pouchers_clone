@@ -114,14 +114,18 @@ class FundWallet extends ConsumerWidget {
                               ref.watch(getWalletProvider).data == null
                                   ? ""
                                   : ref
+                                              .watch(getWalletProvider)
+                                              .data!
+                                              .data!
+                                              .bankProvider ==
+                                          ""
+                                      ? ""
+                                      : ref
                                           .watch(getWalletProvider)
                                           .data!
                                           .data!
-                                          .bankProvider == "" ? "" : ref
-                                  .watch(getWalletProvider)
-                                  .data!
-                                  .data!
-                                  .bankProvider!.toCapitalized()),
+                                          .bankProvider!
+                                          .toCapitalized()),
                         ],
                       ),
                     ),
@@ -156,8 +160,8 @@ class FundWallet extends ConsumerWidget {
                             child: RichText(
                           text: TextSpan(
                               text: "$select ",
-                              style:
-                                  textTheme.headline3!.copyWith(color: kIconGrey),
+                              style: textTheme.headline3!
+                                  .copyWith(color: kIconGrey),
                               children: [
                                 TextSpan(
                                   text: "\"Transfer Money\"",
@@ -187,7 +191,7 @@ class FundWallet extends ConsumerWidget {
                     ),
                     CopyCodeRow(
                       textTheme: textTheme,
-                      text:"Select Bank",
+                      text: "Select Bank",
                     ),
                     SizedBox(
                       height: kMediumPadding,

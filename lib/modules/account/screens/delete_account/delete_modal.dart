@@ -72,14 +72,16 @@ class DeleteModal extends StatelessWidget {
               ),
               Consumer(builder: (context, ref, _) {
                 ref.listen(deleteUserProvider,
-                    (previous, NotifierState<String> next) async{
+                    (previous, NotifierState<String> next) async {
                   if (next.status == NotifierStatus.done) {
                     await Hive.deleteFromDisk();
                     ref.invalidate(editProfileInHouseProvider);
                     ref.invalidate(biometricProvider);
-                    pushTo(context, DisableSuccessful(
-                      isDelete: true,
-                    ),
+                    pushTo(
+                        context,
+                        DisableSuccessful(
+                          isDelete: true,
+                        ),
                         settings: const RouteSettings(
                             name: DisableSuccessful.routeName));
                   } else if (next.status == NotifierStatus.error) {

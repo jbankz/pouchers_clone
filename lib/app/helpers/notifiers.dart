@@ -51,7 +51,7 @@ class NotifierState<T> {
 }
 
 NotifierState<T> notifyIdle<T>() {
-  return  NotifierState(status: NotifierStatus.idle);
+  return NotifierState(status: NotifierStatus.idle);
 }
 
 NotifierState<T> notifyRight<T>({required T? data, String? message}) {

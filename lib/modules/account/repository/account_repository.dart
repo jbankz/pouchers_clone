@@ -12,6 +12,8 @@ import 'package:Pouchers/modules/login/models/login_response.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:riverpod/riverpod.dart';
 
+import '../../../ui/features/profile/data/dao/user_dao.dart';
+
 final accountRepoProvider =
     Provider.autoDispose<AccountRepository>((ref) => AccountRepository(ref));
 
@@ -111,9 +113,9 @@ class AccountRepository {
       String? profilePicture,
       String? utilityBill,
       String? fcmToken,
-        String? city,
-        String? userState,
-        String? postalCode,
+      String? city,
+      String? userState,
+      String? postalCode,
       bool? isLoginBiometricActive,
       bool? isPaymentBiometricActive}) async {
     ServiceResponse<EditProfileResponse> editProfile;
@@ -294,12 +296,13 @@ class AccountRepository {
     return validateBvn.toNotifierState();
   }
 
-  Future<NotifierState<EditProfileResponse>> validateId({
-    required String idType,
-    required String idNumber,
-    required bool isUpload,
-    String? firstName, lastName, dob
-  }) async {
+  Future<NotifierState<EditProfileResponse>> validateId(
+      {required String idType,
+      required String idNumber,
+      required bool isUpload,
+      String? firstName,
+      lastName,
+      dob}) async {
     ServiceResponse<EditProfileResponse> validateId;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     validateId = await AccountService.validateId(
@@ -330,7 +333,9 @@ class AccountRepository {
 
   Future<NotifierState<TierListResponse>> getTierList() async {
     ServiceResponse<TierListResponse> tierList;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
+
     tierList = await AccountService.getTierList(token: userProfile.token!);
 
     if (tierList.notAuthenticated) {
@@ -456,26 +461,18 @@ class AccountRepository {
     return getUserProfile.toNotifierState();
   }
 
-  Future<NotifierState<ManageRequestResponse>> manageRequest({required String type,
-    required int page, String? status}) async {
+  Future<NotifierState<ManageRequestResponse>> manageRequest(
+      {required String type, required int page, String? status}) async {
     ServiceResponse<ManageRequestResponse> manageRequest;
     HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     manageRequest = await AccountService.manageRequest(
-      token: userProfile.token!,
-      page: page,
-      type: type,
-      status: status
-    );
+        token: userProfile.token!, page: page, type: type, status: status);
 
     if (manageRequest.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
       manageRequest = await AccountService.manageRequest(
-        token: userProfiles.token!,
-          page: page,
-          type: type,
-          status: status
-      );
+          token: userProfiles.token!, page: page, type: type, status: status);
     }
     return manageRequest.toNotifierState();
   }

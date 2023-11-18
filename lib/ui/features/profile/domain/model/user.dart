@@ -20,7 +20,9 @@ class User with _$User {
       @JsonKey(name: 'verification_token_expires')
       @HiveField(6)
       String? verificationTokenExpires,
-      @JsonKey(name: 'tier_levels') @HiveField(7) int? tierLevels,
+      @JsonKey(name: 'tier_levels', defaultValue: 1)
+      @HiveField(7)
+      int? tierLevels,
       @JsonKey(name: 'password_reset_token')
       @HiveField(8)
       String? passwordResetToken,

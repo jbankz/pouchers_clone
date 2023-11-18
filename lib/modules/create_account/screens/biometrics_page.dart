@@ -99,10 +99,11 @@ class _BiometricsPageState extends ConsumerState<BiometricsPage> {
                     Hive.box(kBiometricsBox).put(kBiometricsKey, 1);
                     pushToAndClearStack(context, LogInAccount());
                     ref.read(editProfileProvider.notifier).editProfile(
-                      isLoginBiometricActive: true,
-                      isPaymentBiometricActive:
-                      ref.watch(biometricProvider).isPaymentBiometricActive,
-                    );
+                          isLoginBiometricActive: true,
+                          isPaymentBiometricActive: ref
+                              .watch(biometricProvider)
+                              .isPaymentBiometricActive,
+                        );
                     // checkBiometric(context);
                   },
                 ),
@@ -187,7 +188,6 @@ class _BiometricsPageState extends ConsumerState<BiometricsPage> {
       isAuth = authenticated ? true : false;
     });
     if (isAuth) {
-
       // pushToAndClearStack(
       //   context,
       //   TabLayout(),
