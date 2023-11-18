@@ -287,7 +287,7 @@ ThemeData kThemeData = ThemeData.light().copyWith(
             borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
         showDragHandle: true,
         dragHandleColor: AppColors.kPurpleColor200,
-        dragHandleSize: const Size(24, 3.47),
+        dragHandleSize: const Size(24, 1.53),
         clipBehavior: Clip.none),
     textTheme: TextTheme(
         displayLarge: kHeadline1TextStyle,

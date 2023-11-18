@@ -3,9 +3,9 @@ import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../common/app_colors.dart';
-import '../../../../../../common/app_strings.dart';
-import '../../../../../../widgets/gap.dart';
+import '../../../../../../../common/app_colors.dart';
+import '../../../../../../../common/app_strings.dart';
+import '../../../../../../../widgets/gap.dart';
 
 class BvnModal extends StatelessWidget {
   const BvnModal({super.key});

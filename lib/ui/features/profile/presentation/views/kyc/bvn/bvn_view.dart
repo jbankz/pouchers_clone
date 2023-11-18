@@ -1,6 +1,6 @@
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/widgets/dialog/show_dialog_sheet.dart';
+import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
 import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -10,9 +10,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked_annotations.dart';
 
-import '../../../../../../utils/field_validator.dart';
-import '../../../../../common/app_strings.dart';
-import '../../../../../widgets/edit_text_field_with.dart';
+import '../../../../../../../utils/field_validator.dart';
+import '../../../../../../common/app_strings.dart';
+import '../../../../../../widgets/edit_text_field_with.dart';
 import 'bvn_view.form.dart';
 import 'widget/bvn_modal.dart';
 
@@ -100,7 +100,8 @@ class _BvnViewState extends State<BvnView> with $BvnView {
                       title: AppString.verifyBVN, onPressed: () {}),
                   const Gap(height: 27),
                   InkWell(
-                    onTap: () => showAlertDialog(child: const BvnModal()),
+                    onTap: () =>
+                        BottomSheets.showAlertDialog(child: const BvnModal()),
                     child: Text(AppString.bvnReminder,
                         style: context.displayMedium
                             ?.copyWith(fontWeight: FontWeight.w400)),

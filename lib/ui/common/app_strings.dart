@@ -181,6 +181,10 @@ class AppString {
   static String upgrade = 'Upgrade';
   static String completedVerificationProcess =
       'Complete the account verification process to upgrade your account and remove all restrictions.';
+  static String validIdInst =
+      'Valid identification helps keeps your account safe and reduce risk of fraud.';
+  static String idDropdownInst = 'Select identification method';
+  static String idInst = 'Enter ID number';
   static String bvn = 'BVN';
   static String bvnVerify = 'Verify your Bank Verification Number';
   static String validId = 'Valid ID card';
@@ -194,4 +198,16 @@ class AppString {
   static String bvnHint2 = 'Retrieve your BVN code by dialing ';
   static String getBVN = 'Get BVN';
   static String cancel = 'Cancel';
+  static String idNum = 'ID Number';
+  static String verificationType = 'Verification Type';
+  static String id = 'Valid ID';
+  static String idType = 'Identification type';
+  static String verify = 'Verify';
+  static String howToGetVNIN = 'How to get your Virtual NIN';
+  static String howToGetNIN1 =
+      'To use NIN- user needs to generate their virtual NIN via the NIMC Mobile App or the NIMC USSD code - *346*3*11digit NIN*1138183#';
+  static String howToGetNIN2 = 'Enterprise code - 1138183';
+  static String howToGetNIN3 = 'The generated VNIN is valid for only 72 hours';
+  static String howToGetNIN4 =
+      'The vNIN is designed to replace the 11-digit NIN';
 }

@@ -41,7 +41,7 @@ class AccountVerificationView extends ConsumerWidget {
                   BuildVerificationTypes(
                       title: AppString.validId,
                       desc: AppString.validIdVerify,
-                      onTap: () {}),
+                      onTap: () => PageRouter.pushNamed(Routes.idView)),
                   const Gap(height: 15),
                   BuildVerificationTypes(
                       title: AppString.utilityBill,

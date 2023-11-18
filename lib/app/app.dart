@@ -17,7 +17,8 @@ import '../ui/features/dashboard/views/account/views/account_settings_view.dart'
 import '../ui/features/dashboard/views/account/views/account_verification.dart';
 import '../ui/features/dashboard/views/dashboard_view.dart';
 import '../ui/features/onboarding/presentation/views/onboarding_view.dart';
-import '../ui/features/profile/presentation/views/bvn/bvn_view.dart';
+import '../ui/features/profile/presentation/views/kyc/bvn/bvn_view.dart';
+import '../ui/features/profile/presentation/views/kyc/id/id_view.dart';
 import '../ui/features/tiers/presentation/view/tier_view.dart';
 import '../ui/widgets/success_state.dart';
 import 'core/manager/biometric_manager.dart';
@@ -67,6 +68,7 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: TierView),
     AdaptiveRoute(page: AccountVerificationView),
     AdaptiveRoute(page: BvnView),
+    AdaptiveRoute(page: IdView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
