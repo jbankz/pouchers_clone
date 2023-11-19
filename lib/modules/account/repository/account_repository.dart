@@ -283,7 +283,8 @@ class AccountRepository {
   Future<NotifierState<EditProfileResponse>> validateBvn(
       {required String bvn}) async {
     ServiceResponse<EditProfileResponse> validateBvn;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     validateBvn =
         await AccountService.validateBvn(bvn: bvn, token: userProfile.token!);
 
@@ -304,7 +305,7 @@ class AccountRepository {
       lastName,
       dob}) async {
     ServiceResponse<EditProfileResponse> validateId;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     validateId = await AccountService.validateId(
         isUpload: isUpload,
         surname: userProfile.lastName,

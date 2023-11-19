@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:Pouchers/app/helpers/network_helpers.dart';
@@ -66,7 +67,9 @@ class CardsRepository {
 
   Future<NotifierState<GetAllCardsResponse>> getAllVirtualCards() async {
     ServiceResponse<GetAllCardsResponse> cardsResponse;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
+
     print("access Token ${userProfile.token}");
     print("refresh Token ${userProfile.refreshToken}");
     cardsResponse = await CardsService.getAllVirtualCards(
@@ -83,7 +86,8 @@ class CardsRepository {
 
   Future<NotifierState<FetchEnvs>> getAllFees({required double amount}) async {
     ServiceResponse<FetchEnvs> fetchEnv;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     fetchEnv = await CardsService.getAllFees(
         token: userProfile.token!, amount: amount);
 

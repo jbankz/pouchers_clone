@@ -2,6 +2,7 @@ import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../../../common/app_colors.dart';
 import '../../../../../../../common/app_strings.dart';
@@ -60,11 +61,14 @@ class BvnModal extends StatelessWidget {
                       ),
                       const Gap(width: 45),
                       Flexible(
-                        child: Text(AppString.getBVN,
-                            style: context.titleMedium?.copyWith(
-                                fontSize: 18,
-                                color: AppColors.kPrimaryColor,
-                                fontWeight: FontWeight.w700)),
+                        child: GestureDetector(
+                          onTap: () => launchUrl(Uri.parse('tel://*565*0#')),
+                          child: Text(AppString.getBVN,
+                              style: context.titleMedium?.copyWith(
+                                  fontSize: 18,
+                                  color: AppColors.kPrimaryColor,
+                                  fontWeight: FontWeight.w700)),
+                        ),
                       ),
                     ],
                   ),

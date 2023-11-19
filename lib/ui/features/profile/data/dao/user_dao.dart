@@ -23,7 +23,7 @@ class UserDao {
 
   Future<Box<Map>> openBox() => _hiveManager.openBox<Map>(AppKeys.userDaoKey);
 
-  Future<void> saveUser(User? user) async =>
+  Future<void> save(User? user) async =>
       await _box.put(AppKeys.userDaoKey, user?.toJson() ?? {});
 
   User returnUser(Box box) =>

@@ -11,9 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 
 import '../../../../../../app/core/manager/intercom_manager.dart';
-import '../../../../../../app/navigators/navigators.dart';
-import '../../../../../../modules/profile/profile_page.dart';
-import '../../../../../../modules/profile/profile_tier_list.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/profile_image.dart';
 import 'widgets/account_tile.dart';
@@ -22,9 +19,8 @@ class AccountView extends ConsumerWidget {
   const AccountView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => 2 < 2
-      ? ProfilePage()
-      : ValueListenableBuilder<Box>(
+  Widget build(BuildContext context, WidgetRef ref) =>
+      ValueListenableBuilder<Box>(
           valueListenable: userDao.getListenable(),
           builder: (_, box, __) {
             final user = userDao.returnUser(box);
@@ -115,12 +111,12 @@ class AccountView extends ConsumerWidget {
                       title: AppString.helpAndSupport,
                       desc: AppString.helpAndSupportInstruction,
                       tapped: IntercomManager.displayMessenger),
-                  // const Gap(height: 23),
-                  // AccountTile(
-                  //     icon: AppImage.logo,
-                  //     title: AppString.aboutPourcher,
-                  //     desc: AppString.aboutPourcherInstruction,
-                  //     tapped: () {}),
+                  const Gap(height: 23),
+                  AccountTile(
+                      icon: AppImage.logo,
+                      title: AppString.aboutPourcher,
+                      desc: AppString.aboutPourcherInstruction,
+                      tapped: () {}),
                   const Gap(height: 32),
                   AccountTile(
                       icon: AppImage.logOut,

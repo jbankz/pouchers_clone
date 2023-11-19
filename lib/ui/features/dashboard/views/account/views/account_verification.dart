@@ -9,9 +9,12 @@ import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../../common/app_images.dart';
 import 'widgets/account_setting_tile.dart';
+import 'widgets/build_verification_type.dart';
 
 class AccountVerificationView extends ConsumerWidget {
   const AccountVerificationView({super.key});
@@ -46,53 +49,10 @@ class AccountVerificationView extends ConsumerWidget {
                   BuildVerificationTypes(
                       title: AppString.utilityBill,
                       desc: AppString.utilityBillVerify,
-                      onTap: () {})
+                      onTap: () =>
+                          PageRouter.pushNamed(Routes.utilityBillView)),
                 ]),
               ),
             );
           });
-}
-
-class BuildVerificationTypes extends StatelessWidget {
-  final String title;
-  final String desc;
-  final void Function()? onTap;
-
-  const BuildVerificationTypes(
-      {super.key, required this.title, required this.desc, this.onTap});
-
-  @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: onTap,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: AppColors.white, borderRadius: BorderRadius.circular(8.r)),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: context.headlineMedium
-                          ?.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                    const Gap(height: 4),
-                    Text(
-                      desc,
-                      style: context.displaySmall
-                          ?.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
-                    )
-                  ],
-                ),
-              ),
-              Icon(Icons.arrow_forward_ios_sharp,
-                  color: AppColors.kSecondaryTextColor, size: 11.w)
-            ],
-          ),
-        ),
-      );
 }

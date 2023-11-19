@@ -5,8 +5,8 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/foundation.dart' as _i21;
-import 'package:flutter/material.dart' as _i20;
+import 'package:flutter/foundation.dart' as _i22;
+import 'package:flutter/material.dart' as _i21;
 import 'package:flutter/material.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/view/biometric/biometric_view.dart'
     as _i15;
@@ -40,11 +40,13 @@ import 'package:Pouchers/ui/features/profile/presentation/views/kyc/bvn/bvn_view
     as _i18;
 import 'package:Pouchers/ui/features/profile/presentation/views/kyc/id/id_view.dart'
     as _i19;
+import 'package:Pouchers/ui/features/profile/presentation/views/kyc/utility/utility_bill_view.dart'
+    as _i20;
 import 'package:Pouchers/ui/features/tiers/presentation/view/tier_view.dart'
     as _i16;
 import 'package:Pouchers/ui/widgets/success_state.dart' as _i5;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i22;
+import 'package:stacked_services/stacked_services.dart' as _i23;
 
 class Routes {
   static const onboardingView = '/';
@@ -83,6 +85,8 @@ class Routes {
 
   static const idView = '/id-view';
 
+  static const utilityBillView = '/utility-bill-view';
+
   static const all = <String>{
     onboardingView,
     signUpView,
@@ -102,6 +106,7 @@ class Routes {
     accountVerificationView,
     bvnView,
     idView,
+    utilityBillView,
   };
 }
 
@@ -179,11 +184,15 @@ class StackedRouter extends _i1.RouterBase {
       Routes.idView,
       page: _i19.IdView,
     ),
+    _i1.RouteDef(
+      Routes.utilityBillView,
+      page: _i20.UtilityBillView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.OnboardingView: (data) {
-      return _i20.PageRouteBuilder<dynamic>(
+      return _i21.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i2.OnboardingView(),
         settings: data,
@@ -192,7 +201,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i3.SignUpView: (data) {
-      return _i20.PageRouteBuilder<dynamic>(
+      return _i21.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i3.SignUpView(),
         settings: data,
@@ -201,7 +210,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i4.SignInView: (data) {
-      return _i20.PageRouteBuilder<dynamic>(
+      return _i21.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i4.SignInView(),
         settings: data,
@@ -213,7 +222,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SuccessStateArguments>(
         orElse: () => const SuccessStateArguments(),
       );
-      return _i20.PageRouteBuilder<dynamic>(
+      return _i21.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i5.SuccessState(
                 key: args.key,
@@ -228,7 +237,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i6.DashboardView: (data) {
-      return _i20.PageRouteBuilder<dynamic>(
+      return _i21.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i6.DashboardView(),
         settings: data,
@@ -320,6 +329,12 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
+    _i20.UtilityBillView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i20.UtilityBillView(),
+        settings: data,
+      );
+    },
   };
 
   @override
@@ -338,7 +353,7 @@ class SuccessStateArguments {
     this.tap,
   });
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   final String title;
 
@@ -379,7 +394,7 @@ class TagViewArguments {
     this.callback,
   });
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   final dynamic Function()? callback;
 
@@ -407,7 +422,7 @@ class SetNewPasswordViewArguments {
     this.route,
   });
 
-  final _i21.Key? key;
+  final _i22.Key? key;
 
   final String email;
 
@@ -430,7 +445,7 @@ class SetNewPasswordViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i22.NavigationService {
+extension NavigatorStateExtension on _i23.NavigationService {
   Future<dynamic> navigateToOnboardingView([
     int? routerId,
     bool preventDuplicates = true,
@@ -474,7 +489,7 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> navigateToSuccessState({
-    _i21.Key? key,
+    _i22.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -527,7 +542,7 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> navigateToTagView({
-    _i21.Key? key,
+    _i22.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -614,7 +629,7 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> navigateToSetNewPasswordView({
-    _i21.Key? key,
+    _i22.Key? key,
     required String email,
     String? route,
     int? routerId,
@@ -702,6 +717,20 @@ extension NavigatorStateExtension on _i22.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToUtilityBillView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.utilityBillView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithOnboardingView([
     int? routerId,
     bool preventDuplicates = true,
@@ -745,7 +774,7 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> replaceWithSuccessState({
-    _i21.Key? key,
+    _i22.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -798,7 +827,7 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> replaceWithTagView({
-    _i21.Key? key,
+    _i22.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -885,7 +914,7 @@ extension NavigatorStateExtension on _i22.NavigationService {
   }
 
   Future<dynamic> replaceWithSetNewPasswordView({
-    _i21.Key? key,
+    _i22.Key? key,
     required String email,
     String? route,
     int? routerId,
@@ -967,6 +996,20 @@ extension NavigatorStateExtension on _i22.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.idView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithUtilityBillView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.utilityBillView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

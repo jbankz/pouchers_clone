@@ -1,4 +1,5 @@
 class AppString {
+  static String _bullet = '\u2022';
   static String appName = 'Pouchers';
   static String notFound = 'Not Found';
   static String paymentHub = 'Your one stop for all things payments';
@@ -210,4 +211,18 @@ class AppString {
   static String howToGetNIN3 = 'The generated VNIN is valid for only 72 hours';
   static String howToGetNIN4 =
       'The vNIN is designed to replace the 11-digit NIN';
+  static String validBillInst =
+      'Upload PHCN bill or receipt of any utilities containing your house address.';
+  static String utilityBillTitle = 'Utility bill';
+  static String uploadFile = 'Upload file';
+  static String uploadFileInst1 =
+      '$_bullet File formats should be in .jpg and .png only';
+  static String uploadFileInst2 = '$_bullet File size should not exceed 3 MB';
+  static String submit = 'Submit';
+  static String completed = 'Completed';
+  static String bvnCompleted = 'BVN verification successful';
+  static String idCompleted = 'ID validation successful';
+  static String pending = 'Pending';
+  static String verified = 'Verified';
+  static String failed = 'Failed';
 }

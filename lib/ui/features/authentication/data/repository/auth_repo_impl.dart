@@ -49,7 +49,7 @@ class AuthRepoImpl implements AuthRepo {
       ..storePasswordCred(authDto.password ?? '');
 
     /// Cache users data
-    userDao.saveUser(response?.data);
+    userDao.save(response?.data);
 
     return response;
   }

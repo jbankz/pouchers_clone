@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import '../manager/session_manager.dart';
 import 'error_wrapper.dart';
 
-enum RequestType { post, get, put, delete, upload }
+enum RequestType { post, get, put, delete, upload, patch }
 
 class NetworkService {
   static const int connectTimeout = 500000;
@@ -56,6 +56,16 @@ class NetworkService {
 
         case RequestType.put:
           response = await dio!.put(
+            path,
+            queryParameters: params,
+            data: data,
+            cancelToken: cancelToken,
+            options: options ?? await _getOption(),
+            onSendProgress: onSendProgress,
+          );
+
+        case RequestType.patch:
+          response = await dio!.patch(
             path,
             queryParameters: params,
             data: data,

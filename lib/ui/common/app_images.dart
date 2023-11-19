@@ -107,4 +107,7 @@ class AppImage {
   static String pointedArrow = "${_iconPath}pointed_arrow.svg";
   static String exclamation = "${_iconPath}exclamation.svg";
   static String comment = "${_iconPath}comment.svg";
+  static String verifiedBadge = "${_iconPath}verified_badge.svg";
+  static String failedBadge = "${_iconPath}failed_badge.svg";
+  static String pendingBadge = "${_iconPath}pending_badge.svg";
 }

@@ -37,4 +37,10 @@ class ApiPath {
 
   /// Returns users tiers
   static const String tiers = '$_apiVersionOne/user/tiers';
+
+  /// Validates users BVN
+  static const String validateBVN = '$_apiVersionOne/user/validate-bvn';
+
+  /// Validates users ID
+  static const String validateID = '$_apiVersionOne/user/validate-ID';
 }
