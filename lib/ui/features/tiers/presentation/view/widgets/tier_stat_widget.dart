@@ -30,8 +30,9 @@ class TierStatsWidget extends HookConsumerWidget {
                 children: [
                   Stack(clipBehavior: Clip.none, children: [
                     Container(
-                      height: context.height * .62,
+                      height: context.height,
                       width: 7.w,
+                      margin: EdgeInsets.only(bottom: 70.h),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.vertical(
                               top: Radius.circular(8.r),
@@ -73,8 +74,8 @@ class TierStatsWidget extends HookConsumerWidget {
       });
 
   num _returnPosition(int? tierLevels) {
-    if (tierLevels == 1) return 12;
-    if (tierLevels == 2) return 3.4;
-    return 1.95;
+    if (tierLevels == 1) return 13;
+    if (tierLevels == 2) return 3.5;
+    return 2;
   }
 }

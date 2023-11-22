@@ -12,9 +12,11 @@ import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
 import 'package:share_plus/share_plus.dart';
 
-class ReferralInvite extends StatelessWidget {
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+import '../../../../ui/features/profile/data/dao/user_dao.dart';
 
+class ReferralInvite extends StatelessWidget {
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  final userProfile = userDao.returnUser(userDao.box);
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;

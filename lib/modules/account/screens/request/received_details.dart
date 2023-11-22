@@ -27,6 +27,8 @@ import 'package:local_auth/local_auth.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
 
+import '../../../../ui/features/profile/data/dao/user_dao.dart';
+
 class ReceivedDetails extends ConsumerStatefulWidget {
   static const String routeName = "receivedDetails";
   final Request request;
@@ -47,7 +49,8 @@ class _ReceivedDetailsState extends ConsumerState<ReceivedDetails> {
   String noteText = addNote;
   TextEditingController noteController = TextEditingController();
   Map<String, dynamic> contactInfo = {};
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  final userProfile = userDao.returnUser(userDao.box);
   bool? _canCheckBiometrics;
   bool isAuth = false;
   UserCredentials? cred;

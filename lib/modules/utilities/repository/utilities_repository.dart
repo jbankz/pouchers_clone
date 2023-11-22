@@ -9,6 +9,8 @@ import 'package:Pouchers/modules/utilities/model/utilities_model.dart';
 import 'package:Pouchers/modules/utilities/service/utilities_service.dart';
 import 'package:Pouchers/utils/strings.dart';
 
+import '../../../ui/features/profile/data/dao/user_dao.dart';
+
 final utilitiesRepoProvider = Provider.autoDispose<UtilitiesRepository>(
     (ref) => UtilitiesRepository(ref));
 
@@ -20,7 +22,7 @@ class UtilitiesRepository {
   Future<NotifierState<String>> buyVoucher(
       {required String amount, required String transactionPin}) async {
     ServiceResponse<String> buyVoucher;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     buyVoucher = await UtilitiesService.buyVoucher(
       token: userProfile.token!,
       amount: amount,
@@ -29,7 +31,7 @@ class UtilitiesRepository {
 
     if (buyVoucher.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       buyVoucher = await UtilitiesService.buyVoucher(
         token: userProfiles.token!,
         amount: amount,
@@ -42,13 +44,13 @@ class UtilitiesRepository {
   Future<NotifierState<GetVoucherResponse>> fetchVoucher(
       {required String status, int? page}) async {
     ServiceResponse<GetVoucherResponse> fetchVoucher;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     fetchVoucher = await UtilitiesService.fetchVouchers(
         token: userProfile.token!, status: status, page: page);
 
     if (fetchVoucher.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       fetchVoucher = await UtilitiesService.fetchVouchers(
         token: userProfiles.token!,
         status: status,
@@ -63,7 +65,7 @@ class UtilitiesRepository {
       required String transactionPin,
       required String code}) async {
     ServiceResponse<String> giftVoucher;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     giftVoucher = await UtilitiesService.giftVoucher(
       token: userProfile.token!,
       email: email,
@@ -74,7 +76,7 @@ class UtilitiesRepository {
 
     if (giftVoucher.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       giftVoucher = await UtilitiesService.giftVoucher(
         token: userProfiles.token!,
         email: email,
@@ -89,7 +91,7 @@ class UtilitiesRepository {
   Future<NotifierState<String>> redeemVoucher(
       {required String transactionPin, required String code}) async {
     ServiceResponse<String> redeemVoucher;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     redeemVoucher = await UtilitiesService.redeemVoucher(
       token: userProfile.token!,
       code: code,
@@ -98,7 +100,7 @@ class UtilitiesRepository {
 
     if (redeemVoucher.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       redeemVoucher = await UtilitiesService.redeemVoucher(
         token: userProfiles.token!,
         code: code,
@@ -119,7 +121,7 @@ class UtilitiesRepository {
   Future<NotifierState<DiscountResponse>> getDiscount(
       {required String utility}) async {
     ServiceResponse<DiscountResponse> getDiscount;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     getDiscount = await UtilitiesService.getDiscount(
       token: userProfile.token!,
       utility: utility,
@@ -127,7 +129,7 @@ class UtilitiesRepository {
 
     if (getDiscount.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       getDiscount = await UtilitiesService.getDiscount(
         token: userProfiles.token!,
         utility: utility,
@@ -158,7 +160,7 @@ class UtilitiesRepository {
     bool? applyDiscount,
   }) async {
     ServiceResponse<String> buyUtilities;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     buyUtilities = await UtilitiesService.buyUtilities(
       token: userProfile.token!,
       merchantAccount: merchantAccount,
@@ -175,7 +177,7 @@ class UtilitiesRepository {
 
     if (buyUtilities.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       buyUtilities = await UtilitiesService.buyUtilities(
         token: userProfiles.token!,
         merchantAccount: merchantAccount,
@@ -199,7 +201,7 @@ class UtilitiesRepository {
       required String merchantProductCode,
       required String category}) async {
     ServiceResponse<String> validateUtilities;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     validateUtilities = await UtilitiesService.validateUtilities(
         merchantAccount: merchantAccount,
         merchantReferenceNumber: merchantReferenceNumber,
@@ -229,7 +231,7 @@ class UtilitiesRepository {
     String? mobileOperatorServiceId,
   }) async {
     ServiceResponse<String> buyAirtime;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     buyAirtime = await UtilitiesService.buyAirtime(
       token: userProfile.token!,
       amount: amount,
@@ -245,7 +247,7 @@ class UtilitiesRepository {
 
     if (buyAirtime.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       buyAirtime = await UtilitiesService.buyAirtime(
         token: userProfiles.token!,
         amount: amount,

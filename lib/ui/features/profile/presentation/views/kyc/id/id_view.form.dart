@@ -11,6 +11,7 @@ import 'package:stacked/stacked.dart';
 
 const bool _autoTextFieldValidation = true;
 
+const String TypeValueKey = 'type';
 const String IdValueKey = 'id';
 
 final Map<String, TextEditingController> _IdViewTextEditingControllers = {};
@@ -18,13 +19,17 @@ final Map<String, TextEditingController> _IdViewTextEditingControllers = {};
 final Map<String, FocusNode> _IdViewFocusNodes = {};
 
 final Map<String, String? Function(String?)?> _IdViewTextValidations = {
+  TypeValueKey: null,
   IdValueKey: null,
 };
 
 mixin $IdView {
+  TextEditingController get typeController =>
+      _getFormTextEditingController(TypeValueKey);
   TextEditingController get idController =>
       _getFormTextEditingController(IdValueKey);
 
+  FocusNode get typeFocusNode => _getFormFocusNode(TypeValueKey);
   FocusNode get idFocusNode => _getFormFocusNode(IdValueKey);
 
   TextEditingController _getFormTextEditingController(
@@ -51,6 +56,7 @@ mixin $IdView {
   /// Registers a listener on every generated controller that calls [model.setData()]
   /// with the latest textController values
   void syncFormWithViewModel(FormStateHelper model) {
+    typeController.addListener(() => _updateFormData(model));
     idController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
@@ -63,6 +69,7 @@ mixin $IdView {
     'This feature was deprecated after 3.1.0.',
   )
   void listenToFormUpdated(FormViewModel model) {
+    typeController.addListener(() => _updateFormData(model));
     idController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
@@ -73,6 +80,7 @@ mixin $IdView {
     model.setData(
       model.formValueMap
         ..addAll({
+          TypeValueKey: typeController.text,
           IdValueKey: idController.text,
         }),
     );
@@ -115,7 +123,18 @@ extension ValueProperties on FormStateHelper {
     return !hasAnyValidationMessage;
   }
 
+  String? get typeValue => this.formValueMap[TypeValueKey] as String?;
   String? get idValue => this.formValueMap[IdValueKey] as String?;
+
+  set typeValue(String? value) {
+    this.setData(
+      this.formValueMap..addAll({TypeValueKey: value}),
+    );
+
+    if (_IdViewTextEditingControllers.containsKey(TypeValueKey)) {
+      _IdViewTextEditingControllers[TypeValueKey]?.text = value ?? '';
+    }
+  }
 
   set idValue(String? value) {
     this.setData(
@@ -127,28 +146,39 @@ extension ValueProperties on FormStateHelper {
     }
   }
 
+  bool get hasType =>
+      this.formValueMap.containsKey(TypeValueKey) &&
+      (typeValue?.isNotEmpty ?? false);
   bool get hasId =>
       this.formValueMap.containsKey(IdValueKey) &&
       (idValue?.isNotEmpty ?? false);
 
+  bool get hasTypeValidationMessage =>
+      this.fieldsValidationMessages[TypeValueKey]?.isNotEmpty ?? false;
   bool get hasIdValidationMessage =>
       this.fieldsValidationMessages[IdValueKey]?.isNotEmpty ?? false;
 
+  String? get typeValidationMessage =>
+      this.fieldsValidationMessages[TypeValueKey];
   String? get idValidationMessage => this.fieldsValidationMessages[IdValueKey];
 }
 
 extension Methods on FormStateHelper {
+  setTypeValidationMessage(String? validationMessage) =>
+      this.fieldsValidationMessages[TypeValueKey] = validationMessage;
   setIdValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[IdValueKey] = validationMessage;
 
   /// Clears text input fields on the Form
   void clearForm() {
+    typeValue = '';
     idValue = '';
   }
 
   /// Validates text input fields on the Form
   void validateForm() {
     this.setValidationMessages({
+      TypeValueKey: getValidationMessage(TypeValueKey),
       IdValueKey: getValidationMessage(IdValueKey),
     });
   }
@@ -169,5 +199,6 @@ String? getValidationMessage(String key) {
 /// Updates the fieldsValidationMessages on the FormViewModel
 void updateValidationData(FormStateHelper model) =>
     model.setValidationMessages({
+      TypeValueKey: getValidationMessage(TypeValueKey),
       IdValueKey: getValidationMessage(IdValueKey),
     });

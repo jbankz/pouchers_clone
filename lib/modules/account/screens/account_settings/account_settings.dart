@@ -18,6 +18,8 @@ import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
 
+import '../../../../ui/features/profile/data/dao/user_dao.dart';
+
 class AccountSettings extends ConsumerStatefulWidget {
   static const String routeName = "accountSettings";
 
@@ -28,8 +30,8 @@ class AccountSettings extends ConsumerStatefulWidget {
 }
 
 class _AccountSettingsState extends ConsumerState<AccountSettings> {
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  final userProfile = userDao.returnUser(userDao.box);
   var isAuthDisabled;
 
   @override

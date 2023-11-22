@@ -8,6 +8,8 @@ import 'package:Pouchers/modules/make_payment/service/payment_service.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:riverpod/riverpod.dart';
 
+import '../../../ui/features/profile/data/dao/user_dao.dart';
+
 final paymentRepoProvider =
     Provider.autoDispose<PaymentRepository>((ref) => PaymentRepository(ref));
 
@@ -19,13 +21,13 @@ class PaymentRepository {
   Future<NotifierState<Map<String, dynamic>>> getContactByPoucherTag(
       {required String poucherTag}) async {
     ServiceResponse<Map<String, dynamic>> getContactByPoucherTag;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     getContactByPoucherTag = await PaymentService.getContactByPoucherTag(
         token: userProfile.token!, poucherTag: poucherTag);
 
     if (getContactByPoucherTag.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       getContactByPoucherTag = await PaymentService.getContactByPoucherTag(
           token: userProfiles.token!, poucherTag: poucherTag);
     }
@@ -35,13 +37,13 @@ class PaymentRepository {
   Future<NotifierState<ContactListResponse>> getAllContacts(
       {required List<String> contacts}) async {
     ServiceResponse<ContactListResponse> getAllContacts;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     getAllContacts = await PaymentService.getAllContacts(
         token: userProfile.token!, contacts: contacts);
 
     if (getAllContacts.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       getAllContacts = await PaymentService.getAllContacts(
           token: userProfiles.token!, contacts: contacts);
     }
@@ -54,7 +56,7 @@ class PaymentRepository {
     required String note,
   }) async {
     ServiceResponse<RequestResponse> requestMoney;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     requestMoney = await PaymentService.requestMoney(
       token: userProfile.token!,
       amount: amount,
@@ -64,7 +66,7 @@ class PaymentRepository {
 
     if (requestMoney.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       requestMoney = await PaymentService.requestMoney(
         token: userProfiles.token!,
         amount: amount,
@@ -81,7 +83,7 @@ class PaymentRepository {
       required String note,
       required String transactionPin}) async {
     ServiceResponse<P2PResponse> p2pMoney;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     p2pMoney = await PaymentService.p2p(
         token: userProfile.token!,
         amount: amount,
@@ -91,7 +93,7 @@ class PaymentRepository {
 
     if (p2pMoney.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       p2pMoney = await PaymentService.p2p(
           token: userProfiles.token!,
           amount: amount,
@@ -108,7 +110,7 @@ class PaymentRepository {
     required String bankName,
   }) async {
     ServiceResponse<AccountDetailsResponse> accountDetails;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     accountDetails = await PaymentService.accountDetails(
         token: userProfile.token!,
         amount: amount,
@@ -117,7 +119,7 @@ class PaymentRepository {
 
     if (accountDetails.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       accountDetails = await PaymentService.accountDetails(
           token: userProfiles.token!,
           amount: amount,
@@ -137,7 +139,7 @@ class PaymentRepository {
       required String amount,
       required String transactionPin}) async {
     ServiceResponse<LocalTransferResponse> localBankTransfer;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     localBankTransfer = await PaymentService.localBankTransfer(
         token: userProfile.token!,
         accountNumber: accountNumber,
@@ -147,7 +149,7 @@ class PaymentRepository {
 
     if (localBankTransfer.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       localBankTransfer = await PaymentService.localBankTransfer(
           token: userProfiles.token!,
           accountNumber: accountNumber,
@@ -160,14 +162,14 @@ class PaymentRepository {
 
   Future<NotifierState<GetWalletResponse>> getWalletDetails() async {
     ServiceResponse<GetWalletResponse> getWalletDetails;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     getWalletDetails = await PaymentService.getWalletDetails(
       token: userProfile.token!,
     );
 
     if (getWalletDetails.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       getWalletDetails = await PaymentService.getWalletDetails(
         token: userProfiles.token!,
       );
@@ -177,14 +179,14 @@ class PaymentRepository {
 
   Future<NotifierState<NotificationResponse>> getNotifications() async {
     ServiceResponse<NotificationResponse> getNotifications;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     getNotifications = await PaymentService.getNotifications(
       token: userProfile.token!,
     );
 
     if (getNotifications.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       getNotifications = await PaymentService.getNotifications(
         token: userProfiles.token!,
       );
@@ -200,7 +202,7 @@ class PaymentRepository {
     String? note,
   }) async {
     ServiceResponse<MoneyRequestResponse> requestMoney;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     requestMoney = await PaymentService.moneyRequestStatus(
         token: userProfile.token!,
         amount: amount,
@@ -211,7 +213,7 @@ class PaymentRepository {
 
     if (requestMoney.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       requestMoney = await PaymentService.moneyRequestStatus(
           token: userProfiles.token!,
           amount: amount,

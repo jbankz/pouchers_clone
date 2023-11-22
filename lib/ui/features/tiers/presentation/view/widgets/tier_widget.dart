@@ -72,7 +72,8 @@ class TiersWidget extends StatelessWidget {
                           color: highest ? AppColors.white : null)),
                   const Gap(height: 4),
                   Text(
-                      tier?.maxBalance == 'Unlimited'
+                      tier?.maxBalance?.toLowerCase() ==
+                              'Unlimited'.toLowerCase()
                           ? tier?.maxBalance ?? ''
                           : num.parse(tier?.maxBalance ?? '0').toNaira,
                       style: context.displayMedium?.copyWith(

@@ -42,5 +42,43 @@ class ApiPath {
   static const String validateBVN = '$_apiVersionOne/user/validate-bvn';
 
   /// Validates users ID
-  static const String validateID = '$_apiVersionOne/user/validate-ID';
+  static const String validateID = '$_apiVersionOne/user/validate-id';
+
+  static const String _cardPath = '$_apiVersionOne/card';
+
+  /// Creates new dollar card
+  static const String createDollarVirtualCard = '$_apiVersionOne/$_cardPath/';
+
+  /// Creates new naira card
+  static const String createNairaVirtualCard = '$_apiVersionOne/$_cardPath/';
+
+  /// Freeze card
+  static const String freezeCard = '$_apiVersionOne/$_cardPath/';
+
+  /// Fund virtual card
+  static const String fundVirtualCard = '$_apiVersionOne/$_cardPath/fund';
+
+  /// virtual card balance
+  static const String balance = '$_apiVersionOne/$_cardPath/accounts/';
+
+  /// Card token
+  static const String token = '$_apiVersionOne/$_cardPath/';
+
+  /// Card transactions
+  static const String transactions = '$_apiVersionOne/$_cardPath/';
+
+  /// Cards
+  static const String cards = '$_apiVersionOne/$_cardPath/';
+
+  /// Exchange Rate
+  static const String rate = '$_apiVersionOne/$_cardPath/exchange_rate/USDNGN';
+
+  /// Virtual Account
+  static const String virtualAccount = '$_apiVersionOne/$_cardPath/accounts';
+
+  /// get signed url bucket
+  static const String getSignedUrl = '$_apiVersionOne/user/pre-signed-url';
+
+  /// get users profile
+  static const String profile = '$_apiVersionOne/user/profile';
 }

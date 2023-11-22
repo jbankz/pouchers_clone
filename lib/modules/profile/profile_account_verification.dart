@@ -167,33 +167,47 @@ class _AccountVerificationStatusState
                           "i",
                           style: TextStyle(fontWeight: FontWeight.w500),
                         ),
-                  onTap: (hiveTierLevel == 2 &&
-                          hiveIsUploadedIdentityCard! &&
-                          result == null)
-                      ? () async {
-                          result = await pushTo(
-                            context,
-                            ProfileUtilityBill(from: widget.from),
-                            settings: const RouteSettings(
-                              name: ProfileUtilityBill.routeName,
-                            ),
-                          );
-                          if (result != null) {
-                            setState(() {
-                              result = result;
-                            });
-                          }
-                        }
-                      : (hiveTierLevel == 2 &&
-                              hiveIsUploadedIdentityCard! &&
-                              result != null)
-                          ? () {
-                              showErrorBar(context, "Awaiting approval");
-                            }
-                          : () {
-                              print("$hiveTierLevel");
-                              print("$hiveIsUploadedIdentityCard");
-                            },
+                  onTap: () async {
+                    result = await pushTo(
+                      context,
+                      ProfileUtilityBill(from: widget.from),
+                      settings: const RouteSettings(
+                        name: ProfileUtilityBill.routeName,
+                      ),
+                    );
+                    if (result != null) {
+                      setState(() {
+                        result = result;
+                      });
+                    }
+                  },
+                  // onTap: (hiveTierLevel == 2 &&
+                  //         hiveIsUploadedIdentityCard! &&
+                  //         result == null)
+                  //     ? () async {
+                  //         result = await pushTo(
+                  //           context,
+                  //           ProfileUtilityBill(from: widget.from),
+                  //           settings: const RouteSettings(
+                  //             name: ProfileUtilityBill.routeName,
+                  //           ),
+                  //         );
+                  //         if (result != null) {
+                  //           setState(() {
+                  //             result = result;
+                  //           });
+                  //         }
+                  //       }
+                  //     : (hiveTierLevel == 2 &&
+                  //             hiveIsUploadedIdentityCard! &&
+                  //             result != null)
+                  //         ? () {
+                  //             showErrorBar(context, "Awaiting approval");
+                  //           }
+                  //         : () {
+                  //             print("$hiveTierLevel");
+                  //             print("$hiveIsUploadedIdentityCard");
+                  //           },
                 ),
               ],
             ),

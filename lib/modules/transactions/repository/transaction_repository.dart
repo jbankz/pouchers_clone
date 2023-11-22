@@ -9,6 +9,8 @@ import 'package:Pouchers/modules/transactions/model/transaction_model.dart';
 import 'package:Pouchers/modules/transactions/service/transaction_service.dart';
 import 'package:Pouchers/utils/strings.dart';
 
+import '../../../ui/features/profile/data/dao/user_dao.dart';
+
 final transactionRepoProvider = Provider.autoDispose<TransactionRepository>(
     (ref) => TransactionRepository(ref));
 
@@ -20,13 +22,14 @@ class TransactionRepository {
   Future<NotifierState<GetTransactionsResponse>> getTransactionHistory(
       {OrderHistoryStatus? status, int? page}) async {
     ServiceResponse<GetTransactionsResponse> getTransaction;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     getTransaction = await TransactionService.getTransactionHistory(
         token: userProfile.token!, status: status, page: page);
 
     if (getTransaction.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      // HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       getTransaction = await TransactionService.getTransactionHistory(
         token: userProfiles.token!,
         status: status,
@@ -40,7 +43,7 @@ class TransactionRepository {
     required String year,
   }) async {
     ServiceResponse<TransactionAnalyticsResponse> getTransactionAnalytics;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     getTransactionAnalytics = await TransactionService.getTransactionAnalytics(
       token: userProfile.token!,
       month: month,
@@ -49,7 +52,8 @@ class TransactionRepository {
 
     if (getTransactionAnalytics.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      // HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       getTransactionAnalytics =
           await TransactionService.getTransactionAnalytics(
         token: userProfiles.token!,

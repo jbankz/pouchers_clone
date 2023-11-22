@@ -3,9 +3,7 @@ import 'dart:io';
 
 import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/helpers/response_handler.dart';
-import 'package:Pouchers/app/helpers/service_constants.dart';
 import 'package:Pouchers/app/helpers/session_manager.dart';
-import 'package:Pouchers/modules/login/models/login_response.dart';
 import 'package:Pouchers/routes.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/logger.dart';
@@ -29,6 +27,8 @@ import 'app/config/app_config.dart';
 import 'app/core/constants/app_constants.dart';
 import 'app/core/manager/hive_manager.dart';
 import 'app/core/manager/session_manager.dart' as core;
+
+import 'app/core/skeleton/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -103,6 +103,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with ResponseHandler {
   @override
+  // ignore: prefer_expression_function_bodies
   Widget build(BuildContext context) {
     return ProviderScope(
       child: ScreenUtilInit(
@@ -110,17 +111,41 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
         minTextAdapt: true,
         splitScreenMode: true,
         child: OverlaySupport.global(
-          child: MaterialApp(
-              title: AppConstants.appName,
-              theme: kThemeData,
-              darkTheme: kThemeData,
-              debugShowCheckedModeBanner: false,
-              themeMode: ThemeMode.light,
-              navigatorKey: StackedService.navigatorKey,
-              onGenerateRoute: StackedRouter().onGenerateRoute,
-              routes: {
-                ...appRoutes,
-              }),
+          child: SkeletonTheme(
+            shimmerGradient: const LinearGradient(colors: [
+              Color(0xFFD8E3E7),
+              Color(0xFFC8D5DA),
+              Color(0xFFD8E3E7),
+            ], stops: [
+              0.1,
+              0.5,
+              0.9
+            ]),
+            darkShimmerGradient: const LinearGradient(colors: [
+              Color(0xFF222222),
+              Color(0xFF242424),
+              Color(0xFF2B2B2B),
+              Color(0xFF242424),
+              Color(0xFF222222)
+            ], stops: [
+              0.0,
+              0.2,
+              0.5,
+              0.8,
+              1
+            ], begin: Alignment(-2.4, -0.2), end: Alignment(2.4, 0.2)),
+            child: MaterialApp(
+                title: AppConstants.appName,
+                theme: kThemeData,
+                darkTheme: kThemeData,
+                debugShowCheckedModeBanner: false,
+                themeMode: ThemeMode.light,
+                navigatorKey: StackedService.navigatorKey,
+                onGenerateRoute: StackedRouter().onGenerateRoute,
+                routes: {
+                  ...appRoutes,
+                }),
+          ),
         ),
       ),
     );

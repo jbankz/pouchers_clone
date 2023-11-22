@@ -12,6 +12,8 @@ import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
 
+import '../../../../ui/features/profile/data/dao/user_dao.dart';
+
 class ChangePassword extends StatefulWidget {
   static const String routeName = "changePassword";
   final bool? changePhone, forgotPin;
@@ -24,8 +26,8 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  final userProfile = userDao.returnUser(userDao.box);
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;

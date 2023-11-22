@@ -23,13 +23,15 @@ import 'package:pdf/pdf.dart' as pdfSaver;
 import 'package:pdf/widgets.dart' as pdfWidget;
 import 'package:printing/printing.dart';
 
+import '../../../ui/features/profile/data/dao/user_dao.dart';
+
 class HistoryDetail extends StatelessWidget {
   static const String routeName = "historyDetail";
   final GetTransactionsData? item;
 
   HistoryDetail({Key? key, this.item}) : super(key: key);
   String dateFormatter = 'MMM dd, yyy';
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  final userProfile = userDao.returnUser(userDao.box);
 
   @override
   Widget build(BuildContext context) {

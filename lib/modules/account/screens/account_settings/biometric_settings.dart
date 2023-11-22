@@ -18,6 +18,7 @@ import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
 
 import '../../../../../../utils/logger.dart';
+import '../../../../ui/features/profile/data/dao/user_dao.dart';
 
 class BiometricSettings extends ConsumerStatefulWidget {
   static const String routeName = "biometricSettings";
@@ -29,7 +30,8 @@ class BiometricSettings extends ConsumerStatefulWidget {
 }
 
 class _BiometricSettingsState extends ConsumerState<BiometricSettings> {
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  final userProfile = userDao.returnUser(userDao.box);
   int id = -1;
   bool? _canCheckBiometrics;
   bool isAuth = false;

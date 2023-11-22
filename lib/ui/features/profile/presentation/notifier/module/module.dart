@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/profile/domain/model/idenitification_type.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/wallet.dart';
 import 'package:Pouchers/ui/features/profile/domain/usecase/module/module.dart';
@@ -26,3 +27,12 @@ Future<User?> validateID(ValidateIDRef ref,
     await ref
         .read(getValidateIDUseCaseModule)
         .execute(parameter: userDto, cancelToken: cancelToken);
+
+@riverpod
+List<IdentificationType> validIds(ValidIdsRef ref) =>
+    ref.read(getValidIdsUseCaseModule).execute();
+
+@riverpod
+Future<User?> getUsersProfile(GetUsersProfileRef ref,
+        {CancelToken? cancelToken}) =>
+    ref.read(getUsersProfileUseCaseImpl).execute(cancelToken);

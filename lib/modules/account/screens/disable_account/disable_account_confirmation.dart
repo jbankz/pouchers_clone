@@ -14,6 +14,8 @@ import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
 
+import '../../../../ui/features/profile/data/dao/user_dao.dart';
+
 class DisableConfirm extends StatefulWidget {
   static const String routeName = "disableConfirm";
   final String? reason;
@@ -27,7 +29,8 @@ class DisableConfirm extends StatefulWidget {
 class _DisableConfirmState extends State<DisableConfirm> {
   bool obscure = true;
   String? _password;
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  final userProfile = userDao.returnUser(userDao.box);
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String modalReturn = "";
 

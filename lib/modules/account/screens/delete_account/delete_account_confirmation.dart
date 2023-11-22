@@ -13,6 +13,8 @@ import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
 
+import '../../../../ui/features/profile/data/dao/user_dao.dart';
+
 class DeleteConfirm extends StatefulWidget {
   static const String routeName = "deleteConfirm";
   final String? reason;
@@ -26,9 +28,9 @@ class DeleteConfirm extends StatefulWidget {
 class _DeleteConfirmState extends State<DeleteConfirm> {
   bool obscure = true;
   String? _password;
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  final userProfile = userDao.returnUser(userDao.box);
   @override
   void initState() {
     super.initState();

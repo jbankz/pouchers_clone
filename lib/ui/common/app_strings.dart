@@ -225,4 +225,8 @@ class AppString {
   static String pending = 'Pending';
   static String verified = 'Verified';
   static String failed = 'Failed';
+  static String uploadId = 'Upload ID';
+  static String pleasePickImage = 'Please you need to pick a image.';
+  static String utilityUploadMessage =
+      'File upload successful. Verification will be confirmed within 2-4 days';
 }

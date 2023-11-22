@@ -11,7 +11,7 @@ final _dioProvider = Provider<Dio>((ref) {
           const Duration(milliseconds: NetworkService.connectTimeout),
       receiveTimeout:
           const Duration(milliseconds: NetworkService.receiveTimeout),
-      baseUrl: 'https://poucher-api.enyata.com/api'));
+      baseUrl: 'https://poucher-backend-14fc00be4800.herokuapp.com/api'));
 
   dio.interceptors.add(PrettyDioLogger(
       requestHeader: kDebugMode,

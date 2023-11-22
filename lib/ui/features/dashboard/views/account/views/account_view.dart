@@ -1,5 +1,6 @@
 import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
+import 'package:Pouchers/modules/profile/profile_page.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
@@ -19,8 +20,9 @@ class AccountView extends ConsumerWidget {
   const AccountView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) =>
-      ValueListenableBuilder<Box>(
+  Widget build(BuildContext context, WidgetRef ref) => 3 < 2
+      ? ProfilePage()
+      : ValueListenableBuilder<Box>(
           valueListenable: userDao.getListenable(),
           builder: (_, box, __) {
             final user = userDao.returnUser(box);

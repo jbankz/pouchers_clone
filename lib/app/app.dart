@@ -23,7 +23,9 @@ import '../ui/features/profile/presentation/views/kyc/utility/utility_bill_view.
 import '../ui/features/tiers/presentation/view/tier_view.dart';
 import '../ui/widgets/success_state.dart';
 import 'core/manager/biometric_manager.dart';
+import 'core/manager/dojah_manager.dart';
 import 'core/manager/hive_manager.dart';
+import 'core/manager/image_manager.dart';
 import 'core/manager/secure_manager.dart';
 import 'core/manager/session_manager.dart';
 
@@ -81,6 +83,8 @@ import 'core/manager/session_manager.dart';
     LazySingleton(classType: FlutterSecureStorage),
     LazySingleton(classType: SecuredManager),
     LazySingleton(classType: HiveManager),
+    LazySingleton(classType: DojahManager),
+    LazySingleton(classType: ImageManager),
   ],
   logger: StackedLogger(),
 )

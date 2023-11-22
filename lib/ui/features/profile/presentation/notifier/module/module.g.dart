@@ -444,5 +444,148 @@ class _ValidateIDProviderElement extends AutoDisposeFutureProviderElement<User?>
   @override
   CancelToken? get cancelToken => (origin as ValidateIDProvider).cancelToken;
 }
+
+String _$validIdsHash() => r'bbe1a199924a4f49644df6370f72faf210e90465';
+
+/// See also [validIds].
+@ProviderFor(validIds)
+final validIdsProvider = AutoDisposeProvider<List<IdentificationType>>.internal(
+  validIds,
+  name: r'validIdsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$validIdsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef ValidIdsRef = AutoDisposeProviderRef<List<IdentificationType>>;
+String _$getUsersProfileHash() => r'c841e1320db8913c425e8be22e7cca02676671f3';
+
+/// See also [getUsersProfile].
+@ProviderFor(getUsersProfile)
+const getUsersProfileProvider = GetUsersProfileFamily();
+
+/// See also [getUsersProfile].
+class GetUsersProfileFamily extends Family<AsyncValue<User?>> {
+  /// See also [getUsersProfile].
+  const GetUsersProfileFamily();
+
+  /// See also [getUsersProfile].
+  GetUsersProfileProvider call({
+    CancelToken? cancelToken,
+  }) {
+    return GetUsersProfileProvider(
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  GetUsersProfileProvider getProviderOverride(
+    covariant GetUsersProfileProvider provider,
+  ) {
+    return call(
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getUsersProfileProvider';
+}
+
+/// See also [getUsersProfile].
+class GetUsersProfileProvider extends AutoDisposeFutureProvider<User?> {
+  /// See also [getUsersProfile].
+  GetUsersProfileProvider({
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => getUsersProfile(
+            ref as GetUsersProfileRef,
+            cancelToken: cancelToken,
+          ),
+          from: getUsersProfileProvider,
+          name: r'getUsersProfileProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getUsersProfileHash,
+          dependencies: GetUsersProfileFamily._dependencies,
+          allTransitiveDependencies:
+              GetUsersProfileFamily._allTransitiveDependencies,
+          cancelToken: cancelToken,
+        );
+
+  GetUsersProfileProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<User?> Function(GetUsersProfileRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetUsersProfileProvider._internal(
+        (ref) => create(ref as GetUsersProfileRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<User?> createElement() {
+    return _GetUsersProfileProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetUsersProfileProvider && other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetUsersProfileRef on AutoDisposeFutureProviderRef<User?> {
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _GetUsersProfileProviderElement
+    extends AutoDisposeFutureProviderElement<User?> with GetUsersProfileRef {
+  _GetUsersProfileProviderElement(super.provider);
+
+  @override
+  CancelToken? get cancelToken =>
+      (origin as GetUsersProfileProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

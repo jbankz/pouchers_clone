@@ -13,7 +13,9 @@ import 'package:stacked_services/src/snackbar/snackbar_service.dart';
 import 'package:stacked_shared/stacked_shared.dart';
 
 import 'core/manager/biometric_manager.dart';
+import 'core/manager/dojah_manager.dart';
 import 'core/manager/hive_manager.dart';
+import 'core/manager/image_manager.dart';
 import 'core/manager/secure_manager.dart';
 import 'core/manager/session_manager.dart';
 
@@ -36,4 +38,6 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => FlutterSecureStorage());
   locator.registerLazySingleton(() => SecuredManager());
   locator.registerLazySingleton(() => HiveManager());
+  locator.registerLazySingleton(() => DojahManager());
+  locator.registerLazySingleton(() => ImageManager());
 }

@@ -5,4 +5,11 @@ class AppConstants {
   static String termsOfUse = 'TERMS_OF_USE';
   static String privacyPolicy = 'PRIVACY_POLICY';
   static String appName = 'APP_NAME';
+  static String dojahDriverLicense = 'DOJAH_DRIVER_LICENSE_KEY';
+  static String dojahVotersCard = 'DOJAH_VOTERS_CARD_KEY';
+  static String dojahInternationalPassport = 'DOJAH_INTERNATIONAL_PASSPORT_KEY';
+  static String dojahVnin = 'DOJAH_VNIN_KEY';
+  static String dojahNin = 'DOJAH_NIN_KEY';
+  static String dojahPublicKey = 'DOJAH_PUBLIC_KEY';
+  static String dojahAppId = 'DOJAH_APP_ID';
 }

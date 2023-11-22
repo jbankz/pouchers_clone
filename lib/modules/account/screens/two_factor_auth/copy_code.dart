@@ -15,6 +15,8 @@ import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
 
+import '../../../../ui/features/profile/data/dao/user_dao.dart';
+
 class CopyCode extends ConsumerStatefulWidget {
   static const String routeName = "copyCode";
 
@@ -25,8 +27,8 @@ class CopyCode extends ConsumerStatefulWidget {
 }
 
 class _CopyCodeState extends ConsumerState<CopyCode> {
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  final userProfile = userDao.returnUser(userDao.box);
   @override
   void initState() {
     super.initState();

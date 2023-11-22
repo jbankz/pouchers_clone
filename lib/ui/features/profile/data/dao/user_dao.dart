@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../../../app/core/manager/hive_manager.dart';
+import '../../domain/enum/kyc_status.dart';
 
 late UserDao userDao;
 final _hiveManager = locator<HiveManager>();
@@ -22,6 +23,8 @@ class UserDao {
   }
 
   Future<Box<Map>> openBox() => _hiveManager.openBox<Map>(AppKeys.userDaoKey);
+
+  User get user => returnUser(_box);
 
   Future<void> save(User? user) async =>
       await _box.put(AppKeys.userDaoKey, user?.toJson() ?? {});

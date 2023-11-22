@@ -8,6 +8,8 @@ import 'package:Pouchers/modules/schedule_purchase/service/schedule_service.dart
 import 'package:Pouchers/modules/utilities/model/utilities_model.dart';
 import 'package:Pouchers/utils/strings.dart';
 
+import '../../../ui/features/profile/data/dao/user_dao.dart';
+
 final scheduleRepoProvider =
     Provider.autoDispose<ScheduleRepository>((ref) => ScheduleRepository(ref));
 
@@ -27,7 +29,7 @@ class ScheduleRepository {
       String? status,
       String? scheduleId}) async {
     ServiceResponse<String> scheduleP2PTransfer;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     scheduleP2PTransfer = await ScheduleService.scheduleP2PTransfer(
       token: userProfile.token!,
       category: category,
@@ -43,7 +45,7 @@ class ScheduleRepository {
 
     if (scheduleP2PTransfer.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       scheduleP2PTransfer = await ScheduleService.scheduleP2PTransfer(
         token: userProfiles.token!,
         category: category,
@@ -71,7 +73,7 @@ class ScheduleRepository {
     required String serviceId,
   }) async {
     ServiceResponse<String> scheduleUtility;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     scheduleUtility = await ScheduleService.scheduleUtility(
       token: userProfile.token!,
       category: category,
@@ -86,7 +88,7 @@ class ScheduleRepository {
 
     if (scheduleUtility.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       scheduleUtility = await ScheduleService.scheduleUtility(
         token: userProfiles.token!,
         category: category,
@@ -111,7 +113,7 @@ class ScheduleRepository {
       String? status,
       String? scheduleId}) async {
     ServiceResponse<String> scheduleLocalTransfer;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     scheduleLocalTransfer = await ScheduleService.scheduleLocalTransfer(
       token: userProfile.token!,
       frequency: frequency,
@@ -125,7 +127,7 @@ class ScheduleRepository {
 
     if (scheduleLocalTransfer.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       scheduleLocalTransfer = await ScheduleService.scheduleLocalTransfer(
         token: userProfiles.token!,
         frequency: frequency,
@@ -144,7 +146,7 @@ class ScheduleRepository {
     required String category,
   }) async {
     ServiceResponse<GetAllScheduleResponse> getSchedule;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     getSchedule = await ScheduleService.getSchedule(
       token: userProfile.token!,
       category: category,
@@ -152,7 +154,7 @@ class ScheduleRepository {
 
     if (getSchedule.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       getSchedule = await ScheduleService.getSchedule(
         token: userProfiles.token!,
         category: category,
@@ -167,7 +169,7 @@ class ScheduleRepository {
       required String scheduleId,
       required String status}) async {
     ServiceResponse<String> editSchedule;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     editSchedule = await ScheduleService.editSchedule(
       token: userProfile.token!,
       frequency: frequency,
@@ -178,7 +180,7 @@ class ScheduleRepository {
 
     if (editSchedule.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       editSchedule = await ScheduleService.editSchedule(
         token: userProfiles.token!,
         frequency: frequency,
@@ -195,7 +197,7 @@ class ScheduleRepository {
     required String scheduleId,
   }) async {
     ServiceResponse<String> deleteSchedule;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     deleteSchedule = await ScheduleService.deleteSchedule(
       token: userProfile.token!,
       transactionPin: transactionPin,
@@ -204,7 +206,7 @@ class ScheduleRepository {
 
     if (deleteSchedule.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       deleteSchedule = await ScheduleService.deleteSchedule(
         token: userProfiles.token!,
         transactionPin: transactionPin,

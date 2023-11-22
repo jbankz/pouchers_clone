@@ -31,7 +31,7 @@ class CardsRepository {
       required String brand,
       required String transactionPin}) async {
     ServiceResponse<String> createCard;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     createCard = await CardsService.createVirtualCard(
       // address: address,
       token: userProfile.token!,
@@ -47,7 +47,7 @@ class CardsRepository {
     );
     if (createCard.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       createCard = await CardsService.createVirtualCard(
         // address: address,
         token: userProfiles.token!,
@@ -67,16 +67,14 @@ class CardsRepository {
 
   Future<NotifierState<GetAllCardsResponse>> getAllVirtualCards() async {
     ServiceResponse<GetAllCardsResponse> cardsResponse;
-    // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
     final userProfile = userDao.returnUser(userDao.box);
-
     print("access Token ${userProfile.token}");
     print("refresh Token ${userProfile.refreshToken}");
     cardsResponse = await CardsService.getAllVirtualCards(
         token: userProfile.token!, userId: userProfile.userId!);
     if (cardsResponse.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       cardsResponse = await CardsService.getAllVirtualCards(
           token: userProfiles.token!, userId: userProfiles.userId!);
     }
@@ -86,14 +84,14 @@ class CardsRepository {
 
   Future<NotifierState<FetchEnvs>> getAllFees({required double amount}) async {
     ServiceResponse<FetchEnvs> fetchEnv;
-    // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    // final userProfile = userDao.returnUser(userDao.box);
     final userProfile = userDao.returnUser(userDao.box);
     fetchEnv = await CardsService.getAllFees(
         token: userProfile.token!, amount: amount);
 
     if (fetchEnv.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       fetchEnv = await CardsService.getAllFees(
           token: userProfiles.token!, amount: amount);
     }
@@ -105,7 +103,7 @@ class CardsRepository {
       required double amount,
       required String transactionPin}) async {
     ServiceResponse<String> fundCard;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     fundCard = await CardsService.fundVirtualCard(
       type: type,
       token: userProfile.token!,
@@ -115,7 +113,7 @@ class CardsRepository {
 
     if (fundCard.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       fundCard = await CardsService.fundVirtualCard(
         type: type,
         token: userProfiles.token!,
@@ -129,13 +127,13 @@ class CardsRepository {
   Future<NotifierState<GetCardDetailsResponse>> getCardDetails(
       {required cardId}) async {
     ServiceResponse<GetCardDetailsResponse> cardDetails;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     cardDetails = await CardsService.getCardDetails(
         token: userProfile.token!, cardId: cardId);
 
     if (cardDetails.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       cardDetails = await CardsService.getCardDetails(
           token: userProfiles.token!, cardId: cardId);
     }
@@ -144,13 +142,13 @@ class CardsRepository {
 
   Future<NotifierState<String>> getCardToken({required cardId}) async {
     ServiceResponse<String> getCardToken;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     getCardToken = await CardsService.getCardToken(
         token: userProfile.token!, cardId: cardId);
 
     if (getCardToken.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       getCardToken = await CardsService.getCardToken(
           token: userProfiles.token!, cardId: cardId);
     }
@@ -159,13 +157,13 @@ class CardsRepository {
 
   Future<NotifierState<String>> getCardBalance({required cardId}) async {
     ServiceResponse<String> cardBalance;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     cardBalance = await CardsService.getCardBalance(
         token: userProfile.token!, cardId: cardId);
 
     if (cardBalance.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       cardBalance = await CardsService.getCardBalance(
           token: userProfiles.token!, cardId: cardId);
     }
@@ -177,7 +175,7 @@ class CardsRepository {
       required String type,
       required String transactionPin}) async {
     ServiceResponse<String> freeze;
-    HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+    final userProfile = userDao.returnUser(userDao.box);
     freeze = await CardsService.freezeCard(
         token: userProfile.token!,
         cardId: cardId,
@@ -186,7 +184,7 @@ class CardsRepository {
 
     if (freeze.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      HiveStoreResponseData userProfiles = Hive.box(kUserBox).get(kUserInfoKey);
+      final userProfiles = userDao.returnUser(userDao.box);
       freeze = await CardsService.freezeCard(
           token: userProfiles.token!,
           cardId: cardId,

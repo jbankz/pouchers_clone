@@ -8,4 +8,5 @@ abstract class UserRepo {
       {required UserDto userDto, CancelToken? cancelToken});
   Future<User?> validateID(
       {required UserDto userDto, CancelToken? cancelToken});
+  Future<User?> profile({CancelToken? cancelToken});
 }

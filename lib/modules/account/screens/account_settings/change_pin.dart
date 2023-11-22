@@ -18,6 +18,8 @@ import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
 
+import '../../../../ui/features/profile/data/dao/user_dao.dart';
+
 class ChangeTransactionPin extends StatefulWidget {
   static const String routeName = "changeTransactionPin";
 
@@ -31,8 +33,8 @@ class _ChangeTransactionPinState extends State<ChangeTransactionPin> {
   bool obscure = true;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? _password;
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  final userProfile = userDao.returnUser(userDao.box);
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;

@@ -156,6 +156,9 @@ extension FileExtensions on File {
 
   // Extracts the file extension from the path
   String get fileExtension => path.split('.').last;
+
+  // Extracts the file name
+  String get fileName => path.split('/').last;
 }
 
 // Extension for BuildContext (placeholder)

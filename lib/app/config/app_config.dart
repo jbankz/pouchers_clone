@@ -35,4 +35,32 @@ class AppConfig {
   static String get privacyPolicy =>
       dotenv.env[AppConstants.privacyPolicy] ??
       '${AppConstants.privacyPolicy} $_notFound';
+
+  static String get dojahDriverLicense =>
+      dotenv.env[AppConstants.dojahDriverLicense] ??
+      '${AppConstants.dojahDriverLicense} $_notFound';
+
+  static String get dojahVotersCard =>
+      dotenv.env[AppConstants.dojahVotersCard] ??
+      '${AppConstants.dojahVotersCard} $_notFound';
+
+  static String get dojahInternationalPassport =>
+      dotenv.env[AppConstants.dojahInternationalPassport] ??
+      '${AppConstants.dojahInternationalPassport} $_notFound';
+
+  static String get dojahVnin =>
+      dotenv.env[AppConstants.dojahVnin] ??
+      '${AppConstants.dojahVnin} $_notFound';
+
+  static String get dojahNin =>
+      dotenv.env[AppConstants.dojahNin] ??
+      '${AppConstants.dojahNin} $_notFound';
+
+  static String get dojahPublicKey =>
+      dotenv.env[AppConstants.dojahPublicKey] ??
+      '${AppConstants.dojahPublicKey} $_notFound';
+
+  static String get dojahAppId =>
+      dotenv.env[AppConstants.dojahAppId] ??
+      '${AppConstants.dojahAppId} $_notFound';
 }

@@ -26,4 +26,11 @@ class UserRepoImpl implements UserRepo {
     await userDao.save(user);
     return user;
   }
+
+  @override
+  Future<User?> profile({CancelToken? cancelToken}) async {
+    final user = await _userSource.profile(cancelToken: cancelToken);
+    await userDao.save(user);
+    return user;
+  }
 }

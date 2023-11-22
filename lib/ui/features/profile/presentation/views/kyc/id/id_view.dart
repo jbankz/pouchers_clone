@@ -1,6 +1,7 @@
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
+import 'package:Pouchers/ui/features/profile/domain/enum/id_enum.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
 import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
 import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
@@ -17,10 +18,11 @@ import '../../../../../../../app/core/theme/light_theme.dart';
 import '../../../../../../../utils/field_validator.dart';
 import '../../../../../../common/app_strings.dart';
 import '../../../../../../widgets/edit_text_field_with.dart';
+import '../../../../domain/model/idenitification_type.dart';
 import 'id_view.form.dart';
 import 'widget/id_type_widget.dart';
 
-@FormView(fields: [FormTextField(name: 'id')])
+@FormView(fields: [FormTextField(name: 'type'), FormTextField(name: 'id')])
 class IdView extends ConsumerStatefulWidget {
   const IdView({super.key});
 
@@ -32,6 +34,10 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
   final _formKey = GlobalKey<FormState>();
   final CancelToken _cancelToken = CancelToken();
   late UserNotifier _userNotifier;
+  IdentificationType? _identificationType;
+
+  bool get _isDriversValidation =>
+      _identificationType?.idTypes == IdTypes.driver;
 
   @override
   void initState() {
@@ -69,11 +75,18 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
                         readOnly: true,
                         title: AppString.verificationType,
                         label: AppString.idDropdownInst,
+                        controller: typeController,
                         suffixIcon:
                             const Icon(Icons.keyboard_arrow_down_rounded),
                         validator: FieldValidator.validateString(),
-                        onTap: () => BottomSheets.showSheet(
-                            child: const IdTypesWidget()),
+                        onTap: () async {
+                          _identificationType = await BottomSheets.showSheet(
+                                  child: const IdTypesWidget())
+                              as IdentificationType?;
+
+                          typeController.text = _identificationType?.key ?? '';
+                          setState(() {});
+                        },
                       ),
                       const Gap(height: 30),
                       EditTextFieldWidget(
@@ -82,14 +95,43 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
                           label: AppString.idInst,
                           controller: idController,
                           focusNode: idFocusNode,
-                          keyboardType: TextInputType.number,
+                          keyboardType: _isDriversValidation
+                              ? TextInputType.text
+                              : TextInputType.number,
                           inputFormatters: [
-                            context.limit(),
-                            context.digitsOnly
+                            if (!_isDriversValidation) context.limit(),
+                            if (!_isDriversValidation) context.digitsOnly
                           ],
-                          validator: FieldValidator.validateInt(),
+                          validator: _isDriversValidation
+                              ? FieldValidator.validateString()
+                              : FieldValidator.validateInt(),
                           textInputAction: TextInputAction.go,
                           onFieldSubmitted: (_) => _submit()),
+                      const Gap(height: 30),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(10.r),
+                        onTap: _triggerDojah,
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.all(15.w),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              border:
+                                  Border.all(color: kLightPurple, width: 1.w)),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SvgPicture.asset(AppImage.uploadIcon),
+                              const Gap(width: 10),
+                              Flexible(
+                                child: Text(AppString.uploadId,
+                                    style: context.displayMedium
+                                        ?.copyWith(fontSize: 14)),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                       const Gap(height: 80),
                       AnimatedSwitcher(
                         duration: const Duration(milliseconds: 700),
@@ -97,7 +139,7 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
                             opacity: animation,
                             child: SizeTransition(
                                 sizeFactor: animation, child: child)),
-                        child: 2 < 2
+                        child: _identificationType?.idTypes != IdTypes.vnin
                             ? const SizedBox.shrink()
                             : Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -147,6 +189,18 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
 
-    _userNotifier.validateID(UserDto(validId: idController.text), _cancelToken);
+    _userNotifier.validateID(
+        UserDto(
+            idType: _identificationType?.value,
+            isUploadId: false,
+            idNumber: idController.text),
+        _cancelToken);
+  }
+
+  Future<void> _triggerDojah() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    await _userNotifier.triggerDojah(
+        identificationType: _identificationType, onSuccess: (_) => _submit());
   }
 }
