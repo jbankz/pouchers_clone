@@ -26,6 +26,8 @@ class AppImage {
   static String mobile9Icon = "${_iconPath}9mobile.svg";
   static String gloIcon = "${_iconPath}glo.svg";
   static String airtelIcon = "${_iconPath}airtel.svg";
+  static String nairaSign = "${_iconPath}naira_sign.svg";
+  static String dollarSign = "${_iconPath}dollar_sign.svg";
   static String pdfIcon = "${_iconPath}pdf_icon.svg";
   static String backSpaceIcon = "${_iconPath}backspace.svg";
   static String googleAuthIcon = "${_iconPath}google_auth_logo.svg";
@@ -110,4 +112,5 @@ class AppImage {
   static String verifiedBadge = "${_iconPath}verified_badge.svg";
   static String failedBadge = "${_iconPath}failed_badge.svg";
   static String pendingBadge = "${_iconPath}pending_badge.svg";
+  static String virtualCards = "${_imagePath}virtual_cards.png";
 }

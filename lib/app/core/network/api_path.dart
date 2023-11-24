@@ -50,7 +50,7 @@ class ApiPath {
   static const String createDollarVirtualCard = '$_apiVersionOne/$_cardPath/';
 
   /// Creates new naira card
-  static const String createNairaVirtualCard = '$_apiVersionOne/$_cardPath/';
+  static const String createNairaVirtualCard = _cardPath;
 
   /// Freeze card
   static const String freezeCard = '$_apiVersionOne/$_cardPath/';
@@ -68,7 +68,7 @@ class ApiPath {
   static const String transactions = '$_apiVersionOne/$_cardPath/';
 
   /// Cards
-  static const String cards = '$_apiVersionOne/$_cardPath/';
+  static const String cards = _cardPath;
 
   /// Exchange Rate
   static const String rate = '$_apiVersionOne/$_cardPath/exchange_rate/USDNGN';
@@ -81,4 +81,7 @@ class ApiPath {
 
   /// get users profile
   static const String profile = '$_apiVersionOne/user/profile';
+
+  /// get admins envs
+  static const String envs = '$_apiVersionOne/admin-settings/envs';
 }

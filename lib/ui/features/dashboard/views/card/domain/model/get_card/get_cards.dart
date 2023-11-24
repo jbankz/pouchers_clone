@@ -11,7 +11,7 @@ class GetCards with _$GetCards {
     String? status,
     String? message,
     int? code,
-    Data? data,
+    @JsonKey(defaultValue: []) List<Data>? data,
   }) = _GetCards;
 
   factory GetCards.fromJson(Map<String, dynamic> json) =>

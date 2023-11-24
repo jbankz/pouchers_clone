@@ -66,9 +66,7 @@ extension StringExtensions on String {
 // Extension for currency formatting
 extension CurrencyExtensions on num {
   // Formats the number as US Dollar currency
-  String get toDollar => NumberFormat.simpleCurrency(name: 'USD')
-      .format(this)
-      .replaceAll('.00', '');
+  String get toDollar => NumberFormat.simpleCurrency(name: 'USD').format(this);
 
   // Formats the number as Nigerian Naira currency
 
@@ -218,6 +216,9 @@ extension ContextExtensions on BuildContext {
 
   TextStyle? get dividerTextSmall => bodySmall?.copyWith(
       letterSpacing: 0.5, fontWeight: FontWeight.w700, fontSize: 12.0);
+
+  MaterialStateProperty<Color?>? get buttonBackgroundColor =>
+      Theme.of(this).elevatedButtonTheme.style?.backgroundColor;
 
   TextStyle? get dividerTextLarge => bodySmall?.copyWith(
       letterSpacing: 1.5,

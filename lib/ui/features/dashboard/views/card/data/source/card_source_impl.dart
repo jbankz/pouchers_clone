@@ -99,7 +99,7 @@ class CardSourceImpl implements CardSource<CardDto> {
   Future<GetCards?> getCards(
       {required CardDto cardDto, CancelToken? cancelToken}) async {
     final response = await networkService.request(
-        path: '${ApiPath.cards}/_/all',
+        path: '${ApiPath.cards}/${cardDto.userId}/all',
         requestType: RequestType.get,
         cancelToken: cancelToken);
     return GetCards.fromJson(response.data as Map<String, dynamic>);

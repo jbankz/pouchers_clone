@@ -15,6 +15,8 @@ import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/utils.dart';
 import 'package:Pouchers/utils/widgets.dart';
 import 'package:printing/printing.dart';
+import '../../../ui/features/profile/data/dao/user_dao.dart';
+import '../../../ui/features/profile/domain/model/user.dart';
 import '../../../utils/constant/theme_color_constants.dart';
 
 class TransactionReceipt extends StatefulWidget {
@@ -54,8 +56,8 @@ class TransactionReceipt extends StatefulWidget {
 }
 
 class _TransactionReceiptState extends State<TransactionReceipt> {
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  User userProfile = userDao.user;
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;

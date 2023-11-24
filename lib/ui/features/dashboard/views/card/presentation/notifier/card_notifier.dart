@@ -1,9 +1,14 @@
+import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
+import 'package:Pouchers/ui/notification/notification_tray.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../../../app/app.logger.dart';
+import '../../../../../../../app/app.router.dart';
+import '../../../../../../../app/core/router/page_router.dart';
 import '../../../../../../../app/core/state/app_state.dart';
 
 part 'card_notifier.g.dart';
@@ -12,8 +17,16 @@ part 'card_notifier.g.dart';
 class CardNotifier extends _$CardNotifier {
   final _logger = getLogger('CardNotifier');
 
+  CardType _cardType = CardType.naira;
+  CardType get cardType => _cardType;
+
+  String _country = '';
+  String _bvn = '';
+
   @override
   AppState build() => const AppState();
+
+  void setCardType(CardType cardType) => _cardType = cardType;
 
   Future<void> createNairaVirtualCard(CardDto parameter,
       [CancelToken? cancelToken]) async {
@@ -23,8 +36,16 @@ class CardNotifier extends _$CardNotifier {
       await ref.read(createNairaVirtualCardProvider
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
+
+      PageRouter.pushNamed(Routes.successState,
+          args: SuccessStateArguments(
+              title: AppString.completed,
+              message: AppString.cardCreated,
+              btnTitle: AppString.proceed,
+              tap: () => PageRouter.pop()));
     } catch (e) {
       _logger.e(e.toString());
+      triggerNotificationTray(e.toString(), error: true);
     }
     state = state.copyWith(isBusy: false);
   }
@@ -37,6 +58,13 @@ class CardNotifier extends _$CardNotifier {
       await ref.read(createDollarVirtualCardProvider
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
+
+      PageRouter.pushNamed(Routes.successState,
+          args: SuccessStateArguments(
+              title: AppString.completed,
+              message: AppString.cardCreated,
+              btnTitle: AppString.proceed,
+              tap: () => PageRouter.popToRoot()));
     } catch (e) {
       _logger.e(e.toString());
     }
@@ -126,12 +154,12 @@ class CardNotifier extends _$CardNotifier {
     state = state.copyWith(isBusy: false);
   }
 
-  Future<void> getCards(CardDto parameter, [CancelToken? cancelToken]) async {
+  Future<void> getCards(CardDto cardDto, [CancelToken? cancelToken]) async {
     try {
       state = state.copyWith(isBusy: true);
 
       await ref.read(getCardsProvider
-          .call(parameter: parameter, cancelToken: cancelToken)
+          .call(parameter: cardDto, cancelToken: cancelToken)
           .future);
     } catch (e) {
       _logger.e(e.toString());

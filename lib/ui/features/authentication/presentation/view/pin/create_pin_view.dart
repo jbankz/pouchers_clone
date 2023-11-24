@@ -8,7 +8,7 @@ import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../../widgets/keypad/account_pin_widget.dart';
 import '../../../../../widgets/keypad/virtual_key_pad_controller.dart';
-import '../../../../../widgets/virtual_keypad.dart';
+import '../../../../../widgets/keypad/virtual_keypad.dart';
 import 'notifier/pin_notifier.dart';
 
 class CreatePinView extends ConsumerStatefulWidget {

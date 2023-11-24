@@ -5,7 +5,7 @@ import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/ui/widgets/virtual_keypad.dart';
+import 'package:Pouchers/ui/widgets/keypad/virtual_keypad.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

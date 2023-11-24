@@ -201,8 +201,12 @@ class AppString {
   static String cancel = 'Cancel';
   static String idNum = 'ID Number';
   static String verificationType = 'Verification Type';
+  static String country = 'Country';
+  static String bvnRequest =
+      'Please enter your BVN. This is a mandatory requirement before creating your card.';
   static String id = 'Valid ID';
   static String idType = 'Identification type';
+  static String cardType = 'Select card type';
   static String verify = 'Verify';
   static String howToGetVNIN = 'How to get your Virtual NIN';
   static String howToGetNIN1 =
@@ -229,4 +233,34 @@ class AppString {
   static String pleasePickImage = 'Please you need to pick a image.';
   static String utilityUploadMessage =
       'File upload successful. Verification will be confirmed within 2-4 days';
+  static String createVirtualCard = 'Create virtual card';
+  static String creationFeeApplies = 'Creation fee applies';
+  static String paymentAnyWhere = 'Make payments anywhere online';
+  static String manageCards = 'Easily manage your payments and cards';
+  static String createNairaCard = 'Create Naira card';
+  static String fundCard = 'Fund card';
+  static String confirmation = 'Confirmation';
+  static String creationFee = 'Creation fee';
+  static String total = 'Total';
+  static String youWillDebited = "You will be debited ";
+  static String fromWallet =
+      " from your wallet to fund the card. Would you like to continue?";
+  static String insufficientFund =
+      'Insufficient fund to carry out this transaction.';
+  static String pinRequest = 'Enter transaction pin';
+  static String cardCreated =
+      'Your virtual card has been successfully\ncreated.';
+  static String completedFunding = 'I have completed payment';
+  static String accountNumber = 'Account number';
+  static String accountName = 'Account name';
+  static String bankName = 'Bank name';
+  static String fundInstr1 = 'Login to your bank app';
+  static String fundInstr2 = 'Select ';
+  static String fundInstr3 = '"Transfer Money"';
+  static String fundInstr4 = " or ";
+  static String fundInstr5 = '"Send Money"';
+  static String fundInstr6 = 'Select Sterling Bank';
+  static String fundInstr7 = 'Enter your  Pouchers account number';
+  static String fundInstr8 = 'Confirm transaction detail and enter pin';
+  static String howToFund = 'How to fund your Pouchers account';
 }

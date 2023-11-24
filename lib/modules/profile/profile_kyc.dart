@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
 import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
@@ -25,6 +26,8 @@ import 'package:Pouchers/utils/logger.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
 
+import '../../ui/features/profile/data/dao/user_dao.dart';
+
 class ProfileKYC extends ConsumerStatefulWidget {
   static const String routeName = "profileKYC";
 
@@ -35,7 +38,8 @@ class ProfileKYC extends ConsumerStatefulWidget {
 }
 
 class _ProfileKYCState extends ConsumerState<ProfileKYC> {
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  User userProfile = userDao.user;
   String? date;
   int? dateNumber = DateTime.now().year;
   int? userTierLevel;

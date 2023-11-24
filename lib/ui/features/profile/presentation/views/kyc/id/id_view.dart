@@ -18,6 +18,7 @@ import '../../../../../../../app/core/theme/light_theme.dart';
 import '../../../../../../../utils/field_validator.dart';
 import '../../../../../../common/app_strings.dart';
 import '../../../../../../widgets/edit_text_field_with.dart';
+import '../../../../../../widgets/hint_widget.dart';
 import '../../../../domain/model/idenitification_type.dart';
 import 'id_view.form.dart';
 import 'widget/id_type_widget.dart';
@@ -148,13 +149,13 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
                                       style: kHeadline1TextStyle.copyWith(
                                           fontSize: 16)),
                                   const Gap(height: 28),
-                                  _buildHints(context, AppString.howToGetNIN1),
+                                  HintWidget(hint: AppString.howToGetNIN1),
                                   const Gap(height: 20),
-                                  _buildHints(context, AppString.howToGetNIN2),
+                                  HintWidget(hint: AppString.howToGetNIN2),
                                   const Gap(height: 20),
-                                  _buildHints(context, AppString.howToGetNIN3),
+                                  HintWidget(hint: AppString.howToGetNIN3),
                                   const Gap(height: 20),
-                                  _buildHints(context, AppString.howToGetNIN4),
+                                  HintWidget(hint: AppString.howToGetNIN4),
                                   const Gap(height: 20),
                                 ],
                               ),
@@ -165,26 +166,12 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
                 ElevatedButtonWidget(
                     loading: appState.isBusy,
                     title: AppString.verify,
-                    onPressed: _submit),
+                    onPressed: _submit)
               ],
             ),
           )),
     );
   }
-
-  Row _buildHints(BuildContext context, String hint) => Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SvgPicture.asset(AppImage.comment),
-          const Gap(width: 15),
-          Flexible(
-              child: Text(hint,
-                  style: context.titleLarge?.copyWith(
-                      color: AppColors.kIconGrey,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400)))
-        ],
-      );
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;

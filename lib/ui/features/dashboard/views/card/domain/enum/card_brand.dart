@@ -1,0 +1,1 @@
+enum CardBrand { verve, mastercard }

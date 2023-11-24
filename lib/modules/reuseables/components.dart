@@ -1,4 +1,5 @@
 import 'package:Pouchers/modules/login/models/login_response.dart';
+import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
 import 'package:Pouchers/utils/assets_path.dart';
 import 'package:Pouchers/utils/input_formatters.dart';
 import 'package:pdf/pdf.dart' as pdfSaver;
@@ -10,7 +11,7 @@ import 'package:Pouchers/utils/utils.dart';
 
 class PdfInvoiceApi {
   static Future<Uint8List> generate(
-      HiveStoreResponseData userProfile,
+      User userProfile,
       String beneficiaryName,
       String transferType,
       String transferName,

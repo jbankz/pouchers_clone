@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,6 +21,8 @@ import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/utils.dart';
 import 'package:Pouchers/utils/widgets.dart';
+
+import '../../../ui/features/profile/data/dao/user_dao.dart';
 
 class ScheduleTransfer extends ConsumerStatefulWidget {
   static const String routeName = "scheduleTransfer";
@@ -55,8 +58,8 @@ class ScheduleTransfer extends ConsumerStatefulWidget {
 class _ScheduleTransferState extends ConsumerState<ScheduleTransfer> {
   String frequency = "";
   String topUpDate = "";
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
-
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  User userProfile = userDao.user;
   @override
   void initState() {
     // TODO: implement initState

@@ -23,7 +23,8 @@ mixin _$GetCards {
   String? get status => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
   int? get code => throw _privateConstructorUsedError;
-  Data? get data => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: [])
+  List<Data>? get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,9 +37,11 @@ abstract class $GetCardsCopyWith<$Res> {
   factory $GetCardsCopyWith(GetCards value, $Res Function(GetCards) then) =
       _$GetCardsCopyWithImpl<$Res, GetCards>;
   @useResult
-  $Res call({String? status, String? message, int? code, Data? data});
-
-  $DataCopyWith<$Res>? get data;
+  $Res call(
+      {String? status,
+      String? message,
+      int? code,
+      @JsonKey(defaultValue: []) List<Data>? data});
 }
 
 /// @nodoc
@@ -75,20 +78,8 @@ class _$GetCardsCopyWithImpl<$Res, $Val extends GetCards>
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as Data?,
+              as List<Data>?,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $DataCopyWith<$Res>? get data {
-    if (_value.data == null) {
-      return null;
-    }
-
-    return $DataCopyWith<$Res>(_value.data!, (value) {
-      return _then(_value.copyWith(data: value) as $Val);
-    });
   }
 }
 
@@ -100,10 +91,11 @@ abstract class _$$GetCardsImplCopyWith<$Res>
       __$$GetCardsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? status, String? message, int? code, Data? data});
-
-  @override
-  $DataCopyWith<$Res>? get data;
+  $Res call(
+      {String? status,
+      String? message,
+      int? code,
+      @JsonKey(defaultValue: []) List<Data>? data});
 }
 
 /// @nodoc
@@ -136,9 +128,9 @@ class __$$GetCardsImplCopyWithImpl<$Res>
           : code // ignore: cast_nullable_to_non_nullable
               as int?,
       data: freezed == data
-          ? _value.data
+          ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as Data?,
+              as List<Data>?,
     ));
   }
 }
@@ -146,7 +138,12 @@ class __$$GetCardsImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$GetCardsImpl implements _GetCards {
-  _$GetCardsImpl({this.status, this.message, this.code, this.data});
+  _$GetCardsImpl(
+      {this.status,
+      this.message,
+      this.code,
+      @JsonKey(defaultValue: []) final List<Data>? data})
+      : _data = data;
 
   factory _$GetCardsImpl.fromJson(Map<String, dynamic> json) =>
       _$$GetCardsImplFromJson(json);
@@ -157,8 +154,16 @@ class _$GetCardsImpl implements _GetCards {
   final String? message;
   @override
   final int? code;
+  final List<Data>? _data;
   @override
-  final Data? data;
+  @JsonKey(defaultValue: [])
+  List<Data>? get data {
+    final value = _data;
+    if (value == null) return null;
+    if (_data is EqualUnmodifiableListView) return _data;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
@@ -173,12 +178,13 @@ class _$GetCardsImpl implements _GetCards {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.message, message) || other.message == message) &&
             (identical(other.code, code) || other.code == code) &&
-            (identical(other.data, data) || other.data == data));
+            const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, status, message, code, data);
+  int get hashCode => Object.hash(runtimeType, status, message, code,
+      const DeepCollectionEquality().hash(_data));
 
   @JsonKey(ignore: true)
   @override
@@ -199,7 +205,7 @@ abstract class _GetCards implements GetCards {
       {final String? status,
       final String? message,
       final int? code,
-      final Data? data}) = _$GetCardsImpl;
+      @JsonKey(defaultValue: []) final List<Data>? data}) = _$GetCardsImpl;
 
   factory _GetCards.fromJson(Map<String, dynamic> json) =
       _$GetCardsImpl.fromJson;
@@ -211,7 +217,8 @@ abstract class _GetCards implements GetCards {
   @override
   int? get code;
   @override
-  Data? get data;
+  @JsonKey(defaultValue: [])
+  List<Data>? get data;
   @override
   @JsonKey(ignore: true)
   _$$GetCardsImplCopyWith<_$GetCardsImpl> get copyWith =>

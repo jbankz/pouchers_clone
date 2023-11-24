@@ -1,6 +1,7 @@
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/usecase/module/module.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../domain/model/created_virtual_card/created_virtual_card.dart';
@@ -13,8 +14,12 @@ import '../../../domain/model/get_exchange_rate/get_exchange_rate.dart';
 import '../../../domain/model/get_virtual_account/get_virtual_account.dart';
 import '../../../domain/model/virtual_account_balance/virtual_account_balance.dart';
 import '../../../domain/model/virtual_card_details/virtual_card_details.dart';
+import '../params_notifier.dart';
 
 part 'module.g.dart';
+
+final paramModule =
+    ChangeNotifierProvider<ParamNotifier>((_) => ParamNotifier());
 
 @riverpod
 Future<VirtualCardDetails?> getVirtualCardDetails(GetVirtualCardDetailsRef ref,

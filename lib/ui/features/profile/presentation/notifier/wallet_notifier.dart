@@ -4,12 +4,15 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../app/app.logger.dart';
 import '../../../../../app/core/state/app_state.dart';
+import '../../domain/model/wallet.dart';
 
 part 'wallet_notifier.g.dart';
 
 @riverpod
 class WalletNotifier extends _$WalletNotifier {
   final _logger = getLogger('WalletNotifier');
+
+  Wallet? _wallet;
 
   @override
   AppState build() => const AppState();
@@ -18,11 +21,11 @@ class WalletNotifier extends _$WalletNotifier {
     try {
       state = state.copyWith(isBusy: true);
 
-      await ref
+      _wallet = await ref
           .read(walletBalanceProvider.call(cancelToken: cancelToken).future);
     } catch (e) {
       _logger.e(e.toString());
     }
-    state = state.copyWith(isBusy: false);
+    state = state.copyWith(isBusy: false, data: _wallet);
   }
 }

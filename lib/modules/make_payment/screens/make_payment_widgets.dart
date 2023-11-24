@@ -592,7 +592,7 @@ class _BankAccountModalState extends ConsumerState<BankAccountModal> {
   TextEditingController accNumberController = TextEditingController();
   int durationTime = 2;
   Map<String, dynamic> item = {};
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
   String? accName;
   String _errorText = "";
   String _amountChange = "0";

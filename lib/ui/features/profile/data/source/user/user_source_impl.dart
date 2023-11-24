@@ -41,25 +41,6 @@ class UserSourceImpl implements UserSource {
         path: ApiPath.profile,
         requestType: RequestType.get,
         cancelToken: cancelToken);
-    return User.fromJson({
-      "id": 3,
-      "phone_number": "09058702550",
-      "user_id": "user-600cb9a4436711edaae03ff02a0ad1e3",
-      "email": "success@enyata.com",
-      "first_name": "success",
-      "last_name": "baby",
-      "tier_levels": 3,
-      "status": "active",
-      "device_token": null,
-      "fcm_token": null,
-      "is_uploaded_identity_card": false,
-      "is_deleted": false,
-      "referral_code": "2DB10AD0",
-      "tag": null,
-      "dob": null,
-      "profile_picture": null,
-      "address": null
-    });
-    // return User.fromJson(response.data['data'] as Map<String, dynamic>);
+    return User.fromJson(response.data['data'] as Map<String, dynamic>);
   }
 }

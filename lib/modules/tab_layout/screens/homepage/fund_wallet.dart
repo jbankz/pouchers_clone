@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,10 +17,13 @@ import 'package:Pouchers/utils/input_formatters.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
 
+import '../../../../ui/features/profile/domain/model/user.dart';
+
 class FundWallet extends ConsumerWidget {
   static const String routeName = "fundWallet";
 
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  User userProfile = userDao.user;
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
 
   FundWallet({Key? key}) : super(key: key);
 
