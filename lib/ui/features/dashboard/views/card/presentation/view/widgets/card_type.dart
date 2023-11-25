@@ -6,6 +6,7 @@ import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/features/admin/domain/model/envs/envs.dart';
 import 'package:Pouchers/ui/features/admin/presentation/notifier/admin_notifier.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/params_notifier.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -19,7 +20,9 @@ import '../../../../../../../common/app_strings.dart';
 import '../../../../../../../widgets/gap.dart';
 
 class CardTypeWidget extends ConsumerStatefulWidget {
-  const CardTypeWidget({super.key});
+  const CardTypeWidget({super.key, this.currency});
+
+  final Currency? currency;
 
   @override
   ConsumerState<CardTypeWidget> createState() => _CardTypeWidgetState();
@@ -79,36 +82,40 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (_, __) => Container(
-                              height: 140.h,
+                              height: 150.h,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(13.r),
                                   color: Colors.white),
                             ),
                         separatorBuilder: (_, __) => const Gap(height: 30),
-                        itemCount: 2),
+                        itemCount: widget.currency != null ? 1 : 2),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        _buildCardWidget(
-                            title: 'Naira virtual card',
-                            fee: num.parse(nairaCreation.value ?? '0').toNaira,
-                            icon: AppImage.nairaSign,
-                            color: AppColors.kGreen100Color,
-                            callback: () {
-                              _paramNotifier.setCardType(CardType.naira);
-                              PageRouter.pushNamed(Routes.requestBVNView);
-                            }),
-                        const Gap(height: 30),
-                        _buildCardWidget(
-                            title: 'Dollar virtual card',
-                            fee:
-                                num.parse(dollarCreation.value ?? '0').toDollar,
-                            icon: AppImage.dollarSign,
-                            color: AppColors.kBrightPurple,
-                            callback: () {
-                              _paramNotifier.setCardType(CardType.dollar);
-                              PageRouter.pushNamed(Routes.requestBVNView);
-                            }),
+                        if (widget.currency != Currency.NGN)
+                          _buildCardWidget(
+                              title: 'Naira virtual card',
+                              fee:
+                                  num.parse(nairaCreation.value ?? '0').toNaira,
+                              icon: AppImage.nairaSign,
+                              color: AppColors.kGreen100Color,
+                              callback: () {
+                                _paramNotifier.setCardType(CardType.naira);
+                                PageRouter.pushNamed(Routes.requestBVNView);
+                              }),
+                        if (widget.currency != Currency.NGN)
+                          const Gap(height: 30),
+                        if (widget.currency != Currency.USD)
+                          _buildCardWidget(
+                              title: 'Dollar virtual card',
+                              fee: num.parse(dollarCreation.value ?? '0')
+                                  .toDollar,
+                              icon: AppImage.dollarSign,
+                              color: AppColors.kBrightPurple,
+                              callback: () {
+                                _paramNotifier.setCardType(CardType.dollar);
+                                PageRouter.pushNamed(Routes.requestBVNView);
+                              }),
                       ],
                     ),
                   ),

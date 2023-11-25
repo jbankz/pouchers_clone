@@ -1,1 +1,2 @@
-enum Currency { ngn, usd }
+// ignore: constant_identifier_names
+enum Currency { NGN, USD }

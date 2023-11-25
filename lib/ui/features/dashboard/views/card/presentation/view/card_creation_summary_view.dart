@@ -298,8 +298,8 @@ class _CardCreationSymmaryViewState
             country: param.country,
             bvn: param.bvn,
             transactionPin: pin,
-            brand: CardBrand.verve,
-            currency: Currency.ngn),
+            brand: CardBrand.Verve,
+            currency: Currency.NGN),
         _cancelToken);
   }
 
@@ -311,8 +311,8 @@ class _CardCreationSymmaryViewState
             country: param.country,
             bvn: param.bvn,
             transactionPin: pin,
-            brand: CardBrand.verve,
-            currency: Currency.usd),
+            brand: CardBrand.Visa,
+            currency: Currency.USD),
         _cancelToken);
   }
 

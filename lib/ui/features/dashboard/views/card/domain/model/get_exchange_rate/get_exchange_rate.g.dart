@@ -9,19 +9,15 @@ part of 'get_exchange_rate.dart';
 _$GetExchangeRateImpl _$$GetExchangeRateImplFromJson(
         Map<String, dynamic> json) =>
     _$GetExchangeRateImpl(
-      status: json['status'] as String?,
-      message: json['message'] as String?,
-      code: json['code'] as int?,
-      data: json['data'] == null
-          ? null
-          : Data.fromJson(json['data'] as Map<String, dynamic>),
+      rate: json['rate'] as String?,
+      sell: json['sell'] as String?,
+      buy: json['buy'] as String?,
     );
 
 Map<String, dynamic> _$$GetExchangeRateImplToJson(
         _$GetExchangeRateImpl instance) =>
     <String, dynamic>{
-      'status': instance.status,
-      'message': instance.message,
-      'code': instance.code,
-      'data': instance.data,
+      'rate': instance.rate,
+      'sell': instance.sell,
+      'buy': instance.buy,
     };

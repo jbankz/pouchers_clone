@@ -4,4 +4,5 @@ class AppKeys {
   static const String isBiometricEnabledKey = 'isBiometricEnabledKey';
   static const String isLoggedInKey = 'isLoggedInKey';
   static const String walletDaoKey = 'walletDaoKey';
+  static const String cardsDaoKey = 'cardsDaoKey';
 }

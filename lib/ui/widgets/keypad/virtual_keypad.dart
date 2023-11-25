@@ -126,7 +126,7 @@ class _VirtualKeyPadState extends State<VirtualKeyPad> {
                 ButtonWidget(
                     title: (widget.keypadConfig?.showPoint ?? false) ? '.' : '',
                     onPressed: (widget.keypadConfig?.showPoint ?? false)
-                        ? () => _addPin('0')
+                        ? () => _addPin('.')
                         : null,
                     keypadConfig: widget.keypadConfig),
                 ButtonWidget(

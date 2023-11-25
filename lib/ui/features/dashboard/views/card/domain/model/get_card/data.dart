@@ -1,3 +1,5 @@
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_brand.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'data.freezed.dart';
@@ -11,8 +13,8 @@ class Data with _$Data {
       @JsonKey(name: 'account_type') String? accountType,
       @JsonKey(name: 'account_number') String? accountNumber,
       @JsonKey(name: 'account_name') String? accountName,
-      String? brand,
-      String? currency}) = _Data;
+      @Default(CardBrand.Verve) CardBrand? brand,
+      @Default(Currency.NGN) Currency? currency}) = _Data;
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 }

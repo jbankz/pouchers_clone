@@ -112,7 +112,8 @@ class CardSourceImpl implements CardSource<CardDto> {
         path: ApiPath.rate,
         requestType: RequestType.get,
         cancelToken: cancelToken);
-    return GetExchangeRate.fromJson(response.data as Map<String, dynamic>);
+    return GetExchangeRate.fromJson(
+        response.data?['data'] as Map<String, dynamic>);
   }
 
   @override

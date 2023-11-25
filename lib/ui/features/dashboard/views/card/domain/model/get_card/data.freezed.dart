@@ -30,8 +30,8 @@ mixin _$Data {
   String? get accountNumber => throw _privateConstructorUsedError;
   @JsonKey(name: 'account_name')
   String? get accountName => throw _privateConstructorUsedError;
-  String? get brand => throw _privateConstructorUsedError;
-  String? get currency => throw _privateConstructorUsedError;
+  CardBrand? get brand => throw _privateConstructorUsedError;
+  Currency? get currency => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,8 +49,8 @@ abstract class $DataCopyWith<$Res> {
       @JsonKey(name: 'account_type') String? accountType,
       @JsonKey(name: 'account_number') String? accountNumber,
       @JsonKey(name: 'account_name') String? accountName,
-      String? brand,
-      String? currency});
+      CardBrand? brand,
+      Currency? currency});
 }
 
 /// @nodoc
@@ -98,11 +98,11 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
       brand: freezed == brand
           ? _value.brand
           : brand // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as CardBrand?,
       currency: freezed == currency
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as Currency?,
     ) as $Val);
   }
 }
@@ -120,8 +120,8 @@ abstract class _$$DataImplCopyWith<$Res> implements $DataCopyWith<$Res> {
       @JsonKey(name: 'account_type') String? accountType,
       @JsonKey(name: 'account_number') String? accountNumber,
       @JsonKey(name: 'account_name') String? accountName,
-      String? brand,
-      String? currency});
+      CardBrand? brand,
+      Currency? currency});
 }
 
 /// @nodoc
@@ -166,11 +166,11 @@ class __$$DataImplCopyWithImpl<$Res>
       brand: freezed == brand
           ? _value.brand
           : brand // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as CardBrand?,
       currency: freezed == currency
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as Currency?,
     ));
   }
 }
@@ -184,8 +184,8 @@ class _$DataImpl implements _Data {
       @JsonKey(name: 'account_type') this.accountType,
       @JsonKey(name: 'account_number') this.accountNumber,
       @JsonKey(name: 'account_name') this.accountName,
-      this.brand,
-      this.currency});
+      this.brand = CardBrand.Verve,
+      this.currency = Currency.NGN});
 
   factory _$DataImpl.fromJson(Map<String, dynamic> json) =>
       _$$DataImplFromJson(json);
@@ -206,9 +206,11 @@ class _$DataImpl implements _Data {
   @JsonKey(name: 'account_name')
   final String? accountName;
   @override
-  final String? brand;
+  @JsonKey()
+  final CardBrand? brand;
   @override
-  final String? currency;
+  @JsonKey()
+  final Currency? currency;
 
   @override
   String toString() {
@@ -259,8 +261,8 @@ abstract class _Data implements Data {
       @JsonKey(name: 'account_type') final String? accountType,
       @JsonKey(name: 'account_number') final String? accountNumber,
       @JsonKey(name: 'account_name') final String? accountName,
-      final String? brand,
-      final String? currency}) = _$DataImpl;
+      final CardBrand? brand,
+      final Currency? currency}) = _$DataImpl;
 
   factory _Data.fromJson(Map<String, dynamic> json) = _$DataImpl.fromJson;
 
@@ -280,9 +282,9 @@ abstract class _Data implements Data {
   @JsonKey(name: 'account_name')
   String? get accountName;
   @override
-  String? get brand;
+  CardBrand? get brand;
   @override
-  String? get currency;
+  Currency? get currency;
   @override
   @JsonKey(ignore: true)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>

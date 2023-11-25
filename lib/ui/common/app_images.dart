@@ -113,4 +113,10 @@ class AppImage {
   static String failedBadge = "${_iconPath}failed_badge.svg";
   static String pendingBadge = "${_iconPath}pending_badge.svg";
   static String virtualCards = "${_imagePath}virtual_cards.png";
+  static String ellipses = "${_imagePath}ellipses.png";
+  static String virtualNaira = "${_imagePath}virtual_naira.png";
+  static String virtualDollar = "${_imagePath}virtual_dollar.png";
+  static String visa = "${_iconPath}visa.svg";
+  static String verve = "${_iconPath}verve.svg";
+  static String mastercard = "${_iconPath}mastercard.svg";
 }

@@ -1,5 +1,4 @@
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_exchange_rate/data.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../../../../../app/app.router.dart';

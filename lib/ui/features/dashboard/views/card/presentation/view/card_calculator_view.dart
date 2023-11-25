@@ -3,6 +3,7 @@ import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_exchange_rate/get_exchange_rate.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/params_notifier.dart';
@@ -12,13 +13,13 @@ import 'package:Pouchers/ui/widgets/keypad/config/keypad_config.dart';
 import 'package:Pouchers/ui/widgets/keypad/virtual_keypad.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../widgets/keypad/virtual_key_pad_controller.dart';
-import '../../domain/enum/card_type.dart';
-import '../../domain/model/get_exchange_rate/data.dart';
+// import '../../domain/model/get_exchange_rate/data.dart';
 import 'widgets/hook_creation_widget.dart';
 
 class CardCalculatorView extends ConsumerStatefulWidget {
@@ -84,17 +85,26 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             const Gap(height: 109),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10.w, vertical: 5.h),
-                              decoration: BoxDecoration(
-                                  color: AppColors.white.withOpacity(.20),
-                                  borderRadius: BorderRadius.circular(7.r)),
-                              child: Text(
-                                  '${1.toDollar.replaceAll('.00', '')} = ${num.parse((cardState.data as Data?)?.rate ?? '0').toNaira.replaceAll('.00', '')}',
-                                  style: context.headlineLarge?.copyWith(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500)),
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 250),
+                              child: cardState.isBusy
+                                  ? const CupertinoActivityIndicator(
+                                      color: Colors.white)
+                                  : Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10.w, vertical: 5.h),
+                                      decoration: BoxDecoration(
+                                          color:
+                                              AppColors.white.withOpacity(.20),
+                                          borderRadius:
+                                              BorderRadius.circular(7.r)),
+                                      child: Text(
+                                          '${1.toDollar.replaceAll('.00', '')} = ${num.parse((cardState.data as GetExchangeRate?)?.rate ?? '0').toNaira.replaceAll('.00', '')}',
+                                          style: context.headlineLarge
+                                              ?.copyWith(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500)),
+                                    ),
                             ),
                             const Gap(height: 81),
                           ],
@@ -105,8 +115,8 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
                               ? 0.toNaira
                               : 0.toDollar
                           : param.isNairaCardType
-                              ? num.parse(_controller.pins.join()).toNaira
-                              : num.parse(_controller.pins.join()).toDollar,
+                              ? _controller.pins.join().naira
+                              : _controller.pins.join().dollar,
                       style: context.titleLarge?.copyWith(
                           color: AppColors.kBackgroundColor,
                           fontWeight: FontWeight.w700,
@@ -119,7 +129,8 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
             )),
             VirtualKeyPad(
                 keyPadController: _controller,
-                keypadConfig: KeypadConfig(keypadColor: AppColors.white),
+                keypadConfig:
+                    KeypadConfig(keypadColor: AppColors.white, showPoint: true),
                 onComplete: (_) {}),
             const Gap(height: 23),
             Padding(
@@ -131,8 +142,11 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
                   onPressed: _controller.pins.isEmpty
                       ? null
                       : () {
-                          _paramNotifier.setExchangeRate(num.parse(
-                              (cardState.data as Data?)?.rate ?? '0'));
+                          if (!param.isNairaCardType) {
+                            _paramNotifier.setExchangeRate(num.parse(
+                                (cardState.data as GetExchangeRate?)?.rate ??
+                                    '0'));
+                          }
                           PageRouter.pushNamed(Routes.cardCreationSymmaryView,
                               args: CardCreationSymmaryViewArguments(
                                   cardDto: CardDto(

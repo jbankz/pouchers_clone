@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/data/source/card_source.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/created_virtual_card/created_virtual_card.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/freeze_card/freeze_card.dart';
@@ -62,8 +63,12 @@ class CardRepoImpl implements CardRepo<CardDto> {
 
   @override
   Future<GetCards?> getCards(
-          {required CardDto cardDto, CancelToken? cancelToken}) async =>
-      await _cardSource.getCards(cardDto: cardDto, cancelToken: cancelToken);
+      {required CardDto cardDto, CancelToken? cancelToken}) async {
+    final cards =
+        await _cardSource.getCards(cardDto: cardDto, cancelToken: cancelToken);
+    cardsDao.saveCards(cards?.data ?? []);
+    return cards;
+  }
 
   @override
   Future<GetExchangeRate?> getExchangeRate(

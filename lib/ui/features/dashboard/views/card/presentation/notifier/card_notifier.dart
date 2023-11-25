@@ -1,6 +1,6 @@
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/notification/notification_tray.dart';
 import 'package:dio/dio.dart';
@@ -10,7 +10,8 @@ import '../../../../../../../app/app.logger.dart';
 import '../../../../../../../app/app.router.dart';
 import '../../../../../../../app/core/router/page_router.dart';
 import '../../../../../../../app/core/state/app_state.dart';
-import '../../domain/model/get_exchange_rate/data.dart';
+import '../../domain/model/get_card/data.dart';
+import '../../domain/model/get_exchange_rate/get_exchange_rate.dart';
 
 part 'card_notifier.g.dart';
 
@@ -18,10 +19,11 @@ part 'card_notifier.g.dart';
 class CardNotifier extends _$CardNotifier {
   final _logger = getLogger('CardNotifier');
 
-  Data? _exchangeRate;
+  GetExchangeRate? _exchangeRate;
+  List<Data> _cards = [];
 
   @override
-  AppState build() => const AppState();
+  AppState build() => AppState(isBusy: true);
 
   Future<void> createNairaVirtualCard(CardDto parameter,
       [CancelToken? cancelToken]) async {
@@ -152,15 +154,17 @@ class CardNotifier extends _$CardNotifier {
 
   Future<void> getCards(CardDto cardDto, [CancelToken? cancelToken]) async {
     try {
-      state = state.copyWith(isBusy: true);
+      state = state.copyWith(isBusy: cardsDao.cards.isEmpty);
 
-      await ref.read(getCardsProvider
+      final response = await ref.read(getCardsProvider
           .call(parameter: cardDto, cancelToken: cancelToken)
           .future);
+
+      _cards = response?.data ?? [];
     } catch (e) {
       _logger.e(e.toString());
     }
-    state = state.copyWith(isBusy: false);
+    state = state.copyWith(isBusy: false, data: _cards);
   }
 
   Future<void> getToken(CardDto parameter, [CancelToken? cancelToken]) async {
@@ -181,11 +185,9 @@ class CardNotifier extends _$CardNotifier {
     try {
       state = state.copyWith(isBusy: true);
 
-      final response = await ref.read(getExchangeRateProvider
+      _exchangeRate = await ref.read(getExchangeRateProvider
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
-
-      _exchangeRate = response?.data;
     } catch (e) {
       _logger.e(e.toString());
     }

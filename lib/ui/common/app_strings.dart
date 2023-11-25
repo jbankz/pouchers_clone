@@ -266,4 +266,5 @@ class AppString {
   static String fundInstr7 = 'Enter your  Pouchers account number';
   static String fundInstr8 = 'Confirm transaction detail and enter pin';
   static String howToFund = 'How to fund your Pouchers account';
+  static String myCards = 'My Cards';
 }

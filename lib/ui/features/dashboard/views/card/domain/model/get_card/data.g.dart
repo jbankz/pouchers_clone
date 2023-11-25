@@ -12,8 +12,10 @@ _$DataImpl _$$DataImplFromJson(Map<String, dynamic> json) => _$DataImpl(
       accountType: json['account_type'] as String?,
       accountNumber: json['account_number'] as String?,
       accountName: json['account_name'] as String?,
-      brand: json['brand'] as String?,
-      currency: json['currency'] as String?,
+      brand: $enumDecodeNullable(_$CardBrandEnumMap, json['brand']) ??
+          CardBrand.Verve,
+      currency: $enumDecodeNullable(_$CurrencyEnumMap, json['currency']) ??
+          Currency.NGN,
     );
 
 Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
@@ -23,6 +25,17 @@ Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
       'account_type': instance.accountType,
       'account_number': instance.accountNumber,
       'account_name': instance.accountName,
-      'brand': instance.brand,
-      'currency': instance.currency,
+      'brand': _$CardBrandEnumMap[instance.brand],
+      'currency': _$CurrencyEnumMap[instance.currency],
     };
+
+const _$CardBrandEnumMap = {
+  CardBrand.Verve: 'Verve',
+  CardBrand.Visa: 'Visa',
+  CardBrand.MasterCard: 'MasterCard',
+};
+
+const _$CurrencyEnumMap = {
+  Currency.NGN: 'NGN',
+  Currency.USD: 'USD',
+};

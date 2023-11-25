@@ -61,6 +61,24 @@ extension StringExtensions on String {
   }
 
   String get reversedFormattedPhoneNumber => _reverseFormatPhoneNumber(this);
+
+  String get naira => _formatMoney('\u20A6');
+  String get dollar => _formatMoney('\$');
+
+  String _formatMoney(String symbol) {
+    // Parse the input string to a double
+    final double amount = double.tryParse(replaceAll('.', '')) ?? 0.0;
+
+    // Create a NumberFormat instance for currency formatting
+    final NumberFormat formatter =
+        NumberFormat.currency(locale: 'en_US', symbol: symbol);
+
+    // Format the amount as currency
+    final String formattedAmount =
+        formatter.format(amount / 100); // Assuming the input is in cents
+
+    return formattedAmount;
+  }
 }
 
 // Extension for currency formatting

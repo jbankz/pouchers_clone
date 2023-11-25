@@ -20,10 +20,9 @@ GetExchangeRate _$GetExchangeRateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$GetExchangeRate {
-  String? get status => throw _privateConstructorUsedError;
-  String? get message => throw _privateConstructorUsedError;
-  int? get code => throw _privateConstructorUsedError;
-  Data? get data => throw _privateConstructorUsedError;
+  String? get rate => throw _privateConstructorUsedError;
+  String? get sell => throw _privateConstructorUsedError;
+  String? get buy => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,9 +36,7 @@ abstract class $GetExchangeRateCopyWith<$Res> {
           GetExchangeRate value, $Res Function(GetExchangeRate) then) =
       _$GetExchangeRateCopyWithImpl<$Res, GetExchangeRate>;
   @useResult
-  $Res call({String? status, String? message, int? code, Data? data});
-
-  $DataCopyWith<$Res>? get data;
+  $Res call({String? rate, String? sell, String? buy});
 }
 
 /// @nodoc
@@ -55,41 +52,24 @@ class _$GetExchangeRateCopyWithImpl<$Res, $Val extends GetExchangeRate>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? status = freezed,
-    Object? message = freezed,
-    Object? code = freezed,
-    Object? data = freezed,
+    Object? rate = freezed,
+    Object? sell = freezed,
+    Object? buy = freezed,
   }) {
     return _then(_value.copyWith(
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
+      rate: freezed == rate
+          ? _value.rate
+          : rate // ignore: cast_nullable_to_non_nullable
               as String?,
-      message: freezed == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
+      sell: freezed == sell
+          ? _value.sell
+          : sell // ignore: cast_nullable_to_non_nullable
               as String?,
-      code: freezed == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as int?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as Data?,
+      buy: freezed == buy
+          ? _value.buy
+          : buy // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $DataCopyWith<$Res>? get data {
-    if (_value.data == null) {
-      return null;
-    }
-
-    return $DataCopyWith<$Res>(_value.data!, (value) {
-      return _then(_value.copyWith(data: value) as $Val);
-    });
   }
 }
 
@@ -101,10 +81,7 @@ abstract class _$$GetExchangeRateImplCopyWith<$Res>
       __$$GetExchangeRateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? status, String? message, int? code, Data? data});
-
-  @override
-  $DataCopyWith<$Res>? get data;
+  $Res call({String? rate, String? sell, String? buy});
 }
 
 /// @nodoc
@@ -118,28 +95,23 @@ class __$$GetExchangeRateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? status = freezed,
-    Object? message = freezed,
-    Object? code = freezed,
-    Object? data = freezed,
+    Object? rate = freezed,
+    Object? sell = freezed,
+    Object? buy = freezed,
   }) {
     return _then(_$GetExchangeRateImpl(
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
+      rate: freezed == rate
+          ? _value.rate
+          : rate // ignore: cast_nullable_to_non_nullable
               as String?,
-      message: freezed == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
+      sell: freezed == sell
+          ? _value.sell
+          : sell // ignore: cast_nullable_to_non_nullable
               as String?,
-      code: freezed == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as int?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as Data?,
+      buy: freezed == buy
+          ? _value.buy
+          : buy // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -147,23 +119,21 @@ class __$$GetExchangeRateImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$GetExchangeRateImpl implements _GetExchangeRate {
-  _$GetExchangeRateImpl({this.status, this.message, this.code, this.data});
+  _$GetExchangeRateImpl({this.rate, this.sell, this.buy});
 
   factory _$GetExchangeRateImpl.fromJson(Map<String, dynamic> json) =>
       _$$GetExchangeRateImplFromJson(json);
 
   @override
-  final String? status;
+  final String? rate;
   @override
-  final String? message;
+  final String? sell;
   @override
-  final int? code;
-  @override
-  final Data? data;
+  final String? buy;
 
   @override
   String toString() {
-    return 'GetExchangeRate(status: $status, message: $message, code: $code, data: $data)';
+    return 'GetExchangeRate(rate: $rate, sell: $sell, buy: $buy)';
   }
 
   @override
@@ -171,15 +141,14 @@ class _$GetExchangeRateImpl implements _GetExchangeRate {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GetExchangeRateImpl &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.message, message) || other.message == message) &&
-            (identical(other.code, code) || other.code == code) &&
-            (identical(other.data, data) || other.data == data));
+            (identical(other.rate, rate) || other.rate == rate) &&
+            (identical(other.sell, sell) || other.sell == sell) &&
+            (identical(other.buy, buy) || other.buy == buy));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, status, message, code, data);
+  int get hashCode => Object.hash(runtimeType, rate, sell, buy);
 
   @JsonKey(ignore: true)
   @override
@@ -198,22 +167,19 @@ class _$GetExchangeRateImpl implements _GetExchangeRate {
 
 abstract class _GetExchangeRate implements GetExchangeRate {
   factory _GetExchangeRate(
-      {final String? status,
-      final String? message,
-      final int? code,
-      final Data? data}) = _$GetExchangeRateImpl;
+      {final String? rate,
+      final String? sell,
+      final String? buy}) = _$GetExchangeRateImpl;
 
   factory _GetExchangeRate.fromJson(Map<String, dynamic> json) =
       _$GetExchangeRateImpl.fromJson;
 
   @override
-  String? get status;
+  String? get rate;
   @override
-  String? get message;
+  String? get sell;
   @override
-  int? get code;
-  @override
-  Data? get data;
+  String? get buy;
   @override
   @JsonKey(ignore: true)
   _$$GetExchangeRateImplCopyWith<_$GetExchangeRateImpl> get copyWith =>

@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:flutter/material.dart';
 
@@ -24,11 +25,13 @@ class HiveManager {
   Future openAllBox() async {
     userDao = UserDao();
     walletDao = WalletDao();
+    cardsDao = CardsDao();
   }
 
   Future clearAllBox() async {
     await userDao.truncate();
-    // await walletDao.truncate();
+    await walletDao.truncate();
+    await cardsDao.truncate();
   }
 
   Future<Box<T>> openBox<T>(String boxName) async {
