@@ -67,6 +67,8 @@ class _CardCreationSymmaryViewState
         final walletState = ref.watch(walletNotifierProvider);
         final appState = ref.watch(adminNotifierProvider);
 
+        /// TODO: Reformat here
+
         final envs = (appState.data as List<Envs>);
 
         final Envs nairaCreationFee = envs.isEmpty
@@ -109,7 +111,7 @@ class _CardCreationSymmaryViewState
                 num.parse((walletState.data as Wallet?)?.balance ?? '0');
 
         return Scaffold(
-          appBar: AppBar(title: Text(AppString.createNairaCard)),
+          appBar: AppBar(title: Text(param.appTitle)),
           body: SafeArea(
             minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
             child: Column(
@@ -133,19 +135,62 @@ class _CardCreationSymmaryViewState
                           _tileWidget(
                               context: context,
                               title: AppString.amount,
-                              value: (widget.cardDto.amount ?? 0).toNaira),
+                              value: param.isNairaCardType
+                                  ? (widget.cardDto.amount ?? 0).toNaira
+                                  : (widget.cardDto.amount ?? 0).toDollar),
                           const Gap(height: 30),
                           _tileWidget(
                               context: context,
                               title: AppString.creationFee,
-                              value: totalNairaFee.toNaira),
+                              value: param.isNairaCardType
+                                  ? totalNairaFee.toNaira
+                                  : totalDollarFee.toDollar),
                           const Gap(height: 30),
-                          _tileWidget(
-                              context: context,
-                              title: AppString.total,
-                              value:
-                                  ((widget.cardDto.amount ?? 0) + totalNairaFee)
-                                      .toNaira),
+                          if (!param.isNairaCardType)
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _tileWidget(
+                                    context: context,
+                                    title: AppString.totalInDollar,
+                                    value: (totalDollarFee +
+                                            (widget.cardDto.amount ?? 0))
+                                        .toDollar),
+                                const Gap(height: 30),
+                                _tileWidget(
+                                    context: context,
+                                    title: AppString.totalInNaira,
+                                    value: ((totalDollarFee +
+                                                (widget.cardDto.amount ?? 0)) *
+                                            (param.exchangeRate ?? 0))
+                                        .toNaira),
+                                const Gap(height: 30),
+                                RichText(
+                                    text: TextSpan(
+                                        text: 'Current exchange rate ',
+                                        style: context.titleLarge?.copyWith(
+                                            fontWeight: FontWeight.w400),
+                                        children: [
+                                      TextSpan(
+                                          text:
+                                              '\$${1} = ${(param.exchangeRate ?? 0).toNaira.replaceAll('.00', '')}',
+                                          style: context.titleLarge?.copyWith(
+                                              color: AppColors.kIconGrey,
+                                              fontWeight: FontWeight.w500)),
+                                    ])),
+                              ],
+                            ),
+                          if (param.isNairaCardType)
+                            _tileWidget(
+                                context: context,
+                                title: AppString.total,
+                                value: param.isNairaCardType
+                                    ? ((widget.cardDto.amount ?? 0) +
+                                            totalNairaFee)
+                                        .toNaira
+                                    : ((widget.cardDto.amount ?? 0) +
+                                            totalDollarFee)
+                                        .toDollar),
                         ],
                       ),
                     ),
@@ -159,8 +204,13 @@ class _CardCreationSymmaryViewState
                                 fontWeight: FontWeight.w400),
                             children: [
                           TextSpan(
-                              text:
-                                  ((widget.cardDto.amount ?? 0) + totalNairaFee)
+                              text: param.isNairaCardType
+                                  ? ((widget.cardDto.amount ?? 0) +
+                                          totalNairaFee)
+                                      .toNaira
+                                  : ((totalDollarFee +
+                                              (widget.cardDto.amount ?? 0)) *
+                                          (param.exchangeRate ?? 0))
                                       .toNaira,
                               style: context.titleLarge?.copyWith(
                                   color: AppColors.kPrimaryTextColor,
@@ -219,7 +269,7 @@ class _CardCreationSymmaryViewState
                 )),
                 const Gap(height: 16),
                 ElevatedButtonWidget(
-                    title: AppString.createNairaCard,
+                    title: param.appTitle,
                     loading: walletState.isBusy || cardState.isBusy,
                     onPressed: (walletState.isBusy ||
                             cardState.isBusy ||
@@ -229,7 +279,10 @@ class _CardCreationSymmaryViewState
                             final pin = await BottomSheets.showSheet(
                                 child: const PinConfirmationSheet()) as String?;
                             if (pin != null) {
-                              _createNairaCard(totalNairaFee, param, pin);
+                              param.isNairaCardType
+                                  ? _createNairaCard(totalNairaFee, param, pin)
+                                  : _createDollarCard(
+                                      totalDollarFee, param, pin);
                             }
                           })
               ],
@@ -247,6 +300,19 @@ class _CardCreationSymmaryViewState
             transactionPin: pin,
             brand: CardBrand.verve,
             currency: Currency.ngn),
+        _cancelToken);
+  }
+
+  void _createDollarCard(num totalDollarFee, ParamNotifier param, String pin) {
+    _cardNotifier.createDollarVirtualCard(
+        CardDto(
+            amount: ((totalDollarFee + (widget.cardDto.amount ?? 0)) *
+                (param.exchangeRate ?? 0)),
+            country: param.country,
+            bvn: param.bvn,
+            transactionPin: pin,
+            brand: CardBrand.verve,
+            currency: Currency.usd),
         _cancelToken);
   }
 

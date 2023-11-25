@@ -10,6 +10,7 @@ import '../../../../../../../app/app.logger.dart';
 import '../../../../../../../app/app.router.dart';
 import '../../../../../../../app/core/router/page_router.dart';
 import '../../../../../../../app/core/state/app_state.dart';
+import '../../domain/model/get_exchange_rate/data.dart';
 
 part 'card_notifier.g.dart';
 
@@ -17,16 +18,10 @@ part 'card_notifier.g.dart';
 class CardNotifier extends _$CardNotifier {
   final _logger = getLogger('CardNotifier');
 
-  CardType _cardType = CardType.naira;
-  CardType get cardType => _cardType;
-
-  String _country = '';
-  String _bvn = '';
+  Data? _exchangeRate;
 
   @override
   AppState build() => const AppState();
-
-  void setCardType(CardType cardType) => _cardType = cardType;
 
   Future<void> createNairaVirtualCard(CardDto parameter,
       [CancelToken? cancelToken]) async {
@@ -64,9 +59,10 @@ class CardNotifier extends _$CardNotifier {
               title: AppString.completed,
               message: AppString.cardCreated,
               btnTitle: AppString.proceed,
-              tap: () => PageRouter.popToRoot()));
+              tap: () => PageRouter.pop()));
     } catch (e) {
       _logger.e(e.toString());
+      triggerNotificationTray(e.toString(), error: true);
     }
     state = state.copyWith(isBusy: false);
   }
@@ -185,12 +181,14 @@ class CardNotifier extends _$CardNotifier {
     try {
       state = state.copyWith(isBusy: true);
 
-      await ref.read(getExchangeRateProvider
+      final response = await ref.read(getExchangeRateProvider
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
+
+      _exchangeRate = response?.data;
     } catch (e) {
       _logger.e(e.toString());
     }
-    state = state.copyWith(isBusy: false);
+    state = state.copyWith(isBusy: false, data: _exchangeRate);
   }
 }

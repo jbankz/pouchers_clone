@@ -5,6 +5,9 @@ import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/features/admin/domain/model/envs/envs.dart';
 import 'package:Pouchers/ui/features/admin/presentation/notifier/admin_notifier.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/params_notifier.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -23,14 +26,16 @@ class CardTypeWidget extends ConsumerStatefulWidget {
 }
 
 class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
-  late AdminNotifier _adminNotifier;
+  late ParamNotifier _paramNotifier;
+
   final CancelToken _cancelToken = CancelToken();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _adminNotifier = ref.read(adminNotifierProvider.notifier)..getEnvs();
+      _paramNotifier = ref.read(paramModule.notifier);
+      ref.read(adminNotifierProvider.notifier).getEnvs();
     });
   }
 
@@ -43,6 +48,8 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
   @override
   Widget build(BuildContext context) {
     final appState = ref.watch(adminNotifierProvider);
+
+    /// TODO: Reformat here
 
     final envs = (appState.data as List<Envs>);
 
@@ -87,8 +94,10 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
                             fee: num.parse(nairaCreation.value ?? '0').toNaira,
                             icon: AppImage.nairaSign,
                             color: AppColors.kGreen100Color,
-                            callback: () =>
-                                PageRouter.pushNamed(Routes.requestBVNView)),
+                            callback: () {
+                              _paramNotifier.setCardType(CardType.naira);
+                              PageRouter.pushNamed(Routes.requestBVNView);
+                            }),
                         const Gap(height: 30),
                         _buildCardWidget(
                             title: 'Dollar virtual card',
@@ -96,8 +105,10 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
                                 num.parse(dollarCreation.value ?? '0').toDollar,
                             icon: AppImage.dollarSign,
                             color: AppColors.kBrightPurple,
-                            callback: () =>
-                                PageRouter.pushNamed(Routes.requestBVNView)),
+                            callback: () {
+                              _paramNotifier.setCardType(CardType.dollar);
+                              PageRouter.pushNamed(Routes.requestBVNView);
+                            }),
                       ],
                     ),
                   ),

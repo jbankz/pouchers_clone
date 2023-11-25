@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,6 +13,9 @@ class HookCreationFeeWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef widgetRef) =>
       HookConsumer(builder: (_, ref, __) {
+        /// TODO: Reformat here
+
+        final param = ref.watch(paramModule);
         final appState = ref.watch(adminNotifierProvider);
 
         final envs = (appState.data as List<Envs>);
@@ -51,7 +55,8 @@ class HookCreationFeeWidget extends HookConsumerWidget {
                 (num.parse(dollarSudoCreationFee.value ?? '0')) +
                 (num.parse(dollarFundingFee.value ?? '0')));
 
-        return Text('Creation fee: + ${totalNairaFee.toNaira}',
+        return Text(
+            'Creation fee: + ${param.isNairaCardType ? totalNairaFee.toNaira : totalDollarFee.toDollar}',
             style: context.titleLarge
                 ?.copyWith(color: AppColors.kBackgroundColor));
       });

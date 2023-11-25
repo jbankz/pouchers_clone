@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
@@ -38,51 +39,55 @@ class _RequestBVNViewState extends ConsumerState<RequestBVNView>
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: Text(AppString.createNairaCard)),
-        body: SafeArea(
-            minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView(
-                      keyboardDismissBehavior:
-                          ScrollViewKeyboardDismissBehavior.onDrag,
-                      children: [
-                        Text(AppString.bvnRequest,
-                            style: context.titleLarge?.copyWith(fontSize: 14)),
-                        const Gap(height: 31),
-                        EditTextFieldWidget(
-                          readOnly: true,
-                          title: AppString.country,
-                          controller: countryController..text = 'Nigeria',
-                          validator: FieldValidator.validateString(),
-                        ),
-                        const Gap(height: 30),
-                        EditTextFieldWidget(
-                            title: AppString.bvn,
-                            label: AppString.bvnInst,
-                            keyboardType: TextInputType.number,
-                            controller: bvnController,
-                            focusNode: bvnFocusNode,
-                            inputFormatters: [
-                              context.limit(),
-                              context.digitsOnly
-                            ],
-                            validator: FieldValidator.validateInt(limit: 11),
-                            textInputAction: TextInputAction.go,
-                            onFieldSubmitted: (_) => _submit()),
-                      ],
-                    ),
+  Widget build(BuildContext context) {
+    final param = ref.watch(paramModule);
+
+    return Scaffold(
+      appBar: AppBar(title: Text(param.appTitle)),
+      body: SafeArea(
+          minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    children: [
+                      Text(AppString.bvnRequest,
+                          style: context.titleLarge?.copyWith(fontSize: 14)),
+                      const Gap(height: 31),
+                      EditTextFieldWidget(
+                        readOnly: true,
+                        title: AppString.country,
+                        controller: countryController..text = 'Nigeria',
+                        validator: FieldValidator.validateString(),
+                      ),
+                      const Gap(height: 30),
+                      EditTextFieldWidget(
+                          title: AppString.bvn,
+                          label: AppString.bvnInst,
+                          keyboardType: TextInputType.number,
+                          controller: bvnController,
+                          focusNode: bvnFocusNode,
+                          inputFormatters: [
+                            context.limit(),
+                            context.digitsOnly
+                          ],
+                          validator: FieldValidator.validateInt(limit: 11),
+                          textInputAction: TextInputAction.go,
+                          onFieldSubmitted: (_) => _submit()),
+                    ],
                   ),
-                  ElevatedButtonWidget(
-                      title: AppString.proceed, onPressed: _submit)
-                ],
-              ),
-            )),
-      );
+                ),
+                ElevatedButtonWidget(
+                    title: AppString.proceed, onPressed: _submit)
+              ],
+            ),
+          )),
+    );
+  }
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;

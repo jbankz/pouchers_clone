@@ -47,7 +47,7 @@ class ApiPath {
   static const String _cardPath = '$_apiVersionOne/card';
 
   /// Creates new dollar card
-  static const String createDollarVirtualCard = '$_apiVersionOne/$_cardPath/';
+  static const String createDollarVirtualCard = _cardPath;
 
   /// Creates new naira card
   static const String createNairaVirtualCard = _cardPath;
@@ -71,7 +71,7 @@ class ApiPath {
   static const String cards = _cardPath;
 
   /// Exchange Rate
-  static const String rate = '$_apiVersionOne/$_cardPath/exchange_rate/USDNGN';
+  static const String rate = '$_cardPath/exchange_rate/USDNGN';
 
   /// Virtual Account
   static const String virtualAccount = '$_apiVersionOne/$_cardPath/accounts';

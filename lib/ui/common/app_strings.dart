@@ -238,9 +238,12 @@ class AppString {
   static String paymentAnyWhere = 'Make payments anywhere online';
   static String manageCards = 'Easily manage your payments and cards';
   static String createNairaCard = 'Create Naira card';
+  static String createDollarCard = 'Create Dollar card';
   static String fundCard = 'Fund card';
   static String confirmation = 'Confirmation';
   static String creationFee = 'Creation fee';
+  static String totalInDollar = 'Total in dollars';
+  static String totalInNaira = 'Total in naira';
   static String total = 'Total';
   static String youWillDebited = "You will be debited ";
   static String fromWallet =
