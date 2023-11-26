@@ -6,12 +6,12 @@ part of 'card_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cardNotifierHash() => r'c97f6a07af3a133ec19c9b77eba77459c6a2cde1';
+String _$cardNotifierHash() => r'c08dbfeafdf97c37b20c87a79ac98fbd83145481';
 
 /// See also [CardNotifier].
 @ProviderFor(CardNotifier)
 final cardNotifierProvider =
-    AutoDisposeNotifierProvider<CardNotifier, AppState<dynamic>>.internal(
+    AutoDisposeNotifierProvider<CardNotifier, CardState<dynamic>>.internal(
   CardNotifier.new,
   name: r'cardNotifierProvider',
   debugGetCreateSourceHash:
@@ -20,6 +20,6 @@ final cardNotifierProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$CardNotifier = AutoDisposeNotifier<AppState<dynamic>>;
+typedef _$CardNotifier = AutoDisposeNotifier<CardState<dynamic>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

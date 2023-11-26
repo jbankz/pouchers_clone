@@ -20,10 +20,17 @@ VirtualCardDetails _$VirtualCardDetailsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$VirtualCardDetails {
-  String? get status => throw _privateConstructorUsedError;
-  String? get message => throw _privateConstructorUsedError;
-  int? get code => throw _privateConstructorUsedError;
-  Data? get data => throw _privateConstructorUsedError;
+  @JsonKey(name: '_id')
+  String? get id => throw _privateConstructorUsedError;
+  String? get type => throw _privateConstructorUsedError;
+  String? get brand => throw _privateConstructorUsedError;
+  String? get number => throw _privateConstructorUsedError;
+  String? get expiryMonth => throw _privateConstructorUsedError;
+  String? get expiryYear => throw _privateConstructorUsedError;
+  String? get cvv => throw _privateConstructorUsedError;
+  String? get cvv2 => throw _privateConstructorUsedError;
+  String? get defaultPin => throw _privateConstructorUsedError;
+  CardStatus? get status => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,9 +44,17 @@ abstract class $VirtualCardDetailsCopyWith<$Res> {
           VirtualCardDetails value, $Res Function(VirtualCardDetails) then) =
       _$VirtualCardDetailsCopyWithImpl<$Res, VirtualCardDetails>;
   @useResult
-  $Res call({String? status, String? message, int? code, Data? data});
-
-  $DataCopyWith<$Res>? get data;
+  $Res call(
+      {@JsonKey(name: '_id') String? id,
+      String? type,
+      String? brand,
+      String? number,
+      String? expiryMonth,
+      String? expiryYear,
+      String? cvv,
+      String? cvv2,
+      String? defaultPin,
+      CardStatus? status});
 }
 
 /// @nodoc
@@ -55,41 +70,59 @@ class _$VirtualCardDetailsCopyWithImpl<$Res, $Val extends VirtualCardDetails>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
+    Object? type = freezed,
+    Object? brand = freezed,
+    Object? number = freezed,
+    Object? expiryMonth = freezed,
+    Object? expiryYear = freezed,
+    Object? cvv = freezed,
+    Object? cvv2 = freezed,
+    Object? defaultPin = freezed,
     Object? status = freezed,
-    Object? message = freezed,
-    Object? code = freezed,
-    Object? data = freezed,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
+      brand: freezed == brand
+          ? _value.brand
+          : brand // ignore: cast_nullable_to_non_nullable
+              as String?,
+      number: freezed == number
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as String?,
+      expiryMonth: freezed == expiryMonth
+          ? _value.expiryMonth
+          : expiryMonth // ignore: cast_nullable_to_non_nullable
+              as String?,
+      expiryYear: freezed == expiryYear
+          ? _value.expiryYear
+          : expiryYear // ignore: cast_nullable_to_non_nullable
+              as String?,
+      cvv: freezed == cvv
+          ? _value.cvv
+          : cvv // ignore: cast_nullable_to_non_nullable
+              as String?,
+      cvv2: freezed == cvv2
+          ? _value.cvv2
+          : cvv2 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      defaultPin: freezed == defaultPin
+          ? _value.defaultPin
+          : defaultPin // ignore: cast_nullable_to_non_nullable
+              as String?,
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String?,
-      message: freezed == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String?,
-      code: freezed == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as int?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as Data?,
+              as CardStatus?,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $DataCopyWith<$Res>? get data {
-    if (_value.data == null) {
-      return null;
-    }
-
-    return $DataCopyWith<$Res>(_value.data!, (value) {
-      return _then(_value.copyWith(data: value) as $Val);
-    });
   }
 }
 
@@ -101,10 +134,17 @@ abstract class _$$VirtualCardDetailsImplCopyWith<$Res>
       __$$VirtualCardDetailsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? status, String? message, int? code, Data? data});
-
-  @override
-  $DataCopyWith<$Res>? get data;
+  $Res call(
+      {@JsonKey(name: '_id') String? id,
+      String? type,
+      String? brand,
+      String? number,
+      String? expiryMonth,
+      String? expiryYear,
+      String? cvv,
+      String? cvv2,
+      String? defaultPin,
+      CardStatus? status});
 }
 
 /// @nodoc
@@ -118,28 +158,58 @@ class __$$VirtualCardDetailsImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
+    Object? type = freezed,
+    Object? brand = freezed,
+    Object? number = freezed,
+    Object? expiryMonth = freezed,
+    Object? expiryYear = freezed,
+    Object? cvv = freezed,
+    Object? cvv2 = freezed,
+    Object? defaultPin = freezed,
     Object? status = freezed,
-    Object? message = freezed,
-    Object? code = freezed,
-    Object? data = freezed,
   }) {
     return _then(_$VirtualCardDetailsImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
+      brand: freezed == brand
+          ? _value.brand
+          : brand // ignore: cast_nullable_to_non_nullable
+              as String?,
+      number: freezed == number
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as String?,
+      expiryMonth: freezed == expiryMonth
+          ? _value.expiryMonth
+          : expiryMonth // ignore: cast_nullable_to_non_nullable
+              as String?,
+      expiryYear: freezed == expiryYear
+          ? _value.expiryYear
+          : expiryYear // ignore: cast_nullable_to_non_nullable
+              as String?,
+      cvv: freezed == cvv
+          ? _value.cvv
+          : cvv // ignore: cast_nullable_to_non_nullable
+              as String?,
+      cvv2: freezed == cvv2
+          ? _value.cvv2
+          : cvv2 // ignore: cast_nullable_to_non_nullable
+              as String?,
+      defaultPin: freezed == defaultPin
+          ? _value.defaultPin
+          : defaultPin // ignore: cast_nullable_to_non_nullable
+              as String?,
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String?,
-      message: freezed == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String?,
-      code: freezed == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as int?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as Data?,
+              as CardStatus?,
     ));
   }
 }
@@ -147,23 +217,47 @@ class __$$VirtualCardDetailsImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$VirtualCardDetailsImpl implements _VirtualCardDetails {
-  _$VirtualCardDetailsImpl({this.status, this.message, this.code, this.data});
+  _$VirtualCardDetailsImpl(
+      {@JsonKey(name: '_id') this.id,
+      this.type,
+      this.brand,
+      this.number,
+      this.expiryMonth,
+      this.expiryYear,
+      this.cvv,
+      this.cvv2,
+      this.defaultPin,
+      this.status = CardStatus.active});
 
   factory _$VirtualCardDetailsImpl.fromJson(Map<String, dynamic> json) =>
       _$$VirtualCardDetailsImplFromJson(json);
 
   @override
-  final String? status;
+  @JsonKey(name: '_id')
+  final String? id;
   @override
-  final String? message;
+  final String? type;
   @override
-  final int? code;
+  final String? brand;
   @override
-  final Data? data;
+  final String? number;
+  @override
+  final String? expiryMonth;
+  @override
+  final String? expiryYear;
+  @override
+  final String? cvv;
+  @override
+  final String? cvv2;
+  @override
+  final String? defaultPin;
+  @override
+  @JsonKey()
+  final CardStatus? status;
 
   @override
   String toString() {
-    return 'VirtualCardDetails(status: $status, message: $message, code: $code, data: $data)';
+    return 'VirtualCardDetails(id: $id, type: $type, brand: $brand, number: $number, expiryMonth: $expiryMonth, expiryYear: $expiryYear, cvv: $cvv, cvv2: $cvv2, defaultPin: $defaultPin, status: $status)';
   }
 
   @override
@@ -171,15 +265,25 @@ class _$VirtualCardDetailsImpl implements _VirtualCardDetails {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VirtualCardDetailsImpl &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.message, message) || other.message == message) &&
-            (identical(other.code, code) || other.code == code) &&
-            (identical(other.data, data) || other.data == data));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.brand, brand) || other.brand == brand) &&
+            (identical(other.number, number) || other.number == number) &&
+            (identical(other.expiryMonth, expiryMonth) ||
+                other.expiryMonth == expiryMonth) &&
+            (identical(other.expiryYear, expiryYear) ||
+                other.expiryYear == expiryYear) &&
+            (identical(other.cvv, cvv) || other.cvv == cvv) &&
+            (identical(other.cvv2, cvv2) || other.cvv2 == cvv2) &&
+            (identical(other.defaultPin, defaultPin) ||
+                other.defaultPin == defaultPin) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, status, message, code, data);
+  int get hashCode => Object.hash(runtimeType, id, type, brand, number,
+      expiryMonth, expiryYear, cvv, cvv2, defaultPin, status);
 
   @JsonKey(ignore: true)
   @override
@@ -198,22 +302,41 @@ class _$VirtualCardDetailsImpl implements _VirtualCardDetails {
 
 abstract class _VirtualCardDetails implements VirtualCardDetails {
   factory _VirtualCardDetails(
-      {final String? status,
-      final String? message,
-      final int? code,
-      final Data? data}) = _$VirtualCardDetailsImpl;
+      {@JsonKey(name: '_id') final String? id,
+      final String? type,
+      final String? brand,
+      final String? number,
+      final String? expiryMonth,
+      final String? expiryYear,
+      final String? cvv,
+      final String? cvv2,
+      final String? defaultPin,
+      final CardStatus? status}) = _$VirtualCardDetailsImpl;
 
   factory _VirtualCardDetails.fromJson(Map<String, dynamic> json) =
       _$VirtualCardDetailsImpl.fromJson;
 
   @override
-  String? get status;
+  @JsonKey(name: '_id')
+  String? get id;
   @override
-  String? get message;
+  String? get type;
   @override
-  int? get code;
+  String? get brand;
   @override
-  Data? get data;
+  String? get number;
+  @override
+  String? get expiryMonth;
+  @override
+  String? get expiryYear;
+  @override
+  String? get cvv;
+  @override
+  String? get cvv2;
+  @override
+  String? get defaultPin;
+  @override
+  CardStatus? get status;
   @override
   @JsonKey(ignore: true)
   _$$VirtualCardDetailsImplCopyWith<_$VirtualCardDetailsImpl> get copyWith =>

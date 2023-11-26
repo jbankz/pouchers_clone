@@ -21,7 +21,8 @@ _$DataImpl _$$DataImplFromJson(Map<String, dynamic> json) => _$DataImpl(
       last4: json['last4'] as String?,
       expiryMonth: json['expiryMonth'] as String?,
       expiryYear: json['expiryYear'] as String?,
-      status: json['status'] as String?,
+      status: $enumDecodeNullable(_$CardStatusEnumMap, json['status']) ??
+          CardStatus.active,
       dummyAccount: json['dummyAccount'] == null
           ? null
           : DummyAccount.fromJson(json['dummyAccount'] as Map<String, dynamic>),
@@ -49,9 +50,14 @@ Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
       'last4': instance.last4,
       'expiryMonth': instance.expiryMonth,
       'expiryYear': instance.expiryYear,
-      'status': instance.status,
+      'status': _$CardStatusEnumMap[instance.status],
       'dummyAccount': instance.dummyAccount,
       'is2FAEnrolled': instance.is2FaEnrolled,
       'spendingControls': instance.spendingControls,
       'updatedAt': instance.updatedAt?.toIso8601String(),
     };
+
+const _$CardStatusEnumMap = {
+  CardStatus.active: 'active',
+  CardStatus.inactive: 'inactive',
+};

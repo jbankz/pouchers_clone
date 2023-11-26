@@ -1,4 +1,5 @@
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_card/data.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../../../../../app/app.router.dart';
@@ -23,6 +24,9 @@ class ParamNotifier extends ChangeNotifier {
   String get appTitle =>
       isNairaCardType ? AppString.createNairaCard : AppString.createDollarCard;
 
+  Data? _cardDetail;
+  Data? get cardDetail => _cardDetail;
+
   void setCardType(CardType cardType) {
     _cardType = cardType;
     notifyListeners();
@@ -38,6 +42,11 @@ class ParamNotifier extends ChangeNotifier {
 
   void setExchangeRate(num rate) {
     _exchangeRate = rate;
+    notifyListeners();
+  }
+
+  void setCardDetails(Data card) {
+    _cardDetail = card;
     notifyListeners();
   }
 }

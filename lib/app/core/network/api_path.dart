@@ -53,7 +53,7 @@ class ApiPath {
   static const String createNairaVirtualCard = _cardPath;
 
   /// Freeze card
-  static const String freezeCard = '$_apiVersionOne/$_cardPath/';
+  static const String freezeCard = _cardPath;
 
   /// Fund virtual card
   static const String fundVirtualCard = '$_apiVersionOne/$_cardPath/fund';

@@ -1,6 +1,7 @@
 import 'package:Pouchers/utils/extension.dart';
 
 import '../enum/card_brand.dart';
+import '../enum/card_status.dart';
 import '../enum/currency.dart';
 
 class CardDto {
@@ -10,17 +11,20 @@ class CardDto {
   String? transactionPin;
   Currency? currency;
   String? userId;
+  String? sudoId;
   CardBrand? brand;
+  CardStatus? status;
 
-  CardDto({
-    this.userId,
-    this.amount = 0,
-    this.country,
-    this.bvn,
-    this.currency,
-    this.brand,
-    this.transactionPin,
-  });
+  CardDto(
+      {this.userId,
+      this.sudoId,
+      this.amount,
+      this.country,
+      this.bvn,
+      this.currency,
+      this.brand,
+      this.transactionPin,
+      this.status});
 
   Map<String, dynamic> toJson() => {
         if (amount != null) 'amount': amount,
@@ -28,6 +32,7 @@ class CardDto {
         if (bvn != null) 'bvn': bvn,
         if (currency != null) 'currency': currency?.name.toUpperCase(),
         if (transactionPin != null) 'transactionPin': transactionPin,
-        if (brand != null) 'brand': brand?.name.titleCase
+        if (brand != null) 'brand': brand?.name.titleCase,
+        if (status != null) 'status': status?.name
       };
 }

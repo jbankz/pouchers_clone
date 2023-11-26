@@ -3,7 +3,7 @@ class AppImage {
   static const String _imagePath = "assets/images/";
 
   static String send = "${_iconPath}send.svg";
-
+  static String sendGreen = "${_iconPath}send_green.svg";
   static String appLogo = "${_iconPath}app_logo.svg";
   static String walletIcon = "${_iconPath}wallet.svg";
   static String swapIcon = "${_iconPath}swap_icon.svg";
@@ -49,6 +49,8 @@ class AppImage {
   static String logOutIcon = "${_iconPath}logout.svg";
   static String nairaIcon = "${_iconPath}naira.svg";
   static String dollarIcon = "${_iconPath}dollar.svg";
+  static String curvedDollarIcon = "${_iconPath}curved_dollar.png";
+  static String curvedNairaIcon = "${_iconPath}curved_naira.png";
   static String cardHomeDollarIcon = "${_iconPath}card_frame.svg";
   static String fundCardIcon = "${_iconPath}fund_card.svg";
   static String cardDetailIcon = "${_iconPath}card_detail.svg";
@@ -116,7 +118,9 @@ class AppImage {
   static String ellipses = "${_imagePath}ellipses.png";
   static String virtualNaira = "${_imagePath}virtual_naira.png";
   static String virtualDollar = "${_imagePath}virtual_dollar.png";
+  static String curvedVirtualDollar = "${_iconPath}curved_dollar.svg";
   static String visa = "${_iconPath}visa.svg";
   static String verve = "${_iconPath}verve.svg";
   static String mastercard = "${_iconPath}mastercard.svg";
+  static String freeze = "${_iconPath}freeze.svg";
 }

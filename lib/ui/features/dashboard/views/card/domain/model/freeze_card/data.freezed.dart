@@ -33,7 +33,7 @@ mixin _$Data {
   String? get last4 => throw _privateConstructorUsedError;
   String? get expiryMonth => throw _privateConstructorUsedError;
   String? get expiryYear => throw _privateConstructorUsedError;
-  String? get status => throw _privateConstructorUsedError;
+  CardStatus? get status => throw _privateConstructorUsedError;
   DummyAccount? get dummyAccount => throw _privateConstructorUsedError;
   @JsonKey(name: 'is2FAEnrolled')
   bool? get is2FaEnrolled => throw _privateConstructorUsedError;
@@ -63,7 +63,7 @@ abstract class $DataCopyWith<$Res> {
       String? last4,
       String? expiryMonth,
       String? expiryYear,
-      String? status,
+      CardStatus? status,
       DummyAccount? dummyAccount,
       @JsonKey(name: 'is2FAEnrolled') bool? is2FaEnrolled,
       SpendingControls? spendingControls,
@@ -157,7 +157,7 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as CardStatus?,
       dummyAccount: freezed == dummyAccount
           ? _value.dummyAccount
           : dummyAccount // ignore: cast_nullable_to_non_nullable
@@ -234,7 +234,7 @@ abstract class _$$DataImplCopyWith<$Res> implements $DataCopyWith<$Res> {
       String? last4,
       String? expiryMonth,
       String? expiryYear,
-      String? status,
+      CardStatus? status,
       DummyAccount? dummyAccount,
       @JsonKey(name: 'is2FAEnrolled') bool? is2FaEnrolled,
       SpendingControls? spendingControls,
@@ -328,7 +328,7 @@ class __$$DataImplCopyWithImpl<$Res>
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as CardStatus?,
       dummyAccount: freezed == dummyAccount
           ? _value.dummyAccount
           : dummyAccount // ignore: cast_nullable_to_non_nullable
@@ -365,7 +365,7 @@ class _$DataImpl implements _Data {
       this.last4,
       this.expiryMonth,
       this.expiryYear,
-      this.status,
+      this.status = CardStatus.active,
       this.dummyAccount,
       @JsonKey(name: 'is2FAEnrolled') this.is2FaEnrolled,
       this.spendingControls,
@@ -400,7 +400,8 @@ class _$DataImpl implements _Data {
   @override
   final String? expiryYear;
   @override
-  final String? status;
+  @JsonKey()
+  final CardStatus? status;
   @override
   final DummyAccount? dummyAccount;
   @override
@@ -501,7 +502,7 @@ abstract class _Data implements Data {
       final String? last4,
       final String? expiryMonth,
       final String? expiryYear,
-      final String? status,
+      final CardStatus? status,
       final DummyAccount? dummyAccount,
       @JsonKey(name: 'is2FAEnrolled') final bool? is2FaEnrolled,
       final SpendingControls? spendingControls,
@@ -535,7 +536,7 @@ abstract class _Data implements Data {
   @override
   String? get expiryYear;
   @override
-  String? get status;
+  CardStatus? get status;
   @override
   DummyAccount? get dummyAccount;
   @override

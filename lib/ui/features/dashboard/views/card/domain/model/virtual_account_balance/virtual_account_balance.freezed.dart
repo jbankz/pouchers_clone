@@ -21,10 +21,8 @@ VirtualAccountBalance _$VirtualAccountBalanceFromJson(
 
 /// @nodoc
 mixin _$VirtualAccountBalance {
-  String? get status => throw _privateConstructorUsedError;
-  String? get message => throw _privateConstructorUsedError;
-  int? get code => throw _privateConstructorUsedError;
-  Data? get data => throw _privateConstructorUsedError;
+  num? get currentBalance => throw _privateConstructorUsedError;
+  num? get availableBalance => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,9 +36,7 @@ abstract class $VirtualAccountBalanceCopyWith<$Res> {
           $Res Function(VirtualAccountBalance) then) =
       _$VirtualAccountBalanceCopyWithImpl<$Res, VirtualAccountBalance>;
   @useResult
-  $Res call({String? status, String? message, int? code, Data? data});
-
-  $DataCopyWith<$Res>? get data;
+  $Res call({num? currentBalance, num? availableBalance});
 }
 
 /// @nodoc
@@ -57,41 +53,19 @@ class _$VirtualAccountBalanceCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? status = freezed,
-    Object? message = freezed,
-    Object? code = freezed,
-    Object? data = freezed,
+    Object? currentBalance = freezed,
+    Object? availableBalance = freezed,
   }) {
     return _then(_value.copyWith(
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as String?,
-      message: freezed == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String?,
-      code: freezed == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as int?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as Data?,
+      currentBalance: freezed == currentBalance
+          ? _value.currentBalance
+          : currentBalance // ignore: cast_nullable_to_non_nullable
+              as num?,
+      availableBalance: freezed == availableBalance
+          ? _value.availableBalance
+          : availableBalance // ignore: cast_nullable_to_non_nullable
+              as num?,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $DataCopyWith<$Res>? get data {
-    if (_value.data == null) {
-      return null;
-    }
-
-    return $DataCopyWith<$Res>(_value.data!, (value) {
-      return _then(_value.copyWith(data: value) as $Val);
-    });
   }
 }
 
@@ -104,10 +78,7 @@ abstract class _$$VirtualAccountBalanceImplCopyWith<$Res>
       __$$VirtualAccountBalanceImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? status, String? message, int? code, Data? data});
-
-  @override
-  $DataCopyWith<$Res>? get data;
+  $Res call({num? currentBalance, num? availableBalance});
 }
 
 /// @nodoc
@@ -122,28 +93,18 @@ class __$$VirtualAccountBalanceImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? status = freezed,
-    Object? message = freezed,
-    Object? code = freezed,
-    Object? data = freezed,
+    Object? currentBalance = freezed,
+    Object? availableBalance = freezed,
   }) {
     return _then(_$VirtualAccountBalanceImpl(
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as String?,
-      message: freezed == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String?,
-      code: freezed == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as int?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as Data?,
+      currentBalance: freezed == currentBalance
+          ? _value.currentBalance
+          : currentBalance // ignore: cast_nullable_to_non_nullable
+              as num?,
+      availableBalance: freezed == availableBalance
+          ? _value.availableBalance
+          : availableBalance // ignore: cast_nullable_to_non_nullable
+              as num?,
     ));
   }
 }
@@ -151,24 +112,19 @@ class __$$VirtualAccountBalanceImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$VirtualAccountBalanceImpl implements _VirtualAccountBalance {
-  _$VirtualAccountBalanceImpl(
-      {this.status, this.message, this.code, this.data});
+  _$VirtualAccountBalanceImpl({this.currentBalance, this.availableBalance});
 
   factory _$VirtualAccountBalanceImpl.fromJson(Map<String, dynamic> json) =>
       _$$VirtualAccountBalanceImplFromJson(json);
 
   @override
-  final String? status;
+  final num? currentBalance;
   @override
-  final String? message;
-  @override
-  final int? code;
-  @override
-  final Data? data;
+  final num? availableBalance;
 
   @override
   String toString() {
-    return 'VirtualAccountBalance(status: $status, message: $message, code: $code, data: $data)';
+    return 'VirtualAccountBalance(currentBalance: $currentBalance, availableBalance: $availableBalance)';
   }
 
   @override
@@ -176,15 +132,16 @@ class _$VirtualAccountBalanceImpl implements _VirtualAccountBalance {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VirtualAccountBalanceImpl &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.message, message) || other.message == message) &&
-            (identical(other.code, code) || other.code == code) &&
-            (identical(other.data, data) || other.data == data));
+            (identical(other.currentBalance, currentBalance) ||
+                other.currentBalance == currentBalance) &&
+            (identical(other.availableBalance, availableBalance) ||
+                other.availableBalance == availableBalance));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, status, message, code, data);
+  int get hashCode =>
+      Object.hash(runtimeType, currentBalance, availableBalance);
 
   @JsonKey(ignore: true)
   @override
@@ -203,22 +160,16 @@ class _$VirtualAccountBalanceImpl implements _VirtualAccountBalance {
 
 abstract class _VirtualAccountBalance implements VirtualAccountBalance {
   factory _VirtualAccountBalance(
-      {final String? status,
-      final String? message,
-      final int? code,
-      final Data? data}) = _$VirtualAccountBalanceImpl;
+      {final num? currentBalance,
+      final num? availableBalance}) = _$VirtualAccountBalanceImpl;
 
   factory _VirtualAccountBalance.fromJson(Map<String, dynamic> json) =
       _$VirtualAccountBalanceImpl.fromJson;
 
   @override
-  String? get status;
+  num? get currentBalance;
   @override
-  String? get message;
-  @override
-  int? get code;
-  @override
-  Data? get data;
+  num? get availableBalance;
   @override
   @JsonKey(ignore: true)
   _$$VirtualAccountBalanceImplCopyWith<_$VirtualAccountBalanceImpl>

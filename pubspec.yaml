@@ -151,11 +151,11 @@ analyzer:
     - custom_lint
 
 scripts:
+  build: dart run build_runner build --delete-conflicting-outputs
   clean: 
     - flutter clean
     - flutter pub get
     - dart run build_runner build --delete-conflicting-outputs
-  build: dart run build_runner build --delete-conflicting-outputs
   watch: dart run build_runner watch
   lint:  dart run custom_lint
   pod:

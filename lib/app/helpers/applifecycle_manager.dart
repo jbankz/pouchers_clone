@@ -32,7 +32,7 @@ class _AppLifeCycleManagerState extends State<AppLifeCycleManager>
     DateTime? inactiveTime = SessionManager.getInactiveTime();
     DateTime timeNow = DateTime.now();
     if (inactiveTime != null && timeNow.isAfter(inactiveTime)) {
-      restartApplication(context, "Your session is expired");
+      // restartApplication(context, "Your session is expired");
     }
     SessionManager.deleteInactiveTime();
     isTracking = false;

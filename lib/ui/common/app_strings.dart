@@ -267,4 +267,15 @@ class AppString {
   static String fundInstr8 = 'Confirm transaction detail and enter pin';
   static String howToFund = 'How to fund your Pouchers account';
   static String myCards = 'My Cards';
+  static String cardDetail = 'Card details';
+  static String cardName = 'Card name';
+  static String manage = 'Manage';
+  static String freezeCard = 'Freeze card';
+  static String freezeCardInfo = 'Temporary disable this card';
+  static String whatThisMean = 'What this means';
+  static String whatThisMean1 =
+      '$_bullet You will not be able to make card payments';
+  static String whatThisMean2 =
+      '$_bullet Your online subscriptions with this card will not work';
+  static String transactionHistory = 'Transaction history';
 }

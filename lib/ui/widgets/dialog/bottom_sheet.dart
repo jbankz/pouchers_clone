@@ -4,15 +4,18 @@ import '../../../app/core/router/page_router.dart';
 import '../../common/app_colors.dart';
 
 class BottomSheets {
-  static Future<T?> showSheet<T>({required Widget child}) =>
+  static Future<T?> showSheet<T>(
+          {bool isDismissible = true, required Widget child}) =>
       showModalBottomSheet<T>(
           context: PageRouter.globalContext,
+          isDismissible: isDismissible,
           builder: (_) => Wrap(children: [child]));
 
-  static Future<dynamic> showAlertDialog({required Widget child}) async =>
+  static Future<dynamic> showAlertDialog(
+          {bool barrierDismissible = true, required Widget child}) async =>
       showGeneralDialog(
         barrierLabel: "Label",
-        barrierDismissible: true,
+        barrierDismissible: barrierDismissible,
         barrierColor: AppColors.kPrimaryTextColor.withOpacity(.70),
         transitionDuration: const Duration(milliseconds: 700),
         context: PageRouter.globalContext,

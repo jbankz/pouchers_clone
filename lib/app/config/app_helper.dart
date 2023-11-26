@@ -11,4 +11,17 @@ class AppHelper {
       debugPrintStack(label: e.toString());
     }
   }
+
+  static String maskNumber(String phoneNumber) {
+    // Check if the input is valid
+    if (phoneNumber.length != 10 ||
+        !phoneNumber.startsWith(RegExp(r'^[0-9]+$'))) {
+      // Return an error message or handle the invalid input as needed
+      return '';
+    }
+
+    // Mask the phone number
+    final String maskedNumber = '**** *** ${phoneNumber.substring(6)}';
+    return maskedNumber;
+  }
 }

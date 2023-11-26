@@ -9,9 +9,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../../../../app/app.logger.dart';
 import '../../../../../../../app/app.router.dart';
 import '../../../../../../../app/core/router/page_router.dart';
-import '../../../../../../../app/core/state/app_state.dart';
+import '../../../../../../widgets/dialog/bottom_sheet.dart';
 import '../../domain/model/get_card/data.dart';
 import '../../domain/model/get_exchange_rate/get_exchange_rate.dart';
+import '../../domain/model/virtual_account_balance/virtual_account_balance.dart';
+import '../../domain/model/virtual_card_details/virtual_card_details.dart';
+import '../state/card_state.dart';
+import '../view/sheets/card_details_sheet.dart';
+import '../view/sheets/manage_card_sheet.dart';
 
 part 'card_notifier.g.dart';
 
@@ -21,9 +26,11 @@ class CardNotifier extends _$CardNotifier {
 
   GetExchangeRate? _exchangeRate;
   List<Data> _cards = [];
+  VirtualCardDetails? _cardDetails;
+  VirtualAccountBalance? _accountBalance;
 
   @override
-  AppState build() => AppState(isBusy: true);
+  CardState build() => CardState(isBusy: true, cards: _cards);
 
   Future<void> createNairaVirtualCard(CardDto parameter,
       [CancelToken? cancelToken]) async {
@@ -74,13 +81,13 @@ class CardNotifier extends _$CardNotifier {
     try {
       state = state.copyWith(isBusy: true);
 
-      await ref.read(getVirtualCardDetailsProvider
+      _cardDetails = await ref.read(getVirtualCardDetailsProvider
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
     } catch (e) {
       _logger.e(e.toString());
     }
-    state = state.copyWith(isBusy: false);
+    state = state.copyWith(isBusy: false, virtualCardDetails: _cardDetails);
   }
 
   Future<void> getAccountBalance(CardDto parameter,
@@ -88,13 +95,14 @@ class CardNotifier extends _$CardNotifier {
     try {
       state = state.copyWith(isBusy: true);
 
-      await ref.read(getAccountBalanceProvider
+      _accountBalance = await ref.read(getAccountBalanceProvider
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
     } catch (e) {
       _logger.e(e.toString());
     }
-    state = state.copyWith(isBusy: false);
+    state =
+        state.copyWith(isBusy: false, virtualAccountBalance: _accountBalance);
   }
 
   Future<void> getVirtualAccout(CardDto parameter,
@@ -132,8 +140,10 @@ class CardNotifier extends _$CardNotifier {
       await ref.read(freezeCardProvider
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
+      PageRouter.popToRoot(Routes.virtualCardDetailView);
     } catch (e) {
       _logger.e(e.toString());
+      triggerNotificationTray(e.toString(), error: true);
     }
     state = state.copyWith(isBusy: false);
   }
@@ -164,7 +174,7 @@ class CardNotifier extends _$CardNotifier {
     } catch (e) {
       _logger.e(e.toString());
     }
-    state = state.copyWith(isBusy: false, data: _cards);
+    state = state.copyWith(isBusy: false, cards: _cards);
   }
 
   Future<void> getToken(CardDto parameter, [CancelToken? cancelToken]) async {
@@ -191,6 +201,17 @@ class CardNotifier extends _$CardNotifier {
     } catch (e) {
       _logger.e(e.toString());
     }
-    state = state.copyWith(isBusy: false, data: _exchangeRate);
+    state = state.copyWith(isBusy: false, exchangeRate: _exchangeRate);
   }
+
+  void navigateToDetails(Data card) {
+    ref.read(paramModule.notifier).setCardDetails(card);
+    PageRouter.pushNamed(Routes.virtualCardDetailView);
+  }
+
+  void triggerDetails() =>
+      BottomSheets.showSheet(child: const CardDetailsSheet());
+
+  Future<void> triggerManageCard() async =>
+      await BottomSheets.showSheet(child: const ManageCardSheet());
 }

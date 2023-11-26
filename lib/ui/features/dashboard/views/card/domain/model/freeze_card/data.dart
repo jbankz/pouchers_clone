@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_status.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'customer.dart';
@@ -22,7 +23,7 @@ class Data with _$Data {
     String? last4,
     String? expiryMonth,
     String? expiryYear,
-    String? status,
+    @Default(CardStatus.active) CardStatus? status,
     DummyAccount? dummyAccount,
     @JsonKey(name: 'is2FAEnrolled') bool? is2FaEnrolled,
     SpendingControls? spendingControls,

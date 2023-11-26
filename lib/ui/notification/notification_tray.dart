@@ -53,7 +53,7 @@ class _MessageNotificationState extends State<MessageNotification>
   }
 
   Future<void> _triggerFeedback() async {
-    await HapticFeedback.vibrate();
+    await HapticFeedback.selectionClick();
   }
 
   @override

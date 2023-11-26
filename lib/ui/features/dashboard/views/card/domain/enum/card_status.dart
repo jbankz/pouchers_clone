@@ -1,0 +1,1 @@
+enum CardStatus { active, inactive }

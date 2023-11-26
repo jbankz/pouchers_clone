@@ -19,6 +19,7 @@ import '../ui/features/dashboard/views/account/views/account_verification.dart';
 import '../ui/features/dashboard/views/card/presentation/view/bvn_requirement_view.dart';
 import '../ui/features/dashboard/views/card/presentation/view/card_calculator_view.dart';
 import '../ui/features/dashboard/views/card/presentation/view/card_creation_summary_view.dart';
+import '../ui/features/dashboard/views/card/presentation/view/virtual_card_detail_view.dart';
 import '../ui/features/dashboard/views/dashboard_view.dart';
 import '../ui/features/onboarding/presentation/views/onboarding_view.dart';
 import '../ui/features/profile/presentation/views/kyc/bvn/bvn_view.dart';
@@ -81,6 +82,10 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: CardCalculatorView),
     AdaptiveRoute(page: CardCreationSymmaryView),
     AdaptiveRoute(page: FundWalletView),
+    CustomRoute(
+        page: VirtualCardDetailView,
+        opaque: false,
+        transitionsBuilder: TransitionsBuilders.fadeIn),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

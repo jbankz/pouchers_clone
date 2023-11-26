@@ -21,7 +21,7 @@ import 'package:Pouchers/utils/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:overlay_support/overlay_support.dart';
 
-import '../../../ui/features/dashboard/views/card/presentation/view/card_view.dart';
+import '../../../ui/features/dashboard/views/card/presentation/view/virtual_card_view.dart';
 
 class TabLayout extends ConsumerStatefulWidget {
   static const String routeName = "tabLayout";
@@ -49,7 +49,7 @@ class _TabLayoutState extends ConsumerState<TabLayout> with ResponseHandler {
     const HomePage(),
     //CardHome(),
     // const CreateCard(),
-    CardView(),
+    const VirtualCardView(),
     const Transactions(),
     const AccountView(),
   ];

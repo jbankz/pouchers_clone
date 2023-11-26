@@ -9,19 +9,13 @@ part of 'virtual_account_balance.dart';
 _$VirtualAccountBalanceImpl _$$VirtualAccountBalanceImplFromJson(
         Map<String, dynamic> json) =>
     _$VirtualAccountBalanceImpl(
-      status: json['status'] as String?,
-      message: json['message'] as String?,
-      code: json['code'] as int?,
-      data: json['data'] == null
-          ? null
-          : Data.fromJson(json['data'] as Map<String, dynamic>),
+      currentBalance: json['currentBalance'] as num?,
+      availableBalance: json['availableBalance'] as num?,
     );
 
 Map<String, dynamic> _$$VirtualAccountBalanceImplToJson(
         _$VirtualAccountBalanceImpl instance) =>
     <String, dynamic>{
-      'status': instance.status,
-      'message': instance.message,
-      'code': instance.code,
-      'data': instance.data,
+      'currentBalance': instance.currentBalance,
+      'availableBalance': instance.availableBalance,
     };

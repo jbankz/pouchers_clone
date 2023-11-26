@@ -3,7 +3,6 @@ import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_exchange_rate/get_exchange_rate.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/params_notifier.dart';
@@ -19,7 +18,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../widgets/keypad/virtual_key_pad_controller.dart';
-// import '../../domain/model/get_exchange_rate/data.dart';
 import 'widgets/hook_creation_widget.dart';
 
 class CardCalculatorView extends ConsumerStatefulWidget {
@@ -99,7 +97,7 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
                                           borderRadius:
                                               BorderRadius.circular(7.r)),
                                       child: Text(
-                                          '${1.toDollar.replaceAll('.00', '')} = ${num.parse((cardState.data as GetExchangeRate?)?.rate ?? '0').toNaira.replaceAll('.00', '')}',
+                                          '${1.toDollar.replaceAll('.00', '')} = ${num.parse((cardState.exchangeRate)?.rate ?? '0').toNaira.replaceAll('.00', '')}',
                                           style: context.headlineLarge
                                               ?.copyWith(
                                                   fontSize: 14,
@@ -144,8 +142,7 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
                       : () {
                           if (!param.isNairaCardType) {
                             _paramNotifier.setExchangeRate(num.parse(
-                                (cardState.data as GetExchangeRate?)?.rate ??
-                                    '0'));
+                                (cardState.exchangeRate)?.rate ?? '0'));
                           }
                           PageRouter.pushNamed(Routes.cardCreationSymmaryView,
                               args: CardCreationSymmaryViewArguments(
