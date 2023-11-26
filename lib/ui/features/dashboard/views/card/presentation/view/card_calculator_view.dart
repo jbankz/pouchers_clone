@@ -120,7 +120,8 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
                           fontWeight: FontWeight.w700,
                           fontSize: 40)),
                   const Gap(height: 11),
-                  const HookCreationFeeWidget(),
+                  if (param.isCreatingCardActivity)
+                    const HookCreationFeeWidget(),
                   const Gap(height: 52),
                 ],
               ),

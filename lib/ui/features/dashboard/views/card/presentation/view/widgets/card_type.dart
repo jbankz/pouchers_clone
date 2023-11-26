@@ -36,8 +36,8 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
   @override
   void initState() {
     super.initState();
+    _paramNotifier = ref.read(paramModule.notifier);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _paramNotifier = ref.read(paramModule.notifier);
       ref.read(adminNotifierProvider.notifier).getEnvs();
     });
   }

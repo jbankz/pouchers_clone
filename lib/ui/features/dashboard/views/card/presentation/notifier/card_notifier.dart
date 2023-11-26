@@ -1,6 +1,7 @@
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_activity_type.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/notification/notification_tray.dart';
 import 'package:dio/dio.dart';
@@ -10,6 +11,7 @@ import '../../../../../../../app/app.logger.dart';
 import '../../../../../../../app/app.router.dart';
 import '../../../../../../../app/core/router/page_router.dart';
 import '../../../../../../widgets/dialog/bottom_sheet.dart';
+import '../../../../../admin/domain/model/envs/envs.dart';
 import '../../domain/model/get_card/data.dart';
 import '../../domain/model/get_exchange_rate/get_exchange_rate.dart';
 import '../../domain/model/virtual_account_balance/virtual_account_balance.dart';
@@ -204,9 +206,36 @@ class CardNotifier extends _$CardNotifier {
     state = state.copyWith(isBusy: false, exchangeRate: _exchangeRate);
   }
 
+  num calculateTotalFeel(List<Envs> envs, String baseName) {
+    final Envs creationFee = envs.isEmpty
+        ? Envs()
+        : envs
+            .singleWhere((env) => env.name == '${baseName}_card_creation_fee');
+
+    final Envs sudoVerveFee = envs.isEmpty
+        ? Envs()
+        : envs.singleWhere(
+            (env) => env.name == 'sudo_verve_${baseName}_card_creation_fee');
+
+    final Envs fundingFee = envs.isEmpty
+        ? Envs()
+        : envs.singleWhere((env) => env.name == '${baseName}_card_funding_fee');
+
+    return ((num.parse(creationFee.value ?? '0')) +
+        (num.parse(sudoVerveFee.value ?? '0')) +
+        (num.parse(fundingFee.value ?? '0')));
+  }
+
   void navigateToDetails(Data card) {
     ref.read(paramModule.notifier).setCardDetails(card);
     PageRouter.pushNamed(Routes.virtualCardDetailView);
+  }
+
+  void navigateToFundCard() {
+    ref
+        .read(paramModule.notifier)
+        .setCardActivityType(CardActivityType.funding);
+    PageRouter.pushNamed(Routes.cardCalculatorView);
   }
 
   void triggerDetails() =>

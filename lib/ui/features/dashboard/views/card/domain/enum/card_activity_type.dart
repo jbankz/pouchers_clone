@@ -1,0 +1,1 @@
+enum CardActivityType { creating, funding }

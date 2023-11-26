@@ -239,6 +239,10 @@ class AppString {
   static String manageCards = 'Easily manage your payments and cards';
   static String createNairaCard = 'Create Naira card';
   static String createDollarCard = 'Create Dollar card';
+  static String virtualNairaCard = 'Naira virtual card';
+  static String virtualDollarCard = 'Dollar virtual card';
+  static String fundNairaCard = 'Fund Naira card';
+  static String fundDollarCard = 'Fund Dollar card';
   static String fundCard = 'Fund card';
   static String confirmation = 'Confirmation';
   static String creationFee = 'Creation fee';

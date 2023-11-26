@@ -56,7 +56,7 @@ class ApiPath {
   static const String freezeCard = _cardPath;
 
   /// Fund virtual card
-  static const String fundVirtualCard = '$_apiVersionOne/$_cardPath/fund';
+  static const String fundVirtualCard = '$_cardPath/fund';
 
   /// virtual card balance
   static const String balance = '$_apiVersionOne/$_cardPath/accounts/';

@@ -1,5 +1,6 @@
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -52,7 +53,7 @@ class _VirtualCardDetailViewState extends ConsumerState<VirtualCardDetailView> {
     final param = ref.watch(paramModule);
     final card = param.cardDetail;
     return Scaffold(
-      appBar: AppBar(title: Text(param.appTitle)),
+      appBar: AppBar(title: Text(param.cardDetailsTitle)),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: Column(
@@ -167,8 +168,8 @@ class _VirtualCardDetailViewState extends ConsumerState<VirtualCardDetailView> {
                 _buildActionButton(
                     context: context,
                     icon: AppImage.fundCardIcon,
-                    label: 'Fund card',
-                    onTap: () {}),
+                    label: AppString.fundCard,
+                    onTap: () => _cardNotifier.navigateToFundCard()),
                 const Gap(width: 40),
                 _buildActionButton(
                     context: context,

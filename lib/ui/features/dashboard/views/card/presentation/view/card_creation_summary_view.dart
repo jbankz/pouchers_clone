@@ -3,6 +3,8 @@ import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/app/core/state/app_state.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_activity_type.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_status.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/params_notifier.dart';
@@ -71,40 +73,45 @@ class _CardCreationSymmaryViewState
 
         final envs = (appState.data as List<Envs>);
 
-        final Envs nairaCreationFee = envs.isEmpty
-            ? Envs()
-            : envs.singleWhere((env) => env.name == 'naira_card_creation_fee');
+        // final Envs nairaCreationFee = envs.isEmpty
+        //     ? Envs()
+        //     : envs.singleWhere((env) => env.name == 'naira_card_creation_fee');
 
-        final Envs nairaSudoVerveFee = envs.isEmpty
-            ? Envs()
-            : envs.singleWhere(
-                (env) => env.name == 'sudo_verve_naira_card_creation_fee');
+        // final Envs nairaSudoVerveFee = envs.isEmpty
+        //     ? Envs()
+        //     : envs.singleWhere(
+        //         (env) => env.name == 'sudo_verve_naira_card_creation_fee');
 
-        final Envs nairaFundingFee = envs.isEmpty
-            ? Envs()
-            : envs.singleWhere((env) => env.name == 'naira_card_funding_fee');
+        // final Envs nairaFundingFee = envs.isEmpty
+        //     ? Envs()
+        //     : envs.singleWhere((env) => env.name == 'naira_card_funding_fee');
 
-        final num totalNairaFee = ((num.parse(nairaCreationFee.value ?? '0')) +
-            (num.parse(nairaSudoVerveFee.value ?? '0')) +
-            (num.parse(nairaFundingFee.value ?? '0')));
+        // final num totalNairaFee = ((num.parse(nairaCreationFee.value ?? '0')) +
+        //     (num.parse(nairaSudoVerveFee.value ?? '0')) +
+        //     (num.parse(nairaFundingFee.value ?? '0')));
 
-        final Envs dollarCreationFee = envs.isEmpty
-            ? Envs()
-            : envs.singleWhere((env) => env.name == 'dollar_card_creation_fee');
+        final totalNairaFee = _cardNotifier.calculateTotalFeel(envs, 'naira');
+        final totalDollarFee = _cardNotifier.calculateTotalFeel(envs, 'dollar');
 
-        final Envs dollarSudoCreationFee = envs.isEmpty
-            ? Envs()
-            : envs.singleWhere(
-                (env) => env.name == 'sudo_dollar_card_creation_fee');
+        ///======================================
 
-        final Envs dollarFundingFee = envs.isEmpty
-            ? Envs()
-            : envs.singleWhere((env) => env.name == 'dollar_card_funding_fee');
+        // final Envs dollarCreationFee = envs.isEmpty
+        //     ? Envs()
+        //     : envs.singleWhere((env) => env.name == 'dollar_card_creation_fee');
 
-        final num totalDollarFee =
-            ((num.parse(dollarCreationFee.value ?? '0')) +
-                (num.parse(dollarSudoCreationFee.value ?? '0')) +
-                (num.parse(dollarFundingFee.value ?? '0')));
+        // final Envs dollarSudoCreationFee = envs.isEmpty
+        //     ? Envs()
+        //     : envs.singleWhere(
+        //         (env) => env.name == 'sudo_dollar_card_creation_fee');
+
+        // final Envs dollarFundingFee = envs.isEmpty
+        //     ? Envs()
+        //     : envs.singleWhere((env) => env.name == 'dollar_card_funding_fee');
+
+        // final num totalDollarFee =
+        //     ((num.parse(dollarCreationFee.value ?? '0')) +
+        //         (num.parse(dollarSudoCreationFee.value ?? '0')) +
+        //         (num.parse(dollarFundingFee.value ?? '0')));
 
         final bool insufficient =
             ((widget.cardDto.amount ?? 0) + totalNairaFee) >
@@ -139,13 +146,20 @@ class _CardCreationSymmaryViewState
                                   ? (widget.cardDto.amount ?? 0).toNaira
                                   : (widget.cardDto.amount ?? 0).toDollar),
                           const Gap(height: 30),
-                          _tileWidget(
-                              context: context,
-                              title: AppString.creationFee,
-                              value: param.isNairaCardType
-                                  ? totalNairaFee.toNaira
-                                  : totalDollarFee.toDollar),
-                          const Gap(height: 30),
+                          if (param.isCreatingCardActivity)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _tileWidget(
+                                    context: context,
+                                    title: AppString.creationFee,
+                                    value: param.isNairaCardType
+                                        ? totalNairaFee.toNaira
+                                        : totalDollarFee.toDollar),
+                                const Gap(height: 30),
+                              ],
+                            ),
                           if (!param.isNairaCardType)
                             Column(
                               mainAxisSize: MainAxisSize.min,
@@ -271,20 +285,21 @@ class _CardCreationSymmaryViewState
                 ElevatedButtonWidget(
                     title: param.appTitle,
                     loading: walletState.isBusy || cardState.isBusy,
-                    onPressed: (walletState.isBusy ||
-                            cardState.isBusy ||
-                            insufficient)
-                        ? null
-                        : () async {
-                            final pin = await BottomSheets.showSheet(
-                                child: const PinConfirmationSheet()) as String?;
-                            if (pin != null) {
-                              param.isNairaCardType
-                                  ? _createNairaCard(totalNairaFee, param, pin)
-                                  : _createDollarCard(
-                                      totalDollarFee, param, pin);
-                            }
-                          })
+                    onPressed:
+                        // onPressed: (walletState.isBusy ||
+                        //         cardState.isBusy ||
+                        //         insufficient)
+                        //     ? null
+                        //     :
+
+                        () async {
+                      final pin = await BottomSheets.showSheet(
+                          child: const PinConfirmationSheet()) as String?;
+                      if (pin != null) {
+                        _handleActivity(
+                            pin, param, totalNairaFee, totalDollarFee);
+                      }
+                    })
               ],
             ),
           ),
@@ -372,4 +387,31 @@ class _CardCreationSymmaryViewState
                   textAlign: TextAlign.right))
         ],
       );
+
+  void _handleActivity(
+      String pin, ParamNotifier param, num totalNairaFee, num totalDollarFee) {
+    switch (param.cardActivityType) {
+      case CardActivityType.creating:
+        param.isNairaCardType
+            ? _createNairaCard(totalNairaFee, param, pin)
+            : _createDollarCard(totalDollarFee, param, pin);
+        return;
+      case CardActivityType.funding:
+        _fundVirtualCard(totalDollarFee, totalDollarFee, param, pin);
+    }
+  }
+
+  void _fundVirtualCard(
+      num totalNairaFee, num totalDollarFee, ParamNotifier param, String pin) {
+    _cardNotifier.fundVirtualCard(
+        CardDto(
+            amount: param.isNairaCardType
+                ? ((widget.cardDto.amount ?? 0) + totalNairaFee)
+                : ((totalDollarFee + (widget.cardDto.amount ?? 0)) *
+                    (param.exchangeRate ?? 0)),
+            transactionPin: pin,
+            currency: param.isNairaCardType ? Currency.NGN : Currency.USD,
+            status: CardStatus.active),
+        _cancelToken);
+  }
 }
