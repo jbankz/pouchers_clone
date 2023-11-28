@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
+import 'package:Pouchers/ui/features/upload/domain/dto/upload_dto.dart';
 import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
 import 'package:Pouchers/utils/date_picker.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -13,11 +16,13 @@ import 'package:hive/hive.dart';
 
 import '../../../../../../app/app.router.dart';
 import '../../../../../../app/core/router/page_router.dart';
+import '../../../../../../utils/image_picker.dart';
 import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_images.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../../widgets/profile_image.dart';
+import '../../../../upload/presentation/notifier/upload_notifier.dart';
 import '../../../data/dao/user_dao.dart';
 import 'widget/update_fullname.dart';
 import 'widget/update_gender.dart';
@@ -31,12 +36,15 @@ class ProfileView extends ConsumerStatefulWidget {
 
 class _ProfileViewState extends ConsumerState<ProfileView> {
   late UserNotifier _userNotifier;
+  late UploadNotifier _uploadNotifier;
   final CancelToken _cancelToken = CancelToken();
+  final ImagePickerHandler _imagePickerHandler = ImagePickerHandler();
 
   @override
   void initState() {
     super.initState();
     _userNotifier = ref.read(userNotifierProvider.notifier);
+    _uploadNotifier = ref.read(uploadNotifierProvider.notifier);
   }
 
   @override
@@ -95,7 +103,13 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                   ),
                 const Gap(height: 13),
                 ProfileImage(
-                    image: user.profilePicture ?? '', pickImage: () {}),
+                    image: user.profilePicture ?? '',
+                    pickImage: () => _imagePickerHandler.pickImage(
+                        file: (file) => _uploadNotifier.uploadProfilePic(
+                            UploadDto(
+                                file: File(file.path),
+                                profilePicture: File(file.path).fileName),
+                            _cancelToken))),
                 const Gap(height: 8),
                 Text(userDao.fullName,
                     style: context.headlineMedium

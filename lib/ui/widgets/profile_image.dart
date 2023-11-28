@@ -41,14 +41,18 @@ class ProfileImage extends StatelessWidget {
           ),
           if (pickImage != null)
             Positioned(
-                bottom: 0,
-                left: 60.w,
+              bottom: 0,
+              left: 60.w,
+              child: GestureDetector(
+                onTap: pickImage,
                 child: Container(
                     height: 24.h,
                     width: 24.w,
                     decoration: const BoxDecoration(
                         color: AppColors.kPrimaryColor, shape: BoxShape.circle),
-                    child: Icon(Icons.add, color: AppColors.white, size: 16.w)))
+                    child: Icon(Icons.add, color: AppColors.white, size: 16.w)),
+              ),
+            )
         ],
       );
 

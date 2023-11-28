@@ -5,7 +5,6 @@ import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/view/otp/notifier/module.dart';
 import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/idenitification_type.dart';
-import 'package:Pouchers/ui/features/tiers/presentation/notifier/tier_notifier.dart';
 import 'package:Pouchers/ui/notification/notification_tray.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

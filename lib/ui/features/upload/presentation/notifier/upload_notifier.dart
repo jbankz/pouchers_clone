@@ -55,4 +55,19 @@ class UploadNotifier extends _$UploadNotifier {
       return false;
     }
   }
+
+  Future<void> uploadProfilePic(UploadDto uploadDto,
+      [CancelToken? cancelToken]) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      await ref.read(uploadFileProvider
+          .call(uploadDto: uploadDto, cancelToken: cancelToken)
+          .future);
+    } catch (e) {
+      _logger.e(e);
+      triggerNotificationTray(e.toString(), error: true);
+    }
+    state = state.copyWith(isBusy: false);
+  }
 }
