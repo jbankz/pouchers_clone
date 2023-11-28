@@ -459,7 +459,7 @@ final validIdsProvider = AutoDisposeProvider<List<IdentificationType>>.internal(
 );
 
 typedef ValidIdsRef = AutoDisposeProviderRef<List<IdentificationType>>;
-String _$getUsersProfileHash() => r'405b43f11843f749eeabe291d577b4877d195cfc';
+String _$getUsersProfileHash() => r'e07bd039b6a6f3c331c9b2c4aa184a635ce1127f';
 
 /// See also [getUsersProfile].
 @ProviderFor(getUsersProfile)
@@ -588,7 +588,7 @@ class _GetUsersProfileProviderElement
       (origin as GetUsersProfileProvider).cancelToken;
 }
 
-String _$updateProfileHash() => r'987597ebb09b2c0ca439184f0309b1c12b31ef4b';
+String _$updateProfileHash() => r'dc68dcf44d7dc199181cf780610b1c841c301d57';
 
 /// See also [updateProfile].
 @ProviderFor(updateProfile)
@@ -731,6 +731,448 @@ class _UpdateProfileProviderElement
   UserDto get userDto => (origin as UpdateProfileProvider).userDto;
   @override
   CancelToken? get cancelToken => (origin as UpdateProfileProvider).cancelToken;
+}
+
+String _$changePhoneNumberHash() => r'baad9d5e34f0d7206e24be598713dccf2e44d79b';
+
+/// See also [changePhoneNumber].
+@ProviderFor(changePhoneNumber)
+const changePhoneNumberProvider = ChangePhoneNumberFamily();
+
+/// See also [changePhoneNumber].
+class ChangePhoneNumberFamily extends Family<AsyncValue<User?>> {
+  /// See also [changePhoneNumber].
+  const ChangePhoneNumberFamily();
+
+  /// See also [changePhoneNumber].
+  ChangePhoneNumberProvider call({
+    required UserDto userDto,
+    CancelToken? cancelToken,
+  }) {
+    return ChangePhoneNumberProvider(
+      userDto: userDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  ChangePhoneNumberProvider getProviderOverride(
+    covariant ChangePhoneNumberProvider provider,
+  ) {
+    return call(
+      userDto: provider.userDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'changePhoneNumberProvider';
+}
+
+/// See also [changePhoneNumber].
+class ChangePhoneNumberProvider extends AutoDisposeFutureProvider<User?> {
+  /// See also [changePhoneNumber].
+  ChangePhoneNumberProvider({
+    required UserDto userDto,
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => changePhoneNumber(
+            ref as ChangePhoneNumberRef,
+            userDto: userDto,
+            cancelToken: cancelToken,
+          ),
+          from: changePhoneNumberProvider,
+          name: r'changePhoneNumberProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$changePhoneNumberHash,
+          dependencies: ChangePhoneNumberFamily._dependencies,
+          allTransitiveDependencies:
+              ChangePhoneNumberFamily._allTransitiveDependencies,
+          userDto: userDto,
+          cancelToken: cancelToken,
+        );
+
+  ChangePhoneNumberProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final UserDto userDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<User?> Function(ChangePhoneNumberRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ChangePhoneNumberProvider._internal(
+        (ref) => create(ref as ChangePhoneNumberRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userDto: userDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<User?> createElement() {
+    return _ChangePhoneNumberProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ChangePhoneNumberProvider &&
+        other.userDto == userDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ChangePhoneNumberRef on AutoDisposeFutureProviderRef<User?> {
+  /// The parameter `userDto` of this provider.
+  UserDto get userDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _ChangePhoneNumberProviderElement
+    extends AutoDisposeFutureProviderElement<User?> with ChangePhoneNumberRef {
+  _ChangePhoneNumberProviderElement(super.provider);
+
+  @override
+  UserDto get userDto => (origin as ChangePhoneNumberProvider).userDto;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as ChangePhoneNumberProvider).cancelToken;
+}
+
+String _$requestPhoneNumberOtpHash() =>
+    r'0deeb089af39f65b8ee8565ce335e491323781a7';
+
+/// See also [requestPhoneNumberOtp].
+@ProviderFor(requestPhoneNumberOtp)
+const requestPhoneNumberOtpProvider = RequestPhoneNumberOtpFamily();
+
+/// See also [requestPhoneNumberOtp].
+class RequestPhoneNumberOtpFamily extends Family<AsyncValue<User?>> {
+  /// See also [requestPhoneNumberOtp].
+  const RequestPhoneNumberOtpFamily();
+
+  /// See also [requestPhoneNumberOtp].
+  RequestPhoneNumberOtpProvider call({
+    required UserDto userDto,
+    CancelToken? cancelToken,
+  }) {
+    return RequestPhoneNumberOtpProvider(
+      userDto: userDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  RequestPhoneNumberOtpProvider getProviderOverride(
+    covariant RequestPhoneNumberOtpProvider provider,
+  ) {
+    return call(
+      userDto: provider.userDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'requestPhoneNumberOtpProvider';
+}
+
+/// See also [requestPhoneNumberOtp].
+class RequestPhoneNumberOtpProvider extends AutoDisposeFutureProvider<User?> {
+  /// See also [requestPhoneNumberOtp].
+  RequestPhoneNumberOtpProvider({
+    required UserDto userDto,
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => requestPhoneNumberOtp(
+            ref as RequestPhoneNumberOtpRef,
+            userDto: userDto,
+            cancelToken: cancelToken,
+          ),
+          from: requestPhoneNumberOtpProvider,
+          name: r'requestPhoneNumberOtpProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$requestPhoneNumberOtpHash,
+          dependencies: RequestPhoneNumberOtpFamily._dependencies,
+          allTransitiveDependencies:
+              RequestPhoneNumberOtpFamily._allTransitiveDependencies,
+          userDto: userDto,
+          cancelToken: cancelToken,
+        );
+
+  RequestPhoneNumberOtpProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final UserDto userDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<User?> Function(RequestPhoneNumberOtpRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: RequestPhoneNumberOtpProvider._internal(
+        (ref) => create(ref as RequestPhoneNumberOtpRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userDto: userDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<User?> createElement() {
+    return _RequestPhoneNumberOtpProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is RequestPhoneNumberOtpProvider &&
+        other.userDto == userDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin RequestPhoneNumberOtpRef on AutoDisposeFutureProviderRef<User?> {
+  /// The parameter `userDto` of this provider.
+  UserDto get userDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _RequestPhoneNumberOtpProviderElement
+    extends AutoDisposeFutureProviderElement<User?>
+    with RequestPhoneNumberOtpRef {
+  _RequestPhoneNumberOtpProviderElement(super.provider);
+
+  @override
+  UserDto get userDto => (origin as RequestPhoneNumberOtpProvider).userDto;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as RequestPhoneNumberOtpProvider).cancelToken;
+}
+
+String _$validatePhoneNumberOtpHash() =>
+    r'a8d71e9addc44baf5dfeaffb426c1bb677444148';
+
+/// See also [validatePhoneNumberOtp].
+@ProviderFor(validatePhoneNumberOtp)
+const validatePhoneNumberOtpProvider = ValidatePhoneNumberOtpFamily();
+
+/// See also [validatePhoneNumberOtp].
+class ValidatePhoneNumberOtpFamily extends Family<AsyncValue<User?>> {
+  /// See also [validatePhoneNumberOtp].
+  const ValidatePhoneNumberOtpFamily();
+
+  /// See also [validatePhoneNumberOtp].
+  ValidatePhoneNumberOtpProvider call({
+    required UserDto userDto,
+    CancelToken? cancelToken,
+  }) {
+    return ValidatePhoneNumberOtpProvider(
+      userDto: userDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  ValidatePhoneNumberOtpProvider getProviderOverride(
+    covariant ValidatePhoneNumberOtpProvider provider,
+  ) {
+    return call(
+      userDto: provider.userDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'validatePhoneNumberOtpProvider';
+}
+
+/// See also [validatePhoneNumberOtp].
+class ValidatePhoneNumberOtpProvider extends AutoDisposeFutureProvider<User?> {
+  /// See also [validatePhoneNumberOtp].
+  ValidatePhoneNumberOtpProvider({
+    required UserDto userDto,
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => validatePhoneNumberOtp(
+            ref as ValidatePhoneNumberOtpRef,
+            userDto: userDto,
+            cancelToken: cancelToken,
+          ),
+          from: validatePhoneNumberOtpProvider,
+          name: r'validatePhoneNumberOtpProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$validatePhoneNumberOtpHash,
+          dependencies: ValidatePhoneNumberOtpFamily._dependencies,
+          allTransitiveDependencies:
+              ValidatePhoneNumberOtpFamily._allTransitiveDependencies,
+          userDto: userDto,
+          cancelToken: cancelToken,
+        );
+
+  ValidatePhoneNumberOtpProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final UserDto userDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<User?> Function(ValidatePhoneNumberOtpRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ValidatePhoneNumberOtpProvider._internal(
+        (ref) => create(ref as ValidatePhoneNumberOtpRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userDto: userDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<User?> createElement() {
+    return _ValidatePhoneNumberOtpProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ValidatePhoneNumberOtpProvider &&
+        other.userDto == userDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ValidatePhoneNumberOtpRef on AutoDisposeFutureProviderRef<User?> {
+  /// The parameter `userDto` of this provider.
+  UserDto get userDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _ValidatePhoneNumberOtpProviderElement
+    extends AutoDisposeFutureProviderElement<User?>
+    with ValidatePhoneNumberOtpRef {
+  _ValidatePhoneNumberOtpProviderElement(super.provider);
+
+  @override
+  UserDto get userDto => (origin as ValidatePhoneNumberOtpProvider).userDto;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as ValidatePhoneNumberOtpProvider).cancelToken;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -2,9 +2,10 @@ import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/authentication/presentation/view/otp/notifier/module.dart';
 import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/idenitification_type.dart';
-import 'package:Pouchers/ui/features/profile/presentation/notifier/module/module.dart';
+import 'package:Pouchers/ui/features/tiers/presentation/notifier/tier_notifier.dart';
 import 'package:Pouchers/ui/notification/notification_tray.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,6 +14,7 @@ import '../../../../../app/app.logger.dart';
 import '../../../../../app/core/manager/dojah_manager.dart';
 import '../../../../../app/core/state/app_state.dart';
 import '../../domain/dto/user_dto.dart';
+import 'module/module.dart';
 
 part 'user_notifier.g.dart';
 
@@ -80,6 +82,48 @@ class UserNotifier extends _$UserNotifier {
     state = state.copyWith(isBusy: false);
   }
 
+  Future<void> requestPhoneNumberOtp(UserDto userDto,
+      {CancelToken? cancelToken, bool resent = false}) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      await ref.read(requestPhoneNumberOtpProvider
+          .call(userDto: userDto, cancelToken: cancelToken)
+          .future);
+
+      triggerNotificationTray(AppString.resetCodeSent);
+
+      if (resent) {
+        ref.read(otpTimerModule.notifier).resetTimer();
+        state = state.copyWith(isBusy: false);
+        return;
+      }
+
+      PageRouter.pushNamed(Routes.verifyPhoneOtpView);
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(), error: true);
+    }
+    state = state.copyWith(isBusy: false);
+  }
+
+  Future<void> validatePhoneNumberOtp(UserDto userDto,
+      {CancelToken? cancelToken}) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      await ref.read(validatePhoneNumberOtpProvider
+          .call(userDto: userDto, cancelToken: cancelToken)
+          .future);
+
+      PageRouter.pushNamed(Routes.changePhoneNumberView);
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(), error: true);
+    }
+    state = state.copyWith(isBusy: false);
+  }
+
   Future<void> updateProfile(UserDto userDto,
       {CancelToken? cancelToken, Function()? success}) async {
     try {
@@ -92,6 +136,24 @@ class UserNotifier extends _$UserNotifier {
       triggerNotificationTray(AppString.profileUpdateSuccessful);
 
       if (success != null) success();
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(), error: true);
+    }
+    state = state.copyWith(isBusy: false);
+  }
+
+  Future<void> changePhone(UserDto userDto, {CancelToken? cancelToken}) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      await ref.read(changePhoneNumberProvider
+          .call(userDto: userDto, cancelToken: cancelToken)
+          .future);
+
+      triggerNotificationTray(AppString.profileUpdateSuccessful);
+
+      PageRouter.popToRoot(Routes.profileView);
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(), error: true);

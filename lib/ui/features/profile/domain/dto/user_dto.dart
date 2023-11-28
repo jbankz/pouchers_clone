@@ -6,6 +6,11 @@ class UserDto {
   final String? surname;
   final String? firstName;
   final String? lastName;
+  final String? email;
+  final String? phoneNumber;
+  final String? gender;
+  final String? resetCode;
+  final String? dob;
 
   UserDto(
       {this.bvn,
@@ -14,7 +19,12 @@ class UserDto {
       this.idNumber,
       this.surname,
       this.firstName,
-      this.lastName});
+      this.lastName,
+      this.gender,
+      this.email,
+      this.phoneNumber,
+      this.resetCode,
+      this.dob});
 
   Map<String, dynamic> toJson() => {
         if (bvn != null) 'bvn': bvn,
@@ -23,6 +33,11 @@ class UserDto {
         if (idNumber != null) 'id_number': idNumber,
         if (surname != null) 'surname': surname,
         if (firstName != null) 'first_name': firstName,
-        if (lastName != null) 'last_name': lastName
+        if (lastName != null) 'last_name': lastName,
+        if (gender != null) 'gender': gender,
+        if (phoneNumber != null) 'phone_number': phoneNumber,
+        if (email != null) 'email': email,
+        if (resetCode != null) 'reset_code': resetCode,
+        if (dob != null) 'dob': dob
       };
 }

@@ -54,4 +54,37 @@ class UserSourceImpl implements UserSource {
         cancelToken: cancelToken);
     return User.fromJson(response.data['data'] as Map<String, dynamic>);
   }
+
+  @override
+  Future<User?> changePhoneNumber(
+      {required UserDto userDto, CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.changePhone,
+        requestType: RequestType.patch,
+        data: userDto.toJson(),
+        cancelToken: cancelToken);
+    return User.fromJson(response.data['data'] as Map<String, dynamic>);
+  }
+
+  @override
+  Future<User?> requestPhoneNumberOtp(
+      {required UserDto userDto, CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.requestPhoneChange,
+        requestType: RequestType.patch,
+        data: userDto.toJson(),
+        cancelToken: cancelToken);
+    return User.fromJson(response.data['data'] as Map<String, dynamic>);
+  }
+
+  @override
+  Future<User?> validatePhoneOtp(
+      {required UserDto userDto, CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.validatePhoneOtp,
+        requestType: RequestType.post,
+        data: userDto.toJson(),
+        cancelToken: cancelToken);
+    return User.fromJson(response.data['data'] as Map<String, dynamic>);
+  }
 }

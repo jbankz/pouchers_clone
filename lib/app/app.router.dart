@@ -5,7 +5,7 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i30;
+import 'package:flutter/material.dart' as _i33;
 import 'package:flutter/material.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/view/biometric/biometric_view.dart'
     as _i18;
@@ -38,7 +38,7 @@ import 'package:Pouchers/ui/features/dashboard/views/account/views/account_setti
 import 'package:Pouchers/ui/features/dashboard/views/account/views/account_verification.dart'
     as _i20;
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart'
-    as _i31;
+    as _i34;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/bvn_requirement_view.dart'
     as _i24;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/card_calculator_view.dart'
@@ -57,6 +57,12 @@ import 'package:Pouchers/ui/features/profile/presentation/views/kyc/id/id_view.d
     as _i22;
 import 'package:Pouchers/ui/features/profile/presentation/views/kyc/utility/utility_bill_view.dart'
     as _i23;
+import 'package:Pouchers/ui/features/profile/presentation/views/profile/phone/change_password_view.dart'
+    as _i32;
+import 'package:Pouchers/ui/features/profile/presentation/views/profile/phone/requst_change_of_phone_number_view.dart'
+    as _i30;
+import 'package:Pouchers/ui/features/profile/presentation/views/profile/phone/verify_phone_number_view.dart'
+    as _i31;
 import 'package:Pouchers/ui/features/profile/presentation/views/profile/profile_view.dart'
     as _i29;
 import 'package:Pouchers/ui/features/profile/presentation/views/wallet/fund_wallet_view.dart'
@@ -65,7 +71,7 @@ import 'package:Pouchers/ui/features/tiers/presentation/view/tier_view.dart'
     as _i19;
 import 'package:Pouchers/ui/widgets/success_state.dart' as _i5;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i32;
+import 'package:stacked_services/stacked_services.dart' as _i35;
 
 class Routes {
   static const onboardingView = '/';
@@ -124,6 +130,13 @@ class Routes {
 
   static const profileView = '/profile-view';
 
+  static const requestChangeOfPhoneNumberView =
+      '/request-change-of-phone-number-view';
+
+  static const verifyPhoneOtpView = '/verify-phone-otp-view';
+
+  static const changePhoneNumberView = '/change-phone-number-view';
+
   static const all = <String>{
     onboardingView,
     signUpView,
@@ -153,6 +166,9 @@ class Routes {
     fundWalletView,
     virtualCardDetailView,
     profileView,
+    requestChangeOfPhoneNumberView,
+    verifyPhoneOtpView,
+    changePhoneNumberView,
   };
 }
 
@@ -270,11 +286,23 @@ class StackedRouter extends _i1.RouterBase {
       Routes.profileView,
       page: _i29.ProfileView,
     ),
+    _i1.RouteDef(
+      Routes.requestChangeOfPhoneNumberView,
+      page: _i30.RequestChangeOfPhoneNumberView,
+    ),
+    _i1.RouteDef(
+      Routes.verifyPhoneOtpView,
+      page: _i31.VerifyPhoneOtpView,
+    ),
+    _i1.RouteDef(
+      Routes.changePhoneNumberView,
+      page: _i32.ChangePhoneNumberView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.OnboardingView: (data) {
-      return _i30.PageRouteBuilder<dynamic>(
+      return _i33.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i2.OnboardingView(),
         settings: data,
@@ -283,7 +311,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i3.SignUpView: (data) {
-      return _i30.PageRouteBuilder<dynamic>(
+      return _i33.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i3.SignUpView(),
         settings: data,
@@ -292,7 +320,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i4.SignInView: (data) {
-      return _i30.PageRouteBuilder<dynamic>(
+      return _i33.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i4.SignInView(),
         settings: data,
@@ -304,7 +332,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SuccessStateArguments>(
         orElse: () => const SuccessStateArguments(),
       );
-      return _i30.PageRouteBuilder<dynamic>(
+      return _i33.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i5.SuccessState(
                 key: args.key,
@@ -319,7 +347,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i6.DashboardView: (data) {
-      return _i30.PageRouteBuilder<dynamic>(
+      return _i33.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i6.DashboardView(),
         settings: data,
@@ -470,7 +498,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i28.VirtualCardDetailView: (data) {
-      return _i30.PageRouteBuilder<dynamic>(
+      return _i33.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i28.VirtualCardDetailView(),
         settings: data,
@@ -479,12 +507,30 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i29.ProfileView: (data) {
-      return _i30.PageRouteBuilder<dynamic>(
+      return _i33.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i29.ProfileView(),
         settings: data,
         opaque: false,
         transitionsBuilder: data.transition ?? _i1.TransitionsBuilders.fadeIn,
+      );
+    },
+    _i30.RequestChangeOfPhoneNumberView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i30.RequestChangeOfPhoneNumberView(),
+        settings: data,
+      );
+    },
+    _i31.VerifyPhoneOtpView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i31.VerifyPhoneOtpView(),
+        settings: data,
+      );
+    },
+    _i32.ChangePhoneNumberView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i32.ChangePhoneNumberView(),
+        settings: data,
       );
     },
   };
@@ -505,7 +551,7 @@ class SuccessStateArguments {
     this.tap,
   });
 
-  final _i30.Key? key;
+  final _i33.Key? key;
 
   final String title;
 
@@ -546,7 +592,7 @@ class OtpViewArguments {
     this.email,
   });
 
-  final _i30.Key? key;
+  final _i33.Key? key;
 
   final String? email;
 
@@ -573,7 +619,7 @@ class TagViewArguments {
     this.callback,
   });
 
-  final _i30.Key? key;
+  final _i33.Key? key;
 
   final dynamic Function()? callback;
 
@@ -601,7 +647,7 @@ class SetNewPasswordViewArguments {
     this.route,
   });
 
-  final _i30.Key? key;
+  final _i33.Key? key;
 
   final String email;
 
@@ -630,7 +676,7 @@ class VerifyPasswordAccountViewArguments {
     this.email,
   });
 
-  final _i30.Key? key;
+  final _i33.Key? key;
 
   final String? email;
 
@@ -657,9 +703,9 @@ class CardCreationSymmaryViewArguments {
     required this.cardDto,
   });
 
-  final _i30.Key? key;
+  final _i33.Key? key;
 
-  final _i31.CardDto cardDto;
+  final _i34.CardDto cardDto;
 
   @override
   String toString() {
@@ -678,7 +724,7 @@ class CardCreationSymmaryViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i32.NavigationService {
+extension NavigatorStateExtension on _i35.NavigationService {
   Future<dynamic> navigateToOnboardingView([
     int? routerId,
     bool preventDuplicates = true,
@@ -722,7 +768,7 @@ extension NavigatorStateExtension on _i32.NavigationService {
   }
 
   Future<dynamic> navigateToSuccessState({
-    _i30.Key? key,
+    _i33.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -761,7 +807,7 @@ extension NavigatorStateExtension on _i32.NavigationService {
   }
 
   Future<dynamic> navigateToOtpView({
-    _i30.Key? key,
+    _i33.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -792,7 +838,7 @@ extension NavigatorStateExtension on _i32.NavigationService {
   }
 
   Future<dynamic> navigateToTagView({
-    _i30.Key? key,
+    _i33.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -893,7 +939,7 @@ extension NavigatorStateExtension on _i32.NavigationService {
   }
 
   Future<dynamic> navigateToSetNewPasswordView({
-    _i30.Key? key,
+    _i33.Key? key,
     required String email,
     String? route,
     int? routerId,
@@ -912,7 +958,7 @@ extension NavigatorStateExtension on _i32.NavigationService {
   }
 
   Future<dynamic> navigateToVerifyPasswordAccountView({
-    _i30.Key? key,
+    _i33.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1041,8 +1087,8 @@ extension NavigatorStateExtension on _i32.NavigationService {
   }
 
   Future<dynamic> navigateToCardCreationSymmaryView({
-    _i30.Key? key,
-    required _i31.CardDto cardDto,
+    _i33.Key? key,
+    required _i34.CardDto cardDto,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1099,6 +1145,48 @@ extension NavigatorStateExtension on _i32.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToRequestChangeOfPhoneNumberView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.requestChangeOfPhoneNumberView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToVerifyPhoneOtpView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.verifyPhoneOtpView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToChangePhoneNumberView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.changePhoneNumberView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithOnboardingView([
     int? routerId,
     bool preventDuplicates = true,
@@ -1142,7 +1230,7 @@ extension NavigatorStateExtension on _i32.NavigationService {
   }
 
   Future<dynamic> replaceWithSuccessState({
-    _i30.Key? key,
+    _i33.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -1181,7 +1269,7 @@ extension NavigatorStateExtension on _i32.NavigationService {
   }
 
   Future<dynamic> replaceWithOtpView({
-    _i30.Key? key,
+    _i33.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1212,7 +1300,7 @@ extension NavigatorStateExtension on _i32.NavigationService {
   }
 
   Future<dynamic> replaceWithTagView({
-    _i30.Key? key,
+    _i33.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -1313,7 +1401,7 @@ extension NavigatorStateExtension on _i32.NavigationService {
   }
 
   Future<dynamic> replaceWithSetNewPasswordView({
-    _i30.Key? key,
+    _i33.Key? key,
     required String email,
     String? route,
     int? routerId,
@@ -1332,7 +1420,7 @@ extension NavigatorStateExtension on _i32.NavigationService {
   }
 
   Future<dynamic> replaceWithVerifyPasswordAccountView({
-    _i30.Key? key,
+    _i33.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1461,8 +1549,8 @@ extension NavigatorStateExtension on _i32.NavigationService {
   }
 
   Future<dynamic> replaceWithCardCreationSymmaryView({
-    _i30.Key? key,
-    required _i31.CardDto cardDto,
+    _i33.Key? key,
+    required _i34.CardDto cardDto,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1513,6 +1601,48 @@ extension NavigatorStateExtension on _i32.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.profileView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithRequestChangeOfPhoneNumberView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.requestChangeOfPhoneNumberView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithVerifyPhoneOtpView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.verifyPhoneOtpView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithChangePhoneNumberView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.changePhoneNumberView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

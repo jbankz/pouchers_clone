@@ -28,6 +28,9 @@ import '../ui/features/onboarding/presentation/views/onboarding_view.dart';
 import '../ui/features/profile/presentation/views/kyc/bvn/bvn_view.dart';
 import '../ui/features/profile/presentation/views/kyc/id/id_view.dart';
 import '../ui/features/profile/presentation/views/kyc/utility/utility_bill_view.dart';
+import '../ui/features/profile/presentation/views/profile/phone/change_password_view.dart';
+import '../ui/features/profile/presentation/views/profile/phone/requst_change_of_phone_number_view.dart';
+import '../ui/features/profile/presentation/views/profile/phone/verify_phone_number_view.dart';
 import '../ui/features/profile/presentation/views/profile/profile_view.dart';
 import '../ui/features/tiers/presentation/view/tier_view.dart';
 import '../ui/widgets/success_state.dart';
@@ -94,6 +97,9 @@ import 'core/manager/session_manager.dart';
         page: ProfileView,
         opaque: false,
         transitionsBuilder: TransitionsBuilders.fadeIn),
+    AdaptiveRoute(page: RequestChangeOfPhoneNumberView),
+    AdaptiveRoute(page: VerifyPhoneOtpView),
+    AdaptiveRoute(page: ChangePhoneNumberView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

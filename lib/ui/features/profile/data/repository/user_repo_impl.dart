@@ -42,4 +42,25 @@ class UserRepoImpl implements UserRepo {
     await userDao.save(user);
     return user;
   }
+
+  @override
+  Future<User?> changePhoneNumber(
+      {required UserDto userDto, CancelToken? cancelToken}) async {
+    final user = await _userSource.changePhoneNumber(
+        userDto: userDto, cancelToken: cancelToken);
+    await userDao.save(user);
+    return user;
+  }
+
+  @override
+  Future<User?> requestPhoneNumberOtp(
+          {required UserDto userDto, CancelToken? cancelToken}) async =>
+      await _userSource.requestPhoneNumberOtp(
+          userDto: userDto, cancelToken: cancelToken);
+
+  @override
+  Future<User?> validatePhoneOtp(
+          {required UserDto userDto, CancelToken? cancelToken}) async =>
+      await _userSource.validatePhoneOtp(
+          userDto: userDto, cancelToken: cancelToken);
 }

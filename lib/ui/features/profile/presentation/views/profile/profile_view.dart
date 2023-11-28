@@ -1,6 +1,12 @@
+import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
+import 'package:Pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
 import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
+import 'package:Pouchers/utils/date_picker.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hive/hive.dart';
@@ -14,9 +20,30 @@ import '../../../../../widgets/gap.dart';
 import '../../../../../widgets/profile_image.dart';
 import '../../../data/dao/user_dao.dart';
 import 'widget/update_fullname.dart';
+import 'widget/update_gender.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends ConsumerStatefulWidget {
   const ProfileView({super.key});
+
+  @override
+  ConsumerState<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends ConsumerState<ProfileView> {
+  late UserNotifier _userNotifier;
+  final CancelToken _cancelToken = CancelToken();
+
+  @override
+  void initState() {
+    super.initState();
+    _userNotifier = ref.read(userNotifierProvider.notifier);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _cancelToken.cancel();
+  }
 
   @override
   Widget build(BuildContext context) => ValueListenableBuilder<Box>(
@@ -25,6 +52,7 @@ class ProfileView extends StatelessWidget {
         final user = userDao.returnUser(box);
         final String name =
             '${user.firstName ?? ''} ${user.lastName ?? ''}'.titleCase;
+        final bool isAccountVerified = user.tierLevels == 3;
         return Scaffold(
           backgroundColor: AppColors.kPurpleColor800,
           appBar: AppBar(
@@ -36,28 +64,33 @@ class ProfileView extends StatelessWidget {
                 child: Center(
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 if (user.tierLevels != 3)
-                  Container(
-                    width: double.infinity,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                    decoration: BoxDecoration(
-                        color: AppColors.kLightOrange100,
-                        borderRadius: BorderRadius.circular(8.r),
-                        border: Border.all(color: AppColors.kLightOrange200)),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(AppImage.shield),
-                        const Gap(width: 7),
-                        Expanded(
-                          child: Text(AppString.completeAccount,
-                              style: context.titleLarge?.copyWith(
-                                  color: AppColors.kLightOrange300,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400)),
-                        ),
-                        const Icon(Icons.navigate_next,
-                            color: AppColors.kLightOrange200)
-                      ],
+                  InkWell(
+                    onTap: () =>
+                        PageRouter.pushNamed(Routes.accountVerificationView),
+                    borderRadius: BorderRadius.circular(8.r),
+                    child: Container(
+                      width: double.infinity,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                      decoration: BoxDecoration(
+                          color: AppColors.kLightOrange100,
+                          borderRadius: BorderRadius.circular(8.r),
+                          border: Border.all(color: AppColors.kLightOrange200)),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(AppImage.shield),
+                          const Gap(width: 7),
+                          Expanded(
+                            child: Text(AppString.completeAccount,
+                                style: context.titleLarge?.copyWith(
+                                    color: AppColors.kLightOrange300,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400)),
+                          ),
+                          const Icon(Icons.navigate_next,
+                              color: AppColors.kLightOrange200)
+                        ],
+                      ),
                     ),
                   ),
                 const Gap(height: 13),
@@ -124,11 +157,16 @@ class ProfileView extends StatelessWidget {
                       _buildTile(
                           context: context,
                           key: AppString.gender,
-                          value: user.gender ?? ''),
+                          value: user.gender?.titleCase ?? '',
+                          onTap: () => BottomSheets.showInputAlertDialog(
+                              barrierDismissible: false,
+                              child: const UpdateGenderWidget())),
                       _buildTile(
                           context: context,
                           key: AppString.phone,
-                          value: user.phoneNumber ?? ''),
+                          value: user.phoneNumber ?? '',
+                          onTap: () => PageRouter.pushNamed(
+                              Routes.requestChangeOfPhoneNumberView)),
                       _buildTile(
                           context: context,
                           key: AppString.idVerification,
@@ -139,16 +177,35 @@ class ProfileView extends StatelessWidget {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12.r),
-                                  color: AppColors.kLightOrange100),
-                              child: Text(AppString.incomplete,
+                                  color: user.tierLevels == 1
+                                      ? AppColors.kLightOrange100
+                                      : AppColors.kLightColorGreen),
+                              child: Text(
+                                  isAccountVerified
+                                      ? AppString.incomplete
+                                      : AppString.incomplete,
                                   style: context.headlineMedium?.copyWith(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
-                                      color: AppColors.kLightOrange300)))),
+                                      color: isAccountVerified
+                                          ? AppColors.kGreen100Color
+                                          : AppColors.kLightOrange300))),
+                          onTap: () => PageRouter.pushNamed(
+                              Routes.accountVerificationView)),
                       _buildTile(
                           context: context,
                           key: AppString.dob,
-                          value: user.dob ?? ''),
+                          value: user.dob ?? '',
+                          isLoading: ref.watch(userNotifierProvider).isBusy,
+                          onTap: () async {
+                            final date = await pickDate(
+                                dateOptions: DateOptions.past,
+                                onChange: (date) {}) as String?;
+                            if (date != null) {
+                              _userNotifier.updateProfile(UserDto(dob: date),
+                                  cancelToken: _cancelToken);
+                            }
+                          }),
                       _buildTile(
                           context: context,
                           isLast: true,
@@ -169,6 +226,7 @@ class ProfileView extends StatelessWidget {
           required String value,
           Widget? trailing,
           bool isLast = false,
+          bool isLoading = false,
           void Function()? onTap}) =>
       GestureDetector(
         onTap: onTap,
@@ -193,8 +251,10 @@ class ProfileView extends StatelessWidget {
                             textAlign: TextAlign.right,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis)),
-                const Icon(Icons.navigate_next,
-                    color: AppColors.kSecondaryTextColor)
+                isLoading
+                    ? const CupertinoActivityIndicator()
+                    : const Icon(Icons.navigate_next,
+                        color: AppColors.kSecondaryTextColor)
               ],
             ),
             if (!isLast)

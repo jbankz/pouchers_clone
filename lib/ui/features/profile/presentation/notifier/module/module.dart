@@ -43,3 +43,24 @@ Future<User?> updateProfile(UpdateProfileRef ref,
     await ref
         .read(updateProfileUseCaseImpl)
         .execute(parameter: userDto, cancelToken: cancelToken);
+
+@riverpod
+Future<User?> changePhoneNumber(ChangePhoneNumberRef ref,
+        {required UserDto userDto, CancelToken? cancelToken}) async =>
+    await ref
+        .read(changePhoneNumberUsecaseImpl)
+        .execute(parameter: userDto, cancelToken: cancelToken);
+
+@riverpod
+Future<User?> requestPhoneNumberOtp(RequestPhoneNumberOtpRef ref,
+        {required UserDto userDto, CancelToken? cancelToken}) async =>
+    await ref
+        .read(requestPhoneNumberOtpUsecaseImpl)
+        .execute(parameter: userDto, cancelToken: cancelToken);
+
+@riverpod
+Future<User?> validatePhoneNumberOtp(ValidatePhoneNumberOtpRef ref,
+        {required UserDto userDto, CancelToken? cancelToken}) async =>
+    await ref
+        .read(validatePhoneNumberOtpUsecaseImpl)
+        .execute(parameter: userDto, cancelToken: cancelToken);

@@ -118,8 +118,8 @@ class AuthNotifier extends _$AuthNotifier {
     state = state.copyWith(isBusy: false);
   }
 
-  Future<void> verifyAccountEmail(AuthDto parameter, Function() onError,
-      [CancelToken? cancelToken]) async {
+  Future<void> verifyAccountEmail({required AuthDto parameter, required Function() onError,
+     required CancelToken? cancelToken,}) async {
     try {
       state = state.copyWith(isBusy: true);
       final response = await ref.read(verifyOTPProvider

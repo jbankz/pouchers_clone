@@ -11,4 +11,10 @@ abstract class UserRepo {
   Future<User?> profile({CancelToken? cancelToken});
   Future<User?> updateProfile(
       {required UserDto userDto, CancelToken? cancelToken});
+  Future<User?> requestPhoneNumberOtp(
+      {required UserDto userDto, CancelToken? cancelToken});
+  Future<User?> changePhoneNumber(
+      {required UserDto userDto, CancelToken? cancelToken});
+  Future<User?> validatePhoneOtp(
+      {required UserDto userDto, CancelToken? cancelToken});
 }

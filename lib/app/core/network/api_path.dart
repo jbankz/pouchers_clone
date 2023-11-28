@@ -84,4 +84,15 @@ class ApiPath {
 
   /// get admins envs
   static const String envs = '$_apiVersionOne/admin-settings/envs';
+
+  /// Request for phone number
+  static const String requestPhoneChange =
+      '$_apiVersionOne/user/request-phone-change';
+
+  /// Change for phone number
+  static const String changePhone = '$_apiVersionOne/user/change-phone';
+
+  /// Validate the otp for phone number
+  static const String validatePhoneOtp =
+      '$_apiVersionOne/auth/validate-password-reset-code';
 }

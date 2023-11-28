@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
+import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
+import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
+import 'package:Pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -10,29 +12,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stacked/stacked_annotations.dart';
 
-import '../../../../../common/app_strings.dart';
-import '../../../../../widgets/elevated_button_widget.dart';
-import '../../../../../widgets/gap.dart';
-import '../../../../../widgets/pin_code_widget.dart';
-import '../../notifier/auth_notifier.dart';
-import 'notifier/module.dart';
-import 'notifier/timer_notifier.dart';
-import 'otp_view.form.dart';
+import '../../../../../../common/app_strings.dart';
+import '../../../../../../widgets/elevated_button_widget.dart';
+import '../../../../../../widgets/gap.dart';
+import '../../../../../../widgets/pin_code_widget.dart';
+import '../../../../../authentication/presentation/view/otp/notifier/module.dart';
+import '../../../../../authentication/presentation/view/otp/notifier/timer_notifier.dart';
+import 'verify_phone_number_view.form.dart';
 
 @FormView(fields: [FormTextField(name: 'otp')])
-class OtpView extends ConsumerStatefulWidget {
-  const OtpView({super.key, this.email});
-
-  final String? email;
+class VerifyPhoneOtpView extends ConsumerStatefulWidget {
+  const VerifyPhoneOtpView({super.key});
 
   @override
-  ConsumerState<OtpView> createState() => _OtpViewState();
+  ConsumerState<VerifyPhoneOtpView> createState() => _VerifyPhoneOtpViewState();
 }
 
-class _OtpViewState extends ConsumerState<OtpView> with $OtpView {
+class _VerifyPhoneOtpViewState extends ConsumerState<VerifyPhoneOtpView>
+    with $VerifyPhoneOtpView {
   final formKey = GlobalKey<FormState>();
 
-  late AuthNotifier _authNotifier;
+  late UserNotifier _userNotifier;
   late OtpTimerNotifier _otpTimerNotifier;
   final StreamController<ErrorAnimationType> _errorController =
       StreamController<ErrorAnimationType>();
@@ -42,9 +42,9 @@ class _OtpViewState extends ConsumerState<OtpView> with $OtpView {
   @override
   void initState() {
     otpFocusNode.requestFocus();
-    _authNotifier = ref.read(authNotifierProvider.notifier);
+    _userNotifier = ref.read(userNotifierProvider.notifier);
     _otpTimerNotifier = ref.read(otpTimerModule.notifier);
-    _otpTimerNotifier.startTimer();
+    _otpTimerNotifier.resetTimer();
     super.initState();
   }
 
@@ -59,11 +59,11 @@ class _OtpViewState extends ConsumerState<OtpView> with $OtpView {
   @override
   Widget build(BuildContext context) {
     final timerState = ref.watch(otpTimerModule);
-    final authState = ref.watch(authNotifierProvider);
+    final userState = ref.watch(userNotifierProvider);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text(AppString.changePhoneNumber)),
       body: SafeArea(
-        minimum: const EdgeInsets.symmetric(horizontal: 16),
+        minimum: EdgeInsets.symmetric(horizontal: 16.w),
         child: Form(
           key: formKey,
           child: Column(
@@ -77,17 +77,8 @@ class _OtpViewState extends ConsumerState<OtpView> with $OtpView {
                         style: context.headlineMedium?.copyWith(
                             fontWeight: FontWeight.w700, fontSize: 24.sp)),
                     const Gap(height: 8),
-                    RichText(
-                        text: TextSpan(
-                            text: AppString.verificationSubText,
-                            style: context.titleLarge?.copyWith(fontSize: 16),
-                            children: [
-                          TextSpan(
-                            text: widget.email ?? '',
-                            style: context.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w500, fontSize: 16),
-                          )
-                        ])),
+                    Text(AppString.requestVerificationPhoneHint,
+                        style: context.titleLarge?.copyWith(fontSize: 16)),
                     const Gap(height: 32),
                     PinCodeWidget(
                         errorAnimationController: _errorController,
@@ -98,20 +89,16 @@ class _OtpViewState extends ConsumerState<OtpView> with $OtpView {
               ),
               ElevatedButtonWidget(
                   title: AppString.verifyAccountCode,
-                  loading: authState.isBusy,
+                  loading: userState.isBusy,
                   onPressed: timerState.isTimerFinished
                       ? null
                       : () {
                           if (!formKey.currentState!.validate()) return;
-                          _authNotifier.verifyAccountEmail(
-                              parameter: AuthDto(otp: otpController.text),
-                              cancelToken: _cancelToken,
-                              onError: () {
-                                _errorController.add(ErrorAnimationType.shake);
-                                otpController.clear();
-                                otpFocusNode.requestFocus();
-                                setState(() {});
-                              });
+                          _userNotifier.validatePhoneNumberOtp(
+                              UserDto(
+                                  email: userDao.user.email,
+                                  resetCode: otpController.text),
+                              cancelToken: _cancelToken);
                         }),
               const Gap(height: 24),
               Row(
@@ -122,8 +109,10 @@ class _OtpViewState extends ConsumerState<OtpView> with $OtpView {
                   InkWell(
                     onTap: !timerState.isTimerFinished
                         ? null
-                        : () => _authNotifier
-                            .requestOtp(AuthDto(email: widget.email)),
+                        : () => _userNotifier.requestPhoneNumberOtp(
+                            UserDto(email: userDao.user.email),
+                            cancelToken: _cancelToken,
+                            resent: true),
                     borderRadius: BorderRadius.circular(20.r),
                     child: Container(
                       padding:

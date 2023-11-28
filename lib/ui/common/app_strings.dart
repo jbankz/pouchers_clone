@@ -288,8 +288,19 @@ class AppString {
   static String idVerification = 'ID Verification';
   static String dob = 'Date of birth';
   static String tag = 'Poucher tag';
+  static String complete = 'Completed';
   static String incomplete = 'Incomplete';
   static String save = 'Save';
   static String profileUpdateSuccessful =
       'User\'s profile updated successfully';
+  static String changePhoneNumber = 'Change phone number';
+  static String sendCode = 'Send code';
+
+  static String requestPhoneHint =
+      'To change your phone number, a code will be sent to the email associated with this account.';
+  static String requestVerificationPhoneHint =
+      'Enter the code sent to your email address.';
+  static String changePhone = 'Change Phone number';
+  static String changePhoneInstr = 'Enter your new phone number.';
+  static String resetCodeSent = 'Reset code sent';
 }
