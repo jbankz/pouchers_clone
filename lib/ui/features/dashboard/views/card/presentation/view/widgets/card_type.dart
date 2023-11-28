@@ -52,8 +52,6 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
   Widget build(BuildContext context) {
     final appState = ref.watch(adminNotifierProvider);
 
-    /// TODO: Reformat here
-
     final envs = (appState.data as List<Envs>);
 
     final Envs nairaCreation = envs.isEmpty

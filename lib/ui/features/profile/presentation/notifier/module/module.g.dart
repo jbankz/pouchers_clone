@@ -587,5 +587,150 @@ class _GetUsersProfileProviderElement
   CancelToken? get cancelToken =>
       (origin as GetUsersProfileProvider).cancelToken;
 }
+
+String _$updateProfileHash() => r'987597ebb09b2c0ca439184f0309b1c12b31ef4b';
+
+/// See also [updateProfile].
+@ProviderFor(updateProfile)
+const updateProfileProvider = UpdateProfileFamily();
+
+/// See also [updateProfile].
+class UpdateProfileFamily extends Family<AsyncValue<User?>> {
+  /// See also [updateProfile].
+  const UpdateProfileFamily();
+
+  /// See also [updateProfile].
+  UpdateProfileProvider call({
+    required UserDto userDto,
+    CancelToken? cancelToken,
+  }) {
+    return UpdateProfileProvider(
+      userDto: userDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  UpdateProfileProvider getProviderOverride(
+    covariant UpdateProfileProvider provider,
+  ) {
+    return call(
+      userDto: provider.userDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'updateProfileProvider';
+}
+
+/// See also [updateProfile].
+class UpdateProfileProvider extends AutoDisposeFutureProvider<User?> {
+  /// See also [updateProfile].
+  UpdateProfileProvider({
+    required UserDto userDto,
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => updateProfile(
+            ref as UpdateProfileRef,
+            userDto: userDto,
+            cancelToken: cancelToken,
+          ),
+          from: updateProfileProvider,
+          name: r'updateProfileProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$updateProfileHash,
+          dependencies: UpdateProfileFamily._dependencies,
+          allTransitiveDependencies:
+              UpdateProfileFamily._allTransitiveDependencies,
+          userDto: userDto,
+          cancelToken: cancelToken,
+        );
+
+  UpdateProfileProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final UserDto userDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<User?> Function(UpdateProfileRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdateProfileProvider._internal(
+        (ref) => create(ref as UpdateProfileRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userDto: userDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<User?> createElement() {
+    return _UpdateProfileProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UpdateProfileProvider &&
+        other.userDto == userDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin UpdateProfileRef on AutoDisposeFutureProviderRef<User?> {
+  /// The parameter `userDto` of this provider.
+  UserDto get userDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _UpdateProfileProviderElement
+    extends AutoDisposeFutureProviderElement<User?> with UpdateProfileRef {
+  _UpdateProfileProviderElement(super.provider);
+
+  @override
+  UserDto get userDto => (origin as UpdateProfileProvider).userDto;
+  @override
+  CancelToken? get cancelToken => (origin as UpdateProfileProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

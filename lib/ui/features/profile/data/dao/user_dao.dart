@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../../../app/core/manager/hive_manager.dart';
-import '../../domain/enum/kyc_status.dart';
 
 late UserDao userDao;
 final _hiveManager = locator<HiveManager>();

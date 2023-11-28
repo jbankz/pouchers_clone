@@ -85,7 +85,8 @@ class _SignInViewState extends ConsumerState<SignInView> with $SignInView {
                   focusNode: emailFocusNode,
                   keyboardType: TextInputType.emailAddress,
                   validator: FieldValidator.validateString(),
-                  onFieldSubmitted: (_) => context.nextFocus(emailFocusNode)),
+                  onFieldSubmitted: (_) =>
+                      context.nextFocus(passwordFocusNode)),
               const Gap(height: 16),
               EditTextFieldWidget(
                   readOnly: appState.isBusy,
@@ -107,7 +108,7 @@ class _SignInViewState extends ConsumerState<SignInView> with $SignInView {
                   onFieldSubmitted: (_) => _submitForm()),
               const Gap(height: 16),
               InkWell(
-                // onTap: () => PageRouter.pushNamed(Routes.forgotPasswordView),
+                onTap: () => PageRouter.pushNamed(Routes.forgotPasswordView),
                 child: Text('${AppString.forgotPassword}?',
                     style: context.headlineMedium
                         ?.copyWith(color: AppColors.kPurpleColor),

@@ -35,7 +35,8 @@ class AccountView extends ConsumerWidget {
                   Center(
                       child: ProfileImage(
                           image: user.profilePicture ?? '',
-                          initials: userDao.initials)),
+                          onTap: () =>
+                              PageRouter.pushNamed(Routes.profileView))),
                   const Gap(height: 8),
                   Text(userDao.fullName,
                       style: context.headlineMedium

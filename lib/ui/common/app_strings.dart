@@ -282,4 +282,14 @@ class AppString {
   static String whatThisMean2 =
       '$_bullet Your online subscriptions with this card will not work';
   static String transactionHistory = 'Transaction history';
+  static String profile = 'Profile';
+  static String gender = 'Gender';
+  static String phone = 'Phone number';
+  static String idVerification = 'ID Verification';
+  static String dob = 'Date of birth';
+  static String tag = 'Poucher tag';
+  static String incomplete = 'Incomplete';
+  static String save = 'Save';
+  static String profileUpdateSuccessful =
+      'User\'s profile updated successfully';
 }

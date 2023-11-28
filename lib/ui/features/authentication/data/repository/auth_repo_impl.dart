@@ -62,6 +62,8 @@ class AuthRepoImpl implements AuthRepo {
     _session
       ..accessToken = response?.data?.token ?? ''
       ..isLoggedIn = true;
+
+    userDao.save(response?.data);
     return response;
   }
 

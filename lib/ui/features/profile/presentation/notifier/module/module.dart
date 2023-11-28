@@ -34,5 +34,12 @@ List<IdentificationType> validIds(ValidIdsRef ref) =>
 
 @riverpod
 Future<User?> getUsersProfile(GetUsersProfileRef ref,
-        {CancelToken? cancelToken}) =>
-    ref.read(getUsersProfileUseCaseImpl).execute(cancelToken);
+        {CancelToken? cancelToken}) async =>
+    await ref.read(getUsersProfileUseCaseImpl).execute(cancelToken);
+
+@riverpod
+Future<User?> updateProfile(UpdateProfileRef ref,
+        {required UserDto userDto, CancelToken? cancelToken}) async =>
+    await ref
+        .read(updateProfileUseCaseImpl)
+        .execute(parameter: userDto, cancelToken: cancelToken);

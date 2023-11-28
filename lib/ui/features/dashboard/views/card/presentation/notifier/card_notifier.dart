@@ -206,23 +206,41 @@ class CardNotifier extends _$CardNotifier {
     state = state.copyWith(isBusy: false, exchangeRate: _exchangeRate);
   }
 
-  num calculateTotalFeel(List<Envs> envs, String baseName) {
+  num calculateTotalNairaFee(List<Envs> envs) {
     final Envs creationFee = envs.isEmpty
         ? Envs()
-        : envs
-            .singleWhere((env) => env.name == '${baseName}_card_creation_fee');
+        : envs.singleWhere((env) => env.name == 'naira_card_creation_fee');
 
     final Envs sudoVerveFee = envs.isEmpty
         ? Envs()
         : envs.singleWhere(
-            (env) => env.name == 'sudo_verve_${baseName}_card_creation_fee');
+            (env) => env.name == 'sudo_verve_naira_card_creation_fee');
 
     final Envs fundingFee = envs.isEmpty
         ? Envs()
-        : envs.singleWhere((env) => env.name == '${baseName}_card_funding_fee');
+        : envs.singleWhere((env) => env.name == 'naira_card_funding_fee');
 
     return ((num.parse(creationFee.value ?? '0')) +
         (num.parse(sudoVerveFee.value ?? '0')) +
+        (num.parse(fundingFee.value ?? '0')));
+  }
+
+  num calculateTotalDollarFee(List<Envs> envs) {
+    final Envs creationFee = envs.isEmpty
+        ? Envs()
+        : envs.singleWhere((env) => env.name == 'dollar_card_creation_fee');
+
+    final Envs sudoCreationFee = envs.isEmpty
+        ? Envs()
+        : envs
+            .singleWhere((env) => env.name == 'sudo_dollar_card_creation_fee');
+
+    final Envs fundingFee = envs.isEmpty
+        ? Envs()
+        : envs.singleWhere((env) => env.name == 'dollar_card_funding_fee');
+
+    return ((num.parse(creationFee.value ?? '0')) +
+        (num.parse(sudoCreationFee.value ?? '0')) +
         (num.parse(fundingFee.value ?? '0')));
   }
 

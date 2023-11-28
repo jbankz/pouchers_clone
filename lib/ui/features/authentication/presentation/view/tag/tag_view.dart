@@ -51,7 +51,7 @@ class _TagViewState extends ConsumerState<TagView> with $TagView {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
-        minimum: const EdgeInsets.symmetric(horizontal: 16),
+        minimum: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Form(
           key: formKey,
           child: Column(

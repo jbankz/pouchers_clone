@@ -69,49 +69,10 @@ class _CardCreationSymmaryViewState
         final walletState = ref.watch(walletNotifierProvider);
         final appState = ref.watch(adminNotifierProvider);
 
-        /// TODO: Reformat here
-
         final envs = (appState.data as List<Envs>);
 
-        // final Envs nairaCreationFee = envs.isEmpty
-        //     ? Envs()
-        //     : envs.singleWhere((env) => env.name == 'naira_card_creation_fee');
-
-        // final Envs nairaSudoVerveFee = envs.isEmpty
-        //     ? Envs()
-        //     : envs.singleWhere(
-        //         (env) => env.name == 'sudo_verve_naira_card_creation_fee');
-
-        // final Envs nairaFundingFee = envs.isEmpty
-        //     ? Envs()
-        //     : envs.singleWhere((env) => env.name == 'naira_card_funding_fee');
-
-        // final num totalNairaFee = ((num.parse(nairaCreationFee.value ?? '0')) +
-        //     (num.parse(nairaSudoVerveFee.value ?? '0')) +
-        //     (num.parse(nairaFundingFee.value ?? '0')));
-
-        final totalNairaFee = _cardNotifier.calculateTotalFeel(envs, 'naira');
-        final totalDollarFee = _cardNotifier.calculateTotalFeel(envs, 'dollar');
-
-        ///======================================
-
-        // final Envs dollarCreationFee = envs.isEmpty
-        //     ? Envs()
-        //     : envs.singleWhere((env) => env.name == 'dollar_card_creation_fee');
-
-        // final Envs dollarSudoCreationFee = envs.isEmpty
-        //     ? Envs()
-        //     : envs.singleWhere(
-        //         (env) => env.name == 'sudo_dollar_card_creation_fee');
-
-        // final Envs dollarFundingFee = envs.isEmpty
-        //     ? Envs()
-        //     : envs.singleWhere((env) => env.name == 'dollar_card_funding_fee');
-
-        // final num totalDollarFee =
-        //     ((num.parse(dollarCreationFee.value ?? '0')) +
-        //         (num.parse(dollarSudoCreationFee.value ?? '0')) +
-        //         (num.parse(dollarFundingFee.value ?? '0')));
+        final totalNairaFee = _cardNotifier.calculateTotalNairaFee(envs);
+        final totalDollarFee = _cardNotifier.calculateTotalDollarFee(envs);
 
         final bool insufficient =
             ((widget.cardDto.amount ?? 0) + totalNairaFee) >
@@ -285,21 +246,18 @@ class _CardCreationSymmaryViewState
                 ElevatedButtonWidget(
                     title: param.appTitle,
                     loading: walletState.isBusy || cardState.isBusy,
-                    onPressed:
-                        // onPressed: (walletState.isBusy ||
-                        //         cardState.isBusy ||
-                        //         insufficient)
-                        //     ? null
-                        //     :
-
-                        () async {
-                      final pin = await BottomSheets.showSheet(
-                          child: const PinConfirmationSheet()) as String?;
-                      if (pin != null) {
-                        _handleActivity(
-                            pin, param, totalNairaFee, totalDollarFee);
-                      }
-                    })
+                    onPressed: (walletState.isBusy ||
+                            cardState.isBusy ||
+                            insufficient)
+                        ? null
+                        : () async {
+                            final pin = await BottomSheets.showSheet(
+                                child: const PinConfirmationSheet()) as String?;
+                            if (pin != null) {
+                              _handleActivity(
+                                  pin, param, totalNairaFee, totalDollarFee);
+                            }
+                          })
               ],
             ),
           ),

@@ -29,6 +29,7 @@ import 'app/core/manager/hive_manager.dart';
 import 'app/core/manager/session_manager.dart' as core;
 
 import 'app/core/skeleton/theme.dart';
+import 'app/core/theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -103,54 +104,28 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with ResponseHandler {
   @override
-  // ignore: prefer_expression_function_bodies
-  Widget build(BuildContext context) {
-    return ProviderScope(
-      child: ScreenUtilInit(
-        designSize: const Size(375, 812),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        child: OverlaySupport.global(
-          child: SkeletonTheme(
-            shimmerGradient: const LinearGradient(colors: [
-              Color(0xFFD8E3E7),
-              Color(0xFFC8D5DA),
-              Color(0xFFD8E3E7),
-            ], stops: [
-              0.1,
-              0.5,
-              0.9
-            ]),
-            darkShimmerGradient: const LinearGradient(colors: [
-              Color(0xFF222222),
-              Color(0xFF242424),
-              Color(0xFF2B2B2B),
-              Color(0xFF242424),
-              Color(0xFF222222)
-            ], stops: [
-              0.0,
-              0.2,
-              0.5,
-              0.8,
-              1
-            ], begin: Alignment(-2.4, -0.2), end: Alignment(2.4, 0.2)),
-            child: MaterialApp(
-                title: AppConstants.appName,
-                theme: kThemeData,
-                darkTheme: kThemeData,
-                debugShowCheckedModeBanner: false,
-                themeMode: ThemeMode.light,
-                navigatorKey: StackedService.navigatorKey,
-                onGenerateRoute: StackedRouter().onGenerateRoute,
-                routes: {
-                  ...appRoutes,
-                }),
+  Widget build(BuildContext context) => ProviderScope(
+        child: ScreenUtilInit(
+          designSize: const Size(375, 812),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          child: OverlaySupport.global(
+            child: AppTheme(
+              child: MaterialApp(
+                  title: AppConstants.appName,
+                  theme: kThemeData,
+                  darkTheme: kThemeData,
+                  debugShowCheckedModeBanner: false,
+                  themeMode: ThemeMode.light,
+                  navigatorKey: StackedService.navigatorKey,
+                  onGenerateRoute: StackedRouter().onGenerateRoute,
+                  routes: {
+                    ...appRoutes,
+                  }),
+            ),
           ),
         ),
-      ),
-    );
-    //  );
-  }
+      );
 }
 
 class ProviderLogger extends ProviderObserver {

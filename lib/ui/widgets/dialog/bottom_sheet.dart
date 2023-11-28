@@ -1,4 +1,6 @@
+import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../app/core/router/page_router.dart';
 import '../../common/app_colors.dart';
@@ -25,4 +27,20 @@ class BottomSheets {
                 .animate(anim1),
             child: child),
       );
+  static Future<dynamic> showInputAlertDialog(
+          {bool barrierDismissible = true, required Widget child}) async =>
+      showDialog(
+          context: PageRouter.globalContext,
+          barrierDismissible: barrierDismissible,
+          barrierColor: AppColors.kPrimaryTextColor.withOpacity(.30),
+          builder: (context) => Container(
+              margin: EdgeInsets.symmetric(horizontal: 12.w),
+              child: AlertDialog(
+                  contentPadding: EdgeInsets.zero,
+                  insetPadding: EdgeInsets.zero,
+                  iconPadding: EdgeInsets.zero,
+                  titlePadding: EdgeInsets.zero,
+                  actionsPadding: EdgeInsets.zero,
+                  buttonPadding: EdgeInsets.zero,
+                  content: SizedBox(width: context.width / .9, child: child))));
 }

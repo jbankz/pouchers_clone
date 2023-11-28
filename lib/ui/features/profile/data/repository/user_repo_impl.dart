@@ -33,4 +33,13 @@ class UserRepoImpl implements UserRepo {
     await userDao.save(user);
     return user;
   }
+
+  @override
+  Future<User?> updateProfile(
+      {required UserDto userDto, CancelToken? cancelToken}) async {
+    final user = await _userSource.updateProfile(
+        userDto: userDto, cancelToken: cancelToken);
+    await userDao.save(user);
+    return user;
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
@@ -13,47 +14,15 @@ class HookCreationFeeWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef widgetRef) =>
       HookConsumer(builder: (_, ref, __) {
-        /// TODO: Reformat here
-
         final param = ref.watch(paramModule);
         final appState = ref.watch(adminNotifierProvider);
 
+        final cardNotifier = ref.read(cardNotifierProvider.notifier);
+
         final envs = (appState.data as List<Envs>);
 
-        final Envs nairaCreationFee = envs.isEmpty
-            ? Envs()
-            : envs.singleWhere((env) => env.name == 'naira_card_creation_fee');
-
-        final Envs nairaSudoVerveFee = envs.isEmpty
-            ? Envs()
-            : envs.singleWhere(
-                (env) => env.name == 'sudo_verve_naira_card_creation_fee');
-
-        final Envs nairaFundingFee = envs.isEmpty
-            ? Envs()
-            : envs.singleWhere((env) => env.name == 'naira_card_funding_fee');
-
-        final num totalNairaFee = ((num.parse(nairaCreationFee.value ?? '0')) +
-            (num.parse(nairaSudoVerveFee.value ?? '0')) +
-            (num.parse(nairaFundingFee.value ?? '0')));
-
-        final Envs dollarCreationFee = envs.isEmpty
-            ? Envs()
-            : envs.singleWhere((env) => env.name == 'dollar_card_creation_fee');
-
-        final Envs dollarSudoCreationFee = envs.isEmpty
-            ? Envs()
-            : envs.singleWhere(
-                (env) => env.name == 'sudo_dollar_card_creation_fee');
-
-        final Envs dollarFundingFee = envs.isEmpty
-            ? Envs()
-            : envs.singleWhere((env) => env.name == 'dollar_card_funding_fee');
-
-        final num totalDollarFee =
-            ((num.parse(dollarCreationFee.value ?? '0')) +
-                (num.parse(dollarSudoCreationFee.value ?? '0')) +
-                (num.parse(dollarFundingFee.value ?? '0')));
+        final totalNairaFee = cardNotifier.calculateTotalNairaFee(envs);
+        final totalDollarFee = cardNotifier.calculateTotalDollarFee(envs);
 
         return Text(
             'Creation fee: + ${param.isNairaCardType ? totalNairaFee.toNaira : totalDollarFee.toDollar}',

@@ -9,7 +9,7 @@ class OtpTimerNotifier extends ChangeNotifier {
   bool _isTimerFinished = false;
   bool get isTimerFinished => _isTimerFinished;
 
-  late Timer _timer;
+   Timer? _timer;
 
   Future<void> startTimer() async {
     _timer = Timer.periodic(const Duration(seconds: 1), (time) {
@@ -22,7 +22,7 @@ class OtpTimerNotifier extends ChangeNotifier {
     });
   }
 
-  void cancelTimer() => _timer.cancel();
+  void cancelTimer() => _timer?.cancel();
 
   void resetTimer() {
     _timerCount = 60;

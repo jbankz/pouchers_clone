@@ -4,19 +4,17 @@ import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../app/app.logger.dart';
 import '../../../../../app/app.router.dart';
 import '../../../../../app/core/manager/biometric_manager.dart';
 import '../../../../../app/core/manager/secure_manager.dart';
-import '../../../../../app/core/state/app_state.dart';
 import '../../../../../app/navigators/navigators.dart';
-import '../../../../../modules/create_account/screens/verify_account.dart';
 import '../../../../../modules/tab_layout/screens/tab_layout.dart';
 import '../../../../common/app_strings.dart';
 import '../../../../notification/notification_tray.dart';
+import '../state/auth_state.dart';
 import '../view/otp/notifier/module.dart';
 import 'module/module.dart';
 
@@ -31,7 +29,7 @@ class AuthNotifier extends _$AuthNotifier {
   final _sessionManager = locator<SessionManager>();
 
   @override
-  AppState build() => AppState(data: _sessionManager.isBiometricEnabled);
+  AuthState build() => AuthState(data: _sessionManager.isBiometricEnabled);
 
   Future<void> signUpUser(AuthDto parameter, [CancelToken? cancelToken]) async {
     try {
@@ -41,13 +39,8 @@ class AuthNotifier extends _$AuthNotifier {
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
 
-      ///TODO: Don't use 'BuildContext's across async gaps.
-      ///Try rewriting the code to not reference the 'BuildContext'.
-      pushTo(PageRouter.globalContext, VerifyAccount(email: parameter.email),
-          settings: const RouteSettings(name: VerifyAccount.routeName));
-
-      // PageRouter.pushNamed(Routes.otpView,
-      //     args: OtpViewArguments(email: parameter.email));
+      PageRouter.pushNamed(Routes.otpView,
+          args: OtpViewArguments(email: parameter.email));
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(),
@@ -77,7 +70,9 @@ class AuthNotifier extends _$AuthNotifier {
         return;
       }
 
-      if (!isBiometricAuth && await _biometricManager.isBiometricEnabled()) {
+      if (!isBiometricAuth &&
+          await _biometricManager.isBiometricEnabled() &&
+          !_sessionManager.isBiometricEnabled) {
         PageRouter.pushReplacement(Routes.biometricView);
         state = state.copyWith(isBusy: false);
         return;
@@ -87,13 +82,25 @@ class AuthNotifier extends _$AuthNotifier {
       pushToAndClearStack(PageRouter.globalContext, TabLayout());
     } catch (e) {
       _logger.e(e.toString());
+
+      if (e.toString().contains('User is not verified')) {
+        await requestOtp(AuthDto(email: parameter.email), cancelToken, false);
+
+        PageRouter.pushNamed(Routes.otpView,
+            args: OtpViewArguments(email: parameter.email));
+        state = state.copyWith(isBusy: false);
+        return;
+      }
+
       triggerNotificationTray(e.toString(),
           error: true, ignoreIfNull: e.toString().isNull);
     }
     state = state.copyWith(isBusy: false);
+    ref.invalidateSelf();
   }
 
-  Future<void> requestOtp(AuthDto parameter, [CancelToken? cancelToken]) async {
+  Future<void> requestOtp(AuthDto parameter,
+      [CancelToken? cancelToken, bool triggerTimer = true]) async {
     try {
       state = state.copyWith(isBusy: true);
 
@@ -102,7 +109,7 @@ class AuthNotifier extends _$AuthNotifier {
           .future);
 
       triggerNotificationTray(response?.message ?? '');
-      ref.read(otpTimerModule.notifier).resetTimer();
+      if (triggerTimer) ref.read(otpTimerModule.notifier).resetTimer();
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(),
@@ -120,7 +127,7 @@ class AuthNotifier extends _$AuthNotifier {
           .future);
 
       triggerNotificationTray(response?.message ?? '');
-      // PageRouter.pushNamed(Routes.tagView);
+      PageRouter.pushNamed(Routes.tagView);
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(),
@@ -145,7 +152,7 @@ class AuthNotifier extends _$AuthNotifier {
         return;
       }
 
-      // PageRouter.pushNamed(Routes.createPinView);
+      PageRouter.pushNamed(Routes.createPinView);
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(),
@@ -179,6 +186,7 @@ class AuthNotifier extends _$AuthNotifier {
           error: true, ignoreIfNull: e.toString().isNull);
     }
     state = state.copyWith(isBusy: false);
+    ref.invalidateSelf();
   }
 
   Future<void> forgotPassword(AuthDto parameter,
@@ -190,8 +198,8 @@ class AuthNotifier extends _$AuthNotifier {
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
 
-      // PageRouter.pushNamed(Routes.verifyPasswordAccountView,
-      //     args: VerifyPasswordAccountViewArguments(email: parameter.email));
+      PageRouter.pushNamed(Routes.verifyPasswordAccountView,
+          args: VerifyPasswordAccountViewArguments(email: parameter.email));
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(),
@@ -209,8 +217,8 @@ class AuthNotifier extends _$AuthNotifier {
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
 
-      // PageRouter.pushNamed(Routes.setNewPasswordView,
-      //     args: SetNewPasswordViewArguments(email: parameter.email ?? ''));
+      PageRouter.pushNamed(Routes.setNewPasswordView,
+          args: SetNewPasswordViewArguments(email: parameter.email ?? ''));
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(),
@@ -220,7 +228,7 @@ class AuthNotifier extends _$AuthNotifier {
   }
 
   Future<void> resetPassword(AuthDto parameter,
-      {CancelToken? cancelToken, String? route = Routes.signInView}) async {
+      {CancelToken? cancelToken, String? route}) async {
     try {
       state = state.copyWith(isBusy: true);
 
@@ -228,12 +236,13 @@ class AuthNotifier extends _$AuthNotifier {
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
 
-      // PageRouter.pushReplacement(Routes.successState,
-      //     args: SuccessStateArguments(
-      //         title: AppString.resetSuccessful,
-      //         message: AppString.resetSuccessfulMessage,
-      //         btnTitle: AppString.login,
-      //         tap: () => PageRouter.pushReplacement(route ?? '')));
+      PageRouter.pushReplacement(Routes.successState,
+          args: SuccessStateArguments(
+              title: AppString.resetSuccessful,
+              message: AppString.resetSuccessfulMessage,
+              btnTitle: AppString.login,
+              tap: () =>
+                  PageRouter.pushReplacement(route ?? Routes.signInView)));
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(),

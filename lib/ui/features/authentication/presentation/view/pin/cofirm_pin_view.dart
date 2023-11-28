@@ -46,9 +46,7 @@ class _ConfirmPinViewState extends ConsumerState<ConfirmPinView> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
-
     _cancelToken.cancel();
   }
 

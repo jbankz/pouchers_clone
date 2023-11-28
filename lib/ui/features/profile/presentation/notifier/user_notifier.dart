@@ -80,6 +80,25 @@ class UserNotifier extends _$UserNotifier {
     state = state.copyWith(isBusy: false);
   }
 
+  Future<void> updateProfile(UserDto userDto,
+      {CancelToken? cancelToken, Function()? success}) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      await ref.read(updateProfileProvider
+          .call(userDto: userDto, cancelToken: cancelToken)
+          .future);
+
+      triggerNotificationTray(AppString.profileUpdateSuccessful);
+
+      if (success != null) success();
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(), error: true);
+    }
+    state = state.copyWith(isBusy: false);
+  }
+
   Future<void> triggerDojah(
       {required IdentificationType? identificationType,
       required dynamic Function(dynamic) onSuccess}) async {

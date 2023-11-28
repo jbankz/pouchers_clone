@@ -5,6 +5,8 @@ import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../ui/features/authentication/presentation/view/biometric/biometric_view.dart';
+import '../ui/features/authentication/presentation/view/otp/otp_view.dart';
+import '../ui/features/authentication/presentation/view/password/forgot_password_view.dart';
 import '../ui/features/authentication/presentation/view/password/set_new_password_view.dart';
 import '../ui/features/authentication/presentation/view/password/verify_change_of_password_view.dart';
 import '../ui/features/authentication/presentation/view/pin/change_pin_view.dart';
@@ -14,6 +16,7 @@ import '../ui/features/authentication/presentation/view/pin/password_confirmatio
 import '../ui/features/authentication/presentation/view/signin/sign_in_view.dart';
 import '../ui/features/authentication/presentation/view/signup/sign_up_view.dart';
 import '../ui/features/authentication/presentation/view/tag/tag_view.dart';
+import '../ui/features/authentication/presentation/view/verify_password/verify_password_account.dart';
 import '../ui/features/dashboard/views/account/views/account_settings_view.dart';
 import '../ui/features/dashboard/views/account/views/account_verification.dart';
 import '../ui/features/dashboard/views/card/presentation/view/bvn_requirement_view.dart';
@@ -25,6 +28,7 @@ import '../ui/features/onboarding/presentation/views/onboarding_view.dart';
 import '../ui/features/profile/presentation/views/kyc/bvn/bvn_view.dart';
 import '../ui/features/profile/presentation/views/kyc/id/id_view.dart';
 import '../ui/features/profile/presentation/views/kyc/utility/utility_bill_view.dart';
+import '../ui/features/profile/presentation/views/profile/profile_view.dart';
 import '../ui/features/tiers/presentation/view/tier_view.dart';
 import '../ui/widgets/success_state.dart';
 import 'core/manager/biometric_manager.dart';
@@ -61,17 +65,17 @@ import 'core/manager/session_manager.dart';
     // AdaptiveRoute(page: GetGuestEmailView),
     // AdaptiveRoute(page: AirtimeView),
     // AdaptiveRoute(page: DebitCardView),
-    // AdaptiveRoute(page: OtpView),
+    AdaptiveRoute(page: OtpView),
     AdaptiveRoute(page: AccountSettingsView),
     AdaptiveRoute(page: TagView),
     AdaptiveRoute(page: CreatePinView),
     AdaptiveRoute(page: ConfirmPinView),
     AdaptiveRoute(page: PasswordConfirmationView),
     AdaptiveRoute(page: ChangePinView),
-    // AdaptiveRoute(page: ForgotPasswordView),
+    AdaptiveRoute(page: ForgotPasswordView),
     AdaptiveRoute(page: VerifyChangeOfPasswordView),
     AdaptiveRoute(page: SetNewPasswordView),
-    // AdaptiveRoute(page: VerifyPasswordAccountView),
+    AdaptiveRoute(page: VerifyPasswordAccountView),
     AdaptiveRoute(page: BiometricView),
     AdaptiveRoute(page: TierView),
     AdaptiveRoute(page: AccountVerificationView),
@@ -84,6 +88,10 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: FundWalletView),
     CustomRoute(
         page: VirtualCardDetailView,
+        opaque: false,
+        transitionsBuilder: TransitionsBuilders.fadeIn),
+    CustomRoute(
+        page: ProfileView,
         opaque: false,
         transitionsBuilder: TransitionsBuilders.fadeIn),
   ],

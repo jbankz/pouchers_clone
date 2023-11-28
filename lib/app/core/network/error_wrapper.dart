@@ -49,6 +49,7 @@ class ApiError {
     String? message;
     switch (response?.statusCode) {
       case 400:
+      case 401:
       case 402:
       case 403:
       case 404:

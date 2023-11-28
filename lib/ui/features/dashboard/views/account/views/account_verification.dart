@@ -70,7 +70,7 @@ class _AccountVerificationViewState
                     BuildVerificationTypes(
                         title: AppString.bvn,
                         desc: AppString.bvnVerify,
-                        kycStatus: ((user.tierLevels ?? 0) >= 1)
+                        kycStatus: ((user.tierLevels ?? 0) > 1)
                             ? KycStatus.verified
                             : KycStatus.pending,
                         onTap: () => PageRouter.pushNamed(Routes.bvnView)),
@@ -78,7 +78,7 @@ class _AccountVerificationViewState
                     BuildVerificationTypes(
                         title: AppString.validId,
                         desc: AppString.validIdVerify,
-                        kycStatus: ((user.tierLevels ?? 0) >= 2)
+                        kycStatus: ((user.tierLevels ?? 0) > 2)
                             ? KycStatus.verified
                             : KycStatus.pending,
                         onTap: () => PageRouter.pushNamed(Routes.idView)),
@@ -86,7 +86,7 @@ class _AccountVerificationViewState
                     BuildVerificationTypes(
                         title: AppString.utilityBill,
                         desc: AppString.utilityBillVerify,
-                        kycStatus: ((user.tierLevels ?? 0) >= 3)
+                        kycStatus: ((user.tierLevels ?? 0) > 3)
                             ? KycStatus.verified
                             : KycStatus.pending,
                         onTap: () =>

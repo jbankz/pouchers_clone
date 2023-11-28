@@ -59,7 +59,7 @@ class _VerifyPasswordAccountViewState
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
-        minimum: const EdgeInsets.symmetric(horizontal: 16),
+        minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: Form(
           key: formKey,
           child: Column(

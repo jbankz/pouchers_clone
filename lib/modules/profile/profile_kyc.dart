@@ -1,23 +1,13 @@
-import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
-import 'package:flutter/services.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:Pouchers/app/common/listener.dart';
 import 'package:Pouchers/app/helpers/notifiers.dart';
 import 'package:Pouchers/app/navigators/navigators.dart';
 import 'package:Pouchers/modules/account/models/profile_model.dart';
 import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:Pouchers/modules/account/screens/change_password/change_password.dart';
-import 'package:Pouchers/modules/login/models/login_response.dart';
 import 'package:Pouchers/modules/profile/profile_account_verification.dart';
 import 'package:Pouchers/modules/profile/profile_tier_list.dart';
 import 'package:Pouchers/modules/tab_layout/widgets/profile_widget.dart';
+import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
 import 'package:Pouchers/utils/assets_path.dart';
 import 'package:Pouchers/utils/components.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
@@ -25,6 +15,13 @@ import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/logger.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import '../../ui/features/profile/data/dao/user_dao.dart';
 

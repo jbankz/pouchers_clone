@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../../app/core/usecase/poucher_usecase.dart';
 import '../get_profile_usecase.dart';
+import '../update_profile_usecase.dart';
 import '../valid_ids_usecase.dart';
 import '../validate_bvn_usecase.dart';
 import '../validate_id_usecase.dart';
@@ -23,3 +24,6 @@ final getValidIdsUseCaseModule = Provider<PoucherUseCaseWithOutParam>(
 
 final getUsersProfileUseCaseImpl = Provider<PoucherUseCaseWithOutParam>(
     (ref) => GetProfileUseCaseImpl(ref.read(userRepoModule)));
+
+final updateProfileUseCaseImpl = Provider<PoucherUseCaseWithRequiredParam>(
+    (ref) => UpdateProfileUseCaseImpl(ref.read(userRepoModule)));

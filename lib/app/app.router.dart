@@ -5,59 +5,67 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i26;
+import 'package:flutter/material.dart' as _i30;
 import 'package:flutter/material.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/view/biometric/biometric_view.dart'
-    as _i15;
-import 'package:Pouchers/ui/features/authentication/presentation/view/password/set_new_password_view.dart'
+    as _i18;
+import 'package:Pouchers/ui/features/authentication/presentation/view/otp/otp_view.dart'
+    as _i7;
+import 'package:Pouchers/ui/features/authentication/presentation/view/password/forgot_password_view.dart'
     as _i14;
+import 'package:Pouchers/ui/features/authentication/presentation/view/password/set_new_password_view.dart'
+    as _i16;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/verify_change_of_password_view.dart'
-    as _i13;
+    as _i15;
 import 'package:Pouchers/ui/features/authentication/presentation/view/pin/change_pin_view.dart'
-    as _i12;
+    as _i13;
 import 'package:Pouchers/ui/features/authentication/presentation/view/pin/cofirm_pin_view.dart'
-    as _i10;
-import 'package:Pouchers/ui/features/authentication/presentation/view/pin/create_pin_view.dart'
-    as _i9;
-import 'package:Pouchers/ui/features/authentication/presentation/view/pin/password_confirmation_view.dart'
     as _i11;
+import 'package:Pouchers/ui/features/authentication/presentation/view/pin/create_pin_view.dart'
+    as _i10;
+import 'package:Pouchers/ui/features/authentication/presentation/view/pin/password_confirmation_view.dart'
+    as _i12;
 import 'package:Pouchers/ui/features/authentication/presentation/view/signin/sign_in_view.dart'
     as _i4;
 import 'package:Pouchers/ui/features/authentication/presentation/view/signup/sign_up_view.dart'
     as _i3;
 import 'package:Pouchers/ui/features/authentication/presentation/view/tag/tag_view.dart'
-    as _i8;
-import 'package:Pouchers/ui/features/dashboard/views/account/views/account_settings_view.dart'
-    as _i7;
-import 'package:Pouchers/ui/features/dashboard/views/account/views/account_verification.dart'
+    as _i9;
+import 'package:Pouchers/ui/features/authentication/presentation/view/verify_password/verify_password_account.dart'
     as _i17;
+import 'package:Pouchers/ui/features/dashboard/views/account/views/account_settings_view.dart'
+    as _i8;
+import 'package:Pouchers/ui/features/dashboard/views/account/views/account_verification.dart'
+    as _i20;
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart'
-    as _i27;
+    as _i31;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/bvn_requirement_view.dart'
-    as _i21;
+    as _i24;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/card_calculator_view.dart'
-    as _i22;
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/card_creation_summary_view.dart'
-    as _i23;
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/virtual_card_detail_view.dart'
     as _i25;
+import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/card_creation_summary_view.dart'
+    as _i26;
+import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/virtual_card_detail_view.dart'
+    as _i28;
 import 'package:Pouchers/ui/features/dashboard/views/dashboard_view.dart'
     as _i6;
 import 'package:Pouchers/ui/features/onboarding/presentation/views/onboarding_view.dart'
     as _i2;
 import 'package:Pouchers/ui/features/profile/presentation/views/kyc/bvn/bvn_view.dart'
-    as _i18;
+    as _i21;
 import 'package:Pouchers/ui/features/profile/presentation/views/kyc/id/id_view.dart'
-    as _i19;
+    as _i22;
 import 'package:Pouchers/ui/features/profile/presentation/views/kyc/utility/utility_bill_view.dart'
-    as _i20;
+    as _i23;
+import 'package:Pouchers/ui/features/profile/presentation/views/profile/profile_view.dart'
+    as _i29;
 import 'package:Pouchers/ui/features/profile/presentation/views/wallet/fund_wallet_view.dart'
-    as _i24;
+    as _i27;
 import 'package:Pouchers/ui/features/tiers/presentation/view/tier_view.dart'
-    as _i16;
+    as _i19;
 import 'package:Pouchers/ui/widgets/success_state.dart' as _i5;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i28;
+import 'package:stacked_services/stacked_services.dart' as _i32;
 
 class Routes {
   static const onboardingView = '/';
@@ -69,6 +77,8 @@ class Routes {
   static const successState = '/success-state';
 
   static const dashboardView = '/dashboard-view';
+
+  static const otpView = '/otp-view';
 
   static const accountSettingsView = '/account-settings-view';
 
@@ -82,9 +92,13 @@ class Routes {
 
   static const changePinView = '/change-pin-view';
 
+  static const forgotPasswordView = '/forgot-password-view';
+
   static const verifyChangeOfPasswordView = '/verify-change-of-password-view';
 
   static const setNewPasswordView = '/set-new-password-view';
+
+  static const verifyPasswordAccountView = '/verify-password-account-view';
 
   static const biometricView = '/biometric-view';
 
@@ -108,20 +122,25 @@ class Routes {
 
   static const virtualCardDetailView = '/virtual-card-detail-view';
 
+  static const profileView = '/profile-view';
+
   static const all = <String>{
     onboardingView,
     signUpView,
     signInView,
     successState,
     dashboardView,
+    otpView,
     accountSettingsView,
     tagView,
     createPinView,
     confirmPinView,
     passwordConfirmationView,
     changePinView,
+    forgotPasswordView,
     verifyChangeOfPasswordView,
     setNewPasswordView,
+    verifyPasswordAccountView,
     biometricView,
     tierView,
     accountVerificationView,
@@ -133,6 +152,7 @@ class Routes {
     cardCreationSymmaryView,
     fundWalletView,
     virtualCardDetailView,
+    profileView,
   };
 }
 
@@ -159,86 +179,102 @@ class StackedRouter extends _i1.RouterBase {
       page: _i6.DashboardView,
     ),
     _i1.RouteDef(
+      Routes.otpView,
+      page: _i7.OtpView,
+    ),
+    _i1.RouteDef(
       Routes.accountSettingsView,
-      page: _i7.AccountSettingsView,
+      page: _i8.AccountSettingsView,
     ),
     _i1.RouteDef(
       Routes.tagView,
-      page: _i8.TagView,
+      page: _i9.TagView,
     ),
     _i1.RouteDef(
       Routes.createPinView,
-      page: _i9.CreatePinView,
+      page: _i10.CreatePinView,
     ),
     _i1.RouteDef(
       Routes.confirmPinView,
-      page: _i10.ConfirmPinView,
+      page: _i11.ConfirmPinView,
     ),
     _i1.RouteDef(
       Routes.passwordConfirmationView,
-      page: _i11.PasswordConfirmationView,
+      page: _i12.PasswordConfirmationView,
     ),
     _i1.RouteDef(
       Routes.changePinView,
-      page: _i12.ChangePinView,
+      page: _i13.ChangePinView,
+    ),
+    _i1.RouteDef(
+      Routes.forgotPasswordView,
+      page: _i14.ForgotPasswordView,
     ),
     _i1.RouteDef(
       Routes.verifyChangeOfPasswordView,
-      page: _i13.VerifyChangeOfPasswordView,
+      page: _i15.VerifyChangeOfPasswordView,
     ),
     _i1.RouteDef(
       Routes.setNewPasswordView,
-      page: _i14.SetNewPasswordView,
+      page: _i16.SetNewPasswordView,
+    ),
+    _i1.RouteDef(
+      Routes.verifyPasswordAccountView,
+      page: _i17.VerifyPasswordAccountView,
     ),
     _i1.RouteDef(
       Routes.biometricView,
-      page: _i15.BiometricView,
+      page: _i18.BiometricView,
     ),
     _i1.RouteDef(
       Routes.tierView,
-      page: _i16.TierView,
+      page: _i19.TierView,
     ),
     _i1.RouteDef(
       Routes.accountVerificationView,
-      page: _i17.AccountVerificationView,
+      page: _i20.AccountVerificationView,
     ),
     _i1.RouteDef(
       Routes.bvnView,
-      page: _i18.BvnView,
+      page: _i21.BvnView,
     ),
     _i1.RouteDef(
       Routes.idView,
-      page: _i19.IdView,
+      page: _i22.IdView,
     ),
     _i1.RouteDef(
       Routes.utilityBillView,
-      page: _i20.UtilityBillView,
+      page: _i23.UtilityBillView,
     ),
     _i1.RouteDef(
       Routes.requestBVNView,
-      page: _i21.RequestBVNView,
+      page: _i24.RequestBVNView,
     ),
     _i1.RouteDef(
       Routes.cardCalculatorView,
-      page: _i22.CardCalculatorView,
+      page: _i25.CardCalculatorView,
     ),
     _i1.RouteDef(
       Routes.cardCreationSymmaryView,
-      page: _i23.CardCreationSymmaryView,
+      page: _i26.CardCreationSymmaryView,
     ),
     _i1.RouteDef(
       Routes.fundWalletView,
-      page: _i24.FundWalletView,
+      page: _i27.FundWalletView,
     ),
     _i1.RouteDef(
       Routes.virtualCardDetailView,
-      page: _i25.VirtualCardDetailView,
+      page: _i28.VirtualCardDetailView,
+    ),
+    _i1.RouteDef(
+      Routes.profileView,
+      page: _i29.ProfileView,
     ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.OnboardingView: (data) {
-      return _i26.PageRouteBuilder<dynamic>(
+      return _i30.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i2.OnboardingView(),
         settings: data,
@@ -247,7 +283,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i3.SignUpView: (data) {
-      return _i26.PageRouteBuilder<dynamic>(
+      return _i30.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i3.SignUpView(),
         settings: data,
@@ -256,7 +292,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i4.SignInView: (data) {
-      return _i26.PageRouteBuilder<dynamic>(
+      return _i30.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i4.SignInView(),
         settings: data,
@@ -268,7 +304,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SuccessStateArguments>(
         orElse: () => const SuccessStateArguments(),
       );
-      return _i26.PageRouteBuilder<dynamic>(
+      return _i30.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i5.SuccessState(
                 key: args.key,
@@ -283,7 +319,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i6.DashboardView: (data) {
-      return _i26.PageRouteBuilder<dynamic>(
+      return _i30.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i6.DashboardView(),
         settings: data,
@@ -291,127 +327,161 @@ class StackedRouter extends _i1.RouterBase {
         transitionsBuilder: data.transition ?? _i1.TransitionsBuilders.fadeIn,
       );
     },
-    _i7.AccountSettingsView: (data) {
+    _i7.OtpView: (data) {
+      final args = data.getArgs<OtpViewArguments>(
+        orElse: () => const OtpViewArguments(),
+      );
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i7.AccountSettingsView(),
+        builder: (context) => _i7.OtpView(key: args.key, email: args.email),
         settings: data,
       );
     },
-    _i8.TagView: (data) {
+    _i8.AccountSettingsView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i8.AccountSettingsView(),
+        settings: data,
+      );
+    },
+    _i9.TagView: (data) {
       final args = data.getArgs<TagViewArguments>(
         orElse: () => const TagViewArguments(),
       );
       return _i1.buildAdaptivePageRoute<dynamic>(
         builder: (context) =>
-            _i8.TagView(key: args.key, callback: args.callback),
+            _i9.TagView(key: args.key, callback: args.callback),
         settings: data,
       );
     },
-    _i9.CreatePinView: (data) {
+    _i10.CreatePinView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i9.CreatePinView(),
+        builder: (context) => const _i10.CreatePinView(),
         settings: data,
       );
     },
-    _i10.ConfirmPinView: (data) {
+    _i11.ConfirmPinView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i10.ConfirmPinView(),
+        builder: (context) => const _i11.ConfirmPinView(),
         settings: data,
       );
     },
-    _i11.PasswordConfirmationView: (data) {
+    _i12.PasswordConfirmationView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i11.PasswordConfirmationView(),
+        builder: (context) => const _i12.PasswordConfirmationView(),
         settings: data,
       );
     },
-    _i12.ChangePinView: (data) {
+    _i13.ChangePinView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i12.ChangePinView(),
+        builder: (context) => const _i13.ChangePinView(),
         settings: data,
       );
     },
-    _i13.VerifyChangeOfPasswordView: (data) {
+    _i14.ForgotPasswordView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i13.VerifyChangeOfPasswordView(),
+        builder: (context) => const _i14.ForgotPasswordView(),
         settings: data,
       );
     },
-    _i14.SetNewPasswordView: (data) {
+    _i15.VerifyChangeOfPasswordView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i15.VerifyChangeOfPasswordView(),
+        settings: data,
+      );
+    },
+    _i16.SetNewPasswordView: (data) {
       final args = data.getArgs<SetNewPasswordViewArguments>(nullOk: false);
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => _i14.SetNewPasswordView(
+        builder: (context) => _i16.SetNewPasswordView(
             key: args.key, email: args.email, route: args.route),
         settings: data,
       );
     },
-    _i15.BiometricView: (data) {
+    _i17.VerifyPasswordAccountView: (data) {
+      final args = data.getArgs<VerifyPasswordAccountViewArguments>(
+        orElse: () => const VerifyPasswordAccountViewArguments(),
+      );
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i15.BiometricView(),
+        builder: (context) =>
+            _i17.VerifyPasswordAccountView(key: args.key, email: args.email),
         settings: data,
       );
     },
-    _i16.TierView: (data) {
+    _i18.BiometricView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i16.TierView(),
+        builder: (context) => const _i18.BiometricView(),
         settings: data,
       );
     },
-    _i17.AccountVerificationView: (data) {
+    _i19.TierView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i17.AccountVerificationView(),
+        builder: (context) => const _i19.TierView(),
         settings: data,
       );
     },
-    _i18.BvnView: (data) {
+    _i20.AccountVerificationView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i18.BvnView(),
+        builder: (context) => const _i20.AccountVerificationView(),
         settings: data,
       );
     },
-    _i19.IdView: (data) {
+    _i21.BvnView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i19.IdView(),
+        builder: (context) => const _i21.BvnView(),
         settings: data,
       );
     },
-    _i20.UtilityBillView: (data) {
+    _i22.IdView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i20.UtilityBillView(),
+        builder: (context) => const _i22.IdView(),
         settings: data,
       );
     },
-    _i21.RequestBVNView: (data) {
+    _i23.UtilityBillView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i21.RequestBVNView(),
+        builder: (context) => const _i23.UtilityBillView(),
         settings: data,
       );
     },
-    _i22.CardCalculatorView: (data) {
+    _i24.RequestBVNView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i22.CardCalculatorView(),
+        builder: (context) => const _i24.RequestBVNView(),
         settings: data,
       );
     },
-    _i23.CardCreationSymmaryView: (data) {
+    _i25.CardCalculatorView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i25.CardCalculatorView(),
+        settings: data,
+      );
+    },
+    _i26.CardCreationSymmaryView: (data) {
       final args =
           data.getArgs<CardCreationSymmaryViewArguments>(nullOk: false);
       return _i1.buildAdaptivePageRoute<dynamic>(
         builder: (context) =>
-            _i23.CardCreationSymmaryView(key: args.key, cardDto: args.cardDto),
+            _i26.CardCreationSymmaryView(key: args.key, cardDto: args.cardDto),
         settings: data,
       );
     },
-    _i24.FundWalletView: (data) {
+    _i27.FundWalletView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i24.FundWalletView(),
+        builder: (context) => const _i27.FundWalletView(),
         settings: data,
       );
     },
-    _i25.VirtualCardDetailView: (data) {
-      return _i26.PageRouteBuilder<dynamic>(
+    _i28.VirtualCardDetailView: (data) {
+      return _i30.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const _i25.VirtualCardDetailView(),
+            const _i28.VirtualCardDetailView(),
+        settings: data,
+        opaque: false,
+        transitionsBuilder: data.transition ?? _i1.TransitionsBuilders.fadeIn,
+      );
+    },
+    _i29.ProfileView: (data) {
+      return _i30.PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const _i29.ProfileView(),
         settings: data,
         opaque: false,
         transitionsBuilder: data.transition ?? _i1.TransitionsBuilders.fadeIn,
@@ -435,7 +505,7 @@ class SuccessStateArguments {
     this.tap,
   });
 
-  final _i26.Key? key;
+  final _i30.Key? key;
 
   final String title;
 
@@ -470,13 +540,40 @@ class SuccessStateArguments {
   }
 }
 
+class OtpViewArguments {
+  const OtpViewArguments({
+    this.key,
+    this.email,
+  });
+
+  final _i30.Key? key;
+
+  final String? email;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "email": "$email"}';
+  }
+
+  @override
+  bool operator ==(covariant OtpViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key && other.email == email;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ email.hashCode;
+  }
+}
+
 class TagViewArguments {
   const TagViewArguments({
     this.key,
     this.callback,
   });
 
-  final _i26.Key? key;
+  final _i30.Key? key;
 
   final dynamic Function()? callback;
 
@@ -504,7 +601,7 @@ class SetNewPasswordViewArguments {
     this.route,
   });
 
-  final _i26.Key? key;
+  final _i30.Key? key;
 
   final String email;
 
@@ -527,15 +624,42 @@ class SetNewPasswordViewArguments {
   }
 }
 
+class VerifyPasswordAccountViewArguments {
+  const VerifyPasswordAccountViewArguments({
+    this.key,
+    this.email,
+  });
+
+  final _i30.Key? key;
+
+  final String? email;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "email": "$email"}';
+  }
+
+  @override
+  bool operator ==(covariant VerifyPasswordAccountViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key && other.email == email;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ email.hashCode;
+  }
+}
+
 class CardCreationSymmaryViewArguments {
   const CardCreationSymmaryViewArguments({
     this.key,
     required this.cardDto,
   });
 
-  final _i26.Key? key;
+  final _i30.Key? key;
 
-  final _i27.CardDto cardDto;
+  final _i31.CardDto cardDto;
 
   @override
   String toString() {
@@ -554,7 +678,7 @@ class CardCreationSymmaryViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i28.NavigationService {
+extension NavigatorStateExtension on _i32.NavigationService {
   Future<dynamic> navigateToOnboardingView([
     int? routerId,
     bool preventDuplicates = true,
@@ -598,7 +722,7 @@ extension NavigatorStateExtension on _i28.NavigationService {
   }
 
   Future<dynamic> navigateToSuccessState({
-    _i26.Key? key,
+    _i30.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -636,6 +760,23 @@ extension NavigatorStateExtension on _i28.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToOtpView({
+    _i30.Key? key,
+    String? email,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.otpView,
+        arguments: OtpViewArguments(key: key, email: email),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> navigateToAccountSettingsView([
     int? routerId,
     bool preventDuplicates = true,
@@ -651,7 +792,7 @@ extension NavigatorStateExtension on _i28.NavigationService {
   }
 
   Future<dynamic> navigateToTagView({
-    _i26.Key? key,
+    _i30.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -723,6 +864,20 @@ extension NavigatorStateExtension on _i28.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToForgotPasswordView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.forgotPasswordView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> navigateToVerifyChangeOfPasswordView([
     int? routerId,
     bool preventDuplicates = true,
@@ -738,7 +893,7 @@ extension NavigatorStateExtension on _i28.NavigationService {
   }
 
   Future<dynamic> navigateToSetNewPasswordView({
-    _i26.Key? key,
+    _i30.Key? key,
     required String email,
     String? route,
     int? routerId,
@@ -750,6 +905,23 @@ extension NavigatorStateExtension on _i28.NavigationService {
     return navigateTo<dynamic>(Routes.setNewPasswordView,
         arguments:
             SetNewPasswordViewArguments(key: key, email: email, route: route),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToVerifyPasswordAccountView({
+    _i30.Key? key,
+    String? email,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.verifyPasswordAccountView,
+        arguments: VerifyPasswordAccountViewArguments(key: key, email: email),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -869,8 +1041,8 @@ extension NavigatorStateExtension on _i28.NavigationService {
   }
 
   Future<dynamic> navigateToCardCreationSymmaryView({
-    _i26.Key? key,
-    required _i27.CardDto cardDto,
+    _i30.Key? key,
+    required _i31.CardDto cardDto,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -907,6 +1079,20 @@ extension NavigatorStateExtension on _i28.NavigationService {
         transition,
   ]) async {
     return navigateTo<dynamic>(Routes.virtualCardDetailView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToProfileView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.profileView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -956,7 +1142,7 @@ extension NavigatorStateExtension on _i28.NavigationService {
   }
 
   Future<dynamic> replaceWithSuccessState({
-    _i26.Key? key,
+    _i30.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -994,6 +1180,23 @@ extension NavigatorStateExtension on _i28.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> replaceWithOtpView({
+    _i30.Key? key,
+    String? email,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.otpView,
+        arguments: OtpViewArguments(key: key, email: email),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithAccountSettingsView([
     int? routerId,
     bool preventDuplicates = true,
@@ -1009,7 +1212,7 @@ extension NavigatorStateExtension on _i28.NavigationService {
   }
 
   Future<dynamic> replaceWithTagView({
-    _i26.Key? key,
+    _i30.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -1081,6 +1284,20 @@ extension NavigatorStateExtension on _i28.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> replaceWithForgotPasswordView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.forgotPasswordView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithVerifyChangeOfPasswordView([
     int? routerId,
     bool preventDuplicates = true,
@@ -1096,7 +1313,7 @@ extension NavigatorStateExtension on _i28.NavigationService {
   }
 
   Future<dynamic> replaceWithSetNewPasswordView({
-    _i26.Key? key,
+    _i30.Key? key,
     required String email,
     String? route,
     int? routerId,
@@ -1108,6 +1325,23 @@ extension NavigatorStateExtension on _i28.NavigationService {
     return replaceWith<dynamic>(Routes.setNewPasswordView,
         arguments:
             SetNewPasswordViewArguments(key: key, email: email, route: route),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithVerifyPasswordAccountView({
+    _i30.Key? key,
+    String? email,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.verifyPasswordAccountView,
+        arguments: VerifyPasswordAccountViewArguments(key: key, email: email),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1227,8 +1461,8 @@ extension NavigatorStateExtension on _i28.NavigationService {
   }
 
   Future<dynamic> replaceWithCardCreationSymmaryView({
-    _i26.Key? key,
-    required _i27.CardDto cardDto,
+    _i30.Key? key,
+    required _i31.CardDto cardDto,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1265,6 +1499,20 @@ extension NavigatorStateExtension on _i28.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.virtualCardDetailView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithProfileView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.profileView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

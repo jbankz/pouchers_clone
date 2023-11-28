@@ -23,7 +23,7 @@ mixin _$VerifyAccountModel {
   String? get status => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
   int? get code => throw _privateConstructorUsedError;
-  Data? get data => throw _privateConstructorUsedError;
+  User? get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,9 +37,9 @@ abstract class $VerifyAccountModelCopyWith<$Res> {
           VerifyAccountModel value, $Res Function(VerifyAccountModel) then) =
       _$VerifyAccountModelCopyWithImpl<$Res, VerifyAccountModel>;
   @useResult
-  $Res call({String? status, String? message, int? code, Data? data});
+  $Res call({String? status, String? message, int? code, User? data});
 
-  $DataCopyWith<$Res>? get data;
+  $UserCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -76,18 +76,18 @@ class _$VerifyAccountModelCopyWithImpl<$Res, $Val extends VerifyAccountModel>
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as Data?,
+              as User?,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $DataCopyWith<$Res>? get data {
+  $UserCopyWith<$Res>? get data {
     if (_value.data == null) {
       return null;
     }
 
-    return $DataCopyWith<$Res>(_value.data!, (value) {
+    return $UserCopyWith<$Res>(_value.data!, (value) {
       return _then(_value.copyWith(data: value) as $Val);
     });
   }
@@ -101,10 +101,10 @@ abstract class _$$VerifyAccountModelImplCopyWith<$Res>
       __$$VerifyAccountModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? status, String? message, int? code, Data? data});
+  $Res call({String? status, String? message, int? code, User? data});
 
   @override
-  $DataCopyWith<$Res>? get data;
+  $UserCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -139,7 +139,7 @@ class __$$VerifyAccountModelImplCopyWithImpl<$Res>
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as Data?,
+              as User?,
     ));
   }
 }
@@ -159,7 +159,7 @@ class _$VerifyAccountModelImpl implements _VerifyAccountModel {
   @override
   final int? code;
   @override
-  final Data? data;
+  final User? data;
 
   @override
   String toString() {
@@ -201,7 +201,7 @@ abstract class _VerifyAccountModel implements VerifyAccountModel {
       {final String? status,
       final String? message,
       final int? code,
-      final Data? data}) = _$VerifyAccountModelImpl;
+      final User? data}) = _$VerifyAccountModelImpl;
 
   factory _VerifyAccountModel.fromJson(Map<String, dynamic> json) =
       _$VerifyAccountModelImpl.fromJson;
@@ -213,7 +213,7 @@ abstract class _VerifyAccountModel implements VerifyAccountModel {
   @override
   int? get code;
   @override
-  Data? get data;
+  User? get data;
   @override
   @JsonKey(ignore: true)
   _$$VerifyAccountModelImplCopyWith<_$VerifyAccountModelImpl> get copyWith =>
