@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import '../../../../../../app/core/network/api_path.dart';
 import '../../../../../../app/core/network/network_service.dart';
 
+import '../../../domain/model/referral/referral.dart';
 import 'user_source.dart';
 
 class UserSourceImpl implements UserSource {
@@ -86,5 +87,14 @@ class UserSourceImpl implements UserSource {
         data: userDto.toJson(),
         cancelToken: cancelToken);
     return User.fromJson(response.data['data'] as Map<String, dynamic>);
+  }
+
+  @override
+  Future<Referral?> referral({CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.referrals,
+        requestType: RequestType.get,
+        cancelToken: cancelToken);
+    return Referral.fromJson(response.data?['data'] as Map<String, dynamic>);
   }
 }

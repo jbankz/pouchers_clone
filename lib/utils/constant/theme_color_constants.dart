@@ -397,7 +397,8 @@ ThemeData kThemeData = ThemeData.light().copyWith(
         type: BottomNavigationBarType.fixed,
         unselectedLabelStyle: kSubtitle1Style.copyWith(color: AppColors.kPrimaryColor, fontSize: 10, fontWeight: FontWeight.w500),
         selectedLabelStyle: kSubtitle1Style.copyWith(color: AppColors.kPrimaryColor, fontSize: 10, fontWeight: FontWeight.w500)),
-    dialogTheme: const DialogTheme(backgroundColor: AppColors.white), datePickerTheme: DatePickerThemeData());
+    dialogTheme: const DialogTheme(backgroundColor: AppColors.white),
+    datePickerTheme: DatePickerThemeData());
 
 ThemeData kThemeDataDark = ThemeData.dark().copyWith(
   visualDensity: VisualDensity.adaptivePlatformDensity,

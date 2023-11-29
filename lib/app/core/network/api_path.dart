@@ -95,4 +95,7 @@ class ApiPath {
   /// Validate the otp for phone number
   static const String validatePhoneOtp =
       '$_apiVersionOne/auth/validate-password-reset-code';
+
+  /// Get users referrals and rewards
+  static const String referrals = '$_apiVersionOne/user/referral-trail';
 }

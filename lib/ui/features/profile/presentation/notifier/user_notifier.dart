@@ -11,8 +11,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../app/app.logger.dart';
 import '../../../../../app/core/manager/dojah_manager.dart';
-import '../../../../../app/core/state/app_state.dart';
+import '../../data/dao/referral_dao.dart';
 import '../../domain/dto/user_dto.dart';
+import '../../domain/model/referral/referral.dart';
+import '../state/user_state.dart';
 import 'module/module.dart';
 
 part 'user_notifier.g.dart';
@@ -22,9 +24,10 @@ class UserNotifier extends _$UserNotifier {
   final _logger = getLogger('UserNotifier');
 
   final DojahManager _dojahManager = locator<DojahManager>();
+  Referral? _referral;
 
   @override
-  AppState build() => const AppState();
+  UserState build() => const UserState();
 
   Future<void> getUserProfile([CancelToken? cancelToken]) async {
     try {
@@ -171,5 +174,18 @@ class UserNotifier extends _$UserNotifier {
     } catch (e) {
       _logger.e(e);
     }
+  }
+
+  Future<void> referrals([CancelToken? cancelToken]) async {
+    try {
+      state = state.copyWith(isBusy: referralDao.box.isEmpty);
+
+      _referral = await ref
+          .read(referralProvider.call(cancelToken: cancelToken).future);
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(), error: true);
+    }
+    state = state.copyWith(isBusy: false, referral: _referral);
   }
 }

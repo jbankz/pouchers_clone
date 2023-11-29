@@ -114,6 +114,9 @@ extension DateTimeExtensions on DateTime {
     return now.difference(this).inDays;
   }
 
+  // Formats the date as "MMM-dd-yyy"
+  String get monthDateYear => DateFormat('MMM-dd-yy').format(this);
+
   // Formats the date as "dd MMM yyyy"
   String get dayMonthYear => DateFormat('dd MMM yyyy').format(this);
 
@@ -146,7 +149,7 @@ extension DateTimeExtensions on DateTime {
   String get dateWithSlashes => DateFormat('MM/dd/yyyy').format(this);
 
 // Function to format a given DateTime object to the desired format
-  String get monthDateYear => _getOrdinalIndicator(this);
+  String get monthDateYearOrdinals => _getOrdinalIndicator(this);
 
 // Function to determine the correct ordinal indicator for a given day
   String _getOrdinalIndicator(DateTime dateTime) {

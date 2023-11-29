@@ -123,4 +123,8 @@ class AppImage {
   static String verve = "${_iconPath}verve.svg";
   static String mastercard = "${_iconPath}mastercard.svg";
   static String freeze = "${_iconPath}freeze.svg";
+  static String referralWorld = "${_imagePath}referral_world.png";
+  static String decoratedContainer = "${_imagePath}decorated_container.png";
+  static String emptyReferral = "${_iconPath}empty_referral.svg";
+  static String addUser = "${_iconPath}add_user.svg";
 }

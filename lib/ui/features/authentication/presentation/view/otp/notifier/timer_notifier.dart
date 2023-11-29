@@ -9,7 +9,7 @@ class OtpTimerNotifier extends ChangeNotifier {
   bool _isTimerFinished = false;
   bool get isTimerFinished => _isTimerFinished;
 
-   Timer? _timer;
+  Timer? _timer;
 
   Future<void> startTimer() async {
     _timer = Timer.periodic(const Duration(seconds: 1), (time) {

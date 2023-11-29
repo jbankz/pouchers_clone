@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../domain/dto/user_dto.dart';
+import '../../../domain/model/referral/referral.dart';
 
 part 'module.g.dart';
 
@@ -64,3 +65,7 @@ Future<User?> validatePhoneNumberOtp(ValidatePhoneNumberOtpRef ref,
     await ref
         .read(validatePhoneNumberOtpUsecaseImpl)
         .execute(parameter: userDto, cancelToken: cancelToken);
+
+@riverpod
+Future<Referral?> referral(ReferralRef ref, {CancelToken? cancelToken}) async =>
+    await ref.read(referralUsecaseImpl).execute(cancelToken);

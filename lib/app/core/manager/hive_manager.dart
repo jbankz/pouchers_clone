@@ -1,24 +1,35 @@
 import 'package:Pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:Pouchers/ui/features/profile/domain/model/referral/earning.dart';
+import 'package:Pouchers/ui/features/profile/domain/model/referral/referral.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 
 import '../../../modules/login/models/login_response.dart';
+import '../../../ui/features/profile/data/dao/referral_dao.dart';
 import '../../../ui/features/profile/data/dao/user_dao.dart';
 import '../../../ui/features/profile/data/dao/wallet_dao.dart';
+import '../../../ui/features/profile/domain/model/referral/referral_trail.dart';
 import '../../../ui/features/profile/domain/model/user.dart';
 import '../../../ui/features/profile/domain/model/wallet.dart';
 import '../../app.locator.dart';
 
 /// initialize local data storage
 Future<void> initializeDB() async {
-  await Hive.initFlutter();
+  try {
+    await Hive.initFlutter();
 
-  await locator<HiveManager>().openAllBox();
+    await locator<HiveManager>().openAllBox();
 
-  Hive
-    ..registerAdapter(UserAdapter())
-    // ..registerAdapter(WalletAdapter())
-    ..registerAdapter(HiveStoreResponseDataAdapter());
+    Hive
+      ..registerAdapter(UserAdapter())
+      ..registerAdapter(ReferralAdapter())
+      ..registerAdapter(EarningAdapter())
+      ..registerAdapter(ReferralTrailAdapter())
+      ..registerAdapter(WalletAdapter())
+      ..registerAdapter(HiveStoreResponseDataAdapter());
+  } catch (e) {
+    debugPrint(e.toString());
+  }
 }
 
 class HiveManager {
@@ -26,12 +37,14 @@ class HiveManager {
     userDao = UserDao();
     walletDao = WalletDao();
     cardsDao = CardsDao();
+    referralDao = ReferralDao();
   }
 
   Future clearAllBox() async {
     await userDao.truncate();
     await walletDao.truncate();
     await cardsDao.truncate();
+    await referralDao.truncate();
   }
 
   Future<Box<T>> openBox<T>(String boxName) async {

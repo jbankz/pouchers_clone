@@ -2,6 +2,7 @@ import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
 import 'package:dio/dio.dart';
 
 import '../dto/user_dto.dart';
+import '../model/referral/referral.dart';
 
 abstract class UserRepo {
   Future<User?> validateBVN(
@@ -17,4 +18,5 @@ abstract class UserRepo {
       {required UserDto userDto, CancelToken? cancelToken});
   Future<User?> validatePhoneOtp(
       {required UserDto userDto, CancelToken? cancelToken});
+  Future<Referral?> referral({CancelToken? cancelToken});
 }

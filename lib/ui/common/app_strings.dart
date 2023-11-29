@@ -303,4 +303,27 @@ class AppString {
   static String changePhone = 'Change Phone number';
   static String changePhoneInstr = 'Enter your new phone number.';
   static String resetCodeSent = 'Reset code sent';
+  static String referrals = 'Referrals';
+  static String invite = 'Invite';
+  static String rewards = 'Rewards';
+
+  static String referAndEarn = 'Refer & Earn';
+  static String howToEarn =
+      'When your friends sign up using this referral code you get a redeemable ';
+  static String tenPoints = '10 Points';
+  static String tapToCopy = 'Tap above to copy the code';
+  static String sendInvite = 'Send Invite';
+
+  static String youHaveNoReferral = 'You have no rewards.';
+  static String youHaveNoReferralHint =
+      'It seems that you haven’t invited someone yet.';
+  static String bonusEarned = 'Bonus Earned';
+  static String invitationsAndRewards = 'Your invitations & Rewards';
+  static String invitationsAndRewardsHints =
+      'People you invited via mail or link will appear here';
+  static String invitee = 'Invitee Name';
+  static String date = 'Date';
+  static String status = 'Status';
+  static String howToEarnPoints = 'How to earn more points';
+  static String inviteFriends = 'Invite a friend';
 }

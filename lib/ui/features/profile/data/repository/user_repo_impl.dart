@@ -1,8 +1,11 @@
+import 'package:Pouchers/ui/features/profile/data/dao/referral_dao.dart';
 import 'package:Pouchers/ui/features/profile/data/source/user/user_source.dart';
 import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
+import 'package:Pouchers/utils/logger.dart';
 import 'package:dio/dio.dart';
 
+import '../../domain/model/referral/referral.dart';
 import '../../domain/repository/user_repo.dart';
 import '../dao/user_dao.dart';
 
@@ -63,4 +66,11 @@ class UserRepoImpl implements UserRepo {
           {required UserDto userDto, CancelToken? cancelToken}) async =>
       await _userSource.validatePhoneOtp(
           userDto: userDto, cancelToken: cancelToken);
+
+  @override
+  Future<Referral?> referral({CancelToken? cancelToken}) async {
+    final referral = await _userSource.referral(cancelToken: cancelToken);
+    referralDao.save(referral);
+    return referral;
+  }
 }

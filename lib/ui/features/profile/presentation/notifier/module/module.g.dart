@@ -1174,5 +1174,132 @@ class _ValidatePhoneNumberOtpProviderElement
   CancelToken? get cancelToken =>
       (origin as ValidatePhoneNumberOtpProvider).cancelToken;
 }
+
+String _$referralHash() => r'55932096ed0e9e8ff63928a4951f8c8e72528692';
+
+/// See also [referral].
+@ProviderFor(referral)
+const referralProvider = ReferralFamily();
+
+/// See also [referral].
+class ReferralFamily extends Family<AsyncValue<Referral?>> {
+  /// See also [referral].
+  const ReferralFamily();
+
+  /// See also [referral].
+  ReferralProvider call({
+    CancelToken? cancelToken,
+  }) {
+    return ReferralProvider(
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  ReferralProvider getProviderOverride(
+    covariant ReferralProvider provider,
+  ) {
+    return call(
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'referralProvider';
+}
+
+/// See also [referral].
+class ReferralProvider extends AutoDisposeFutureProvider<Referral?> {
+  /// See also [referral].
+  ReferralProvider({
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => referral(
+            ref as ReferralRef,
+            cancelToken: cancelToken,
+          ),
+          from: referralProvider,
+          name: r'referralProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$referralHash,
+          dependencies: ReferralFamily._dependencies,
+          allTransitiveDependencies: ReferralFamily._allTransitiveDependencies,
+          cancelToken: cancelToken,
+        );
+
+  ReferralProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<Referral?> Function(ReferralRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ReferralProvider._internal(
+        (ref) => create(ref as ReferralRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Referral?> createElement() {
+    return _ReferralProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ReferralProvider && other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ReferralRef on AutoDisposeFutureProviderRef<Referral?> {
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _ReferralProviderElement
+    extends AutoDisposeFutureProviderElement<Referral?> with ReferralRef {
+  _ReferralProviderElement(super.provider);
+
+  @override
+  CancelToken? get cancelToken => (origin as ReferralProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

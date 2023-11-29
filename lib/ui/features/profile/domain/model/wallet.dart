@@ -6,7 +6,7 @@ part 'wallet.g.dart';
 
 @freezed
 class Wallet with _$Wallet {
-  @HiveType(typeId: 1, adapterName: 'WalletAdapter')
+  @HiveType(typeId: 5, adapterName: 'WalletAdapter')
   factory Wallet(
           {@JsonKey(name: 'wallet_id') @HiveField(0) String? walletId,
           @JsonKey(name: 'user_id') @HiveField(1) String? userId,

@@ -25,6 +25,7 @@ import '../ui/features/dashboard/views/card/presentation/view/card_creation_summ
 import '../ui/features/dashboard/views/card/presentation/view/virtual_card_detail_view.dart';
 import '../ui/features/dashboard/views/dashboard_view.dart';
 import '../ui/features/onboarding/presentation/views/onboarding_view.dart';
+import '../ui/features/onboarding/presentation/views/splash_view.dart';
 import '../ui/features/profile/presentation/views/kyc/bvn/bvn_view.dart';
 import '../ui/features/profile/presentation/views/kyc/id/id_view.dart';
 import '../ui/features/profile/presentation/views/kyc/utility/utility_bill_view.dart';
@@ -32,6 +33,7 @@ import '../ui/features/profile/presentation/views/profile/phone/change_password_
 import '../ui/features/profile/presentation/views/profile/phone/requst_change_of_phone_number_view.dart';
 import '../ui/features/profile/presentation/views/profile/phone/verify_phone_number_view.dart';
 import '../ui/features/profile/presentation/views/profile/profile_view.dart';
+import '../ui/features/profile/presentation/views/referral/referral_view.dart';
 import '../ui/features/tiers/presentation/view/tier_view.dart';
 import '../ui/widgets/success_state.dart';
 import 'core/manager/biometric_manager.dart';
@@ -44,9 +46,13 @@ import 'core/manager/session_manager.dart';
 @StackedApp(
   routes: [
     CustomRoute(
-        page: OnboardingView,
+        page: SplashView,
         opaque: false,
         initial: true,
+        transitionsBuilder: TransitionsBuilders.fadeIn),
+    CustomRoute(
+        page: OnboardingView,
+        opaque: false,
         transitionsBuilder: TransitionsBuilders.fadeIn),
     CustomRoute(
         page: SignUpView,
@@ -100,6 +106,7 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: RequestChangeOfPhoneNumberView),
     AdaptiveRoute(page: VerifyPhoneOtpView),
     AdaptiveRoute(page: ChangePhoneNumberView),
+    AdaptiveRoute(page: ReferralView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

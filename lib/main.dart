@@ -41,8 +41,6 @@ Future<void> main() async {
   await setupLocator();
   await locator<core.SessionManager>().initializeSession();
 
-  initializeDB();
-
   await Intercom.instance.initialize(interComAppId,
       iosApiKey: interComIOSKey, androidApiKey: interComAndroidKey);
   // Env.setEnvironment(EnvState.production);
@@ -80,13 +78,13 @@ Future<void> main() async {
   final key = await secureStorage.read(key: kHiveEncryptionKey);
   if (key != null) {
     final hiveEncryptionKey = base64Url.decode(key);
-    await Hive.openBox(kTokenBox,
-        encryptionCipher: HiveAesCipher(hiveEncryptionKey));
+    // await Hive.openBox(kTokenBox,
+    //     encryptionCipher: HiveAesCipher(hiveEncryptionKey));
   }
 
-  await Hive.openBox(kUserBox);
-  await Hive.openBox(k2FACodeBox);
-  await Hive.openBox(kBiometricsBox);
+  // await Hive.openBox(kUserBox);
+  // await Hive.openBox(k2FACodeBox);
+  // await Hive.openBox(kBiometricsBox);
   SessionManager.initSharedPreference().then((value) =>
       SystemChrome.setPreferredOrientations(
               [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])

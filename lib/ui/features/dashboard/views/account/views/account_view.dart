@@ -88,7 +88,7 @@ class AccountView extends ConsumerWidget {
                       icon: AppImage.referralIcon,
                       title: AppString.referral,
                       desc: AppString.referralInstruction,
-                      tapped: () {}),
+                      tapped: () => PageRouter.pushNamed(Routes.referralView)),
                   const Gap(height: 23),
                   AccountTile(
                       icon: AppImage.savedCard,

@@ -1,8 +1,3 @@
-import 'dart:async';
-
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -10,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stacked/stacked_annotations.dart';
 
 import '../../../../../../../utils/field_validator.dart';
@@ -18,12 +12,9 @@ import '../../../../../../common/app_strings.dart';
 import '../../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../../widgets/gap.dart';
-import '../../../../../../widgets/pin_code_widget.dart';
-import '../../../../../authentication/presentation/notifier/auth_notifier.dart';
 import '../../../../../authentication/presentation/view/otp/notifier/module.dart';
 import '../../../../../authentication/presentation/view/otp/notifier/timer_notifier.dart';
 import 'change_password_view.form.dart';
-import 'verify_phone_number_view.form.dart';
 
 @FormView(fields: [FormTextField(name: 'phoneNumber')])
 class ChangePhoneNumberView extends ConsumerStatefulWidget {

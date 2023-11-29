@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../../../app/core/usecase/poucher_usecase.dart';
 import '../change_phone_number_usecase.dart';
 import '../get_profile_usecase.dart';
+import '../referral_usecase.dart';
 import '../update_profile_usecase.dart';
 import '../valid_ids_usecase.dart';
 import '../validate_bvn_usecase.dart';
@@ -41,3 +42,6 @@ final changePhoneNumberUsecaseImpl = Provider<PoucherUseCaseWithRequiredParam>(
 final validatePhoneNumberOtpUsecaseImpl =
     Provider<PoucherUseCaseWithRequiredParam>(
         (ref) => ValidatePhoneNumberOtpUseCaseImpl(ref.read(userRepoModule)));
+
+final referralUsecaseImpl = Provider<PoucherUseCaseWithOutParam>(
+    (ref) => ReferralUseCaseImpl(ref.read(userRepoModule)));
