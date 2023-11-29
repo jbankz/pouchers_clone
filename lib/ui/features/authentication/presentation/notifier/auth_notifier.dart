@@ -3,6 +3,7 @@ import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
+import 'package:Pouchers/ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -27,10 +28,9 @@ class AuthNotifier extends _$AuthNotifier {
 
   final _biometricManager = locator<BiometricManager>();
   final _securedManager = locator<SecuredManager>();
-  final _sessionManager = locator<SessionManager>();
 
   @override
-  AuthState build() => AuthState(data: _sessionManager.isBiometricEnabled);
+  AuthState build() => AuthState(data: biometricDao.login);
 
   Future<void> signUpUser(AuthDto parameter, [CancelToken? cancelToken]) async {
     try {
@@ -76,7 +76,7 @@ class AuthNotifier extends _$AuthNotifier {
 
       if (!isBiometricAuth &&
           await _biometricManager.isBiometricEnabled() &&
-          !_sessionManager.isBiometricEnabled) {
+          !biometricDao.login) {
         PageRouter.pushReplacement(Routes.biometricView);
         state = state.copyWith(isBusy: false);
         return;

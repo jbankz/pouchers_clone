@@ -6,9 +6,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as _i35;
-import 'package:Pouchers/ui/features/authentication/presentation/view/biometric/biometric_view.dart'
-    as _i19;
+import 'package:flutter/material.dart' as _i36;
 import 'package:Pouchers/ui/features/authentication/presentation/view/otp/otp_view.dart'
     as _i8;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/forgot_password_view.dart'
@@ -38,7 +36,7 @@ import 'package:Pouchers/ui/features/dashboard/views/account/views/account_setti
 import 'package:Pouchers/ui/features/dashboard/views/account/views/account_verification.dart'
     as _i21;
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart'
-    as _i36;
+    as _i37;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/bvn_requirement_view.dart'
     as _i25;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/card_calculator_view.dart'
@@ -53,6 +51,10 @@ import 'package:Pouchers/ui/features/onboarding/presentation/views/onboarding_vi
     as _i3;
 import 'package:Pouchers/ui/features/onboarding/presentation/views/splash_view.dart'
     as _i2;
+import 'package:Pouchers/ui/features/profile/presentation/views/biometric/biometric_setup_view.dart'
+    as _i35;
+import 'package:Pouchers/ui/features/profile/presentation/views/biometric/biometric_view.dart'
+    as _i19;
 import 'package:Pouchers/ui/features/profile/presentation/views/kyc/bvn/bvn_view.dart'
     as _i22;
 import 'package:Pouchers/ui/features/profile/presentation/views/kyc/id/id_view.dart'
@@ -75,7 +77,7 @@ import 'package:Pouchers/ui/features/tiers/presentation/view/tier_view.dart'
     as _i20;
 import 'package:Pouchers/ui/widgets/success_state.dart' as _i6;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i37;
+import 'package:stacked_services/stacked_services.dart' as _i38;
 
 class Routes {
   static const splashView = '/';
@@ -145,6 +147,8 @@ class Routes {
 
   static const referralView = '/referral-view';
 
+  static const biometricSetupView = '/biometric-setup-view';
+
   static const all = <String>{
     splashView,
     onboardingView,
@@ -179,6 +183,7 @@ class Routes {
     verifyPhoneOtpView,
     changePhoneNumberView,
     referralView,
+    biometricSetupView,
   };
 }
 
@@ -316,11 +321,15 @@ class StackedRouter extends _i1.RouterBase {
       Routes.referralView,
       page: _i34.ReferralView,
     ),
+    _i1.RouteDef(
+      Routes.biometricSetupView,
+      page: _i35.BiometricSetupView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashView: (data) {
-      return _i35.PageRouteBuilder<dynamic>(
+      return _i36.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i2.SplashView(),
         settings: data,
@@ -329,7 +338,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i3.OnboardingView: (data) {
-      return _i35.PageRouteBuilder<dynamic>(
+      return _i36.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i3.OnboardingView(),
         settings: data,
@@ -338,7 +347,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i4.SignUpView: (data) {
-      return _i35.PageRouteBuilder<dynamic>(
+      return _i36.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i4.SignUpView(),
         settings: data,
@@ -347,7 +356,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i5.SignInView: (data) {
-      return _i35.PageRouteBuilder<dynamic>(
+      return _i36.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i5.SignInView(),
         settings: data,
@@ -359,7 +368,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SuccessStateArguments>(
         orElse: () => const SuccessStateArguments(),
       );
-      return _i35.PageRouteBuilder<dynamic>(
+      return _i36.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i6.SuccessState(
                 key: args.key,
@@ -374,7 +383,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i7.DashboardView: (data) {
-      return _i35.PageRouteBuilder<dynamic>(
+      return _i36.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i7.DashboardView(),
         settings: data,
@@ -525,7 +534,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i29.VirtualCardDetailView: (data) {
-      return _i35.PageRouteBuilder<dynamic>(
+      return _i36.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i29.VirtualCardDetailView(),
         settings: data,
@@ -534,7 +543,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i30.ProfileView: (data) {
-      return _i35.PageRouteBuilder<dynamic>(
+      return _i36.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i30.ProfileView(),
         settings: data,
@@ -566,6 +575,12 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
+    _i35.BiometricSetupView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i35.BiometricSetupView(),
+        settings: data,
+      );
+    },
   };
 
   @override
@@ -584,7 +599,7 @@ class SuccessStateArguments {
     this.tap,
   });
 
-  final _i35.Key? key;
+  final _i36.Key? key;
 
   final String title;
 
@@ -625,7 +640,7 @@ class OtpViewArguments {
     this.email,
   });
 
-  final _i35.Key? key;
+  final _i36.Key? key;
 
   final String? email;
 
@@ -652,7 +667,7 @@ class TagViewArguments {
     this.callback,
   });
 
-  final _i35.Key? key;
+  final _i36.Key? key;
 
   final dynamic Function()? callback;
 
@@ -679,7 +694,7 @@ class SetNewPasswordViewArguments {
     required this.email,
   });
 
-  final _i35.Key? key;
+  final _i36.Key? key;
 
   final String email;
 
@@ -706,7 +721,7 @@ class VerifyPasswordAccountViewArguments {
     this.email,
   });
 
-  final _i35.Key? key;
+  final _i36.Key? key;
 
   final String? email;
 
@@ -733,9 +748,9 @@ class CardCreationSymmaryViewArguments {
     required this.cardDto,
   });
 
-  final _i35.Key? key;
+  final _i36.Key? key;
 
-  final _i36.CardDto cardDto;
+  final _i37.CardDto cardDto;
 
   @override
   String toString() {
@@ -754,7 +769,7 @@ class CardCreationSymmaryViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i37.NavigationService {
+extension NavigatorStateExtension on _i38.NavigationService {
   Future<dynamic> navigateToSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -812,7 +827,7 @@ extension NavigatorStateExtension on _i37.NavigationService {
   }
 
   Future<dynamic> navigateToSuccessState({
-    _i35.Key? key,
+    _i36.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -851,7 +866,7 @@ extension NavigatorStateExtension on _i37.NavigationService {
   }
 
   Future<dynamic> navigateToOtpView({
-    _i35.Key? key,
+    _i36.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -882,7 +897,7 @@ extension NavigatorStateExtension on _i37.NavigationService {
   }
 
   Future<dynamic> navigateToTagView({
-    _i35.Key? key,
+    _i36.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -983,7 +998,7 @@ extension NavigatorStateExtension on _i37.NavigationService {
   }
 
   Future<dynamic> navigateToSetNewPasswordView({
-    _i35.Key? key,
+    _i36.Key? key,
     required String email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1000,7 +1015,7 @@ extension NavigatorStateExtension on _i37.NavigationService {
   }
 
   Future<dynamic> navigateToVerifyPasswordAccountView({
-    _i35.Key? key,
+    _i36.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1129,8 +1144,8 @@ extension NavigatorStateExtension on _i37.NavigationService {
   }
 
   Future<dynamic> navigateToCardCreationSymmaryView({
-    _i35.Key? key,
-    required _i36.CardDto cardDto,
+    _i36.Key? key,
+    required _i37.CardDto cardDto,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1243,6 +1258,20 @@ extension NavigatorStateExtension on _i37.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToBiometricSetupView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.biometricSetupView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -1300,7 +1329,7 @@ extension NavigatorStateExtension on _i37.NavigationService {
   }
 
   Future<dynamic> replaceWithSuccessState({
-    _i35.Key? key,
+    _i36.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -1339,7 +1368,7 @@ extension NavigatorStateExtension on _i37.NavigationService {
   }
 
   Future<dynamic> replaceWithOtpView({
-    _i35.Key? key,
+    _i36.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1370,7 +1399,7 @@ extension NavigatorStateExtension on _i37.NavigationService {
   }
 
   Future<dynamic> replaceWithTagView({
-    _i35.Key? key,
+    _i36.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -1471,7 +1500,7 @@ extension NavigatorStateExtension on _i37.NavigationService {
   }
 
   Future<dynamic> replaceWithSetNewPasswordView({
-    _i35.Key? key,
+    _i36.Key? key,
     required String email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1488,7 +1517,7 @@ extension NavigatorStateExtension on _i37.NavigationService {
   }
 
   Future<dynamic> replaceWithVerifyPasswordAccountView({
-    _i35.Key? key,
+    _i36.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1617,8 +1646,8 @@ extension NavigatorStateExtension on _i37.NavigationService {
   }
 
   Future<dynamic> replaceWithCardCreationSymmaryView({
-    _i35.Key? key,
-    required _i36.CardDto cardDto,
+    _i36.Key? key,
+    required _i37.CardDto cardDto,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1725,6 +1754,20 @@ extension NavigatorStateExtension on _i37.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.referralView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithBiometricSetupView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.biometricSetupView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

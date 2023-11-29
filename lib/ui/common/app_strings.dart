@@ -1,5 +1,5 @@
 class AppString {
-  static String _bullet = '\u2022';
+  static const String _bullet = '\u2022';
   static String appName = 'Pouchers';
   static String notFound = 'Not Found';
   static String paymentHub = 'Your one stop for all things payments';
@@ -171,6 +171,8 @@ class AppString {
   static String changeTransactionPin = 'Change transaction pin';
   static String changeTransactionPinInstruction =
       'Update your transaction pin to a new one';
+  static String twoFactorAuth = 'Two factor authentication';
+  static String twoFactorAuthInstr = 'Manage Two factor authentication';
   static String biometricAuth = 'Biometric authentication';
   static String biometricAuthInstruction = 'Manage biometric authentications';
   static String disableAccount = 'Disable my account';
@@ -333,4 +335,5 @@ class AppString {
   static String howToEarnPoints = 'How to earn more points';
   static String inviteFriends = 'Invite a friend';
   static String validPinRequired = 'Please enter a valid PIN';
+  static String biometric = 'Biometric';
 }

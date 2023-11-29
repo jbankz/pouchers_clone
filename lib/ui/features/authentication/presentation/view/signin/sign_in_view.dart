@@ -2,7 +2,7 @@ import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
-import 'package:Pouchers/ui/features/authentication/presentation/view/biometric/notifier/module.dart';
+import 'package:Pouchers/ui/features/profile/presentation/views/biometric/notifier/module.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:Pouchers/utils/field_validator.dart';
 import 'package:dio/dio.dart';

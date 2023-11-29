@@ -53,8 +53,16 @@ class AccountSettingsView extends ConsumerWidget {
                     const Divider(),
                     const Gap(height: 20),
                     AccountSettingsTile(
-                      title: AppString.biometricAuth,
-                      desc: AppString.biometricAuthInstruction,
+                        title: AppString.biometricAuth,
+                        desc: AppString.biometricAuthInstruction,
+                        tapped: () =>
+                            PageRouter.pushNamed(Routes.biometricSetupView)),
+                    const Gap(height: 11),
+                    const Divider(),
+                    const Gap(height: 20),
+                    AccountSettingsTile(
+                      title: AppString.twoFactorAuth,
+                      desc: AppString.twoFactorAuthInstr,
                       tapped: () {},
                     ),
                     const Gap(height: 11),

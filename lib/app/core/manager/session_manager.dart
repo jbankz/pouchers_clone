@@ -31,12 +31,6 @@ class SessionManager {
   String get accessToken =>
       sharedPreferences.getString(AppKeys.usersTokenKey) ?? '';
 
-  set isBiometricEnabled(bool value) =>
-      sharedPreferences.setBool(AppKeys.isBiometricEnabledKey, value);
-
-  bool get isBiometricEnabled =>
-      sharedPreferences.getBool(AppKeys.isBiometricEnabledKey) ?? false;
-
   set isLoggedIn(bool value) =>
       sharedPreferences.setBool(AppKeys.isLoggedInKey, value);
 

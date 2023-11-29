@@ -4,7 +4,8 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-import '../ui/features/authentication/presentation/view/biometric/biometric_view.dart';
+import '../ui/features/profile/presentation/views/biometric/biometric_setup_view.dart';
+import '../ui/features/profile/presentation/views/biometric/biometric_view.dart';
 import '../ui/features/authentication/presentation/view/otp/otp_view.dart';
 import '../ui/features/authentication/presentation/view/password/forgot_password_view.dart';
 import '../ui/features/authentication/presentation/view/password/set_new_password_view.dart';
@@ -107,6 +108,7 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: VerifyPhoneOtpView),
     AdaptiveRoute(page: ChangePhoneNumberView),
     AdaptiveRoute(page: ReferralView),
+    AdaptiveRoute(page: BiometricSetupView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
