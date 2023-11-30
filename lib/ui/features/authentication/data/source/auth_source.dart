@@ -26,4 +26,5 @@ abstract class AuthSource {
       {CancelToken? cancelToken});
   Future<ResetPasswordModel?> resetPassword(AuthDto authDto,
       {CancelToken? cancelToken});
+  Future<bool> changePin(AuthDto authDto, {CancelToken? cancelToken});
 }

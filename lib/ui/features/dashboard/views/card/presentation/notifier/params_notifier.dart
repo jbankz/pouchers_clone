@@ -44,6 +44,10 @@ class ParamNotifier extends ChangeNotifier {
       ? AppString.virtualNairaCard
       : AppString.virtualDollarCard;
 
+  bool _userJustWantsToChangeTherePassword = false;
+  bool get userJustWantsToChangeTherePassword =>
+      _userJustWantsToChangeTherePassword;
+
   void setCardType(CardType cardType) {
     _cardType = cardType;
     notifyListeners();
@@ -69,6 +73,11 @@ class ParamNotifier extends ChangeNotifier {
 
   void setCardActivityType(CardActivityType cardActivityType) {
     _cardActivityType = cardActivityType;
+    notifyListeners();
+  }
+
+  void setChangePassword(bool value) {
+    _userJustWantsToChangeTherePassword = value;
     notifyListeners();
   }
 }

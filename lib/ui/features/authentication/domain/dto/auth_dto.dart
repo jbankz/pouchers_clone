@@ -9,6 +9,7 @@ class AuthDto {
   final String? tag;
   final String? pin;
   final String? resetCode;
+  final String? oldPin;
 
   AuthDto(
       {this.firstName,
@@ -20,6 +21,7 @@ class AuthDto {
       this.otp,
       this.tag,
       this.pin,
+      this.oldPin,
       this.resetCode});
 
   Map<String, dynamic> toJson() => {
@@ -32,6 +34,7 @@ class AuthDto {
         if (otp != null) 'otp': otp,
         if (tag != null) 'tag': tag,
         if (pin != null) 'pin': pin,
+        if (oldPin != null) 'oldPin': oldPin,
         if (resetCode != null) 'reset_code': resetCode,
       };
 }

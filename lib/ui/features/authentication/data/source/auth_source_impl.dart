@@ -120,4 +120,14 @@ class AuthSourceImpl implements AuthSource {
         cancelToken: cancelToken);
     return ResetPasswordModel.fromJson(response.data as Map<String, dynamic>);
   }
+
+  @override
+  Future<bool> changePin(AuthDto authDto, {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.resetPin,
+        requestType: RequestType.patch,
+        data: authDto.toJson(),
+        cancelToken: cancelToken);
+    return response.statusCode == 200;
+  }
 }

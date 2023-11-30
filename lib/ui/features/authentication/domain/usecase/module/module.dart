@@ -9,6 +9,7 @@ import '../create_pin_usecase.dart';
 import '../create_tag_usecase.dart';
 import '../forgot_password_usecase.dart';
 import '../reset_password_usecase.dart';
+import '../reset_pin_usecase.dart';
 import '../validate_reset_password_usecase.dart';
 import '../sign_in_usecase.dart';
 import '../verify_account_usecase.dart';
@@ -40,3 +41,6 @@ final getValidateResetPasswordUseCaseImpl =
 
 final getResetPasswordUseCaseImpl = Provider<PoucherUseCaseWithRequiredParam>(
     (ref) => ResetPasswordUseCaseImpl(ref.read(authRepoModule)));
+
+final resetPinUseCaseImpl = Provider<PoucherUseCaseWithRequiredParam>(
+    (ref) => ResetUseCaseImpl(ref.read(authRepoModule)));

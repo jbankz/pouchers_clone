@@ -78,3 +78,10 @@ Future<ResetPasswordModel> resetPassword(ResetPasswordRef ref,
     await ref
         .read(getResetPasswordUseCaseImpl)
         .execute(parameter: parameter, cancelToken: cancelToken);
+
+@riverpod
+Future<bool> changePin(ChangePinRef ref,
+        {required AuthDto parameter, CancelToken? cancelToken}) async =>
+    await ref
+        .read(resetPinUseCaseImpl)
+        .execute(parameter: parameter, cancelToken: cancelToken);

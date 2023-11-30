@@ -96,4 +96,8 @@ class AuthRepoImpl implements AuthRepo {
   Future<ResetPasswordModel?> resetPassword(AuthDto authDto,
           {CancelToken? cancelToken}) async =>
       await _authSource.resetPassword(authDto);
+
+  @override
+  Future<bool> changePin(AuthDto authDto, {CancelToken? cancelToken}) async =>
+      await _authSource.changePin(authDto, cancelToken: cancelToken);
 }

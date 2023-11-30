@@ -1,7 +1,9 @@
 import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
+import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
+import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:Pouchers/utils/field_validator.dart';
 import 'package:dio/dio.dart';
@@ -14,6 +16,7 @@ import 'package:stacked/stacked_annotations.dart';
 
 import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_strings.dart';
+import '../../../../../notification/notification_tray.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
@@ -58,7 +61,7 @@ class _PasswordConfirmationViewState
     return Scaffold(
       appBar: AppBar(title: Text(AppString.transactionPin)),
       body: SafeArea(
-        minimum: const EdgeInsets.symmetric(horizontal: 16),
+        minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: Form(
           key: formKey,
           child: Column(
@@ -115,6 +118,13 @@ class _PasswordConfirmationViewState
 
   void _submitForm() {
     if (!formKey.currentState!.validate()) return;
-    PageRouter.pushNamed(Routes.changePinView);
+
+    _authNotifier.signInUser(
+        AuthDto(email: userDao.user.email, password: passwordController.text),
+        cancelToken: _cancelToken,
+        onSuccess: () => PageRouter.pushNamed(Routes.changePinView),
+        onError: (error) => triggerNotificationTray(
+            error.toString().replaceAll('email/', ''),
+            error: true));
   }
 }

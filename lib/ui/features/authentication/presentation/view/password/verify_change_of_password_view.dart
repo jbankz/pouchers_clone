@@ -4,8 +4,10 @@ import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,18 +43,34 @@ class _VerifyChangeOfPasswordViewState
   final StreamController<ErrorAnimationType> _errorController =
       StreamController<ErrorAnimationType>();
 
+  final CancelToken _cancelToken = CancelToken();
+
   @override
   void initState() {
-    otpFocusNode.requestFocus();
-    _authNotifier = ref.read(authNotifierProvider.notifier);
-    _otpTimerNotifier = ref.read(otpTimerModule.notifier);
-    _otpTimerNotifier.startTimer();
     super.initState();
+    _initializer();
+  }
+
+  Future<void> _initializer() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      otpFocusNode.requestFocus();
+      _authNotifier = ref.read(authNotifierProvider.notifier);
+      _otpTimerNotifier = ref.read(otpTimerModule.notifier);
+
+      final bool value =
+          ref.watch(paramModule).userJustWantsToChangeTherePassword;
+      if (value) {
+        await _authNotifier.requestOtp(
+            AuthDto(email: userDao.user.email), _cancelToken);
+      }
+      if (!value) _otpTimerNotifier.startTimer();
+    });
   }
 
   @override
   void dispose() {
     _otpTimerNotifier.cancelTimer();
+    _cancelToken.cancel();
     disposeForm();
     super.dispose();
   }

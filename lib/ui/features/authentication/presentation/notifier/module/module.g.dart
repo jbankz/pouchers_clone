@@ -1347,5 +1347,149 @@ class _ResetPasswordProviderElement
   @override
   CancelToken? get cancelToken => (origin as ResetPasswordProvider).cancelToken;
 }
+
+String _$changePinHash() => r'2ce9640dd3c3f59b2567b19bf07ba06fb47db75f';
+
+/// See also [changePin].
+@ProviderFor(changePin)
+const changePinProvider = ChangePinFamily();
+
+/// See also [changePin].
+class ChangePinFamily extends Family<AsyncValue<bool>> {
+  /// See also [changePin].
+  const ChangePinFamily();
+
+  /// See also [changePin].
+  ChangePinProvider call({
+    required AuthDto parameter,
+    CancelToken? cancelToken,
+  }) {
+    return ChangePinProvider(
+      parameter: parameter,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  ChangePinProvider getProviderOverride(
+    covariant ChangePinProvider provider,
+  ) {
+    return call(
+      parameter: provider.parameter,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'changePinProvider';
+}
+
+/// See also [changePin].
+class ChangePinProvider extends AutoDisposeFutureProvider<bool> {
+  /// See also [changePin].
+  ChangePinProvider({
+    required AuthDto parameter,
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => changePin(
+            ref as ChangePinRef,
+            parameter: parameter,
+            cancelToken: cancelToken,
+          ),
+          from: changePinProvider,
+          name: r'changePinProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$changePinHash,
+          dependencies: ChangePinFamily._dependencies,
+          allTransitiveDependencies: ChangePinFamily._allTransitiveDependencies,
+          parameter: parameter,
+          cancelToken: cancelToken,
+        );
+
+  ChangePinProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.parameter,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final AuthDto parameter;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<bool> Function(ChangePinRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ChangePinProvider._internal(
+        (ref) => create(ref as ChangePinRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        parameter: parameter,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<bool> createElement() {
+    return _ChangePinProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ChangePinProvider &&
+        other.parameter == parameter &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, parameter.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ChangePinRef on AutoDisposeFutureProviderRef<bool> {
+  /// The parameter `parameter` of this provider.
+  AuthDto get parameter;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _ChangePinProviderElement extends AutoDisposeFutureProviderElement<bool>
+    with ChangePinRef {
+  _ChangePinProviderElement(super.provider);
+
+  @override
+  AuthDto get parameter => (origin as ChangePinProvider).parameter;
+  @override
+  CancelToken? get cancelToken => (origin as ChangePinProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

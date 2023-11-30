@@ -2,6 +2,7 @@ import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
@@ -32,11 +33,13 @@ class AccountSettingsView extends ConsumerWidget {
                 Expanded(
                   child: ListView(children: [
                     AccountSettingsTile(
-                      title: AppString.changePassword,
-                      desc: AppString.changePasswordInstruction,
-                      tapped: () => PageRouter.pushNamed(
-                          Routes.verifyChangeOfPasswordView),
-                    ),
+                        title: AppString.changePassword,
+                        desc: AppString.changePasswordInstruction,
+                        tapped: () {
+                          ref.read(paramModule).setChangePassword(true);
+                          PageRouter.pushNamed(
+                              Routes.verifyChangeOfPasswordView);
+                        }),
                     const Gap(height: 11),
                     const Divider(),
                     const Gap(height: 20),

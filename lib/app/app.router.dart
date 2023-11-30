@@ -446,8 +446,8 @@ class StackedRouter extends _i1.RouterBase {
     _i17.SetNewPasswordView: (data) {
       final args = data.getArgs<SetNewPasswordViewArguments>(nullOk: false);
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => _i17.SetNewPasswordView(
-            key: args.key, email: args.email, route: args.route),
+        builder: (context) =>
+            _i17.SetNewPasswordView(key: args.key, email: args.email),
         settings: data,
       );
     },
@@ -677,29 +677,26 @@ class SetNewPasswordViewArguments {
   const SetNewPasswordViewArguments({
     this.key,
     required this.email,
-    this.route,
   });
 
   final _i35.Key? key;
 
   final String email;
 
-  final String? route;
-
   @override
   String toString() {
-    return '{"key": "$key", "email": "$email", "route": "$route"}';
+    return '{"key": "$key", "email": "$email"}';
   }
 
   @override
   bool operator ==(covariant SetNewPasswordViewArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key && other.email == email && other.route == route;
+    return other.key == key && other.email == email;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ email.hashCode ^ route.hashCode;
+    return key.hashCode ^ email.hashCode;
   }
 }
 
@@ -988,7 +985,6 @@ extension NavigatorStateExtension on _i37.NavigationService {
   Future<dynamic> navigateToSetNewPasswordView({
     _i35.Key? key,
     required String email,
-    String? route,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -996,8 +992,7 @@ extension NavigatorStateExtension on _i37.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.setNewPasswordView,
-        arguments:
-            SetNewPasswordViewArguments(key: key, email: email, route: route),
+        arguments: SetNewPasswordViewArguments(key: key, email: email),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1478,7 +1473,6 @@ extension NavigatorStateExtension on _i37.NavigationService {
   Future<dynamic> replaceWithSetNewPasswordView({
     _i35.Key? key,
     required String email,
-    String? route,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1486,8 +1480,7 @@ extension NavigatorStateExtension on _i37.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.setNewPasswordView,
-        arguments:
-            SetNewPasswordViewArguments(key: key, email: email, route: route),
+        arguments: SetNewPasswordViewArguments(key: key, email: email),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

@@ -29,6 +29,7 @@ class ReferralDao {
     await _box.put(AppKeys.referralDaoKey, referral?.toJson() ?? {});
   }
 
+  /// TODO: Fix issue of error showing up when the referral rewards page is opened the first time the user opens the app
   Referral returnReferral(Box box) =>
       Referral.fromJson(box.toMap()[AppKeys.referralDaoKey] ?? {});
 

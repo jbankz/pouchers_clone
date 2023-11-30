@@ -17,6 +17,7 @@ class PinCodeWidget extends StatelessWidget {
   final bool readOnly;
   final StreamController<ErrorAnimationType>? errorAnimationController;
   final void Function(String)? onCompleted;
+  final String? Function(String?)? validator;
 
   const PinCodeWidget(
       {super.key,
@@ -28,6 +29,7 @@ class PinCodeWidget extends StatelessWidget {
       this.readOnly = false,
       this.errorAnimationController,
       this.onCompleted,
+      this.validator,
       this.align = MainAxisAlignment.spaceBetween});
 
   @override
@@ -41,7 +43,7 @@ class PinCodeWidget extends StatelessWidget {
       errorTextSpace: 25,
       focusNode: focusNode,
       readOnly: readOnly,
-      validator: FieldValidator.validateOTP(),
+      validator: validator ?? FieldValidator.validateOTP(),
       animationType: AnimationType.scale,
       autoDisposeControllers: false,
       onSaved: onSaved,

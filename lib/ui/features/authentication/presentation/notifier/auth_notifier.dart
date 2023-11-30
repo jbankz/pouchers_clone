@@ -2,6 +2,7 @@ import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -50,7 +51,10 @@ class AuthNotifier extends _$AuthNotifier {
   }
 
   Future<void> signInUser(AuthDto parameter,
-      [CancelToken? cancelToken, bool isBiometricAuth = false]) async {
+      {CancelToken? cancelToken,
+      bool isBiometricAuth = false,
+      Function()? onSuccess,
+      Function(String error)? onError}) async {
     try {
       state = state.copyWith(isBusy: true);
 
@@ -78,6 +82,12 @@ class AuthNotifier extends _$AuthNotifier {
         return;
       }
 
+      if (onSuccess != null) {
+        onSuccess();
+        state = state.copyWith(isBusy: false);
+        return;
+      }
+
       // PageRouter.pushReplacement(Routes.dashboardView);
       pushToAndClearStack(PageRouter.globalContext, TabLayout());
     } catch (e) {
@@ -88,6 +98,12 @@ class AuthNotifier extends _$AuthNotifier {
 
         PageRouter.pushNamed(Routes.otpView,
             args: OtpViewArguments(email: parameter.email));
+        state = state.copyWith(isBusy: false);
+        return;
+      }
+
+      if (onError != null) {
+        onError(e.toString());
         state = state.copyWith(isBusy: false);
         return;
       }
@@ -231,7 +247,7 @@ class AuthNotifier extends _$AuthNotifier {
   }
 
   Future<void> resetPassword(AuthDto parameter,
-      {CancelToken? cancelToken, String? route}) async {
+      {CancelToken? cancelToken}) async {
     try {
       state = state.copyWith(isBusy: true);
 
@@ -239,13 +255,23 @@ class AuthNotifier extends _$AuthNotifier {
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
 
+      if (ref.watch(paramModule).userJustWantsToChangeTherePassword) {
+        PageRouter.pushNamed(Routes.successState,
+            args: SuccessStateArguments(
+                title: AppString.resetSuccessful,
+                message: AppString.resetSuccessfulMessage,
+                btnTitle: AppString.goHome,
+                tap: () => PageRouter.popToRoot(Routes.accountSettingsView)));
+        state = state.copyWith(isBusy: false);
+        return;
+      }
+
       PageRouter.pushReplacement(Routes.successState,
           args: SuccessStateArguments(
               title: AppString.resetSuccessful,
               message: AppString.resetSuccessfulMessage,
               btnTitle: AppString.login,
-              tap: () =>
-                  PageRouter.pushReplacement(route ?? Routes.signInView)));
+              tap: () => PageRouter.pushReplacement(Routes.signInView)));
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(),
@@ -254,11 +280,40 @@ class AuthNotifier extends _$AuthNotifier {
     state = state.copyWith(isBusy: false);
   }
 
-  Future<void> signInUserWithBiometric(CancelToken cancelToken) async {
+  Future<void> signInUserWithBiometric({
+    required CancelToken cancelToken,
+    Function()? callback,
+    Function(String error)? onError,
+  }) async {
     final List<String> values = await Future.wait(
         [_securedManager.readEmailCred(), _securedManager.readPasswordCred()]);
 
-    await signInUser(
-        AuthDto(email: values.first, password: values[1]), cancelToken, true);
+    await signInUser(AuthDto(email: values.first, password: values[1]),
+        cancelToken: cancelToken,
+        isBiometricAuth: true,
+        onSuccess: callback,
+        onError: onError);
+  }
+
+  Future<void> changePin(AuthDto parameter, [CancelToken? cancelToken]) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      await ref.read(changePinProvider
+          .call(parameter: parameter, cancelToken: cancelToken)
+          .future);
+
+      PageRouter.pushNamed(Routes.successState,
+          args: SuccessStateArguments(
+              title: AppString.resetSuccessful,
+              message: AppString.resetPinSuccessfulMessage,
+              btnTitle: AppString.goHome,
+              tap: () => PageRouter.popToRoot(Routes.accountSettingsView)));
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(),
+          error: true, ignoreIfNull: e.toString().isNull);
+    }
+    state = state.copyWith(isBusy: false);
   }
 }

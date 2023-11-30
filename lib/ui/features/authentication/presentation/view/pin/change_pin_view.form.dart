@@ -11,6 +11,7 @@ import 'package:stacked/stacked.dart';
 
 const bool _autoTextFieldValidation = true;
 
+const String OldPinValueKey = 'oldPin';
 const String NewPinValueKey = 'newPin';
 const String ConfirmNewPinValueKey = 'confirmNewPin';
 
@@ -20,16 +21,20 @@ final Map<String, TextEditingController> _ChangePinViewTextEditingControllers =
 final Map<String, FocusNode> _ChangePinViewFocusNodes = {};
 
 final Map<String, String? Function(String?)?> _ChangePinViewTextValidations = {
+  OldPinValueKey: null,
   NewPinValueKey: null,
   ConfirmNewPinValueKey: null,
 };
 
 mixin $ChangePinView {
+  TextEditingController get oldPinController =>
+      _getFormTextEditingController(OldPinValueKey);
   TextEditingController get newPinController =>
       _getFormTextEditingController(NewPinValueKey);
   TextEditingController get confirmNewPinController =>
       _getFormTextEditingController(ConfirmNewPinValueKey);
 
+  FocusNode get oldPinFocusNode => _getFormFocusNode(OldPinValueKey);
   FocusNode get newPinFocusNode => _getFormFocusNode(NewPinValueKey);
   FocusNode get confirmNewPinFocusNode =>
       _getFormFocusNode(ConfirmNewPinValueKey);
@@ -58,6 +63,7 @@ mixin $ChangePinView {
   /// Registers a listener on every generated controller that calls [model.setData()]
   /// with the latest textController values
   void syncFormWithViewModel(FormStateHelper model) {
+    oldPinController.addListener(() => _updateFormData(model));
     newPinController.addListener(() => _updateFormData(model));
     confirmNewPinController.addListener(() => _updateFormData(model));
 
@@ -71,6 +77,7 @@ mixin $ChangePinView {
     'This feature was deprecated after 3.1.0.',
   )
   void listenToFormUpdated(FormViewModel model) {
+    oldPinController.addListener(() => _updateFormData(model));
     newPinController.addListener(() => _updateFormData(model));
     confirmNewPinController.addListener(() => _updateFormData(model));
 
@@ -82,6 +89,7 @@ mixin $ChangePinView {
     model.setData(
       model.formValueMap
         ..addAll({
+          OldPinValueKey: oldPinController.text,
           NewPinValueKey: newPinController.text,
           ConfirmNewPinValueKey: confirmNewPinController.text,
         }),
@@ -125,9 +133,20 @@ extension ValueProperties on FormStateHelper {
     return !hasAnyValidationMessage;
   }
 
+  String? get oldPinValue => this.formValueMap[OldPinValueKey] as String?;
   String? get newPinValue => this.formValueMap[NewPinValueKey] as String?;
   String? get confirmNewPinValue =>
       this.formValueMap[ConfirmNewPinValueKey] as String?;
+
+  set oldPinValue(String? value) {
+    this.setData(
+      this.formValueMap..addAll({OldPinValueKey: value}),
+    );
+
+    if (_ChangePinViewTextEditingControllers.containsKey(OldPinValueKey)) {
+      _ChangePinViewTextEditingControllers[OldPinValueKey]?.text = value ?? '';
+    }
+  }
 
   set newPinValue(String? value) {
     this.setData(
@@ -151,6 +170,9 @@ extension ValueProperties on FormStateHelper {
     }
   }
 
+  bool get hasOldPin =>
+      this.formValueMap.containsKey(OldPinValueKey) &&
+      (oldPinValue?.isNotEmpty ?? false);
   bool get hasNewPin =>
       this.formValueMap.containsKey(NewPinValueKey) &&
       (newPinValue?.isNotEmpty ?? false);
@@ -158,11 +180,15 @@ extension ValueProperties on FormStateHelper {
       this.formValueMap.containsKey(ConfirmNewPinValueKey) &&
       (confirmNewPinValue?.isNotEmpty ?? false);
 
+  bool get hasOldPinValidationMessage =>
+      this.fieldsValidationMessages[OldPinValueKey]?.isNotEmpty ?? false;
   bool get hasNewPinValidationMessage =>
       this.fieldsValidationMessages[NewPinValueKey]?.isNotEmpty ?? false;
   bool get hasConfirmNewPinValidationMessage =>
       this.fieldsValidationMessages[ConfirmNewPinValueKey]?.isNotEmpty ?? false;
 
+  String? get oldPinValidationMessage =>
+      this.fieldsValidationMessages[OldPinValueKey];
   String? get newPinValidationMessage =>
       this.fieldsValidationMessages[NewPinValueKey];
   String? get confirmNewPinValidationMessage =>
@@ -170,6 +196,8 @@ extension ValueProperties on FormStateHelper {
 }
 
 extension Methods on FormStateHelper {
+  setOldPinValidationMessage(String? validationMessage) =>
+      this.fieldsValidationMessages[OldPinValueKey] = validationMessage;
   setNewPinValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[NewPinValueKey] = validationMessage;
   setConfirmNewPinValidationMessage(String? validationMessage) =>
@@ -177,6 +205,7 @@ extension Methods on FormStateHelper {
 
   /// Clears text input fields on the Form
   void clearForm() {
+    oldPinValue = '';
     newPinValue = '';
     confirmNewPinValue = '';
   }
@@ -184,6 +213,7 @@ extension Methods on FormStateHelper {
   /// Validates text input fields on the Form
   void validateForm() {
     this.setValidationMessages({
+      OldPinValueKey: getValidationMessage(OldPinValueKey),
       NewPinValueKey: getValidationMessage(NewPinValueKey),
       ConfirmNewPinValueKey: getValidationMessage(ConfirmNewPinValueKey),
     });
@@ -205,6 +235,7 @@ String? getValidationMessage(String key) {
 /// Updates the fieldsValidationMessages on the FormViewModel
 void updateValidationData(FormStateHelper model) =>
     model.setValidationMessages({
+      OldPinValueKey: getValidationMessage(OldPinValueKey),
       NewPinValueKey: getValidationMessage(NewPinValueKey),
       ConfirmNewPinValueKey: getValidationMessage(ConfirmNewPinValueKey),
     });

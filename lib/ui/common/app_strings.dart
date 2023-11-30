@@ -86,6 +86,9 @@ class AppString {
   static String passwordInstruction = "Enter password";
   static String passwordInstruction2 =
       "Enter the password for this account to reset transaction pin";
+  static String pinInstruction = "Change transaction pin";
+  static String pinInstruction2 =
+      "Remember this pin and do not share with anyone. ";
   static String newPassword = "New Password";
   static String newPasswordInstruction = "New password";
   static String passwordHint = "Password must contain alphabets and numbers";
@@ -130,6 +133,8 @@ class AppString {
   static String resetSuccessful = "Reset successful";
   static String resetSuccessfulMessage =
       "The password has been reset successfully";
+  static String resetPinSuccessfulMessage =
+      "Your pin has been reset successfully";
   static String hello = 'Hello,';
   static String completeAccount = 'Complete account setup';
   static String viewAccount = 'Tap to view account details';
@@ -173,6 +178,7 @@ class AppString {
   static String confirm = 'Confirm';
   static String goHome = 'Go home';
   static String transactionPin = 'Transaction pin';
+  static String oldPin = 'Old pin';
   static String newPin = 'New pin';
   static String confirmNewPin = 'Confirm pin';
   static String savePin = 'Save pin';
@@ -326,4 +332,5 @@ class AppString {
   static String status = 'Status';
   static String howToEarnPoints = 'How to earn more points';
   static String inviteFriends = 'Invite a friend';
+  static String validPinRequired = 'Please enter a valid PIN';
 }

@@ -165,11 +165,11 @@ class _SignInViewState extends ConsumerState<SignInView> with $SignInView {
 
     _authNotifier.signInUser(
         AuthDto(email: emailController.text, password: passwordController.text),
-        _cancelToken);
+        cancelToken: _cancelToken);
   }
 
   void _authenticateUsingBiometric() =>
       ref.read(biometricNotifier.notifier).authenticateUser(
           callbackAction: () =>
-              _authNotifier.signInUserWithBiometric(_cancelToken));
+              _authNotifier.signInUserWithBiometric(cancelToken: _cancelToken));
 }

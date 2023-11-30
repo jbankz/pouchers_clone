@@ -313,7 +313,8 @@ class FieldValidator {
           TextEditingController passwordController,
           {String? error}) =>
       (String? value) {
-        if (value == null || value.isEmpty) return 'Please enter a password.';
+        if (value == null || value.isEmpty)
+          return error ?? 'Please enter a password.';
 
         return validateDiffChange(
             passwordController, error ?? 'The passwords don\'t match')(value);

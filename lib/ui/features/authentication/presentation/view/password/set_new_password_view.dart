@@ -20,10 +20,9 @@ import 'set_new_password_view.form.dart';
 
 @FormView(fields: [FormTextField(name: 'password')])
 class SetNewPasswordView extends ConsumerStatefulWidget {
-  const SetNewPasswordView({super.key, required this.email, this.route});
+  const SetNewPasswordView({super.key, required this.email});
 
   final String email;
-  final String? route;
 
   @override
   ConsumerState<SetNewPasswordView> createState() => _SetNewPasswordViewState();
@@ -120,7 +119,6 @@ class _SetNewPasswordViewState extends ConsumerState<SetNewPasswordView>
 
     _authNotifier.resetPassword(
         AuthDto(password: passwordController.text, email: widget.email),
-        cancelToken: _cancelToken,
-        route: widget.route);
+        cancelToken: _cancelToken);
   }
 }

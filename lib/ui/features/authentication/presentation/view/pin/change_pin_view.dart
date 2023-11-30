@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:Pouchers/utils/field_validator.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +19,7 @@ import '../../../../../widgets/pin_code_widget.dart';
 import 'change_pin_view.form.dart';
 
 @FormView(fields: [
+  FormTextField(name: 'oldPin'),
   FormTextField(name: 'newPin'),
   FormTextField(name: 'confirmNewPin')
 ])
@@ -32,9 +35,11 @@ class _ChangePinViewState extends ConsumerState<ChangePinView>
   final formKey = GlobalKey<FormState>();
 
   late AuthNotifier _authNotifier;
-  bool _obscureText = true;
 
   final CancelToken _cancelToken = CancelToken();
+
+  final StreamController<ErrorAnimationType> _oldPinErrorController =
+      StreamController<ErrorAnimationType>();
 
   final StreamController<ErrorAnimationType> _newPinErrorController =
       StreamController<ErrorAnimationType>();
@@ -44,7 +49,7 @@ class _ChangePinViewState extends ConsumerState<ChangePinView>
 
   @override
   void initState() {
-    newPinFocusNode.requestFocus();
+    oldPinFocusNode.requestFocus();
     _authNotifier = ref.read(authNotifierProvider.notifier);
     super.initState();
   }
@@ -62,7 +67,7 @@ class _ChangePinViewState extends ConsumerState<ChangePinView>
     return Scaffold(
       appBar: AppBar(title: Text(AppString.transactionPin)),
       body: SafeArea(
-        minimum: const EdgeInsets.symmetric(horizontal: 16),
+        minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: Form(
           key: formKey,
           child: Column(
@@ -72,15 +77,26 @@ class _ChangePinViewState extends ConsumerState<ChangePinView>
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   children: [
-                    Text(AppString.passwordInstruction,
+                    Text(AppString.pinInstruction,
                         style: context.titleLarge?.copyWith(
                             fontWeight: FontWeight.w700,
                             fontSize: 24.sp,
                             color: AppColors.kPrimaryTextColor)),
                     const Gap(height: 8),
-                    Text(AppString.passwordInstruction2,
+                    Text(AppString.pinInstruction2,
                         style: context.titleLarge?.copyWith(fontSize: 16)),
                     const Gap(height: 43),
+                    Text(AppString.oldPin,
+                        style: context.titleLarge?.copyWith(fontSize: 12.sp)),
+                    const Gap(height: 8),
+                    PinCodeWidget(
+                        pinLength: 4,
+                        align: MainAxisAlignment.start,
+                        errorAnimationController: _oldPinErrorController,
+                        controller: oldPinController,
+                        focusNode: oldPinFocusNode,
+                        onCompleted: (_) => context.nextFocus(newPinFocusNode)),
+                    const Gap(height: 32),
                     Text(AppString.newPin,
                         style: context.titleLarge?.copyWith(fontSize: 12.sp)),
                     const Gap(height: 8),
@@ -89,7 +105,9 @@ class _ChangePinViewState extends ConsumerState<ChangePinView>
                         align: MainAxisAlignment.start,
                         errorAnimationController: _newPinErrorController,
                         controller: newPinController,
-                        focusNode: newPinFocusNode),
+                        focusNode: newPinFocusNode,
+                        onCompleted: (_) =>
+                            context.nextFocus(confirmNewPinFocusNode)),
                     const Gap(height: 32),
                     Text(AppString.confirmNewPin,
                         style: context.titleLarge?.copyWith(fontSize: 12.sp)),
@@ -98,8 +116,11 @@ class _ChangePinViewState extends ConsumerState<ChangePinView>
                         align: MainAxisAlignment.start,
                         pinLength: 4,
                         errorAnimationController: _confirmNewPinErrorController,
-                        controller: newPinController,
-                        focusNode: newPinFocusNode),
+                        controller: confirmNewPinController,
+                        focusNode: confirmNewPinFocusNode,
+                        validator: FieldValidator.validatePassword(
+                            newPinController,
+                            error: AppString.validPinRequired)),
                   ],
                 ),
               ),
@@ -118,5 +139,9 @@ class _ChangePinViewState extends ConsumerState<ChangePinView>
 
   void _submitForm() {
     if (!formKey.currentState!.validate()) return;
+
+    _authNotifier.changePin(
+        AuthDto(pin: newPinController.text, oldPin: oldPinController.text),
+        _cancelToken);
   }
 }

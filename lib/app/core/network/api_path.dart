@@ -98,4 +98,7 @@ class ApiPath {
 
   /// Get users referrals and rewards
   static const String referrals = '$_apiVersionOne/user/referral-trail';
+
+  /// Change of pin
+  static const String resetPin = '$_apiVersionOne/user/reset-pin';
 }

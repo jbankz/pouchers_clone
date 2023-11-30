@@ -63,8 +63,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    print(Hive.box(kBiometricsBox).get(kBiometricsKey));
-    print(ref.watch(biometricProvider).isLoginBiometricActive);
+    // print(Hive.box(kBiometricsBox).get(kBiometricsKey));
+    // print(ref.watch(biometricProvider).isLoginBiometricActive);
     return ValueListenableBuilder<Box>(
         valueListenable: userDao.getListenable(),
         builder: (_, box, __) {
