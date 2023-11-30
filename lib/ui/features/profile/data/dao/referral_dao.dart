@@ -4,6 +4,7 @@ import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/ui/common/app_keys.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/referral/referral.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:Pouchers/utils/logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -28,9 +29,8 @@ class ReferralDao {
     await _box.put(AppKeys.referralDaoKey, referral?.toJson() ?? {});
   }
 
-  Referral returnReferral(Box box) => Referral.fromJson(
-      Map<String, dynamic>.from(box.toMap()[AppKeys.referralDaoKey] ?? {})
-          .convertToTypedMap());
+  Referral returnReferral(Box box) =>
+      Referral.fromJson(box.toMap()[AppKeys.referralDaoKey] ?? {});
 
   ValueListenable<Box> getListenable({List<String>? keys}) =>
       (keys == null ? _box.listenable() : _box.listenable(keys: keys));

@@ -127,4 +127,5 @@ class AppImage {
   static String decoratedContainer = "${_imagePath}decorated_container.png";
   static String emptyReferral = "${_iconPath}empty_referral.svg";
   static String addUser = "${_iconPath}add_user.svg";
+  static String logoLength = "${_iconPath}logo_length.svg";
 }

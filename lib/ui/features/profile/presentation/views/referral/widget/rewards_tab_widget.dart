@@ -2,6 +2,7 @@ import 'package:Pouchers/app/config/app_helper.dart';
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
+import 'package:Pouchers/ui/features/profile/domain/model/referral/earning.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
@@ -35,6 +36,7 @@ class _RewardTabWidgetState extends ConsumerState<RewardTabWidget> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) => _userNotifier =
         ref.read(userNotifierProvider.notifier)..referrals(_cancelToken));
   }
@@ -53,11 +55,13 @@ class _RewardTabWidgetState extends ConsumerState<RewardTabWidget> {
         builder: (_, box, __) {
           final referral = referralDao.returnReferral(box);
 
-          final earnings = referral.earning?.first;
+          final earnings = (referral.earning?.isNotEmpty ?? false)
+              ? referral.earning?.first
+              : Earning();
 
           final referrals = referral.referralTrail ?? [];
 
-          num totalPoints =
+          final num totalPoints =
               referrals.where((data) => data.isPaid ?? false).toList().length;
           return Skeleton(
               isLoading: userState.isBusy,
