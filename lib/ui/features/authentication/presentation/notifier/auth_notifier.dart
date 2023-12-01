@@ -1,10 +1,10 @@
 import 'package:Pouchers/app/app.locator.dart';
-import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
 import 'package:Pouchers/ui/features/authentication/domain/model/selected_questions.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
+import 'package:Pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
 import 'package:Pouchers/ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
@@ -426,5 +426,23 @@ class AuthNotifier extends _$AuthNotifier {
     }
     state =
         state.copyWith(isBusy: false, selectedQuestions: _selectedQuestions);
+  }
+
+  Future<void> validate2fa(TwoFaDto twoFaDto,
+      {CancelToken? cancelToken, required Function() success}) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      await ref.read(validate2faAnswerProvider
+          .call(twoFaDto, cancelToken: cancelToken)
+          .future);
+
+      success();
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(),
+          error: true, ignoreIfNull: e.toString().isNull);
+    }
+    state = state.copyWith(isBusy: false);
   }
 }

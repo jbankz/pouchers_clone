@@ -178,7 +178,6 @@ class UserNotifier extends _$UserNotifier {
 
   Future<void> referrals([CancelToken? cancelToken]) async {
     try {
-      await Future.delayed(Duration(seconds: 5));
       state = state.copyWith(isBusy: referralDao.box.isEmpty);
 
       _referral = await ref

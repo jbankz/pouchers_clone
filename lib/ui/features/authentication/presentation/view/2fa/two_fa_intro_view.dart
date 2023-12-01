@@ -88,8 +88,8 @@ class TwoFaAuthView extends ConsumerWidget {
                                                   as bool?;
 
                                               if (response ?? false) {
-                                                // PageRouter.pushNamed(Routes
-                                                //     .securityQuestionView);
+                                                PageRouter.pushNamed(Routes
+                                                    .selectedQuestionView);
                                               }
                                             }
                                           }))

@@ -9,15 +9,15 @@ part of 'selected_questions.dart';
 _$SelectedQuestionsImpl _$$SelectedQuestionsImplFromJson(
         Map<String, dynamic> json) =>
     _$SelectedQuestionsImpl(
-      userId: json['userId'] as String?,
+      userId: json['user_id'] as String?,
       question: json['question'] as String?,
-      questionId: json['questionId'] as String?,
+      questionId: json['question_id'] as String?,
     );
 
 Map<String, dynamic> _$$SelectedQuestionsImplToJson(
         _$SelectedQuestionsImpl instance) =>
     <String, dynamic>{
-      'userId': instance.userId,
+      'user_id': instance.userId,
       'question': instance.question,
-      'questionId': instance.questionId,
+      'question_id': instance.questionId,
     };

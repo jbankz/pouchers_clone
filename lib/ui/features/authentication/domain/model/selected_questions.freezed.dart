@@ -20,8 +20,10 @@ SelectedQuestions _$SelectedQuestionsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SelectedQuestions {
+  @JsonKey(name: 'user_id')
   String? get userId => throw _privateConstructorUsedError;
   String? get question => throw _privateConstructorUsedError;
+  @JsonKey(name: 'question_id')
   String? get questionId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -36,7 +38,10 @@ abstract class $SelectedQuestionsCopyWith<$Res> {
           SelectedQuestions value, $Res Function(SelectedQuestions) then) =
       _$SelectedQuestionsCopyWithImpl<$Res, SelectedQuestions>;
   @useResult
-  $Res call({String? userId, String? question, String? questionId});
+  $Res call(
+      {@JsonKey(name: 'user_id') String? userId,
+      String? question,
+      @JsonKey(name: 'question_id') String? questionId});
 }
 
 /// @nodoc
@@ -81,7 +86,10 @@ abstract class _$$SelectedQuestionsImplCopyWith<$Res>
       __$$SelectedQuestionsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? userId, String? question, String? questionId});
+  $Res call(
+      {@JsonKey(name: 'user_id') String? userId,
+      String? question,
+      @JsonKey(name: 'question_id') String? questionId});
 }
 
 /// @nodoc
@@ -119,16 +127,21 @@ class __$$SelectedQuestionsImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$SelectedQuestionsImpl implements _SelectedQuestions {
-  _$SelectedQuestionsImpl({this.userId, this.question, this.questionId});
+  _$SelectedQuestionsImpl(
+      {@JsonKey(name: 'user_id') this.userId,
+      this.question,
+      @JsonKey(name: 'question_id') this.questionId});
 
   factory _$SelectedQuestionsImpl.fromJson(Map<String, dynamic> json) =>
       _$$SelectedQuestionsImplFromJson(json);
 
   @override
+  @JsonKey(name: 'user_id')
   final String? userId;
   @override
   final String? question;
   @override
+  @JsonKey(name: 'question_id')
   final String? questionId;
 
   @override
@@ -169,18 +182,21 @@ class _$SelectedQuestionsImpl implements _SelectedQuestions {
 
 abstract class _SelectedQuestions implements SelectedQuestions {
   factory _SelectedQuestions(
-      {final String? userId,
-      final String? question,
-      final String? questionId}) = _$SelectedQuestionsImpl;
+          {@JsonKey(name: 'user_id') final String? userId,
+          final String? question,
+          @JsonKey(name: 'question_id') final String? questionId}) =
+      _$SelectedQuestionsImpl;
 
   factory _SelectedQuestions.fromJson(Map<String, dynamic> json) =
       _$SelectedQuestionsImpl.fromJson;
 
   @override
+  @JsonKey(name: 'user_id')
   String? get userId;
   @override
   String? get question;
   @override
+  @JsonKey(name: 'question_id')
   String? get questionId;
   @override
   @JsonKey(ignore: true)

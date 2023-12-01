@@ -65,7 +65,7 @@ final answerSecurityQuestionUseCaseImpl =
     Provider<PoucherUseCaseWithRequiredParam>(
         (ref) => AnswerQuestionsUseCaseImpl(ref.read(authRepoModule)));
 
-final validate2faQuestionQuestionUseCaseImpl =
+final validate2faQuestionUseCaseImpl =
     Provider<PoucherUseCaseWithRequiredParam>(
         (ref) => ValidateTwoFaQuestionUseCaseImpl(ref.read(authRepoModule)));
 

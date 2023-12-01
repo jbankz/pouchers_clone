@@ -127,7 +127,7 @@ Future<bool> validate2faCode(Validate2faCodeRef ref, TwoFaDto twoFaDto,
 Future<bool> validate2faAnswer(Validate2faAnswerRef ref, TwoFaDto twoFaDto,
         {CancelToken? cancelToken}) async =>
     await ref
-        .read(validate2faQuestionQuestionUseCaseImpl)
+        .read(validate2faQuestionUseCaseImpl)
         .execute(parameter: twoFaDto, cancelToken: cancelToken);
 
 @riverpod
