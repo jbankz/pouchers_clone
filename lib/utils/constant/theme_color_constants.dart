@@ -299,7 +299,8 @@ ThemeData kThemeData = ThemeData.light().copyWith(
         titleMedium: kSubtitle1Style,
         titleSmall: kSubtitle2Style,
         headlineSmall: kHeadline5Style,
-        titleLarge: kHeadline6Style),
+        titleLarge: kHeadline6Style,
+        labelLarge: kHeadline6Style),
     colorScheme: const ColorScheme(
             brightness: Brightness.light,
             primary: AppColors.white,
@@ -398,8 +399,8 @@ ThemeData kThemeData = ThemeData.light().copyWith(
         unselectedLabelStyle: kSubtitle1Style.copyWith(color: AppColors.kPrimaryColor, fontSize: 10, fontWeight: FontWeight.w500),
         selectedLabelStyle: kSubtitle1Style.copyWith(color: AppColors.kPrimaryColor, fontSize: 10, fontWeight: FontWeight.w500)),
     dialogTheme: const DialogTheme(backgroundColor: AppColors.white),
-    datePickerTheme: DatePickerThemeData(),
-    switchTheme: SwitchThemeData());
+    datePickerTheme: const DatePickerThemeData(),
+    switchTheme: const SwitchThemeData());
 
 ThemeData kThemeDataDark = ThemeData.dark().copyWith(
   visualDensity: VisualDensity.adaptivePlatformDensity,

@@ -336,4 +336,33 @@ class AppString {
   static String inviteFriends = 'Invite a friend';
   static String validPinRequired = 'Please enter a valid PIN';
   static String biometric = 'Biometric';
+
+  static String loginWithBiometric = 'Login with biometrics';
+  static String payWithBiometric = 'Pay with biometrics';
+  static String authentication = '2FA Authentication';
+  static String factorAuth = '2 Factor authentication';
+  static String successFactorAuth =
+      'Two-factor authentication is enabled on this your\naccount to generate a secure code on device for\nconfirming transactions';
+  static String unSuccessFactorAuth =
+      'For extra security, enable two-factor authentication on your account to generate a secure code on device for confirming transactions';
+  static String setupFactorAuth = 'Setup 2FA authentication';
+  static String selectSecurityQue = 'Select your security question';
+  static String selectSecurityQueInstr =
+      'Please keep this secret as this will be required to reset your 2FA authentication.';
+  static String secondQuestion = 'Second question';
+  static String selectSecondQuestion = 'Select question';
+  static String answer = 'Answer';
+  static String tapToCopy1 = 'Tap to copy';
+  static String tokenHint1 =
+      'Paste the code above in your authenticator app to start generating tokens.';
+  static String tokenHint2 =
+      'Tap completed, when you’ve added the key above successfully.';
+  static String digitsCode = '6-digit code';
+  static String digitsCodeHint =
+      'Enter the 6-digit code generated for “Pouchers” from your authenticator.';
+  static String setUpGoogleAuth = 'Setup Google authenticator';
+  static String setUpGoogleAuthHint =
+      'Download google authenticator to setup two-factor authentication.';
+  static String setUpGoogleDownloadAuthHint = 'Download Google authenticator';
+  static String setUpGoogleDownloadedAlreadAuthHint = 'Downloaded already';
 }

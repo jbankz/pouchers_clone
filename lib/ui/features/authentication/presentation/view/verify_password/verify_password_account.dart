@@ -71,7 +71,7 @@ class _VerifyPasswordAccountViewState
                   children: [
                     Text(AppString.verifyAccount,
                         style: context.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.w700, fontSize: 24.sp)),
+                            fontWeight: FontWeight.w700, fontSize: 24)),
                     const Gap(height: 8),
                     Text(AppString.verificationSubTextOne,
                         style: context.titleLarge?.copyWith(fontSize: 16)),

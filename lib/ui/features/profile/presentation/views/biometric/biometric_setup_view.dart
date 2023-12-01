@@ -27,17 +27,17 @@ class BiometricSetupView extends ConsumerWidget {
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   children: [
                     _buildTile(
-                        title: 'Login with biometrics',
+                        title: AppString.loginWithBiometric,
                         value: biometricDao.login,
                         onChanged: (value) => _handleLoginToggle(ref, value)),
                     _buildTile(
-                        title: 'Pay with biometrics',
+                        title: AppString.payWithBiometric,
                         value: biometricDao.pay,
                         onChanged: (value) => _handlePayToggle(ref, value)),
-                    _buildTile(
-                        title: 'Unlock with biometrics',
-                        value: biometricDao.unlock,
-                        onChanged: (value) => biometricDao.unlock = value),
+                    // _buildTile(
+                    //     title: 'Unlock with biometrics',
+                    //     value: biometricDao.unlock,
+                    //     onChanged: (value) => biometricDao.unlock = value),
                   ],
                 )),
       );

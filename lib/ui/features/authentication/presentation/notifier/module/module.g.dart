@@ -1491,5 +1491,993 @@ class _ChangePinProviderElement extends AutoDisposeFutureProviderElement<bool>
   @override
   CancelToken? get cancelToken => (origin as ChangePinProvider).cancelToken;
 }
+
+String _$validatePinHash() => r'aedf78956802db950ddfc3e784db64c1c38afc34';
+
+/// See also [validatePin].
+@ProviderFor(validatePin)
+const validatePinProvider = ValidatePinFamily();
+
+/// See also [validatePin].
+class ValidatePinFamily extends Family<AsyncValue<bool>> {
+  /// See also [validatePin].
+  const ValidatePinFamily();
+
+  /// See also [validatePin].
+  ValidatePinProvider call({
+    required AuthDto parameter,
+    CancelToken? cancelToken,
+  }) {
+    return ValidatePinProvider(
+      parameter: parameter,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  ValidatePinProvider getProviderOverride(
+    covariant ValidatePinProvider provider,
+  ) {
+    return call(
+      parameter: provider.parameter,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'validatePinProvider';
+}
+
+/// See also [validatePin].
+class ValidatePinProvider extends AutoDisposeFutureProvider<bool> {
+  /// See also [validatePin].
+  ValidatePinProvider({
+    required AuthDto parameter,
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => validatePin(
+            ref as ValidatePinRef,
+            parameter: parameter,
+            cancelToken: cancelToken,
+          ),
+          from: validatePinProvider,
+          name: r'validatePinProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$validatePinHash,
+          dependencies: ValidatePinFamily._dependencies,
+          allTransitiveDependencies:
+              ValidatePinFamily._allTransitiveDependencies,
+          parameter: parameter,
+          cancelToken: cancelToken,
+        );
+
+  ValidatePinProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.parameter,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final AuthDto parameter;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<bool> Function(ValidatePinRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ValidatePinProvider._internal(
+        (ref) => create(ref as ValidatePinRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        parameter: parameter,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<bool> createElement() {
+    return _ValidatePinProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ValidatePinProvider &&
+        other.parameter == parameter &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, parameter.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ValidatePinRef on AutoDisposeFutureProviderRef<bool> {
+  /// The parameter `parameter` of this provider.
+  AuthDto get parameter;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _ValidatePinProviderElement extends AutoDisposeFutureProviderElement<bool>
+    with ValidatePinRef {
+  _ValidatePinProviderElement(super.provider);
+
+  @override
+  AuthDto get parameter => (origin as ValidatePinProvider).parameter;
+  @override
+  CancelToken? get cancelToken => (origin as ValidatePinProvider).cancelToken;
+}
+
+String _$securityQuestionsHash() => r'0d113723417838d73773456ff588720d432add2b';
+
+/// See also [securityQuestions].
+@ProviderFor(securityQuestions)
+const securityQuestionsProvider = SecurityQuestionsFamily();
+
+/// See also [securityQuestions].
+class SecurityQuestionsFamily
+    extends Family<AsyncValue<List<SecurityQuestions>>> {
+  /// See also [securityQuestions].
+  const SecurityQuestionsFamily();
+
+  /// See also [securityQuestions].
+  SecurityQuestionsProvider call({
+    CancelToken? cancelToken,
+  }) {
+    return SecurityQuestionsProvider(
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  SecurityQuestionsProvider getProviderOverride(
+    covariant SecurityQuestionsProvider provider,
+  ) {
+    return call(
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'securityQuestionsProvider';
+}
+
+/// See also [securityQuestions].
+class SecurityQuestionsProvider
+    extends AutoDisposeFutureProvider<List<SecurityQuestions>> {
+  /// See also [securityQuestions].
+  SecurityQuestionsProvider({
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => securityQuestions(
+            ref as SecurityQuestionsRef,
+            cancelToken: cancelToken,
+          ),
+          from: securityQuestionsProvider,
+          name: r'securityQuestionsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$securityQuestionsHash,
+          dependencies: SecurityQuestionsFamily._dependencies,
+          allTransitiveDependencies:
+              SecurityQuestionsFamily._allTransitiveDependencies,
+          cancelToken: cancelToken,
+        );
+
+  SecurityQuestionsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<SecurityQuestions>> Function(SecurityQuestionsRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SecurityQuestionsProvider._internal(
+        (ref) => create(ref as SecurityQuestionsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<SecurityQuestions>> createElement() {
+    return _SecurityQuestionsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SecurityQuestionsProvider &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin SecurityQuestionsRef
+    on AutoDisposeFutureProviderRef<List<SecurityQuestions>> {
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _SecurityQuestionsProviderElement
+    extends AutoDisposeFutureProviderElement<List<SecurityQuestions>>
+    with SecurityQuestionsRef {
+  _SecurityQuestionsProviderElement(super.provider);
+
+  @override
+  CancelToken? get cancelToken =>
+      (origin as SecurityQuestionsProvider).cancelToken;
+}
+
+String _$answerQuestionHash() => r'f5e30a77fcc6133c71b7663ea53ad50129938140';
+
+/// See also [answerQuestion].
+@ProviderFor(answerQuestion)
+const answerQuestionProvider = AnswerQuestionFamily();
+
+/// See also [answerQuestion].
+class AnswerQuestionFamily extends Family<AsyncValue<List<SetQuestions>>> {
+  /// See also [answerQuestion].
+  const AnswerQuestionFamily();
+
+  /// See also [answerQuestion].
+  AnswerQuestionProvider call(
+    TwoFaDto twoFaDto, {
+    CancelToken? cancelToken,
+  }) {
+    return AnswerQuestionProvider(
+      twoFaDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  AnswerQuestionProvider getProviderOverride(
+    covariant AnswerQuestionProvider provider,
+  ) {
+    return call(
+      provider.twoFaDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'answerQuestionProvider';
+}
+
+/// See also [answerQuestion].
+class AnswerQuestionProvider
+    extends AutoDisposeFutureProvider<List<SetQuestions>> {
+  /// See also [answerQuestion].
+  AnswerQuestionProvider(
+    TwoFaDto twoFaDto, {
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => answerQuestion(
+            ref as AnswerQuestionRef,
+            twoFaDto,
+            cancelToken: cancelToken,
+          ),
+          from: answerQuestionProvider,
+          name: r'answerQuestionProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$answerQuestionHash,
+          dependencies: AnswerQuestionFamily._dependencies,
+          allTransitiveDependencies:
+              AnswerQuestionFamily._allTransitiveDependencies,
+          twoFaDto: twoFaDto,
+          cancelToken: cancelToken,
+        );
+
+  AnswerQuestionProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.twoFaDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final TwoFaDto twoFaDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<SetQuestions>> Function(AnswerQuestionRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: AnswerQuestionProvider._internal(
+        (ref) => create(ref as AnswerQuestionRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        twoFaDto: twoFaDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<SetQuestions>> createElement() {
+    return _AnswerQuestionProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is AnswerQuestionProvider &&
+        other.twoFaDto == twoFaDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, twoFaDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin AnswerQuestionRef on AutoDisposeFutureProviderRef<List<SetQuestions>> {
+  /// The parameter `twoFaDto` of this provider.
+  TwoFaDto get twoFaDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _AnswerQuestionProviderElement
+    extends AutoDisposeFutureProviderElement<List<SetQuestions>>
+    with AnswerQuestionRef {
+  _AnswerQuestionProviderElement(super.provider);
+
+  @override
+  TwoFaDto get twoFaDto => (origin as AnswerQuestionProvider).twoFaDto;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as AnswerQuestionProvider).cancelToken;
+}
+
+String _$generateTwoFaTokenHash() =>
+    r'c3804c7b7ed9e171818b1bf01ff3f2cc90700eac';
+
+/// See also [generateTwoFaToken].
+@ProviderFor(generateTwoFaToken)
+const generateTwoFaTokenProvider = GenerateTwoFaTokenFamily();
+
+/// See also [generateTwoFaToken].
+class GenerateTwoFaTokenFamily extends Family<AsyncValue<Generate2faToken>> {
+  /// See also [generateTwoFaToken].
+  const GenerateTwoFaTokenFamily();
+
+  /// See also [generateTwoFaToken].
+  GenerateTwoFaTokenProvider call({
+    CancelToken? cancelToken,
+  }) {
+    return GenerateTwoFaTokenProvider(
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  GenerateTwoFaTokenProvider getProviderOverride(
+    covariant GenerateTwoFaTokenProvider provider,
+  ) {
+    return call(
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'generateTwoFaTokenProvider';
+}
+
+/// See also [generateTwoFaToken].
+class GenerateTwoFaTokenProvider
+    extends AutoDisposeFutureProvider<Generate2faToken> {
+  /// See also [generateTwoFaToken].
+  GenerateTwoFaTokenProvider({
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => generateTwoFaToken(
+            ref as GenerateTwoFaTokenRef,
+            cancelToken: cancelToken,
+          ),
+          from: generateTwoFaTokenProvider,
+          name: r'generateTwoFaTokenProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$generateTwoFaTokenHash,
+          dependencies: GenerateTwoFaTokenFamily._dependencies,
+          allTransitiveDependencies:
+              GenerateTwoFaTokenFamily._allTransitiveDependencies,
+          cancelToken: cancelToken,
+        );
+
+  GenerateTwoFaTokenProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<Generate2faToken> Function(GenerateTwoFaTokenRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GenerateTwoFaTokenProvider._internal(
+        (ref) => create(ref as GenerateTwoFaTokenRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Generate2faToken> createElement() {
+    return _GenerateTwoFaTokenProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GenerateTwoFaTokenProvider &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GenerateTwoFaTokenRef on AutoDisposeFutureProviderRef<Generate2faToken> {
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _GenerateTwoFaTokenProviderElement
+    extends AutoDisposeFutureProviderElement<Generate2faToken>
+    with GenerateTwoFaTokenRef {
+  _GenerateTwoFaTokenProviderElement(super.provider);
+
+  @override
+  CancelToken? get cancelToken =>
+      (origin as GenerateTwoFaTokenProvider).cancelToken;
+}
+
+String _$validate2faCodeHash() => r'063a9b224142288c6a7886f4022aaa153a701fad';
+
+/// See also [validate2faCode].
+@ProviderFor(validate2faCode)
+const validate2faCodeProvider = Validate2faCodeFamily();
+
+/// See also [validate2faCode].
+class Validate2faCodeFamily extends Family<AsyncValue<bool>> {
+  /// See also [validate2faCode].
+  const Validate2faCodeFamily();
+
+  /// See also [validate2faCode].
+  Validate2faCodeProvider call(
+    TwoFaDto twoFaDto, {
+    CancelToken? cancelToken,
+  }) {
+    return Validate2faCodeProvider(
+      twoFaDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  Validate2faCodeProvider getProviderOverride(
+    covariant Validate2faCodeProvider provider,
+  ) {
+    return call(
+      provider.twoFaDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'validate2faCodeProvider';
+}
+
+/// See also [validate2faCode].
+class Validate2faCodeProvider extends AutoDisposeFutureProvider<bool> {
+  /// See also [validate2faCode].
+  Validate2faCodeProvider(
+    TwoFaDto twoFaDto, {
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => validate2faCode(
+            ref as Validate2faCodeRef,
+            twoFaDto,
+            cancelToken: cancelToken,
+          ),
+          from: validate2faCodeProvider,
+          name: r'validate2faCodeProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$validate2faCodeHash,
+          dependencies: Validate2faCodeFamily._dependencies,
+          allTransitiveDependencies:
+              Validate2faCodeFamily._allTransitiveDependencies,
+          twoFaDto: twoFaDto,
+          cancelToken: cancelToken,
+        );
+
+  Validate2faCodeProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.twoFaDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final TwoFaDto twoFaDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<bool> Function(Validate2faCodeRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: Validate2faCodeProvider._internal(
+        (ref) => create(ref as Validate2faCodeRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        twoFaDto: twoFaDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<bool> createElement() {
+    return _Validate2faCodeProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is Validate2faCodeProvider &&
+        other.twoFaDto == twoFaDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, twoFaDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin Validate2faCodeRef on AutoDisposeFutureProviderRef<bool> {
+  /// The parameter `twoFaDto` of this provider.
+  TwoFaDto get twoFaDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _Validate2faCodeProviderElement
+    extends AutoDisposeFutureProviderElement<bool> with Validate2faCodeRef {
+  _Validate2faCodeProviderElement(super.provider);
+
+  @override
+  TwoFaDto get twoFaDto => (origin as Validate2faCodeProvider).twoFaDto;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as Validate2faCodeProvider).cancelToken;
+}
+
+String _$validate2faAnswerHash() => r'9784c6d0f03d8628dc7320b411219c8f8dd8ebdf';
+
+/// See also [validate2faAnswer].
+@ProviderFor(validate2faAnswer)
+const validate2faAnswerProvider = Validate2faAnswerFamily();
+
+/// See also [validate2faAnswer].
+class Validate2faAnswerFamily extends Family<AsyncValue<bool>> {
+  /// See also [validate2faAnswer].
+  const Validate2faAnswerFamily();
+
+  /// See also [validate2faAnswer].
+  Validate2faAnswerProvider call(
+    TwoFaDto twoFaDto, {
+    CancelToken? cancelToken,
+  }) {
+    return Validate2faAnswerProvider(
+      twoFaDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  Validate2faAnswerProvider getProviderOverride(
+    covariant Validate2faAnswerProvider provider,
+  ) {
+    return call(
+      provider.twoFaDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'validate2faAnswerProvider';
+}
+
+/// See also [validate2faAnswer].
+class Validate2faAnswerProvider extends AutoDisposeFutureProvider<bool> {
+  /// See also [validate2faAnswer].
+  Validate2faAnswerProvider(
+    TwoFaDto twoFaDto, {
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => validate2faAnswer(
+            ref as Validate2faAnswerRef,
+            twoFaDto,
+            cancelToken: cancelToken,
+          ),
+          from: validate2faAnswerProvider,
+          name: r'validate2faAnswerProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$validate2faAnswerHash,
+          dependencies: Validate2faAnswerFamily._dependencies,
+          allTransitiveDependencies:
+              Validate2faAnswerFamily._allTransitiveDependencies,
+          twoFaDto: twoFaDto,
+          cancelToken: cancelToken,
+        );
+
+  Validate2faAnswerProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.twoFaDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final TwoFaDto twoFaDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<bool> Function(Validate2faAnswerRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: Validate2faAnswerProvider._internal(
+        (ref) => create(ref as Validate2faAnswerRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        twoFaDto: twoFaDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<bool> createElement() {
+    return _Validate2faAnswerProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is Validate2faAnswerProvider &&
+        other.twoFaDto == twoFaDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, twoFaDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin Validate2faAnswerRef on AutoDisposeFutureProviderRef<bool> {
+  /// The parameter `twoFaDto` of this provider.
+  TwoFaDto get twoFaDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _Validate2faAnswerProviderElement
+    extends AutoDisposeFutureProviderElement<bool> with Validate2faAnswerRef {
+  _Validate2faAnswerProviderElement(super.provider);
+
+  @override
+  TwoFaDto get twoFaDto => (origin as Validate2faAnswerProvider).twoFaDto;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as Validate2faAnswerProvider).cancelToken;
+}
+
+String _$selectedQuestionsHash() => r'6f7b14572965a4f60f617778cf577400a8628a56';
+
+/// See also [selectedQuestions].
+@ProviderFor(selectedQuestions)
+const selectedQuestionsProvider = SelectedQuestionsFamily();
+
+/// See also [selectedQuestions].
+class SelectedQuestionsFamily
+    extends Family<AsyncValue<List<SelectedQuestions>>> {
+  /// See also [selectedQuestions].
+  const SelectedQuestionsFamily();
+
+  /// See also [selectedQuestions].
+  SelectedQuestionsProvider call({
+    CancelToken? cancelToken,
+  }) {
+    return SelectedQuestionsProvider(
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  SelectedQuestionsProvider getProviderOverride(
+    covariant SelectedQuestionsProvider provider,
+  ) {
+    return call(
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'selectedQuestionsProvider';
+}
+
+/// See also [selectedQuestions].
+class SelectedQuestionsProvider
+    extends AutoDisposeFutureProvider<List<SelectedQuestions>> {
+  /// See also [selectedQuestions].
+  SelectedQuestionsProvider({
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => selectedQuestions(
+            ref as SelectedQuestionsRef,
+            cancelToken: cancelToken,
+          ),
+          from: selectedQuestionsProvider,
+          name: r'selectedQuestionsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$selectedQuestionsHash,
+          dependencies: SelectedQuestionsFamily._dependencies,
+          allTransitiveDependencies:
+              SelectedQuestionsFamily._allTransitiveDependencies,
+          cancelToken: cancelToken,
+        );
+
+  SelectedQuestionsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<SelectedQuestions>> Function(SelectedQuestionsRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SelectedQuestionsProvider._internal(
+        (ref) => create(ref as SelectedQuestionsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<SelectedQuestions>> createElement() {
+    return _SelectedQuestionsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SelectedQuestionsProvider &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin SelectedQuestionsRef
+    on AutoDisposeFutureProviderRef<List<SelectedQuestions>> {
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _SelectedQuestionsProviderElement
+    extends AutoDisposeFutureProviderElement<List<SelectedQuestions>>
+    with SelectedQuestionsRef {
+  _SelectedQuestionsProviderElement(super.provider);
+
+  @override
+  CancelToken? get cancelToken =>
+      (origin as SelectedQuestionsProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

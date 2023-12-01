@@ -63,7 +63,7 @@ class _ForgotPasswordViewState extends ConsumerState<ForgotPasswordView>
                         Text('${AppString.forgotPassword}?',
                             style: context.titleLarge?.copyWith(
                                 fontWeight: FontWeight.w700,
-                                fontSize: 24.sp,
+                                fontSize: 24,
                                 color: AppColors.kPrimaryTextColor)),
                         const Gap(height: 8),
                         Text(AppString.forgotPasswordSubText,

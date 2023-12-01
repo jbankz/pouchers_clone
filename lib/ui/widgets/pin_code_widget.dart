@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:Pouchers/ui/common/app_colors.dart';
+import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:Pouchers/utils/field_validator.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +52,15 @@ class PinCodeWidget extends StatelessWidget {
       onSaved: onSaved,
       onCompleted: onCompleted,
       errorAnimationController: errorAnimationController,
+      pastedTextStyle: context.headlineLarge?.copyWith(
+          fontWeight: FontWeight.w700,
+          color: AppColors.kPrimaryColor,
+          fontSize: 14),
+      dialogConfig: DialogConfig(
+          dialogTitle: AppString.appName,
+          platform:
+              Platform.isIOS ? PinCodePlatform.iOS : PinCodePlatform.other),
+      useHapticFeedback: true,
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
         LengthLimitingTextInputFormatter(pinLength)

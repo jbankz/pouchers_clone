@@ -2,6 +2,8 @@ import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
+import 'package:Pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
+import 'package:Pouchers/ui/features/authentication/domain/model/selected_questions.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -16,6 +18,8 @@ import '../../../../../app/navigators/navigators.dart';
 import '../../../../../modules/tab_layout/screens/tab_layout.dart';
 import '../../../../common/app_strings.dart';
 import '../../../../notification/notification_tray.dart';
+import '../../domain/model/generate_2fa_token.dart';
+import '../../domain/model/security_questions.dart';
 import '../state/auth_state.dart';
 import '../view/otp/notifier/module.dart';
 import 'module/module.dart';
@@ -28,6 +32,9 @@ class AuthNotifier extends _$AuthNotifier {
 
   final _biometricManager = locator<BiometricManager>();
   final _securedManager = locator<SecuredManager>();
+  List<SecurityQuestions> _securityQuestions = [];
+  List<SelectedQuestions> _selectedQuestions = [];
+  Generate2faToken? _generate2faToken;
 
   @override
   AuthState build() => AuthState(data: biometricDao.login);
@@ -315,5 +322,109 @@ class AuthNotifier extends _$AuthNotifier {
           error: true, ignoreIfNull: e.toString().isNull);
     }
     state = state.copyWith(isBusy: false);
+  }
+
+  Future<void> validatePin(String pin, CancelToken cancelToken,
+      {Function()? onSuccess, Function()? onError}) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      await ref.read(validatePinProvider
+          .call(
+              parameter: AuthDto(transactionPin: pin), cancelToken: cancelToken)
+          .future);
+
+      if (onSuccess != null) onSuccess();
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(),
+          error: true, ignoreIfNull: e.toString().isNull);
+      if (onError != null) onError();
+    }
+    state = state.copyWith(isBusy: false);
+  }
+
+  Future<void> securityQuestions(CancelToken cancelToken) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      _securityQuestions = await ref.read(
+          securityQuestionsProvider.call(cancelToken: cancelToken).future);
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(),
+          error: true, ignoreIfNull: e.toString().isNull);
+    }
+    state = state.copyWith(isBusy: false, securityQuestion: _securityQuestions);
+  }
+
+  Future<void> answerQuestion(
+      {required TwoFaDto twoFaDto,
+      required CancelToken cancelToken,
+      required String route}) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      await ref.read(answerQuestionProvider
+          .call(twoFaDto, cancelToken: cancelToken)
+          .future);
+
+      PageRouter.pushNamed(route);
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(),
+          error: true, ignoreIfNull: e.toString().isNull);
+    }
+    state = state.copyWith(isBusy: false);
+  }
+
+  Future<void> generateTwoFaToken({required CancelToken cancelToken}) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      _generate2faToken = await ref.read(
+          generateTwoFaTokenProvider.call(cancelToken: cancelToken).future);
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(),
+          error: true, ignoreIfNull: e.toString().isNull);
+    }
+    state = state.copyWith(isBusy: false, generate2faToken: _generate2faToken);
+  }
+
+  Future<void> validateTwoFaToken(
+      {required String user2faToken,
+      required CancelToken cancelToken,
+      required Function() onError}) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      await ref.read(validate2faCodeProvider
+          .call(TwoFaDto(user2faToken: user2faToken), cancelToken: cancelToken)
+          .future);
+
+      PageRouter.popToRoot(Routes.twoFaAuthView);
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(),
+          error: true, ignoreIfNull: e.toString().isNull);
+      onError();
+    }
+    state = state.copyWith(isBusy: false);
+  }
+
+  Future<void> selectedQuestions(CancelToken cancelToken) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      _selectedQuestions = await ref.read(
+          selectedQuestionsProvider.call(cancelToken: cancelToken).future);
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(),
+          error: true, ignoreIfNull: e.toString().isNull);
+    }
+    state =
+        state.copyWith(isBusy: false, selectedQuestions: _selectedQuestions);
   }
 }

@@ -63,7 +63,7 @@ class _TagViewState extends ConsumerState<TagView> with $TagView {
                   children: [
                     Text(AppString.poucherTag,
                         style: context.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.w700, fontSize: 24.sp)),
+                            fontWeight: FontWeight.w700, fontSize: 24)),
                     const Gap(height: 8),
                     Text(AppString.tagHint,
                         style: context.titleLarge?.copyWith(fontSize: 16)),

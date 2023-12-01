@@ -71,7 +71,7 @@ class _ConfirmPinViewState extends ConsumerState<ConfirmPinView> {
                       children: [
                         Text(AppString.confirmPin,
                             style: context.headlineMedium?.copyWith(
-                                fontWeight: FontWeight.w700, fontSize: 24.sp)),
+                                fontWeight: FontWeight.w700, fontSize: 24)),
                         const Gap(height: 8),
                         Text(AppString.createPinHint,
                             style: context.titleLarge?.copyWith(fontSize: 16)),

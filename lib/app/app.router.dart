@@ -5,8 +5,22 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:flutter/material.dart' as _i43;
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as _i36;
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/first_security_question_view.dart'
+    as _i37;
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/second_security_question_view.dart'
+    as _i38;
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/selected_question_view.dart'
+    as _i42;
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_code_generator_view.dart'
+    as _i40;
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_code_view.dart'
+    as _i41;
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_view.dart'
+    as _i39;
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/two_fa_intro_view.dart'
+    as _i36;
 import 'package:Pouchers/ui/features/authentication/presentation/view/otp/otp_view.dart'
     as _i8;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/forgot_password_view.dart'
@@ -36,7 +50,7 @@ import 'package:Pouchers/ui/features/dashboard/views/account/views/account_setti
 import 'package:Pouchers/ui/features/dashboard/views/account/views/account_verification.dart'
     as _i21;
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart'
-    as _i37;
+    as _i44;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/bvn_requirement_view.dart'
     as _i25;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/card_calculator_view.dart'
@@ -77,7 +91,7 @@ import 'package:Pouchers/ui/features/tiers/presentation/view/tier_view.dart'
     as _i20;
 import 'package:Pouchers/ui/widgets/success_state.dart' as _i6;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i38;
+import 'package:stacked_services/stacked_services.dart' as _i45;
 
 class Routes {
   static const splashView = '/';
@@ -149,6 +163,23 @@ class Routes {
 
   static const biometricSetupView = '/biometric-setup-view';
 
+  static const twoFaAuthView = '/two-fa-auth-view';
+
+  static const firstSecurityQuestionView = '/first-security-question-view';
+
+  static const secondSecurityQuestionView = '/second-security-question-view';
+
+  static const twoFaGoogleAuthenticatorView =
+      '/two-fa-google-authenticator-view';
+
+  static const twoFaGoogleAuthenticatorCodeGeneratorView =
+      '/two-fa-google-authenticator-code-generator-view';
+
+  static const twoFaGoogleAuthenticatorCodeView =
+      '/two-fa-google-authenticator-code-view';
+
+  static const selectedQuestionView = '/selected-question-view';
+
   static const all = <String>{
     splashView,
     onboardingView,
@@ -184,6 +215,13 @@ class Routes {
     changePhoneNumberView,
     referralView,
     biometricSetupView,
+    twoFaAuthView,
+    firstSecurityQuestionView,
+    secondSecurityQuestionView,
+    twoFaGoogleAuthenticatorView,
+    twoFaGoogleAuthenticatorCodeGeneratorView,
+    twoFaGoogleAuthenticatorCodeView,
+    selectedQuestionView,
   };
 }
 
@@ -325,11 +363,39 @@ class StackedRouter extends _i1.RouterBase {
       Routes.biometricSetupView,
       page: _i35.BiometricSetupView,
     ),
+    _i1.RouteDef(
+      Routes.twoFaAuthView,
+      page: _i36.TwoFaAuthView,
+    ),
+    _i1.RouteDef(
+      Routes.firstSecurityQuestionView,
+      page: _i37.FirstSecurityQuestionView,
+    ),
+    _i1.RouteDef(
+      Routes.secondSecurityQuestionView,
+      page: _i38.SecondSecurityQuestionView,
+    ),
+    _i1.RouteDef(
+      Routes.twoFaGoogleAuthenticatorView,
+      page: _i39.TwoFaGoogleAuthenticatorView,
+    ),
+    _i1.RouteDef(
+      Routes.twoFaGoogleAuthenticatorCodeGeneratorView,
+      page: _i40.TwoFaGoogleAuthenticatorCodeGeneratorView,
+    ),
+    _i1.RouteDef(
+      Routes.twoFaGoogleAuthenticatorCodeView,
+      page: _i41.TwoFaGoogleAuthenticatorCodeView,
+    ),
+    _i1.RouteDef(
+      Routes.selectedQuestionView,
+      page: _i42.SelectedQuestionView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashView: (data) {
-      return _i36.PageRouteBuilder<dynamic>(
+      return _i43.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i2.SplashView(),
         settings: data,
@@ -338,7 +404,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i3.OnboardingView: (data) {
-      return _i36.PageRouteBuilder<dynamic>(
+      return _i43.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i3.OnboardingView(),
         settings: data,
@@ -347,7 +413,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i4.SignUpView: (data) {
-      return _i36.PageRouteBuilder<dynamic>(
+      return _i43.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i4.SignUpView(),
         settings: data,
@@ -356,7 +422,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i5.SignInView: (data) {
-      return _i36.PageRouteBuilder<dynamic>(
+      return _i43.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i5.SignInView(),
         settings: data,
@@ -368,7 +434,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SuccessStateArguments>(
         orElse: () => const SuccessStateArguments(),
       );
-      return _i36.PageRouteBuilder<dynamic>(
+      return _i43.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i6.SuccessState(
                 key: args.key,
@@ -383,7 +449,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i7.DashboardView: (data) {
-      return _i36.PageRouteBuilder<dynamic>(
+      return _i43.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i7.DashboardView(),
         settings: data,
@@ -534,7 +600,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i29.VirtualCardDetailView: (data) {
-      return _i36.PageRouteBuilder<dynamic>(
+      return _i43.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i29.VirtualCardDetailView(),
         settings: data,
@@ -543,7 +609,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i30.ProfileView: (data) {
-      return _i36.PageRouteBuilder<dynamic>(
+      return _i43.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i30.ProfileView(),
         settings: data,
@@ -581,6 +647,49 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
+    _i36.TwoFaAuthView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i36.TwoFaAuthView(),
+        settings: data,
+      );
+    },
+    _i37.FirstSecurityQuestionView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i37.FirstSecurityQuestionView(),
+        settings: data,
+      );
+    },
+    _i38.SecondSecurityQuestionView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i38.SecondSecurityQuestionView(),
+        settings: data,
+      );
+    },
+    _i39.TwoFaGoogleAuthenticatorView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i39.TwoFaGoogleAuthenticatorView(),
+        settings: data,
+      );
+    },
+    _i40.TwoFaGoogleAuthenticatorCodeGeneratorView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) =>
+            const _i40.TwoFaGoogleAuthenticatorCodeGeneratorView(),
+        settings: data,
+      );
+    },
+    _i41.TwoFaGoogleAuthenticatorCodeView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i41.TwoFaGoogleAuthenticatorCodeView(),
+        settings: data,
+      );
+    },
+    _i42.SelectedQuestionView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i42.SelectedQuestionView(),
+        settings: data,
+      );
+    },
   };
 
   @override
@@ -599,7 +708,7 @@ class SuccessStateArguments {
     this.tap,
   });
 
-  final _i36.Key? key;
+  final _i43.Key? key;
 
   final String title;
 
@@ -640,7 +749,7 @@ class OtpViewArguments {
     this.email,
   });
 
-  final _i36.Key? key;
+  final _i43.Key? key;
 
   final String? email;
 
@@ -667,7 +776,7 @@ class TagViewArguments {
     this.callback,
   });
 
-  final _i36.Key? key;
+  final _i43.Key? key;
 
   final dynamic Function()? callback;
 
@@ -694,7 +803,7 @@ class SetNewPasswordViewArguments {
     required this.email,
   });
 
-  final _i36.Key? key;
+  final _i43.Key? key;
 
   final String email;
 
@@ -721,7 +830,7 @@ class VerifyPasswordAccountViewArguments {
     this.email,
   });
 
-  final _i36.Key? key;
+  final _i43.Key? key;
 
   final String? email;
 
@@ -748,9 +857,9 @@ class CardCreationSymmaryViewArguments {
     required this.cardDto,
   });
 
-  final _i36.Key? key;
+  final _i43.Key? key;
 
-  final _i37.CardDto cardDto;
+  final _i44.CardDto cardDto;
 
   @override
   String toString() {
@@ -769,7 +878,7 @@ class CardCreationSymmaryViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i38.NavigationService {
+extension NavigatorStateExtension on _i45.NavigationService {
   Future<dynamic> navigateToSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -827,7 +936,7 @@ extension NavigatorStateExtension on _i38.NavigationService {
   }
 
   Future<dynamic> navigateToSuccessState({
-    _i36.Key? key,
+    _i43.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -866,7 +975,7 @@ extension NavigatorStateExtension on _i38.NavigationService {
   }
 
   Future<dynamic> navigateToOtpView({
-    _i36.Key? key,
+    _i43.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -897,7 +1006,7 @@ extension NavigatorStateExtension on _i38.NavigationService {
   }
 
   Future<dynamic> navigateToTagView({
-    _i36.Key? key,
+    _i43.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -998,7 +1107,7 @@ extension NavigatorStateExtension on _i38.NavigationService {
   }
 
   Future<dynamic> navigateToSetNewPasswordView({
-    _i36.Key? key,
+    _i43.Key? key,
     required String email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1015,7 +1124,7 @@ extension NavigatorStateExtension on _i38.NavigationService {
   }
 
   Future<dynamic> navigateToVerifyPasswordAccountView({
-    _i36.Key? key,
+    _i43.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1144,8 +1253,8 @@ extension NavigatorStateExtension on _i38.NavigationService {
   }
 
   Future<dynamic> navigateToCardCreationSymmaryView({
-    _i36.Key? key,
-    required _i37.CardDto cardDto,
+    _i43.Key? key,
+    required _i44.CardDto cardDto,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1272,6 +1381,104 @@ extension NavigatorStateExtension on _i38.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToTwoFaAuthView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.twoFaAuthView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToFirstSecurityQuestionView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.firstSecurityQuestionView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToSecondSecurityQuestionView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.secondSecurityQuestionView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToTwoFaGoogleAuthenticatorView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.twoFaGoogleAuthenticatorView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToTwoFaGoogleAuthenticatorCodeGeneratorView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.twoFaGoogleAuthenticatorCodeGeneratorView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToTwoFaGoogleAuthenticatorCodeView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.twoFaGoogleAuthenticatorCodeView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToSelectedQuestionView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.selectedQuestionView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -1329,7 +1536,7 @@ extension NavigatorStateExtension on _i38.NavigationService {
   }
 
   Future<dynamic> replaceWithSuccessState({
-    _i36.Key? key,
+    _i43.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -1368,7 +1575,7 @@ extension NavigatorStateExtension on _i38.NavigationService {
   }
 
   Future<dynamic> replaceWithOtpView({
-    _i36.Key? key,
+    _i43.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1399,7 +1606,7 @@ extension NavigatorStateExtension on _i38.NavigationService {
   }
 
   Future<dynamic> replaceWithTagView({
-    _i36.Key? key,
+    _i43.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -1500,7 +1707,7 @@ extension NavigatorStateExtension on _i38.NavigationService {
   }
 
   Future<dynamic> replaceWithSetNewPasswordView({
-    _i36.Key? key,
+    _i43.Key? key,
     required String email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1517,7 +1724,7 @@ extension NavigatorStateExtension on _i38.NavigationService {
   }
 
   Future<dynamic> replaceWithVerifyPasswordAccountView({
-    _i36.Key? key,
+    _i43.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1646,8 +1853,8 @@ extension NavigatorStateExtension on _i38.NavigationService {
   }
 
   Future<dynamic> replaceWithCardCreationSymmaryView({
-    _i36.Key? key,
-    required _i37.CardDto cardDto,
+    _i43.Key? key,
+    required _i44.CardDto cardDto,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1768,6 +1975,105 @@ extension NavigatorStateExtension on _i38.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.biometricSetupView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithTwoFaAuthView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.twoFaAuthView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithFirstSecurityQuestionView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.firstSecurityQuestionView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithSecondSecurityQuestionView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.secondSecurityQuestionView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithTwoFaGoogleAuthenticatorView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.twoFaGoogleAuthenticatorView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithTwoFaGoogleAuthenticatorCodeGeneratorView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(
+        Routes.twoFaGoogleAuthenticatorCodeGeneratorView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithTwoFaGoogleAuthenticatorCodeView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.twoFaGoogleAuthenticatorCodeView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithSelectedQuestionView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.selectedQuestionView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

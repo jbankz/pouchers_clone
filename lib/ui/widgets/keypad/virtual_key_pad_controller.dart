@@ -29,6 +29,15 @@ class VirtualKeyPadController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearAll() {
+    for (int i = pinCount - 1; i >= 0; i--) {
+      if (pins[i].isNotEmpty) {
+        pins[i] = '';
+      }
+    }
+    notifyListeners();
+  }
+
   void removePin() {
     if (!applyPinLength && pins.isNotEmpty) {
       pins.removeLast();

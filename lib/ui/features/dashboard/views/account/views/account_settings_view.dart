@@ -61,10 +61,10 @@ class AccountSettingsView extends ConsumerWidget {
                     const Divider(),
                     const Gap(height: 20),
                     AccountSettingsTile(
-                      title: AppString.twoFactorAuth,
-                      desc: AppString.twoFactorAuthInstr,
-                      tapped: () {},
-                    ),
+                        title: AppString.twoFactorAuth,
+                        desc: AppString.twoFactorAuthInstr,
+                        tapped: () =>
+                            PageRouter.pushNamed(Routes.twoFaAuthView)),
                     const Gap(height: 11),
                     const Divider(),
                     const Gap(height: 40),

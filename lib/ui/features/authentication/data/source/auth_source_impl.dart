@@ -1,6 +1,12 @@
+import 'package:Pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
+import 'package:Pouchers/ui/features/authentication/domain/model/generate_2fa_token.dart';
 import 'package:Pouchers/ui/features/authentication/domain/model/reset_password_model/reset_password_model.dart';
+import 'package:Pouchers/ui/features/authentication/domain/model/security_questions.dart';
+import 'package:Pouchers/ui/features/authentication/domain/model/selected_questions.dart';
+import 'package:Pouchers/ui/features/authentication/domain/model/set_questions.dart';
 import 'package:Pouchers/ui/features/authentication/domain/model/validate_reset_password_model/validate_reset_password_model.dart';
 import 'package:Pouchers/ui/features/authentication/domain/model/sign_in_model/sign_in_model.dart';
+import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/network/api_path.dart';
@@ -127,6 +133,94 @@ class AuthSourceImpl implements AuthSource {
         path: ApiPath.resetPin,
         requestType: RequestType.patch,
         data: authDto.toJson(),
+        cancelToken: cancelToken);
+    return response.statusCode == 200;
+  }
+
+  @override
+  Future<User?> disable2fa({CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.disable2fa,
+        requestType: RequestType.patch,
+        cancelToken: cancelToken);
+    return User.fromJson(response.data?['data'] as Map<String, dynamic>);
+  }
+
+  @override
+  Future<Generate2faToken> generate2faToken({CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.generate2fa,
+        requestType: RequestType.post,
+        cancelToken: cancelToken);
+    return Generate2faToken.fromJson(
+        response.data?['data'] as Map<String, dynamic>);
+  }
+
+  @override
+  Future<List<SecurityQuestions>> securityQuestions(
+      {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.securityQuestions,
+        requestType: RequestType.get,
+        cancelToken: cancelToken);
+    return (response.data?['data'] as List<dynamic>)
+        .map((json) => SecurityQuestions.fromJson(json))
+        .toList();
+  }
+
+  @override
+  Future<List<SelectedQuestions>> selectedQuestions(
+      {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.selectedQuestions,
+        requestType: RequestType.get,
+        cancelToken: cancelToken);
+    return (response.data?['data'] as List<dynamic>)
+        .map((json) => SelectedQuestions.fromJson(json))
+        .toList();
+  }
+
+  @override
+  Future<List<SetQuestions>> setQuestions(TwoFaDto twoFaDto,
+      {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.setQuestions,
+        requestType: RequestType.post,
+        data: twoFaDto.toJson(),
+        cancelToken: cancelToken);
+    return (response.data?['data'] as List<dynamic>)
+        .map((data) => SetQuestions.fromJson(data as Map<String, dynamic>))
+        .toList();
+  }
+
+  @override
+  Future<bool> validate2faToken(TwoFaDto twoFaDto,
+      {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.validate2Fa,
+        requestType: RequestType.post,
+        data: twoFaDto.toJson(),
+        cancelToken: cancelToken);
+    return response.statusCode == 200;
+  }
+
+  @override
+  Future<bool> validatePin(AuthDto authDto, {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.validatePin,
+        requestType: RequestType.post,
+        data: authDto.toJson(),
+        cancelToken: cancelToken);
+    return response.statusCode == 200;
+  }
+
+  @override
+  Future<bool> validate2FaQuestion(TwoFaDto twoFaDto,
+      {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.validate2FaQuestion,
+        requestType: RequestType.post,
+        data: twoFaDto.toJson(),
         cancelToken: cancelToken);
     return response.statusCode == 200;
   }

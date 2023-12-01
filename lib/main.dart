@@ -25,10 +25,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'app/app.router.dart';
 import 'app/config/app_config.dart';
 import 'app/core/constants/app_constants.dart';
-import 'app/core/manager/hive_manager.dart';
 import 'app/core/manager/session_manager.dart' as core;
-
-import 'app/core/skeleton/theme.dart';
 import 'app/core/theme/app_theme.dart';
 
 Future<void> main() async {
@@ -94,7 +91,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -117,9 +114,7 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
                   themeMode: ThemeMode.light,
                   navigatorKey: StackedService.navigatorKey,
                   onGenerateRoute: StackedRouter().onGenerateRoute,
-                  routes: {
-                    ...appRoutes,
-                  }),
+                  routes: {...appRoutes}),
             ),
           ),
         ),
@@ -329,3 +324,14 @@ class ProviderLogger extends ProviderObserver {
 // I/flutter (11047):     }
 // I/flutter (11047):   }
 // I/flutter (11047): ]
+
+
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/validate-pin
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/security-questions
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/set-questions
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/user/generate-2fa-token
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/user/validate-2fa-token
+
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/selected-questions
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/validate-2fa
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/user/disable-2fa

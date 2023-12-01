@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../../../../../app/config/app_helper.dart';
 import '../../../../../../../common/app_colors.dart';
 import '../../../../../../../common/app_strings.dart';
 import '../../../../../../../widgets/gap.dart';
@@ -62,7 +63,7 @@ class BvnModal extends StatelessWidget {
                       const Gap(width: 45),
                       Flexible(
                         child: GestureDetector(
-                          onTap: () => launchUrl(Uri.parse('tel://*565*0#')),
+                          onTap: () => AppHelper.triggerUrl('tel://*565*0#'),
                           child: Text(AppString.getBVN,
                               style: context.titleMedium?.copyWith(
                                   fontSize: 18,

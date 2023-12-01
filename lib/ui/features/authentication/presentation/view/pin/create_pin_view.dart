@@ -49,7 +49,7 @@ class _CreatePinViewState extends ConsumerState<CreatePinView> {
                     children: [
                       Text(AppString.createPin,
                           style: context.headlineMedium?.copyWith(
-                              fontWeight: FontWeight.w700, fontSize: 24.sp)),
+                              fontWeight: FontWeight.w700, fontSize: 24)),
                       const Gap(height: 8),
                       Text(AppString.createPinHint,
                           style: context.titleLarge?.copyWith(fontSize: 16)),

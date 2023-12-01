@@ -25,6 +25,7 @@ class EditTextFieldWidget extends StatelessWidget {
       this.autovalidateMode = AutovalidateMode.onUserInteraction,
       this.suffixIcon,
       this.prefix,
+      this.titleStyle,
       this.inputFormatters});
 
   final String? title;
@@ -46,6 +47,7 @@ class EditTextFieldWidget extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final Widget? prefix;
   final bool autocorrect;
+  final TextStyle? titleStyle;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -53,7 +55,8 @@ class EditTextFieldWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title ?? '',
-              style: context.titleLarge?.copyWith(fontSize: 12.sp)),
+              style:
+                  titleStyle ?? context.titleLarge?.copyWith(fontSize: 12.sp)),
           const Gap(height: 8),
           TextFormField(
             controller: controller,

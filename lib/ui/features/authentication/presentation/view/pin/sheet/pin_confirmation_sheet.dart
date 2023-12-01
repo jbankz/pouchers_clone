@@ -1,8 +1,12 @@
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
+import 'package:Pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
 import 'package:Pouchers/ui/widgets/keypad/config/keypad_config.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../../common/app_strings.dart';
 import '../../../../../../widgets/gap.dart';
@@ -10,15 +14,20 @@ import '../../../../../../widgets/keypad/account_pin_widget.dart';
 import '../../../../../../widgets/keypad/virtual_key_pad_controller.dart';
 import '../../../../../../widgets/keypad/virtual_keypad.dart';
 
-class PinConfirmationSheet extends StatefulWidget {
-  const PinConfirmationSheet({super.key});
+class PinConfirmationSheet extends ConsumerStatefulWidget {
+  const PinConfirmationSheet({super.key, this.validatePinHere = false});
+
+  final bool validatePinHere;
 
   @override
-  State<PinConfirmationSheet> createState() => _PinConfirmationSheetState();
+  ConsumerState<PinConfirmationSheet> createState() =>
+      _PinConfirmationSheetState();
 }
 
-class _PinConfirmationSheetState extends State<PinConfirmationSheet> {
+class _PinConfirmationSheetState extends ConsumerState<PinConfirmationSheet> {
   final VirtualKeyPadController _keyPadController = VirtualKeyPadController();
+
+  final CancelToken _cancelToken = CancelToken();
 
   @override
   void initState() {
@@ -26,6 +35,12 @@ class _PinConfirmationSheetState extends State<PinConfirmationSheet> {
     _keyPadController.addListener(() {
       setState(() {});
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _cancelToken.cancel();
   }
 
   @override
@@ -41,14 +56,28 @@ class _PinConfirmationSheetState extends State<PinConfirmationSheet> {
                         style: context.titleMedium?.copyWith(
                             fontSize: 15, fontWeight: FontWeight.w500)),
                     const Gap(height: 31),
-                    AccountPinCodeField(
-                        virtualKeyPadController: _keyPadController),
+                    AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 250),
+                        child: ref.watch(authNotifierProvider).isBusy
+                            ? const CupertinoActivityIndicator(
+                                color: AppColors.kBlueColor)
+                            : AccountPinCodeField(
+                                virtualKeyPadController: _keyPadController)),
                     const Gap(height: 31),
                     VirtualKeyPad(
                         keyPadController: _keyPadController,
                         keypadConfig:
                             KeypadConfig(keypadColor: AppColors.kDarkFill100),
-                        onComplete: (pin) => PageRouter.pop(pin)),
+                        onComplete: (pin) async {
+                          if (widget.validatePinHere) {
+                            await ref
+                                .read(authNotifierProvider.notifier)
+                                .validatePin(pin, _cancelToken,
+                                    onError: () => _keyPadController.clearAll(),
+                                    onSuccess: () => PageRouter.pop(pin));
+                            return;
+                          }
+                        }),
                   ],
                 ),
               ),

@@ -2,6 +2,7 @@ import 'package:Pouchers/ui/notification/notification_tray.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppHelper {
   static Future<void> copy(String value) async {
@@ -28,5 +29,16 @@ class AppHelper {
 
   static Future<void> share(String link, {String? subject}) async {
     await Share.share(link, subject: subject);
+  }
+
+  static Future<void> triggerUrl(String url,
+      {LaunchMode mode = LaunchMode.platformDefault}) async {
+    try {
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url), mode: mode);
+      }
+    } catch (e) {
+      debugPrint('Could not launch: $e');
+    }
   }
 }

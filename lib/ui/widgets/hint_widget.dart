@@ -11,15 +11,17 @@ class HintWidget extends StatelessWidget {
       {super.key,
       required this.hint,
       this.textColor = AppColors.kIconGrey,
-      this.widget});
+      this.widget,
+      this.crossAxisAlignment = CrossAxisAlignment.start});
 
   final String hint;
   final Color textColor;
   final Widget? widget;
+  final CrossAxisAlignment crossAxisAlignment;
 
   @override
   Widget build(BuildContext context) => Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: crossAxisAlignment,
         children: [
           SvgPicture.asset(AppImage.comment),
           const Gap(width: 15),

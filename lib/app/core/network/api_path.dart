@@ -1,3 +1,5 @@
+import 'dart:io';
+
 /// Author: JayTech👨🏾‍💻
 /// Date: September 6, 2023
 /// A class that defines API paths for API endpoints.
@@ -101,4 +103,29 @@ class ApiPath {
 
   /// Change of pin
   static const String resetPin = '$_apiVersionOne/user/reset-pin';
+
+  // https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/validate-pin
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/security-questions
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/set-questions
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/user/generate-2fa-token
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/user/validate-2fa-token
+
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/selected-questions
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/validate-2fa
+// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/user/disable-2fa
+
+  static const String validatePin = '$_apiVersionOne/auth/validate-pin';
+  static const String securityQuestions =
+      '$_apiVersionOne/auth/security-questions';
+  static const String setQuestions = '$_apiVersionOne/auth/set-questions';
+  static const String generate2fa = '$_apiVersionOne/user/generate-2fa-token';
+  static const String validate2Fa = '$_apiVersionOne/user/validate-2fa-token';
+  static const String validate2FaQuestion = '$_apiVersionOne/auth/validate-2fa';
+  static const String disable2fa = '$_apiVersionOne/user/disable-2fa';
+  static const String selectedQuestions =
+      '$_apiVersionOne/auth/selected-questions';
+
+  static String authenticator = Platform.isAndroid
+      ? 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'
+      : 'https://apps.apple.com/us/app/google-authenticator/id388497605';
 }

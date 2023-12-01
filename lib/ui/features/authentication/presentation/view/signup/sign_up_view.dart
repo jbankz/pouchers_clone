@@ -15,6 +15,7 @@ import 'package:stacked/stacked_annotations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../../app/config/app_config.dart';
+import '../../../../../../app/config/app_helper.dart';
 import '../../../../../../app/navigators/navigators.dart';
 import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_strings.dart';
@@ -74,7 +75,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> with $SignUpView {
             children: [
               Text(AppString.createAnAccount,
                   style: context.headlineMedium
-                      ?.copyWith(fontWeight: FontWeight.w700, fontSize: 24.sp)),
+                      ?.copyWith(fontWeight: FontWeight.w700, fontSize: 24)),
               const Gap(height: 12),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,8 +211,8 @@ class _SignUpViewState extends ConsumerState<SignUpView> with $SignUpView {
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.kPrimaryColor),
                             recognizer: TapGestureRecognizer()
-                              ..onTap = () async => await launchUrl(
-                                  Uri.parse(AppConfig.termsOfUse))),
+                              ..onTap = () async => await AppHelper.triggerUrl(
+                                  AppConfig.termsOfUse)),
                         TextSpan(text: " ${AppString.andText} "),
                         TextSpan(
                             text: "${AppString.privacyPolicy}.",
@@ -219,8 +220,8 @@ class _SignUpViewState extends ConsumerState<SignUpView> with $SignUpView {
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.kPrimaryColor),
                             recognizer: TapGestureRecognizer()
-                              ..onTap = () async => await launchUrl(
-                                  Uri.parse(AppConfig.privacyPolicy)))
+                              ..onTap = () async => await AppHelper.triggerUrl(
+                                  AppConfig.privacyPolicy))
                       ])),
             ],
           ),

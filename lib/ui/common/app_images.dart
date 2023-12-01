@@ -128,4 +128,8 @@ class AppImage {
   static String emptyReferral = "${_iconPath}empty_referral.svg";
   static String addUser = "${_iconPath}add_user.svg";
   static String logoLength = "${_iconPath}logo_length.svg";
+  static String authenticator = "${_iconPath}authenticator.svg";
+  static String authenticatorEnabled = "${_iconPath}two_fa_enabled.svg";
+  static String authenticatorSuccess = "${_iconPath}successful_two_fa.svg";
+  static String vault = "${_iconPath}vault.svg";
 }

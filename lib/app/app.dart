@@ -1,9 +1,16 @@
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/first_security_question_view.dart';
 import 'package:Pouchers/ui/features/profile/presentation/views/wallet/fund_wallet_view.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../ui/features/authentication/presentation/view/2fa/second_security_question_view.dart';
+import '../ui/features/authentication/presentation/view/2fa/selected_question_view.dart';
+import '../ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_code_generator_view.dart';
+import '../ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_code_view.dart';
+import '../ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_view.dart';
+import '../ui/features/authentication/presentation/view/2fa/two_fa_intro_view.dart';
 import '../ui/features/profile/presentation/views/biometric/biometric_setup_view.dart';
 import '../ui/features/profile/presentation/views/biometric/biometric_view.dart';
 import '../ui/features/authentication/presentation/view/otp/otp_view.dart';
@@ -109,6 +116,13 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: ChangePhoneNumberView),
     AdaptiveRoute(page: ReferralView),
     AdaptiveRoute(page: BiometricSetupView),
+    AdaptiveRoute(page: TwoFaAuthView),
+    AdaptiveRoute(page: FirstSecurityQuestionView),
+    AdaptiveRoute(page: SecondSecurityQuestionView),
+    AdaptiveRoute(page: TwoFaGoogleAuthenticatorView),
+    AdaptiveRoute(page: TwoFaGoogleAuthenticatorCodeGeneratorView),
+    AdaptiveRoute(page: TwoFaGoogleAuthenticatorCodeView),
+    AdaptiveRoute(page: SelectedQuestionView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

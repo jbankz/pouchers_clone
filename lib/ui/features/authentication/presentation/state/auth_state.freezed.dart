@@ -19,6 +19,11 @@ mixin _$AuthState<T> {
   bool get isBusy => throw _privateConstructorUsedError;
   T? get data => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
+  List<SecurityQuestions> get securityQuestion =>
+      throw _privateConstructorUsedError;
+  List<SelectedQuestions> get selectedQuestions =>
+      throw _privateConstructorUsedError;
+  Generate2faToken? get generate2faToken => throw _privateConstructorUsedError;
   StackTrace? get stackTrace => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -33,7 +38,15 @@ abstract class $AuthStateCopyWith<T, $Res> {
       _$AuthStateCopyWithImpl<T, $Res, AuthState<T>>;
   @useResult
   $Res call(
-      {bool isBusy, T? data, String? errorMessage, StackTrace? stackTrace});
+      {bool isBusy,
+      T? data,
+      String? errorMessage,
+      List<SecurityQuestions> securityQuestion,
+      List<SelectedQuestions> selectedQuestions,
+      Generate2faToken? generate2faToken,
+      StackTrace? stackTrace});
+
+  $Generate2faTokenCopyWith<$Res>? get generate2faToken;
 }
 
 /// @nodoc
@@ -52,6 +65,9 @@ class _$AuthStateCopyWithImpl<T, $Res, $Val extends AuthState<T>>
     Object? isBusy = null,
     Object? data = freezed,
     Object? errorMessage = freezed,
+    Object? securityQuestion = null,
+    Object? selectedQuestions = null,
+    Object? generate2faToken = freezed,
     Object? stackTrace = freezed,
   }) {
     return _then(_value.copyWith(
@@ -67,11 +83,35 @@ class _$AuthStateCopyWithImpl<T, $Res, $Val extends AuthState<T>>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String?,
+      securityQuestion: null == securityQuestion
+          ? _value.securityQuestion
+          : securityQuestion // ignore: cast_nullable_to_non_nullable
+              as List<SecurityQuestions>,
+      selectedQuestions: null == selectedQuestions
+          ? _value.selectedQuestions
+          : selectedQuestions // ignore: cast_nullable_to_non_nullable
+              as List<SelectedQuestions>,
+      generate2faToken: freezed == generate2faToken
+          ? _value.generate2faToken
+          : generate2faToken // ignore: cast_nullable_to_non_nullable
+              as Generate2faToken?,
       stackTrace: freezed == stackTrace
           ? _value.stackTrace
           : stackTrace // ignore: cast_nullable_to_non_nullable
               as StackTrace?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $Generate2faTokenCopyWith<$Res>? get generate2faToken {
+    if (_value.generate2faToken == null) {
+      return null;
+    }
+
+    return $Generate2faTokenCopyWith<$Res>(_value.generate2faToken!, (value) {
+      return _then(_value.copyWith(generate2faToken: value) as $Val);
+    });
   }
 }
 
@@ -84,7 +124,16 @@ abstract class _$$AuthStateImplCopyWith<T, $Res>
   @override
   @useResult
   $Res call(
-      {bool isBusy, T? data, String? errorMessage, StackTrace? stackTrace});
+      {bool isBusy,
+      T? data,
+      String? errorMessage,
+      List<SecurityQuestions> securityQuestion,
+      List<SelectedQuestions> selectedQuestions,
+      Generate2faToken? generate2faToken,
+      StackTrace? stackTrace});
+
+  @override
+  $Generate2faTokenCopyWith<$Res>? get generate2faToken;
 }
 
 /// @nodoc
@@ -101,6 +150,9 @@ class __$$AuthStateImplCopyWithImpl<T, $Res>
     Object? isBusy = null,
     Object? data = freezed,
     Object? errorMessage = freezed,
+    Object? securityQuestion = null,
+    Object? selectedQuestions = null,
+    Object? generate2faToken = freezed,
     Object? stackTrace = freezed,
   }) {
     return _then(_$AuthStateImpl<T>(
@@ -116,6 +168,18 @@ class __$$AuthStateImplCopyWithImpl<T, $Res>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String?,
+      securityQuestion: null == securityQuestion
+          ? _value._securityQuestion
+          : securityQuestion // ignore: cast_nullable_to_non_nullable
+              as List<SecurityQuestions>,
+      selectedQuestions: null == selectedQuestions
+          ? _value._selectedQuestions
+          : selectedQuestions // ignore: cast_nullable_to_non_nullable
+              as List<SelectedQuestions>,
+      generate2faToken: freezed == generate2faToken
+          ? _value.generate2faToken
+          : generate2faToken // ignore: cast_nullable_to_non_nullable
+              as Generate2faToken?,
       stackTrace: freezed == stackTrace
           ? _value.stackTrace
           : stackTrace // ignore: cast_nullable_to_non_nullable
@@ -128,7 +192,15 @@ class __$$AuthStateImplCopyWithImpl<T, $Res>
 
 class _$AuthStateImpl<T> implements _AuthState<T> {
   const _$AuthStateImpl(
-      {this.isBusy = false, this.data, this.errorMessage, this.stackTrace});
+      {this.isBusy = false,
+      this.data,
+      this.errorMessage,
+      final List<SecurityQuestions> securityQuestion = const [],
+      final List<SelectedQuestions> selectedQuestions = const [],
+      this.generate2faToken = null,
+      this.stackTrace})
+      : _securityQuestion = securityQuestion,
+        _selectedQuestions = selectedQuestions;
 
   @override
   @JsonKey()
@@ -137,12 +209,35 @@ class _$AuthStateImpl<T> implements _AuthState<T> {
   final T? data;
   @override
   final String? errorMessage;
+  final List<SecurityQuestions> _securityQuestion;
+  @override
+  @JsonKey()
+  List<SecurityQuestions> get securityQuestion {
+    if (_securityQuestion is EqualUnmodifiableListView)
+      return _securityQuestion;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_securityQuestion);
+  }
+
+  final List<SelectedQuestions> _selectedQuestions;
+  @override
+  @JsonKey()
+  List<SelectedQuestions> get selectedQuestions {
+    if (_selectedQuestions is EqualUnmodifiableListView)
+      return _selectedQuestions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_selectedQuestions);
+  }
+
+  @override
+  @JsonKey()
+  final Generate2faToken? generate2faToken;
   @override
   final StackTrace? stackTrace;
 
   @override
   String toString() {
-    return 'AuthState<$T>(isBusy: $isBusy, data: $data, errorMessage: $errorMessage, stackTrace: $stackTrace)';
+    return 'AuthState<$T>(isBusy: $isBusy, data: $data, errorMessage: $errorMessage, securityQuestion: $securityQuestion, selectedQuestions: $selectedQuestions, generate2faToken: $generate2faToken, stackTrace: $stackTrace)';
   }
 
   @override
@@ -154,13 +249,26 @@ class _$AuthStateImpl<T> implements _AuthState<T> {
             const DeepCollectionEquality().equals(other.data, data) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
+            const DeepCollectionEquality()
+                .equals(other._securityQuestion, _securityQuestion) &&
+            const DeepCollectionEquality()
+                .equals(other._selectedQuestions, _selectedQuestions) &&
+            (identical(other.generate2faToken, generate2faToken) ||
+                other.generate2faToken == generate2faToken) &&
             (identical(other.stackTrace, stackTrace) ||
                 other.stackTrace == stackTrace));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isBusy,
-      const DeepCollectionEquality().hash(data), errorMessage, stackTrace);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isBusy,
+      const DeepCollectionEquality().hash(data),
+      errorMessage,
+      const DeepCollectionEquality().hash(_securityQuestion),
+      const DeepCollectionEquality().hash(_selectedQuestions),
+      generate2faToken,
+      stackTrace);
 
   @JsonKey(ignore: true)
   @override
@@ -174,6 +282,9 @@ abstract class _AuthState<T> implements AuthState<T> {
       {final bool isBusy,
       final T? data,
       final String? errorMessage,
+      final List<SecurityQuestions> securityQuestion,
+      final List<SelectedQuestions> selectedQuestions,
+      final Generate2faToken? generate2faToken,
       final StackTrace? stackTrace}) = _$AuthStateImpl<T>;
 
   @override
@@ -182,6 +293,12 @@ abstract class _AuthState<T> implements AuthState<T> {
   T? get data;
   @override
   String? get errorMessage;
+  @override
+  List<SecurityQuestions> get securityQuestion;
+  @override
+  List<SelectedQuestions> get selectedQuestions;
+  @override
+  Generate2faToken? get generate2faToken;
   @override
   StackTrace? get stackTrace;
   @override

@@ -72,7 +72,7 @@ class _SignInViewState extends ConsumerState<SignInView> with $SignInView {
               const Gap(height: 25),
               Text(AppString.loginAccount,
                   style: context.displayLarge
-                      ?.copyWith(fontWeight: FontWeight.w700, fontSize: 24.sp)),
+                      ?.copyWith(fontWeight: FontWeight.w700, fontSize: 24)),
               const Gap(height: 8),
               Text(AppString.loginSubText,
                   style: context.titleLarge?.copyWith(fontSize: 16)),

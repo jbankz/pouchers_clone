@@ -10,19 +10,22 @@ class AuthDto {
   final String? pin;
   final String? resetCode;
   final String? oldPin;
+  final String? transactionPin;
 
-  AuthDto(
-      {this.firstName,
-      this.lastName,
-      this.email,
-      this.phoneNumber,
-      this.password,
-      this.referralCode,
-      this.otp,
-      this.tag,
-      this.pin,
-      this.oldPin,
-      this.resetCode});
+  AuthDto({
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.phoneNumber,
+    this.password,
+    this.referralCode,
+    this.otp,
+    this.tag,
+    this.pin,
+    this.oldPin,
+    this.resetCode,
+    this.transactionPin,
+  });
 
   Map<String, dynamic> toJson() => {
         if (firstName != null) 'first_name': firstName,
@@ -36,5 +39,6 @@ class AuthDto {
         if (pin != null) 'pin': pin,
         if (oldPin != null) 'oldPin': oldPin,
         if (resetCode != null) 'reset_code': resetCode,
+        if (transactionPin != null) 'transactionPin': transactionPin,
       };
 }
