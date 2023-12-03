@@ -1301,5 +1301,279 @@ class _ReferralProviderElement
   @override
   CancelToken? get cancelToken => (origin as ReferralProvider).cancelToken;
 }
+
+String _$deleteAccountHash() => r'fad8225824d5c9736e994f3f5189c1759b2804c3';
+
+/// See also [deleteAccount].
+@ProviderFor(deleteAccount)
+const deleteAccountProvider = DeleteAccountFamily();
+
+/// See also [deleteAccount].
+class DeleteAccountFamily extends Family<AsyncValue<bool>> {
+  /// See also [deleteAccount].
+  const DeleteAccountFamily();
+
+  /// See also [deleteAccount].
+  DeleteAccountProvider call({
+    CancelToken? cancelToken,
+  }) {
+    return DeleteAccountProvider(
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  DeleteAccountProvider getProviderOverride(
+    covariant DeleteAccountProvider provider,
+  ) {
+    return call(
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'deleteAccountProvider';
+}
+
+/// See also [deleteAccount].
+class DeleteAccountProvider extends AutoDisposeFutureProvider<bool> {
+  /// See also [deleteAccount].
+  DeleteAccountProvider({
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => deleteAccount(
+            ref as DeleteAccountRef,
+            cancelToken: cancelToken,
+          ),
+          from: deleteAccountProvider,
+          name: r'deleteAccountProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$deleteAccountHash,
+          dependencies: DeleteAccountFamily._dependencies,
+          allTransitiveDependencies:
+              DeleteAccountFamily._allTransitiveDependencies,
+          cancelToken: cancelToken,
+        );
+
+  DeleteAccountProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<bool> Function(DeleteAccountRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: DeleteAccountProvider._internal(
+        (ref) => create(ref as DeleteAccountRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<bool> createElement() {
+    return _DeleteAccountProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is DeleteAccountProvider && other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin DeleteAccountRef on AutoDisposeFutureProviderRef<bool> {
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _DeleteAccountProviderElement
+    extends AutoDisposeFutureProviderElement<bool> with DeleteAccountRef {
+  _DeleteAccountProviderElement(super.provider);
+
+  @override
+  CancelToken? get cancelToken => (origin as DeleteAccountProvider).cancelToken;
+}
+
+String _$disableAccountHash() => r'50eaab5c7c28f8be99e0f647d0ac9fb81f490104';
+
+/// See also [disableAccount].
+@ProviderFor(disableAccount)
+const disableAccountProvider = DisableAccountFamily();
+
+/// See also [disableAccount].
+class DisableAccountFamily extends Family<AsyncValue<bool>> {
+  /// See also [disableAccount].
+  const DisableAccountFamily();
+
+  /// See also [disableAccount].
+  DisableAccountProvider call(
+    String reason, {
+    CancelToken? cancelToken,
+  }) {
+    return DisableAccountProvider(
+      reason,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  DisableAccountProvider getProviderOverride(
+    covariant DisableAccountProvider provider,
+  ) {
+    return call(
+      provider.reason,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'disableAccountProvider';
+}
+
+/// See also [disableAccount].
+class DisableAccountProvider extends AutoDisposeFutureProvider<bool> {
+  /// See also [disableAccount].
+  DisableAccountProvider(
+    String reason, {
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => disableAccount(
+            ref as DisableAccountRef,
+            reason,
+            cancelToken: cancelToken,
+          ),
+          from: disableAccountProvider,
+          name: r'disableAccountProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$disableAccountHash,
+          dependencies: DisableAccountFamily._dependencies,
+          allTransitiveDependencies:
+              DisableAccountFamily._allTransitiveDependencies,
+          reason: reason,
+          cancelToken: cancelToken,
+        );
+
+  DisableAccountProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.reason,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final String reason;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<bool> Function(DisableAccountRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: DisableAccountProvider._internal(
+        (ref) => create(ref as DisableAccountRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        reason: reason,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<bool> createElement() {
+    return _DisableAccountProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is DisableAccountProvider &&
+        other.reason == reason &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, reason.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin DisableAccountRef on AutoDisposeFutureProviderRef<bool> {
+  /// The parameter `reason` of this provider.
+  String get reason;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _DisableAccountProviderElement
+    extends AutoDisposeFutureProviderElement<bool> with DisableAccountRef {
+  _DisableAccountProviderElement(super.provider);
+
+  @override
+  String get reason => (origin as DisableAccountProvider).reason;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as DisableAccountProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

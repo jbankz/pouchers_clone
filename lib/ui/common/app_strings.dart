@@ -365,4 +365,37 @@ class AppString {
       'Download google authenticator to setup two-factor authentication.';
   static String setUpGoogleDownloadAuthHint = 'Download Google authenticator';
   static String setUpGoogleDownloadedAlreadAuthHint = 'Downloaded already';
+
+  static String answerTheQuestion = 'Answer the security questions';
+  static String cantRemember = "Can’t remember the answers?";
+  static String whyDisableAccount = "Why do you want to disable your account?";
+  static String confirmationHint =
+      "Please enter your password to complete the deactivation process.";
+  static String tellUsWhy = "Tell us why";
+  static String pleaseConfirm = "Please confirm";
+  static String pleaseConfirmHint =
+      "Disabling your account will lock you out of the Pouchers ecosystem.\n\nTo re-enable your account, please contact support.";
+  static String disable = 'Yes, Disable';
+  static String accountDisabled = 'Account Disabled';
+  static String accountDisabledHint =
+      'The account you’re trying to access has been disabled. Please contact support.';
+  static String support = 'Contact support.';
+  static String disableAccount2 = 'Disable account';
+  static String deleteAccount2 = 'Delete account';
+  static String deleteAccountHint = 'Why do you want to delete your account?';
+
+  static String confirmPasswordDisableHint =
+      'Please enter your password to complete the deactivation process.';
+
+  static String confirmPasswordDeleteHint =
+      'Please enter your password to complete the deletion process.';
+
+  static String deleteApology =
+      'we\'re sorry to hear that and we would love to take a look at the issue.\n\nPlease help us understand the issue you are facing in depth. You may share the details of the issue (include screenshots if possible) by chatting with us. We\'ll ensure to look into it with utmost priority and have it resolved.\n\nThanks! 💜';
+
+  static String talkToSupport = 'Talk to support';
+
+  static String eraseData =
+      'we understand how you might feel about leaving data footprints. We take data security seriously and will not sell or unlawfully use or expose your data. We retain data based on our retention schedule in order to comply with legal and regulatory requirements.\n\nYou can read more about our ';
+  static String contactSupport = 'Contact support';
 }

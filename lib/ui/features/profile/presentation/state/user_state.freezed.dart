@@ -21,6 +21,8 @@ mixin _$UserState<T> {
   String? get errorMessage => throw _privateConstructorUsedError;
   StackTrace? get stackTrace => throw _privateConstructorUsedError;
   Referral? get referral => throw _privateConstructorUsedError;
+  List<String> get disableReason => throw _privateConstructorUsedError;
+  List<String> get deleteReason => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UserStateCopyWith<T, UserState<T>> get copyWith =>
@@ -38,7 +40,9 @@ abstract class $UserStateCopyWith<T, $Res> {
       T? data,
       String? errorMessage,
       StackTrace? stackTrace,
-      Referral? referral});
+      Referral? referral,
+      List<String> disableReason,
+      List<String> deleteReason});
 
   $ReferralCopyWith<$Res>? get referral;
 }
@@ -61,6 +65,8 @@ class _$UserStateCopyWithImpl<T, $Res, $Val extends UserState<T>>
     Object? errorMessage = freezed,
     Object? stackTrace = freezed,
     Object? referral = freezed,
+    Object? disableReason = null,
+    Object? deleteReason = null,
   }) {
     return _then(_value.copyWith(
       isBusy: null == isBusy
@@ -83,6 +89,14 @@ class _$UserStateCopyWithImpl<T, $Res, $Val extends UserState<T>>
           ? _value.referral
           : referral // ignore: cast_nullable_to_non_nullable
               as Referral?,
+      disableReason: null == disableReason
+          ? _value.disableReason
+          : disableReason // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      deleteReason: null == deleteReason
+          ? _value.deleteReason
+          : deleteReason // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 
@@ -112,7 +126,9 @@ abstract class _$$UserStateImplCopyWith<T, $Res>
       T? data,
       String? errorMessage,
       StackTrace? stackTrace,
-      Referral? referral});
+      Referral? referral,
+      List<String> disableReason,
+      List<String> deleteReason});
 
   @override
   $ReferralCopyWith<$Res>? get referral;
@@ -134,6 +150,8 @@ class __$$UserStateImplCopyWithImpl<T, $Res>
     Object? errorMessage = freezed,
     Object? stackTrace = freezed,
     Object? referral = freezed,
+    Object? disableReason = null,
+    Object? deleteReason = null,
   }) {
     return _then(_$UserStateImpl<T>(
       isBusy: null == isBusy
@@ -156,6 +174,14 @@ class __$$UserStateImplCopyWithImpl<T, $Res>
           ? _value.referral
           : referral // ignore: cast_nullable_to_non_nullable
               as Referral?,
+      disableReason: null == disableReason
+          ? _value._disableReason
+          : disableReason // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      deleteReason: null == deleteReason
+          ? _value._deleteReason
+          : deleteReason // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -168,7 +194,11 @@ class _$UserStateImpl<T> implements _UserState<T> {
       this.data,
       this.errorMessage,
       this.stackTrace,
-      this.referral});
+      this.referral,
+      final List<String> disableReason = const [],
+      final List<String> deleteReason = const []})
+      : _disableReason = disableReason,
+        _deleteReason = deleteReason;
 
   @override
   @JsonKey()
@@ -181,10 +211,27 @@ class _$UserStateImpl<T> implements _UserState<T> {
   final StackTrace? stackTrace;
   @override
   final Referral? referral;
+  final List<String> _disableReason;
+  @override
+  @JsonKey()
+  List<String> get disableReason {
+    if (_disableReason is EqualUnmodifiableListView) return _disableReason;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_disableReason);
+  }
+
+  final List<String> _deleteReason;
+  @override
+  @JsonKey()
+  List<String> get deleteReason {
+    if (_deleteReason is EqualUnmodifiableListView) return _deleteReason;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_deleteReason);
+  }
 
   @override
   String toString() {
-    return 'UserState<$T>(isBusy: $isBusy, data: $data, errorMessage: $errorMessage, stackTrace: $stackTrace, referral: $referral)';
+    return 'UserState<$T>(isBusy: $isBusy, data: $data, errorMessage: $errorMessage, stackTrace: $stackTrace, referral: $referral, disableReason: $disableReason, deleteReason: $deleteReason)';
   }
 
   @override
@@ -199,7 +246,11 @@ class _$UserStateImpl<T> implements _UserState<T> {
             (identical(other.stackTrace, stackTrace) ||
                 other.stackTrace == stackTrace) &&
             (identical(other.referral, referral) ||
-                other.referral == referral));
+                other.referral == referral) &&
+            const DeepCollectionEquality()
+                .equals(other._disableReason, _disableReason) &&
+            const DeepCollectionEquality()
+                .equals(other._deleteReason, _deleteReason));
   }
 
   @override
@@ -209,7 +260,9 @@ class _$UserStateImpl<T> implements _UserState<T> {
       const DeepCollectionEquality().hash(data),
       errorMessage,
       stackTrace,
-      referral);
+      referral,
+      const DeepCollectionEquality().hash(_disableReason),
+      const DeepCollectionEquality().hash(_deleteReason));
 
   @JsonKey(ignore: true)
   @override
@@ -224,7 +277,9 @@ abstract class _UserState<T> implements UserState<T> {
       final T? data,
       final String? errorMessage,
       final StackTrace? stackTrace,
-      final Referral? referral}) = _$UserStateImpl<T>;
+      final Referral? referral,
+      final List<String> disableReason,
+      final List<String> deleteReason}) = _$UserStateImpl<T>;
 
   @override
   bool get isBusy;
@@ -236,6 +291,10 @@ abstract class _UserState<T> implements UserState<T> {
   StackTrace? get stackTrace;
   @override
   Referral? get referral;
+  @override
+  List<String> get disableReason;
+  @override
+  List<String> get deleteReason;
   @override
   @JsonKey(ignore: true)
   _$$UserStateImplCopyWith<T, _$UserStateImpl<T>> get copyWith =>

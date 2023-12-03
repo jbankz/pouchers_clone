@@ -19,4 +19,6 @@ abstract class UserRepo {
   Future<User?> validatePhoneOtp(
       {required UserDto userDto, CancelToken? cancelToken});
   Future<Referral?> referral({CancelToken? cancelToken});
+  Future<bool> disableAccount(String reason, {CancelToken? cancelToken});
+  Future<bool> deleteAccount({CancelToken? cancelToken});
 }

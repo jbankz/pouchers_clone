@@ -26,7 +26,10 @@ class EditTextFieldWidget extends StatelessWidget {
       this.suffixIcon,
       this.prefix,
       this.titleStyle,
-      this.inputFormatters});
+      this.inputFormatters,
+      this.contentPadding,
+      this.maxLines = 1,
+      this.alignLabelWithHint});
 
   final String? title;
   final String label;
@@ -48,6 +51,9 @@ class EditTextFieldWidget extends StatelessWidget {
   final Widget? prefix;
   final bool autocorrect;
   final TextStyle? titleStyle;
+  final EdgeInsetsGeometry? contentPadding;
+  final int? maxLines;
+  final bool? alignLabelWithHint;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -74,8 +80,13 @@ class EditTextFieldWidget extends StatelessWidget {
             autovalidateMode: autovalidateMode,
             autocorrect: autocorrect,
             decoration: InputDecoration(
-                label: Text(label), suffixIcon: suffixIcon, prefix: prefix),
+                label: Text(label),
+                suffixIcon: suffixIcon,
+                prefix: prefix,
+                contentPadding: contentPadding,
+                alignLabelWithHint: alignLabelWithHint),
             inputFormatters: inputFormatters,
+            maxLines: maxLines,
           )
         ],
       );

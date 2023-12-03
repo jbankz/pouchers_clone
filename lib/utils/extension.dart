@@ -241,6 +241,9 @@ extension ContextExtensions on BuildContext {
   MaterialStateProperty<Color?>? get buttonBackgroundColor =>
       Theme.of(this).elevatedButtonTheme.style?.backgroundColor;
 
+  MaterialStateProperty<Color?>? get outlinegroundColor =>
+      Theme.of(this).elevatedButtonTheme.style?.backgroundColor;
+
   TextStyle? get dividerTextLarge => bodySmall?.copyWith(
       letterSpacing: 1.5,
       fontWeight: FontWeight.w700,

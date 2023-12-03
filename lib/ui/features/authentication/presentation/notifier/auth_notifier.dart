@@ -1,4 +1,5 @@
 import 'package:Pouchers/app/app.locator.dart';
+import 'package:Pouchers/app/core/manager/intercom_manager.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
@@ -6,6 +7,7 @@ import 'package:Pouchers/ui/features/authentication/domain/model/selected_questi
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
 import 'package:Pouchers/ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
+import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -22,6 +24,7 @@ import '../../domain/model/generate_2fa_token.dart';
 import '../../domain/model/security_questions.dart';
 import '../state/auth_state.dart';
 import '../view/otp/notifier/module.dart';
+import '../../../profile/presentation/views/widgets/account_info_sheet.dart';
 import 'module/module.dart';
 
 part 'auth_notifier.g.dart';
@@ -105,6 +108,20 @@ class AuthNotifier extends _$AuthNotifier {
 
         PageRouter.pushNamed(Routes.otpView,
             args: OtpViewArguments(email: parameter.email));
+        state = state.copyWith(isBusy: false);
+        return;
+      }
+
+      if (e.toString().contains('User account is disabled')) {
+        final response = await BottomSheets.showAlertDialog(
+            child: AccountInfoWindow(
+                config: Config(
+                    title: AppString.accountDisabled,
+                    content: AppString.accountDisabledHint,
+                    buttonText: AppString.contactSupport)));
+        if (response) {
+          IntercomManager.displayMessenger();
+        }
         state = state.copyWith(isBusy: false);
         return;
       }

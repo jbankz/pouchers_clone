@@ -13,6 +13,7 @@ import '../../../../../app/app.logger.dart';
 import '../../../../../app/core/manager/dojah_manager.dart';
 import '../../data/dao/referral_dao.dart';
 import '../../domain/dto/user_dto.dart';
+import '../../domain/model/mocked/reasons.dart';
 import '../../domain/model/referral/referral.dart';
 import '../state/user_state.dart';
 import 'module/module.dart';
@@ -27,7 +28,8 @@ class UserNotifier extends _$UserNotifier {
   Referral? _referral;
 
   @override
-  UserState build() => const UserState();
+  UserState build() =>
+      UserState(disableReason: disableReason, deleteReason: deleteReason);
 
   Future<void> getUserProfile([CancelToken? cancelToken]) async {
     try {
@@ -187,5 +189,39 @@ class UserNotifier extends _$UserNotifier {
       triggerNotificationTray(e.toString(), error: true);
     }
     state = state.copyWith(isBusy: false, referral: _referral);
+  }
+
+  Future<void> disableAccount(String reason, [CancelToken? cancelToken]) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      await ref.read(
+          disableAccountProvider.call(reason, cancelToken: cancelToken).future);
+
+      /// clear users sessions
+      ///
+      PageRouter.pushReplacement(Routes.signInView);
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(), error: true);
+    }
+    state = state.copyWith(isBusy: false);
+  }
+
+  Future<void> deleteAccount([CancelToken? cancelToken]) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      await ref
+          .read(deleteAccountProvider.call(cancelToken: cancelToken).future);
+
+      /// clear users sessions
+      ///
+      PageRouter.pushReplacement(Routes.signInView);
+    } catch (e) {
+      _logger.e(e.toString());
+      triggerNotificationTray(e.toString(), error: true);
+    }
+    state = state.copyWith(isBusy: false);
   }
 }

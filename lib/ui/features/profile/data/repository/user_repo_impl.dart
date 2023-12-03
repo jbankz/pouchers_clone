@@ -2,7 +2,6 @@ import 'package:Pouchers/ui/features/profile/data/dao/referral_dao.dart';
 import 'package:Pouchers/ui/features/profile/data/source/user/user_source.dart';
 import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
-import 'package:Pouchers/utils/logger.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/model/referral/referral.dart';
@@ -73,4 +72,13 @@ class UserRepoImpl implements UserRepo {
     referralDao.save(referral);
     return referral;
   }
+
+  @override
+  Future<bool> deleteAccount({CancelToken? cancelToken}) async =>
+      await _userSource.deleteAccount(cancelToken: cancelToken);
+
+  @override
+  Future<bool> disableAccount(String reason,
+          {CancelToken? cancelToken}) async =>
+      await _userSource.disableAccount(reason, cancelToken: cancelToken);
 }

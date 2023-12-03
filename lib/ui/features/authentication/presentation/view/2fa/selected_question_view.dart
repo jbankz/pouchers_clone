@@ -67,14 +67,14 @@ class _SelectedQuestionViewState extends ConsumerState<SelectedQuestionView>
               Expanded(
                   child: ListView(children: [
                 Text(
-                  'Answer the security questions',
+                  AppString.answerTheQuestion,
                   style: context.headlineMedium
                       ?.copyWith(fontSize: 24, fontWeight: FontWeight.w700),
                 ),
                 const Gap(height: 10),
                 RichText(
                   text: TextSpan(
-                    text: "Can’t remember the answers? ",
+                    text: AppString.cantRemember,
                     style: context.headlineLarge?.copyWith(
                         color: AppColors.kIconGrey,
                         fontSize: 12,

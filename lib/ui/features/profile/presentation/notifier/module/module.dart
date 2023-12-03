@@ -69,3 +69,24 @@ Future<User?> validatePhoneNumberOtp(ValidatePhoneNumberOtpRef ref,
 @riverpod
 Future<Referral?> referral(ReferralRef ref, {CancelToken? cancelToken}) async =>
     await ref.read(referralUsecaseImpl).execute(cancelToken);
+
+@riverpod
+Future<bool> deleteAccount(DeleteAccountRef ref,
+        {CancelToken? cancelToken}) async =>
+    await ref.read(deleteAccountUsecaseImpl).execute(cancelToken);
+
+@riverpod
+Future<bool> disableAccount(DisableAccountRef ref, String reason,
+        {CancelToken? cancelToken}) async =>
+    await ref
+        .read(disableAccountUsecaseImpl)
+        .execute(parameter: reason, cancelToken: cancelToken);
+
+
+
+
+// final deleteAccountUsecaseImpl = Provider<PoucherUseCaseWithOutParam>(
+//     (ref) => DeleteAccountUseCaseImpl(ref.read(userRepoModule)));
+
+// final disableAccountUsecaseImpl = Provider<PoucherUseCaseWithRequiredParam>(
+//     (ref) => DisableAccountUseCaseImpl(ref.read(userRepoModule)));

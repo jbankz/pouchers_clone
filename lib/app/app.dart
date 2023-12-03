@@ -11,6 +11,7 @@ import '../ui/features/authentication/presentation/view/2fa/two_fa_google_authen
 import '../ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_code_view.dart';
 import '../ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_view.dart';
 import '../ui/features/authentication/presentation/view/2fa/two_fa_intro_view.dart';
+import '../ui/features/authentication/presentation/view/password/confirm_password_view.dart';
 import '../ui/features/profile/presentation/views/biometric/biometric_setup_view.dart';
 import '../ui/features/profile/presentation/views/biometric/biometric_view.dart';
 import '../ui/features/authentication/presentation/view/otp/otp_view.dart';
@@ -34,6 +35,8 @@ import '../ui/features/dashboard/views/card/presentation/view/virtual_card_detai
 import '../ui/features/dashboard/views/dashboard_view.dart';
 import '../ui/features/onboarding/presentation/views/onboarding_view.dart';
 import '../ui/features/onboarding/presentation/views/splash_view.dart';
+import '../ui/features/profile/presentation/views/delete/delete_view.dart';
+import '../ui/features/profile/presentation/views/disable/disable_view.dart';
 import '../ui/features/profile/presentation/views/kyc/bvn/bvn_view.dart';
 import '../ui/features/profile/presentation/views/kyc/id/id_view.dart';
 import '../ui/features/profile/presentation/views/kyc/utility/utility_bill_view.dart';
@@ -123,6 +126,12 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: TwoFaGoogleAuthenticatorCodeGeneratorView),
     AdaptiveRoute(page: TwoFaGoogleAuthenticatorCodeView),
     AdaptiveRoute(page: SelectedQuestionView),
+    AdaptiveRoute(page: DisableView),
+    CustomRoute(
+        page: ConfirmPasswordView,
+        opaque: false,
+        transitionsBuilder: TransitionsBuilders.slideBottom),
+    AdaptiveRoute(page: DeleteView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

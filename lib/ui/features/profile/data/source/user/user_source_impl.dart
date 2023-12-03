@@ -97,4 +97,23 @@ class UserSourceImpl implements UserSource {
         cancelToken: cancelToken);
     return Referral.fromJson(response.data?['data'] as Map<String, dynamic>);
   }
+
+  @override
+  Future<bool> disableAccount(String reason, {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.disable,
+        requestType: RequestType.patch,
+        data: {'disable_reason': reason},
+        cancelToken: cancelToken);
+    return response.statusCode == 200;
+  }
+
+  @override
+  Future<bool> deleteAccount({CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.delete,
+        requestType: RequestType.delete,
+        cancelToken: cancelToken);
+    return response.statusCode == 200;
+  }
 }

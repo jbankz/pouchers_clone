@@ -257,7 +257,7 @@ TextStyle kHeadline6Style = const TextStyle(
   fontSize: 14,
 );
 
-ThemeData kThemeData = ThemeData.light().copyWith(
+ThemeData kThemeData = ThemeData.light(useMaterial3: false).copyWith(
     visualDensity: VisualDensity.adaptivePlatformDensity,
     scaffoldBackgroundColor: AppColors.white,
     iconTheme: const IconThemeData(size: kIconSize, color: kPrimaryColor),
@@ -289,6 +289,18 @@ ThemeData kThemeData = ThemeData.light().copyWith(
         dragHandleColor: AppColors.kPurpleColor200,
         dragHandleSize: const Size(24, 1.53),
         clipBehavior: Clip.none),
+    primaryTextTheme: TextTheme(
+        displayLarge: kHeadline1TextStyle,
+        displayMedium: kHeadline2TextStyle,
+        displaySmall: kHeadline3TextStyle,
+        headlineMedium: kHeadline4TextStyle,
+        bodyLarge: kBodyText1Style,
+        bodyMedium: kBodyText2Style,
+        titleMedium: kSubtitle1Style,
+        titleSmall: kSubtitle2Style,
+        headlineSmall: kHeadline5Style,
+        titleLarge: kHeadline6Style,
+        labelLarge: kHeadline6Style),
     textTheme: TextTheme(
         displayLarge: kHeadline1TextStyle,
         displayMedium: kHeadline2TextStyle,

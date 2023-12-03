@@ -16,18 +16,18 @@ class _ListenerPageState extends State<ListenerPage> {
     return Listener(
       onPointerDown: (e) {
         DateTime whenTouchedDatetime = DateTime.now();
-        if (nowDate.isBefore(whenTouchedDatetime)) {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (_) {
-            return LogInAccount(sessionTimeOut: true);
-          }), (route) => false);
+        // if (nowDate.isBefore(whenTouchedDatetime)) {
+        //   Navigator.of(context).pushAndRemoveUntil(
+        //       MaterialPageRoute(builder: (_) {
+        //     return LogInAccount(sessionTimeOut: true);
+        //   }), (route) => false);
 
-          setState(() {
-            nowDate = DateTime.now().add(Duration(minutes: 5));
-          });
-        } else {
-          nowDate = DateTime.now().add(Duration(minutes: 5));
-        }
+        //   setState(() {
+        //     nowDate = DateTime.now().add(Duration(minutes: 5));
+        //   });
+        // } else {
+        // nowDate = DateTime.now().add(Duration(minutes: 5));
+        // }
       },
       child: widget.child,
     );

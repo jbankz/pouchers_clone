@@ -15,7 +15,8 @@ class ElevatedButtonWidget extends StatelessWidget {
       this.width = double.infinity,
       this.loading = false,
       this.padding = EdgeInsets.zero,
-      this.bacgroundColor});
+      this.bacgroundColor,
+      this.outlinedColor});
 
   final double? height;
   final double? width;
@@ -24,27 +25,49 @@ class ElevatedButtonWidget extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final bool loading;
   final Color? bacgroundColor;
+  final Color? outlinedColor;
 
   @override
   Widget build(BuildContext context) => Padding(
         padding: padding,
         child: SizedBox(
-            height: height?.h,
-            width: width,
-            child: loading
-                ? ElevatedButton.icon(
-                    onPressed: null,
-                    icon: const CupertinoActivityIndicator(
-                        color: AppColors.white),
-                    label: Text(AppString.wait))
-                : ElevatedButton(
-                    onPressed: onPressed,
-                    style: ButtonStyle(
-                        backgroundColor: bacgroundColor == null
-                            ? context.buttonBackgroundColor
-                            : MaterialStateColor.resolveWith(
-                                (states) => bacgroundColor!)),
-                    child: Text(title),
-                  )),
+          height: height?.h,
+          width: width,
+          child: switch (loading) {
+            true => _buildLoadingButtonState(context),
+            false => _buildButtonState(context)
+          },
+        ),
+      );
+
+  ElevatedButton _buildButtonState(BuildContext context) => ElevatedButton(
+        onPressed: onPressed,
+        style: ButtonStyle(
+            side: outlinedColor == null
+                ? MaterialStateBorderSide.resolveWith(
+                    (states) => const BorderSide(color: Colors.transparent))
+                : MaterialStateBorderSide.resolveWith(
+                    (states) => BorderSide(color: outlinedColor!)),
+            backgroundColor: bacgroundColor == null
+                ? context.buttonBackgroundColor
+                : MaterialStateColor.resolveWith((states) => bacgroundColor!)),
+        child: Text(title),
+      );
+
+  ElevatedButton _buildLoadingButtonState(BuildContext context) =>
+      ElevatedButton.icon(
+        onPressed: null,
+        icon: const CupertinoActivityIndicator(color: AppColors.white),
+        label: Text(AppString.wait),
+        style: ButtonStyle(
+            side: outlinedColor == null
+                ? MaterialStateBorderSide.resolveWith(
+                    (states) => const BorderSide(color: Colors.transparent))
+                : MaterialStateBorderSide.resolveWith((states) =>
+                    BorderSide(color: outlinedColor!.withOpacity(.2))),
+            backgroundColor: bacgroundColor == null
+                ? context.buttonBackgroundColor
+                : MaterialStateColor.resolveWith(
+                    (states) => bacgroundColor!.withOpacity(.2))),
       );
 }

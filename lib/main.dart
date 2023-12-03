@@ -324,14 +324,3 @@ class ProviderLogger extends ProviderObserver {
 // I/flutter (11047):     }
 // I/flutter (11047):   }
 // I/flutter (11047): ]
-
-
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/validate-pin
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/security-questions
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/set-questions
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/user/generate-2fa-token
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/user/validate-2fa-token
-
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/selected-questions
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/validate-2fa
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/user/disable-2fa

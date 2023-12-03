@@ -104,16 +104,6 @@ class ApiPath {
   /// Change of pin
   static const String resetPin = '$_apiVersionOne/user/reset-pin';
 
-  // https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/validate-pin
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/security-questions
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/set-questions
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/user/generate-2fa-token
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/user/validate-2fa-token
-
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/selected-questions
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/validate-2fa
-// https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/user/disable-2fa
-
   static const String validatePin = '$_apiVersionOne/auth/validate-pin';
   static const String securityQuestions =
       '$_apiVersionOne/auth/security-questions';
@@ -124,6 +114,8 @@ class ApiPath {
   static const String disable2fa = '$_apiVersionOne/user/disable-2fa';
   static const String selectedQuestions =
       '$_apiVersionOne/auth/selected-questions';
+  static const String disable = '$_apiVersionOne/user/disable';
+  static const String delete = '$_apiVersionOne/user';
 
   static String authenticator = Platform.isAndroid
       ? 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'
