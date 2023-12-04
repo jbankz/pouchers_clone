@@ -10,7 +10,7 @@ class UploadRepImpl implements UploadRepo {
       : _uploadSource = uploadSource;
 
   @override
-  Future<bool> uploadFile(
+  Future<String> uploadFile(
           {required UploadDto uploadDto, CancelToken? cancelToken}) async =>
       await _uploadSource.uploadFile(uploadDto: uploadDto);
 }

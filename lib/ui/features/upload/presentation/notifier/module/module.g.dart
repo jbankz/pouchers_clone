@@ -6,7 +6,7 @@ part of 'module.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$uploadFileHash() => r'1e26f8f1d716333a1bec8a92c5b7daad42941823';
+String _$uploadFileHash() => r'224e2f904995acce7b80bd180982f45f4dd0e77e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const uploadFileProvider = UploadFileFamily();
 
 /// See also [uploadFile].
-class UploadFileFamily extends Family<AsyncValue<bool>> {
+class UploadFileFamily extends Family<AsyncValue<String>> {
   /// See also [uploadFile].
   const UploadFileFamily();
 
@@ -75,7 +75,7 @@ class UploadFileFamily extends Family<AsyncValue<bool>> {
 }
 
 /// See also [uploadFile].
-class UploadFileProvider extends AutoDisposeFutureProvider<bool> {
+class UploadFileProvider extends AutoDisposeFutureProvider<String> {
   /// See also [uploadFile].
   UploadFileProvider({
     required UploadDto uploadDto,
@@ -115,7 +115,7 @@ class UploadFileProvider extends AutoDisposeFutureProvider<bool> {
 
   @override
   Override overrideWith(
-    FutureOr<bool> Function(UploadFileRef provider) create,
+    FutureOr<String> Function(UploadFileRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -133,7 +133,7 @@ class UploadFileProvider extends AutoDisposeFutureProvider<bool> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<bool> createElement() {
+  AutoDisposeFutureProviderElement<String> createElement() {
     return _UploadFileProviderElement(this);
   }
 
@@ -154,7 +154,7 @@ class UploadFileProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
-mixin UploadFileRef on AutoDisposeFutureProviderRef<bool> {
+mixin UploadFileRef on AutoDisposeFutureProviderRef<String> {
   /// The parameter `uploadDto` of this provider.
   UploadDto get uploadDto;
 
@@ -162,8 +162,8 @@ mixin UploadFileRef on AutoDisposeFutureProviderRef<bool> {
   CancelToken? get cancelToken;
 }
 
-class _UploadFileProviderElement extends AutoDisposeFutureProviderElement<bool>
-    with UploadFileRef {
+class _UploadFileProviderElement
+    extends AutoDisposeFutureProviderElement<String> with UploadFileRef {
   _UploadFileProviderElement(super.provider);
 
   @override

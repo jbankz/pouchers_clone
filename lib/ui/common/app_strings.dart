@@ -142,6 +142,8 @@ class AppString {
   static String fundWallet = 'Fund Wallet';
   static String transfer = 'Transfer';
   static String request = 'Request';
+  static String requestHint =
+      'Easily manage and track all your request money transactions in one place';
   static String quickLinks = 'Quick Links';
   static String data = 'Data';
   static String more = 'More';
@@ -367,7 +369,7 @@ class AppString {
   static String setUpGoogleDownloadedAlreadAuthHint = 'Downloaded already';
 
   static String answerTheQuestion = 'Answer the security questions';
-  static String cantRemember = "Can’t remember the answers?";
+  static String cantRemember = "Can’t remember the answers? ";
   static String whyDisableAccount = "Why do you want to disable your account?";
   static String confirmationHint =
       "Please enter your password to complete the deactivation process.";
@@ -398,4 +400,14 @@ class AppString {
   static String eraseData =
       'we understand how you might feel about leaving data footprints. We take data security seriously and will not sell or unlawfully use or expose your data. We retain data based on our retention schedule in order to comply with legal and regulatory requirements.\n\nYou can read more about our ';
   static String contactSupport = 'Contact support';
+
+  static String takeNote = 'Take note!';
+  static String takeNoteHint =
+      'Make sure you keep the answers to your security questions safe. You\'ll need them to make security-related changes to your account when necessary.';
+  static String takeNoteActionButton = 'Ok, i understand';
+
+  static String urgentNote = 'Urgent!';
+  static String urgentNoteActionButton = 'Yes, turn it off';
+  static String urgentNoteHint =
+      'Turning off 2FA is not advisable. Your account could be open to unauthorized access if your PIN or password is compromised. Are you really sure about this?';
 }

@@ -1,5 +1,3 @@
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:Pouchers/app/common/provider.dart';
 import 'package:Pouchers/app/helpers/network_helpers.dart';
 import 'package:Pouchers/app/helpers/notifiers.dart';
 import 'package:Pouchers/app/helpers/service_response.dart';
@@ -8,10 +6,10 @@ import 'package:Pouchers/modules/account/models/referral_model.dart';
 import 'package:Pouchers/modules/account/models/security_question.dart';
 import 'package:Pouchers/modules/account/models/tier_list.dart';
 import 'package:Pouchers/modules/account/service/account_service.dart';
-import 'package:Pouchers/modules/login/models/login_response.dart';
-import 'package:Pouchers/utils/strings.dart';
 import 'package:riverpod/riverpod.dart';
 
+import '../../../app/app.locator.dart';
+import '../../../app/core/manager/session_manager.dart';
 import '../../../ui/features/profile/data/dao/user_dao.dart';
 
 final accountRepoProvider =
@@ -22,17 +20,19 @@ class AccountRepository {
 
   AccountRepository(this.ref);
 
+  final session = locator<SessionManager>();
+
   Future<NotifierState<String>> requestPasswordChange() async {
     ServiceResponse<String> passwordChange;
     final userProfile = userDao.returnUser(userDao.box);
     passwordChange = await AccountService.requestPasswordChange(
-        email: userProfile.email ?? "", token: userProfile.token!);
+        email: userProfile.email ?? "", token: session.accessToken);
 
     if (passwordChange.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       passwordChange = await AccountService.requestPasswordChange(
-          email: userProfiles.email ?? "", token: userProfiles.token!);
+          email: userProfiles.email ?? "", token: session.accessToken);
     }
     return passwordChange.toNotifierState();
   }
@@ -41,13 +41,13 @@ class AccountRepository {
     ServiceResponse<String> phoneChange;
     final userProfile = userDao.returnUser(userDao.box);
     phoneChange = await AccountService.requestPhoneChange(
-        email: userProfile.email ?? "", token: userProfile.token!);
+        email: userProfile.email ?? "", token: session.accessToken);
 
     if (phoneChange.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       phoneChange = await AccountService.requestPhoneChange(
-          email: userProfiles.email ?? "", token: userProfiles.token!);
+          email: userProfiles.email ?? "", token: session.accessToken);
     }
     return phoneChange.toNotifierState();
   }
@@ -57,13 +57,12 @@ class AccountRepository {
     ServiceResponse<EditProfileResponse> changePhone;
     final userProfile = userDao.returnUser(userDao.box);
     changePhone = await AccountService.changePhoneNumber(
-        phoneNumber: phoneNumber, token: userProfile.token!);
+        phoneNumber: phoneNumber, token: session.accessToken);
 
     if (changePhone.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
-      final userProfiles = userDao.returnUser(userDao.box);
       changePhone = await AccountService.changePhoneNumber(
-          phoneNumber: phoneNumber, token: userProfiles.token!);
+          phoneNumber: phoneNumber, token: session.accessToken);
     }
     return changePhone.toNotifierState();
   }
@@ -73,13 +72,13 @@ class AccountRepository {
     ServiceResponse<String> disable;
     final userProfile = userDao.returnUser(userDao.box);
     disable = await AccountService.disableAccount(
-        reason: reason, token: userProfile.token!, password: password);
+        reason: reason, token: session.accessToken, password: password);
 
     if (disable.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       disable = await AccountService.disableAccount(
-          reason: reason, token: userProfiles.token!, password: password);
+          reason: reason, token: session.accessToken, password: password);
     }
     return disable.toNotifierState();
   }
@@ -89,7 +88,7 @@ class AccountRepository {
     final userProfile = userDao.returnUser(userDao.box);
     delete = await AccountService.deleteAccount(
       reason: reason,
-      token: userProfile.token!,
+      token: session.accessToken,
     );
 
     if (delete.notAuthenticated) {
@@ -97,7 +96,7 @@ class AccountRepository {
       final userProfiles = userDao.returnUser(userDao.box);
       delete = await AccountService.deleteAccount(
         reason: reason,
-        token: userProfiles.token!,
+        token: session.accessToken,
       );
     }
     return delete.toNotifierState();
@@ -135,7 +134,7 @@ class AccountRepository {
         postalCode: postalCode,
         isLoginBiometricActive: isLoginBiometricActive,
         isPaymentBiometricActive: isPaymentBiometricActive,
-        token: userProfile.token!);
+        token: session.accessToken);
 
     if (editProfile.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
@@ -155,7 +154,7 @@ class AccountRepository {
           utilityBill: utilityBill,
           isLoginBiometricActive: isLoginBiometricActive,
           isPaymentBiometricActive: isPaymentBiometricActive,
-          token: userProfiles.token!);
+          token: session.accessToken);
     }
     return editProfile.toNotifierState();
   }
@@ -164,13 +163,13 @@ class AccountRepository {
     ServiceResponse<SecurityQuestionResponse> securityQuestion;
     final userProfile = userDao.returnUser(userDao.box);
     securityQuestion =
-        await AccountService.getSecurityQuestion(token: userProfile.token!);
+        await AccountService.getSecurityQuestion(token: session.accessToken);
 
     if (securityQuestion.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       securityQuestion =
-          await AccountService.getSecurityQuestion(token: userProfiles.token!);
+          await AccountService.getSecurityQuestion(token: session.accessToken);
     }
     return securityQuestion.toNotifierState();
   }
@@ -179,13 +178,13 @@ class AccountRepository {
     ServiceResponse<SelectedQuestionResponse> selectedQuestion;
     final userProfile = userDao.returnUser(userDao.box);
     selectedQuestion =
-        await AccountService.getSelectedQuestion(token: userProfile.token!);
+        await AccountService.getSelectedQuestion(token: session.accessToken);
 
     if (selectedQuestion.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       selectedQuestion =
-          await AccountService.getSelectedQuestion(token: userProfiles.token!);
+          await AccountService.getSelectedQuestion(token: session.accessToken);
     }
     return selectedQuestion.toNotifierState();
   }
@@ -200,7 +199,7 @@ class AccountRepository {
     setQuestion = await AccountService.setSecurityQuestion(
       questionId: questionId,
       answer: answer,
-      token: userProfile.token!,
+      token: session.accessToken,
       isValidate: isValidate,
     );
 
@@ -210,7 +209,7 @@ class AccountRepository {
       setQuestion = await AccountService.setSecurityQuestion(
         questionId: questionId,
         answer: answer,
-        token: userProfiles.token!,
+        token: session.accessToken,
         isValidate: isValidate,
       );
     }
@@ -224,13 +223,13 @@ class AccountRepository {
     ServiceResponse<String> reset;
     final userProfile = userDao.returnUser(userDao.box);
     reset = await AccountService.resetPin(
-        oldPin: oldPin, newPin: newPin, token: userProfile.token!);
+        oldPin: oldPin, newPin: newPin, token: session.accessToken);
 
     if (reset.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       reset = await AccountService.resetPin(
-          oldPin: oldPin, newPin: newPin, token: userProfiles.token!);
+          oldPin: oldPin, newPin: newPin, token: session.accessToken);
     }
     return reset.toNotifierState();
   }
@@ -239,13 +238,13 @@ class AccountRepository {
     ServiceResponse<String> validatePin;
     final userProfile = userDao.returnUser(userDao.box);
     validatePin =
-        await AccountService.validatePin(pin: pin, token: userProfile.token!);
+        await AccountService.validatePin(pin: pin, token: session.accessToken);
 
     if (validatePin.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       validatePin = await AccountService.validatePin(
-          pin: pin, token: userProfiles.token!);
+          pin: pin, token: session.accessToken);
     }
     return validatePin.toNotifierState();
   }
@@ -253,14 +252,14 @@ class AccountRepository {
   Future<NotifierState<String>> resendOtp({required String email}) async {
     ServiceResponse<String> resendOtp;
     final userProfile = userDao.returnUser(userDao.box);
-    resendOtp =
-        await AccountService.resendOtp(email: email, token: userProfile.token!);
+    resendOtp = await AccountService.resendOtp(
+        email: email, token: session.accessToken);
 
     if (resendOtp.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       resendOtp = await AccountService.resendOtp(
-          email: email, token: userProfiles.token!);
+          email: email, token: session.accessToken);
     }
     return resendOtp.toNotifierState();
   }
@@ -269,13 +268,13 @@ class AccountRepository {
     ServiceResponse<String> validateResend;
     final userProfile = userDao.returnUser(userDao.box);
     validateResend = await AccountService.validateResendOtp(
-        otp: otp, token: userProfile.token!);
+        otp: otp, token: session.accessToken);
 
     if (validateResend.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       validateResend = await AccountService.validateResendOtp(
-          otp: otp, token: userProfiles.token!);
+          otp: otp, token: session.accessToken);
     }
     return validateResend.toNotifierState();
   }
@@ -286,13 +285,13 @@ class AccountRepository {
     // final userProfile = userDao.returnUser(userDao.box);
     final userProfile = userDao.returnUser(userDao.box);
     validateBvn =
-        await AccountService.validateBvn(bvn: bvn, token: userProfile.token!);
+        await AccountService.validateBvn(bvn: bvn, token: session.accessToken);
 
     if (validateBvn.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       validateBvn = await AccountService.validateBvn(
-          bvn: bvn, token: userProfiles.token!);
+          bvn: bvn, token: session.accessToken);
     }
     return validateBvn.toNotifierState();
   }
@@ -314,7 +313,7 @@ class AccountRepository {
         firstName: firstName,
         lastName: lastName,
         dob: dob,
-        token: userProfile.token!);
+        token: session.accessToken);
 
     if (validateId.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
@@ -327,7 +326,7 @@ class AccountRepository {
           firstName: firstName,
           lastName: lastName,
           dob: dob,
-          token: userProfiles.token!);
+          token: session.accessToken);
     }
     return validateId.toNotifierState();
   }
@@ -337,12 +336,12 @@ class AccountRepository {
     // final userProfile = userDao.returnUser(userDao.box);
     final userProfile = userDao.returnUser(userDao.box);
 
-    tierList = await AccountService.getTierList(token: userProfile.token!);
+    tierList = await AccountService.getTierList(token: session.accessToken);
 
     if (tierList.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
-      tierList = await AccountService.getTierList(token: userProfiles.token!);
+      tierList = await AccountService.getTierList(token: session.accessToken);
     }
     return tierList.toNotifierState();
   }
@@ -352,13 +351,13 @@ class AccountRepository {
     ServiceResponse<String> signedUrl;
     final userProfile = userDao.returnUser(userDao.box);
     signedUrl = await AccountService.getSignedUrl(
-        token: userProfile.token!, fileName: fileName, isPhoto: isPhoto);
+        token: session.accessToken, fileName: fileName, isPhoto: isPhoto);
 
     if (signedUrl.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       signedUrl = await AccountService.getSignedUrl(
-          token: userProfiles.token!, fileName: fileName, isPhoto: isPhoto);
+          token: session.accessToken, fileName: fileName, isPhoto: isPhoto);
     }
     return signedUrl.toNotifierState();
   }
@@ -367,14 +366,14 @@ class AccountRepository {
     ServiceResponse<String> generate2FA;
     final userProfile = userDao.returnUser(userDao.box);
     generate2FA = await AccountService.generate2FAToken(
-      token: userProfile.token!,
+      token: session.accessToken,
     );
 
     if (generate2FA.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       generate2FA = await AccountService.generate2FAToken(
-        token: userProfiles.token!,
+        token: session.accessToken,
       );
     }
     return generate2FA.toNotifierState();
@@ -384,13 +383,13 @@ class AccountRepository {
     ServiceResponse<bool> validate2FA;
     final userProfile = userDao.returnUser(userDao.box);
     validate2FA = await AccountService.validate2FAToken(
-        token: userProfile.token!, userToken: userToken);
+        token: session.accessToken, userToken: userToken);
 
     if (validate2FA.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       validate2FA = await AccountService.validate2FAToken(
-          token: userProfiles.token!, userToken: userToken);
+          token: session.accessToken, userToken: userToken);
     }
     return validate2FA.toNotifierState();
   }
@@ -400,13 +399,13 @@ class AccountRepository {
     ServiceResponse<bool> disable2FA;
     final userProfile = userDao.returnUser(userDao.box);
     disable2FA = await AccountService.disable2FA(
-        token: userProfile.token!, transactionPin: transactionPin);
+        token: session.accessToken, transactionPin: transactionPin);
 
     if (disable2FA.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       disable2FA = await AccountService.disable2FA(
-          token: userProfiles.token!, transactionPin: transactionPin);
+          token: session.accessToken, transactionPin: transactionPin);
     }
     return disable2FA.toNotifierState();
   }
@@ -415,14 +414,14 @@ class AccountRepository {
     ServiceResponse<GetReferralResponse> getReferralTrail;
     final userProfile = userDao.returnUser(userDao.box);
     getReferralTrail = await AccountService.getReferralTrail(
-      token: userProfile.token!,
+      token: session.accessToken,
     );
 
     if (getReferralTrail.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       getReferralTrail = await AccountService.getReferralTrail(
-        token: userProfiles.token!,
+        token: session.accessToken,
       );
     }
     return getReferralTrail.toNotifierState();
@@ -432,14 +431,14 @@ class AccountRepository {
     ServiceResponse<BannerResponse> getBanner;
     final userProfile = userDao.returnUser(userDao.box);
     getBanner = await AccountService.getBanner(
-      token: userProfile.token!,
+      token: session.accessToken,
     );
 
     if (getBanner.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       getBanner = await AccountService.getBanner(
-        token: userProfiles.token!,
+        token: session.accessToken,
       );
     }
     return getBanner.toNotifierState();
@@ -449,14 +448,14 @@ class AccountRepository {
     ServiceResponse<EditProfileResponse> getUserProfile;
     final userProfile = userDao.returnUser(userDao.box);
     getUserProfile = await AccountService.getUserProfile(
-      token: userProfile.token!,
+      token: session.accessToken,
     );
 
     if (getUserProfile.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       getUserProfile = await AccountService.getUserProfile(
-        token: userProfiles.token!,
+        token: session.accessToken,
       );
     }
     return getUserProfile.toNotifierState();
@@ -467,13 +466,13 @@ class AccountRepository {
     ServiceResponse<ManageRequestResponse> manageRequest;
     final userProfile = userDao.returnUser(userDao.box);
     manageRequest = await AccountService.manageRequest(
-        token: userProfile.token!, page: page, type: type, status: status);
+        token: session.accessToken, page: page, type: type, status: status);
 
     if (manageRequest.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
       manageRequest = await AccountService.manageRequest(
-          token: userProfiles.token!, page: page, type: type, status: status);
+          token: session.accessToken, page: page, type: type, status: status);
     }
     return manageRequest.toNotifierState();
   }

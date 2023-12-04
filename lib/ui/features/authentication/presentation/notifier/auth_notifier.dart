@@ -4,27 +4,27 @@ import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
 import 'package:Pouchers/ui/features/authentication/domain/model/selected_questions.dart';
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/enum/two_fa_type.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
-import 'package:Pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
 import 'package:Pouchers/ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
 import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
-import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../app/app.logger.dart';
 import '../../../../../app/app.router.dart';
+import '../../../../../app/config/app_helper.dart';
 import '../../../../../app/core/manager/biometric_manager.dart';
 import '../../../../../app/core/manager/secure_manager.dart';
 import '../../../../../app/navigators/navigators.dart';
 import '../../../../../modules/tab_layout/screens/tab_layout.dart';
 import '../../../../common/app_strings.dart';
 import '../../../../notification/notification_tray.dart';
+import '../../../profile/presentation/views/widgets/account_info_sheet.dart';
 import '../../domain/model/generate_2fa_token.dart';
 import '../../domain/model/security_questions.dart';
 import '../state/auth_state.dart';
 import '../view/otp/notifier/module.dart';
-import '../../../profile/presentation/views/widgets/account_info_sheet.dart';
 import 'module/module.dart';
 
 part 'auth_notifier.g.dart';
@@ -54,10 +54,11 @@ class AuthNotifier extends _$AuthNotifier {
           args: OtpViewArguments(email: parameter.email));
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> signInUser(AuthDto parameter,
@@ -92,14 +93,21 @@ class AuthNotifier extends _$AuthNotifier {
         return;
       }
 
+      if (response?.data?.is2faActive == true) {
+        PageRouter.pushNamed(Routes.twoFaGoogleAuthenticatorCodeView,
+            args: const TwoFaGoogleAuthenticatorCodeViewArguments(
+                twoFaType: TwoFaType.twoFaLoginVerification));
+        state = state.copyWith(isBusy: false);
+        return;
+      }
+
       if (onSuccess != null) {
         onSuccess();
         state = state.copyWith(isBusy: false);
         return;
       }
 
-      // PageRouter.pushReplacement(Routes.dashboardView);
-      pushToAndClearStack(PageRouter.globalContext, TabLayout());
+      PageRouter.pushReplacement(Routes.tabLayout);
     } catch (e) {
       _logger.e(e.toString());
 
@@ -132,11 +140,11 @@ class AuthNotifier extends _$AuthNotifier {
         return;
       }
 
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
+      ref.invalidateSelf();
     }
-    state = state.copyWith(isBusy: false);
-    ref.invalidateSelf();
   }
 
   Future<void> requestOtp(AuthDto parameter,
@@ -152,10 +160,10 @@ class AuthNotifier extends _$AuthNotifier {
       if (triggerTimer) ref.read(otpTimerModule.notifier).resetTimer();
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> verifyAccountEmail({
@@ -173,11 +181,11 @@ class AuthNotifier extends _$AuthNotifier {
       PageRouter.pushNamed(Routes.tagView);
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
       onError();
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> createTag(AuthDto parameter,
@@ -198,10 +206,10 @@ class AuthNotifier extends _$AuthNotifier {
       PageRouter.pushNamed(Routes.createPinView);
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> createTransactionPin(AuthDto parameter,
@@ -225,11 +233,11 @@ class AuthNotifier extends _$AuthNotifier {
       pushToAndClearStack(PageRouter.globalContext, TabLayout());
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
+      ref.invalidateSelf();
     }
-    state = state.copyWith(isBusy: false);
-    ref.invalidateSelf();
   }
 
   Future<void> forgotPassword(AuthDto parameter,
@@ -245,10 +253,10 @@ class AuthNotifier extends _$AuthNotifier {
           args: VerifyPasswordAccountViewArguments(email: parameter.email));
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> validateResetPassword(AuthDto parameter,
@@ -264,10 +272,10 @@ class AuthNotifier extends _$AuthNotifier {
           args: SetNewPasswordViewArguments(email: parameter.email ?? ''));
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> resetPassword(AuthDto parameter,
@@ -298,10 +306,10 @@ class AuthNotifier extends _$AuthNotifier {
               tap: () => PageRouter.pushReplacement(Routes.signInView)));
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> signInUserWithBiometric({
@@ -335,10 +343,10 @@ class AuthNotifier extends _$AuthNotifier {
               tap: () => PageRouter.popToRoot(Routes.accountSettingsView)));
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> validatePin(String pin, CancelToken cancelToken,
@@ -354,11 +362,11 @@ class AuthNotifier extends _$AuthNotifier {
       if (onSuccess != null) onSuccess();
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
       if (onError != null) onError();
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> securityQuestions(CancelToken cancelToken) async {
@@ -369,10 +377,11 @@ class AuthNotifier extends _$AuthNotifier {
           securityQuestionsProvider.call(cancelToken: cancelToken).future);
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
+    } finally {
+      state =
+          state.copyWith(isBusy: false, securityQuestion: _securityQuestions);
     }
-    state = state.copyWith(isBusy: false, securityQuestion: _securityQuestions);
   }
 
   Future<void> answerQuestion(
@@ -389,10 +398,10 @@ class AuthNotifier extends _$AuthNotifier {
       PageRouter.pushNamed(route);
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> generateTwoFaToken({required CancelToken cancelToken}) async {
@@ -403,16 +412,18 @@ class AuthNotifier extends _$AuthNotifier {
           generateTwoFaTokenProvider.call(cancelToken: cancelToken).future);
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
+    } finally {
+      state =
+          state.copyWith(isBusy: false, generate2faToken: _generate2faToken);
     }
-    state = state.copyWith(isBusy: false, generate2faToken: _generate2faToken);
   }
 
   Future<void> validateTwoFaToken(
       {required String user2faToken,
       required CancelToken cancelToken,
-      required Function() onError}) async {
+      required Function() onError,
+      required void Function() onSuccess}) async {
     try {
       state = state.copyWith(isBusy: true);
 
@@ -420,14 +431,14 @@ class AuthNotifier extends _$AuthNotifier {
           .call(TwoFaDto(user2faToken: user2faToken), cancelToken: cancelToken)
           .future);
 
-      PageRouter.popToRoot(Routes.twoFaAuthView);
+      onSuccess();
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
       onError();
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> selectedQuestions(CancelToken cancelToken) async {
@@ -438,11 +449,11 @@ class AuthNotifier extends _$AuthNotifier {
           selectedQuestionsProvider.call(cancelToken: cancelToken).future);
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
+    } finally {
+      state =
+          state.copyWith(isBusy: false, selectedQuestions: _selectedQuestions);
     }
-    state =
-        state.copyWith(isBusy: false, selectedQuestions: _selectedQuestions);
   }
 
   Future<void> validate2fa(TwoFaDto twoFaDto,
@@ -457,9 +468,9 @@ class AuthNotifier extends _$AuthNotifier {
       success();
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(),
-          error: true, ignoreIfNull: e.toString().isNull);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 }

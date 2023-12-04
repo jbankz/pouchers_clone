@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
 import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
@@ -13,12 +14,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stacked/stacked_annotations.dart';
 
+import '../../../../../../app/app.router.dart';
 import '../../../../../common/app_strings.dart';
+import 'enum/two_fa_type.dart';
 import 'two_fa_google_authenticator_code_view.form.dart';
 
 @FormView(fields: [FormTextField(name: 'code')])
 class TwoFaGoogleAuthenticatorCodeView extends ConsumerStatefulWidget {
-  const TwoFaGoogleAuthenticatorCodeView({super.key});
+  const TwoFaGoogleAuthenticatorCodeView(
+      {super.key, this.twoFaType = TwoFaType.twoFaSetup});
+
+  final TwoFaType? twoFaType;
 
   @override
   ConsumerState<TwoFaGoogleAuthenticatorCodeView> createState() =>
@@ -101,10 +107,21 @@ class _TwoFaGoogleAuthenticatorCodeViewState
     _authNotifier.validateTwoFaToken(
         user2faToken: codeController.text,
         cancelToken: _cancelToken,
+        onSuccess: _proceed,
         onError: () {
           codeController.text = '';
           setState(() {});
           _errorAnimationController.addError(ErrorAnimationType.shake);
         });
+  }
+
+  void _proceed() {
+    switch (widget.twoFaType) {
+      case TwoFaType.twoFaSetup:
+        PageRouter.popToRoot(Routes.twoFaAuthView);
+      case TwoFaType.twoFaLoginVerification:
+        PageRouter.pushReplacement(Routes.tabLayout);
+      case null:
+    }
   }
 }

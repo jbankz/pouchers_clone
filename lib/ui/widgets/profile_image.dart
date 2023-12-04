@@ -1,5 +1,6 @@
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,12 +13,14 @@ class ProfileImage extends StatelessWidget {
       required this.image,
       this.initials = '',
       this.onTap,
-      this.pickImage});
+      this.pickImage,
+      this.loading = false});
 
   final String image;
   final String initials;
   final void Function()? onTap;
   final void Function()? pickImage;
+  final bool loading;
   @override
   Widget build(BuildContext context) => Stack(
         clipBehavior: Clip.none,
@@ -26,7 +29,7 @@ class ProfileImage extends StatelessWidget {
             onTap: onTap,
             customBorder: const CircleBorder(),
             child: CachedNetworkImage(
-              imageUrl: initials,
+              imageUrl: image,
               imageBuilder: (context, imageProvider) => Container(
                 width: 80.w,
                 height: 80.h,
@@ -43,14 +46,21 @@ class ProfileImage extends StatelessWidget {
             Positioned(
               bottom: 0,
               left: 60.w,
-              child: GestureDetector(
-                onTap: pickImage,
-                child: Container(
-                    height: 24.h,
-                    width: 24.w,
-                    decoration: const BoxDecoration(
-                        color: AppColors.kPrimaryColor, shape: BoxShape.circle),
-                    child: Icon(Icons.add, color: AppColors.white, size: 16.w)),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                child: loading
+                    ? const CupertinoActivityIndicator()
+                    : GestureDetector(
+                        onTap: pickImage,
+                        child: Container(
+                            height: 24.h,
+                            width: 24.w,
+                            decoration: const BoxDecoration(
+                                color: AppColors.kPrimaryColor,
+                                shape: BoxShape.circle),
+                            child: Icon(Icons.add,
+                                color: AppColors.white, size: 16.w)),
+                      ),
               ),
             )
         ],

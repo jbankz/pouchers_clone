@@ -25,7 +25,8 @@ class WalletNotifier extends _$WalletNotifier {
           .read(walletBalanceProvider.call(cancelToken: cancelToken).future);
     } catch (e) {
       _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(isBusy: false, data: _wallet);
     }
-    state = state.copyWith(isBusy: false, data: _wallet);
   }
 }

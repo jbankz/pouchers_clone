@@ -1,5 +1,6 @@
 import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/app.router.dart';
+import 'package:Pouchers/app/config/app_helper.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/view/otp/notifier/module.dart';
@@ -40,8 +41,9 @@ class UserNotifier extends _$UserNotifier {
           .read(getUsersProfileProvider.call(cancelToken: cancelToken).future);
     } catch (e) {
       _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> validateBVN(UserDto userDto, [CancelToken? cancelToken]) async {
@@ -60,9 +62,10 @@ class UserNotifier extends _$UserNotifier {
               tap: () => PageRouter.popToRoot(Routes.accountVerificationView)));
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(), error: true);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> validateID(UserDto userDto, [CancelToken? cancelToken]) async {
@@ -81,9 +84,10 @@ class UserNotifier extends _$UserNotifier {
               tap: () => PageRouter.popToRoot(Routes.accountVerificationView)));
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(), error: true);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> requestPhoneNumberOtp(UserDto userDto,
@@ -106,9 +110,10 @@ class UserNotifier extends _$UserNotifier {
       PageRouter.pushNamed(Routes.verifyPhoneOtpView);
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(), error: true);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> validatePhoneNumberOtp(UserDto userDto,
@@ -123,9 +128,10 @@ class UserNotifier extends _$UserNotifier {
       PageRouter.pushNamed(Routes.changePhoneNumberView);
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(), error: true);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> updateProfile(UserDto userDto,
@@ -142,9 +148,10 @@ class UserNotifier extends _$UserNotifier {
       if (success != null) success();
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(), error: true);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> changePhone(UserDto userDto, {CancelToken? cancelToken}) async {
@@ -160,9 +167,10 @@ class UserNotifier extends _$UserNotifier {
       PageRouter.popToRoot(Routes.profileView);
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(), error: true);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> triggerDojah(
@@ -186,9 +194,10 @@ class UserNotifier extends _$UserNotifier {
           .read(referralProvider.call(cancelToken: cancelToken).future);
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(), error: true);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false, referral: _referral);
     }
-    state = state.copyWith(isBusy: false, referral: _referral);
   }
 
   Future<void> disableAccount(String reason, [CancelToken? cancelToken]) async {
@@ -203,9 +212,10 @@ class UserNotifier extends _$UserNotifier {
       PageRouter.pushReplacement(Routes.signInView);
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(), error: true);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> deleteAccount([CancelToken? cancelToken]) async {
@@ -220,8 +230,9 @@ class UserNotifier extends _$UserNotifier {
       PageRouter.pushReplacement(Routes.signInView);
     } catch (e) {
       _logger.e(e.toString());
-      triggerNotificationTray(e.toString(), error: true);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 }

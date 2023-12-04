@@ -1,9 +1,7 @@
-import 'dart:async';
-
 import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
+import 'package:Pouchers/ui/features/profile/presentation/views/widgets/account_info_sheet.dart';
 import 'package:Pouchers/ui/widgets/edit_text_field_with.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:Pouchers/utils/field_validator.dart';
@@ -11,7 +9,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stacked/stacked_annotations.dart';
 
 import '../../../../../common/app_colors.dart';
@@ -22,7 +19,6 @@ import '../../../../../widgets/gap.dart';
 import '../../../domain/model/security_questions.dart';
 import 'first_security_question_view.form.dart';
 import 'sheets/questions_options_sheet.dart';
-import 'sheets/take_note_sheets.dart';
 
 @FormView(
     fields: [FormTextField(name: 'question'), FormTextField(name: 'answer')])
@@ -49,7 +45,12 @@ class _FirstSecurityQuestionViewState
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _authNotifier = ref.read(authNotifierProvider.notifier);
-      BottomSheets.showAlertDialog(child: const TakeNoteSheets());
+      BottomSheets.showAlertDialog(
+          child: AccountInfoWindow(
+              config: Config(
+                  title: AppString.takeNote,
+                  content: AppString.takeNoteHint,
+                  buttonText: AppString.takeNoteActionButton)));
     });
     super.initState();
   }

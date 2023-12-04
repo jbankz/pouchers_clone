@@ -14,7 +14,7 @@ class UploadSourceImpl implements UploadSource {
       : _networkService = networkService;
 
   @override
-  Future<bool> uploadFile(
+  Future<String> uploadFile(
       {required UploadDto uploadDto, CancelToken? cancelToken}) async {
     try {
       final getSignedUrl = await _networkService.request(
@@ -27,14 +27,14 @@ class UploadSourceImpl implements UploadSource {
 
       final Uint8List? rawImage = await uploadDto.file?.readAsBytes();
 
-      final upload = await _networkService.request(
+      await _networkService.request(
           path: bucketUrl,
           requestType: RequestType.put,
           data: rawImage,
           options: Options(),
           cancelToken: cancelToken);
 
-      return upload.statusCode == 200;
+      return bucketUrl.split('?').first;
     } catch (e) {
       rethrow;
     }

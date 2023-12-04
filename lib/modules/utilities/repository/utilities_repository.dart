@@ -9,6 +9,8 @@ import 'package:Pouchers/modules/utilities/model/utilities_model.dart';
 import 'package:Pouchers/modules/utilities/service/utilities_service.dart';
 import 'package:Pouchers/utils/strings.dart';
 
+import '../../../app/app.locator.dart';
+import '../../../app/core/manager/session_manager.dart';
 import '../../../ui/features/profile/data/dao/user_dao.dart';
 
 final utilitiesRepoProvider = Provider.autoDispose<UtilitiesRepository>(
@@ -19,12 +21,14 @@ class UtilitiesRepository {
 
   UtilitiesRepository(this.ref);
 
+  final session = locator<SessionManager>();
+
   Future<NotifierState<String>> buyVoucher(
       {required String amount, required String transactionPin}) async {
     ServiceResponse<String> buyVoucher;
     final userProfile = userDao.returnUser(userDao.box);
     buyVoucher = await UtilitiesService.buyVoucher(
-      token: userProfile.token!,
+      token: session.accessToken,
       amount: amount,
       transactionPin: transactionPin,
     );
@@ -46,7 +50,7 @@ class UtilitiesRepository {
     ServiceResponse<GetVoucherResponse> fetchVoucher;
     final userProfile = userDao.returnUser(userDao.box);
     fetchVoucher = await UtilitiesService.fetchVouchers(
-        token: userProfile.token!, status: status, page: page);
+        token: session.accessToken, status: status, page: page);
 
     if (fetchVoucher.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
@@ -67,7 +71,7 @@ class UtilitiesRepository {
     ServiceResponse<String> giftVoucher;
     final userProfile = userDao.returnUser(userDao.box);
     giftVoucher = await UtilitiesService.giftVoucher(
-      token: userProfile.token!,
+      token: session.accessToken,
       email: email,
       tag: tag,
       code: code,
@@ -93,7 +97,7 @@ class UtilitiesRepository {
     ServiceResponse<String> redeemVoucher;
     final userProfile = userDao.returnUser(userDao.box);
     redeemVoucher = await UtilitiesService.redeemVoucher(
-      token: userProfile.token!,
+      token: session.accessToken,
       code: code,
       transactionPin: transactionPin,
     );
@@ -123,7 +127,7 @@ class UtilitiesRepository {
     ServiceResponse<DiscountResponse> getDiscount;
     final userProfile = userDao.returnUser(userDao.box);
     getDiscount = await UtilitiesService.getDiscount(
-      token: userProfile.token!,
+      token: session.accessToken,
       utility: utility,
     );
 
@@ -162,7 +166,7 @@ class UtilitiesRepository {
     ServiceResponse<String> buyUtilities;
     final userProfile = userDao.returnUser(userDao.box);
     buyUtilities = await UtilitiesService.buyUtilities(
-      token: userProfile.token!,
+      token: session.accessToken,
       merchantAccount: merchantAccount,
       amount: amount,
       merchantReferenceNumber: merchantReferenceNumber,
@@ -233,7 +237,7 @@ class UtilitiesRepository {
     ServiceResponse<String> buyAirtime;
     final userProfile = userDao.returnUser(userDao.box);
     buyAirtime = await UtilitiesService.buyAirtime(
-      token: userProfile.token!,
+      token: session.accessToken,
       amount: amount,
       transactionPin: transactionPin,
       subCategory: subCategory,

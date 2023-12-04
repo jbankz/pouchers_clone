@@ -5,6 +5,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../modules/tab_layout/screens/tab_layout.dart';
 import '../ui/features/authentication/presentation/view/2fa/second_security_question_view.dart';
 import '../ui/features/authentication/presentation/view/2fa/selected_question_view.dart';
 import '../ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_code_generator_view.dart';
@@ -132,6 +133,10 @@ import 'core/manager/session_manager.dart';
         opaque: false,
         transitionsBuilder: TransitionsBuilders.slideBottom),
     AdaptiveRoute(page: DeleteView),
+    CustomRoute(
+        page: TabLayout,
+        opaque: false,
+        transitionsBuilder: TransitionsBuilders.fadeIn),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

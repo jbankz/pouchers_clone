@@ -1,3 +1,5 @@
+import 'package:Pouchers/app/config/app_helper.dart';
+import 'package:Pouchers/app/core/manager/intercom_manager.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
@@ -12,6 +14,7 @@ import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:Pouchers/utils/field_validator.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -81,11 +84,13 @@ class _SelectedQuestionViewState extends ConsumerState<SelectedQuestionView>
                         fontWeight: FontWeight.w400),
                     children: [
                       TextSpan(
-                          text: "contact support",
+                          text: AppString.contactSupport,
                           style: context.headlineLarge?.copyWith(
                               color: AppColors.kPrimaryColor,
                               fontSize: 12,
-                              fontWeight: FontWeight.w700))
+                              fontWeight: FontWeight.w700),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => IntercomManager.displayMessenger())
                     ],
                   ),
                 ),

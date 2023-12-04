@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:Pouchers/app/app.locator.dart';
+import 'package:Pouchers/app/config/app_helper.dart';
 import 'package:Pouchers/app/core/manager/image_manager.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/ui/features/upload/presentation/notifier/module/module.dart';
-import 'package:Pouchers/ui/notification/notification_tray.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -37,7 +38,7 @@ class UploadNotifier extends _$UploadNotifier {
   Future<bool> uploadFile(UploadDto uploadDto,
       [CancelToken? cancelToken]) async {
     if (_file == null) {
-      triggerNotificationTray(AppString.pleasePickImage, error: true);
+      AppHelper.handleError(AppString.pleasePickImage);
       return false;
     }
 
@@ -61,13 +62,16 @@ class UploadNotifier extends _$UploadNotifier {
     try {
       state = state.copyWith(isBusy: true);
 
-      await ref.read(uploadFileProvider
+      final String imageUrl = await ref.read(uploadFileProvider
           .call(uploadDto: uploadDto, cancelToken: cancelToken)
           .future);
+
+      userDao.save(userDao.user.copyWith(profilePicture: imageUrl));
     } catch (e) {
       _logger.e(e);
-      triggerNotificationTray(e.toString(), error: true);
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 }

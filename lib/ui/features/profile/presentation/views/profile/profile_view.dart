@@ -54,185 +54,193 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
   }
 
   @override
-  Widget build(BuildContext context) => ValueListenableBuilder<Box>(
-      valueListenable: userDao.getListenable(),
-      builder: (_, box, __) {
-        final user = userDao.returnUser(box);
-        final String name =
-            '${user.firstName ?? ''} ${user.lastName ?? ''}'.titleCase;
-        final bool isAccountVerified = user.tierLevels == 3;
-        return Scaffold(
-          backgroundColor: AppColors.kPurpleColor800,
-          appBar: AppBar(
-              backgroundColor: AppColors.kPurpleColor800,
-              title: Text(AppString.profile)),
-          body: SafeArea(
-            minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-            child: SingleChildScrollView(
-                child: Center(
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                if (user.tierLevels != 3)
-                  InkWell(
-                    onTap: () =>
-                        PageRouter.pushNamed(Routes.accountVerificationView),
-                    borderRadius: BorderRadius.circular(8.r),
-                    child: Container(
-                      width: double.infinity,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                      decoration: BoxDecoration(
-                          color: AppColors.kLightOrange100,
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(color: AppColors.kLightOrange200)),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(AppImage.shield),
-                          const Gap(width: 7),
-                          Expanded(
-                            child: Text(AppString.completeAccount,
-                                style: context.titleLarge?.copyWith(
-                                    color: AppColors.kLightOrange300,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400)),
-                          ),
-                          const Icon(Icons.navigate_next,
-                              color: AppColors.kLightOrange200)
-                        ],
+  Widget build(BuildContext context) {
+    final userState = ref.watch(userNotifierProvider);
+    final uploadState = ref.watch(uploadNotifierProvider);
+
+    return ValueListenableBuilder<Box>(
+        valueListenable: userDao.getListenable(),
+        builder: (_, box, __) {
+          final user = userDao.returnUser(box);
+          final String name =
+              '${user.firstName ?? ''} ${user.lastName ?? ''}'.titleCase;
+          final bool isAccountVerified = user.tierLevels == 3;
+
+          return Scaffold(
+            backgroundColor: AppColors.kPurpleColor800,
+            appBar: AppBar(
+                backgroundColor: AppColors.kPurpleColor800,
+                title: Text(AppString.profile)),
+            body: SafeArea(
+              minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+              child: SingleChildScrollView(
+                  child: Center(
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  if (user.tierLevels != 3)
+                    InkWell(
+                      onTap: () =>
+                          PageRouter.pushNamed(Routes.accountVerificationView),
+                      borderRadius: BorderRadius.circular(8.r),
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 5.h),
+                        decoration: BoxDecoration(
+                            color: AppColors.kLightOrange100,
+                            borderRadius: BorderRadius.circular(8.r),
+                            border:
+                                Border.all(color: AppColors.kLightOrange200)),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(AppImage.shield),
+                            const Gap(width: 7),
+                            Expanded(
+                              child: Text(AppString.completeAccount,
+                                  style: context.titleLarge?.copyWith(
+                                      color: AppColors.kLightOrange300,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400)),
+                            ),
+                            const Icon(Icons.navigate_next,
+                                color: AppColors.kLightOrange200)
+                          ],
+                        ),
                       ),
                     ),
+                  const Gap(height: 13),
+                  ProfileImage(
+                      image: user.profilePicture ?? '',
+                      loading: uploadState.isBusy,
+                      pickImage: () => _imagePickerHandler.pickImage(
+                          file: (file) => _uploadNotifier.uploadProfilePic(
+                              UploadDto(
+                                  file: File(file.path),
+                                  profilePicture: File(file.path).fileName),
+                              _cancelToken))),
+                  const Gap(height: 8),
+                  Text(userDao.fullName,
+                      style: context.headlineMedium
+                          ?.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center),
+                  const Gap(height: 2),
+                  Text('@${user.tag ?? ''}',
+                      style: context.headlineMedium?.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.kIconGrey),
+                      textAlign: TextAlign.center),
+                  const Gap(height: 9),
+                  GestureDetector(
+                    onTap: () => PageRouter.pushNamed(Routes.tierView),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 6.91.w, vertical: 1.38.h),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6.91.r),
+                              color: AppColors.kUnknownColor1,
+                              border:
+                                  Border.all(color: AppColors.kPurpleColor700)),
+                          child: Text('Tier ${user.tierLevels}',
+                              style: context.displayMedium?.copyWith(
+                                  fontSize: 8, fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.center),
+                        ),
+                        const Gap(width: 10),
+                        Flexible(
+                          child: Text(AppString.upgradeNow,
+                              style: context.displayMedium?.copyWith(
+                                  fontSize: 12, fontWeight: FontWeight.w700),
+                              textAlign: TextAlign.center),
+                        ),
+                      ],
+                    ),
                   ),
-                const Gap(height: 13),
-                ProfileImage(
-                    image: user.profilePicture ?? '',
-                    pickImage: () => _imagePickerHandler.pickImage(
-                        file: (file) => _uploadNotifier.uploadProfilePic(
-                            UploadDto(
-                                file: File(file.path),
-                                profilePicture: File(file.path).fileName),
-                            _cancelToken))),
-                const Gap(height: 8),
-                Text(userDao.fullName,
-                    style: context.headlineMedium
-                        ?.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.center),
-                const Gap(height: 2),
-                Text('@${user.tag ?? ''}',
-                    style: context.headlineMedium?.copyWith(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.kIconGrey),
-                    textAlign: TextAlign.center),
-                const Gap(height: 9),
-                GestureDetector(
-                  onTap: () => PageRouter.pushNamed(Routes.tierView),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 6.91.w, vertical: 1.38.h),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6.91.r),
-                            color: AppColors.kUnknownColor1,
-                            border:
-                                Border.all(color: AppColors.kPurpleColor700)),
-                        child: Text('Tier ${user.tierLevels}',
-                            style: context.displayMedium?.copyWith(
-                                fontSize: 8, fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.center),
-                      ),
-                      const Gap(width: 10),
-                      Flexible(
-                        child: Text(AppString.upgradeNow,
-                            style: context.displayMedium?.copyWith(
-                                fontSize: 12, fontWeight: FontWeight.w700),
-                            textAlign: TextAlign.center),
-                      ),
-                    ],
-                  ),
-                ),
-                const Gap(height: 25),
-                Container(
-                  width: double.infinity,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 15.w, vertical: 23.h),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16.r),
-                      color: AppColors.white),
-                  child: Column(
-                    children: [
-                      _buildTile(
-                          context: context,
-                          key: AppString.fullName,
-                          value: name,
-                          onTap: () => BottomSheets.showInputAlertDialog(
-                              barrierDismissible: false,
-                              child: const UpdateFullNameWidget())),
-                      _buildTile(
-                          context: context,
-                          key: AppString.gender,
-                          value: user.gender?.titleCase ?? '',
-                          onTap: () => BottomSheets.showInputAlertDialog(
-                              barrierDismissible: false,
-                              child: const UpdateGenderWidget())),
-                      _buildTile(
-                          context: context,
-                          key: AppString.phone,
-                          value: user.phoneNumber ?? '',
-                          onTap: () => PageRouter.pushNamed(
-                              Routes.requestChangeOfPhoneNumberView)),
-                      _buildTile(
-                          context: context,
-                          key: AppString.idVerification,
-                          value: '',
-                          trailing: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10.w, vertical: 5.h),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  color: user.tierLevels == 1
-                                      ? AppColors.kLightOrange100
-                                      : AppColors.kLightColorGreen),
-                              child: Text(
-                                  isAccountVerified
-                                      ? AppString.incomplete
-                                      : AppString.incomplete,
-                                  style: context.headlineMedium?.copyWith(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: isAccountVerified
-                                          ? AppColors.kGreen100Color
-                                          : AppColors.kLightOrange300))),
-                          onTap: () => PageRouter.pushNamed(
-                              Routes.accountVerificationView)),
-                      _buildTile(
-                          context: context,
-                          key: AppString.dob,
-                          value: user.dob ?? '',
-                          isLoading: ref.watch(userNotifierProvider).isBusy,
-                          onTap: () async {
-                            final date = await pickDate(
-                                dateOptions: DateOptions.past,
-                                onChange: (date) {}) as String?;
-                            if (date != null) {
-                              _userNotifier.updateProfile(UserDto(dob: date),
-                                  cancelToken: _cancelToken);
-                            }
-                          }),
-                      _buildTile(
-                          context: context,
-                          isLast: true,
-                          key: AppString.tag,
-                          value: '@${user.tag ?? ''}'),
-                    ],
-                  ),
-                )
-              ]),
-            )),
-          ),
-        );
-      });
+                  const Gap(height: 25),
+                  Container(
+                    width: double.infinity,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 15.w, vertical: 23.h),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16.r),
+                        color: AppColors.white),
+                    child: Column(
+                      children: [
+                        _buildTile(
+                            context: context,
+                            key: AppString.fullName,
+                            value: name,
+                            onTap: () => BottomSheets.showInputAlertDialog(
+                                barrierDismissible: false,
+                                child: const UpdateFullNameWidget())),
+                        _buildTile(
+                            context: context,
+                            key: AppString.gender,
+                            value: user.gender?.titleCase ?? '',
+                            onTap: () => BottomSheets.showInputAlertDialog(
+                                barrierDismissible: false,
+                                child: const UpdateGenderWidget())),
+                        _buildTile(
+                            context: context,
+                            key: AppString.phone,
+                            value: user.phoneNumber ?? '',
+                            onTap: () => PageRouter.pushNamed(
+                                Routes.requestChangeOfPhoneNumberView)),
+                        _buildTile(
+                            context: context,
+                            key: AppString.idVerification,
+                            value: '',
+                            trailing: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w, vertical: 5.h),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    color: user.tierLevels == 1
+                                        ? AppColors.kLightOrange100
+                                        : AppColors.kLightColorGreen),
+                                child: Text(
+                                    isAccountVerified
+                                        ? AppString.incomplete
+                                        : AppString.incomplete,
+                                    style: context.headlineMedium?.copyWith(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: isAccountVerified
+                                            ? AppColors.kGreen100Color
+                                            : AppColors.kLightOrange300))),
+                            onTap: () => PageRouter.pushNamed(
+                                Routes.accountVerificationView)),
+                        _buildTile(
+                            context: context,
+                            key: AppString.dob,
+                            value: user.dob ?? '',
+                            isLoading: userState.isBusy,
+                            onTap: () async {
+                              final date = await pickDate(
+                                  dateOptions: DateOptions.past,
+                                  onChange: (date) {}) as String?;
+                              if (date != null) {
+                                _userNotifier.updateProfile(UserDto(dob: date),
+                                    cancelToken: _cancelToken);
+                              }
+                            }),
+                        _buildTile(
+                            context: context,
+                            isLast: true,
+                            key: AppString.tag,
+                            value: '@${user.tag ?? ''}'),
+                      ],
+                    ),
+                  )
+                ]),
+              )),
+            ),
+          );
+        });
+  }
 
   GestureDetector _buildTile(
           {required BuildContext context,

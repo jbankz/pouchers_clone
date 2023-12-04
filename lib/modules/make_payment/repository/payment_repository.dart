@@ -1,3 +1,4 @@
+import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:Pouchers/app/helpers/network_helpers.dart';
 import 'package:Pouchers/app/helpers/notifiers.dart';
@@ -8,6 +9,7 @@ import 'package:Pouchers/modules/make_payment/service/payment_service.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:riverpod/riverpod.dart';
 
+import '../../../app/app.locator.dart';
 import '../../../ui/features/profile/data/dao/user_dao.dart';
 
 final paymentRepoProvider =
@@ -18,15 +20,17 @@ class PaymentRepository {
 
   PaymentRepository(this.ref);
 
+  static final session = locator<SessionManager>();
+
   Future<NotifierState<Map<String, dynamic>>> getContactByPoucherTag(
       {required String poucherTag}) async {
     ServiceResponse<Map<String, dynamic>> getContactByPoucherTag;
     final userProfile = userDao.returnUser(userDao.box);
     getContactByPoucherTag = await PaymentService.getContactByPoucherTag(
-        token: userProfile.token!, poucherTag: poucherTag);
+        token: session.accessToken, poucherTag: poucherTag);
 
     if (getContactByPoucherTag.notAuthenticated) {
-      await refreshToken(refreshToken: userProfile.refreshToken!);
+      await refreshToken(refreshToken: session.accessToken);
       final userProfiles = userDao.returnUser(userDao.box);
       getContactByPoucherTag = await PaymentService.getContactByPoucherTag(
           token: userProfiles.token!, poucherTag: poucherTag);
@@ -39,10 +43,10 @@ class PaymentRepository {
     ServiceResponse<ContactListResponse> getAllContacts;
     final userProfile = userDao.returnUser(userDao.box);
     getAllContacts = await PaymentService.getAllContacts(
-        token: userProfile.token!, contacts: contacts);
+        token: session.accessToken, contacts: contacts);
 
     if (getAllContacts.notAuthenticated) {
-      await refreshToken(refreshToken: userProfile.refreshToken!);
+      await refreshToken(refreshToken: session.accessToken);
       final userProfiles = userDao.returnUser(userDao.box);
       getAllContacts = await PaymentService.getAllContacts(
           token: userProfiles.token!, contacts: contacts);
@@ -58,14 +62,14 @@ class PaymentRepository {
     ServiceResponse<RequestResponse> requestMoney;
     final userProfile = userDao.returnUser(userDao.box);
     requestMoney = await PaymentService.requestMoney(
-      token: userProfile.token!,
+      token: session.accessToken,
       amount: amount,
       tag: tag,
       note: note,
     );
 
     if (requestMoney.notAuthenticated) {
-      await refreshToken(refreshToken: userProfile.refreshToken!);
+      await refreshToken(refreshToken: session.accessToken);
       final userProfiles = userDao.returnUser(userDao.box);
       requestMoney = await PaymentService.requestMoney(
         token: userProfiles.token!,
@@ -85,14 +89,14 @@ class PaymentRepository {
     ServiceResponse<P2PResponse> p2pMoney;
     final userProfile = userDao.returnUser(userDao.box);
     p2pMoney = await PaymentService.p2p(
-        token: userProfile.token!,
+        token: session.accessToken,
         amount: amount,
         tag: tag,
         note: note,
         transactionPin: transactionPin);
 
     if (p2pMoney.notAuthenticated) {
-      await refreshToken(refreshToken: userProfile.refreshToken!);
+      await refreshToken(refreshToken: session.accessToken);
       final userProfiles = userDao.returnUser(userDao.box);
       p2pMoney = await PaymentService.p2p(
           token: userProfiles.token!,
@@ -112,13 +116,13 @@ class PaymentRepository {
     ServiceResponse<AccountDetailsResponse> accountDetails;
     final userProfile = userDao.returnUser(userDao.box);
     accountDetails = await PaymentService.accountDetails(
-        token: userProfile.token!,
+        token: session.accessToken,
         amount: amount,
         accountNumber: accountNumber,
         bankName: bankName);
 
     if (accountDetails.notAuthenticated) {
-      await refreshToken(refreshToken: userProfile.refreshToken!);
+      await refreshToken(refreshToken: session.accessToken);
       final userProfiles = userDao.returnUser(userDao.box);
       accountDetails = await PaymentService.accountDetails(
           token: userProfiles.token!,
@@ -141,14 +145,14 @@ class PaymentRepository {
     ServiceResponse<LocalTransferResponse> localBankTransfer;
     final userProfile = userDao.returnUser(userDao.box);
     localBankTransfer = await PaymentService.localBankTransfer(
-        token: userProfile.token!,
+        token: session.accessToken,
         accountNumber: accountNumber,
         amount: amount,
         bankName: bankName,
         transactionPin: transactionPin);
 
     if (localBankTransfer.notAuthenticated) {
-      await refreshToken(refreshToken: userProfile.refreshToken!);
+      await refreshToken(refreshToken: session.accessToken);
       final userProfiles = userDao.returnUser(userDao.box);
       localBankTransfer = await PaymentService.localBankTransfer(
           token: userProfiles.token!,
@@ -164,11 +168,11 @@ class PaymentRepository {
     ServiceResponse<GetWalletResponse> getWalletDetails;
     final userProfile = userDao.returnUser(userDao.box);
     getWalletDetails = await PaymentService.getWalletDetails(
-      token: userProfile.token!,
+      token: session.accessToken,
     );
 
     if (getWalletDetails.notAuthenticated) {
-      await refreshToken(refreshToken: userProfile.refreshToken!);
+      await refreshToken(refreshToken: session.accessToken);
       final userProfiles = userDao.returnUser(userDao.box);
       getWalletDetails = await PaymentService.getWalletDetails(
         token: userProfiles.token!,
@@ -181,11 +185,11 @@ class PaymentRepository {
     ServiceResponse<NotificationResponse> getNotifications;
     final userProfile = userDao.returnUser(userDao.box);
     getNotifications = await PaymentService.getNotifications(
-      token: userProfile.token!,
+      token: session.accessToken,
     );
 
     if (getNotifications.notAuthenticated) {
-      await refreshToken(refreshToken: userProfile.refreshToken!);
+      await refreshToken(refreshToken: session.accessToken);
       final userProfiles = userDao.returnUser(userDao.box);
       getNotifications = await PaymentService.getNotifications(
         token: userProfiles.token!,
@@ -204,7 +208,7 @@ class PaymentRepository {
     ServiceResponse<MoneyRequestResponse> requestMoney;
     final userProfile = userDao.returnUser(userDao.box);
     requestMoney = await PaymentService.moneyRequestStatus(
-        token: userProfile.token!,
+        token: session.accessToken,
         amount: amount,
         action: action,
         requestId: requestId,
@@ -212,7 +216,7 @@ class PaymentRepository {
         pin: pin);
 
     if (requestMoney.notAuthenticated) {
-      await refreshToken(refreshToken: userProfile.refreshToken!);
+      await refreshToken(refreshToken: session.accessToken);
       final userProfiles = userDao.returnUser(userDao.box);
       requestMoney = await PaymentService.moneyRequestStatus(
           token: userProfiles.token!,

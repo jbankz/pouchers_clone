@@ -87,11 +87,10 @@ class BiometricSetupView extends ConsumerWidget {
 
   Future<void> _handlePayToggle(WidgetRef ref, bool value) async {
     if (value) {
-      final pin =
-          await BottomSheets.showSheet(child: const PinConfirmationSheet())
-              as String?;
+      final pin = await BottomSheets.showSheet(
+          child: const PinConfirmationSheet(validatePinHere: true)) as String?;
       if (pin != null) {
-        ref.read(biometricNotifier.notifier).secureTransactionPin(pin);
+        await ref.read(biometricNotifier.notifier).secureTransactionPin(pin);
       } else {
         biometricDao.pay = false;
         return;

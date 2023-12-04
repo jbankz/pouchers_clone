@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'module.g.dart';
 
 @riverpod
-Future<bool> uploadFile(UploadFileRef ref,
+Future<String> uploadFile(UploadFileRef ref,
         {required UploadDto uploadDto, CancelToken? cancelToken}) async =>
     await ref
         .read(getUploadFileUseCaseModule)

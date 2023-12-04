@@ -4,14 +4,14 @@ import 'package:Pouchers/ui/features/upload/domain/repository/upload_repo.dart';
 import 'package:dio/dio.dart';
 
 class UploadUseCaseImpl
-    implements PoucherUseCaseWithRequiredParam<UploadDto, bool> {
+    implements PoucherUseCaseWithRequiredParam<UploadDto, String> {
   final UploadRepo _uploadRepo;
 
   UploadUseCaseImpl({required UploadRepo uploadRepo})
       : _uploadRepo = uploadRepo;
 
   @override
-  Future<bool> execute(
+  Future<String> execute(
           {required UploadDto parameter, CancelToken? cancelToken}) async =>
       await _uploadRepo.uploadFile(
           uploadDto: parameter, cancelToken: cancelToken);

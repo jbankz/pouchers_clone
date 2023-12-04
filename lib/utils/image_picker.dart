@@ -29,6 +29,7 @@ class ImagePickerHandler {
     final isAndroid = Platform.isAndroid;
     return await showModalBottomSheet(
       context: PageRouter.globalContext,
+      showDragHandle: false,
       shape: isAndroid
           ? const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),

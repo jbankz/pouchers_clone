@@ -1,4 +1,5 @@
 import 'package:Pouchers/ui/notification/notification_tray.dart';
+import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
@@ -40,5 +41,10 @@ class AppHelper {
     } catch (e) {
       debugPrint('Could not launch: $e');
     }
+  }
+
+  static Future<void> handleError(dynamic e) async {
+    triggerNotificationTray(e.toString(),
+        error: true, ignoreIfNull: e.toString().isNull);
   }
 }

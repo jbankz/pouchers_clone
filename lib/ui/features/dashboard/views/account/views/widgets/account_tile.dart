@@ -37,24 +37,26 @@ class AccountTile extends StatelessWidget {
             ),
             const Gap(width: 10),
             desc != null
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: context.headlineMedium?.copyWith(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: color),
-                        textAlign: TextAlign.left,
-                      ),
-                      const Gap(height: 1),
-                      Text(
-                        desc ?? '',
-                        style: context.titleLarge?.copyWith(fontSize: 12),
-                        textAlign: TextAlign.left,
-                      ),
-                    ],
+                ? Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: context.headlineMedium?.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: color),
+                          textAlign: TextAlign.left,
+                        ),
+                        const Gap(height: 1),
+                        Text(
+                          desc ?? '',
+                          style: context.titleLarge?.copyWith(fontSize: 12),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
                   )
                 : Text(title,
                     style: context.headlineMedium?.copyWith(

@@ -12,6 +12,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 
 import '../../../../../../app/core/manager/intercom_manager.dart';
+import '../../../../../../app/navigators/navigators.dart';
+import '../../../../../../modules/account/screens/account_settings/schedule_payments.dart';
+import '../../../../../../modules/account/screens/request/requests.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/profile_image.dart';
 import 'widgets/account_tile.dart';
@@ -21,7 +24,7 @@ class AccountView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => 2 < 2
-      ? ProfilePage()
+      ? const ProfilePage()
       : ValueListenableBuilder<Box>(
           valueListenable: userDao.getListenable(),
           builder: (_, box, __) {
@@ -89,18 +92,14 @@ class AccountView extends ConsumerWidget {
                       title: AppString.referral,
                       desc: AppString.referralInstruction,
                       tapped: () => PageRouter.pushNamed(Routes.referralView)),
-                  // const Gap(height: 23),
-                  // AccountTile(
-                  //     icon: AppImage.savedCard,
-                  //     title: AppString.savedCards,
-                  //     desc: AppString.savedCardsInstruction,
-                  //     tapped: () {}),
                   const Gap(height: 23),
                   AccountTile(
-                      icon: AppImage.sync,
-                      title: AppString.scheduledPayments,
-                      desc: AppString.scheduledPaymentsInstruction,
-                      tapped: () {}),
+                      icon: AppImage.requestIcon,
+                      title: AppString.request,
+                      desc: AppString.requestHint,
+                      tapped: () => pushTo(context, ManageRequest(),
+                          settings: const RouteSettings(
+                              name: ManageRequest.routeName))),
                   const Gap(height: 23),
                   AccountTile(
                       icon: AppImage.user,
@@ -110,17 +109,28 @@ class AccountView extends ConsumerWidget {
                           PageRouter.pushNamed(Routes.accountSettingsView)),
                   const Gap(height: 23),
                   AccountTile(
+                      icon: AppImage.sync,
+                      title: AppString.scheduledPayments,
+                      desc: AppString.scheduledPaymentsInstruction,
+                      tapped: () => pushTo(
+                            context,
+                            const SchedulePayments(),
+                            settings: const RouteSettings(
+                                name: SchedulePayments.routeName),
+                          )),
+                  const Gap(height: 23),
+                  AccountTile(
                       icon: AppImage.customerService,
                       title: AppString.helpAndSupport,
                       desc: AppString.helpAndSupportInstruction,
                       tapped: IntercomManager.displayMessenger),
                   const Gap(height: 23),
-                  AccountTile(
-                      icon: AppImage.logo,
-                      title: AppString.aboutPourcher,
-                      desc: AppString.aboutPourcherInstruction,
-                      tapped: () {}),
-                  const Gap(height: 32),
+                  // AccountTile(
+                  //     icon: AppImage.logo,
+                  //     title: AppString.aboutPourcher,
+                  //     desc: AppString.aboutPourcherInstruction,
+                  //     tapped: () {}),
+                  // const Gap(height: 32),
                   AccountTile(
                       icon: AppImage.logOut,
                       title: AppString.logOut,

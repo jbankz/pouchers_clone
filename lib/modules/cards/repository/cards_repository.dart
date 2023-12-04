@@ -4,11 +4,13 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:Pouchers/app/helpers/network_helpers.dart';
 import 'package:Pouchers/app/helpers/notifiers.dart';
 import 'package:Pouchers/app/helpers/service_response.dart';
-import 'package:Pouchers/app/helpers/session_manager.dart';
 import 'package:Pouchers/modules/cards/model/cards_model.dart';
 import 'package:Pouchers/modules/cards/service/cards_service.dart';
 import 'package:Pouchers/modules/login/models/login_response.dart';
 import 'package:Pouchers/utils/strings.dart';
+
+import '../../../app/app.locator.dart';
+import '../../../app/core/manager/session_manager.dart';
 
 final cardsRepoProvider =
     Provider.autoDispose<CardsRepository>((ref) => CardsRepository(ref));
@@ -17,6 +19,8 @@ class CardsRepository {
   final ProviderRef ref;
 
   CardsRepository(this.ref);
+
+  static final session = locator<SessionManager>();
 
   Future<NotifierState<String>> createVirtualCards(
       {
@@ -34,7 +38,7 @@ class CardsRepository {
     final userProfile = userDao.returnUser(userDao.box);
     createCard = await CardsService.createVirtualCard(
       // address: address,
-      token: userProfile.token!,
+      token: session.accessToken,
       amount: amount,
       transactionPin: transactionPin,
       bvn: bvn,
@@ -71,7 +75,7 @@ class CardsRepository {
     print("access Token ${userProfile.token}");
     print("refresh Token ${userProfile.refreshToken}");
     cardsResponse = await CardsService.getAllVirtualCards(
-        token: userProfile.token!, userId: userProfile.userId!);
+        token: session.accessToken, userId: userProfile.userId!);
     if (cardsResponse.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
       final userProfiles = userDao.returnUser(userDao.box);
@@ -87,7 +91,7 @@ class CardsRepository {
     // final userProfile = userDao.returnUser(userDao.box);
     final userProfile = userDao.returnUser(userDao.box);
     fetchEnv = await CardsService.getAllFees(
-        token: userProfile.token!, amount: amount);
+        token: session.accessToken, amount: amount);
 
     if (fetchEnv.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
@@ -106,7 +110,7 @@ class CardsRepository {
     final userProfile = userDao.returnUser(userDao.box);
     fundCard = await CardsService.fundVirtualCard(
       type: type,
-      token: userProfile.token!,
+      token: session.accessToken,
       amount: amount,
       transactionPin: transactionPin,
     );
@@ -129,7 +133,7 @@ class CardsRepository {
     ServiceResponse<GetCardDetailsResponse> cardDetails;
     final userProfile = userDao.returnUser(userDao.box);
     cardDetails = await CardsService.getCardDetails(
-        token: userProfile.token!, cardId: cardId);
+        token: session.accessToken, cardId: cardId);
 
     if (cardDetails.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
@@ -144,7 +148,7 @@ class CardsRepository {
     ServiceResponse<String> getCardToken;
     final userProfile = userDao.returnUser(userDao.box);
     getCardToken = await CardsService.getCardToken(
-        token: userProfile.token!, cardId: cardId);
+        token: session.accessToken, cardId: cardId);
 
     if (getCardToken.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
@@ -159,7 +163,7 @@ class CardsRepository {
     ServiceResponse<String> cardBalance;
     final userProfile = userDao.returnUser(userDao.box);
     cardBalance = await CardsService.getCardBalance(
-        token: userProfile.token!, cardId: cardId);
+        token: session.accessToken, cardId: cardId);
 
     if (cardBalance.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
@@ -177,7 +181,7 @@ class CardsRepository {
     ServiceResponse<String> freeze;
     final userProfile = userDao.returnUser(userDao.box);
     freeze = await CardsService.freezeCard(
-        token: userProfile.token!,
+        token: session.accessToken,
         cardId: cardId,
         transactionPin: transactionPin,
         type: type);

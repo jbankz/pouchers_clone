@@ -1,3 +1,4 @@
+import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/modules/transactions/screens/history.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -9,6 +10,7 @@ import 'package:Pouchers/modules/transactions/model/transaction_model.dart';
 import 'package:Pouchers/modules/transactions/service/transaction_service.dart';
 import 'package:Pouchers/utils/strings.dart';
 
+import '../../../app/app.locator.dart';
 import '../../../ui/features/profile/data/dao/user_dao.dart';
 
 final transactionRepoProvider = Provider.autoDispose<TransactionRepository>(
@@ -19,12 +21,14 @@ class TransactionRepository {
 
   TransactionRepository(this.ref);
 
+  final session = locator<SessionManager>();
+
   Future<NotifierState<GetTransactionsResponse>> getTransactionHistory(
       {OrderHistoryStatus? status, int? page}) async {
     ServiceResponse<GetTransactionsResponse> getTransaction;
     final userProfile = userDao.returnUser(userDao.box);
     getTransaction = await TransactionService.getTransactionHistory(
-        token: userProfile.token!, status: status, page: page);
+        token: session.accessToken, status: status, page: page);
 
     if (getTransaction.notAuthenticated) {
       await refreshToken(refreshToken: userProfile.refreshToken!);
@@ -45,7 +49,7 @@ class TransactionRepository {
     ServiceResponse<TransactionAnalyticsResponse> getTransactionAnalytics;
     final userProfile = userDao.returnUser(userDao.box);
     getTransactionAnalytics = await TransactionService.getTransactionAnalytics(
-      token: userProfile.token!,
+      token: session.accessToken,
       month: month,
       year: year,
     );

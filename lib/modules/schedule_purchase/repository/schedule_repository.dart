@@ -1,3 +1,4 @@
+import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:Pouchers/app/helpers/network_helpers.dart';
@@ -8,6 +9,7 @@ import 'package:Pouchers/modules/schedule_purchase/service/schedule_service.dart
 import 'package:Pouchers/modules/utilities/model/utilities_model.dart';
 import 'package:Pouchers/utils/strings.dart';
 
+import '../../../app/app.locator.dart';
 import '../../../ui/features/profile/data/dao/user_dao.dart';
 
 final scheduleRepoProvider =
@@ -17,6 +19,8 @@ class ScheduleRepository {
   final ProviderRef ref;
 
   ScheduleRepository(this.ref);
+
+  final session = locator<SessionManager>();
 
   Future<NotifierState<String>> scheduleP2PTransfer(
       {required String category,
@@ -31,7 +35,7 @@ class ScheduleRepository {
     ServiceResponse<String> scheduleP2PTransfer;
     final userProfile = userDao.returnUser(userDao.box);
     scheduleP2PTransfer = await ScheduleService.scheduleP2PTransfer(
-      token: userProfile.token!,
+      token: session.accessToken,
       category: category,
       subCategory: subCategory,
       frequency: frequency,
@@ -75,7 +79,7 @@ class ScheduleRepository {
     ServiceResponse<String> scheduleUtility;
     final userProfile = userDao.returnUser(userDao.box);
     scheduleUtility = await ScheduleService.scheduleUtility(
-      token: userProfile.token!,
+      token: session.accessToken,
       category: category,
       subCategory: subCategory,
       frequency: frequency,
@@ -115,7 +119,7 @@ class ScheduleRepository {
     ServiceResponse<String> scheduleLocalTransfer;
     final userProfile = userDao.returnUser(userDao.box);
     scheduleLocalTransfer = await ScheduleService.scheduleLocalTransfer(
-      token: userProfile.token!,
+      token: session.accessToken,
       frequency: frequency,
       bankName: bankName,
       accountNumber: accountNumber,
@@ -148,7 +152,7 @@ class ScheduleRepository {
     ServiceResponse<GetAllScheduleResponse> getSchedule;
     final userProfile = userDao.returnUser(userDao.box);
     getSchedule = await ScheduleService.getSchedule(
-      token: userProfile.token!,
+      token: session.accessToken,
       category: category,
     );
 
@@ -171,7 +175,7 @@ class ScheduleRepository {
     ServiceResponse<String> editSchedule;
     final userProfile = userDao.returnUser(userDao.box);
     editSchedule = await ScheduleService.editSchedule(
-      token: userProfile.token!,
+      token: session.accessToken,
       frequency: frequency,
       transactionPin: transactionPin,
       scheduleId: scheduleId,
@@ -199,7 +203,7 @@ class ScheduleRepository {
     ServiceResponse<String> deleteSchedule;
     final userProfile = userDao.returnUser(userDao.box);
     deleteSchedule = await ScheduleService.deleteSchedule(
-      token: userProfile.token!,
+      token: session.accessToken,
       transactionPin: transactionPin,
       scheduleId: scheduleId,
     );
