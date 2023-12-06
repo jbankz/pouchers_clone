@@ -138,10 +138,11 @@ class AuthSourceImpl implements AuthSource {
   }
 
   @override
-  Future<User?> disable2fa({CancelToken? cancelToken}) async {
+  Future<User?> disable2fa(AuthDto authDto, {CancelToken? cancelToken}) async {
     final response = await networkService.request(
         path: ApiPath.disable2fa,
         requestType: RequestType.patch,
+        data: authDto.toJson(),
         cancelToken: cancelToken);
     return User.fromJson(response.data?['data'] as Map<String, dynamic>);
   }

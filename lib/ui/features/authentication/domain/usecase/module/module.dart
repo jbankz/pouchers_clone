@@ -7,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../../../app/core/usecase/poucher_usecase.dart';
 import '../create_pin_usecase.dart';
 import '../create_tag_usecase.dart';
+import '../disable_two_fa_usecase.dart';
 import '../forgot_password_usecase.dart';
 import '../generate_two_fa_token_usecase.dart';
 import '../reset_password_usecase.dart';
@@ -74,3 +75,6 @@ final generate2faUseCaseImpl = Provider<PoucherUseCaseWithOutParam>(
 
 final validate2faUseCaseImpl = Provider<PoucherUseCaseWithRequiredParam>(
     (ref) => ValidateTwoFaCodeUseCaseImpl(ref.read(authRepoModule)));
+
+final disable2faUseCaseImpl = Provider<PoucherUseCaseWithRequiredParam>(
+    (ref) => DisableTwoFaUseCaseImpl(ref.read(authRepoModule)));

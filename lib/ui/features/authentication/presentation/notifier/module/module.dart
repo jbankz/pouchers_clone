@@ -6,6 +6,7 @@ import 'package:Pouchers/ui/features/authentication/domain/model/sign_in_model/s
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../profile/domain/model/user.dart';
 import '../../../domain/dto/auth_dto.dart';
 import '../../../domain/model/create_pin_model/create_pin_model.dart';
 import '../../../domain/model/request_otp_model/request_otp_model.dart';
@@ -134,3 +135,10 @@ Future<bool> validate2faAnswer(Validate2faAnswerRef ref, TwoFaDto twoFaDto,
 Future<List<SelectedQuestions>> selectedQuestions(SelectedQuestionsRef ref,
         {CancelToken? cancelToken}) async =>
     await ref.read(getSelectedQuestionsUseCaseImpl).execute(cancelToken);
+
+@riverpod
+Future<User?> disableTwoFa(DisableTwoFaRef ref, AuthDto authDto,
+        {CancelToken? cancelToken}) async =>
+    await ref
+        .read(disable2faUseCaseImpl)
+        .execute(parameter: authDto, cancelToken: cancelToken);

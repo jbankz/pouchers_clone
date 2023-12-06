@@ -473,4 +473,19 @@ class AuthNotifier extends _$AuthNotifier {
       state = state.copyWith(isBusy: false);
     }
   }
+
+  Future<void> disable2fa(AuthDto authDto, {CancelToken? cancelToken}) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      await ref.read(
+          disableTwoFaProvider.call(authDto, cancelToken: cancelToken).future);
+      PageRouter.pop();
+    } catch (e) {
+      _logger.e(e.toString());
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
+    }
+  }
 }

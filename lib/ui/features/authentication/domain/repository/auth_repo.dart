@@ -40,7 +40,7 @@ abstract class AuthRepo {
   Future<Generate2faToken> generate2faToken({CancelToken? cancelToken});
   Future<bool> validate2faToken(TwoFaDto twoFaDto, {CancelToken? cancelToken});
   Future<List<SelectedQuestions>> selectedQuestions({CancelToken? cancelToken});
-  Future<User?> disable2fa({CancelToken? cancelToken});
+  Future<User?> disable2fa(AuthDto authDto, {CancelToken? cancelToken});
   Future<bool> validate2FaQuestion(TwoFaDto twoFaDto,
       {CancelToken? cancelToken});
 }

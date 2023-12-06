@@ -108,8 +108,9 @@ class AuthRepoImpl implements AuthRepo {
       await _authSource.changePin(authDto, cancelToken: cancelToken);
 
   @override
-  Future<User?> disable2fa({CancelToken? cancelToken}) async {
-    final response = await _authSource.disable2fa(cancelToken: cancelToken);
+  Future<User?> disable2fa(AuthDto authDto, {CancelToken? cancelToken}) async {
+    final response =
+        await _authSource.disable2fa(authDto, cancelToken: cancelToken);
     userDao.save(response);
     return response;
   }

@@ -2479,5 +2479,150 @@ class _SelectedQuestionsProviderElement
   CancelToken? get cancelToken =>
       (origin as SelectedQuestionsProvider).cancelToken;
 }
+
+String _$disableTwoFaHash() => r'4632474efadeb101edcb2e4301d73df0115fecc0';
+
+/// See also [disableTwoFa].
+@ProviderFor(disableTwoFa)
+const disableTwoFaProvider = DisableTwoFaFamily();
+
+/// See also [disableTwoFa].
+class DisableTwoFaFamily extends Family<AsyncValue<User?>> {
+  /// See also [disableTwoFa].
+  const DisableTwoFaFamily();
+
+  /// See also [disableTwoFa].
+  DisableTwoFaProvider call(
+    AuthDto authDto, {
+    CancelToken? cancelToken,
+  }) {
+    return DisableTwoFaProvider(
+      authDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  DisableTwoFaProvider getProviderOverride(
+    covariant DisableTwoFaProvider provider,
+  ) {
+    return call(
+      provider.authDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'disableTwoFaProvider';
+}
+
+/// See also [disableTwoFa].
+class DisableTwoFaProvider extends AutoDisposeFutureProvider<User?> {
+  /// See also [disableTwoFa].
+  DisableTwoFaProvider(
+    AuthDto authDto, {
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => disableTwoFa(
+            ref as DisableTwoFaRef,
+            authDto,
+            cancelToken: cancelToken,
+          ),
+          from: disableTwoFaProvider,
+          name: r'disableTwoFaProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$disableTwoFaHash,
+          dependencies: DisableTwoFaFamily._dependencies,
+          allTransitiveDependencies:
+              DisableTwoFaFamily._allTransitiveDependencies,
+          authDto: authDto,
+          cancelToken: cancelToken,
+        );
+
+  DisableTwoFaProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.authDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final AuthDto authDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<User?> Function(DisableTwoFaRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: DisableTwoFaProvider._internal(
+        (ref) => create(ref as DisableTwoFaRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        authDto: authDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<User?> createElement() {
+    return _DisableTwoFaProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is DisableTwoFaProvider &&
+        other.authDto == authDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, authDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin DisableTwoFaRef on AutoDisposeFutureProviderRef<User?> {
+  /// The parameter `authDto` of this provider.
+  AuthDto get authDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _DisableTwoFaProviderElement
+    extends AutoDisposeFutureProviderElement<User?> with DisableTwoFaRef {
+  _DisableTwoFaProviderElement(super.provider);
+
+  @override
+  AuthDto get authDto => (origin as DisableTwoFaProvider).authDto;
+  @override
+  CancelToken? get cancelToken => (origin as DisableTwoFaProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

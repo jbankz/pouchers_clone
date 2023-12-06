@@ -1,12 +1,10 @@
-import 'package:Pouchers/app/config/app_helper.dart';
 import 'package:Pouchers/app/core/manager/intercom_manager.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
 import 'package:Pouchers/ui/widgets/edit_text_field_with.dart';
 import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
@@ -143,17 +141,19 @@ class _SelectedQuestionViewState extends ConsumerState<SelectedQuestionView>
 
     final questions = ref.watch(authNotifierProvider).selectedQuestions;
 
-    final response = await BottomSheets.showSheet(
+    final verifiedPin = await BottomSheets.showSheet(
         child: const PinConfirmationSheet(validatePinHere: true)) as String?;
-    if (response != null) {
+    if (verifiedPin != null) {
       final String questionId = questions[_pageIndex].questionId ?? '';
 
       _authNotifier.validate2fa(
           TwoFaDto(questionId: questionId, answer: answerController.text),
           cancelToken: _cancelToken, success: () {
         if ((_pageIndex + 1) == questions.length) {
-          userDao.save(userDao.user.copyWith(is2faActive: false));
-          PageRouter.pop();
+          // userDao.save(userDao.user.copyWith(is2faActive: false));
+          // PageRouter.pop();
+          _authNotifier.disable2fa(AuthDto(transactionPin: verifiedPin),
+              cancelToken: _cancelToken);
           return;
         }
 

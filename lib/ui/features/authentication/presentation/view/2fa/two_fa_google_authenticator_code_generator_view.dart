@@ -24,16 +24,11 @@ class TwoFaGoogleAuthenticatorCodeGeneratorView extends ConsumerStatefulWidget {
 
 class _TwoFaGoogleAuthenticatorCodeGeneratorViewState
     extends ConsumerState<TwoFaGoogleAuthenticatorCodeGeneratorView> {
-  late AuthNotifier _authNotifier;
   final CancelToken _cancelToken = CancelToken();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _authNotifier = ref.read(authNotifierProvider.notifier)
-        ..generateTwoFaToken(cancelToken: _cancelToken);
-    });
   }
 
   @override
