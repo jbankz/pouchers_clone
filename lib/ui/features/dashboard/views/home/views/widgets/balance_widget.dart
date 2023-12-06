@@ -20,7 +20,7 @@ class BalanceWidget extends ConsumerWidget {
       ValueListenableBuilder<Box>(
           valueListenable: walletDao.getListenable(),
           builder: (_, box, __) {
-            final wallet = walletDao.convert(box);
+            final wallet = walletDao.retrieve(box);
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 43, vertical: 18),
               decoration: BoxDecoration(

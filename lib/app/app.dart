@@ -47,6 +47,7 @@ import '../ui/features/profile/presentation/views/profile/phone/verify_phone_num
 import '../ui/features/profile/presentation/views/profile/profile_view.dart';
 import '../ui/features/profile/presentation/views/referral/referral_view.dart';
 import '../ui/features/tiers/presentation/view/tier_view.dart';
+import '../ui/features/transfer/presentation/transfer_money_confirmation_view.dart';
 import '../ui/widgets/success_state.dart';
 import 'core/manager/biometric_manager.dart';
 import 'core/manager/dojah_manager.dart';
@@ -137,6 +138,7 @@ import 'core/manager/session_manager.dart';
         page: TabLayout,
         opaque: false,
         transitionsBuilder: TransitionsBuilders.fadeIn),
+    AdaptiveRoute(page: TransferMoneyConfirmationView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

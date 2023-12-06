@@ -12,21 +12,22 @@ late WalletDao walletDao;
 final _hiveManager = locator<HiveManager>();
 
 class WalletDao {
-  late Box<Map> _box;
+  late Box _box;
 
-  Box<Map>? get box => _box;
+  Box get box => _box;
 
   WalletDao() {
     openBox().then((value) => _box = value);
   }
 
-  Future<Box<Map>> openBox() => _hiveManager.openBox<Map>(AppKeys.walletDaoKey);
+  Future<Box> openBox() => _hiveManager.openBox<Wallet>(AppKeys.walletDaoKey);
+
+  Wallet get wallet => retrieve(_box);
 
   Future<void> save(Wallet? wallet) async =>
-      await _box.put(AppKeys.walletDaoKey, wallet?.toJson() ?? {});
+      await _box.put(AppKeys.walletDaoKey, wallet);
 
-  Wallet convert(Box box) =>
-      Wallet.fromJson(box.toMap()[AppKeys.walletDaoKey] ?? {});
+  Wallet retrieve(Box box) => box.get(AppKeys.walletDaoKey);
 
   ValueListenable<Box> getListenable({List<String>? keys}) =>
       (keys == null ? _box.listenable() : _box.listenable(keys: keys));

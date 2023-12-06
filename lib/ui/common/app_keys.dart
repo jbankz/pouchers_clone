@@ -10,4 +10,5 @@ class AppKeys {
   static const String loginKey = 'loginKey';
   static const String payKey = 'payKey';
   static const String unlockKey = 'unlockKey';
+  static const String localBanksDaoKey = 'localBanksDaoKey';
 }

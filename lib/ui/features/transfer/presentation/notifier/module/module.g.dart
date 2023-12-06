@@ -1,0 +1,307 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'module.dart';
+
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+String _$localBanksHash() => r'285169a82be831fdedab87cd7dcf511653502fe9';
+
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
+
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
+
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+/// See also [localBanks].
+@ProviderFor(localBanks)
+const localBanksProvider = LocalBanksFamily();
+
+/// See also [localBanks].
+class LocalBanksFamily extends Family<AsyncValue<List<LocalBank>>> {
+  /// See also [localBanks].
+  const LocalBanksFamily();
+
+  /// See also [localBanks].
+  LocalBanksProvider call({
+    CancelToken? cancelToken,
+  }) {
+    return LocalBanksProvider(
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  LocalBanksProvider getProviderOverride(
+    covariant LocalBanksProvider provider,
+  ) {
+    return call(
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'localBanksProvider';
+}
+
+/// See also [localBanks].
+class LocalBanksProvider extends AutoDisposeFutureProvider<List<LocalBank>> {
+  /// See also [localBanks].
+  LocalBanksProvider({
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => localBanks(
+            ref as LocalBanksRef,
+            cancelToken: cancelToken,
+          ),
+          from: localBanksProvider,
+          name: r'localBanksProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$localBanksHash,
+          dependencies: LocalBanksFamily._dependencies,
+          allTransitiveDependencies:
+              LocalBanksFamily._allTransitiveDependencies,
+          cancelToken: cancelToken,
+        );
+
+  LocalBanksProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<LocalBank>> Function(LocalBanksRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: LocalBanksProvider._internal(
+        (ref) => create(ref as LocalBanksRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<LocalBank>> createElement() {
+    return _LocalBanksProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is LocalBanksProvider && other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin LocalBanksRef on AutoDisposeFutureProviderRef<List<LocalBank>> {
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _LocalBanksProviderElement
+    extends AutoDisposeFutureProviderElement<List<LocalBank>>
+    with LocalBanksRef {
+  _LocalBanksProviderElement(super.provider);
+
+  @override
+  CancelToken? get cancelToken => (origin as LocalBanksProvider).cancelToken;
+}
+
+String _$transferToLocalBankHash() =>
+    r'b477e2059c000ef8d867cb4755c6e397727a8040';
+
+/// See also [transferToLocalBank].
+@ProviderFor(transferToLocalBank)
+const transferToLocalBankProvider = TransferToLocalBankFamily();
+
+/// See also [transferToLocalBank].
+class TransferToLocalBankFamily extends Family<AsyncValue<bool>> {
+  /// See also [transferToLocalBank].
+  const TransferToLocalBankFamily();
+
+  /// See also [transferToLocalBank].
+  TransferToLocalBankProvider call(
+    TransferMoneyDto transferMoneyDto, {
+    CancelToken? cancelToken,
+  }) {
+    return TransferToLocalBankProvider(
+      transferMoneyDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  TransferToLocalBankProvider getProviderOverride(
+    covariant TransferToLocalBankProvider provider,
+  ) {
+    return call(
+      provider.transferMoneyDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'transferToLocalBankProvider';
+}
+
+/// See also [transferToLocalBank].
+class TransferToLocalBankProvider extends AutoDisposeFutureProvider<bool> {
+  /// See also [transferToLocalBank].
+  TransferToLocalBankProvider(
+    TransferMoneyDto transferMoneyDto, {
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => transferToLocalBank(
+            ref as TransferToLocalBankRef,
+            transferMoneyDto,
+            cancelToken: cancelToken,
+          ),
+          from: transferToLocalBankProvider,
+          name: r'transferToLocalBankProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$transferToLocalBankHash,
+          dependencies: TransferToLocalBankFamily._dependencies,
+          allTransitiveDependencies:
+              TransferToLocalBankFamily._allTransitiveDependencies,
+          transferMoneyDto: transferMoneyDto,
+          cancelToken: cancelToken,
+        );
+
+  TransferToLocalBankProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.transferMoneyDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final TransferMoneyDto transferMoneyDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<bool> Function(TransferToLocalBankRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: TransferToLocalBankProvider._internal(
+        (ref) => create(ref as TransferToLocalBankRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        transferMoneyDto: transferMoneyDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<bool> createElement() {
+    return _TransferToLocalBankProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is TransferToLocalBankProvider &&
+        other.transferMoneyDto == transferMoneyDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, transferMoneyDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin TransferToLocalBankRef on AutoDisposeFutureProviderRef<bool> {
+  /// The parameter `transferMoneyDto` of this provider.
+  TransferMoneyDto get transferMoneyDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _TransferToLocalBankProviderElement
+    extends AutoDisposeFutureProviderElement<bool> with TransferToLocalBankRef {
+  _TransferToLocalBankProviderElement(super.provider);
+
+  @override
+  TransferMoneyDto get transferMoneyDto =>
+      (origin as TransferToLocalBankProvider).transferMoneyDto;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as TransferToLocalBankProvider).cancelToken;
+}
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

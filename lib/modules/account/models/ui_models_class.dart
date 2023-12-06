@@ -1015,10 +1015,11 @@ class _RechargeSummaryState extends ConsumerState<RechargeSummary> {
                                             showErrorBar(context, val));
                               }
                             : double.parse(ref
-                                        .watch(getWalletProvider)
-                                        .data!
-                                        .data!
-                                        .balance!) >
+                                            .watch(getWalletProvider)
+                                            .data
+                                            ?.data
+                                            ?.balance ??
+                                        '0') >
                                     double.parse(widget.amount)
                                 ? () async {
                                     if (ref

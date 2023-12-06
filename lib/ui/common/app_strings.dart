@@ -260,6 +260,8 @@ class AppString {
   static String totalInNaira = 'Total in naira';
   static String total = 'Total';
   static String youWillDebited = "You will be debited ";
+  static String youWillDebited2 =
+      " from your wallet to complete this transactiton. Would you like to continue?";
   static String fromWallet =
       " from your wallet to fund the card. Would you like to continue?";
   static String insufficientFund =
@@ -269,6 +271,7 @@ class AppString {
       'Your virtual card has been successfully\ncreated.';
   static String completedFunding = 'I have completed payment';
   static String accountNumber = 'Account number';
+  static String accountNumberInst = 'Enter Account number';
   static String accountName = 'Account name';
   static String bankName = 'Bank name';
   static String fundInstr1 = 'Login to your bank app';
@@ -410,4 +413,17 @@ class AppString {
   static String urgentNoteActionButton = 'Yes, turn it off';
   static String urgentNoteHint =
       'Turning off 2FA is not advisable. Your account could be open to unauthorized access if your PIN or password is compromised. Are you really sure about this?';
+  static String transferCompleted = 'Transfer completed';
+  static String transferCompletedMessage =
+      'Your money has been successfully delivered!';
+  static String transferFee = 'Transfer fee';
+  static String transferMoney = 'Transfer money';
+  static String amountCannotBeEmpty = 'Amount field cannot be empty';
+  static String selectBank = 'Select Bank';
+  static String selectBankInst = 'Enter Bank Name';
+  static String transferToFriend = 'To Poucher Friend';
+  static String transferToFriendInst =
+      'Send money quicker and free to a friend.';
+  static String transferToBank = 'To bank account';
+  static String transferToBankInst = 'Send to 10 digit NUBAN account number.';
 }

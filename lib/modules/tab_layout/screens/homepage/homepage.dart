@@ -1,13 +1,3 @@
-import 'package:Pouchers/modules/cards/providers/cards_providers.dart';
-import 'package:Pouchers/modules/profile/profile_bvn.dart';
-import 'package:Pouchers/modules/profile/profile_kyc.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:Pouchers/app/common/credentials.dart';
 import 'package:Pouchers/app/common/model.dart';
 import 'package:Pouchers/app/helpers/session_manager.dart';
@@ -15,15 +5,19 @@ import 'package:Pouchers/app/helpers/size_config.dart';
 import 'package:Pouchers/app/navigators/navigators.dart';
 import 'package:Pouchers/modules/account/models/ui_models_class.dart';
 import 'package:Pouchers/modules/account/providers/account_provider.dart';
-import 'package:Pouchers/modules/login/models/login_response.dart';
+import 'package:Pouchers/modules/cards/providers/cards_providers.dart';
 import 'package:Pouchers/modules/make_payment/providers/payment_providers.dart';
 import 'package:Pouchers/modules/make_payment/screens/transfer_poucher_friend.dart';
-import 'package:Pouchers/modules/profile/profile_account_verification.dart';
+import 'package:Pouchers/modules/profile/profile_bvn.dart';
+import 'package:Pouchers/modules/profile/profile_kyc.dart';
 import 'package:Pouchers/modules/profile/profile_page.dart';
 import 'package:Pouchers/modules/tab_layout/screens/homepage/fund_wallet.dart';
 import 'package:Pouchers/modules/tab_layout/screens/homepage/notification.dart';
 import 'package:Pouchers/modules/tab_layout/screens/tab_layout.dart';
 import 'package:Pouchers/modules/tab_layout/widgets/home_widget.dart';
+import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
+import 'package:Pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
+import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
 import 'package:Pouchers/utils/assets_path.dart';
 import 'package:Pouchers/utils/components.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
@@ -32,6 +26,14 @@ import 'package:Pouchers/utils/flushbar.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:Pouchers/utils/utils.dart';
 import 'package:Pouchers/utils/widgets.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../../../ui/features/transfer/presentation/sheets/transfer_money_sheet.dart';
 
 /// TODO: Rebuild this entire Home Page
 class HomePage extends ConsumerStatefulWidget {
@@ -48,6 +50,8 @@ class _HomePageState extends ConsumerState<HomePage> {
   // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
   bool showSecondGrid = false;
 
+  final CancelToken _cancelToken = CancelToken();
+
   Future refresh() async {
     SessionManager.setWalletBalance("");
     ref.read(getWalletProvider.notifier).getWalletDetails();
@@ -62,6 +66,8 @@ class _HomePageState extends ConsumerState<HomePage> {
       ref.read(getBannerProvider.notifier).getBanner();
       ref.read(getAllFeesProvider.notifier).getAllFees(amount: 0);
       UserCredentials? cred = await getUserCredentials();
+
+      ref.read(walletNotifierProvider.notifier).getWalletBalance(_cancelToken);
     });
   }
 
@@ -84,6 +90,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void dispose() {
     _controller.dispose();
+    _cancelToken.cancel();
     super.dispose();
   }
 
@@ -510,10 +517,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                   1
                                               ? showSuccessBar(context,
                                                   "Please Verify Your BVN To Proceed.")
-                                              : buildShowModalBottomSheet(
-                                                  context,
-                                                  const HomeModal(),
-                                                );
+                                              // : buildShowModalBottomSheet(
+                                              //     context, const HomeModal());
+                                              : BottomSheets.showSheet(
+                                                  wrap: false,
+                                                  child:
+                                                      const TransferMoneySheet());
                                         },
                                         text: transfer,
                                       ),

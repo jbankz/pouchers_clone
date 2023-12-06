@@ -36,6 +36,7 @@ class ApiPath {
 
   /// Return users wallet
   static const String wallet = '$_apiVersionOne/payment/wallet';
+  static const String accountDetails = '$_apiVersionOne/payment/bank-account';
 
   /// Returns users tiers
   static const String tiers = '$_apiVersionOne/user/tiers';
@@ -116,6 +117,9 @@ class ApiPath {
       '$_apiVersionOne/auth/selected-questions';
   static const String disable = '$_apiVersionOne/user/disable';
   static const String delete = '$_apiVersionOne/user';
+  static const String localBanks = '$_apiVersionOne/payment/banks';
+  static const String localBankTransfer =
+      '$_apiVersionOne/payment/local-bank-transfer';
 
   static String authenticator = Platform.isAndroid
       ? 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'

@@ -257,7 +257,7 @@ TextStyle kHeadline6Style = const TextStyle(
   fontSize: 14,
 );
 
-ThemeData kThemeData = ThemeData.light(useMaterial3: false).copyWith(
+ThemeData kThemeData = ThemeData.light().copyWith(
     visualDensity: VisualDensity.adaptivePlatformDensity,
     scaffoldBackgroundColor: AppColors.white,
     iconTheme: const IconThemeData(size: kIconSize, color: kPrimaryColor),

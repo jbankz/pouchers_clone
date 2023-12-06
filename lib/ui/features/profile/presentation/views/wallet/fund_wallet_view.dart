@@ -23,7 +23,7 @@ class FundWalletView extends StatelessWidget {
         body: ValueListenableBuilder<Box>(
             valueListenable: walletDao.getListenable(),
             builder: (_, box, __) {
-              final wallet = walletDao.convert(box);
+              final wallet = walletDao.retrieve(box);
               return SafeArea(
                 minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                 child: Column(

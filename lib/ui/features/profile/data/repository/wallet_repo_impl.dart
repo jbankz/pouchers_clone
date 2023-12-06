@@ -1,3 +1,5 @@
+import 'package:Pouchers/ui/features/profile/domain/dto/wallet_dto.dart';
+import 'package:Pouchers/ui/features/profile/domain/model/bank_account_details/bank_account_details.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/wallet.dart';
 import 'package:dio/dio.dart';
 
@@ -16,4 +18,10 @@ class WalletRepoImpl implements WalletRepo {
     await walletDao.save(wallet);
     return wallet;
   }
+
+  @override
+  Future<BankAccountDetails?> bankAccountDetails(WalletDto walletDto,
+          {CancelToken? cancelToken}) async =>
+      await _walletSource.bankAccountDetails(walletDto,
+          cancelToken: cancelToken);
 }

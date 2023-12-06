@@ -92,7 +92,10 @@ class FieldValidator {
         return null;
       };
 
-  static String? Function(String?) validateInt({String? error, int? limit}) =>
+  static String? Function(String?) validateInt(
+          {String? error,
+          int? limit,
+          TextEditingController? textEditingController}) =>
       (String? value) {
         if (value == null || value.isEmpty) {
           return error ?? 'Field is required.';
@@ -103,6 +106,11 @@ class FieldValidator {
         if (limit != null) {
           if (value.length < limit) {
             return error ?? 'Not a valid number';
+          }
+        }
+        if (textEditingController != null) {
+          if (textEditingController.text.isEmpty) {
+            return 'Please fill in the above field.';
           }
         }
         return null;

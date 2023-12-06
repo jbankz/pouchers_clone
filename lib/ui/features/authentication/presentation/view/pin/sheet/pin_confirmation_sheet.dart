@@ -5,7 +5,6 @@ import 'package:Pouchers/ui/widgets/keypad/config/keypad_config.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../../common/app_strings.dart';
@@ -77,6 +76,7 @@ class _PinConfirmationSheetState extends ConsumerState<PinConfirmationSheet> {
                                     onSuccess: () => PageRouter.pop(pin));
                             return;
                           }
+                          PageRouter.pop(pin);
                         }),
                   ],
                 ),

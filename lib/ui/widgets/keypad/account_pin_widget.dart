@@ -29,18 +29,9 @@ class AccountPinCodeField extends StatelessWidget {
                     border: Border.all(
                         color:
                             hasError ? AppColors.kDanger : Colors.transparent),
-                    color: AppColors.kGreyScale,
+                    color: virtualKeyPadController.pins[index].isNotEmpty
+                        ? AppColors.kPrimaryColor
+                        : AppColors.kGreyScale,
                     shape: BoxShape.circle),
-                child: Center(
-                  child: Container(
-                    height: 4.75.h,
-                    width: 4.75.w,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: virtualKeyPadController.pins[index].isNotEmpty
-                            ? AppColors.kPrimaryBlack
-                            : AppColors.kGreyScale),
-                  ),
-                ),
               )));
 }

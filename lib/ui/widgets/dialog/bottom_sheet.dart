@@ -7,11 +7,17 @@ import '../../common/app_colors.dart';
 
 class BottomSheets {
   static Future<T?> showSheet<T>(
-          {bool isDismissible = true, required Widget child}) =>
+          {bool isDismissible = true,
+          bool isScrollControlled = true,
+          bool useSafeArea = false,
+          bool wrap = true,
+          required Widget child}) =>
       showModalBottomSheet<T>(
           context: PageRouter.globalContext,
+          useSafeArea: useSafeArea,
+          isScrollControlled: isScrollControlled,
           isDismissible: isDismissible,
-          builder: (_) => Wrap(children: [child]));
+          builder: (_) => wrap ? Wrap(children: [child]) : child);
 
   static Future<dynamic> showAlertDialog(
           {bool barrierDismissible = true, required Widget child}) async =>

@@ -11,6 +11,7 @@ import '../get_profile_usecase.dart';
 import '../referral_usecase.dart';
 import '../update_profile_usecase.dart';
 import '../valid_ids_usecase.dart';
+import '../validate_account_number_usecase.dart';
 import '../validate_bvn_usecase.dart';
 import '../validate_id_usecase.dart';
 import '../validate_phone_number_otp_usecase.dart';
@@ -53,3 +54,7 @@ final deleteAccountUsecaseImpl = Provider<PoucherUseCaseWithOutParam>(
 
 final disableAccountUsecaseImpl = Provider<PoucherUseCaseWithRequiredParam>(
     (ref) => DisableAccountUseCaseImpl(ref.read(userRepoModule)));
+
+final validateAccountNumberUseCaseModule =
+    Provider<PoucherUseCaseWithRequiredParam>((ref) =>
+        ValidateBankAccountNumberUseCaseImpl(ref.read(walletRepoModule)));

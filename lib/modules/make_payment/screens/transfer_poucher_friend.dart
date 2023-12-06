@@ -1,4 +1,5 @@
 import 'package:Pouchers/modules/account/providers/account_provider.dart';
+import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,6 +30,8 @@ import 'package:Pouchers/utils/input_formatters.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
 
+import '../../../ui/features/profile/domain/model/user.dart';
+
 class TransferPoucherFriend extends ConsumerStatefulWidget {
   static const String routeName = "transferPoucherFriend";
   final bool? isRequestMoney;
@@ -52,7 +55,8 @@ class _TransferPoucherFriendState extends ConsumerState<TransferPoucherFriend> {
   String noteText = addNote;
   TextEditingController noteController = TextEditingController();
   Map<String, dynamic> contactInfo = {};
-  HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  // HiveStoreResponseData userProfile = Hive.box(kUserBox).get(kUserInfoKey);
+  User userProfile = userDao.user;
   bool? _canCheckBiometrics;
   bool isAuth = false;
   UserCredentials? cred;

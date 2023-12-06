@@ -1,6 +1,8 @@
 import 'package:Pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/referral/earning.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/referral/referral.dart';
+import 'package:Pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
+import 'package:Pouchers/ui/features/transfer/domain/model/attributes.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -13,6 +15,7 @@ import '../../../ui/features/profile/domain/model/referral/referral_trail.dart';
 import '../../../ui/features/profile/domain/model/user.dart';
 import '../../../ui/features/profile/domain/model/wallet.dart';
 import '../../../ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
+import '../../../ui/features/transfer/domain/model/local_bank.dart';
 import '../../app.locator.dart';
 
 /// initialize local data storage
@@ -28,6 +31,8 @@ Future<void> initializeDB() async {
       ..registerAdapter(EarningAdapter())
       ..registerAdapter(ReferralTrailAdapter())
       ..registerAdapter(WalletAdapter())
+      ..registerAdapter(LocalBankAdapter())
+      ..registerAdapter(AttributesAdapter())
       ..registerAdapter(HiveStoreResponseDataAdapter());
   } catch (e) {
     debugPrint(e.toString());
@@ -41,6 +46,7 @@ class HiveManager {
     cardsDao = CardsDao();
     referralDao = ReferralDao();
     biometricDao = BiometricDao();
+    localBankDao = LocalBankDao();
   }
 
   Future clearAllBox() async {
@@ -49,6 +55,7 @@ class HiveManager {
     await cardsDao.truncate();
     await referralDao.truncate();
     await biometricDao.truncate();
+    await localBankDao.truncate();
   }
 
   Future<Box<T>> openBox<T>(String boxName) async {

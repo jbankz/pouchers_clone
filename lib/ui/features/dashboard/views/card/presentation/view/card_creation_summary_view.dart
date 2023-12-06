@@ -25,6 +25,7 @@ import '../../../../../admin/domain/model/envs/envs.dart';
 import '../../../../../admin/presentation/notifier/admin_notifier.dart';
 import '../../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
 import '../../../../../profile/domain/model/wallet.dart';
+import '../../../../../profile/presentation/state/wallet_state.dart';
 import '../../domain/dto/card_dto.dart';
 import '../../domain/enum/card_brand.dart';
 import '../../domain/enum/currency.dart';
@@ -290,7 +291,7 @@ class _CardCreationSymmaryViewState
   }
 
   Row _buildBalaceIndicator(
-          AppState<dynamic> walletState, BuildContext context) =>
+          WalletState<dynamic> walletState, BuildContext context) =>
       Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,

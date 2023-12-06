@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/profile/domain/model/bank_account_details/bank_account_details.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/idenitification_type.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/wallet.dart';
@@ -6,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../domain/dto/user_dto.dart';
+import '../../../domain/dto/wallet_dto.dart';
 import '../../../domain/model/referral/referral.dart';
 
 part 'module.g.dart';
@@ -82,11 +84,10 @@ Future<bool> disableAccount(DisableAccountRef ref, String reason,
         .read(disableAccountUsecaseImpl)
         .execute(parameter: reason, cancelToken: cancelToken);
 
-
-
-
-// final deleteAccountUsecaseImpl = Provider<PoucherUseCaseWithOutParam>(
-//     (ref) => DeleteAccountUseCaseImpl(ref.read(userRepoModule)));
-
-// final disableAccountUsecaseImpl = Provider<PoucherUseCaseWithRequiredParam>(
-//     (ref) => DisableAccountUseCaseImpl(ref.read(userRepoModule)));
+@riverpod
+Future<BankAccountDetails> validateBankAccount(
+        ValidateBankAccountRef ref, WalletDto walletDto,
+        {CancelToken? cancelToken}) async =>
+    await ref
+        .read(validateAccountNumberUseCaseModule)
+        .execute(parameter: walletDto, cancelToken: cancelToken);

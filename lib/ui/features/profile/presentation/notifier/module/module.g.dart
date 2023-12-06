@@ -1575,5 +1575,156 @@ class _DisableAccountProviderElement
   CancelToken? get cancelToken =>
       (origin as DisableAccountProvider).cancelToken;
 }
+
+String _$validateBankAccountHash() =>
+    r'913b95e48d1da3aadf6868eabaea382d5d256a91';
+
+/// See also [validateBankAccount].
+@ProviderFor(validateBankAccount)
+const validateBankAccountProvider = ValidateBankAccountFamily();
+
+/// See also [validateBankAccount].
+class ValidateBankAccountFamily extends Family<AsyncValue<BankAccountDetails>> {
+  /// See also [validateBankAccount].
+  const ValidateBankAccountFamily();
+
+  /// See also [validateBankAccount].
+  ValidateBankAccountProvider call(
+    WalletDto walletDto, {
+    CancelToken? cancelToken,
+  }) {
+    return ValidateBankAccountProvider(
+      walletDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  ValidateBankAccountProvider getProviderOverride(
+    covariant ValidateBankAccountProvider provider,
+  ) {
+    return call(
+      provider.walletDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'validateBankAccountProvider';
+}
+
+/// See also [validateBankAccount].
+class ValidateBankAccountProvider
+    extends AutoDisposeFutureProvider<BankAccountDetails> {
+  /// See also [validateBankAccount].
+  ValidateBankAccountProvider(
+    WalletDto walletDto, {
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => validateBankAccount(
+            ref as ValidateBankAccountRef,
+            walletDto,
+            cancelToken: cancelToken,
+          ),
+          from: validateBankAccountProvider,
+          name: r'validateBankAccountProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$validateBankAccountHash,
+          dependencies: ValidateBankAccountFamily._dependencies,
+          allTransitiveDependencies:
+              ValidateBankAccountFamily._allTransitiveDependencies,
+          walletDto: walletDto,
+          cancelToken: cancelToken,
+        );
+
+  ValidateBankAccountProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.walletDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final WalletDto walletDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<BankAccountDetails> Function(ValidateBankAccountRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ValidateBankAccountProvider._internal(
+        (ref) => create(ref as ValidateBankAccountRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        walletDto: walletDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<BankAccountDetails> createElement() {
+    return _ValidateBankAccountProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ValidateBankAccountProvider &&
+        other.walletDto == walletDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, walletDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ValidateBankAccountRef
+    on AutoDisposeFutureProviderRef<BankAccountDetails> {
+  /// The parameter `walletDto` of this provider.
+  WalletDto get walletDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _ValidateBankAccountProviderElement
+    extends AutoDisposeFutureProviderElement<BankAccountDetails>
+    with ValidateBankAccountRef {
+  _ValidateBankAccountProviderElement(super.provider);
+
+  @override
+  WalletDto get walletDto => (origin as ValidateBankAccountProvider).walletDto;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as ValidateBankAccountProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
