@@ -1,7 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'data.dart';
-
 part 'reset_password_model.freezed.dart';
 part 'reset_password_model.g.dart';
 

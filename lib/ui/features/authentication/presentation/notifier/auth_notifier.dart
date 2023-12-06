@@ -228,9 +228,7 @@ class AuthNotifier extends _$AuthNotifier {
         return;
       }
 
-      ///TODO: Don't use 'BuildContext's across async gaps.
-      ///Try rewriting the code to not reference the 'BuildContext'.
-      pushToAndClearStack(PageRouter.globalContext, TabLayout());
+      PageRouter.pushReplacement(Routes.tabLayout);
     } catch (e) {
       _logger.e(e.toString());
       AppHelper.handleError(e);

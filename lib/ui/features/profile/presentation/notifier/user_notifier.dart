@@ -1,6 +1,7 @@
 import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/config/app_helper.dart';
+import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/view/otp/notifier/module.dart';
@@ -27,6 +28,7 @@ class UserNotifier extends _$UserNotifier {
 
   final DojahManager _dojahManager = locator<DojahManager>();
   Referral? _referral;
+  final SessionManager _sessionManager = locator<SessionManager>();
 
   @override
   UserState build() =>
@@ -234,5 +236,10 @@ class UserNotifier extends _$UserNotifier {
     } finally {
       state = state.copyWith(isBusy: false);
     }
+  }
+
+  Future<void> logout() async {
+    await _sessionManager.logOut();
+    PageRouter.pushReplacement(Routes.signInView);
   }
 }

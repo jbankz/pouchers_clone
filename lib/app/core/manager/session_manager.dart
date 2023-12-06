@@ -39,13 +39,9 @@ class SessionManager {
 
   Future<bool> logOut() async {
     try {
-      await Future.wait([
-        sharedPreferences.clear(),
-        _securedManager.clearAllSecurities(),
-        _hiveManager.clearAllBox(),
-        locator.reset(),
-        setupLocator()
-      ]);
+      await sharedPreferences.clear();
+      await _securedManager.clearAllSecurities();
+      await _hiveManager.clearAllBox();
 
       return true;
     } catch (e) {

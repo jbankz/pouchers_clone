@@ -13,23 +13,22 @@ late UserDao userDao;
 final _hiveManager = locator<HiveManager>();
 
 class UserDao {
-  late Box<Map> _box;
+  late Box _box;
 
-  Box<Map> get box => _box;
+  Box get box => _box;
 
   UserDao() {
     openBox().then((value) => _box = value);
   }
 
-  Future<Box<Map>> openBox() => _hiveManager.openBox<Map>(AppKeys.userDaoKey);
+  Future<Box> openBox() => _hiveManager.openBox(AppKeys.userDaoKey);
 
   User get user => returnUser(_box);
 
   Future<void> save(User? user) async =>
-      await _box.put(AppKeys.userDaoKey, user?.toJson() ?? {});
+      await _box.put(AppKeys.userDaoKey, user ?? User());
 
-  User returnUser(Box box) =>
-      User.fromJson(Map<String, dynamic>.from(box.toMap()[AppKeys.userDaoKey]));
+  User returnUser(Box box) => box.get(AppKeys.userDaoKey) as User? ?? User();
 
   ValueListenable<Box> getListenable({List<String>? keys}) =>
       (keys == null ? _box.listenable() : _box.listenable(keys: keys));
