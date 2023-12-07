@@ -114,6 +114,8 @@ extension DateTimeExtensions on DateTime {
     return now.difference(this).inDays;
   }
 
+  String get monthTime => DateFormat('MMM dd, yyyy | hh:mm a').format(this);
+
   // Formats the date as "MMM-dd-yyy"
   String get monthDateYear => DateFormat('MMM-dd-yy').format(this);
 

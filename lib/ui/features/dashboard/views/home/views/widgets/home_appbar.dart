@@ -4,10 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../../../../app/app.router.dart';
+import '../../../../../../../app/core/router/page_router.dart';
 import '../../../../../../common/app_colors.dart';
 import '../../../../../../common/app_images.dart';
 import '../../../../../../common/app_strings.dart';
 import '../../../../../../widgets/gap.dart';
+import '../../../../../../widgets/profile_image.dart';
 import '../../../../../profile/data/dao/user_dao.dart';
 
 class HomeAppBar extends StatelessWidget {
@@ -15,8 +18,7 @@ class HomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ValueListenableBuilder<Box>(
-      valueListenable:
-          userDao.getListenable(keys: ['first_name', 'profile_picture']),
+      valueListenable: userDao.getListenable(),
       builder: (_, box, __) {
         final user = userDao.returnUser(box);
         return Padding(
@@ -26,14 +28,19 @@ class HomeAppBar extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Container(
-                      height: 35.h,
-                      width: 35.w,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.paleLavenderGray),
-                      child: SvgPicture.asset(AppImage.bell,
-                          fit: BoxFit.scaleDown)),
+                  // Container(
+                  //     height: 35.h,
+                  //     width: 35.w,
+                  //     decoration: const BoxDecoration(
+                  //         shape: BoxShape.circle,
+                  //         color: AppColors.paleLavenderGray),
+                  //     child: SvgPicture.asset(AppImage.bell,
+                  //         fit: BoxFit.scaleDown)),
+                  ProfileImage(
+                      height: 35,
+                      width: 35,
+                      image: user.profilePicture ?? '',
+                      onTap: () => PageRouter.pushNamed(Routes.profileView)),
                   const Gap(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,14 +77,18 @@ class HomeAppBar extends StatelessWidget {
                     ],
                   ),
                   const Spacer(),
-                  Container(
-                      height: 35.h,
-                      width: 35.w,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.paleLavenderGray),
-                      child: SvgPicture.asset(AppImage.bell,
-                          fit: BoxFit.scaleDown))
+                  InkWell(
+                    onTap: () => PageRouter.pushNamed(Routes.notificationView),
+                    customBorder: const CircleBorder(),
+                    child: Container(
+                        height: 35.h,
+                        width: 35.w,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.paleLavenderGray),
+                        child: SvgPicture.asset(AppImage.bell,
+                            fit: BoxFit.scaleDown)),
+                  )
                 ],
               ),
               Container(

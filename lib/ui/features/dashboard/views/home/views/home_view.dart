@@ -1,7 +1,5 @@
-import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -9,7 +7,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hive_flutter/adapters.dart';
 
 import '../../../../../common/app_colors.dart';
 import 'widgets/balance_widget.dart';
@@ -31,9 +28,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   void initState() {
     super.initState();
-    _walletNotifier = ref.read(walletNotifierProvider.notifier);
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => _walletNotifier.getWalletBalance());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => _walletNotifier =
+        ref.read(walletNotifierProvider.notifier)..getWalletBalance());
   }
 
   @override

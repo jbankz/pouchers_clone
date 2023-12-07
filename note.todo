@@ -1,6 +1,10 @@
 Check and Fix Scheduled payments screen
 Check and Fix Requests list screen
-Implement logout feature
+Implement logout feature => DONE
+Implement auto session logout
+Set up firebase push notification
+
+
 
 
 diaz@blondmail.com

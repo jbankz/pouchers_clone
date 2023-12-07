@@ -28,13 +28,11 @@ class BuildActionButton extends StatelessWidget {
               child: SvgPicture.asset(icon, fit: BoxFit.scaleDown),
             ),
             Gap(height: 6.h),
-            Text(
-              title,
-              style: context.headlineLarge?.copyWith(
-                  color: AppColors.kPurple200,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12),
-            ),
+            Text(title,
+                style: context.headlineLarge?.copyWith(
+                    color: AppColors.kPurple200,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12)),
           ],
         ),
       );

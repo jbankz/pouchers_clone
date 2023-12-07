@@ -8,19 +8,24 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../common/app_colors.dart';
 
 class ProfileImage extends StatelessWidget {
-  const ProfileImage(
-      {super.key,
-      required this.image,
-      this.initials = '',
-      this.onTap,
-      this.pickImage,
-      this.loading = false});
+  const ProfileImage({
+    super.key,
+    required this.image,
+    this.initials = '',
+    this.onTap,
+    this.pickImage,
+    this.loading = false,
+    this.width = 80,
+    this.height = 80,
+  });
 
   final String image;
   final String initials;
   final void Function()? onTap;
   final void Function()? pickImage;
   final bool loading;
+  final double? height;
+  final double? width;
   @override
   Widget build(BuildContext context) => Stack(
         clipBehavior: Clip.none,
@@ -31,8 +36,8 @@ class ProfileImage extends StatelessWidget {
             child: CachedNetworkImage(
               imageUrl: image,
               imageBuilder: (context, imageProvider) => Container(
-                width: 80.w,
-                height: 80.h,
+                width: width?.w,
+                height: height?.h,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
@@ -67,16 +72,16 @@ class ProfileImage extends StatelessWidget {
       );
 
   Container _buildPlaceHolder(BuildContext context) => Container(
-        width: 80.w,
-        height: 80.h,
+        width: width?.w,
+        height: height?.h,
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: AppColors.white,
             border: Border.all(width: 8.w, color: AppColors.kPurple300)),
         padding: EdgeInsets.all(4.w),
         child: Container(
-          width: 80.w,
-          height: 80.h,
+          width: width?.w,
+          height: height?.h,
           decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: AppColors.kPrimaryTextColor.withOpacity(0.05)),

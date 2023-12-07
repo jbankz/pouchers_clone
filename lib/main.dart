@@ -5,6 +5,7 @@ import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/helpers/response_handler.dart';
 import 'package:Pouchers/app/helpers/session_manager.dart';
 import 'package:Pouchers/routes.dart';
+import 'package:Pouchers/ui/features/dashboard/views/dashboard_view.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/logger.dart';
 import 'package:Pouchers/utils/strings.dart';

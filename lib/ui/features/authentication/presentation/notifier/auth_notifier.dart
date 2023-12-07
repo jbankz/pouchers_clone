@@ -107,7 +107,7 @@ class AuthNotifier extends _$AuthNotifier {
         return;
       }
 
-      PageRouter.pushReplacement(Routes.tabLayout);
+      PageRouter.pushReplacement(Routes.dashboardView);
     } catch (e) {
       _logger.e(e.toString());
 

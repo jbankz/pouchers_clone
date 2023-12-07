@@ -120,6 +120,7 @@ class ApiPath {
   static const String localBanks = '$_apiVersionOne/payment/banks';
   static const String localBankTransfer =
       '$_apiVersionOne/payment/local-bank-transfer';
+  static const String notification = '$_apiVersionOne/notification';
 
   static String authenticator = Platform.isAndroid
       ? 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'

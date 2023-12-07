@@ -38,7 +38,7 @@ class AccountView extends ConsumerWidget {
                   const Gap(height: 32),
                   Center(
                       child: ProfileImage(
-                          image: user?.profilePicture ?? '',
+                          image: user.profilePicture ?? '',
                           onTap: () =>
                               PageRouter.pushNamed(Routes.profileView))),
                   const Gap(height: 8),
@@ -47,12 +47,12 @@ class AccountView extends ConsumerWidget {
                           ?.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center),
                   const Gap(height: 2),
-                  Text(user?.email ?? '',
+                  Text(user.email ?? '',
                       style: context.displayMedium
                           ?.copyWith(fontSize: 12, fontWeight: FontWeight.w700),
                       textAlign: TextAlign.center),
                   const Gap(height: 4),
-                  Text('@${user?.tag ?? ''}',
+                  Text('@${user.tag ?? ''}',
                       style: context.headlineMedium?.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
@@ -72,7 +72,7 @@ class AccountView extends ConsumerWidget {
                               color: AppColors.kUnknownColor1,
                               border:
                                   Border.all(color: AppColors.kPurpleColor700)),
-                          child: Text('Tier ${user?.tierLevels}',
+                          child: Text('Tier ${user.tierLevels}',
                               style: context.displayMedium?.copyWith(
                                   fontSize: 8, fontWeight: FontWeight.w500),
                               textAlign: TextAlign.center),

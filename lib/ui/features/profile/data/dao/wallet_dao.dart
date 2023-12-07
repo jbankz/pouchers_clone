@@ -27,7 +27,8 @@ class WalletDao {
   Future<void> save(Wallet? wallet) async =>
       await _box.put(AppKeys.walletDaoKey, wallet);
 
-  Wallet retrieve(Box box) => box.get(AppKeys.walletDaoKey);
+  Wallet retrieve(Box box) =>
+      box.get(AppKeys.walletDaoKey) as Wallet? ?? Wallet();
 
   ValueListenable<Box> getListenable({List<String>? keys}) =>
       (keys == null ? _box.listenable() : _box.listenable(keys: keys));
