@@ -81,4 +81,6 @@ class AppColors {
   static const Color kDanger = Color(0xffE20010);
   static const Color kUnknownColor = Color(0xffEDEAF9);
   static const Color kUnknownColor1 = Color(0xffF5F3FC);
+  static const Color kUnknownColor2 = Color(0xff032086);
+  static const Color kUnknownColor3 = Color(0xffF6F6F6);
 }

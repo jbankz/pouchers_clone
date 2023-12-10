@@ -37,6 +37,12 @@ class SessionManager {
   bool get isLoggedIn =>
       sharedPreferences.getBool(AppKeys.isLoggedInKey) ?? false;
 
+  set toggleBalanceVisibility(bool value) =>
+      sharedPreferences.setBool(AppKeys.balanceVisibilityKey, value);
+
+  bool get toggleBalanceVisibility =>
+      sharedPreferences.getBool(AppKeys.balanceVisibilityKey) ?? false;
+
   Future<bool> logOut() async {
     try {
       await sharedPreferences.clear();

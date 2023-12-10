@@ -6,12 +6,12 @@ part of 'admin_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$adminNotifierHash() => r'6979cc4e2eebfad5d67c70a8dd06ffdfb4427b0a';
+String _$adminNotifierHash() => r'cf4b54aa17eef6b17ec8e2d05be7035828919254';
 
 /// See also [AdminNotifier].
 @ProviderFor(AdminNotifier)
 final adminNotifierProvider =
-    AutoDisposeNotifierProvider<AdminNotifier, AppState<dynamic>>.internal(
+    AutoDisposeNotifierProvider<AdminNotifier, AdminState<dynamic>>.internal(
   AdminNotifier.new,
   name: r'adminNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,6 +21,6 @@ final adminNotifierProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$AdminNotifier = AutoDisposeNotifier<AppState<dynamic>>;
+typedef _$AdminNotifier = AutoDisposeNotifier<AdminState<dynamic>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

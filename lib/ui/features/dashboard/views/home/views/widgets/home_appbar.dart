@@ -91,29 +91,40 @@ class HomeAppBar extends StatelessWidget {
                   )
                 ],
               ),
-              Container(
-                  margin: const EdgeInsets.only(top: 19),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 7.h),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
+              if (user.tierLevels == 1)
+                Column(
+                  children: [
+                    const Gap(height: 19),
+                    InkWell(
+                      onTap: () => PageRouter.pushNamed(Routes.bvnView),
                       borderRadius: BorderRadius.circular(8.r),
-                      color: AppColors.kLightOrange100,
-                      border: Border.all(color: AppColors.kLightOrange200)),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SvgPicture.asset(AppImage.shield),
-                      const Gap(width: 4),
-                      Flexible(
-                          child: Text(AppString.completeAccount,
-                              style: context.headlineMedium?.copyWith(
-                                  color: AppColors.kLightOrange300))),
-                      const Spacer(),
-                      Icon(Icons.navigate_next,
-                          size: 10.5.w, color: AppColors.kLightOrange200)
-                    ],
-                  ))
+                      child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 7.h),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.r),
+                              color: AppColors.kLightOrange100,
+                              border:
+                                  Border.all(color: AppColors.kLightOrange200)),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SvgPicture.asset(AppImage.shield),
+                              const Gap(width: 4),
+                              Flexible(
+                                  child: Text(AppString.completeAccount,
+                                      style: context.headlineMedium?.copyWith(
+                                          color: AppColors.kLightOrange300))),
+                              const Spacer(),
+                              Icon(Icons.navigate_next,
+                                  size: 10.5.w,
+                                  color: AppColors.kLightOrange200)
+                            ],
+                          )),
+                    ),
+                  ],
+                )
             ],
           ),
         );

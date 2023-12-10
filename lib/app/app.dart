@@ -15,6 +15,7 @@ import '../ui/features/authentication/presentation/view/2fa/two_fa_intro_view.da
 import '../ui/features/authentication/presentation/view/password/confirm_password_view.dart';
 import '../ui/features/notification/presentation/view/notification_details_view.dart';
 import '../ui/features/notification/presentation/view/notification_view.dart';
+import '../ui/features/profile/presentation/views/account/account_details_view.dart';
 import '../ui/features/profile/presentation/views/biometric/biometric_setup_view.dart';
 import '../ui/features/profile/presentation/views/biometric/biometric_view.dart';
 import '../ui/features/authentication/presentation/view/otp/otp_view.dart';
@@ -143,6 +144,7 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: TransferMoneyConfirmationView),
     AdaptiveRoute(page: NotificationView),
     AdaptiveRoute(page: NotificationDetailsView),
+    AdaptiveRoute(page: AccountDetailsView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

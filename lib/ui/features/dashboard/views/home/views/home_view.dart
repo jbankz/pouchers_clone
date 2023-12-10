@@ -1,5 +1,7 @@
+import 'package:Pouchers/app/navigators/navigators.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/admin/presentation/notifier/admin_notifier.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -8,6 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../modules/utilities/screens/betting.dart';
+import '../../../../../../modules/utilities/screens/buy_airtime.dart';
+import '../../../../../../modules/utilities/screens/buy_cable.dart';
+import '../../../../../../modules/utilities/screens/buy_data.dart';
+import '../../../../../../modules/utilities/screens/buy_education.dart';
+import '../../../../../../modules/utilities/screens/buy_electricity.dart';
+import '../../../../../../modules/utilities/screens/buy_internet.dart';
+import '../../../../../../modules/utilities/screens/voucher/voucher.dart';
 import '../../../../../common/app_colors.dart';
 import 'widgets/balance_widget.dart';
 import 'widgets/build_quick_action_button.dart';
@@ -23,14 +33,20 @@ class HomeView extends ConsumerStatefulWidget {
 
 class _HomeViewState extends ConsumerState<HomeView> {
   late WalletNotifier _walletNotifier;
+  late AdminNotifier _adminNotifier;
+
   final CancelToken _cancelToken = CancelToken();
 
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => _walletNotifier =
-        ref.read(walletNotifierProvider.notifier)..getWalletBalance());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _walletNotifier = ref.read(walletNotifierProvider.notifier)
+        ..getWalletBalance(_cancelToken);
+      _adminNotifier = ref.read(adminNotifierProvider.notifier)
+        ..getBanners(_cancelToken);
+    });
   }
 
   @override
@@ -69,19 +85,26 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                 BuildQuickActionButton(
                                     icon: AppImage.airtimeIcon,
                                     title: AppString.airtime,
-                                    onPressed: () {}),
+                                    onPressed: () => pushTo(context,
+                                        const BuyAirtime(isGuest: false))),
                                 Gap(width: 37.w),
                                 BuildQuickActionButton(
                                     icon: AppImage.dataIcon,
-                                    title: AppString.data),
+                                    title: AppString.data,
+                                    onPressed: () => pushTo(context,
+                                        const BuyData(isGuest: false))),
                                 Gap(width: 37.w),
                                 BuildQuickActionButton(
                                     icon: AppImage.televisionIcon,
-                                    title: AppString.cableTv),
+                                    title: AppString.cableTv,
+                                    onPressed: () => pushTo(context,
+                                        const BuyCable(isGuest: false))),
                                 Gap(width: 37.w),
                                 BuildQuickActionButton(
                                     icon: AppImage.electricityIcon,
-                                    title: AppString.electricity),
+                                    title: AppString.electricity,
+                                    onPressed: () => pushTo(context,
+                                        const BuyElectricity(isGuest: false))),
                               ],
                             ),
                             const Gap(height: 18),
@@ -90,19 +113,27 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               children: [
                                 BuildQuickActionButton(
                                     icon: AppImage.wifiIcon,
-                                    title: AppString.internet),
+                                    title: AppString.internet,
+                                    onPressed: () => pushTo(context,
+                                        const BuyInternet(isGuest: false))),
                                 Gap(width: 37.w),
                                 BuildQuickActionButton(
                                     icon: AppImage.bettingIcon,
-                                    title: AppString.betting),
+                                    title: AppString.betting,
+                                    onPressed: () => pushTo(context,
+                                        const Betting(isGuest: false))),
                                 Gap(width: 37.w),
                                 BuildQuickActionButton(
                                     icon: AppImage.voucherIcon,
-                                    title: AppString.vouchers),
+                                    title: AppString.vouchers,
+                                    onPressed: () => pushTo(context,
+                                        const Vouchers(isGuest: false))),
                                 Gap(width: 37.w),
                                 BuildQuickActionButton(
-                                    icon: AppImage.moreIcon,
-                                    title: AppString.more),
+                                    icon: AppImage.educationIcon,
+                                    title: AppString.education,
+                                    onPressed: () => pushTo(context,
+                                        const BuyEducation(isGuest: false))),
                               ],
                             ),
                           ])),

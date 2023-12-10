@@ -4,7 +4,6 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../modules/tab_layout/screens/homepage/homepage.dart';
 import '../../../../modules/transactions/screens/transactions.dart';
 import 'account/views/account_view.dart';
 import 'card/presentation/view/virtual_card_view.dart';

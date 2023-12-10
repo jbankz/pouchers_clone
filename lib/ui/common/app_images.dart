@@ -132,4 +132,6 @@ class AppImage {
   static String authenticatorEnabled = "${_iconPath}two_fa_enabled.svg";
   static String authenticatorSuccess = "${_iconPath}successful_two_fa.svg";
   static String vault = "${_iconPath}vault.svg";
+  static String ngn = "${_imagePath}ngn.png";
+  static String arrowDown = "${_iconPath}arrow_down.svg";
 }

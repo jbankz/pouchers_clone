@@ -1,3 +1,6 @@
+import 'package:Pouchers/app/app.router.dart';
+import 'package:Pouchers/app/config/app_helper.dart';
+import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/profile/data/dao/wallet_dao.dart';
@@ -9,7 +12,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/adapters.dart';
 
+import '../../../../../../../app/navigators/navigators.dart';
+import '../../../../../../../modules/make_payment/screens/transfer_poucher_friend.dart';
 import '../../../../../../common/app_colors.dart';
+import '../../../../../../widgets/dialog/bottom_sheet.dart';
+import '../../../../../transfer/presentation/sheets/transfer_money_sheet.dart';
 import 'build_action_button.dart';
 
 class BalanceWidget extends ConsumerWidget {
@@ -40,46 +47,70 @@ class BalanceWidget extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Flexible(
-                        child: Text(num.parse(wallet.balance ?? '0').toNaira,
+                        child: Text(
+                            walletDao.balanceVisibilty
+                                ? num.parse(wallet.balance ?? '0').toNaira
+                                : '*****',
                             style: context.headlineLarge?.copyWith(
                                 fontSize: 28.sp, fontWeight: FontWeight.w700)),
                       ),
                       const Gap(width: 6),
-                      SvgPicture.asset(AppImage.hideEye, fit: BoxFit.scaleDown)
+                      GestureDetector(
+                          onTap: () => walletDao.toggleBalanceVisibility(),
+                          child: walletDao.balanceVisibilty
+                              ? const Icon(Icons.visibility_off_outlined,
+                                  color: AppColors.kSecondaryTextColor)
+                              : const Icon(Icons.visibility_outlined,
+                                  color: AppColors.kSecondaryTextColor))
                     ],
                   ),
                   const Gap(height: 29),
                   Row(
                     children: [
                       BuildActionButton(
-                          icon: AppImage.walletOne,
-                          title: AppString.fundWallet,
-                          width: 65),
+                        icon: AppImage.walletOne,
+                        title: AppString.fundWallet,
+                        width: 65,
+                        checkUsersLevel: false,
+                        onTap: () =>
+                            PageRouter.pushNamed(Routes.fundWalletView),
+                      ),
                       Gap(width: 46.5.w),
                       BuildActionButton(
                           icon: AppImage.swap,
                           title: AppString.transfer,
-                          width: 45),
+                          width: 45,
+                          onTap: () => BottomSheets.showSheet(
+                              wrap: false, child: const TransferMoneySheet())),
                       Gap(width: 46.5.w),
                       BuildActionButton(
                           icon: AppImage.bag,
                           title: AppString.request,
-                          width: 46)
+                          width: 46,
+                          onTap: () => pushTo(context,
+                              const TransferPoucherFriend(isRequestMoney: true),
+                              settings: const RouteSettings(
+                                  name: TransferPoucherFriend.routeName)))
                     ],
                   ),
                   const Gap(height: 18),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.r),
-                        color: AppColors.kUnknownColor),
-                    child: Text(
-                      AppString.viewAccount,
-                      style: context.headlineLarge?.copyWith(
-                          color: AppColors.kPrimaryColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12),
+                  InkWell(
+                    onTap: () =>
+                        PageRouter.pushNamed(Routes.accountDetailsView),
+                    borderRadius: BorderRadius.circular(20.r),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 4),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.r),
+                          color: AppColors.kUnknownColor),
+                      child: Text(
+                        AppString.viewAccount,
+                        style: context.headlineLarge?.copyWith(
+                            color: AppColors.kPrimaryColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12),
+                      ),
                     ),
                   )
                 ],

@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/admin/domain/model/banner.dart';
 import 'package:Pouchers/ui/features/admin/domain/model/envs/envs.dart';
 import 'package:dio/dio.dart';
 
@@ -22,6 +23,18 @@ class AdminSourceImpl implements AdminSource {
 
     return (response.data?['data'] as List<dynamic>)
         .map((e) => Envs.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  @override
+  Future<List<Banner>> banners({CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.banners,
+        requestType: RequestType.get,
+        cancelToken: cancelToken);
+
+    return (response.data?['data'] as List<dynamic>)
+        .map((e) => Banner.fromJson(e as Map<String, dynamic>))
         .toList();
   }
 }

@@ -168,5 +168,132 @@ class _EnvsProviderElement extends AutoDisposeFutureProviderElement<List<Envs>>
   @override
   CancelToken? get cancelToken => (origin as EnvsProvider).cancelToken;
 }
+
+String _$bannersHash() => r'd76a0fba1e583164c8fe550e6353f8a16b0a4729';
+
+/// See also [banners].
+@ProviderFor(banners)
+const bannersProvider = BannersFamily();
+
+/// See also [banners].
+class BannersFamily extends Family<AsyncValue<List<Banner>>> {
+  /// See also [banners].
+  const BannersFamily();
+
+  /// See also [banners].
+  BannersProvider call({
+    CancelToken? cancelToken,
+  }) {
+    return BannersProvider(
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  BannersProvider getProviderOverride(
+    covariant BannersProvider provider,
+  ) {
+    return call(
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'bannersProvider';
+}
+
+/// See also [banners].
+class BannersProvider extends AutoDisposeFutureProvider<List<Banner>> {
+  /// See also [banners].
+  BannersProvider({
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => banners(
+            ref as BannersRef,
+            cancelToken: cancelToken,
+          ),
+          from: bannersProvider,
+          name: r'bannersProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$bannersHash,
+          dependencies: BannersFamily._dependencies,
+          allTransitiveDependencies: BannersFamily._allTransitiveDependencies,
+          cancelToken: cancelToken,
+        );
+
+  BannersProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<Banner>> Function(BannersRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: BannersProvider._internal(
+        (ref) => create(ref as BannersRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<Banner>> createElement() {
+    return _BannersProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is BannersProvider && other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin BannersRef on AutoDisposeFutureProviderRef<List<Banner>> {
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _BannersProviderElement
+    extends AutoDisposeFutureProviderElement<List<Banner>> with BannersRef {
+  _BannersProviderElement(super.provider);
+
+  @override
+  CancelToken? get cancelToken => (origin as BannersProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

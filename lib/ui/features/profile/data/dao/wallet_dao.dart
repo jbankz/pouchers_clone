@@ -6,10 +6,12 @@ import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../../../app/core/manager/hive_manager.dart';
+import '../../../../../app/core/manager/session_manager.dart';
 import '../../domain/model/wallet.dart';
 
 late WalletDao walletDao;
 final _hiveManager = locator<HiveManager>();
+final _session = locator<SessionManager>();
 
 class WalletDao {
   late Box _box;
@@ -20,9 +22,16 @@ class WalletDao {
     openBox().then((value) => _box = value);
   }
 
-  Future<Box> openBox() => _hiveManager.openBox<Wallet>(AppKeys.walletDaoKey);
+  Future<Box> openBox() => _hiveManager.openBox(AppKeys.walletDaoKey);
 
   Wallet get wallet => retrieve(_box);
+
+  bool get balanceVisibilty =>
+      _box.get(AppKeys.balanceVisibilityKey, defaultValue: false) as bool;
+
+  Future<void> toggleBalanceVisibility() async {
+    await _box.put(AppKeys.balanceVisibilityKey, !balanceVisibilty);
+  }
 
   Future<void> save(Wallet? wallet) async =>
       await _box.put(AppKeys.walletDaoKey, wallet);

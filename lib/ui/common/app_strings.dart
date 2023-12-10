@@ -427,4 +427,5 @@ class AppString {
   static String transferToBank = 'To bank account';
   static String transferToBankInst = 'Send to 10 digit NUBAN account number.';
   static String notification = 'Notification';
+  static String accountDetails = 'Account Details';
 }

@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import '../../../modules/login/models/login_response.dart';
+import '../../../ui/features/admin/data/dao/banner_dao.dart';
+import '../../../ui/features/admin/domain/model/banner.dart';
 import '../../../ui/features/notification/data/dao/notification_dao.dart';
 import '../../../ui/features/notification/domain/model/notification_model.dart';
 import '../../../ui/features/profile/data/dao/referral_dao.dart';
@@ -35,6 +37,7 @@ Future<void> initializeDB() async {
       ..registerAdapter(LocalBankAdapter())
       ..registerAdapter(AttributesAdapter())
       ..registerAdapter(NotificationModelAdapter())
+      ..registerAdapter(BannerAdapter())
       ..registerAdapter(HiveStoreResponseDataAdapter());
   } catch (e) {
     debugPrint(e.toString());
@@ -50,6 +53,7 @@ class HiveManager {
     biometricDao = BiometricDao();
     localBankDao = LocalBankDao();
     notificationDao = NotificationDao();
+    bannerDao = BannerDao();
   }
 
   Future clearAllBox() async {
@@ -60,6 +64,7 @@ class HiveManager {
     await biometricDao.truncate();
     await localBankDao.truncate();
     await notificationDao.truncate();
+    await bannerDao.truncate();
   }
 
   Future<Box<T>> openBox<T>(String boxName) async {

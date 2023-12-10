@@ -78,13 +78,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void onGuestTap(int index) {
-    guestHomeClass[index].title == "More"
-        ? toggleGrid()
-        // showSuccessBar(context,
-        //         "More Products Will Be Added Soon...")
-        : ref.watch(editProfileInHouseProvider).tierLevels == 1
-            ? showSuccessBar(context, "Please Verify Your BVN To Proceed.")
-            : pushTo(context, guestHomeClass[index].page);
+    pushTo(context, guestHomeClass[index].page);
   }
 
   @override

@@ -370,8 +370,8 @@ class _BuyAirtimeState extends ConsumerState<BuyAirtime> {
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 crossAxisCount: 3,
-                                childAspectRatio:
-                                    SizeConfig.blockSizeHorizontal! / 3.4,
+                                // childAspectRatio:
+                                //     SizeConfig.blockSizeHorizontal! / 3.4,
                                 children: List.generate(
                                   guestList.length,
                                   (index) => Column(

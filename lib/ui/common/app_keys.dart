@@ -12,4 +12,6 @@ class AppKeys {
   static const String unlockKey = 'unlockKey';
   static const String localBanksDaoKey = 'localBanksDaoKey';
   static const String notificationDaoKey = 'notificationDaoKey';
+  static const String balanceVisibilityKey = 'balanceVisibilityKey';
+  static const String bannerDaoKey = 'bannerDaoKey';
 }

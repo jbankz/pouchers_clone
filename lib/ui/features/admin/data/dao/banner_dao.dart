@@ -2,36 +2,35 @@ import 'dart:async';
 
 import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/ui/common/app_keys.dart';
-import 'package:Pouchers/ui/features/notification/domain/model/notification_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../../../app/core/manager/hive_manager.dart';
+import '../../domain/model/banner.dart';
 
-late NotificationDao notificationDao;
+late BannerDao bannerDao;
 final _hiveManager = locator<HiveManager>();
 
-class NotificationDao {
+class BannerDao {
   late Box _box;
 
   Box get box => _box;
 
-  NotificationDao() {
+  BannerDao() {
     openBox().then((value) => _box = value);
   }
 
-  Future<Box> openBox() => _hiveManager.openBox(AppKeys.notificationDaoKey);
+  Future<Box> openBox() => _hiveManager.openBox(AppKeys.bannerDaoKey);
 
-  Future<void> save(List<NotificationModel> notifications) async {
-    if (notifications.isEmpty) return;
+  Future<void> save(List<Banner> banners) async {
+    if (banners.isEmpty) return;
 
-    for (var notification in notifications) {
-      await _box.put(notification.createdAt?.toIso8601String(), notification);
+    for (var banner in banners) {
+      await _box.put(banner.id, banner);
     }
   }
 
-  List<NotificationModel> retrieve(Box box) =>
-      box.values.cast<NotificationModel>().toList();
+  List<Banner> retrieve(Box box) => box.values.cast<Banner>().toList();
 
   ValueListenable<Box> getListenable({List<String>? keys}) =>
       (keys == null ? _box.listenable() : _box.listenable(keys: keys));
