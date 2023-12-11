@@ -1,5 +1,4 @@
 import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/config/app_helper.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
@@ -9,7 +8,6 @@ import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import '../../../../../../../app/navigators/navigators.dart';
@@ -93,26 +91,26 @@ class BalanceWidget extends ConsumerWidget {
                                   name: TransferPoucherFriend.routeName)))
                     ],
                   ),
-                  const Gap(height: 18),
-                  InkWell(
-                    onTap: () =>
-                        PageRouter.pushNamed(Routes.accountDetailsView),
-                    borderRadius: BorderRadius.circular(20.r),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 4),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.r),
-                          color: AppColors.kUnknownColor),
-                      child: Text(
-                        AppString.viewAccount,
-                        style: context.headlineLarge?.copyWith(
-                            color: AppColors.kPrimaryColor,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12),
-                      ),
-                    ),
-                  )
+                  // const Gap(height: 18),
+                  // InkWell(
+                  //   onTap: () =>
+                  //       PageRouter.pushNamed(Routes.accountDetailsView),
+                  //   borderRadius: BorderRadius.circular(20.r),
+                  //   child: Container(
+                  //     padding: const EdgeInsets.symmetric(
+                  //         horizontal: 16, vertical: 4),
+                  //     decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(20.r),
+                  //         color: AppColors.kUnknownColor),
+                  //     child: Text(
+                  //       AppString.viewAccount,
+                  //       style: context.headlineLarge?.copyWith(
+                  //           color: AppColors.kPrimaryColor,
+                  //           fontWeight: FontWeight.w400,
+                  //           fontSize: 12),
+                  //     ),
+                  //   ),
+                  // )
                 ],
               ),
             );

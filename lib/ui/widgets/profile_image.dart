@@ -8,16 +8,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../common/app_colors.dart';
 
 class ProfileImage extends StatelessWidget {
-  const ProfileImage({
-    super.key,
-    required this.image,
-    this.initials = '',
-    this.onTap,
-    this.pickImage,
-    this.loading = false,
-    this.width = 80,
-    this.height = 80,
-  });
+  const ProfileImage(
+      {super.key,
+      required this.image,
+      this.initials = '',
+      this.onTap,
+      this.pickImage,
+      this.loading = false,
+      this.width = 80,
+      this.height = 80});
 
   final String image;
   final String initials;
@@ -77,16 +76,17 @@ class ProfileImage extends StatelessWidget {
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: AppColors.white,
-            border: Border.all(width: 8.w, color: AppColors.kPurple300)),
-        padding: EdgeInsets.all(4.w),
+            border: Border.all(
+                width: ((width ?? 0) / 10).w, color: AppColors.kPurple300)),
+        padding: EdgeInsets.all(((width ?? 0) / 20).w),
         child: Container(
           width: width?.w,
           height: height?.h,
           decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.kPrimaryTextColor.withOpacity(0.05)),
+              color: const Color.fromARGB(255, 11, 11, 181).withOpacity(0.05)),
           child: Padding(
-            padding: EdgeInsets.all(10.w),
+            padding: EdgeInsets.all(((width ?? 0) / 10).w),
             child:
                 SvgPicture.asset(AppImage.profile, height: 54.h, width: 54.w),
           ),

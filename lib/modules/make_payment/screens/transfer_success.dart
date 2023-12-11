@@ -1,3 +1,5 @@
+import 'package:Pouchers/app/app.router.dart';
+import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
@@ -32,7 +34,7 @@ class TransferSuccess extends StatelessWidget {
   final double? transactionFee;
 
   const TransferSuccess(
-      {Key? key,
+      {super.key,
       required this.text,
       required this.isRequest,
       this.typeOfTransfer,
@@ -46,8 +48,7 @@ class TransferSuccess extends StatelessWidget {
       this.transactionId,
       this.transactionFee,
       this.tag,
-      this.note})
-      : super(key: key);
+      this.note});
 
   @override
   Widget build(BuildContext context) {
@@ -171,16 +172,15 @@ class TransferSuccess extends StatelessWidget {
                   title: continueText,
                   disableColor: kPurpleColor,
                   onPressed: () {
-                    pushToAndClearStack(
-                      context,
-                      TabLayout(
-                        gottenIndex: 0,
-                      ),
-                    );
+                    PageRouter.popToRoot(Routes.dashboardView);
+                    // pushToAndClearStack(
+                    //   context,
+                    //   TabLayout(
+                    //     gottenIndex: 0,
+                    //   ),
+                    // );
                   }),
-              SizedBox(
-                height: kMediumPadding,
-              ),
+              SizedBox(height: kMediumPadding),
             ],
           ),
         ));

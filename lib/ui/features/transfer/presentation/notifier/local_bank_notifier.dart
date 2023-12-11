@@ -43,7 +43,8 @@ class LocalBankNotifier extends _$LocalBankNotifier {
               title: AppString.transferCompleted,
               message: AppString.transferCompletedMessage,
               btnTitle: AppString.proceed,
-              tap: () => PageRouter.popToRoot(Routes.tabLayout)));
+              tap: () => PageRouter.pushReplacement(Routes.dashboardView,
+                  args: const DashboardViewArguments(gottenIndex: 2))));
     } catch (e) {
       _logger.e(e.toString());
       AppHelper.handleError(e);

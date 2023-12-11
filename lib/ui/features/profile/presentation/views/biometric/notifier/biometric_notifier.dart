@@ -39,4 +39,7 @@ class BiometricNotifier extends ChangeNotifier {
 
   Future<void> secureTransactionPin(String pin) async =>
       await _securedManager.storePinCred(pin);
+
+  Future<String> retrieveTransactionPin() async =>
+      await _securedManager.readPinCred();
 }

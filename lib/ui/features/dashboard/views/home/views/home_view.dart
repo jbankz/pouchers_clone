@@ -71,6 +71,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            const Gap(height: 12),
                             const BalanceWidget(),
                             const Gap(height: 36),
                             Text(AppString.quickLinks,

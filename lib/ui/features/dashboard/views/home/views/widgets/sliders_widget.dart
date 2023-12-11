@@ -1,7 +1,4 @@
-import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/features/admin/data/dao/banner_dao.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
