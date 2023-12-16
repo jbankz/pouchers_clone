@@ -21,7 +21,9 @@ import 'widget/bvn_modal.dart';
 
 @FormView(fields: [FormTextField(name: 'bvn')])
 class BvnView extends ConsumerStatefulWidget {
-  const BvnView({super.key});
+  const BvnView({super.key, required this.routeName});
+
+  final String routeName;
 
   @override
   ConsumerState<BvnView> createState() => _BvnViewState();
@@ -126,6 +128,7 @@ class _BvnViewState extends ConsumerState<BvnView> with $BvnView {
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
 
-    _userNotifier.validateBVN(UserDto(bvn: bvnController.text), _cancelToken);
+    _userNotifier.validateBVN(UserDto(bvn: bvnController.text),
+        cancelToken: _cancelToken, route: widget.routeName);
   }
 }

@@ -18,7 +18,8 @@ import '../../../../../transfer/presentation/sheets/transfer_money_sheet.dart';
 import 'build_action_button.dart';
 
 class BalanceWidget extends ConsumerWidget {
-  const BalanceWidget({super.key});
+  const 
+  BalanceWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) =>

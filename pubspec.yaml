@@ -57,6 +57,8 @@ dependencies:
 
   hooks_riverpod: ^2.4.6
 
+  flutter_native_contact_picker: ^0.0.6
+
   # Util
   flutter_screenutil: ^5.9.0
 

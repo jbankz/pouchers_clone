@@ -70,7 +70,7 @@ class _CardCreationSymmaryViewState
         final walletState = ref.watch(walletNotifierProvider);
         final appState = ref.watch(adminNotifierProvider);
 
-        final envs = (appState.data as List<Envs>);
+        final envs = appState.data;
 
         final totalNairaFee = _cardNotifier.calculateTotalNairaFee(envs);
         final totalDollarFee = _cardNotifier.calculateTotalDollarFee(envs);

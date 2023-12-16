@@ -51,6 +51,8 @@ import '../ui/features/profile/presentation/views/profile/profile_view.dart';
 import '../ui/features/profile/presentation/views/referral/referral_view.dart';
 import '../ui/features/tiers/presentation/view/tier_view.dart';
 import '../ui/features/transfer/presentation/transfer_money_confirmation_view.dart';
+import '../ui/features/utilities/presentation/views/airtime/airtime_view.dart';
+import '../ui/features/utilities/presentation/views/data/data_view.dart';
 import '../ui/widgets/success_state.dart';
 import 'core/manager/biometric_manager.dart';
 import 'core/manager/dojah_manager.dart';
@@ -88,7 +90,8 @@ import 'core/manager/session_manager.dart';
         transitionsBuilder: TransitionsBuilders.fadeIn),
     // AdaptiveRoute(page: GuestView),
     // AdaptiveRoute(page: GetGuestEmailView),
-    // AdaptiveRoute(page: AirtimeView),
+    AdaptiveRoute(page: AirtimeView),
+    AdaptiveRoute(page: DataView),
     // AdaptiveRoute(page: DebitCardView),
     AdaptiveRoute(page: OtpView),
     AdaptiveRoute(page: AccountSettingsView),

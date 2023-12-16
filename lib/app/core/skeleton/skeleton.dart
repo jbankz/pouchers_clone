@@ -27,18 +27,18 @@ class Skeleton extends StatefulWidget {
 class _SkeletonState extends State<Skeleton> {
   @override
   Widget build(BuildContext context) => AnimatedSwitcher(
-        duration: const Duration(milliseconds: 150),
-        child: widget.isLoading
-            ? ShimmerWidget(
-                shimmerGradient: widget.shimmerGradient,
-                darkShimmerGradient: widget.darkShimmerGradient,
-                duration: widget.duration,
-                themeMode: widget.themeMode,
-                child: _SkeletonWidget(
-                    isLoading: widget.isLoading, skeleton: widget.skeleton),
-              )
-            : widget.child,
-      );
+      duration: const Duration(milliseconds: 150),
+      child: widget.isLoading
+          ? ShimmerWidget(
+              shimmerGradient: widget.shimmerGradient,
+              darkShimmerGradient: widget.darkShimmerGradient,
+              duration: widget.duration,
+              themeMode: widget.themeMode,
+              child: _SkeletonWidget(
+                  isLoading: widget.isLoading, skeleton: widget.skeleton))
+          : widget.child,
+      transitionBuilder: (child, animation) =>
+          FadeTransition(opacity: animation, child: child));
 }
 
 class _SkeletonWidget extends StatefulWidget {

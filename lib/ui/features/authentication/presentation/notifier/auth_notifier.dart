@@ -16,8 +16,6 @@ import '../../../../../app/app.router.dart';
 import '../../../../../app/config/app_helper.dart';
 import '../../../../../app/core/manager/biometric_manager.dart';
 import '../../../../../app/core/manager/secure_manager.dart';
-import '../../../../../app/navigators/navigators.dart';
-import '../../../../../modules/tab_layout/screens/tab_layout.dart';
 import '../../../../common/app_strings.dart';
 import '../../../../notification/notification_tray.dart';
 import '../../../profile/presentation/views/widgets/account_info_sheet.dart';

@@ -9,13 +9,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked_annotations.dart';
-import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../../../app/app.router.dart';
 import '../../../../../../app/config/app_config.dart';
 import '../../../../../../app/config/app_helper.dart';
+import '../../../../../../app/core/router/page_router.dart';
 import '../../../../../../app/navigators/navigators.dart';
 import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_strings.dart';
@@ -189,9 +189,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> with $SignUpView {
                             ?.copyWith(color: AppColors.kPrimaryGrey)),
                   ),
                   InkWell(
-                      onTap: () => pushTo(context, LogInAccount(),
-                          settings: const RouteSettings(
-                              name: LogInAccount.routeName)),
+                      onTap: () => PageRouter.pushNamed(Routes.signInView),
                       child: Text(AppString.login,
                           style: context.headlineMedium?.copyWith(
                               fontWeight: FontWeight.w700,

@@ -5,14 +5,14 @@ class AppString {
   static String paymentHub = 'Your one stop for all things payments';
   static String convenience =
       'Service your bills, transfer money to friends, top-up your phone and many more have never been easier and faster.';
-  static String login = 'Login';
+  static String login = 'Log In';
   static String recoverPassword = 'Recover Password';
   static String setPassword = 'Set Password';
   static String register = 'Register';
   static String buyVoucher = 'Buy Voucher';
   static String redeemVoucher = 'Redeem Voucher';
   static String giftVoucher = 'Gift Voucher';
-  static String guestLogin = "Continue as guest";
+  static String guestLogin = "Continue as Guest";
   static String welcomeGuest = "Welcome Guest 👋🏽";
   static String selectPayment = "Select Payment";
   static String airtimeData = "Airtime/Data";
@@ -36,10 +36,10 @@ class AppString {
       "Enter your full name and email address.\nWe’ll send you a message after you have\ncompleted a transaction.";
   static String fullNameInstruction = 'Enter your full name';
   static String fullName = 'Full Name';
-  static String emailInstruction = 'Enter your email address';
+  static String emailInstruction = 'Enter Email Address';
   static String loginEmailInstruction =
       'Enter your email address or phone number';
-  static String email = 'Your email address';
+  static String email = 'Email Address';
   static String loginEmail = 'Email / Phone Number';
   static String proceed = 'Continue';
   static String createOne = 'Create one';
@@ -74,16 +74,16 @@ class AppString {
   static String firstName = "First Name";
   static String firstNameInstruction = "Enter First Name";
   static String lastName = "Last Name";
-  static String lastNameInstruction = "Last First Name";
+  static String lastNameInstruction = "Enter Last Name";
   static String signUpLegalInfo =
       "Your full name should be as they are on your legal documents and BVN.";
   static String bvnInst = "Enter BVN";
   static String phoneNumber = "Phone Number";
-  static String phoneNumberInstruction = "Enter phone number";
-  static String referralCode = "Referral code (optional)";
+  static String phoneNumberInstruction = "Enter Phone Number";
+  static String referralCode = "Referal Code (Optional)";
   static String referralCodeInstruction = "Enter referral code";
   static String password = "Password";
-  static String passwordInstruction = "Enter password";
+  static String passwordInstruction = "Enter Password";
   static String passwordInstruction2 =
       "Enter the password for this account to reset transaction pin";
   static String pinInstruction = "Change transaction pin";
@@ -161,7 +161,7 @@ class AppString {
   static String scheduledPaymentsInstruction =
       'Manage weekly and monthly recurring payments';
   static String accountSettings = 'Account settings ';
-  static String accountVerification = 'Account verification ';
+  static String accountVerification = 'Account Verification ';
   static String accountSettingsInstruction = 'Manage your account and security';
   static String helpAndSupport = 'Help & support';
   static String helpAndSupportInstruction = 'Send feedback or get support';
@@ -194,13 +194,13 @@ class AppString {
       'Complete the account verification process to upgrade your account and remove all restrictions.';
   static String validIdInst =
       'Valid identification helps keeps your account safe and reduce risk of fraud.';
-  static String idDropdownInst = 'Select identification method';
-  static String idInst = 'Enter ID number';
+  static String idDropdownInst = 'Select Identification Method';
+  static String idInst = 'Enter ID Number';
   static String bvn = 'BVN';
   static String bvnVerify = 'Verify your Bank Verification Number';
-  static String validId = 'Valid ID card';
+  static String validId = 'Valid ID Card';
   static String validIdVerify = 'Submit a valid means of identification';
-  static String utilityBill = 'Utility bill';
+  static String utilityBill = 'Utility Bill';
   static String utilityBillVerify = 'Upload and verify utility bill';
   static String verifyBVN = 'Verify BVN';
   static String bvnReminder = 'Can’t remember BVN code?';
@@ -236,7 +236,7 @@ class AppString {
   static String completed = 'Completed';
   static String bvnCompleted = 'BVN verification successful';
   static String idCompleted = 'ID validation successful';
-  static String pending = 'Pending';
+  static String pending = ' Not Verified';
   static String verified = 'Verified';
   static String failed = 'Failed';
   static String uploadId = 'Upload ID';
@@ -297,10 +297,10 @@ class AppString {
   static String transactionHistory = 'Transaction history';
   static String profile = 'Profile';
   static String gender = 'Gender';
-  static String phone = 'Phone number';
+  static String phone = 'Phone Number';
   static String idVerification = 'ID Verification';
-  static String dob = 'Date of birth';
-  static String tag = 'Poucher tag';
+  static String dob = 'Date of Birth';
+  static String tag = 'Poucher Tag';
   static String complete = 'Completed';
   static String incomplete = 'Incomplete';
   static String save = 'Save';
@@ -428,4 +428,9 @@ class AppString {
   static String transferToBankInst = 'Send to 10 digit NUBAN account number.';
   static String notification = 'Notification';
   static String accountDetails = 'Account Details';
+
+  static String nairaSymbol = '₦';
+  static String scheduleAirtimeSub = "Auto top airtime at regular intervals.";
+  static String scheduleAirtime = "Schedule airtime";
+  static String selectType = "Select type";
 }

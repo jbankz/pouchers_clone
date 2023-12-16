@@ -48,7 +48,8 @@ class UserNotifier extends _$UserNotifier {
     }
   }
 
-  Future<void> validateBVN(UserDto userDto, [CancelToken? cancelToken]) async {
+  Future<void> validateBVN(UserDto userDto,
+      {CancelToken? cancelToken, required String route}) async {
     try {
       state = state.copyWith(isBusy: true);
 
@@ -61,7 +62,7 @@ class UserNotifier extends _$UserNotifier {
               title: AppString.completed,
               message: AppString.bvnCompleted,
               btnTitle: AppString.proceed,
-              tap: () => PageRouter.popToRoot(Routes.accountVerificationView)));
+              tap: () => PageRouter.popToRoot(route)));
     } catch (e) {
       _logger.e(e.toString());
       AppHelper.handleError(e);

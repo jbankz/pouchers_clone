@@ -65,6 +65,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
           final String name =
               '${user.firstName ?? ''} ${user.lastName ?? ''}'.titleCase;
           final bool isAccountVerified = user.tierLevels == 3;
+          final bool isBVNVerified = (user.tierLevels ?? 0) > 1;
 
           return Scaffold(
             backgroundColor: AppColors.kPurpleColor800,
@@ -172,16 +173,22 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                             context: context,
                             key: AppString.fullName,
                             value: name,
-                            onTap: () => BottomSheets.showInputAlertDialog(
-                                barrierDismissible: false,
-                                child: const UpdateFullNameWidget())),
+                            onTap: () {
+                              if (isBVNVerified) return;
+                              BottomSheets.showInputAlertDialog(
+                                  barrierDismissible: false,
+                                  child: const UpdateFullNameWidget());
+                            }),
                         _buildTile(
                             context: context,
                             key: AppString.gender,
                             value: user.gender?.titleCase ?? '',
-                            onTap: () => BottomSheets.showInputAlertDialog(
-                                barrierDismissible: false,
-                                child: const UpdateGenderWidget())),
+                            onTap: () {
+                              if (isBVNVerified) return;
+                              BottomSheets.showInputAlertDialog(
+                                  barrierDismissible: false,
+                                  child: const UpdateGenderWidget());
+                            }),
                         _buildTile(
                             context: context,
                             key: AppString.phone,
@@ -219,6 +226,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                             value: user.dob ?? '',
                             isLoading: userState.isBusy,
                             onTap: () async {
+                              if (isBVNVerified) return;
+
                               final date = await pickDate(
                                   dateOptions: DateOptions.past,
                                   onChange: (date) {}) as String?;

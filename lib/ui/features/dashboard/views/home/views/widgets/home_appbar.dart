@@ -96,7 +96,9 @@ class HomeAppBar extends StatelessWidget {
                   children: [
                     const Gap(height: 19),
                     InkWell(
-                      onTap: () => PageRouter.pushNamed(Routes.bvnView),
+                      onTap: () => PageRouter.pushNamed(Routes.bvnView,
+                          args: const BvnViewArguments(
+                              routeName: Routes.dashboardView)),
                       borderRadius: BorderRadius.circular(8.r),
                       child: Container(
                           padding: EdgeInsets.symmetric(

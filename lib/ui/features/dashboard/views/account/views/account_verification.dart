@@ -56,7 +56,7 @@ class _AccountVerificationViewState
               title: Text(AppString.accountVerification),
               backgroundColor: AppColors.kPurpleColor800),
           body: SafeArea(
-            minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+            minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
             child: ListView(children: [
               Text(AppString.completedVerificationProcess,
                   style: context.titleLarge?.copyWith(fontSize: 14)),
@@ -73,7 +73,9 @@ class _AccountVerificationViewState
                         kycStatus: ((user.tierLevels ?? 0) > 1)
                             ? KycStatus.verified
                             : KycStatus.pending,
-                        onTap: () => PageRouter.pushNamed(Routes.bvnView)),
+                        onTap: () => PageRouter.pushNamed(Routes.bvnView,
+                            args: const BvnViewArguments(
+                                routeName: Routes.accountVerificationView))),
                     const Gap(height: 15),
                     BuildVerificationTypes(
                         title: AppString.validId,

@@ -203,7 +203,9 @@ class _TransferMoneySheetState extends ConsumerState<TransferMoneySheet>
             ),
           ),
           const Gap(height: 15),
-          const Center(child: BalanceIndicatorWidget()),
+          Center(
+              child: BalanceIndicatorWidget(
+                  amount: _moneyMaskedTextController.numberValue)),
           const Gap(height: 40),
           EditTextFieldWidget(
             readOnly: true,

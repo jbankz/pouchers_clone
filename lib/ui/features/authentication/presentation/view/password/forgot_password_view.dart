@@ -71,7 +71,7 @@ class _ForgotPasswordViewState extends ConsumerState<ForgotPasswordView>
                         const Gap(height: 43),
                         EditTextFieldWidget(
                             readOnly: appState.isBusy,
-                            title: AppString.email,
+                            title: 'Enter ${AppString.email}',
                             label: AppString.emailInstruction,
                             controller: emailController,
                             focusNode: emailFocusNode,

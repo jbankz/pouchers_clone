@@ -35,7 +35,7 @@ class BiometricNotifier extends ChangeNotifier {
     }
   }
 
-  void skip() => PageRouter.pushReplacement(Routes.tabLayout);
+  void skip() => PageRouter.pushReplacement(Routes.dashboardView);
 
   Future<void> secureTransactionPin(String pin) async =>
       await _securedManager.storePinCred(pin);

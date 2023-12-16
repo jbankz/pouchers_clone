@@ -37,8 +37,10 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
   late UserNotifier _userNotifier;
   IdentificationType? _identificationType;
 
-  bool get _isDriversValidation =>
-      _identificationType?.idTypes == IdTypes.driver;
+  bool get _isAlphaNumericValidation =>
+      (_identificationType?.idTypes == IdTypes.driver ||
+          _identificationType?.idTypes == IdTypes.voters ||
+          _identificationType?.idTypes == IdTypes.passport);
 
   @override
   void initState() {
@@ -77,8 +79,9 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
                         title: AppString.verificationType,
                         label: AppString.idDropdownInst,
                         controller: typeController,
-                        suffixIcon:
-                            const Icon(Icons.keyboard_arrow_down_rounded),
+                        suffixIcon: const Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            color: AppColors.kIconGrey),
                         validator: FieldValidator.validateString(),
                         onTap: () async {
                           _identificationType = await BottomSheets.showSheet(
@@ -96,14 +99,14 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
                           label: AppString.idInst,
                           controller: idController,
                           focusNode: idFocusNode,
-                          keyboardType: _isDriversValidation
+                          keyboardType: _isAlphaNumericValidation
                               ? TextInputType.text
                               : TextInputType.number,
                           inputFormatters: [
-                            if (!_isDriversValidation) context.limit(),
-                            if (!_isDriversValidation) context.digitsOnly
+                            if (!_isAlphaNumericValidation) context.limit(),
+                            if (!_isAlphaNumericValidation) context.digitsOnly
                           ],
-                          validator: _isDriversValidation
+                          validator: _isAlphaNumericValidation
                               ? FieldValidator.validateString()
                               : FieldValidator.validateInt(),
                           textInputAction: TextInputAction.go,

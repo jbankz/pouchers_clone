@@ -1,6 +1,7 @@
 import 'package:Pouchers/ui/features/profile/domain/dto/wallet_dto.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/bank_account_details/bank_account_details.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../../../app/core/network/api_path.dart';
 import '../../../../../../app/core/network/network_service.dart';
@@ -18,6 +19,8 @@ class WalletSourceImpl implements WalletSource {
         path: ApiPath.wallet,
         requestType: RequestType.get,
         cancelToken: cancelToken);
+    if (kDebugMode) response.data['data']['balance'] = "500000000000";
+
     return Wallet.fromJson(response.data['data'] as Map<String, dynamic>);
   }
 
