@@ -245,7 +245,7 @@ class AppString {
   static String pleasePickImage = 'Please you need to pick a image.';
   static String utilityUploadMessage =
       'File upload successful. Verification will be confirmed within 2-4 days';
-  static String createVirtualCard = 'Create virtual card';
+  static String createVirtualCard = 'Create Virtual Card';
   static String creationFeeApplies = 'Creation fee applies';
   static String paymentAnyWhere = 'Make payments anywhere online';
   static String manageCards = 'Easily manage your payments and cards';
@@ -255,7 +255,7 @@ class AppString {
   static String virtualDollarCard = 'Dollar Virtual Card';
   static String fundNairaCard = 'Fund Naira card';
   static String fundDollarCard = 'Fund Dollar card';
-  static String fundCard = 'Fund card';
+  static String fundCard = 'Fund Card';
   static String confirmation = 'Confirmation';
   static String creationFee = 'Creation fee';
   static String totalInDollar = 'Total in dollars';

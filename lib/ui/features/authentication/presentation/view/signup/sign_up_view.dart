@@ -87,7 +87,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> with $SignUpView {
                       controller: firstNameController,
                       textCapitalization: TextCapitalization.words,
                       keyboardType: TextInputType.text,
-                      validator: FieldValidator.validateString(),
+                      validator: FieldValidator.validateString(min: 2),
                       onFieldSubmitted: (_) =>
                           context.nextFocus(lastNameFocusNode),
                       inputFormatters: [context.charactersOnly],
@@ -103,7 +103,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> with $SignUpView {
                       focusNode: lastNameFocusNode,
                       textCapitalization: TextCapitalization.words,
                       keyboardType: TextInputType.text,
-                      validator: FieldValidator.validateString(),
+                      validator: FieldValidator.validateString(min: 2),
                       inputFormatters: [context.charactersOnly],
                       onFieldSubmitted: (_) =>
                           context.nextFocus(emailFocusNode),
