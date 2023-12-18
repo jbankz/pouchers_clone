@@ -2,7 +2,9 @@ import 'package:Pouchers/ui/features/utilities/domain/dto/billers_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/airtime_top_deals.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/billers.dart';
+import 'package:Pouchers/ui/features/utilities/domain/model/mobile_data_services.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
+import 'package:Pouchers/ui/features/utilities/domain/model/schedule.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/utility.dart';
 import 'package:dio/dio.dart';
 
@@ -58,5 +60,29 @@ class BillersSourceImpl implements BillerSource {
         cancelToken: cancelToken);
 
     return Utility.fromJson(response.data?['data'] as Map<String, dynamic>);
+  }
+
+  @override
+  Future<List<MobileOperatorServices>> mobileOperatorServices(
+      MobileDto mobileDto,
+      {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: '${ApiPath.dataProviders}/${mobileDto.mobileOperatorPublicId}',
+        requestType: RequestType.get,
+        cancelToken: cancelToken);
+    return (response.data?['data']?['mobileOperatorServices'] as List<dynamic>)
+        .map((e) => MobileOperatorServices.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  @override
+  Future<Schedule> schedule(MobileDto mobileDto,
+      {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.schedule,
+        data: mobileDto.toJson(),
+        requestType: RequestType.post,
+        cancelToken: cancelToken);
+    return Schedule.fromJson(response.data?['data'] as Map<String, dynamic>);
   }
 }

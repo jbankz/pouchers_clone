@@ -26,8 +26,13 @@ class NotificationDao {
     if (notifications.isEmpty) return;
 
     for (var notification in notifications) {
-      await _box.put(notification.createdAt?.toIso8601String(), notification);
+      await _box.put(notification.notificationId, notification);
     }
+  }
+
+  Future<void> updateReadStatus(NotificationModel notification) async {
+    await _box.put(
+        notification.notificationId, notification.copyWith(isRead: true ));
   }
 
   List<NotificationModel> retrieve(Box box) =>

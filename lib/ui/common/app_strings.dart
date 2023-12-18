@@ -37,10 +37,11 @@ class AppString {
   static String fullNameInstruction = 'Enter your full name';
   static String fullName = 'Full Name';
   static String emailInstruction = 'Enter Email Address';
+  static String emailPesonalizedInstruction = 'Enter Your Email Address';
   static String loginEmailInstruction =
       'Enter your email address or phone number';
   static String email = 'Email Address';
-  static String loginEmail = 'Email / Phone Number';
+  static String loginEmail = 'Enter Your Email Address/Phone Number';
   static String proceed = 'Continue';
   static String createOne = 'Create one';
   static String forgotPassword = 'Forgot Password';
@@ -157,28 +158,28 @@ class AppString {
       'Earn money when your friends join Pouchers';
   static String savedCards = 'Saved cards';
   static String savedCardsInstruction = 'Managed linked cards';
-  static String scheduledPayments = 'Scheduled payments';
+  static String scheduledPayments = 'Scheduled Payments';
   static String scheduledPaymentsInstruction =
       'Manage weekly and monthly recurring payments';
-  static String accountSettings = 'Account settings ';
+  static String accountSettings = 'Account Settings ';
   static String accountVerification = 'Account Verification ';
   static String accountSettingsInstruction = 'Manage your account and security';
-  static String helpAndSupport = 'Help & support';
+  static String helpAndSupport = 'Help & Support';
   static String helpAndSupportInstruction = 'Send feedback or get support';
   static String aboutPourcher = 'About Pouchers';
   static String aboutPourcherInstruction = 'Learn more about Pouchers';
   static String logOut = 'Log out';
-  static String changePassword = 'Change password';
+  static String changePassword = 'Change Password';
   static String changePasswordInstruction = 'Update your password to a new one';
-  static String changeTransactionPin = 'Change transaction pin';
+  static String changeTransactionPin = 'Change Transaction Pin';
   static String changeTransactionPinInstruction =
       'Update your transaction pin to a new one';
-  static String twoFactorAuth = 'Two factor authentication';
+  static String twoFactorAuth = 'Two Factor Authentication';
   static String twoFactorAuthInstr = 'Manage Two factor authentication';
-  static String biometricAuth = 'Biometric authentication';
+  static String biometricAuth = 'Biometric Authentication';
   static String biometricAuthInstruction = 'Manage biometric authentications';
-  static String disableAccount = 'Disable my account';
-  static String deleteAccount = 'Delete my account';
+  static String disableAccount = 'Disable my Account';
+  static String deleteAccount = 'Delete my Account';
   static String confirm = 'Confirm';
   static String goHome = 'Go home';
   static String transactionPin = 'Transaction pin';
@@ -433,4 +434,12 @@ class AppString {
   static String scheduleAirtimeSub = "Auto top airtime at regular intervals.";
   static String scheduleAirtime = "Schedule airtime";
   static String selectType = "Select type";
+
+  static String completedDataPurchase = 'Your data has been delivered';
+  static String completedAirtimePurchase = 'Your airtime has been delivered';
+  static String rechargeSuccessful = 'Recharge successful';
+
+  static String subscriptionType = 'Subscription Type';
+  static String selectFrequency = 'Select frequency';
+  static String successFullBillSchedule = 'Bill schedule successfully created';
 }

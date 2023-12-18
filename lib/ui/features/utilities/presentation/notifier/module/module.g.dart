@@ -479,5 +479,303 @@ class _UtilityPurchaseProviderElement
   CancelToken? get cancelToken =>
       (origin as UtilityPurchaseProvider).cancelToken;
 }
+
+String _$mobileDataServicesHash() =>
+    r'9299d6e5a66817da5cb9d26461026087006ad6d4';
+
+/// See also [mobileDataServices].
+@ProviderFor(mobileDataServices)
+const mobileDataServicesProvider = MobileDataServicesFamily();
+
+/// See also [mobileDataServices].
+class MobileDataServicesFamily
+    extends Family<AsyncValue<List<MobileOperatorServices>>> {
+  /// See also [mobileDataServices].
+  const MobileDataServicesFamily();
+
+  /// See also [mobileDataServices].
+  MobileDataServicesProvider call({
+    required MobileDto parameter,
+    CancelToken? cancelToken,
+  }) {
+    return MobileDataServicesProvider(
+      parameter: parameter,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  MobileDataServicesProvider getProviderOverride(
+    covariant MobileDataServicesProvider provider,
+  ) {
+    return call(
+      parameter: provider.parameter,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'mobileDataServicesProvider';
+}
+
+/// See also [mobileDataServices].
+class MobileDataServicesProvider
+    extends AutoDisposeFutureProvider<List<MobileOperatorServices>> {
+  /// See also [mobileDataServices].
+  MobileDataServicesProvider({
+    required MobileDto parameter,
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => mobileDataServices(
+            ref as MobileDataServicesRef,
+            parameter: parameter,
+            cancelToken: cancelToken,
+          ),
+          from: mobileDataServicesProvider,
+          name: r'mobileDataServicesProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$mobileDataServicesHash,
+          dependencies: MobileDataServicesFamily._dependencies,
+          allTransitiveDependencies:
+              MobileDataServicesFamily._allTransitiveDependencies,
+          parameter: parameter,
+          cancelToken: cancelToken,
+        );
+
+  MobileDataServicesProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.parameter,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final MobileDto parameter;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<MobileOperatorServices>> Function(
+            MobileDataServicesRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: MobileDataServicesProvider._internal(
+        (ref) => create(ref as MobileDataServicesRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        parameter: parameter,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<MobileOperatorServices>>
+      createElement() {
+    return _MobileDataServicesProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is MobileDataServicesProvider &&
+        other.parameter == parameter &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, parameter.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin MobileDataServicesRef
+    on AutoDisposeFutureProviderRef<List<MobileOperatorServices>> {
+  /// The parameter `parameter` of this provider.
+  MobileDto get parameter;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _MobileDataServicesProviderElement
+    extends AutoDisposeFutureProviderElement<List<MobileOperatorServices>>
+    with MobileDataServicesRef {
+  _MobileDataServicesProviderElement(super.provider);
+
+  @override
+  MobileDto get parameter => (origin as MobileDataServicesProvider).parameter;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as MobileDataServicesProvider).cancelToken;
+}
+
+String _$scheduleHash() => r'd41c609836d1c6d091bf7fc98e5bde9f4ac0ffd4';
+
+/// See also [schedule].
+@ProviderFor(schedule)
+const scheduleProvider = ScheduleFamily();
+
+/// See also [schedule].
+class ScheduleFamily extends Family<AsyncValue<Schedule?>> {
+  /// See also [schedule].
+  const ScheduleFamily();
+
+  /// See also [schedule].
+  ScheduleProvider call({
+    required MobileDto parameter,
+    CancelToken? cancelToken,
+  }) {
+    return ScheduleProvider(
+      parameter: parameter,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  ScheduleProvider getProviderOverride(
+    covariant ScheduleProvider provider,
+  ) {
+    return call(
+      parameter: provider.parameter,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'scheduleProvider';
+}
+
+/// See also [schedule].
+class ScheduleProvider extends AutoDisposeFutureProvider<Schedule?> {
+  /// See also [schedule].
+  ScheduleProvider({
+    required MobileDto parameter,
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => schedule(
+            ref as ScheduleRef,
+            parameter: parameter,
+            cancelToken: cancelToken,
+          ),
+          from: scheduleProvider,
+          name: r'scheduleProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$scheduleHash,
+          dependencies: ScheduleFamily._dependencies,
+          allTransitiveDependencies: ScheduleFamily._allTransitiveDependencies,
+          parameter: parameter,
+          cancelToken: cancelToken,
+        );
+
+  ScheduleProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.parameter,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final MobileDto parameter;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<Schedule?> Function(ScheduleRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ScheduleProvider._internal(
+        (ref) => create(ref as ScheduleRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        parameter: parameter,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Schedule?> createElement() {
+    return _ScheduleProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ScheduleProvider &&
+        other.parameter == parameter &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, parameter.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ScheduleRef on AutoDisposeFutureProviderRef<Schedule?> {
+  /// The parameter `parameter` of this provider.
+  MobileDto get parameter;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _ScheduleProviderElement
+    extends AutoDisposeFutureProviderElement<Schedule?> with ScheduleRef {
+  _ScheduleProviderElement(super.provider);
+
+  @override
+  MobileDto get parameter => (origin as ScheduleProvider).parameter;
+  @override
+  CancelToken? get cancelToken => (origin as ScheduleProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

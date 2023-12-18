@@ -1,4 +1,3 @@
-import 'package:Pouchers/modules/login/screens/login.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
@@ -16,7 +15,6 @@ import '../../../../../../app/app.router.dart';
 import '../../../../../../app/config/app_config.dart';
 import '../../../../../../app/config/app_helper.dart';
 import '../../../../../../app/core/router/page_router.dart';
-import '../../../../../../app/navigators/navigators.dart';
 import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/edit_text_field_with.dart';

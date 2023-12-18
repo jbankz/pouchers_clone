@@ -52,6 +52,7 @@ import '../ui/features/profile/presentation/views/referral/referral_view.dart';
 import '../ui/features/tiers/presentation/view/tier_view.dart';
 import '../ui/features/transfer/presentation/transfer_money_confirmation_view.dart';
 import '../ui/features/utilities/presentation/views/airtime/airtime_view.dart';
+import '../ui/features/utilities/presentation/views/airtime/schedule_airtime_view.dart';
 import '../ui/features/utilities/presentation/views/data/data_view.dart';
 import '../ui/widgets/success_state.dart';
 import 'core/manager/biometric_manager.dart';
@@ -148,6 +149,7 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: NotificationView),
     AdaptiveRoute(page: NotificationDetailsView),
     AdaptiveRoute(page: AccountDetailsView),
+    AdaptiveRoute(page: ScheduledAirtimeView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

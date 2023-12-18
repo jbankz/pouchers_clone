@@ -7,6 +7,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../domain/dto/mobile_dto.dart';
 import '../../../domain/model/discounts.dart';
+import '../../../domain/model/mobile_data_services.dart';
+import '../../../domain/model/schedule.dart';
 import '../../../domain/model/utility.dart';
 
 part 'module.g.dart';
@@ -34,4 +36,20 @@ Future<Utility?> utilityPurchase(UtilityPurchaseRef ref,
         {required MobileDto parameter, CancelToken? cancelToken}) async =>
     await ref
         .read(purchaseUtilityUseCaseModule)
+        .execute(parameter: parameter, cancelToken: cancelToken);
+
+@riverpod
+Future<List<MobileOperatorServices>> mobileDataServices(
+        MobileDataServicesRef ref,
+        {required MobileDto parameter,
+        CancelToken? cancelToken}) async =>
+    await ref
+        .read(getMobileDataServicesUseCaseModule)
+        .execute(parameter: parameter, cancelToken: cancelToken);
+
+@riverpod
+Future<Schedule?> schedule(ScheduleRef ref,
+        {required MobileDto parameter, CancelToken? cancelToken}) async =>
+    await ref
+        .read(scheduleUseCaseModule)
         .execute(parameter: parameter, cancelToken: cancelToken);

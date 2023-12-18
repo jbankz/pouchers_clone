@@ -5,6 +5,7 @@ import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/notification/data/dao/notification_dao.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -72,11 +73,17 @@ class _NotificationViewState extends ConsumerState<NotificationView> {
                   child: ListView.separated(
                       itemBuilder: (_, index) {
                         final notification = notifications[index];
-                        return GestureDetector(
-                          onTap: () => PageRouter.pushNamed(
-                              Routes.notificationDetailsView,
-                              args: NotificationDetailsViewArguments(
-                                  notificationModel: notification)),
+                        return CupertinoButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () async {
+                            await notificationDao
+                                .updateReadStatus(notification);
+
+                            PageRouter.pushNamed(Routes.notificationDetailsView,
+                                args: NotificationDetailsViewArguments(
+                                    notificationModel: notification));
+                          },
+                          color: Colors.transparent,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -84,8 +91,10 @@ class _NotificationViewState extends ConsumerState<NotificationView> {
                                   height: 10.h,
                                   width: 10.w,
                                   margin: EdgeInsets.only(top: 5.h),
-                                  decoration: const BoxDecoration(
-                                      color: Colors.green,
+                                  decoration: BoxDecoration(
+                                      color: notification.isRead
+                                          ? AppColors.kLightColor200
+                                          : AppColors.limeGreen,
                                       shape: BoxShape.circle)),
                               const Gap(width: 8),
                               Flexible(

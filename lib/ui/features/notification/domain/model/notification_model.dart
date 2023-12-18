@@ -9,12 +9,18 @@ part 'notification_model.g.dart';
 class NotificationModel with _$NotificationModel {
   @HiveType(typeId: 8, adapterName: 'NotificationModelAdapter')
   factory NotificationModel(
-      {@HiveField(0) String? title,
-      @HiveField(1) String? body,
+      {@HiveField(0) num? id,
+      @HiveField(1) @JsonKey(name: 'notification_id') String? notificationId,
+      @HiveField(2) String? title,
+      @HiveField(3) String? body,
       @JsonKey(name: 'created_at')
-      @HiveField(2)
+      @HiveField(4)
       @DateTimeSerializer()
-      DateTime? createdAt}) = _NotificationModel;
+      DateTime? createdAt,
+      @HiveField(5)
+      @JsonKey(name: 'is_read', defaultValue: false)
+      @Default(false)
+      bool isRead}) = _NotificationModel;
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) =>
       _$NotificationModelFromJson(json);

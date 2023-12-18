@@ -1,4 +1,5 @@
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
+import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
@@ -14,13 +15,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stacked/stacked_annotations.dart';
 
-import '../../../../../../app/core/theme/light_theme.dart';
-import '../../../../../../app/navigators/navigators.dart';
-import '../../../../../../modules/schedule_purchase/schedule_widget_constants.dart';
-import '../../../../../../modules/schedule_purchase/screens/schedule_airtime_topup.dart';
+import '../../../../../../app/app.router.dart';
+import '../../../../../../app/core/router/page_router.dart';
 import '../../../../../../utils/field_validator.dart';
 import '../../../../../../utils/formatters/currency_formatter.dart';
-import '../../../../../../utils/strings.dart';
 import '../../../../../common/app_images.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/dialog/bottom_sheet.dart';
@@ -28,10 +26,12 @@ import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/airtime_top_deals.dart';
 import '../../../domain/model/billers.dart';
 import '../../notifier/billers_notifier.dart';
 import '../sheet/summary_sheet.dart';
+import '../widget/scheduling_widget.dart';
 import '../widget/utility_icon.dart';
 import 'airtime_view.form.dart';
 import 'skeleton/airtime_skeleton.dart';
@@ -98,7 +98,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                         controller: phoneController,
                         focusNode: phoneFocusNode,
                         keyboardType: TextInputType.phone,
-                        readOnly: billerState.purchasing,
+                        readOnly: billerState.isPurchasing,
                         onFieldSubmitted: (_) =>
                             context.nextFocus(amountFocusNode),
                         validator: FieldValidator.validatePhone(),
@@ -111,16 +111,14 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                             child: SvgPicture.asset(AppImage.contactBook,
                                 fit: BoxFit.scaleDown),
                             onPressed: () async {
-                              if (billerState.purchasing) return;
+                              if (billerState.isPurchasing) return;
 
                               final Contact? contact =
                                   await _contactPicker.selectContact();
 
                               if (contact?.phoneNumbers?.isNotEmpty ?? false) {
-                                phoneController.text = contact
-                                        ?.phoneNumbers?.first
-                                        .replaceAll('+234', '0')
-                                        .replaceAll(' ', '') ??
+                                phoneController.text = contact?.phoneNumbers
+                                        ?.first.formatCountryCode ??
                                     '';
                               }
                               setState(() {});
@@ -140,7 +138,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                                       _billers?.name,
                                   image: billerState.billers[index].logoUrl,
                                   onTap: () {
-                                    if (billerState.purchasing) return;
+                                    if (billerState.isPurchasing) return;
 
                                     setState(() =>
                                         _billers = billerState.billers[index]);
@@ -152,7 +150,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                           style: context.titleLarge?.copyWith(fontSize: 12.sp)),
                       const Gap(height: 12),
                       TopDealsWidget(callback: (topDeal) {
-                        if (billerState.purchasing) return;
+                        if (billerState.isPurchasing) return;
                         _airtimeTopDeals = topDeal;
                         amountController.text =
                             _formatter.format(topDeal.amount.toString());
@@ -164,7 +162,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                         label: AppString.amountInstruction,
                         controller: amountController,
                         focusNode: amountFocusNode,
-                        readOnly: billerState.purchasing,
+                        readOnly: billerState.isPurchasing,
                         keyboardType: TextInputType.number,
                         onFieldSubmitted: (_) {},
                         validator: FieldValidator.validateAmount(),
@@ -174,12 +172,18 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                           _formatter
                         ],
                       ),
+                      const Gap(height: 24),
+                      SchedulingWidget(
+                          title: 'Schedule airtime',
+                          description: 'Auto top airtime at regular intervals',
+                          tapped: () =>
+                              PageRouter.pushNamed(Routes.scheduledAirtimeView))
                     ],
                   ),
                 ),
                 ElevatedButtonWidget(
                     title: AppString.proceed,
-                    loading: billerState.purchasing,
+                    loading: billerState.isPurchasing,
                     onPressed: _billers == null
                         ? null
                         : () async {
@@ -197,23 +201,11 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                                         fee: 0))) as bool?;
 
                             if (feedback != null && feedback) {
-                              final response = await BottomSheets.showSheet(
+                              final pin = await BottomSheets.showSheet(
                                       child: const PinConfirmationSheet())
                                   as String?;
-                              if (response != null) {
-                                _billersNotifier.purchaseService(
-                                    MobileDto(
-                                        category: 'airtime-purchase',
-                                        subCategory: _billers?.displayName,
-                                        amount:
-                                            _formatter.getUnformattedValue(),
-                                        destinationPhoneNumber:
-                                            phoneController.text,
-                                        mobileOperatorPublicId:
-                                            _billers?.operatorpublicid,
-                                        applyDiscount: false,
-                                        transactionPin: response),
-                                    _cancelToken);
+                              if (pin != null) {
+                                _submit(pin);
                               }
                             }
                           })
@@ -224,4 +216,21 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
       ),
     );
   }
+
+  Future<void> _submit(String pin) => _billersNotifier.purchaseService(
+      mobileDto: MobileDto(
+          category: ServiceCategory.airtime,
+          subCategory: _billers?.displayName,
+          amount: _formatter.getUnformattedValue(),
+          destinationPhoneNumber: phoneController.text,
+          mobileOperatorPublicId: _billers?.operatorpublicid,
+          applyDiscount: false,
+          transactionPin: pin),
+      onSuccess: () => PageRouter.pushNamed(Routes.successState,
+          args: SuccessStateArguments(
+              title: AppString.rechargeSuccessful,
+              message: AppString.completedAirtimePurchase,
+              btnTitle: AppString.complete,
+              tap: () => PageRouter.popToRoot(Routes.airtimeView))),
+      cancelToken: _cancelToken);
 }

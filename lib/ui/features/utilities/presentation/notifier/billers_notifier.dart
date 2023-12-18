@@ -1,5 +1,6 @@
 import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
+import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/billers_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
@@ -12,6 +13,7 @@ import '../../../../../app/config/app_helper.dart';
 import '../../domain/dto/mobile_dto.dart';
 import '../../domain/enum/billers_category.dart';
 import '../../domain/model/billers.dart';
+import '../../domain/model/mobile_data_services.dart';
 import '../state/billers_state.dart';
 
 part 'billers_notifier.g.dart';
@@ -21,11 +23,14 @@ class BillersNotifier extends _$BillersNotifier {
   final _logger = getLogger('BillersNotifier');
 
   List<Billers> _billers = [];
+  List<MobileOperatorServices> _mobileOperatorServices = [];
   Discounts? _discounts;
 
   @override
   BillersState build() => BillersState(
-      billers: _billers, airtimeTopDeals: ref.read(airtimeTopDealsProvider));
+      billers: _billers,
+      airtimeTopDeals: ref.read(airtimeTopDealsProvider),
+      mobileOperatorServices: _mobileOperatorServices);
 
   Future<void> billers(BillersCategory parameter,
       [CancelToken? cancelToken]) async {
@@ -64,30 +69,72 @@ class BillersNotifier extends _$BillersNotifier {
     }
   }
 
-  Future<void> purchaseService(MobileDto mobileDto,
-      [CancelToken? cancelToken]) async {
+  Future<void> purchaseService(
+      {required MobileDto mobileDto,
+      required Function() onSuccess,
+      CancelToken? cancelToken}) async {
     try {
-      state = state.copyWith(purchasing: true);
+      state = state.copyWith(isPurchasing: true);
 
       await ref.read(utilityPurchaseProvider
           .call(parameter: mobileDto, cancelToken: cancelToken)
           .future);
 
+      onSuccess();
+
       await ref
           .read(walletNotifierProvider.notifier)
           .getWalletBalance(cancelToken);
-
-      PageRouter.pushNamed(Routes.successState,
-          args: SuccessStateArguments(
-              title: 'Recharge successful',
-              message: 'Your airtime has been delivered',
-              btnTitle: 'Continue',
-              tap: () => PageRouter.popToRoot(Routes.airtimeView)));
     } catch (e) {
       _logger.e(e.toString());
       AppHelper.handleError(e);
     } finally {
-      state = state.copyWith(purchasing: false);
+      state = state.copyWith(isPurchasing: false);
+    }
+  }
+
+  Future<void> mobileDataServices(String mobileOperatorPublicId,
+      [CancelToken? cancelToken]) async {
+    try {
+      state = state.copyWith(isGettingServices: true);
+
+      _mobileOperatorServices = await ref.read(mobileDataServicesProvider
+          .call(
+              parameter:
+                  MobileDto(mobileOperatorPublicId: mobileOperatorPublicId),
+              cancelToken: cancelToken)
+          .future);
+    } catch (e) {
+      _logger.e(e.toString());
+      AppHelper.handleError(e);
+      PageRouter.pop();
+    } finally {
+      state = state.copyWith(
+          isGettingServices: false,
+          mobileOperatorServices: _mobileOperatorServices);
+    }
+  }
+
+  Future<void> scheduleAirtime(
+      {required MobileDto mobileDto, CancelToken? cancelToken}) async {
+    try {
+      state = state.copyWith(isScheduling: true);
+
+      await ref.read(scheduleProvider
+          .call(parameter: mobileDto, cancelToken: cancelToken)
+          .future);
+
+      PageRouter.pushNamed(Routes.successState,
+          args: SuccessStateArguments(
+              title: AppString.complete,
+              message: AppString.successFullBillSchedule,
+              btnTitle: AppString.proceed,
+              tap: () => PageRouter.popToRoot(Routes.scheduledAirtimeView)));
+    } catch (e) {
+      _logger.e(e.toString());
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isScheduling: false);
     }
   }
 }

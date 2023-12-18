@@ -5,11 +5,11 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i53;
+import 'package:flutter/material.dart' as _i54;
 import 'package:flutter/material.dart';
 import 'package:Pouchers/modules/tab_layout/screens/tab_layout.dart' as _i48;
 import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/enum/two_fa_type.dart'
-    as _i55;
+    as _i56;
 import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/first_security_question_view.dart'
     as _i39;
 import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/second_security_question_view.dart'
@@ -29,7 +29,7 @@ import 'package:Pouchers/ui/features/authentication/presentation/view/otp/otp_vi
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/confirm_password_view.dart'
     as _i46;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/enum/password_confirmation_type.dart'
-    as _i56;
+    as _i57;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/forgot_password_view.dart'
     as _i17;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/set_new_password_view.dart'
@@ -57,7 +57,7 @@ import 'package:Pouchers/ui/features/dashboard/views/account/views/account_setti
 import 'package:Pouchers/ui/features/dashboard/views/account/views/account_verification.dart'
     as _i23;
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart'
-    as _i54;
+    as _i55;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/bvn_requirement_view.dart'
     as _i27;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/card_calculator_view.dart'
@@ -69,7 +69,7 @@ import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/virt
 import 'package:Pouchers/ui/features/dashboard/views/dashboard_view.dart'
     as _i7;
 import 'package:Pouchers/ui/features/notification/domain/model/notification_model.dart'
-    as _i58;
+    as _i59;
 import 'package:Pouchers/ui/features/notification/presentation/view/notification_details_view.dart'
     as _i51;
 import 'package:Pouchers/ui/features/notification/presentation/view/notification_view.dart'
@@ -109,16 +109,18 @@ import 'package:Pouchers/ui/features/profile/presentation/views/wallet/fund_wall
 import 'package:Pouchers/ui/features/tiers/presentation/view/tier_view.dart'
     as _i22;
 import 'package:Pouchers/ui/features/transfer/domain/dto/confirm_transfer_money_dto.dart'
-    as _i57;
+    as _i58;
 import 'package:Pouchers/ui/features/transfer/presentation/transfer_money_confirmation_view.dart'
     as _i49;
 import 'package:Pouchers/ui/features/utilities/presentation/views/airtime/airtime_view.dart'
     as _i8;
+import 'package:Pouchers/ui/features/utilities/presentation/views/airtime/schedule_airtime_view.dart'
+    as _i53;
 import 'package:Pouchers/ui/features/utilities/presentation/views/data/data_view.dart'
     as _i9;
 import 'package:Pouchers/ui/widgets/success_state.dart' as _i6;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i59;
+import 'package:stacked_services/stacked_services.dart' as _i60;
 
 class Routes {
   static const splashView = '/';
@@ -228,6 +230,8 @@ class Routes {
 
   static const accountDetailsView = '/account-details-view';
 
+  static const scheduledAirtimeView = '/scheduled-airtime-view';
+
   static const all = <String>{
     splashView,
     onboardingView,
@@ -280,6 +284,7 @@ class Routes {
     notificationView,
     notificationDetailsView,
     accountDetailsView,
+    scheduledAirtimeView,
   };
 }
 
@@ -489,11 +494,15 @@ class StackedRouter extends _i1.RouterBase {
       Routes.accountDetailsView,
       page: _i52.AccountDetailsView,
     ),
+    _i1.RouteDef(
+      Routes.scheduledAirtimeView,
+      page: _i53.ScheduledAirtimeView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashView: (data) {
-      return _i53.PageRouteBuilder<dynamic>(
+      return _i54.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i2.SplashView(),
         settings: data,
@@ -502,7 +511,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i3.OnboardingView: (data) {
-      return _i53.PageRouteBuilder<dynamic>(
+      return _i54.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i3.OnboardingView(),
         settings: data,
@@ -511,7 +520,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i4.SignUpView: (data) {
-      return _i53.PageRouteBuilder<dynamic>(
+      return _i54.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i4.SignUpView(),
         settings: data,
@@ -520,7 +529,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i5.SignInView: (data) {
-      return _i53.PageRouteBuilder<dynamic>(
+      return _i54.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i5.SignInView(),
         settings: data,
@@ -532,7 +541,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SuccessStateArguments>(
         orElse: () => const SuccessStateArguments(),
       );
-      return _i53.PageRouteBuilder<dynamic>(
+      return _i54.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i6.SuccessState(
                 key: args.key,
@@ -550,7 +559,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<DashboardViewArguments>(
         orElse: () => const DashboardViewArguments(),
       );
-      return _i53.PageRouteBuilder<dynamic>(
+      return _i54.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i7.DashboardView(key: args.key, gottenIndex: args.gottenIndex),
         settings: data,
@@ -715,7 +724,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i31.VirtualCardDetailView: (data) {
-      return _i53.PageRouteBuilder<dynamic>(
+      return _i54.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i31.VirtualCardDetailView(),
         settings: data,
@@ -724,7 +733,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i32.ProfileView: (data) {
-      return _i53.PageRouteBuilder<dynamic>(
+      return _i54.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i32.ProfileView(),
         settings: data,
@@ -819,7 +828,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ConfirmPasswordViewArguments>(
         orElse: () => const ConfirmPasswordViewArguments(),
       );
-      return _i53.PageRouteBuilder<dynamic>(
+      return _i54.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i46.ConfirmPasswordView(
                 key: args.key,
@@ -840,7 +849,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<TabLayoutArguments>(
         orElse: () => const TabLayoutArguments(),
       );
-      return _i53.PageRouteBuilder<dynamic>(
+      return _i54.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i48.TabLayout(gottenIndex: args.gottenIndex),
         settings: data,
@@ -878,6 +887,12 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
+    _i53.ScheduledAirtimeView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i53.ScheduledAirtimeView(),
+        settings: data,
+      );
+    },
   };
 
   @override
@@ -896,7 +911,7 @@ class SuccessStateArguments {
     this.tap,
   });
 
-  final _i53.Key? key;
+  final _i54.Key? key;
 
   final String title;
 
@@ -937,7 +952,7 @@ class DashboardViewArguments {
     this.gottenIndex = 0,
   });
 
-  final _i53.Key? key;
+  final _i54.Key? key;
 
   final int gottenIndex;
 
@@ -964,7 +979,7 @@ class OtpViewArguments {
     this.email,
   });
 
-  final _i53.Key? key;
+  final _i54.Key? key;
 
   final String? email;
 
@@ -991,7 +1006,7 @@ class TagViewArguments {
     this.callback,
   });
 
-  final _i53.Key? key;
+  final _i54.Key? key;
 
   final dynamic Function()? callback;
 
@@ -1018,7 +1033,7 @@ class SetNewPasswordViewArguments {
     required this.email,
   });
 
-  final _i53.Key? key;
+  final _i54.Key? key;
 
   final String email;
 
@@ -1045,7 +1060,7 @@ class VerifyPasswordAccountViewArguments {
     this.email,
   });
 
-  final _i53.Key? key;
+  final _i54.Key? key;
 
   final String? email;
 
@@ -1072,7 +1087,7 @@ class BvnViewArguments {
     required this.routeName,
   });
 
-  final _i53.Key? key;
+  final _i54.Key? key;
 
   final String routeName;
 
@@ -1099,9 +1114,9 @@ class CardCreationSymmaryViewArguments {
     required this.cardDto,
   });
 
-  final _i53.Key? key;
+  final _i54.Key? key;
 
-  final _i54.CardDto cardDto;
+  final _i55.CardDto cardDto;
 
   @override
   String toString() {
@@ -1123,12 +1138,12 @@ class CardCreationSymmaryViewArguments {
 class TwoFaGoogleAuthenticatorCodeViewArguments {
   const TwoFaGoogleAuthenticatorCodeViewArguments({
     this.key,
-    this.twoFaType = _i55.TwoFaType.twoFaSetup,
+    this.twoFaType = _i56.TwoFaType.twoFaSetup,
   });
 
-  final _i53.Key? key;
+  final _i54.Key? key;
 
-  final _i55.TwoFaType? twoFaType;
+  final _i56.TwoFaType? twoFaType;
 
   @override
   String toString() {
@@ -1150,12 +1165,12 @@ class TwoFaGoogleAuthenticatorCodeViewArguments {
 class ConfirmPasswordViewArguments {
   const ConfirmPasswordViewArguments({
     this.key,
-    this.passwordConfirmationType = _i56.PasswordConfirmationType.disable,
+    this.passwordConfirmationType = _i57.PasswordConfirmationType.disable,
   });
 
-  final _i53.Key? key;
+  final _i54.Key? key;
 
-  final _i56.PasswordConfirmationType? passwordConfirmationType;
+  final _i57.PasswordConfirmationType? passwordConfirmationType;
 
   @override
   String toString() {
@@ -1203,9 +1218,9 @@ class TransferMoneyConfirmationViewArguments {
     required this.confirmTransferMoney,
   });
 
-  final _i53.Key? key;
+  final _i54.Key? key;
 
-  final _i57.ConfirmTransferMoney confirmTransferMoney;
+  final _i58.ConfirmTransferMoney confirmTransferMoney;
 
   @override
   String toString() {
@@ -1231,9 +1246,9 @@ class NotificationDetailsViewArguments {
     required this.notificationModel,
   });
 
-  final _i53.Key? key;
+  final _i54.Key? key;
 
-  final _i58.NotificationModel notificationModel;
+  final _i59.NotificationModel notificationModel;
 
   @override
   String toString() {
@@ -1252,7 +1267,7 @@ class NotificationDetailsViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i59.NavigationService {
+extension NavigatorStateExtension on _i60.NavigationService {
   Future<dynamic> navigateToSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -1310,7 +1325,7 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> navigateToSuccessState({
-    _i53.Key? key,
+    _i54.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -1335,7 +1350,7 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> navigateToDashboardView({
-    _i53.Key? key,
+    _i54.Key? key,
     int gottenIndex = 0,
     int? routerId,
     bool preventDuplicates = true,
@@ -1380,7 +1395,7 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> navigateToOtpView({
-    _i53.Key? key,
+    _i54.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1411,7 +1426,7 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> navigateToTagView({
-    _i53.Key? key,
+    _i54.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -1512,7 +1527,7 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> navigateToSetNewPasswordView({
-    _i53.Key? key,
+    _i54.Key? key,
     required String email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1529,7 +1544,7 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> navigateToVerifyPasswordAccountView({
-    _i53.Key? key,
+    _i54.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -1588,7 +1603,7 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> navigateToBvnView({
-    _i53.Key? key,
+    _i54.Key? key,
     required String routeName,
     int? routerId,
     bool preventDuplicates = true,
@@ -1661,8 +1676,8 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> navigateToCardCreationSymmaryView({
-    _i53.Key? key,
-    required _i54.CardDto cardDto,
+    _i54.Key? key,
+    required _i55.CardDto cardDto,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1860,8 +1875,8 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> navigateToTwoFaGoogleAuthenticatorCodeView({
-    _i53.Key? key,
-    _i55.TwoFaType? twoFaType = _i55.TwoFaType.twoFaSetup,
+    _i54.Key? key,
+    _i56.TwoFaType? twoFaType = _i56.TwoFaType.twoFaSetup,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1906,9 +1921,9 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> navigateToConfirmPasswordView({
-    _i53.Key? key,
-    _i56.PasswordConfirmationType? passwordConfirmationType =
-        _i56.PasswordConfirmationType.disable,
+    _i54.Key? key,
+    _i57.PasswordConfirmationType? passwordConfirmationType =
+        _i57.PasswordConfirmationType.disable,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1955,8 +1970,8 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> navigateToTransferMoneyConfirmationView({
-    _i53.Key? key,
-    required _i57.ConfirmTransferMoney confirmTransferMoney,
+    _i54.Key? key,
+    required _i58.ConfirmTransferMoney confirmTransferMoney,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1987,8 +2002,8 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> navigateToNotificationDetailsView({
-    _i53.Key? key,
-    required _i58.NotificationModel notificationModel,
+    _i54.Key? key,
+    required _i59.NotificationModel notificationModel,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2012,6 +2027,20 @@ extension NavigatorStateExtension on _i59.NavigationService {
         transition,
   ]) async {
     return navigateTo<dynamic>(Routes.accountDetailsView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToScheduledAirtimeView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.scheduledAirtimeView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2075,7 +2104,7 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> replaceWithSuccessState({
-    _i53.Key? key,
+    _i54.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -2100,7 +2129,7 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> replaceWithDashboardView({
-    _i53.Key? key,
+    _i54.Key? key,
     int gottenIndex = 0,
     int? routerId,
     bool preventDuplicates = true,
@@ -2145,7 +2174,7 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> replaceWithOtpView({
-    _i53.Key? key,
+    _i54.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -2176,7 +2205,7 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> replaceWithTagView({
-    _i53.Key? key,
+    _i54.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -2277,7 +2306,7 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> replaceWithSetNewPasswordView({
-    _i53.Key? key,
+    _i54.Key? key,
     required String email,
     int? routerId,
     bool preventDuplicates = true,
@@ -2294,7 +2323,7 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> replaceWithVerifyPasswordAccountView({
-    _i53.Key? key,
+    _i54.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -2353,7 +2382,7 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> replaceWithBvnView({
-    _i53.Key? key,
+    _i54.Key? key,
     required String routeName,
     int? routerId,
     bool preventDuplicates = true,
@@ -2426,8 +2455,8 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> replaceWithCardCreationSymmaryView({
-    _i53.Key? key,
-    required _i54.CardDto cardDto,
+    _i54.Key? key,
+    required _i55.CardDto cardDto,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2626,8 +2655,8 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> replaceWithTwoFaGoogleAuthenticatorCodeView({
-    _i53.Key? key,
-    _i55.TwoFaType? twoFaType = _i55.TwoFaType.twoFaSetup,
+    _i54.Key? key,
+    _i56.TwoFaType? twoFaType = _i56.TwoFaType.twoFaSetup,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2672,9 +2701,9 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> replaceWithConfirmPasswordView({
-    _i53.Key? key,
-    _i56.PasswordConfirmationType? passwordConfirmationType =
-        _i56.PasswordConfirmationType.disable,
+    _i54.Key? key,
+    _i57.PasswordConfirmationType? passwordConfirmationType =
+        _i57.PasswordConfirmationType.disable,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2721,8 +2750,8 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> replaceWithTransferMoneyConfirmationView({
-    _i53.Key? key,
-    required _i57.ConfirmTransferMoney confirmTransferMoney,
+    _i54.Key? key,
+    required _i58.ConfirmTransferMoney confirmTransferMoney,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2753,8 +2782,8 @@ extension NavigatorStateExtension on _i59.NavigationService {
   }
 
   Future<dynamic> replaceWithNotificationDetailsView({
-    _i53.Key? key,
-    required _i58.NotificationModel notificationModel,
+    _i54.Key? key,
+    required _i59.NotificationModel notificationModel,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2778,6 +2807,20 @@ extension NavigatorStateExtension on _i59.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.accountDetailsView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithScheduledAirtimeView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.scheduledAirtimeView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

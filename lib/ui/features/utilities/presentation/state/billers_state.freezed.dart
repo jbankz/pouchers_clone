@@ -17,12 +17,16 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$BillersState<T> {
   bool get isBusy => throw _privateConstructorUsedError;
-  bool get purchasing => throw _privateConstructorUsedError;
+  bool get isPurchasing => throw _privateConstructorUsedError;
+  bool get isGettingServices => throw _privateConstructorUsedError;
+  bool get isScheduling => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
   StackTrace? get stackTrace => throw _privateConstructorUsedError;
   List<Billers> get billers => throw _privateConstructorUsedError;
   Discounts? get discounts => throw _privateConstructorUsedError;
   List<AirtimeTopDeals> get airtimeTopDeals =>
+      throw _privateConstructorUsedError;
+  List<MobileOperatorServices> get mobileOperatorServices =>
       throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -38,12 +42,15 @@ abstract class $BillersStateCopyWith<T, $Res> {
   @useResult
   $Res call(
       {bool isBusy,
-      bool purchasing,
+      bool isPurchasing,
+      bool isGettingServices,
+      bool isScheduling,
       String? errorMessage,
       StackTrace? stackTrace,
       List<Billers> billers,
       Discounts? discounts,
-      List<AirtimeTopDeals> airtimeTopDeals});
+      List<AirtimeTopDeals> airtimeTopDeals,
+      List<MobileOperatorServices> mobileOperatorServices});
 
   $DiscountsCopyWith<$Res>? get discounts;
 }
@@ -62,21 +69,32 @@ class _$BillersStateCopyWithImpl<T, $Res, $Val extends BillersState<T>>
   @override
   $Res call({
     Object? isBusy = null,
-    Object? purchasing = null,
+    Object? isPurchasing = null,
+    Object? isGettingServices = null,
+    Object? isScheduling = null,
     Object? errorMessage = freezed,
     Object? stackTrace = freezed,
     Object? billers = null,
     Object? discounts = freezed,
     Object? airtimeTopDeals = null,
+    Object? mobileOperatorServices = null,
   }) {
     return _then(_value.copyWith(
       isBusy: null == isBusy
           ? _value.isBusy
           : isBusy // ignore: cast_nullable_to_non_nullable
               as bool,
-      purchasing: null == purchasing
-          ? _value.purchasing
-          : purchasing // ignore: cast_nullable_to_non_nullable
+      isPurchasing: null == isPurchasing
+          ? _value.isPurchasing
+          : isPurchasing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isGettingServices: null == isGettingServices
+          ? _value.isGettingServices
+          : isGettingServices // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isScheduling: null == isScheduling
+          ? _value.isScheduling
+          : isScheduling // ignore: cast_nullable_to_non_nullable
               as bool,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
@@ -98,6 +116,10 @@ class _$BillersStateCopyWithImpl<T, $Res, $Val extends BillersState<T>>
           ? _value.airtimeTopDeals
           : airtimeTopDeals // ignore: cast_nullable_to_non_nullable
               as List<AirtimeTopDeals>,
+      mobileOperatorServices: null == mobileOperatorServices
+          ? _value.mobileOperatorServices
+          : mobileOperatorServices // ignore: cast_nullable_to_non_nullable
+              as List<MobileOperatorServices>,
     ) as $Val);
   }
 
@@ -124,12 +146,15 @@ abstract class _$$BillersStateImplCopyWith<T, $Res>
   @useResult
   $Res call(
       {bool isBusy,
-      bool purchasing,
+      bool isPurchasing,
+      bool isGettingServices,
+      bool isScheduling,
       String? errorMessage,
       StackTrace? stackTrace,
       List<Billers> billers,
       Discounts? discounts,
-      List<AirtimeTopDeals> airtimeTopDeals});
+      List<AirtimeTopDeals> airtimeTopDeals,
+      List<MobileOperatorServices> mobileOperatorServices});
 
   @override
   $DiscountsCopyWith<$Res>? get discounts;
@@ -147,21 +172,32 @@ class __$$BillersStateImplCopyWithImpl<T, $Res>
   @override
   $Res call({
     Object? isBusy = null,
-    Object? purchasing = null,
+    Object? isPurchasing = null,
+    Object? isGettingServices = null,
+    Object? isScheduling = null,
     Object? errorMessage = freezed,
     Object? stackTrace = freezed,
     Object? billers = null,
     Object? discounts = freezed,
     Object? airtimeTopDeals = null,
+    Object? mobileOperatorServices = null,
   }) {
     return _then(_$BillersStateImpl<T>(
       isBusy: null == isBusy
           ? _value.isBusy
           : isBusy // ignore: cast_nullable_to_non_nullable
               as bool,
-      purchasing: null == purchasing
-          ? _value.purchasing
-          : purchasing // ignore: cast_nullable_to_non_nullable
+      isPurchasing: null == isPurchasing
+          ? _value.isPurchasing
+          : isPurchasing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isGettingServices: null == isGettingServices
+          ? _value.isGettingServices
+          : isGettingServices // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isScheduling: null == isScheduling
+          ? _value.isScheduling
+          : isScheduling // ignore: cast_nullable_to_non_nullable
               as bool,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
@@ -183,6 +219,10 @@ class __$$BillersStateImplCopyWithImpl<T, $Res>
           ? _value._airtimeTopDeals
           : airtimeTopDeals // ignore: cast_nullable_to_non_nullable
               as List<AirtimeTopDeals>,
+      mobileOperatorServices: null == mobileOperatorServices
+          ? _value._mobileOperatorServices
+          : mobileOperatorServices // ignore: cast_nullable_to_non_nullable
+              as List<MobileOperatorServices>,
     ));
   }
 }
@@ -192,21 +232,31 @@ class __$$BillersStateImplCopyWithImpl<T, $Res>
 class _$BillersStateImpl<T> implements _BillersState<T> {
   const _$BillersStateImpl(
       {this.isBusy = false,
-      this.purchasing = false,
+      this.isPurchasing = false,
+      this.isGettingServices = false,
+      this.isScheduling = false,
       this.errorMessage,
       this.stackTrace,
       final List<Billers> billers = const [],
       this.discounts,
-      final List<AirtimeTopDeals> airtimeTopDeals = const []})
+      final List<AirtimeTopDeals> airtimeTopDeals = const [],
+      final List<MobileOperatorServices> mobileOperatorServices = const []})
       : _billers = billers,
-        _airtimeTopDeals = airtimeTopDeals;
+        _airtimeTopDeals = airtimeTopDeals,
+        _mobileOperatorServices = mobileOperatorServices;
 
   @override
   @JsonKey()
   final bool isBusy;
   @override
   @JsonKey()
-  final bool purchasing;
+  final bool isPurchasing;
+  @override
+  @JsonKey()
+  final bool isGettingServices;
+  @override
+  @JsonKey()
+  final bool isScheduling;
   @override
   final String? errorMessage;
   @override
@@ -231,9 +281,19 @@ class _$BillersStateImpl<T> implements _BillersState<T> {
     return EqualUnmodifiableListView(_airtimeTopDeals);
   }
 
+  final List<MobileOperatorServices> _mobileOperatorServices;
+  @override
+  @JsonKey()
+  List<MobileOperatorServices> get mobileOperatorServices {
+    if (_mobileOperatorServices is EqualUnmodifiableListView)
+      return _mobileOperatorServices;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_mobileOperatorServices);
+  }
+
   @override
   String toString() {
-    return 'BillersState<$T>(isBusy: $isBusy, purchasing: $purchasing, errorMessage: $errorMessage, stackTrace: $stackTrace, billers: $billers, discounts: $discounts, airtimeTopDeals: $airtimeTopDeals)';
+    return 'BillersState<$T>(isBusy: $isBusy, isPurchasing: $isPurchasing, isGettingServices: $isGettingServices, isScheduling: $isScheduling, errorMessage: $errorMessage, stackTrace: $stackTrace, billers: $billers, discounts: $discounts, airtimeTopDeals: $airtimeTopDeals, mobileOperatorServices: $mobileOperatorServices)';
   }
 
   @override
@@ -242,8 +302,12 @@ class _$BillersStateImpl<T> implements _BillersState<T> {
         (other.runtimeType == runtimeType &&
             other is _$BillersStateImpl<T> &&
             (identical(other.isBusy, isBusy) || other.isBusy == isBusy) &&
-            (identical(other.purchasing, purchasing) ||
-                other.purchasing == purchasing) &&
+            (identical(other.isPurchasing, isPurchasing) ||
+                other.isPurchasing == isPurchasing) &&
+            (identical(other.isGettingServices, isGettingServices) ||
+                other.isGettingServices == isGettingServices) &&
+            (identical(other.isScheduling, isScheduling) ||
+                other.isScheduling == isScheduling) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
             (identical(other.stackTrace, stackTrace) ||
@@ -252,19 +316,24 @@ class _$BillersStateImpl<T> implements _BillersState<T> {
             (identical(other.discounts, discounts) ||
                 other.discounts == discounts) &&
             const DeepCollectionEquality()
-                .equals(other._airtimeTopDeals, _airtimeTopDeals));
+                .equals(other._airtimeTopDeals, _airtimeTopDeals) &&
+            const DeepCollectionEquality().equals(
+                other._mobileOperatorServices, _mobileOperatorServices));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       isBusy,
-      purchasing,
+      isPurchasing,
+      isGettingServices,
+      isScheduling,
       errorMessage,
       stackTrace,
       const DeepCollectionEquality().hash(_billers),
       discounts,
-      const DeepCollectionEquality().hash(_airtimeTopDeals));
+      const DeepCollectionEquality().hash(_airtimeTopDeals),
+      const DeepCollectionEquality().hash(_mobileOperatorServices));
 
   @JsonKey(ignore: true)
   @override
@@ -276,18 +345,26 @@ class _$BillersStateImpl<T> implements _BillersState<T> {
 
 abstract class _BillersState<T> implements BillersState<T> {
   const factory _BillersState(
-      {final bool isBusy,
-      final bool purchasing,
-      final String? errorMessage,
-      final StackTrace? stackTrace,
-      final List<Billers> billers,
-      final Discounts? discounts,
-      final List<AirtimeTopDeals> airtimeTopDeals}) = _$BillersStateImpl<T>;
+          {final bool isBusy,
+          final bool isPurchasing,
+          final bool isGettingServices,
+          final bool isScheduling,
+          final String? errorMessage,
+          final StackTrace? stackTrace,
+          final List<Billers> billers,
+          final Discounts? discounts,
+          final List<AirtimeTopDeals> airtimeTopDeals,
+          final List<MobileOperatorServices> mobileOperatorServices}) =
+      _$BillersStateImpl<T>;
 
   @override
   bool get isBusy;
   @override
-  bool get purchasing;
+  bool get isPurchasing;
+  @override
+  bool get isGettingServices;
+  @override
+  bool get isScheduling;
   @override
   String? get errorMessage;
   @override
@@ -298,6 +375,8 @@ abstract class _BillersState<T> implements BillersState<T> {
   Discounts? get discounts;
   @override
   List<AirtimeTopDeals> get airtimeTopDeals;
+  @override
+  List<MobileOperatorServices> get mobileOperatorServices;
   @override
   @JsonKey(ignore: true)
   _$$BillersStateImplCopyWith<T, _$BillersStateImpl<T>> get copyWith =>

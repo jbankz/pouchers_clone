@@ -6,6 +6,8 @@ import '../../../../../../app/core/usecase/poucher_usecase.dart';
 import '../airtime_top_deals_usecase.dart';
 import '../billers_usecase.dart';
 import '../discounts_usecase.dart';
+import '../mobile_data_services_usecase.dart';
+import '../schedule_usecase.dart';
 import '../utility_usecase.dart';
 
 final getBillersUseCaseModule = Provider<PoucherUseCaseWithRequiredParam>(
@@ -20,3 +22,10 @@ final getTopDealsUseCaseModule = Provider<PoucherUseCaseWithOutParam>(
 
 final purchaseUtilityUseCaseModule = Provider<PoucherUseCaseWithRequiredParam>(
     (ref) => UtilityUseCaseImpl(ref.read(billersRepoModule)));
+
+final getMobileDataServicesUseCaseModule =
+    Provider<PoucherUseCaseWithRequiredParam>(
+        (ref) => MobileDataServicesUseCaseImpl(ref.read(billersRepoModule)));
+
+final scheduleUseCaseModule = Provider<PoucherUseCaseWithRequiredParam>(
+    (ref) => ScheduleUseCaseImpl(ref.read(billersRepoModule)));

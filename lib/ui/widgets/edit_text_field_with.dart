@@ -81,6 +81,7 @@ class EditTextFieldWidget extends StatelessWidget {
             autocorrect: autocorrect,
             decoration: InputDecoration(
                 label: Text(label),
+                hintText: label,
                 suffixIcon: suffixIcon,
                 prefix: prefix,
                 contentPadding: contentPadding,

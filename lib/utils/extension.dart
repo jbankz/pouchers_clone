@@ -79,6 +79,8 @@ extension StringExtensions on String {
 
     return formattedAmount;
   }
+
+  String get formatCountryCode => replaceAll('+234', '0').replaceAll(' ', '');
 }
 
 // Extension for currency formatting
@@ -89,6 +91,16 @@ extension CurrencyExtensions on num {
   // Formats the number as Nigerian Naira currency
 
   String get toNaira => NumberFormat.simpleCurrency(name: 'NGN').format(this);
+  String get ordinals => _getJustOrdinalIndicator(this);
+
+  String _getJustOrdinalIndicator(num number) {
+    String suffix = 'th';
+    final num digit = number % 10;
+    if ((digit > 0 && digit < 4) && (number < 11 || number > 13)) {
+      suffix = <String>['st', 'nd', 'rd'][int.parse(digit.toString()) - 1];
+    }
+    return '$number$suffix';
+  }
 }
 
 extension DateTimeExtensions on DateTime {

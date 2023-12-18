@@ -28,6 +28,11 @@ class _TwoFaGoogleAuthenticatorCodeGeneratorViewState
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(authNotifierProvider.notifier)
+          .generateTwoFaToken(cancelToken: _cancelToken);
+    });
     super.initState();
   }
 

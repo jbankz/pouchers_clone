@@ -206,6 +206,14 @@ class FieldValidator {
         return null;
       };
 
+  static String? Function(String?) validateFrequency(String frequency) =>
+      (String? value) {
+        if (frequency.trim().isEmpty) {
+          'Please select a frequency rate';
+        }
+        return null;
+      };
+
   static String? Function(String?) validateString(
           {String? error, int? min, int? max}) =>
       (String? value) {

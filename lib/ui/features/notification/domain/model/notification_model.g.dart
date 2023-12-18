@@ -17,22 +17,31 @@ class NotificationModelAdapter extends TypeAdapter<_$NotificationModelImpl> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return _$NotificationModelImpl(
-      title: fields[0] as String?,
-      body: fields[1] as String?,
-      createdAt: fields[2] as DateTime?,
+      id: fields[0] as num?,
+      notificationId: fields[1] as String?,
+      title: fields[2] as String?,
+      body: fields[3] as String?,
+      createdAt: fields[4] as DateTime?,
+      isRead: fields[5] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, _$NotificationModelImpl obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(6)
       ..writeByte(0)
-      ..write(obj.title)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.body)
+      ..write(obj.notificationId)
       ..writeByte(2)
-      ..write(obj.createdAt);
+      ..write(obj.title)
+      ..writeByte(3)
+      ..write(obj.body)
+      ..writeByte(4)
+      ..write(obj.createdAt)
+      ..writeByte(5)
+      ..write(obj.isRead);
   }
 
   @override
@@ -53,19 +62,25 @@ class NotificationModelAdapter extends TypeAdapter<_$NotificationModelImpl> {
 _$NotificationModelImpl _$$NotificationModelImplFromJson(
         Map<String, dynamic> json) =>
     _$NotificationModelImpl(
+      id: json['id'] as num?,
+      notificationId: json['notification_id'] as String?,
       title: json['title'] as String?,
       body: json['body'] as String?,
       createdAt: _$JsonConverterFromJson<String, DateTime>(
           json['created_at'], const DateTimeSerializer().fromJson),
+      isRead: json['is_read'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$NotificationModelImplToJson(
         _$NotificationModelImpl instance) =>
     <String, dynamic>{
+      'id': instance.id,
+      'notification_id': instance.notificationId,
       'title': instance.title,
       'body': instance.body,
       'created_at': _$JsonConverterToJson<String, DateTime>(
           instance.createdAt, const DateTimeSerializer().toJson),
+      'is_read': instance.isRead,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

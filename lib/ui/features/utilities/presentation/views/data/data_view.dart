@@ -14,6 +14,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stacked/stacked_annotations.dart';
 
+import '../../../../../../app/app.router.dart';
+import '../../../../../../app/core/router/page_router.dart';
 import '../../../../../../utils/field_validator.dart';
 import '../../../../../../utils/formatters/currency_formatter.dart';
 import '../../../../../common/app_colors.dart';
@@ -24,12 +26,15 @@ import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/airtime_top_deals.dart';
 import '../../../domain/model/billers.dart';
+import '../../../domain/model/mobile_data_services.dart';
 import '../../notifier/billers_notifier.dart';
 import '../sheet/summary_sheet.dart';
 import '../widget/utility_icon.dart';
 import 'data_view.form.dart';
+import 'sheets/data_bundle_sheets.dart';
 import 'skeleton/data_skeleton.dart';
 
 @FormView(fields: [FormTextField(name: 'phone'), FormTextField(name: 'amount')])
@@ -47,6 +52,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
 
   Billers? _billers;
   AirtimeTopDeals? _airtimeTopDeals;
+  MobileOperatorServices? _mobileOperatorServices;
 
   @override
   void initState() {
@@ -93,7 +99,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                         controller: phoneController,
                         focusNode: phoneFocusNode,
                         keyboardType: TextInputType.phone,
-                        readOnly: billerState.purchasing,
+                        readOnly: billerState.isPurchasing,
                         onFieldSubmitted: (_) =>
                             context.nextFocus(amountFocusNode),
                         validator: FieldValidator.validatePhone(),
@@ -106,16 +112,14 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                             child: SvgPicture.asset(AppImage.contactBook,
                                 fit: BoxFit.scaleDown),
                             onPressed: () async {
-                              if (billerState.purchasing) return;
+                              if (billerState.isPurchasing) return;
 
                               final Contact? contact =
                                   await _contactPicker.selectContact();
 
                               if (contact?.phoneNumbers?.isNotEmpty ?? false) {
-                                phoneController.text = contact
-                                        ?.phoneNumbers?.first
-                                        .replaceAll('+234', '0')
-                                        .replaceAll(' ', '') ??
+                                phoneController.text = contact?.phoneNumbers
+                                        ?.first.formatCountryCode ??
                                     '';
                               }
                               setState(() {});
@@ -135,8 +139,9 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                                       _billers?.name,
                                   image: billerState.billers[index].logoUrl,
                                   onTap: () {
-                                    if (billerState.purchasing) return;
+                                    if (billerState.isPurchasing) return;
 
+                                    _mobileOperatorServices = null;
                                     setState(() =>
                                         _billers = billerState.billers[index]);
                                   },
@@ -145,7 +150,10 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                       const Gap(height: 24),
                       EditTextFieldWidget(
                         title: AppString.selectType,
-                        controller: amountController,
+                        controller: amountController
+                          ..text = _mobileOperatorServices == null
+                              ? ''
+                              : '${_mobileOperatorServices?.serviceName ?? ''} - ${_mobileOperatorServices?.servicePrice.toNaira ?? ''}',
                         focusNode: amountFocusNode,
                         readOnly: true,
                         keyboardType: TextInputType.text,
@@ -154,14 +162,24 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                         suffixIcon: const Icon(
                             Icons.keyboard_arrow_down_rounded,
                             color: AppColors.kSecondaryTextColor),
-                        onTap: () {},
+                        onTap: () async {
+                          if (billerState.isPurchasing || _billers == null) {
+                            return;
+                          }
+                          _mobileOperatorServices =
+                              await BottomSheets.showSheet(
+                                  child: DataBundleSheets(
+                                      providerId: _billers?.operatorpublicid ??
+                                          '')) as MobileOperatorServices?;
+                          setState(() {});
+                        },
                       ),
                     ],
                   ),
                 ),
                 ElevatedButtonWidget(
                     title: AppString.proceed,
-                    loading: billerState.purchasing,
+                    loading: billerState.isPurchasing,
                     onPressed: _billers == null
                         ? null
                         : () async {
@@ -173,29 +191,17 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                                         title: _billers?.displayName,
                                         imageUrl: _billers?.logoUrl,
                                         recipient: phoneController.text,
-                                        amount:
-                                            _formatter.getUnformattedValue(),
+                                        amount: _mobileOperatorServices
+                                            ?.servicePrice,
                                         cashBack: _airtimeTopDeals?.cashBack,
                                         fee: 0))) as bool?;
 
                             if (feedback != null && feedback) {
-                              final response = await BottomSheets.showSheet(
+                              final pin = await BottomSheets.showSheet(
                                       child: const PinConfirmationSheet())
                                   as String?;
-                              if (response != null) {
-                                _billersNotifier.purchaseService(
-                                    MobileDto(
-                                        category: 'airtime-purchase',
-                                        subCategory: _billers?.displayName,
-                                        amount:
-                                            _formatter.getUnformattedValue(),
-                                        destinationPhoneNumber:
-                                            phoneController.text,
-                                        mobileOperatorPublicId:
-                                            _billers?.operatorpublicid,
-                                        applyDiscount: false,
-                                        transactionPin: response),
-                                    _cancelToken);
+                              if (pin != null) {
+                                _submit(pin);
                               }
                             }
                           })
@@ -206,4 +212,24 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
       ),
     );
   }
+
+  Future<void> _submit(String pin) => _billersNotifier.purchaseService(
+      mobileDto: MobileDto(
+          category: ServiceCategory.data,
+          subCategory: _billers?.displayName,
+          amount: _mobileOperatorServices?.servicePrice,
+          destinationPhoneNumber: phoneController.text,
+          mobileOperatorPublicId: _billers?.operatorpublicid,
+          applyDiscount: false,
+          mobileOperatorServiceId:
+              _mobileOperatorServices?.serviceId.toString() ?? '',
+          isDataBundle: true,
+          transactionPin: pin),
+      onSuccess: () => PageRouter.pushNamed(Routes.successState,
+          args: SuccessStateArguments(
+              title: AppString.complete,
+              message: AppString.completedDataPurchase,
+              btnTitle: AppString.proceed,
+              tap: () => PageRouter.popToRoot(Routes.dataView))),
+      cancelToken: _cancelToken);
 }

@@ -11,5 +11,5 @@ List<BottomNav> get bottomNav => [
       BottomNav(icon: AppImage.home, label: 'Home'),
       BottomNav(icon: AppImage.card, label: 'Cards'),
       BottomNav(icon: AppImage.transaction, label: 'Transactions'),
-      BottomNav(icon: AppImage.profile, label: 'account')
+      BottomNav(icon: AppImage.profile, label: 'Account')
     ];
