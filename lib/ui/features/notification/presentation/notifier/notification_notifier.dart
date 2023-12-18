@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../app/app.logger.dart';
 import '../../domain/model/notification_model.dart';
+import '../../domain/model/unread_payment_request.dart';
 
 part 'notification_notifier.g.dart';
 
@@ -14,6 +15,7 @@ class NotificationNotifier extends _$NotificationNotifier {
   final _logger = getLogger('NotificationNotifier');
 
   List<NotificationModel> _notifications = [];
+  UnreadPaymentRequest? _unreadPaymentModel;
 
   @override
   NotificationState build() => NotificationState(notifications: _notifications);
@@ -30,6 +32,22 @@ class NotificationNotifier extends _$NotificationNotifier {
       _logger.e(e.toString());
     } finally {
       state = state.copyWith(isBusy: false, notifications: _notifications);
+    }
+  }
+
+  Future<void> fetchUnreadPaymentNotifications(
+      {CancelToken? cancelToken}) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      _unreadPaymentModel = await ref.read(unreadPaymentNotificationProvider
+          .call(cancelToken: cancelToken)
+          .future);
+    } catch (e) {
+      _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(
+          isBusy: false, unreadPaymentModel: _unreadPaymentModel);
     }
   }
 

@@ -205,6 +205,7 @@ class AppString {
   static String utilityBill = 'Utility Bill';
   static String utilityBillVerify = 'Upload and verify utility bill';
   static String verifyBVN = 'Verify BVN';
+  static String verifyBVNproceed = 'Please verify your BVN to proceed';
   static String bvnReminder = 'Can’t remember BVN code?';
   static String bvnHint1 =
       'Please ensure your registered first name and last name matches with your BVN.';

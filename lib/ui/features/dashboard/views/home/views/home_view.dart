@@ -19,6 +19,7 @@ import '../../../../../../modules/utilities/screens/buy_electricity.dart';
 import '../../../../../../modules/utilities/screens/buy_internet.dart';
 import '../../../../../../modules/utilities/screens/voucher/voucher.dart';
 import '../../../../../common/app_colors.dart';
+import '../../../../notification/presentation/notifier/notification_notifier.dart';
 import 'widgets/balance_widget.dart';
 import 'widgets/build_quick_action_button.dart';
 import 'widgets/home_appbar.dart';
@@ -34,6 +35,7 @@ class HomeView extends ConsumerStatefulWidget {
 class _HomeViewState extends ConsumerState<HomeView> {
   late WalletNotifier _walletNotifier;
   late AdminNotifier _adminNotifier;
+  late NotificationNotifier _notificationNotifier;
 
   final CancelToken _cancelToken = CancelToken();
 
@@ -46,6 +48,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
         ..getWalletBalance(_cancelToken);
       _adminNotifier = ref.read(adminNotifierProvider.notifier)
         ..getBanners(_cancelToken);
+      _notificationNotifier = ref.read(notificationNotifierProvider.notifier)
+        ..fetchUnreadPaymentNotifications(cancelToken: _cancelToken);
     });
   }
 

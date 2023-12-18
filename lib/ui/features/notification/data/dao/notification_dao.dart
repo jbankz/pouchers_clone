@@ -32,7 +32,7 @@ class NotificationDao {
 
   Future<void> updateReadStatus(NotificationModel notification) async {
     await _box.put(
-        notification.notificationId, notification.copyWith(isRead: true ));
+        notification.notificationId, notification.copyWith(isRead: true));
   }
 
   List<NotificationModel> retrieve(Box box) =>

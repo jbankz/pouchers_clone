@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/ui/notification/notification_tray.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -8,7 +9,6 @@ import 'package:hive/hive.dart';
 
 import '../../../../../../common/app_colors.dart';
 import '../../../../../../widgets/gap.dart';
-import '../../../../../profile/data/dao/wallet_dao.dart';
 
 class BuildActionButton extends StatelessWidget {
   final String title;
@@ -33,8 +33,7 @@ class BuildActionButton extends StatelessWidget {
         return InkWell(
           onTap: () {
             if (checkUsersLevel && user.tierLevels == 1) {
-              triggerNotificationTray('Please verify your BVN to proceed',
-                  error: true);
+              triggerNotificationTray(AppString.verifyBVNproceed, error: true);
               return;
             }
             onTap();

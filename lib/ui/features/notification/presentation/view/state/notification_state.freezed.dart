@@ -21,6 +21,8 @@ mixin _$NotificationState<T> {
       throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
   StackTrace? get stackTrace => throw _privateConstructorUsedError;
+  UnreadPaymentRequest? get unreadPaymentModel =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $NotificationStateCopyWith<T, NotificationState<T>> get copyWith =>
@@ -37,7 +39,10 @@ abstract class $NotificationStateCopyWith<T, $Res> {
       {bool isBusy,
       List<NotificationModel> notifications,
       String? errorMessage,
-      StackTrace? stackTrace});
+      StackTrace? stackTrace,
+      UnreadPaymentRequest? unreadPaymentModel});
+
+  $UnreadPaymentRequestCopyWith<$Res>? get unreadPaymentModel;
 }
 
 /// @nodoc
@@ -58,6 +63,7 @@ class _$NotificationStateCopyWithImpl<T, $Res,
     Object? notifications = null,
     Object? errorMessage = freezed,
     Object? stackTrace = freezed,
+    Object? unreadPaymentModel = freezed,
   }) {
     return _then(_value.copyWith(
       isBusy: null == isBusy
@@ -76,7 +82,24 @@ class _$NotificationStateCopyWithImpl<T, $Res,
           ? _value.stackTrace
           : stackTrace // ignore: cast_nullable_to_non_nullable
               as StackTrace?,
+      unreadPaymentModel: freezed == unreadPaymentModel
+          ? _value.unreadPaymentModel
+          : unreadPaymentModel // ignore: cast_nullable_to_non_nullable
+              as UnreadPaymentRequest?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UnreadPaymentRequestCopyWith<$Res>? get unreadPaymentModel {
+    if (_value.unreadPaymentModel == null) {
+      return null;
+    }
+
+    return $UnreadPaymentRequestCopyWith<$Res>(_value.unreadPaymentModel!,
+        (value) {
+      return _then(_value.copyWith(unreadPaymentModel: value) as $Val);
+    });
   }
 }
 
@@ -92,7 +115,11 @@ abstract class _$$NotificationStateImplCopyWith<T, $Res>
       {bool isBusy,
       List<NotificationModel> notifications,
       String? errorMessage,
-      StackTrace? stackTrace});
+      StackTrace? stackTrace,
+      UnreadPaymentRequest? unreadPaymentModel});
+
+  @override
+  $UnreadPaymentRequestCopyWith<$Res>? get unreadPaymentModel;
 }
 
 /// @nodoc
@@ -110,6 +137,7 @@ class __$$NotificationStateImplCopyWithImpl<T, $Res>
     Object? notifications = null,
     Object? errorMessage = freezed,
     Object? stackTrace = freezed,
+    Object? unreadPaymentModel = freezed,
   }) {
     return _then(_$NotificationStateImpl<T>(
       isBusy: null == isBusy
@@ -128,6 +156,10 @@ class __$$NotificationStateImplCopyWithImpl<T, $Res>
           ? _value.stackTrace
           : stackTrace // ignore: cast_nullable_to_non_nullable
               as StackTrace?,
+      unreadPaymentModel: freezed == unreadPaymentModel
+          ? _value.unreadPaymentModel
+          : unreadPaymentModel // ignore: cast_nullable_to_non_nullable
+              as UnreadPaymentRequest?,
     ));
   }
 }
@@ -139,7 +171,8 @@ class _$NotificationStateImpl<T> implements _NotificationState<T> {
       {this.isBusy = false,
       final List<NotificationModel> notifications = const [],
       this.errorMessage,
-      this.stackTrace})
+      this.stackTrace,
+      this.unreadPaymentModel})
       : _notifications = notifications;
 
   @override
@@ -158,10 +191,12 @@ class _$NotificationStateImpl<T> implements _NotificationState<T> {
   final String? errorMessage;
   @override
   final StackTrace? stackTrace;
+  @override
+  final UnreadPaymentRequest? unreadPaymentModel;
 
   @override
   String toString() {
-    return 'NotificationState<$T>(isBusy: $isBusy, notifications: $notifications, errorMessage: $errorMessage, stackTrace: $stackTrace)';
+    return 'NotificationState<$T>(isBusy: $isBusy, notifications: $notifications, errorMessage: $errorMessage, stackTrace: $stackTrace, unreadPaymentModel: $unreadPaymentModel)';
   }
 
   @override
@@ -175,7 +210,9 @@ class _$NotificationStateImpl<T> implements _NotificationState<T> {
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
             (identical(other.stackTrace, stackTrace) ||
-                other.stackTrace == stackTrace));
+                other.stackTrace == stackTrace) &&
+            (identical(other.unreadPaymentModel, unreadPaymentModel) ||
+                other.unreadPaymentModel == unreadPaymentModel));
   }
 
   @override
@@ -184,7 +221,8 @@ class _$NotificationStateImpl<T> implements _NotificationState<T> {
       isBusy,
       const DeepCollectionEquality().hash(_notifications),
       errorMessage,
-      stackTrace);
+      stackTrace,
+      unreadPaymentModel);
 
   @JsonKey(ignore: true)
   @override
@@ -197,10 +235,12 @@ class _$NotificationStateImpl<T> implements _NotificationState<T> {
 
 abstract class _NotificationState<T> implements NotificationState<T> {
   const factory _NotificationState(
-      {final bool isBusy,
-      final List<NotificationModel> notifications,
-      final String? errorMessage,
-      final StackTrace? stackTrace}) = _$NotificationStateImpl<T>;
+          {final bool isBusy,
+          final List<NotificationModel> notifications,
+          final String? errorMessage,
+          final StackTrace? stackTrace,
+          final UnreadPaymentRequest? unreadPaymentModel}) =
+      _$NotificationStateImpl<T>;
 
   @override
   bool get isBusy;
@@ -210,6 +250,8 @@ abstract class _NotificationState<T> implements NotificationState<T> {
   String? get errorMessage;
   @override
   StackTrace? get stackTrace;
+  @override
+  UnreadPaymentRequest? get unreadPaymentModel;
   @override
   @JsonKey(ignore: true)
   _$$NotificationStateImplCopyWith<T, _$NotificationStateImpl<T>>

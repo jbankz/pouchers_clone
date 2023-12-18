@@ -157,7 +157,7 @@ class _NotificationProviderElement
   CancelToken? get cancelToken => (origin as NotificationProvider).cancelToken;
 }
 
-String _$readNotificationHash() => r'3d5c834508007f596f0ac44214d7398f8d0907fb';
+String _$readNotificationHash() => r'361972b1d7484a4b59e4bc2676638692db615580';
 
 /// See also [readNotification].
 @ProviderFor(readNotification)
@@ -302,6 +302,143 @@ class _ReadNotificationProviderElement
   @override
   CancelToken? get cancelToken =>
       (origin as ReadNotificationProvider).cancelToken;
+}
+
+String _$unreadPaymentNotificationHash() =>
+    r'ab3db2f7c820472ccca3819277afe240be872d36';
+
+/// See also [unreadPaymentNotification].
+@ProviderFor(unreadPaymentNotification)
+const unreadPaymentNotificationProvider = UnreadPaymentNotificationFamily();
+
+/// See also [unreadPaymentNotification].
+class UnreadPaymentNotificationFamily
+    extends Family<AsyncValue<UnreadPaymentRequest>> {
+  /// See also [unreadPaymentNotification].
+  const UnreadPaymentNotificationFamily();
+
+  /// See also [unreadPaymentNotification].
+  UnreadPaymentNotificationProvider call({
+    CancelToken? cancelToken,
+  }) {
+    return UnreadPaymentNotificationProvider(
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  UnreadPaymentNotificationProvider getProviderOverride(
+    covariant UnreadPaymentNotificationProvider provider,
+  ) {
+    return call(
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'unreadPaymentNotificationProvider';
+}
+
+/// See also [unreadPaymentNotification].
+class UnreadPaymentNotificationProvider
+    extends AutoDisposeFutureProvider<UnreadPaymentRequest> {
+  /// See also [unreadPaymentNotification].
+  UnreadPaymentNotificationProvider({
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => unreadPaymentNotification(
+            ref as UnreadPaymentNotificationRef,
+            cancelToken: cancelToken,
+          ),
+          from: unreadPaymentNotificationProvider,
+          name: r'unreadPaymentNotificationProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$unreadPaymentNotificationHash,
+          dependencies: UnreadPaymentNotificationFamily._dependencies,
+          allTransitiveDependencies:
+              UnreadPaymentNotificationFamily._allTransitiveDependencies,
+          cancelToken: cancelToken,
+        );
+
+  UnreadPaymentNotificationProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<UnreadPaymentRequest> Function(
+            UnreadPaymentNotificationRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UnreadPaymentNotificationProvider._internal(
+        (ref) => create(ref as UnreadPaymentNotificationRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<UnreadPaymentRequest> createElement() {
+    return _UnreadPaymentNotificationProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UnreadPaymentNotificationProvider &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin UnreadPaymentNotificationRef
+    on AutoDisposeFutureProviderRef<UnreadPaymentRequest> {
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _UnreadPaymentNotificationProviderElement
+    extends AutoDisposeFutureProviderElement<UnreadPaymentRequest>
+    with UnreadPaymentNotificationRef {
+  _UnreadPaymentNotificationProviderElement(super.provider);
+
+  @override
+  CancelToken? get cancelToken =>
+      (origin as UnreadPaymentNotificationProvider).cancelToken;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

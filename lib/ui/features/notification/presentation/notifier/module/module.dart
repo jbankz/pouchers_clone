@@ -2,6 +2,7 @@ import 'package:Pouchers/ui/features/notification/domain/model/notification_data
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../domain/model/unread_payment_request.dart';
 import '../../../domain/usecase/module/module.dart';
 
 part 'module.g.dart';
@@ -17,3 +18,11 @@ Future<bool> readNotification(ReadNotificationRef ref, String notificationId,
     await ref
         .read(readNotificationUseCaseModule)
         .execute(parameter: notificationId, cancelToken: cancelToken);
+
+@riverpod
+Future<UnreadPaymentRequest> unreadPaymentNotification(
+        UnreadPaymentNotificationRef ref,
+        {CancelToken? cancelToken}) async =>
+    await ref
+        .read(getUnreadPaymentNotificationUseCaseModule)
+        .execute(cancelToken);
