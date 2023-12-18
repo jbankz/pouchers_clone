@@ -1,3 +1,5 @@
+import 'package:Pouchers/app/app.router.dart';
+import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
@@ -46,7 +48,7 @@ class ApiError {
   String toString() => '$errorDescription';
 
   String? _handleErrorFromStatusCode(Response? response) {
-    String? message;
+    String message = '';
     switch (response?.statusCode) {
       case 400:
       case 401:
@@ -56,7 +58,10 @@ class ApiError {
       case 409:
       case 422:
       case 500:
-        message = getErrorData(response?.data).message?.removeUnderscore;
+        message = getErrorData(response?.data).message?.removeUnderscore ?? '';
+        if (message.contains(AppString.sessionTimedOut)) {
+          PageRouter.pushReplacement(Routes.signInView);
+        }
       case 429:
         message = AppString.tooManyRequest;
 

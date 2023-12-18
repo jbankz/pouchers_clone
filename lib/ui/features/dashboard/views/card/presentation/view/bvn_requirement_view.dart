@@ -1,5 +1,3 @@
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,7 +39,6 @@ class _RequestBVNViewState extends ConsumerState<RequestBVNView>
   @override
   Widget build(BuildContext context) {
     final param = ref.watch(paramModule);
-
     return Scaffold(
       appBar: AppBar(title: Text(param.appTitle)),
       body: SafeArea(

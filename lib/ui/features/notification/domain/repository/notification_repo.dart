@@ -4,4 +4,6 @@ import '../model/notification_data_model.dart';
 
 abstract class NotificationRepo {
   Future<NotificationDataModel> notifications({CancelToken? cancelToken});
+  Future<bool> readNotification(String notificationId,
+      {CancelToken? cancelToken});
 }

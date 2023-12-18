@@ -156,5 +156,152 @@ class _NotificationProviderElement
   @override
   CancelToken? get cancelToken => (origin as NotificationProvider).cancelToken;
 }
+
+String _$readNotificationHash() => r'3d5c834508007f596f0ac44214d7398f8d0907fb';
+
+/// See also [readNotification].
+@ProviderFor(readNotification)
+const readNotificationProvider = ReadNotificationFamily();
+
+/// See also [readNotification].
+class ReadNotificationFamily extends Family<AsyncValue<bool>> {
+  /// See also [readNotification].
+  const ReadNotificationFamily();
+
+  /// See also [readNotification].
+  ReadNotificationProvider call(
+    String notificationId, {
+    CancelToken? cancelToken,
+  }) {
+    return ReadNotificationProvider(
+      notificationId,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  ReadNotificationProvider getProviderOverride(
+    covariant ReadNotificationProvider provider,
+  ) {
+    return call(
+      provider.notificationId,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'readNotificationProvider';
+}
+
+/// See also [readNotification].
+class ReadNotificationProvider extends AutoDisposeFutureProvider<bool> {
+  /// See also [readNotification].
+  ReadNotificationProvider(
+    String notificationId, {
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => readNotification(
+            ref as ReadNotificationRef,
+            notificationId,
+            cancelToken: cancelToken,
+          ),
+          from: readNotificationProvider,
+          name: r'readNotificationProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$readNotificationHash,
+          dependencies: ReadNotificationFamily._dependencies,
+          allTransitiveDependencies:
+              ReadNotificationFamily._allTransitiveDependencies,
+          notificationId: notificationId,
+          cancelToken: cancelToken,
+        );
+
+  ReadNotificationProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.notificationId,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final String notificationId;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<bool> Function(ReadNotificationRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ReadNotificationProvider._internal(
+        (ref) => create(ref as ReadNotificationRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        notificationId: notificationId,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<bool> createElement() {
+    return _ReadNotificationProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ReadNotificationProvider &&
+        other.notificationId == notificationId &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, notificationId.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ReadNotificationRef on AutoDisposeFutureProviderRef<bool> {
+  /// The parameter `notificationId` of this provider.
+  String get notificationId;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _ReadNotificationProviderElement
+    extends AutoDisposeFutureProviderElement<bool> with ReadNotificationRef {
+  _ReadNotificationProviderElement(super.provider);
+
+  @override
+  String get notificationId =>
+      (origin as ReadNotificationProvider).notificationId;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as ReadNotificationProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

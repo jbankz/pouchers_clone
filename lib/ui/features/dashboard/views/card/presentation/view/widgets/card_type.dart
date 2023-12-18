@@ -92,7 +92,7 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
                       children: [
                         if (widget.currency != Currency.NGN)
                           _buildCardWidget(
-                              title: 'Naira virtual card',
+                              title: AppString.virtualNairaCard,
                               fee:
                                   num.parse(nairaCreation.value ?? '0').toNaira,
                               icon: AppImage.nairaSign,
@@ -105,7 +105,7 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
                           const Gap(height: 30),
                         if (widget.currency != Currency.USD)
                           _buildCardWidget(
-                              title: 'Dollar virtual card',
+                              title: AppString.virtualDollarCard,
                               fee: num.parse(dollarCreation.value ?? '0')
                                   .toDollar,
                               icon: AppImage.dollarSign,

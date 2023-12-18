@@ -115,8 +115,10 @@ class BillersNotifier extends _$BillersNotifier {
     }
   }
 
-  Future<void> scheduleAirtime(
-      {required MobileDto mobileDto, CancelToken? cancelToken}) async {
+  Future<void> schedule(
+      {required MobileDto mobileDto,
+      required String route,
+      CancelToken? cancelToken}) async {
     try {
       state = state.copyWith(isScheduling: true);
 
@@ -129,7 +131,7 @@ class BillersNotifier extends _$BillersNotifier {
               title: AppString.complete,
               message: AppString.successFullBillSchedule,
               btnTitle: AppString.proceed,
-              tap: () => PageRouter.popToRoot(Routes.scheduledAirtimeView)));
+              tap: () => PageRouter.popToRoot(route)));
     } catch (e) {
       _logger.e(e.toString());
       AppHelper.handleError(e);

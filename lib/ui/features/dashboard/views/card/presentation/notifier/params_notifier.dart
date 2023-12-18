@@ -1,7 +1,6 @@
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_card/data.dart';
-import 'package:Pouchers/utils/strings.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../../../../../app/app.router.dart';
@@ -29,7 +28,8 @@ class ParamNotifier extends ChangeNotifier {
   bool get isCreatingCardActivity =>
       _cardActivityType == CardActivityType.creating;
 
-  bool get isNairaCardType => _cardDetail?.currency == Currency.NGN;
+  bool get isNairaCardType =>
+      (_cardDetail?.currency == Currency.NGN || _cardType == CardType.naira);
 
   Data? _cardDetail;
   Data? get cardDetail => _cardDetail;

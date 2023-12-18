@@ -53,6 +53,13 @@ class DataSkeleton extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12.r)),
                 ),
+                const Gap(height: 24),
+                Container(
+                  height: 50.h,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12.r)),
+                ),
               ],
             ),
           ),

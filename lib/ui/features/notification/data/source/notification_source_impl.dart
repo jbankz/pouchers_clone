@@ -21,4 +21,15 @@ class NotificationSourceImpl implements NotificationSource {
     return NotificationDataModel.fromJson(
         response.data?['data'] as Map<String, dynamic>);
   }
+
+  @override
+  Future<bool> readNotification(String notificationId,
+      {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: '${ApiPath.notification}/$notificationId',
+        requestType: RequestType.patch,
+        cancelToken: cancelToken);
+
+    return response.statusCode == 200;
+  }
 }

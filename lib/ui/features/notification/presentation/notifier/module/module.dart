@@ -10,3 +10,10 @@ part 'module.g.dart';
 Future<NotificationDataModel> notification(NotificationRef ref,
         {CancelToken? cancelToken}) async =>
     await ref.read(getNotificationUseCaseModule).execute(cancelToken);
+
+@riverpod
+Future<bool> readNotification(ReadNotificationRef ref, String notificationId,
+        {CancelToken? cancelToken}) async =>
+    await ref
+        .read(readNotificationUseCaseModule)
+        .execute(parameter: notificationId, cancelToken: cancelToken);

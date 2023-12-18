@@ -117,11 +117,11 @@ class AppString {
   static String resend = 'Resend';
   static String tagHint =
       'Create your unique Poucher tag to easily receive money anywhere.';
-  static String poucherTag = 'Poucher tag';
-  static String createPin = 'Create transaction pin';
+  static String poucherTag = 'Poucher Tag';
+  static String createPin = 'Create Transaction Pin';
   static String createPinHint =
       'Your pin secures your account. This will be required for all transactions and do not share.';
-  static String confirmPin = 'Confirm transaction pin';
+  static String confirmPin = 'Confirm Transaction Pin';
   static String pinNotMatch = 'PIN do not match';
   static String skip = 'Skip';
   static String tooManyRequest =
@@ -147,6 +147,7 @@ class AppString {
       'Easily manage and track all your request money transactions in one place';
   static String quickLinks = 'Quick Links';
   static String data = 'Data';
+  static String scheduleData = 'Schedule Data';
   static String more = 'More';
 
   static String localizedReason = 'To authenticate and login into the app';
@@ -217,7 +218,7 @@ class AppString {
       'Please enter your BVN. This is a mandatory requirement before creating your card.';
   static String id = 'Valid ID';
   static String idType = 'Identification type';
-  static String cardType = 'Select card type';
+  static String cardType = 'Select Card Type';
   static String verify = 'Verify';
   static String howToGetVNIN = 'How to get your Virtual NIN';
   static String howToGetNIN1 =
@@ -248,10 +249,10 @@ class AppString {
   static String creationFeeApplies = 'Creation fee applies';
   static String paymentAnyWhere = 'Make payments anywhere online';
   static String manageCards = 'Easily manage your payments and cards';
-  static String createNairaCard = 'Create Naira card';
-  static String createDollarCard = 'Create Dollar card';
-  static String virtualNairaCard = 'Naira virtual card';
-  static String virtualDollarCard = 'Dollar virtual card';
+  static String createNairaCard = 'Create Naira Card';
+  static String createDollarCard = 'Create Dollar Card';
+  static String virtualNairaCard = 'Naira Virtual Card';
+  static String virtualDollarCard = 'Dollar Virtual Card';
   static String fundNairaCard = 'Fund Naira card';
   static String fundDollarCard = 'Fund Dollar card';
   static String fundCard = 'Fund card';
@@ -442,4 +443,12 @@ class AppString {
   static String subscriptionType = 'Subscription Type';
   static String selectFrequency = 'Select frequency';
   static String successFullBillSchedule = 'Bill schedule successfully created';
+  static String choosePeriod = 'Choose top-up period';
+  static String frequency = 'Select frequency';
+
+  static String weekDays = 'Top up will be done every weekday';
+  static String weekDates =
+      'Top up will be done on date of every month or last day of that month if day does not exist.';
+
+  static String sessionTimedOut = 'Expired token - Access Restricted!';
 }

@@ -1,8 +1,5 @@
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
-import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
-import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
-import 'package:Pouchers/ui/widgets/bottom_sheet.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +12,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stacked/stacked_annotations.dart';
 
 import '../../../../../../app/app.router.dart';
-import '../../../../../../app/core/router/page_router.dart';
 import '../../../../../../utils/field_validator.dart';
 import '../../../../../../utils/formatters/currency_formatter.dart';
 import '../../../../../common/app_colors.dart';
@@ -27,42 +23,42 @@ import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
 import '../../../domain/enum/service_category.dart';
-import '../../../domain/model/airtime_top_deals.dart';
 import '../../../domain/model/billers.dart';
 import '../../../domain/model/mobile_data_services.dart';
 import '../../notifier/billers_notifier.dart';
-import '../sheet/summary_sheet.dart';
-import '../widget/scheduling_widget.dart';
+import '../sheet/frequency_sheet.dart';
 import '../widget/utility_icon.dart';
-import 'data_view.form.dart';
+import 'schedule_data_view.form.dart';
 import 'sheets/data_bundle_sheets.dart';
 import 'skeleton/data_skeleton.dart';
 
-@FormView(fields: [FormTextField(name: 'phone'), FormTextField(name: 'amount')])
-class DataView extends ConsumerStatefulWidget {
-  const DataView({super.key});
+@FormView(fields: [
+  FormTextField(name: 'phone'),
+  FormTextField(name: 'amount'),
+  FormTextField(name: 'frequency')
+])
+class ScheduleDataView extends ConsumerStatefulWidget {
+  const ScheduleDataView({super.key});
 
   @override
-  ConsumerState<DataView> createState() => _DataViewState();
+  ConsumerState<ScheduleDataView> createState() => _ScheduleDataViewState();
 }
 
-class _DataViewState extends ConsumerState<DataView> with $DataView {
+class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
+    with $ScheduleDataView {
   late BillersNotifier _billersNotifier;
   final CancelToken _cancelToken = CancelToken();
   final FlutterContactPicker _contactPicker = FlutterContactPicker();
 
   Billers? _billers;
-  AirtimeTopDeals? _airtimeTopDeals;
   MobileOperatorServices? _mobileOperatorServices;
+  String _frequency = '';
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _billersNotifier = ref.read(billersNotifierProvider.notifier)
-        ..billers(BillersCategory.data, _cancelToken)
-        ..billersDiscounts(BillersCategory.data, _cancelToken);
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _billersNotifier = ref.read(billersNotifierProvider.notifier));
   }
 
   @override
@@ -80,7 +76,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
     return Scaffold(
-      appBar: AppBar(title: Text(AppString.data)),
+      appBar: AppBar(title: Text(AppString.scheduleData)),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: Skeleton(
@@ -100,7 +96,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                         controller: phoneController,
                         focusNode: phoneFocusNode,
                         keyboardType: TextInputType.phone,
-                        readOnly: billerState.isPurchasing,
+                        readOnly: billerState.isScheduling,
                         onFieldSubmitted: (_) =>
                             context.nextFocus(amountFocusNode),
                         validator: FieldValidator.validatePhone(),
@@ -113,7 +109,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                             child: SvgPicture.asset(AppImage.contactBook,
                                 fit: BoxFit.scaleDown),
                             onPressed: () async {
-                              if (billerState.isPurchasing) return;
+                              if (billerState.isScheduling) return;
 
                               final Contact? contact =
                                   await _contactPicker.selectContact();
@@ -140,7 +136,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                                       _billers?.name,
                                   image: billerState.billers[index].logoUrl,
                                   onTap: () {
-                                    if (billerState.isPurchasing) return;
+                                    if (billerState.isScheduling) return;
 
                                     _mobileOperatorServices = null;
                                     setState(() =>
@@ -164,7 +160,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                             Icons.keyboard_arrow_down_rounded,
                             color: AppColors.kSecondaryTextColor),
                         onTap: () async {
-                          if (billerState.isPurchasing || _billers == null) {
+                          if (billerState.isScheduling || _billers == null) {
                             return;
                           }
                           _mobileOperatorServices =
@@ -176,42 +172,58 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                         },
                       ),
                       const Gap(height: 24),
-                      SchedulingWidget(
-                          title: 'Schedule data',
-                          description:
-                              'Auto top data plan at regular intervals',
-                          tapped: () =>
-                              PageRouter.pushNamed(Routes.scheduleDataView))
+                      EditTextFieldWidget(
+                          title: AppString.choosePeriod,
+                          label: AppString.frequency,
+                          controller: frequencyController,
+                          focusNode: frequencyFocusNode,
+                          readOnly: true,
+                          keyboardType: TextInputType.text,
+                          validator:
+                              FieldValidator.validateFrequency(_frequency),
+                          suffixIcon: _frequency.isEmpty
+                              ? const Icon(Icons.keyboard_arrow_down_outlined,
+                                  color: AppColors.kSecondaryTextColor)
+                              : Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (_frequency.isNotEmpty)
+                                      Flexible(
+                                        child: Text(_frequency,
+                                            style: context.titleLarge?.copyWith(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700,
+                                                color: AppColors.kPurpleColor)),
+                                      ),
+                                    const Icon(
+                                        Icons.keyboard_arrow_down_outlined,
+                                        color: AppColors.kSecondaryTextColor),
+                                    if (_frequency.isNotEmpty)
+                                      const Gap(width: 16)
+                                  ],
+                                ),
+                          onTap: () async {
+                            final response = await BottomSheets.showSheet(
+                                child: const FrequencySheet()) as String;
+                            if (response.isNotEmpty) {
+                              _frequency = 'Every $response';
+                            }
+                            setState(() {});
+                          }),
                     ],
                   ),
                 ),
                 ElevatedButtonWidget(
                     title: AppString.proceed,
-                    loading: billerState.isPurchasing,
+                    loading: billerState.isScheduling,
                     onPressed: _billers == null
                         ? null
                         : () async {
                             if (!formKey.currentState!.validate()) return;
 
-                            final feedback = await Sheets.showSheet(
-                                child: SummaryWidget(
-                                    summaryDto: SummaryDto(
-                                        title: _billers?.displayName,
-                                        imageUrl: _billers?.logoUrl,
-                                        recipient: phoneController.text,
-                                        amount: _mobileOperatorServices
-                                            ?.servicePrice,
-                                        cashBack: _airtimeTopDeals?.cashBack,
-                                        fee: 0))) as bool?;
-
-                            if (feedback != null && feedback) {
-                              final pin = await BottomSheets.showSheet(
-                                      child: const PinConfirmationSheet())
-                                  as String?;
-                              if (pin != null) {
-                                _submit(pin);
-                              }
-                            }
+                            final pin = await BottomSheets.showSheet(
+                                child: const PinConfirmationSheet()) as String?;
+                            if (pin != null) _submit(pin);
                           })
               ],
             ),
@@ -221,23 +233,17 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
     );
   }
 
-  Future<void> _submit(String pin) => _billersNotifier.purchaseService(
+  Future<void> _submit(String pin) => _billersNotifier.schedule(
       mobileDto: MobileDto(
-          category: ServiceCategory.data,
+          frequency: _frequency,
+          amount: _formatter.getUnformattedValue(),
+          transactionPin: pin,
           subCategory: _billers?.displayName,
-          amount: _mobileOperatorServices?.servicePrice,
+          category: ServiceCategory.data,
           destinationPhoneNumber: phoneController.text,
-          mobileOperatorPublicId: _billers?.operatorpublicid,
-          applyDiscount: false,
           mobileOperatorServiceId:
-              _mobileOperatorServices?.serviceId.toString() ?? '',
-          isDataBundle: true,
-          transactionPin: pin),
-      onSuccess: () => PageRouter.pushNamed(Routes.successState,
-          args: SuccessStateArguments(
-              title: AppString.complete,
-              message: AppString.completedDataPurchase,
-              btnTitle: AppString.proceed,
-              tap: () => PageRouter.popToRoot(Routes.dataView))),
+              _mobileOperatorServices?.serviceId.toString(),
+          mobileOperatorPublicId: _billers?.operatorpublicid),
+      route: Routes.scheduleDataView,
       cancelToken: _cancelToken);
 }

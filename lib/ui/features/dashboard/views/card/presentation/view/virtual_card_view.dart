@@ -111,7 +111,7 @@ class _VirtualCardViewState extends ConsumerState<VirtualCardView> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                'Virtual Naira card',
+                                                'Virtual Naira Card',
                                                 style: context.displayLarge
                                                     ?.copyWith(
                                                         color: AppColors.white,

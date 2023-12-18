@@ -28,7 +28,21 @@ class NotificationNotifier extends _$NotificationNotifier {
       _notifications = response.notifications;
     } catch (e) {
       _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(isBusy: false, notifications: _notifications);
     }
-    state = state.copyWith(isBusy: false, notifications: _notifications);
+  }
+
+  Future<void> readNotification(NotificationModel notification,
+      {CancelToken? cancelToken}) async {
+    try {
+      await notificationDao.updateReadStatus(notification);
+
+      await ref.read(readNotificationProvider
+          .call(notification.notificationId ?? '', cancelToken: cancelToken)
+          .future);
+    } catch (e) {
+      _logger.e(e.toString());
+    } finally {}
   }
 }

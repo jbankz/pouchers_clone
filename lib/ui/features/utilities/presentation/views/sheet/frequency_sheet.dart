@@ -108,8 +108,10 @@ class _FrequencySheetState extends State<FrequencySheet> {
                       if (_weekday.isNotEmpty)
                         Text(
                             _tab == _tabs.first
-                                ? 'Top up will be done every $_weekday'
-                                : 'Top up will be done on $_weekday of every month or last day of that month if day does not exist.',
+                                ? AppString.weekDays
+                                    .replaceAll('weekday', _weekday)
+                                : AppString.weekDates
+                                    .replaceAll('date', _weekday),
                             style: context.titleLarge?.copyWith(
                                 fontWeight: FontWeight.w400, fontSize: 16),
                             textAlign: TextAlign.center),

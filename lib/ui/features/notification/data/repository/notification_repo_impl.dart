@@ -18,4 +18,10 @@ class NotificationRepoImpl implements NotificationRepo {
     notificationDao.save(response.notifications);
     return response;
   }
+
+  @override
+  Future<bool> readNotification(String notificationId,
+          {CancelToken? cancelToken}) async =>
+      await _notificationSource.readNotification(notificationId,
+          cancelToken: cancelToken);
 }

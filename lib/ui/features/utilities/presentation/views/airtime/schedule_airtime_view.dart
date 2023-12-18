@@ -11,6 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stacked/stacked_annotations.dart';
 
+import '../../../../../../app/app.router.dart';
 import '../../../../../../utils/field_validator.dart';
 import '../../../../../../utils/formatters/currency_formatter.dart';
 import '../../../../../common/app_colors.dart';
@@ -161,8 +162,8 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
                     ),
                     const Gap(height: 24),
                     EditTextFieldWidget(
-                        title: 'Choose top-up period',
-                        label: 'Select frequency',
+                        title: AppString.choosePeriod,
+                        label: AppString.frequency,
                         controller: frequencyController,
                         focusNode: frequencyFocusNode,
                         readOnly: true,
@@ -218,7 +219,7 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
     );
   }
 
-  Future<void> _submit(String pin) => _billersNotifier.scheduleAirtime(
+  Future<void> _submit(String pin) => _billersNotifier.schedule(
       mobileDto: MobileDto(
           frequency: _frequency,
           amount: _formatter.getUnformattedValue(),
@@ -227,5 +228,6 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
           category: ServiceCategory.airtime,
           destinationPhoneNumber: phoneController.text,
           mobileOperatorPublicId: _billers?.operatorpublicid),
+      route: Routes.scheduledAirtimeView,
       cancelToken: _cancelToken);
 }

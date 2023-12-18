@@ -75,9 +75,9 @@ class _NotificationViewState extends ConsumerState<NotificationView> {
                         final notification = notifications[index];
                         return CupertinoButton(
                           padding: EdgeInsets.zero,
-                          onPressed: () async {
-                            await notificationDao
-                                .updateReadStatus(notification);
+                          onPressed: () {
+                            _notificationNotifier.readNotification(notification,
+                                cancelToken: _cancelToken);
 
                             PageRouter.pushNamed(Routes.notificationDetailsView,
                                 args: NotificationDetailsViewArguments(
