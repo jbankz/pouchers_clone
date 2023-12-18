@@ -1,11 +1,9 @@
 import 'package:Pouchers/ui/features/profile/domain/dto/wallet_dto.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/bank_account_details/bank_account_details.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
 import '../../../../../../app/core/network/api_path.dart';
 import '../../../../../../app/core/network/network_service.dart';
-
 import '../../../domain/model/wallet.dart';
 import 'wallet_source.dart';
 
