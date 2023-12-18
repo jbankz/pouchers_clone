@@ -19,7 +19,6 @@ class WalletSourceImpl implements WalletSource {
         path: ApiPath.wallet,
         requestType: RequestType.get,
         cancelToken: cancelToken);
-    if (kDebugMode) response.data['data']['balance'] = "500000000000";
 
     return Wallet.fromJson(response.data['data'] as Map<String, dynamic>);
   }

@@ -24,7 +24,8 @@ class BalanceWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notificationState = ref.watch(notificationNotifierProvider);
-    final int totalUnreadMessages = notificationState.unreadPaymentModel?.unreadPaymentRequestCount ?? 0;
+    final int totalUnreadMessages =
+        notificationState.unreadPaymentModel?.unreadPaymentRequestCount ?? 0;
     return ValueListenableBuilder<Box>(
         valueListenable: walletDao.getListenable(),
         builder: (_, box, __) {
@@ -53,7 +54,10 @@ class BalanceWidget extends HookConsumerWidget {
                               ? num.parse(wallet.balance ?? '0').toNaira
                               : '*****',
                           style: context.headlineLarge?.copyWith(
-                              fontSize: 28.sp, fontWeight: FontWeight.w700)),
+                              fontSize: _returnFontSize(
+                                      num.parse(wallet.balance ?? '0').toNaira)
+                                  .sp,
+                              fontWeight: FontWeight.w700)),
                     ),
                     const Gap(width: 6),
                     GestureDetector(
@@ -141,5 +145,21 @@ class BalanceWidget extends HookConsumerWidget {
             ),
           );
         });
+  }
+
+  num _returnFontSize(String balance) {
+    if (balance.length <= 9) {
+      return 28;
+    } else if (balance.length <= 11.9) {
+      return 25;
+    } else if (balance.length <= 15.9) {
+      return 23;
+    } else if (balance.length <= 19.9) {
+      return 20;
+    } else if (balance.length <= 23.9) {
+      return 18;
+    } else {
+      return 16;
+    }
   }
 }

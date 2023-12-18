@@ -43,20 +43,22 @@ class _HomeViewState extends ConsumerState<HomeView> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _walletNotifier = ref.read(walletNotifierProvider.notifier)
-        ..getWalletBalance(_cancelToken);
-      _adminNotifier = ref.read(adminNotifierProvider.notifier)
-        ..getBanners(_cancelToken);
-      _notificationNotifier = ref.read(notificationNotifierProvider.notifier)
-        ..fetchUnreadPaymentNotifications(cancelToken: _cancelToken);
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
   }
 
   @override
   void dispose() {
     super.dispose();
     _cancelToken.cancel();
+  }
+
+  Future<void> _fetchData() async {
+    _walletNotifier = ref.read(walletNotifierProvider.notifier)
+      ..getWalletBalance(_cancelToken);
+    _adminNotifier = ref.read(adminNotifierProvider.notifier)
+      ..getBanners(_cancelToken);
+    _notificationNotifier = ref.read(notificationNotifierProvider.notifier)
+      ..fetchUnreadPaymentNotifications(cancelToken: _cancelToken);
   }
 
   @override
