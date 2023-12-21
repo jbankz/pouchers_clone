@@ -1,5 +1,4 @@
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
-import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
@@ -174,8 +173,8 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                       ),
                       const Gap(height: 24),
                       SchedulingWidget(
-                          title: 'Schedule airtime',
-                          description: 'Auto top airtime at regular intervals',
+                          title: AppString.scheduleAirtimeHint,
+                          description: AppString.scheduleAirtimeHint1,
                           tapped: () =>
                               PageRouter.pushNamed(Routes.scheduledAirtimeView))
                     ],
@@ -192,7 +191,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                             final feedback = await Sheets.showSheet(
                                 child: SummaryWidget(
                                     summaryDto: SummaryDto(
-                                        title: 'Airtime',
+                                        title: _billers?.displayName,
                                         imageUrl: _billers?.logoUrl,
                                         recipient: phoneController.text,
                                         amount:

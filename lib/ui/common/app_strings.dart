@@ -17,6 +17,7 @@ class AppString {
   static String selectPayment = "Select Payment";
   static String airtimeData = "Airtime/Data";
   static String cableTv = "CableTV";
+  static String scheduleCableTv = 'Schedule Cable TV';
   static String waterBill = "Water Bill";
   static String electricity = "Electricity";
   static String education = "Education";
@@ -47,6 +48,7 @@ class AppString {
   static String forgotPassword = 'Forgot Password';
   static String setNewPassword = 'Set New Password';
   static String mobileNumber = 'Mobile number';
+  static String smartCardNumber = 'Smartcard number';
   static String airtime = "Airtime";
   static String enableBiometric = "Enable biometrics";
   static String enableBiometricInstruction = "This is faster and more secure";
@@ -269,7 +271,7 @@ class AppString {
       " from your wallet to fund the card. Would you like to continue?";
   static String insufficientFund =
       'Insufficient fund to carry out this transaction.';
-  static String pinRequest = 'Enter transaction pin';
+  static String pinRequest = 'Enter Transaction Pin';
   static String cardCreated =
       'Your virtual card has been successfully\ncreated.';
   static String completedFunding = 'I have completed payment';
@@ -439,6 +441,8 @@ class AppString {
 
   static String completedDataPurchase = 'Your data has been delivered';
   static String completedAirtimePurchase = 'Your airtime has been delivered';
+  static String completedCablePurchase =
+      'Your cable subscription has been delivered';
   static String rechargeSuccessful = 'Recharge successful';
 
   static String subscriptionType = 'Subscription Type';
@@ -452,4 +456,13 @@ class AppString {
       'Top up will be done on date of every month or last day of that month if day does not exist.';
 
   static String sessionTimedOut = 'Expired token - Access Restricted!';
+
+  static String saveBeneficiary = 'Save as beneficiary';
+  static String scheduleCableTvHint = 'Schedule Cable TV';
+  static String scheduleCableTvHint1 =
+      'Auto renew cable tv at regular intervals';
+  static String scheduleDataHint = 'Schedule Data';
+  static String scheduleDataHint1 = 'Auto top data plan at regular intervals';
+  static String scheduleAirtimeHint = 'Schedule Airtime';
+  static String scheduleAirtimeHint1 = 'Auto top airtime at regular intervals';
 }

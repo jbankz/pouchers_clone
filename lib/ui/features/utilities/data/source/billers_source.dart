@@ -4,10 +4,12 @@ import 'package:dio/dio.dart';
 
 import '../../domain/dto/mobile_dto.dart';
 import '../../domain/model/airtime_top_deals.dart';
-import '../../domain/model/mobile_data_services.dart';
 import '../../domain/model/discounts.dart';
+import '../../domain/model/get_cable_service.dart';
+import '../../domain/model/mobile_data_services.dart';
 import '../../domain/model/schedule.dart';
 import '../../domain/model/utility.dart';
+import '../../domain/model/validate_customer.dart';
 
 abstract class BillerSource {
   Future<List<Billers>> billers(BillersDto billersDto,
@@ -21,4 +23,8 @@ abstract class BillerSource {
       MobileDto mobileDto,
       {CancelToken? cancelToken});
   Future<Schedule?> schedule(MobileDto mobileDto, {CancelToken? cancelToken});
+  Future<GetCableService> cableServices(BillersDto billersDto,
+      {CancelToken? cancelToken});
+  Future<ValidateCustomer> customerInfo(BillersDto billersDto,
+      {CancelToken? cancelToken});
 }

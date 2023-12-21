@@ -65,12 +65,12 @@ class FieldValidator {
       };
 
   static String? Function(String?) validateSmartCard(
-          {String? error, int cardLength = 0}) =>
+          {String? error, int cardLength = 5}) =>
       (String? value) {
         if (value == null || value.isEmpty) {
           return error ?? 'Field is required.';
         }
-        if (value.length != cardLength) {
+        if (value.length < cardLength) {
           return 'Invalid smart card number';
         }
         if (error != null) return error;

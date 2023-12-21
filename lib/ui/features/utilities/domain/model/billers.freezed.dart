@@ -20,13 +20,19 @@ Billers _$BillersFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Billers {
+  @HiveField(0)
   String? get name => throw _privateConstructorUsedError;
+  @HiveField(1)
   @JsonKey(name: 'display_name')
   String? get displayName => throw _privateConstructorUsedError;
+  @HiveField(2)
   String? get category => throw _privateConstructorUsedError;
+  @HiveField(3)
   String? get status => throw _privateConstructorUsedError;
+  @HiveField(4)
   @JsonKey(name: 'logo_url')
   String? get logoUrl => throw _privateConstructorUsedError;
+  @HiveField(5)
   String? get operatorpublicid => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,12 +46,12 @@ abstract class $BillersCopyWith<$Res> {
       _$BillersCopyWithImpl<$Res, Billers>;
   @useResult
   $Res call(
-      {String? name,
-      @JsonKey(name: 'display_name') String? displayName,
-      String? category,
-      String? status,
-      @JsonKey(name: 'logo_url') String? logoUrl,
-      String? operatorpublicid});
+      {@HiveField(0) String? name,
+      @HiveField(1) @JsonKey(name: 'display_name') String? displayName,
+      @HiveField(2) String? category,
+      @HiveField(3) String? status,
+      @HiveField(4) @JsonKey(name: 'logo_url') String? logoUrl,
+      @HiveField(5) String? operatorpublicid});
 }
 
 /// @nodoc
@@ -105,12 +111,12 @@ abstract class _$$BillersImplCopyWith<$Res> implements $BillersCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String? name,
-      @JsonKey(name: 'display_name') String? displayName,
-      String? category,
-      String? status,
-      @JsonKey(name: 'logo_url') String? logoUrl,
-      String? operatorpublicid});
+      {@HiveField(0) String? name,
+      @HiveField(1) @JsonKey(name: 'display_name') String? displayName,
+      @HiveField(2) String? category,
+      @HiveField(3) String? status,
+      @HiveField(4) @JsonKey(name: 'logo_url') String? logoUrl,
+      @HiveField(5) String? operatorpublicid});
 }
 
 /// @nodoc
@@ -162,31 +168,38 @@ class __$$BillersImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
+@HiveType(typeId: 12, adapterName: 'BillersAdapter')
 class _$BillersImpl implements _Billers {
   _$BillersImpl(
-      {this.name,
-      @JsonKey(name: 'display_name') this.displayName,
-      this.category,
-      this.status,
-      @JsonKey(name: 'logo_url') this.logoUrl,
-      this.operatorpublicid});
+      {@HiveField(0) this.name,
+      @HiveField(1) @JsonKey(name: 'display_name') this.displayName,
+      @HiveField(2) this.category,
+      @HiveField(3) this.status,
+      @HiveField(4) @JsonKey(name: 'logo_url') this.logoUrl,
+      @HiveField(5) this.operatorpublicid});
 
   factory _$BillersImpl.fromJson(Map<String, dynamic> json) =>
       _$$BillersImplFromJson(json);
 
   @override
+  @HiveField(0)
   final String? name;
   @override
+  @HiveField(1)
   @JsonKey(name: 'display_name')
   final String? displayName;
   @override
+  @HiveField(2)
   final String? category;
   @override
+  @HiveField(3)
   final String? status;
   @override
+  @HiveField(4)
   @JsonKey(name: 'logo_url')
   final String? logoUrl;
   @override
+  @HiveField(5)
   final String? operatorpublicid;
 
   @override
@@ -231,28 +244,34 @@ class _$BillersImpl implements _Billers {
 
 abstract class _Billers implements Billers {
   factory _Billers(
-      {final String? name,
-      @JsonKey(name: 'display_name') final String? displayName,
-      final String? category,
-      final String? status,
-      @JsonKey(name: 'logo_url') final String? logoUrl,
-      final String? operatorpublicid}) = _$BillersImpl;
+      {@HiveField(0) final String? name,
+      @HiveField(1) @JsonKey(name: 'display_name') final String? displayName,
+      @HiveField(2) final String? category,
+      @HiveField(3) final String? status,
+      @HiveField(4) @JsonKey(name: 'logo_url') final String? logoUrl,
+      @HiveField(5) final String? operatorpublicid}) = _$BillersImpl;
 
   factory _Billers.fromJson(Map<String, dynamic> json) = _$BillersImpl.fromJson;
 
   @override
+  @HiveField(0)
   String? get name;
   @override
+  @HiveField(1)
   @JsonKey(name: 'display_name')
   String? get displayName;
   @override
+  @HiveField(2)
   String? get category;
   @override
+  @HiveField(3)
   String? get status;
   @override
+  @HiveField(4)
   @JsonKey(name: 'logo_url')
   String? get logoUrl;
   @override
+  @HiveField(5)
   String? get operatorpublicid;
   @override
   @JsonKey(ignore: true)

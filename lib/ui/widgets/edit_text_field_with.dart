@@ -83,7 +83,7 @@ class EditTextFieldWidget extends StatelessWidget {
                 label: Text(label),
                 hintText: label,
                 suffixIcon: suffixIcon,
-                prefix: prefix,
+                prefixIcon: prefix,
                 contentPadding: contentPadding,
                 alignLabelWithHint: alignLabelWithHint),
             inputFormatters: inputFormatters,

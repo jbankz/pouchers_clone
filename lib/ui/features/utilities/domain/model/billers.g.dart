@@ -3,6 +3,59 @@
 part of 'billers.dart';
 
 // **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class BillersAdapter extends TypeAdapter<_$BillersImpl> {
+  @override
+  final int typeId = 12;
+
+  @override
+  _$BillersImpl read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return _$BillersImpl(
+      name: fields[0] as String?,
+      displayName: fields[1] as String?,
+      category: fields[2] as String?,
+      status: fields[3] as String?,
+      logoUrl: fields[4] as String?,
+      operatorpublicid: fields[5] as String?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, _$BillersImpl obj) {
+    writer
+      ..writeByte(6)
+      ..writeByte(0)
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.displayName)
+      ..writeByte(2)
+      ..write(obj.category)
+      ..writeByte(3)
+      ..write(obj.status)
+      ..writeByte(4)
+      ..write(obj.logoUrl)
+      ..writeByte(5)
+      ..write(obj.operatorpublicid);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BillersAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 

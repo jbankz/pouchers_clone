@@ -108,8 +108,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                 BuildQuickActionButton(
                                     icon: AppImage.televisionIcon,
                                     title: AppString.cableTv,
-                                    onPressed: () => pushTo(context,
-                                        const BuyCable(isGuest: false))),
+                                    onPressed: () => PageRouter.pushNamed(
+                                        Routes.cableTvView)),
+                                // onPressed: () => pushTo(context,
+                                //     const BuyCable(isGuest: false))),
                                 Gap(width: 37.w),
                                 BuildQuickActionButton(
                                     icon: AppImage.electricityIcon,

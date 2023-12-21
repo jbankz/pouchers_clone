@@ -3,12 +3,17 @@ import 'package:Pouchers/ui/features/profile/domain/model/referral/earning.dart'
 import 'package:Pouchers/ui/features/profile/domain/model/referral/referral.dart';
 import 'package:Pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
 import 'package:Pouchers/ui/features/transfer/domain/model/attributes.dart';
+import 'package:Pouchers/ui/features/utilities/data/dao/billers_dao.dart';
+import 'package:Pouchers/ui/features/utilities/data/dao/cable_services_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import '../../../modules/login/models/login_response.dart';
 import '../../../ui/features/admin/data/dao/banner_dao.dart';
 import '../../../ui/features/admin/domain/model/banner.dart';
+import '../../../ui/features/merchant/data/dao/merchant_dao.dart';
+import '../../../ui/features/merchant/domain/model/get_merchants.dart';
+import '../../../ui/features/merchant/domain/model/merchants.dart';
 import '../../../ui/features/notification/data/dao/notification_dao.dart';
 import '../../../ui/features/notification/domain/model/notification_model.dart';
 import '../../../ui/features/profile/data/dao/referral_dao.dart';
@@ -19,6 +24,9 @@ import '../../../ui/features/profile/domain/model/user.dart';
 import '../../../ui/features/profile/domain/model/wallet.dart';
 import '../../../ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
 import '../../../ui/features/transfer/domain/model/local_bank.dart';
+import '../../../ui/features/utilities/domain/model/billers.dart';
+import '../../../ui/features/utilities/domain/model/cable_service.dart';
+import '../../../ui/features/utilities/domain/model/get_cable_service.dart';
 import '../../app.locator.dart';
 
 /// initialize local data storage
@@ -38,6 +46,11 @@ Future<void> initializeDB() async {
       ..registerAdapter(AttributesAdapter())
       ..registerAdapter(NotificationModelAdapter())
       ..registerAdapter(BannerAdapter())
+      ..registerAdapter(GetMerchantAdapter())
+      ..registerAdapter(MerchantAdapter())
+      ..registerAdapter(BillersAdapter())
+      ..registerAdapter(GetCableServiceAdapter())
+      ..registerAdapter(CableServiceAdapter())
       ..registerAdapter(HiveStoreResponseDataAdapter());
   } catch (e) {
     debugPrint(e.toString());
@@ -54,6 +67,9 @@ class HiveManager {
     localBankDao = LocalBankDao();
     notificationDao = NotificationDao();
     bannerDao = BannerDao();
+    merchantDao = MerchantDao();
+    billersDao = BillersDao();
+    cableServicesDao = CableServicesDao();
   }
 
   Future clearAllBox() async {
@@ -65,6 +81,9 @@ class HiveManager {
     await localBankDao.truncate();
     await notificationDao.truncate();
     await bannerDao.truncate();
+    await merchantDao.truncate();
+    await billersDao.truncate();
+    await cableServicesDao.truncate();
   }
 
   Future<Box<T>> openBox<T>(String boxName) async {

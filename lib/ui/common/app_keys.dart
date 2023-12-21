@@ -14,4 +14,7 @@ class AppKeys {
   static const String notificationDaoKey = 'notificationDaoKey';
   static const String balanceVisibilityKey = 'balanceVisibilityKey';
   static const String bannerDaoKey = 'bannerDaoKey';
+  static const String merchantDaoKey = 'merchantDaoKey';
+  static const String billersDaoKey = 'billersDaoKey';
+  static const String cableServicesDaoKey = 'cableServicesDaoKey';
 }

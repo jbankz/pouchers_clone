@@ -3,7 +3,6 @@ import 'package:Pouchers/ui/features/profile/domain/model/wallet.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
 import 'package:Pouchers/ui/features/profile/presentation/state/wallet_state.dart';
 import 'package:Pouchers/utils/extension.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

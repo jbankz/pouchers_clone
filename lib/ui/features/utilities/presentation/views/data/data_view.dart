@@ -17,7 +17,6 @@ import 'package:stacked/stacked_annotations.dart';
 import '../../../../../../app/app.router.dart';
 import '../../../../../../app/core/router/page_router.dart';
 import '../../../../../../utils/field_validator.dart';
-import '../../../../../../utils/formatters/currency_formatter.dart';
 import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_images.dart';
 import '../../../../../common/app_strings.dart';
@@ -73,8 +72,6 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
   }
 
   final formKey = GlobalKey<FormState>();
-  final CurrencyFormatter _formatter = CurrencyFormatter(
-      enableNegative: false, name: '', symbol: '', decimalDigits: 0);
 
   @override
   Widget build(BuildContext context) {
@@ -177,9 +174,8 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                       ),
                       const Gap(height: 24),
                       SchedulingWidget(
-                          title: 'Schedule data',
-                          description:
-                              'Auto top data plan at regular intervals',
+                          title: AppString.scheduleDataHint,
+                          description: AppString.scheduleDataHint1,
                           tapped: () =>
                               PageRouter.pushNamed(Routes.scheduleDataView))
                     ],

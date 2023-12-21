@@ -53,6 +53,8 @@ import '../ui/features/tiers/presentation/view/tier_view.dart';
 import '../ui/features/transfer/presentation/transfer_money_confirmation_view.dart';
 import '../ui/features/utilities/presentation/views/airtime/airtime_view.dart';
 import '../ui/features/utilities/presentation/views/airtime/schedule_airtime_view.dart';
+import '../ui/features/utilities/presentation/views/cable/cable_tv_view.dart';
+import '../ui/features/utilities/presentation/views/cable/schedule_cable_tv_view.dart';
 import '../ui/features/utilities/presentation/views/data/data_view.dart';
 import '../ui/features/utilities/presentation/views/data/schedule_data_view.dart';
 import '../ui/widgets/success_state.dart';
@@ -152,6 +154,8 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: AccountDetailsView),
     AdaptiveRoute(page: ScheduledAirtimeView),
     AdaptiveRoute(page: ScheduleDataView),
+    AdaptiveRoute(page: CableTvView),
+    AdaptiveRoute(page: ScheduleCableTvView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

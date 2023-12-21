@@ -14,6 +14,7 @@ class MobileDto {
   final String? merchantAccount;
   final String? merchantReferenceNumber;
   final String? merchantService;
+  final bool isMerchantPayment;
 
   MobileDto({
     this.category,
@@ -29,6 +30,7 @@ class MobileDto {
     this.merchantAccount,
     this.merchantReferenceNumber,
     this.merchantService,
+    this.isMerchantPayment = false,
   });
 
   Map<String, dynamic> toJson() {

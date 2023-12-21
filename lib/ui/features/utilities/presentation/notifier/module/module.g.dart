@@ -777,5 +777,303 @@ class _ScheduleProviderElement
   @override
   CancelToken? get cancelToken => (origin as ScheduleProvider).cancelToken;
 }
+
+String _$cableServicesHash() => r'15f512e485139107171b75f159c60b500f3c9d05';
+
+/// See also [cableServices].
+@ProviderFor(cableServices)
+const cableServicesProvider = CableServicesFamily();
+
+/// See also [cableServices].
+class CableServicesFamily extends Family<AsyncValue<GetCableService>> {
+  /// See also [cableServices].
+  const CableServicesFamily();
+
+  /// See also [cableServices].
+  CableServicesProvider call({
+    required BillersDto parameter,
+    CancelToken? cancelToken,
+  }) {
+    return CableServicesProvider(
+      parameter: parameter,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  CableServicesProvider getProviderOverride(
+    covariant CableServicesProvider provider,
+  ) {
+    return call(
+      parameter: provider.parameter,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'cableServicesProvider';
+}
+
+/// See also [cableServices].
+class CableServicesProvider extends AutoDisposeFutureProvider<GetCableService> {
+  /// See also [cableServices].
+  CableServicesProvider({
+    required BillersDto parameter,
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => cableServices(
+            ref as CableServicesRef,
+            parameter: parameter,
+            cancelToken: cancelToken,
+          ),
+          from: cableServicesProvider,
+          name: r'cableServicesProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$cableServicesHash,
+          dependencies: CableServicesFamily._dependencies,
+          allTransitiveDependencies:
+              CableServicesFamily._allTransitiveDependencies,
+          parameter: parameter,
+          cancelToken: cancelToken,
+        );
+
+  CableServicesProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.parameter,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final BillersDto parameter;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<GetCableService> Function(CableServicesRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: CableServicesProvider._internal(
+        (ref) => create(ref as CableServicesRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        parameter: parameter,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<GetCableService> createElement() {
+    return _CableServicesProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CableServicesProvider &&
+        other.parameter == parameter &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, parameter.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin CableServicesRef on AutoDisposeFutureProviderRef<GetCableService> {
+  /// The parameter `parameter` of this provider.
+  BillersDto get parameter;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _CableServicesProviderElement
+    extends AutoDisposeFutureProviderElement<GetCableService>
+    with CableServicesRef {
+  _CableServicesProviderElement(super.provider);
+
+  @override
+  BillersDto get parameter => (origin as CableServicesProvider).parameter;
+  @override
+  CancelToken? get cancelToken => (origin as CableServicesProvider).cancelToken;
+}
+
+String _$validateCustomerInfoHash() =>
+    r'b48c76e96de92fe2ac48710634f32dde3992ac3e';
+
+/// See also [validateCustomerInfo].
+@ProviderFor(validateCustomerInfo)
+const validateCustomerInfoProvider = ValidateCustomerInfoFamily();
+
+/// See also [validateCustomerInfo].
+class ValidateCustomerInfoFamily extends Family<AsyncValue<ValidateCustomer>> {
+  /// See also [validateCustomerInfo].
+  const ValidateCustomerInfoFamily();
+
+  /// See also [validateCustomerInfo].
+  ValidateCustomerInfoProvider call({
+    required BillersDto parameter,
+    CancelToken? cancelToken,
+  }) {
+    return ValidateCustomerInfoProvider(
+      parameter: parameter,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  ValidateCustomerInfoProvider getProviderOverride(
+    covariant ValidateCustomerInfoProvider provider,
+  ) {
+    return call(
+      parameter: provider.parameter,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'validateCustomerInfoProvider';
+}
+
+/// See also [validateCustomerInfo].
+class ValidateCustomerInfoProvider
+    extends AutoDisposeFutureProvider<ValidateCustomer> {
+  /// See also [validateCustomerInfo].
+  ValidateCustomerInfoProvider({
+    required BillersDto parameter,
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => validateCustomerInfo(
+            ref as ValidateCustomerInfoRef,
+            parameter: parameter,
+            cancelToken: cancelToken,
+          ),
+          from: validateCustomerInfoProvider,
+          name: r'validateCustomerInfoProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$validateCustomerInfoHash,
+          dependencies: ValidateCustomerInfoFamily._dependencies,
+          allTransitiveDependencies:
+              ValidateCustomerInfoFamily._allTransitiveDependencies,
+          parameter: parameter,
+          cancelToken: cancelToken,
+        );
+
+  ValidateCustomerInfoProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.parameter,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final BillersDto parameter;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<ValidateCustomer> Function(ValidateCustomerInfoRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ValidateCustomerInfoProvider._internal(
+        (ref) => create(ref as ValidateCustomerInfoRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        parameter: parameter,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<ValidateCustomer> createElement() {
+    return _ValidateCustomerInfoProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ValidateCustomerInfoProvider &&
+        other.parameter == parameter &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, parameter.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ValidateCustomerInfoRef
+    on AutoDisposeFutureProviderRef<ValidateCustomer> {
+  /// The parameter `parameter` of this provider.
+  BillersDto get parameter;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _ValidateCustomerInfoProviderElement
+    extends AutoDisposeFutureProviderElement<ValidateCustomer>
+    with ValidateCustomerInfoRef {
+  _ValidateCustomerInfoProviderElement(super.provider);
+
+  @override
+  BillersDto get parameter =>
+      (origin as ValidateCustomerInfoProvider).parameter;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as ValidateCustomerInfoProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

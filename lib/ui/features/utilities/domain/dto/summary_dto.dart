@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class SummaryDto {
   final String? imageUrl;
   final String? title;
@@ -5,6 +7,7 @@ class SummaryDto {
   final num? amount;
   final num? fee;
   final num? cashBack;
+  final Widget? recipientWidget;
 
   SummaryDto(
       {this.imageUrl,
@@ -12,5 +15,6 @@ class SummaryDto {
       this.recipient,
       this.amount,
       this.fee,
-      this.cashBack});
+      this.cashBack,
+      this.recipientWidget});
 }

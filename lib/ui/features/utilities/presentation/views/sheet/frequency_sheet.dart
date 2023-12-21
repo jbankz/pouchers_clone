@@ -10,9 +10,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../common/app_strings.dart';
+import 'enum/frequency_type.dart';
 
 class FrequencySheet extends StatefulWidget {
-  const FrequencySheet({super.key});
+  const FrequencySheet({super.key, this.frequencyType = FrequencyType.both});
+
+  final FrequencyType frequencyType;
 
   @override
   State<FrequencySheet> createState() => _FrequencySheetState();
@@ -36,8 +39,13 @@ class _FrequencySheetState extends State<FrequencySheet> {
   @override
   void initState() {
     super.initState();
-    _tab = _tabs.first;
+    _tab = switch (widget.frequencyType) {
+      FrequencyType.both => _tabs.first,
+      FrequencyType.day => _tabs.first,
+      FrequencyType.months => _tabs[1],
+    };
   }
+  //_tabs.first;
 
   @override
   Widget build(BuildContext context) => SafeArea(
@@ -59,51 +67,65 @@ class _FrequencySheetState extends State<FrequencySheet> {
                               fontSize: 15,
                               color: AppColors.kPrimaryTextColor)),
                       const Gap(height: 16),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: _tabs
-                            .map((tab) => CupertinoButton(
-                                  onPressed: () {
-                                    _weekday = '';
-                                    setState(() => _tab = tab);
-                                  },
-                                  padding: EdgeInsets.zero,
-                                  child: Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 23.w),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16.w, vertical: 9.h),
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                color: _tab == tab
-                                                    ? AppColors.kPrimaryColor
-                                                    : AppColors.kPurpleColor200,
-                                                width: 2.w))),
-                                    child: Text(tab,
-                                        style: context.titleLarge?.copyWith(
-                                            fontWeight: _tab == tab
-                                                ? FontWeight.w700
-                                                : FontWeight.w400,
-                                            fontSize: 16,
-                                            color: AppColors.kPrimaryTextColor),
-                                        textAlign: TextAlign.center),
-                                  ),
-                                ))
-                            .toList(),
-                      ),
-                      const Gap(height: 22),
-                      PageTransitionSwitcher(
-                        reverse: true,
-                        transitionBuilder: (child, primary, secondary) =>
-                            FadeThroughTransition(
-                                animation: primary,
-                                secondaryAnimation: secondary,
-                                child: child),
-                        child: _tab == _tabs.first
-                            ? _buildDayWidget(context)
-                            : _buildDateWidget(context),
-                      ),
+                      if (widget.frequencyType == FrequencyType.both)
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: _tabs
+                                  .map((tab) => CupertinoButton(
+                                        onPressed: () {
+                                          _weekday = '';
+                                          setState(() => _tab = tab);
+                                        },
+                                        padding: EdgeInsets.zero,
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 23.w),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16.w, vertical: 9.h),
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  bottom: BorderSide(
+                                                      color: _tab == tab
+                                                          ? AppColors
+                                                              .kPrimaryColor
+                                                          : AppColors
+                                                              .kPurpleColor200,
+                                                      width: 2.w))),
+                                          child: Text(tab,
+                                              style: context.titleLarge
+                                                  ?.copyWith(
+                                                      fontWeight: _tab == tab
+                                                          ? FontWeight.w700
+                                                          : FontWeight.w400,
+                                                      fontSize: 16,
+                                                      color: AppColors
+                                                          .kPrimaryTextColor),
+                                              textAlign: TextAlign.center),
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                            const Gap(height: 22),
+                          ],
+                        ),
+                      switch (widget.frequencyType) {
+                        FrequencyType.both => PageTransitionSwitcher(
+                            reverse: true,
+                            transitionBuilder: (child, primary, secondary) =>
+                                FadeThroughTransition(
+                                    animation: primary,
+                                    secondaryAnimation: secondary,
+                                    child: child),
+                            child: _tab == _tabs.first
+                                ? _buildDayWidget(context)
+                                : _buildDateWidget(context),
+                          ),
+                        FrequencyType.day => _buildDayWidget(context),
+                        FrequencyType.months => _buildDateWidget(context),
+                      },
                       const Gap(height: 31),
                       if (_weekday.isNotEmpty)
                         Text(

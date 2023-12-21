@@ -13,7 +13,10 @@ import '../../../../../app/config/app_helper.dart';
 import '../../domain/dto/mobile_dto.dart';
 import '../../domain/enum/billers_category.dart';
 import '../../domain/model/billers.dart';
+import '../../domain/model/cable_service.dart';
+import '../../domain/model/get_cable_service.dart';
 import '../../domain/model/mobile_data_services.dart';
+import '../../domain/model/validate_customer.dart';
 import '../state/billers_state.dart';
 
 part 'billers_notifier.g.dart';
@@ -24,13 +27,17 @@ class BillersNotifier extends _$BillersNotifier {
 
   List<Billers> _billers = [];
   List<MobileOperatorServices> _mobileOperatorServices = [];
+  ValidateCustomer? _validateCustomerInfo;
+  GetCableService? _getCableService;
+
   Discounts? _discounts;
 
   @override
   BillersState build() => BillersState(
       billers: _billers,
       airtimeTopDeals: ref.read(airtimeTopDealsProvider),
-      mobileOperatorServices: _mobileOperatorServices);
+      mobileOperatorServices: _mobileOperatorServices,
+      validateCustomerInfo: _validateCustomerInfo);
 
   Future<void> billers(BillersCategory parameter,
       [CancelToken? cancelToken]) async {
@@ -138,5 +145,45 @@ class BillersNotifier extends _$BillersNotifier {
     } finally {
       state = state.copyWith(isScheduling: false);
     }
+  }
+
+  Future<void> getCableProviderServices(
+      {required BillersDto biller, CancelToken? cancelToken}) async {
+    try {
+      state = state.copyWith(isGettingServices: true);
+
+      _getCableService = await ref.read(cableServicesProvider
+          .call(parameter: biller, cancelToken: cancelToken)
+          .future);
+    } catch (e) {
+      _logger.e(e.toString());
+      AppHelper.handleError(e);
+      PageRouter.pop();
+    } finally {
+      state = state.copyWith(
+          isGettingServices: false, cableService: _getCableService);
+    }
+  }
+
+  Future<void> validateCustomerInfo(
+      {required BillersDto biller, CancelToken? cancelToken}) async {
+    try {
+      state = state.copyWith(isValidatingCustomerInfo: true);
+
+      _validateCustomerInfo = await ref.read(validateCustomerInfoProvider
+          .call(parameter: biller, cancelToken: cancelToken)
+          .future);
+    } catch (e) {
+      _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(
+          isValidatingCustomerInfo: false,
+          validateCustomerInfo: _validateCustomerInfo);
+    }
+  }
+
+  void resetCustomerInfo() {
+    _validateCustomerInfo = null;
+    state = state.copyWith(validateCustomerInfo: _validateCustomerInfo);
   }
 }

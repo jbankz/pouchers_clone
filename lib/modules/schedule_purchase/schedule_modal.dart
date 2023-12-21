@@ -145,7 +145,7 @@ class _ScheduleModalState extends State<ScheduleModal>
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         crossAxisCount: 3,
-                        childAspectRatio: SizeConfig.blockSizeHorizontal! / 2.4,
+                        // childAspectRatio: SizeConfig.blockSizeHorizontal! / 2.4,
                         crossAxisSpacing: 15,
                         mainAxisSpacing: 15,
                         children: List.generate(

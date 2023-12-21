@@ -126,8 +126,14 @@ class ApiPath {
   static const String billersDiscounts =
       '$_apiVersionOne/utility/discount/value';
   static const String mobile = '$_apiVersionOne/utility/mobile';
+  static const String merchantPayment =
+      '$_apiVersionOne/utility/merchantPayment';
   static const String dataProviders = '$_apiVersionOne/utility/data/operators';
   static const String schedule = '$_apiVersionOne/utility/schedule';
+  static const String merchants = '$_apiVersionOne/utility/merchantServices';
+  static const String getMerchants = '$_apiVersionOne/utility/merchants';
+  static const String validateCustomerInfo =
+      '$_apiVersionOne/utility/customer-validation';
 
   static String authenticator = Platform.isAndroid
       ? 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'
