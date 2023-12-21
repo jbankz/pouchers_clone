@@ -84,9 +84,9 @@ class FieldValidator {
         if (value == null || value.isEmpty) {
           return error ?? 'Field is required.';
         }
-        /*  if (value.length != cardLength) {
-        return 'Invalid meter number';
-      } */
+        if (value.length != cardLength) {
+          return 'Invalid meter number';
+        }
         if (error != null) return error;
 
         return null;

@@ -18,6 +18,7 @@ import '../../domain/model/get_cable_service.dart';
 import '../../domain/model/mobile_data_services.dart';
 import '../../domain/model/validate_customer.dart';
 import '../state/billers_state.dart';
+import 'dart:collection';
 
 part 'billers_notifier.g.dart';
 
@@ -49,6 +50,9 @@ class BillersNotifier extends _$BillersNotifier {
               parameter: BillersDto(billersCategory: parameter),
               cancelToken: cancelToken)
           .future);
+
+      _billers
+          .sort((a, b) => (a.displayName ?? '').compareTo(b.displayName ?? ''));
     } catch (e) {
       _logger.e(e.toString());
       AppHelper.handleError(e);

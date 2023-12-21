@@ -15,6 +15,7 @@ class MobileDto {
   final String? merchantReferenceNumber;
   final String? merchantService;
   final bool isMerchantPayment;
+  final bool makeMerchantServiceArray;
 
   MobileDto({
     this.category,
@@ -31,6 +32,7 @@ class MobileDto {
     this.merchantReferenceNumber,
     this.merchantService,
     this.isMerchantPayment = false,
+    this.makeMerchantServiceArray = true,
   });
 
   Map<String, dynamic> toJson() {
@@ -73,7 +75,10 @@ class MobileDto {
       result.addAll({'merchantReferenceNumber': merchantReferenceNumber});
     }
     if (merchantService != null) {
-      result.addAll({'merchantService': merchantService});
+      result.addAll({
+        'merchantService':
+            makeMerchantServiceArray ? [merchantService] : merchantService
+      });
     }
     return result;
   }

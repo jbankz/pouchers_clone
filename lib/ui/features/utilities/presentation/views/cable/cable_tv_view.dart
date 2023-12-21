@@ -13,7 +13,6 @@ import 'package:stacked/stacked_annotations.dart';
 import '../../../../../../app/app.router.dart';
 import '../../../../../../app/core/router/page_router.dart';
 import '../../../../../../app/core/skeleton/widgets.dart';
-import '../../../../../../modules/utilities/screens/buy_cable.dart';
 import '../../../../../../utils/field_validator.dart';
 import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_images.dart';
@@ -34,11 +33,11 @@ import '../../../domain/model/billers.dart';
 import '../../../domain/model/cable_service.dart';
 import '../../notifier/billers_notifier.dart';
 import '../../state/billers_state.dart';
+import '../sheet/provider_services_sheets.dart';
+import '../sheet/providers_sheets.dart';
 import '../sheet/summary_sheet.dart';
 import '../widget/scheduling_widget.dart';
 import 'cable_tv_view.form.dart';
-import 'sheets/provider_services_sheets.dart';
-import 'sheets/providers_sheets.dart';
 import 'skeleton/cable_skeleton.dart';
 
 @FormView(fields: [
@@ -326,6 +325,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
         merchantAccount: _billers?.operatorpublicid,
         merchantReferenceNumber:
             ref.watch(billersNotifierProvider).cableService?.referenceNumber,
+        makeMerchantServiceArray: false,
         merchantService: _cableService?.code,
         transactionPin: pin,
         subCategory: _billers?.displayName,
@@ -359,7 +359,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
   }
 
   void _onProviderTextFieldTapped() {
-    BottomSheets.showSheet(child: const CableProvidersSheet()).then((response) {
+    BottomSheets.showSheet(child: const ProvidersSheet()).then((response) {
       if (response != null) {
         _billers = response;
         providerController.text = response.name ?? '';
@@ -376,7 +376,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
     if (_billers == null) return;
 
     final response = await BottomSheets.showSheet(
-      child: CableProviderServiceSheet(
+      child: ProviderServiceSheet(
         billersDto: BillersDto(
           cableId: _billers?.operatorpublicid ?? '',
         ),

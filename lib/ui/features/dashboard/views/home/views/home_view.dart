@@ -116,8 +116,11 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                 BuildQuickActionButton(
                                     icon: AppImage.electricityIcon,
                                     title: AppString.electricity,
-                                    onPressed: () => pushTo(context,
-                                        const BuyElectricity(isGuest: false))),
+                                    // onPressed: () => pushTo(context,
+                                    //     const BuyElectricity(isGuest: false))),
+
+                                    onPressed: () => PageRouter.pushNamed(
+                                        Routes.electricityView)),
                               ],
                             ),
                             const Gap(height: 18),

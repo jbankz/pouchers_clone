@@ -6,25 +6,24 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../../../app/core/router/page_router.dart';
 import '../../../../../../../app/core/skeleton/widgets.dart';
-import '../../../../../../common/app_colors.dart';
-import '../../../../../../common/app_strings.dart';
-import '../../../../../../widgets/gap.dart';
-import '../../../../domain/dto/billers_dto.dart';
-import '../../../notifier/billers_notifier.dart';
-import '../../data/skeleton/data_service_skeleton.dart';
+import '../../../../../common/app_colors.dart';
+import '../../../../../common/app_strings.dart';
+import '../../../../../widgets/gap.dart';
+import '../../../domain/dto/billers_dto.dart';
+import '../../notifier/billers_notifier.dart';
+import '../data/skeleton/data_service_skeleton.dart';
 
-class CableProviderServiceSheet extends ConsumerStatefulWidget {
-  const CableProviderServiceSheet({required this.billersDto, super.key});
+class ProviderServiceSheet extends ConsumerStatefulWidget {
+  const ProviderServiceSheet({required this.billersDto, super.key});
 
   final BillersDto billersDto;
 
   @override
-  ConsumerState<CableProviderServiceSheet> createState() =>
-      _CableProviderServiceSheetState();
+  ConsumerState<ProviderServiceSheet> createState() =>
+      _ProviderServiceSheetState();
 }
 
-class _CableProviderServiceSheetState
-    extends ConsumerState<CableProviderServiceSheet> {
+class _ProviderServiceSheetState extends ConsumerState<ProviderServiceSheet> {
   late BillersNotifier _billersNotifier;
   final CancelToken _cancelToken = CancelToken();
 
@@ -90,17 +89,21 @@ class _CableProviderServiceSheetState
                                             overflow: TextOverflow.ellipsis),
                                       ),
                                       const Gap(width: 16),
-                                      Expanded(
-                                        child: Text(
-                                            service?.price.toNaira ?? '',
-                                            style: context.titleLarge?.copyWith(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 14,
-                                              color: AppColors.kIconGrey,
+                                      service?.price == 0
+                                          ? const SizedBox.shrink()
+                                          : Expanded(
+                                              child: Text(
+                                                  service?.price.toNaira ?? '',
+                                                  style: context.titleLarge
+                                                      ?.copyWith(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 14,
+                                                    color: AppColors.kIconGrey,
+                                                  ),
+                                                  textAlign: TextAlign.right,
+                                                  overflow:
+                                                      TextOverflow.ellipsis),
                                             ),
-                                            textAlign: TextAlign.right,
-                                            overflow: TextOverflow.ellipsis),
-                                      ),
                                     ])),
                               );
                             },

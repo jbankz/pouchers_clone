@@ -18,6 +18,7 @@ class AppString {
   static String airtimeData = "Airtime/Data";
   static String cableTv = "CableTV";
   static String scheduleCableTv = 'Schedule Cable TV';
+  static String scheduleElectricity = 'Schedule Electricity';
   static String waterBill = "Water Bill";
   static String electricity = "Electricity";
   static String education = "Education";
@@ -48,14 +49,14 @@ class AppString {
   static String forgotPassword = 'Forgot Password';
   static String setNewPassword = 'Set New Password';
   static String mobileNumber = 'Mobile number';
-  static String smartCardNumber = 'Smartcard number';
+  static String smartCardNumber = 'Smartcard Number';
   static String airtime = "Airtime";
-  static String enableBiometric = "Enable biometrics";
+  static String enableBiometric = "Enable Biometrics";
   static String enableBiometricInstruction = "This is faster and more secure";
-  static String selectProvider = "Select provider";
+  static String selectProvider = "Select Provider";
   static String topDeals = "Top deals";
   static String amount = "Amount";
-  static String amountInstruction = "Enter amount";
+  static String amountInstruction = "Enter Amount";
   static String payWithCard = "Pay with Card";
   static String payWithUssd = "Pay with USSD";
   static String paymentOption = "Select payment option";
@@ -443,6 +444,8 @@ class AppString {
   static String completedAirtimePurchase = 'Your airtime has been delivered';
   static String completedCablePurchase =
       'Your cable subscription has been delivered';
+  static String completedElectricityPurchase =
+      'Your electricity subscription has been delivered';
   static String rechargeSuccessful = 'Recharge successful';
 
   static String subscriptionType = 'Subscription Type';
@@ -465,4 +468,9 @@ class AppString {
   static String scheduleDataHint1 = 'Auto top data plan at regular intervals';
   static String scheduleAirtimeHint = 'Schedule Airtime';
   static String scheduleAirtimeHint1 = 'Auto top airtime at regular intervals';
+  static String scheduleElectricityHint = 'Schedule Electricity';
+  static String scheduleElectricityHint1 =
+      'Auto top electricity at regular intervals';
+  static String meterType = 'Meter Type';
+  static String meterNumber = 'Meter Number';
 }

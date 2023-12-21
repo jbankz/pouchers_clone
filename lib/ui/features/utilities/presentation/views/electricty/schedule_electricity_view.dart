@@ -1,4 +1,3 @@
-import 'package:Pouchers/ui/features/utilities/presentation/views/sheet/enum/frequency_type.dart';
 import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -14,6 +13,7 @@ import 'package:stacked/stacked_annotations.dart';
 import '../../../../../../app/app.router.dart';
 import '../../../../../../app/core/skeleton/widgets.dart';
 import '../../../../../../utils/field_validator.dart';
+import '../../../../../../utils/formatters/currency_formatter.dart';
 import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_images.dart';
 import '../../../../../common/app_strings.dart';
@@ -30,28 +30,30 @@ import '../../../domain/model/billers.dart';
 import '../../../domain/model/cable_service.dart';
 import '../../notifier/billers_notifier.dart';
 import '../../state/billers_state.dart';
+import '../cable/skeleton/cable_skeleton.dart';
 import '../sheet/frequency_sheet.dart';
 import '../sheet/provider_services_sheets.dart';
 import '../sheet/providers_sheets.dart';
-import 'schedule_cable_tv_view.form.dart';
-import 'skeleton/cable_skeleton.dart';
+import 'schedule_electricity_view.form.dart';
 
 @FormView(fields: [
   FormTextField(name: 'provider'),
   FormTextField(name: 'number'),
   FormTextField(name: 'subscriptionType'),
   FormTextField(name: 'frequency'),
+  FormTextField(name: 'amount')
 ])
-class ScheduleCableTvView extends ConsumerStatefulWidget {
-  const ScheduleCableTvView({super.key});
+class ScheduleElectricityView extends ConsumerStatefulWidget {
+  const ScheduleElectricityView({super.key});
 
   @override
-  ConsumerState<ScheduleCableTvView> createState() =>
-      _ScheduleCableTvViewState();
+  ConsumerState<ScheduleElectricityView> createState() =>
+      _ScheduleElectricityViewState();
 }
 
-class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
-    with $ScheduleCableTvView {
+class _ScheduleElectricityViewState
+    extends ConsumerState<ScheduleElectricityView>
+    with $ScheduleElectricityView {
   late BillersNotifier _billersNotifier;
   final CancelToken _cancelToken = CancelToken();
   final FlutterContactPicker _contactPicker = FlutterContactPicker();
@@ -62,6 +64,8 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
   CableService? _cableService;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final CurrencyFormatter _formatter = CurrencyFormatter(
+      enableNegative: false, name: '', symbol: '', decimalDigits: 0);
 
   @override
   void initState() {
@@ -77,14 +81,15 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
   }
 
   void _initializeNotifiers() {
-    _billersNotifier = ref.read(billersNotifierProvider.notifier);
+    _billersNotifier = ref.read(billersNotifierProvider.notifier)
+      ..resetCustomerInfo();
   }
 
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
     return Scaffold(
-      appBar: AppBar(title: Text(AppString.scheduleCableTv)),
+      appBar: AppBar(title: Text(AppString.scheduleElectricity)),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: Skeleton(
@@ -104,9 +109,24 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
                       const Gap(height: 24),
                       _buildSubscriptionTypeTextField(),
                       const Gap(height: 24),
-                      _buildSmartCardNumberTextField(billerState),
-                      const Gap(height: 8),
+                      _buildMeterNumberTextField(billerState),
                       _buildCustomerInfoText(billerState),
+                      const Gap(height: 24),
+                      EditTextFieldWidget(
+                          title: AppString.amount,
+                          label: AppString.amountInstruction,
+                          controller: amountController,
+                          focusNode: amountFocusNode,
+                          readOnly: billerState.isPurchasing,
+                          keyboardType: TextInputType.number,
+                          onFieldSubmitted: (_) {},
+                          validator: FieldValidator.validateAmount(),
+                          prefix: IconButton(
+                              onPressed: () {},
+                              icon: Text(AppString.nairaSymbol,
+                                  style: context.headlineMedium
+                                      ?.copyWith(fontSize: 16))),
+                          inputFormatters: [context.digitsOnly, _formatter]),
                       const Gap(height: 24),
                       EditTextFieldWidget(
                           title: AppString.choosePeriod,
@@ -140,9 +160,7 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
                                 ),
                           onTap: () async {
                             final response = await BottomSheets.showSheet(
-                                    child: const FrequencySheet(
-                                        frequencyType: FrequencyType.months))
-                                as String;
+                                child: const FrequencySheet()) as String;
                             if (response.isNotEmpty) {
                               _frequency = 'Every $response';
                             }
@@ -199,8 +217,8 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
         );
 
   Widget _buildSubscriptionTypeTextField() => EditTextFieldWidget(
-        title: AppString.subscriptionType,
-        label: AppString.subscriptionType,
+        title: AppString.meterType,
+        label: AppString.meterType,
         controller: subscriptionTypeController,
         focusNode: subscriptionTypeFocusNode,
         readOnly: true,
@@ -214,32 +232,13 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
         },
       );
 
-  Widget _buildSubscriptionTypeSuffixIcon() => _cableService == null
-      ? const Icon(Icons.keyboard_arrow_down_outlined,
-          color: AppColors.kSecondaryTextColor)
-      : Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (_cableService != null)
-              Flexible(
-                child: Text(
-                  _cableService?.price.toNaira ?? '',
-                  style: context.titleLarge?.copyWith(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.kPurpleColor,
-                  ),
-                ),
-              ),
-            const Icon(Icons.keyboard_arrow_down_outlined,
-                color: AppColors.kSecondaryTextColor),
-            if (_cableService != null) const Gap(width: 16),
-          ],
-        );
+  Widget _buildSubscriptionTypeSuffixIcon() =>
+      const Icon(Icons.keyboard_arrow_down_outlined,
+          color: AppColors.kSecondaryTextColor);
 
-  Widget _buildSmartCardNumberTextField(BillersState billerState) =>
+  Widget _buildMeterNumberTextField(BillersState billerState) =>
       EditTextFieldWidget(
-        title: AppString.smartCardNumber,
+        title: AppString.meterNumber,
         controller: numberController,
         focusNode: numberFocusNode,
         keyboardType: TextInputType.number,
@@ -250,7 +249,7 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
         onChanged: (value) => _debouncer.run(() {
           if (value.length >= 10) _validateCustomer();
         }),
-        validator: FieldValidator.validateSmartCard(cardLength: 10),
+        validator: FieldValidator.validateMeterNumber(cardLength: 10),
         inputFormatters: [context.digitsOnly],
         suffixIcon: CupertinoButton(
           padding: EdgeInsets.zero,
@@ -265,20 +264,33 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
   Widget _buildCustomerInfoText(BillersState billerState) => Align(
         alignment: Alignment.centerLeft,
         child: billerState.isValidatingCustomerInfo
-            ? const CupertinoActivityIndicator()
+            ? const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gap(height: 8),
+                  CupertinoActivityIndicator(),
+                ],
+              )
             : billerState.validateCustomerInfo == null
                 ? const SizedBox.shrink()
-                : Text(
-                    'Account name: ${billerState.validateCustomerInfo?.customerName ?? ''}',
-                    style: context.headlineMedium
-                        ?.copyWith(color: AppColors.kIconGrey),
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Gap(height: 8),
+                      Text(
+                        'Account name: ${billerState.validateCustomerInfo?.customerName ?? ''}',
+                        style: context.headlineMedium
+                            ?.copyWith(color: AppColors.kIconGrey),
+                      ),
+                    ],
                   ),
       );
 
   bool _isProceedButtonEnabled(BillersState billerState) =>
       _billers != null &&
       billerState.validateCustomerInfo?.customerName != null &&
-      formKey.currentState?.validate() == true;
+      formKey.currentState?.validate() == true &&
+      _frequency.isNotEmpty;
 
   Future<void> _onProceedButtonPressed(BillersState billerState) async {
     final pin = await BottomSheets.showSheet(
@@ -291,15 +303,16 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
     await _billersNotifier.schedule(
       mobileDto: MobileDto(
           frequency: _frequency,
-          amount: _cableService?.price,
+          amount: _formatter.getUnformattedValue(),
           merchantAccount: _billers?.operatorpublicid,
           merchantReferenceNumber:
               ref.watch(billersNotifierProvider).cableService?.referenceNumber,
+          makeMerchantServiceArray: false,
           merchantService: _cableService?.code,
           transactionPin: pin,
           subCategory: _billers?.displayName,
-          category: ServiceCategory.cable),
-      route: Routes.scheduleCableTvView,
+          category: ServiceCategory.electricity),
+      route: Routes.scheduleElectricityView,
       cancelToken: _cancelToken,
     );
   }

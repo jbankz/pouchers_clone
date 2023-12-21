@@ -166,10 +166,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                         onFieldSubmitted: (_) {},
                         validator: FieldValidator.validateAmount(),
                         prefix: Text('${AppString.nairaSymbol} '),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          _formatter
-                        ],
+                        inputFormatters: [context.digitsOnly, _formatter],
                       ),
                       const Gap(height: 24),
                       SchedulingWidget(

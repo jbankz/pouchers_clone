@@ -7,13 +7,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../../../app/core/router/page_router.dart';
 import '../../../../../../../app/core/skeleton/widgets.dart';
-import '../../../../../../common/app_colors.dart';
-import '../../../../../../widgets/gap.dart';
-import '../../../notifier/billers_notifier.dart';
-import '../../data/skeleton/data_service_skeleton.dart';
+import '../../../../../common/app_colors.dart';
+import '../../../../../widgets/gap.dart';
+import '../../notifier/billers_notifier.dart';
+import '../data/skeleton/data_service_skeleton.dart';
 
-class CableProvidersSheet extends HookConsumerWidget {
-  const CableProvidersSheet({super.key});
+class ProvidersSheet extends HookConsumerWidget {
+  const ProvidersSheet({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,16 +45,31 @@ class CableProvidersSheet extends HookConsumerWidget {
                             child: Container(
                                 width: double.infinity,
                                 color: Colors.transparent,
-                                padding: EdgeInsets.symmetric(vertical: 8.h),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8.h, horizontal: 20.w),
                                 child: Row(children: [
-                                  CachedNetworkImage(
-                                      imageUrl: service.logoUrl ?? '',
-                                      height: 47.h,
-                                      width: 89.w,
-                                      errorWidget: (_, __, ___) =>
-                                          const SizedBox.shrink()),
+                                  Container(
+                                    height: 40.h,
+                                    width: 40.w,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 6.w, vertical: 12.h),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            width: 1.w,
+                                            color: AppColors.kPrimaryColor
+                                                .withOpacity(.30))),
+                                    child: CachedNetworkImage(
+                                        imageUrl: service.logoUrl ?? '',
+                                        height: 47.h,
+                                        width: 89.w,
+                                        errorWidget: (_, __, ___) =>
+                                            const SizedBox.shrink()),
+                                  ),
+                                  Gap(width: 12),
                                   Expanded(
-                                    child: Text(service.displayName ?? '',
+                                    child: Text(
+                                        service.displayName?.titleCase ?? '',
                                         style: context.titleLarge?.copyWith(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 14,
