@@ -31,11 +31,19 @@ class SummaryWidget extends StatelessWidget {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CachedNetworkImage(
+                  Container(
                       height: 70.h,
                       width: 70.w,
-                      imageUrl: summaryDto.imageUrl ?? '',
-                      fit: BoxFit.fill),
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.paleLavenderGray),
+                      child: CachedNetworkImage(
+                          height: 70.h,
+                          width: 70.w,
+                          imageUrl: summaryDto.imageUrl ?? '',
+                          fit: BoxFit.fill,
+                          errorWidget: (_, __, ___) =>
+                              const SizedBox.shrink())),
                   const Gap(height: 5),
                   Text(summaryDto.title ?? '',
                       style: context.titleLarge

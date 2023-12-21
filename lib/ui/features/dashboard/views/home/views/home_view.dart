@@ -130,8 +130,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                 BuildQuickActionButton(
                                     icon: AppImage.wifiIcon,
                                     title: AppString.internet,
-                                    onPressed: () => pushTo(context,
-                                        const BuyInternet(isGuest: false))),
+                                    onPressed: () => PageRouter.pushNamed(
+                                        Routes.internetView)),
+                                // onPressed: () => pushTo(context,
+                                //     const BuyInternet(isGuest: false))),
                                 Gap(width: 37.w),
                                 BuildQuickActionButton(
                                     icon: AppImage.bettingIcon,

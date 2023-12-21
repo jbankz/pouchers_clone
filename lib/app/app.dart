@@ -59,6 +59,7 @@ import '../ui/features/utilities/presentation/views/data/data_view.dart';
 import '../ui/features/utilities/presentation/views/data/schedule_data_view.dart';
 import '../ui/features/utilities/presentation/views/electricty/electricity_view.dart';
 import '../ui/features/utilities/presentation/views/electricty/schedule_electricity_view.dart';
+import '../ui/features/utilities/presentation/views/internet/internet_view.dart';
 import '../ui/widgets/success_state.dart';
 import 'core/manager/biometric_manager.dart';
 import 'core/manager/dojah_manager.dart';
@@ -160,6 +161,7 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: ScheduleCableTvView),
     AdaptiveRoute(page: ElectricityView),
     AdaptiveRoute(page: ScheduleElectricityView),
+    AdaptiveRoute(page: InternetView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

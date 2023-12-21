@@ -50,6 +50,8 @@ class AppString {
   static String setNewPassword = 'Set New Password';
   static String mobileNumber = 'Mobile number';
   static String smartCardNumber = 'Smartcard Number';
+  static String accountId = 'Account ID';
+  static String accountIdInstr = 'Enter Account ID';
   static String airtime = "Airtime";
   static String enableBiometric = "Enable Biometrics";
   static String enableBiometricInstruction = "This is faster and more secure";
