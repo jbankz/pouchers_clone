@@ -1,4 +1,5 @@
 import 'package:Pouchers/app/app.locator.dart';
+import 'package:Pouchers/app/core/manager/hive_manager.dart';
 import 'package:Pouchers/app/core/manager/secure_manager.dart';
 import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/ui/features/authentication/data/source/auth_source.dart';
@@ -26,6 +27,7 @@ class AuthRepoImpl implements AuthRepo {
   final AuthSource _authSource;
   final _session = locator<SessionManager>();
   final _securedManager = locator<SecuredManager>();
+  final _hiveManager = locator<HiveManager>();
 
   AuthRepoImpl(this._authSource);
 
@@ -45,6 +47,9 @@ class AuthRepoImpl implements AuthRepo {
       {CancelToken? cancelToken}) async {
     final response =
         await _authSource.signIn(authDto, cancelToken: cancelToken);
+
+    await _hiveManager.clearAllBox();
+
     _session
       ..accessToken = response?.data?.token ?? ''
       ..isLoggedIn = true;

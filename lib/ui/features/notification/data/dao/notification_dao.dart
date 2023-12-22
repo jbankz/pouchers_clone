@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/ui/common/app_keys.dart';
 import 'package:Pouchers/ui/features/notification/domain/model/notification_model.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -36,7 +37,10 @@ class NotificationDao {
   }
 
   List<NotificationModel> retrieve(Box box) =>
-      box.values.cast<NotificationModel>().toList();
+      box.values.cast<NotificationModel>().toList()
+        ..sort((a, b) => a.isRead ? 1 : -1)
+        ..sort((a, b) => (b.createdAt ?? DateTime.now().toLocal())
+            .compareTo(a.createdAt ?? DateTime.now().toLocal()));
 
   ValueListenable<Box> getListenable({List<String>? keys}) =>
       (keys == null ? _box.listenable() : _box.listenable(keys: keys));
