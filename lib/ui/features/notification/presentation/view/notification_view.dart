@@ -46,10 +46,21 @@ class _NotificationViewState extends ConsumerState<NotificationView> {
 
   Future<void> _refreshNotification() async {
     try {
+      _notificationNotifier.resetPageCount();
       await _notificationNotifier.fetchNotifications(cancelToken: _cancelToken);
       _refreshController.refreshCompleted();
     } catch (e) {
       _refreshController.refreshFailed();
+    }
+  }
+
+  Future<void> _paginateNotification() async {
+    try {
+      _notificationNotifier.increamentPageCount();
+      await _notificationNotifier.fetchNotifications(cancelToken: _cancelToken);
+      _refreshController.loadComplete();
+    } catch (e) {
+      _refreshController.loadFailed();
     }
   }
 
@@ -69,7 +80,9 @@ class _NotificationViewState extends ConsumerState<NotificationView> {
                 skeleton: const NotificationSkeleton(),
                 child: SmartRefresher(
                   controller: _refreshController,
+                  enablePullUp: true,
                   onRefresh: _refreshNotification,
+                  onLoading: _paginateNotification,
                   child: ListView.separated(
                       itemBuilder: (_, index) {
                         final notification = notifications[index];

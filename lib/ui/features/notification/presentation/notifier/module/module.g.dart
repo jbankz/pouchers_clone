@@ -6,7 +6,7 @@ part of 'module.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$notificationHash() => r'fa0b8d2c0badabb67d1529b5a13ed0d1beca9158';
+String _$notificationHash() => r'e3a9d45d1cbeed3811a4ed85aae76fb065f15382';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -39,10 +39,12 @@ class NotificationFamily extends Family<AsyncValue<NotificationDataModel>> {
   const NotificationFamily();
 
   /// See also [notification].
-  NotificationProvider call({
+  NotificationProvider call(
+    NotificationDto notificationDto, {
     CancelToken? cancelToken,
   }) {
     return NotificationProvider(
+      notificationDto,
       cancelToken: cancelToken,
     );
   }
@@ -52,6 +54,7 @@ class NotificationFamily extends Family<AsyncValue<NotificationDataModel>> {
     covariant NotificationProvider provider,
   ) {
     return call(
+      provider.notificationDto,
       cancelToken: provider.cancelToken,
     );
   }
@@ -75,11 +78,13 @@ class NotificationFamily extends Family<AsyncValue<NotificationDataModel>> {
 class NotificationProvider
     extends AutoDisposeFutureProvider<NotificationDataModel> {
   /// See also [notification].
-  NotificationProvider({
+  NotificationProvider(
+    NotificationDto notificationDto, {
     CancelToken? cancelToken,
   }) : this._internal(
           (ref) => notification(
             ref as NotificationRef,
+            notificationDto,
             cancelToken: cancelToken,
           ),
           from: notificationProvider,
@@ -91,6 +96,7 @@ class NotificationProvider
           dependencies: NotificationFamily._dependencies,
           allTransitiveDependencies:
               NotificationFamily._allTransitiveDependencies,
+          notificationDto: notificationDto,
           cancelToken: cancelToken,
         );
 
@@ -101,9 +107,11 @@ class NotificationProvider
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
+    required this.notificationDto,
     required this.cancelToken,
   }) : super.internal();
 
+  final NotificationDto notificationDto;
   final CancelToken? cancelToken;
 
   @override
@@ -119,6 +127,7 @@ class NotificationProvider
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
+        notificationDto: notificationDto,
         cancelToken: cancelToken,
       ),
     );
@@ -131,12 +140,15 @@ class NotificationProvider
 
   @override
   bool operator ==(Object other) {
-    return other is NotificationProvider && other.cancelToken == cancelToken;
+    return other is NotificationProvider &&
+        other.notificationDto == notificationDto &&
+        other.cancelToken == cancelToken;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, notificationDto.hashCode);
     hash = _SystemHash.combine(hash, cancelToken.hashCode);
 
     return _SystemHash.finish(hash);
@@ -144,6 +156,9 @@ class NotificationProvider
 }
 
 mixin NotificationRef on AutoDisposeFutureProviderRef<NotificationDataModel> {
+  /// The parameter `notificationDto` of this provider.
+  NotificationDto get notificationDto;
+
   /// The parameter `cancelToken` of this provider.
   CancelToken? get cancelToken;
 }
@@ -153,6 +168,9 @@ class _NotificationProviderElement
     with NotificationRef {
   _NotificationProviderElement(super.provider);
 
+  @override
+  NotificationDto get notificationDto =>
+      (origin as NotificationProvider).notificationDto;
   @override
   CancelToken? get cancelToken => (origin as NotificationProvider).cancelToken;
 }

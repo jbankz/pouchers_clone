@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/ui/common/app_keys.dart';
 import 'package:Pouchers/ui/features/notification/domain/model/notification_model.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -23,8 +22,11 @@ class NotificationDao {
 
   Future<Box> openBox() => _hiveManager.openBox(AppKeys.notificationDaoKey);
 
-  Future<void> save(List<NotificationModel> notifications) async {
+  Future<void> save(List<NotificationModel> notifications,
+      {bool clear = true}) async {
     if (notifications.isEmpty) return;
+
+    if (clear) await _box.clear();
 
     for (var notification in notifications) {
       await _box.put(notification.notificationId, notification);

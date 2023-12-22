@@ -95,7 +95,7 @@ class AppString {
   static String pinInstruction2 =
       "Remember this pin and do not share with anyone. ";
   static String newPassword = "New Password";
-  static String newPasswordInstruction = "New password";
+  static String newPasswordInstruction = "New Password";
   static String passwordHint = "Password must contain alphabets and numbers";
   static String haveAccount = "Already have an account? ";
   static String dontHaveAccount = "Don\'t have an account? ";
@@ -187,7 +187,7 @@ class AppString {
   static String deleteAccount = 'Delete my Account';
   static String confirm = 'Confirm';
   static String goHome = 'Go home';
-  static String transactionPin = 'Transaction pin';
+  static String transactionPin = 'Transaction Pin';
   static String oldPin = 'Old pin';
   static String newPin = 'New pin';
   static String confirmNewPin = 'Confirm pin';
@@ -362,7 +362,7 @@ class AppString {
   static String selectSecurityQueInstr =
       'Please keep this secret as this will be required to reset your 2FA authentication.';
   static String secondQuestion = 'Second question';
-  static String selectSecondQuestion = 'Select question';
+  static String selectSecondQuestion = 'Select Question';
   static String answer = 'Answer';
   static String tapToCopy1 = 'Tap to copy';
   static String tokenHint1 =
@@ -475,4 +475,6 @@ class AppString {
   static String meterType = 'Meter Type';
   static String meterNumber = 'Meter Number';
   static String completedBettingPurchase = 'Your purchase has been delivered';
+
+  static String firstQue = 'First Question';
 }

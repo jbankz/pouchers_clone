@@ -78,20 +78,19 @@ class _FirstSecurityQuestionViewState
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   children: [
-                    Text('Select your security question',
+                    Text(AppString.selectSecurityQue,
                         style: context.titleLarge?.copyWith(
                             fontWeight: FontWeight.w700,
                             fontSize: 24,
                             color: AppColors.kPrimaryTextColor)),
                     const Gap(height: 8),
-                    Text(
-                        'Please keep this secret as this will be required to reset your 2FA authentication.',
+                    Text(AppString.selectSecurityQueInstr,
                         style: context.titleLarge?.copyWith(fontSize: 16)),
                     const Gap(height: 29),
                     EditTextFieldWidget(
                         readOnly: true,
-                        title: 'First question',
-                        label: 'Select question',
+                        title: AppString.firstQue,
+                        label: AppString.selectSecondQuestion,
                         titleStyle: context.headlineLarge?.copyWith(
                             fontWeight: FontWeight.w700,
                             fontSize: 16,
@@ -117,7 +116,7 @@ class _FirstSecurityQuestionViewState
                         }),
                     const Gap(height: 20),
                     EditTextFieldWidget(
-                        title: 'Answer',
+                        title: AppString.answer,
                         readOnly: appState.isBusy,
                         controller: answerController,
                         focusNode: answerFocusNode,

@@ -1,4 +1,5 @@
 import 'package:Pouchers/ui/features/notification/data/dao/notification_dao.dart';
+import 'package:Pouchers/ui/features/notification/domain/dto/notification_dto.dart';
 import 'package:Pouchers/ui/features/notification/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/notification/presentation/view/state/notification_state.dart';
 import 'package:dio/dio.dart';
@@ -17,17 +18,22 @@ class NotificationNotifier extends _$NotificationNotifier {
   List<NotificationModel> _notifications = [];
   UnreadPaymentRequest? _unreadPaymentModel;
 
+  int _page = 1;
+
   @override
   NotificationState build() => NotificationState(notifications: _notifications);
+
+  void increamentPageCount() => _page++;
+
+  void resetPageCount() => _page = 1;
 
   Future<void> fetchNotifications({CancelToken? cancelToken}) async {
     try {
       state = state.copyWith(isBusy: notificationDao.box.isEmpty);
 
-      final response = await ref
-          .read(notificationProvider.call(cancelToken: cancelToken).future);
-
-      _notifications = response.notifications;
+      await ref.read(notificationProvider
+          .call(NotificationDto(page: _page), cancelToken: cancelToken)
+          .future);
     } catch (e) {
       _logger.e(e.toString());
     } finally {

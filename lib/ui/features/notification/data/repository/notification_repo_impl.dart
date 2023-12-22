@@ -1,4 +1,5 @@
 import 'package:Pouchers/ui/features/notification/data/dao/notification_dao.dart';
+import 'package:Pouchers/ui/features/notification/domain/dto/notification_dto.dart';
 import 'package:Pouchers/ui/features/notification/domain/model/notification_data_model.dart';
 import 'package:dio/dio.dart';
 
@@ -12,11 +13,12 @@ class NotificationRepoImpl implements NotificationRepo {
   NotificationRepoImpl(this._notificationSource);
 
   @override
-  Future<NotificationDataModel> notifications(
+  Future<NotificationDataModel> notifications(NotificationDto notificationDto,
       {CancelToken? cancelToken}) async {
-    final response =
-        await _notificationSource.notifications(cancelToken: cancelToken);
-    notificationDao.save(response.notifications);
+    final response = await _notificationSource.notifications(notificationDto,
+        cancelToken: cancelToken);
+    notificationDao.save(response.notifications,
+        clear: notificationDto.page <= 1);
     return response;
   }
 

@@ -7,7 +7,7 @@ import '../notification_usecase.dart';
 import '../read_notification_usecase.dart';
 import '../unread_payment_notification_usecase.dart';
 
-final getNotificationUseCaseModule = Provider<PoucherUseCaseWithOutParam>(
+final getNotificationUseCaseModule = Provider<PoucherUseCaseWithRequiredParam>(
     (ref) => NotificationUseCaseImpl(ref.read(notificationRepoModule)));
 
 final readNotificationUseCaseModule = Provider<PoucherUseCaseWithRequiredParam>(

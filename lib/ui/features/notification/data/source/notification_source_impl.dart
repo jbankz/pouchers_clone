@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 
 import '../../../../../app/core/network/api_path.dart';
 import '../../../../../app/core/network/network_service.dart';
+import '../../domain/dto/notification_dto.dart';
 import '../../domain/model/unread_payment_request.dart';
 import 'notification_source.dart';
 
@@ -12,11 +13,12 @@ class NotificationSourceImpl implements NotificationSource {
   NotificationSourceImpl({required this.networkService});
 
   @override
-  Future<NotificationDataModel> notifications(
+  Future<NotificationDataModel> notifications(NotificationDto notificationDto,
       {CancelToken? cancelToken}) async {
     final response = await networkService.request(
         path: ApiPath.notification,
         requestType: RequestType.get,
+        queryParams: notificationDto.toQuery(),
         cancelToken: cancelToken);
 
     return NotificationDataModel.fromJson(
