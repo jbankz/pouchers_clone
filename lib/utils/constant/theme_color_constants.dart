@@ -306,7 +306,10 @@ ThemeData kThemeData = ThemeData.light().copyWith(
         displayMedium: kHeadline2TextStyle,
         displaySmall: kHeadline3TextStyle,
         headlineMedium: kHeadline4TextStyle,
-        bodyLarge: kBodyText1Style,
+        bodyLarge: kBodyText1Style.copyWith(
+            color: AppColors.kPrimaryTextColor,
+            fontSize: 16,
+            fontWeight: FontWeight.w400),
         bodyMedium: kBodyText2Style,
         titleMedium: kSubtitle1Style,
         titleSmall: kSubtitle2Style,

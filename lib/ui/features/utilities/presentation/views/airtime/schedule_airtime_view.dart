@@ -154,7 +154,11 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
                       onFieldSubmitted: (_) =>
                           context.nextFocus(frequencyFocusNode),
                       validator: FieldValidator.validateAmount(),
-                      prefix: Text('${AppString.nairaSymbol} '),
+                      prefix: IconButton(
+                          onPressed: () {},
+                          icon: Text(AppString.nairaSymbol,
+                              style: context.headlineMedium
+                                  ?.copyWith(fontSize: 16))),
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         _formatter
@@ -202,7 +206,7 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
                 ElevatedButtonWidget(
                     title: AppString.proceed,
                     loading: billerState.isScheduling,
-                    onPressed: _billers == null
+                    onPressed: _billers == null || _frequency.isEmpty
                         ? null
                         : () async {
                             if (!formKey.currentState!.validate()) return;

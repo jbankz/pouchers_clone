@@ -20,7 +20,7 @@ class MerchantsNotifier extends _$MerchantsNotifier {
 
   Future<void> getMerchants([CancelToken? cancelToken]) async {
     try {
-      state = state.copyWith(isBusy: merchantDao.box.isEmpty);
+      state = state.copyWith(isBusy: true);
       _getMerchant = await ref
           .read(getMerchantsProvider.call(cancelToken: cancelToken).future);
     } catch (e) {

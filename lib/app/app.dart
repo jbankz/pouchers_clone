@@ -47,16 +47,19 @@ import '../ui/features/profile/presentation/views/kyc/utility/utility_bill_view.
 import '../ui/features/profile/presentation/views/profile/phone/change_password_view.dart';
 import '../ui/features/profile/presentation/views/profile/phone/requst_change_of_phone_number_view.dart';
 import '../ui/features/profile/presentation/views/profile/phone/verify_phone_number_view.dart';
+import '../ui/features/profile/presentation/views/profile/profile_image_view.dart';
 import '../ui/features/profile/presentation/views/profile/profile_view.dart';
 import '../ui/features/profile/presentation/views/referral/referral_view.dart';
 import '../ui/features/tiers/presentation/view/tier_view.dart';
 import '../ui/features/transfer/presentation/transfer_money_confirmation_view.dart';
 import '../ui/features/utilities/presentation/views/airtime/airtime_view.dart';
 import '../ui/features/utilities/presentation/views/airtime/schedule_airtime_view.dart';
+import '../ui/features/utilities/presentation/views/betting/betting_view.dart';
 import '../ui/features/utilities/presentation/views/cable/cable_tv_view.dart';
 import '../ui/features/utilities/presentation/views/cable/schedule_cable_tv_view.dart';
 import '../ui/features/utilities/presentation/views/data/data_view.dart';
 import '../ui/features/utilities/presentation/views/data/schedule_data_view.dart';
+import '../ui/features/utilities/presentation/views/education/education_view.dart';
 import '../ui/features/utilities/presentation/views/electricty/electricity_view.dart';
 import '../ui/features/utilities/presentation/views/electricty/schedule_electricity_view.dart';
 import '../ui/features/utilities/presentation/views/internet/internet_view.dart';
@@ -162,6 +165,12 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: ElectricityView),
     AdaptiveRoute(page: ScheduleElectricityView),
     AdaptiveRoute(page: InternetView),
+    AdaptiveRoute(page: BettingView),
+    AdaptiveRoute(page: EducationView),
+    CustomRoute(
+        page: ProfileImageView,
+        opaque: false,
+        transitionsBuilder: TransitionsBuilders.fadeIn),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

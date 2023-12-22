@@ -40,15 +40,14 @@ class AppString {
   static String fullName = 'Full Name';
   static String emailInstruction = 'Enter Email Address';
   static String emailPesonalizedInstruction = 'Enter Your Email Address';
-  static String loginEmailInstruction =
-      'Enter your email address or phone number';
+  static String loginEmailInstruction = 'Enter Your Email Address/Phone Number';
   static String email = 'Email Address';
   static String loginEmail = 'Enter Your Email Address/Phone Number';
   static String proceed = 'Continue';
   static String createOne = 'Create one';
   static String forgotPassword = 'Forgot Password';
   static String setNewPassword = 'Set New Password';
-  static String mobileNumber = 'Mobile number';
+  static String mobileNumber = 'Mobile Number';
   static String smartCardNumber = 'Smartcard Number';
   static String accountId = 'Account ID';
   static String accountIdInstr = 'Enter Account ID';
@@ -439,7 +438,7 @@ class AppString {
 
   static String nairaSymbol = '₦';
   static String scheduleAirtimeSub = "Auto top airtime at regular intervals.";
-  static String scheduleAirtime = "Schedule airtime";
+  static String scheduleAirtime = "Schedule Airtime";
   static String selectType = "Select type";
 
   static String completedDataPurchase = 'Your data has been delivered';
@@ -475,4 +474,5 @@ class AppString {
       'Auto top electricity at regular intervals';
   static String meterType = 'Meter Type';
   static String meterNumber = 'Meter Number';
+  static String completedBettingPurchase = 'Your purchase has been delivered';
 }

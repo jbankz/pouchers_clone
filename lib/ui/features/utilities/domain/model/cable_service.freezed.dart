@@ -28,6 +28,7 @@ mixin _$CableService {
   String? get category => throw _privateConstructorUsedError;
   @HiveField(3)
   String? get status => throw _privateConstructorUsedError;
+  @StringToNumSerializer()
   @HiveField(4)
   num get price => throw _privateConstructorUsedError;
   @HiveField(5)
@@ -50,7 +51,7 @@ abstract class $CableServiceCopyWith<$Res> {
       @HiveField(1) String? code,
       @HiveField(2) String? category,
       @HiveField(3) String? status,
-      @HiveField(4) num price,
+      @StringToNumSerializer() @HiveField(4) num price,
       @HiveField(5) String? shortCode});
 }
 
@@ -116,7 +117,7 @@ abstract class _$$CableServiceImplCopyWith<$Res>
       @HiveField(1) String? code,
       @HiveField(2) String? category,
       @HiveField(3) String? status,
-      @HiveField(4) num price,
+      @StringToNumSerializer() @HiveField(4) num price,
       @HiveField(5) String? shortCode});
 }
 
@@ -176,7 +177,7 @@ class _$CableServiceImpl implements _CableService {
       @HiveField(1) this.code,
       @HiveField(2) this.category,
       @HiveField(3) this.status,
-      @HiveField(4) this.price = 0,
+      @StringToNumSerializer() @HiveField(4) this.price = 0,
       @HiveField(5) this.shortCode});
 
   factory _$CableServiceImpl.fromJson(Map<String, dynamic> json) =>
@@ -196,6 +197,7 @@ class _$CableServiceImpl implements _CableService {
   final String? status;
   @override
   @JsonKey()
+  @StringToNumSerializer()
   @HiveField(4)
   final num price;
   @override
@@ -247,7 +249,7 @@ abstract class _CableService implements CableService {
       @HiveField(1) final String? code,
       @HiveField(2) final String? category,
       @HiveField(3) final String? status,
-      @HiveField(4) final num price,
+      @StringToNumSerializer() @HiveField(4) final num price,
       @HiveField(5) final String? shortCode}) = _$CableServiceImpl;
 
   factory _CableService.fromJson(Map<String, dynamic> json) =
@@ -266,6 +268,7 @@ abstract class _CableService implements CableService {
   @HiveField(3)
   String? get status;
   @override
+  @StringToNumSerializer()
   @HiveField(4)
   num get price;
   @override

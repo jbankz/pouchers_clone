@@ -102,9 +102,9 @@ class _InternetViewState extends ConsumerState<InternetView>
                     children: [
                       _buildProviderTextField(billerState),
                       const Gap(height: 24),
-                      _buildSmartCardNumberTextField(billerState),
-                      const Gap(height: 24),
                       _buildSubscriptionTypeTextField(),
+                      const Gap(height: 24),
+                      _buildSmartCardNumberTextField(billerState),
                     ],
                   ),
                 ),
@@ -349,10 +349,9 @@ class _InternetViewState extends ConsumerState<InternetView>
 
     final response = await BottomSheets.showSheet(
       child: ProviderServiceSheet(
-        billersDto: BillersDto(
-          cableId: _billers?.operatorpublicid ?? '',
-        ),
-      ),
+          billersDto: BillersDto(
+              cableId: _billers?.operatorpublicid ?? '',
+              path: BillersCategory.internet)),
     ) as CableService?;
 
     if (response != null) {

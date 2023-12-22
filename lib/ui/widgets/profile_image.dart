@@ -16,7 +16,8 @@ class ProfileImage extends StatelessWidget {
       this.pickImage,
       this.loading = false,
       this.width = 80,
-      this.height = 80});
+      this.height = 80,
+      this.shape = BoxShape.circle});
 
   final String image;
   final String initials;
@@ -25,25 +26,33 @@ class ProfileImage extends StatelessWidget {
   final bool loading;
   final double? height;
   final double? width;
+  final BoxShape shape;
   @override
   Widget build(BuildContext context) => Stack(
         clipBehavior: Clip.none,
         children: [
-          InkWell(
-            onTap: onTap,
-            customBorder: const CircleBorder(),
-            child: CachedNetworkImage(
-              imageUrl: image,
-              imageBuilder: (context, imageProvider) => Container(
-                width: width?.w,
-                height: height?.h,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: imageProvider, fit: BoxFit.cover)),
+          Hero(
+            tag: image,
+            child: Material(
+              shape: const CircleBorder(),
+              child: InkWell(
+                onTap: onTap,
+                customBorder: const CircleBorder(),
+                child: CachedNetworkImage(
+                  imageUrl: image,
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: width?.w,
+                    height: height?.h,
+                    decoration: BoxDecoration(
+                        shape: shape,
+                        image: DecorationImage(
+                            image: imageProvider, fit: BoxFit.cover)),
+                  ),
+                  placeholder: (context, url) => _buildPlaceHolder(context),
+                  errorWidget: (context, url, error) =>
+                      _buildPlaceHolder(context),
+                ),
               ),
-              placeholder: (context, url) => _buildPlaceHolder(context),
-              errorWidget: (context, url, error) => _buildPlaceHolder(context),
             ),
           ),
           if (pickImage != null)

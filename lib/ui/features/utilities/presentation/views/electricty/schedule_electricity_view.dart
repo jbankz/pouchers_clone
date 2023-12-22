@@ -349,7 +349,9 @@ class _ScheduleElectricityViewState
 
     final response = await BottomSheets.showSheet(
       child: ProviderServiceSheet(
-        billersDto: BillersDto(cableId: _billers?.operatorpublicid ?? ''),
+        billersDto: BillersDto(
+            cableId: _billers?.operatorpublicid ?? '',
+            path: BillersCategory.electricity),
       ),
     ) as CableService?;
 

@@ -216,7 +216,7 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
                 ElevatedButtonWidget(
                     title: AppString.proceed,
                     loading: billerState.isScheduling,
-                    onPressed: _billers == null
+                    onPressed: _billers == null || _frequency.isEmpty
                         ? null
                         : () async {
                             if (!formKey.currentState!.validate()) return;

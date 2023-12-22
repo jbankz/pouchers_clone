@@ -95,9 +95,12 @@ class BillersSourceImpl implements BillerSource {
   Future<GetCableService> cableServices(BillersDto billersDto,
       {CancelToken? cancelToken}) async {
     final response = await networkService.request(
-        path: '${ApiPath.merchants}/${billersDto.cableId}/cable',
+        path:
+            '${ApiPath.merchants}/${billersDto.cableId}/${billersDto.path?.name}',
         requestType: RequestType.get,
         cancelToken: cancelToken);
+
+        
     return GetCableService.fromJson(
         response.data?['data'] as Map<String, dynamic>);
   }

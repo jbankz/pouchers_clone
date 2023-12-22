@@ -48,25 +48,20 @@ class ProvidersSheet extends HookConsumerWidget {
                                 padding: EdgeInsets.symmetric(
                                     vertical: 8.h, horizontal: 20.w),
                                 child: Row(children: [
-                                  Container(
-                                    height: 40.h,
-                                    width: 40.w,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 6.w, vertical: 12.h),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            width: 1.w,
-                                            color: AppColors.kPrimaryColor
-                                                .withOpacity(.30))),
-                                    child: CachedNetworkImage(
-                                        imageUrl: service.logoUrl ?? '',
-                                        height: 47.h,
-                                        width: 89.w,
-                                        errorWidget: (_, __, ___) =>
-                                            const SizedBox.shrink()),
-                                  ),
-                                  Gap(width: 12),
+                                  CachedNetworkImage(
+                                      height: 40.h,
+                                      width: 40.w,
+                                      imageUrl: service.logoUrl ?? '',
+                                      errorWidget: (_, __, ___) => Container(
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                    width: 1.w,
+                                                    color: AppColors
+                                                        .kPrimaryColor
+                                                        .withOpacity(.30))),
+                                          )),
+                                  const Gap(width: 12),
                                   Expanded(
                                     child: Text(
                                         service.displayName?.titleCase ?? '',

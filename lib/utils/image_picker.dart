@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,12 +48,17 @@ class ImagePickerHandler {
         builder: (context) => Wrap(
           children: <Widget>[
             ListTile(
-              title: const Center(child: Text('Pick from library')),
+              title: const Center(child: Text('View Profile Photo')),
+              onTap: () => PageRouter.pop(ProfileOptionAction.viewImage),
+            ),
+            const Divider(),
+            ListTile(
+              title: const Center(child: Text('Pick From Library')),
               onTap: () => PageRouter.pop(ProfileOptionAction.library),
             ),
             const Divider(),
             ListTile(
-              title: const Center(child: Text('Take a photo')),
+              title: const Center(child: Text('Take A Photo')),
               onTap: () => PageRouter.pop(ProfileOptionAction.profileCamera),
             ),
             InkWell(
@@ -71,12 +77,17 @@ class ImagePickerHandler {
   Widget _buildIOSActionSheet(BuildContext context) => CupertinoActionSheet(
         actions: <Widget>[
           CupertinoButton(
-            child: const Text('Pick from library',
+            child: const Text('View Profile Photo',
+                style: TextStyle(color: AppColors.kPrimaryBlack)),
+            onPressed: () => PageRouter.pop(ProfileOptionAction.viewImage),
+          ),
+          CupertinoButton(
+            child: const Text('Pick From Library',
                 style: TextStyle(color: AppColors.kPrimaryBlack)),
             onPressed: () => PageRouter.pop(ProfileOptionAction.library),
           ),
           CupertinoButton(
-            child: const Text('Take a photo',
+            child: const Text('Take A Photo',
                 style: TextStyle(color: AppColors.kPrimaryBlack)),
             onPressed: () => PageRouter.pop(ProfileOptionAction.profileCamera),
           ),
@@ -92,6 +103,8 @@ class ImagePickerHandler {
       {@required ProfileOptionAction? action}) {
     switch (action!) {
       case ProfileOptionAction.viewImage:
+        PageRouter.pushNamed(Routes.profileImageView);
+        return null;
       case ProfileOptionAction.library:
         return _getImage(ImageSource.gallery);
       case ProfileOptionAction.profileCamera:

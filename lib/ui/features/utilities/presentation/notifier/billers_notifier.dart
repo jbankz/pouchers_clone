@@ -91,11 +91,11 @@ class BillersNotifier extends _$BillersNotifier {
           .call(parameter: mobileDto, cancelToken: cancelToken)
           .future);
 
-      onSuccess();
-
       await ref
           .read(walletNotifierProvider.notifier)
           .getWalletBalance(cancelToken);
+
+      onSuccess();
     } catch (e) {
       _logger.e(e.toString());
       AppHelper.handleError(e);
@@ -142,7 +142,7 @@ class BillersNotifier extends _$BillersNotifier {
               title: AppString.complete,
               message: AppString.successFullBillSchedule,
               btnTitle: AppString.proceed,
-              tap: () => PageRouter.popToRoot(route)));
+              tap: () => PageRouter.popToRoot(Routes.tabLayout)));
     } catch (e) {
       _logger.e(e.toString());
       AppHelper.handleError(e);

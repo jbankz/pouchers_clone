@@ -138,8 +138,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                 BuildQuickActionButton(
                                     icon: AppImage.bettingIcon,
                                     title: AppString.betting,
-                                    onPressed: () => pushTo(context,
-                                        const Betting(isGuest: false))),
+                                    onPressed: () => PageRouter.pushNamed(
+                                        Routes.bettingView)),
+                                // onPressed: () => pushTo(context,
+                                //     const Betting(isGuest: false))),
                                 Gap(width: 37.w),
                                 BuildQuickActionButton(
                                     icon: AppImage.voucherIcon,
@@ -150,8 +152,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                 BuildQuickActionButton(
                                     icon: AppImage.educationIcon,
                                     title: AppString.education,
-                                    onPressed: () => pushTo(context,
-                                        const BuyEducation(isGuest: false))),
+                                    // onPressed: () => pushTo(context,
+                                    //     const BuyEducation(isGuest: false))),
+                                    onPressed: () => PageRouter.pushNamed(
+                                        Routes.educationView)),
                               ],
                             ),
                           ])),

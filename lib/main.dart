@@ -324,3 +324,4 @@ class ProviderLogger extends ProviderObserver {
 // I/flutter (11047):     }
 // I/flutter (11047):   }
 // I/flutter (11047): ]
+

@@ -65,7 +65,9 @@ _$CableServiceImpl _$$CableServiceImplFromJson(Map<String, dynamic> json) =>
       code: json['code'] as String?,
       category: json['category'] as String?,
       status: json['status'] as String?,
-      price: json['price'] as num? ?? 0,
+      price: json['price'] == null
+          ? 0
+          : const StringToNumSerializer().fromJson(json['price']),
       shortCode: json['shortCode'] as String?,
     );
 
@@ -75,6 +77,6 @@ Map<String, dynamic> _$$CableServiceImplToJson(_$CableServiceImpl instance) =>
       'code': instance.code,
       'category': instance.category,
       'status': instance.status,
-      'price': instance.price,
+      'price': const StringToNumSerializer().toJson(instance.price),
       'shortCode': instance.shortCode,
     };

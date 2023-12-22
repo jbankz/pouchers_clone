@@ -154,7 +154,7 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
                 const Gap(height: 44),
                 ElevatedButtonWidget(
                   title: AppString.proceed,
-                  loading: billerState.isPurchasing,
+                  loading: billerState.isScheduling,
                   onPressed: _isProceedButtonEnabled(billerState)
                       ? () => _onProceedButtonPressed(billerState)
                       : null,
@@ -278,6 +278,7 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
   bool _isProceedButtonEnabled(BillersState billerState) =>
       _billers != null &&
       billerState.validateCustomerInfo?.customerName != null &&
+      _frequency.isNotEmpty &&
       formKey.currentState?.validate() == true;
 
   Future<void> _onProceedButtonPressed(BillersState billerState) async {
@@ -295,6 +296,7 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
           merchantAccount: _billers?.operatorpublicid,
           merchantReferenceNumber:
               ref.watch(billersNotifierProvider).cableService?.referenceNumber,
+          makeMerchantServiceArray: false,
           merchantService: _cableService?.code,
           transactionPin: pin,
           subCategory: _billers?.displayName,
@@ -334,16 +336,19 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
   Future<void> _onSubscriptionTypeTextFieldTapped() async {
     if (_billers == null) return;
 
-    final response = await BottomSheets.showSheet(
-      child: ProviderServiceSheet(
-        billersDto: BillersDto(cableId: _billers?.operatorpublicid ?? ''),
-      ),
-    ) as CableService?;
+    await BottomSheets.showSheet(
+        child: ProviderServiceSheet(
+      billersDto: BillersDto(
+          cableId: _billers?.operatorpublicid ?? '',
+          path: BillersCategory.cable),
+    )).then((response) {
+      if (response != null) {
+        _cableService = response;
+        subscriptionTypeController.text = response.name ?? '';
+        context.nextFocus(numberFocusNode);
+      }
+    });
 
-    if (response != null) {
-      _cableService = response;
-      subscriptionTypeController.text = response.name ?? '';
-    }
     setState(() {});
   }
 

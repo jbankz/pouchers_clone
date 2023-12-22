@@ -6,7 +6,7 @@ part of 'merchants_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$merchantsNotifierHash() => r'7bda0222f94e050548b811f7831e458e6483114e';
+String _$merchantsNotifierHash() => r'510238b24bb41068ea2b662f0984d3ca60f7b58a';
 
 /// See also [MerchantsNotifier].
 @ProviderFor(MerchantsNotifier)

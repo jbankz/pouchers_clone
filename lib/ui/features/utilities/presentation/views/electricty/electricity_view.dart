@@ -385,8 +385,8 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
     final response = await BottomSheets.showSheet(
       child: ProviderServiceSheet(
         billersDto: BillersDto(
-          cableId: _billers?.operatorpublicid ?? '',
-        ),
+            cableId: _billers?.operatorpublicid ?? '',
+            path: BillersCategory.electricity),
       ),
     ) as CableService?;
 

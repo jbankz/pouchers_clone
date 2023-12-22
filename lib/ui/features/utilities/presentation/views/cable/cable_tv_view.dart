@@ -325,7 +325,6 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
         merchantAccount: _billers?.operatorpublicid,
         merchantReferenceNumber:
             ref.watch(billersNotifierProvider).cableService?.referenceNumber,
-        makeMerchantServiceArray: false,
         merchantService: _cableService?.code,
         transactionPin: pin,
         subCategory: _billers?.displayName,
@@ -375,18 +374,19 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
   Future<void> _onSubscriptionTypeTextFieldTapped() async {
     if (_billers == null) return;
 
-    final response = await BottomSheets.showSheet(
-      child: ProviderServiceSheet(
-        billersDto: BillersDto(
-          cableId: _billers?.operatorpublicid ?? '',
-        ),
-      ),
-    ) as CableService?;
+    BottomSheets.showSheet(
+            child: ProviderServiceSheet(
+                billersDto: BillersDto(
+                    cableId: _billers?.operatorpublicid ?? '',
+                    path: BillersCategory.cable)))
+        .then((response) {
+      if (response != null) {
+        _cableService = response;
+        subscriptionTypeController.text = response.name ?? '';
+        context.nextFocus(numberFocusNode);
+      }
+    });
 
-    if (response != null) {
-      _cableService = response;
-      subscriptionTypeController.text = response.name ?? '';
-    }
     setState(() {});
   }
 
