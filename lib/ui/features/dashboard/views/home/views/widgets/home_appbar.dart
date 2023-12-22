@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/notification/data/dao/notification_dao.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -77,18 +78,44 @@ class HomeAppBar extends StatelessWidget {
                     ],
                   ),
                   const Spacer(),
-                  InkWell(
-                    onTap: () => PageRouter.pushNamed(Routes.notificationView),
-                    customBorder: const CircleBorder(),
-                    child: Container(
-                        height: 35.h,
-                        width: 35.w,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.paleLavenderGray),
-                        child: SvgPicture.asset(AppImage.bell,
-                            fit: BoxFit.scaleDown)),
-                  )
+                  ValueListenableBuilder<Box>(
+                      valueListenable: notificationDao.getListenable(),
+                      builder: (_, box, __) {
+                        final notifications = notificationDao
+                            .retrieve(box)
+                            .where((element) => element.isRead)
+                            .toList();
+                        return Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            InkWell(
+                              onTap: () =>
+                                  PageRouter.pushNamed(Routes.notificationView),
+                              customBorder: const CircleBorder(),
+                              child: Container(
+                                  height: 35.h,
+                                  width: 35.w,
+                                  decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.paleLavenderGray),
+                                  child: SvgPicture.asset(AppImage.bell,
+                                      fit: BoxFit.scaleDown)),
+                            ),
+                            if (notifications.isNotEmpty)
+                              Positioned(
+                                left: 23.w,
+                                top: -2,
+                                child: Container(
+                                    height: 10.h,
+                                    width: 10.w,
+                                    alignment: Alignment.center,
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: AppColors.kGreen100Color)),
+                              ),
+                          ],
+                        );
+                      })
                 ],
               ),
               if (user.tierLevels == 1)

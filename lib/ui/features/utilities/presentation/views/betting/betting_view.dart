@@ -125,7 +125,6 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
                         focusNode: amountFocusNode,
                         readOnly: billerState.isPurchasing,
                         keyboardType: TextInputType.number,
-                        onFieldSubmitted: (_) {},
                         validator: FieldValidator.validateAmount(),
                         prefix: IconButton(
                             onPressed: () {},
