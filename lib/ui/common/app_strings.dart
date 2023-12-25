@@ -475,6 +475,17 @@ class AppString {
   static String meterType = 'Meter Type';
   static String meterNumber = 'Meter Number';
   static String completedBettingPurchase = 'Your purchase has been delivered';
-
+  static String completedBuyingVoucherPurchase =
+      'Your voucher purchase was successfully.';
   static String firstQue = 'First Question';
+  static String emptyVoucher = 'Sorry, you have no avaliable Vouchers';
+  static String voucherHistory = 'View History';
+  static String selectAmount = 'Select Amount';
+  static String shareVoucher = 'Share Voucher';
+  static String availableVouchers = 'Available Vouchers';
+  static String enterVoucherCode = 'Enter Voucher Code';
+  static String redeemVoucherSuccess =
+      'Your voucher has been successfully\nredeemed.';
+  static String giftVoucherSuccess =
+      'Your voucher has been successfully gifted.';
 }

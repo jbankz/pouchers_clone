@@ -77,7 +77,7 @@ class _BuyVouchersState extends ConsumerState<BuyVouchers> {
                     crossAxisCount: 3,
                     mainAxisSpacing: 15,
                     crossAxisSpacing: 15,
-                    childAspectRatio: SizeConfig.blockSizeHorizontal! / 2.5,
+                    // childAspectRatio: SizeConfig.blockSizeHorizontal! / 2.5,
                     children: List.generate(
                       buyVoucherList.length,
                       (index) => inkWell(

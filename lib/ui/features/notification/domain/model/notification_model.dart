@@ -18,7 +18,7 @@ class NotificationModel with _$NotificationModel {
       @DateTimeSerializer()
       DateTime? createdAt,
       @HiveField(5)
-      @JsonKey(name: 'is_read', defaultValue: false)
+      @JsonKey(name: 'is_read')
       @Default(false)
       bool isRead}) = _NotificationModel;
 

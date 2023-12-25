@@ -29,7 +29,8 @@ class EditTextFieldWidget extends StatelessWidget {
       this.inputFormatters,
       this.contentPadding,
       this.maxLines = 1,
-      this.alignLabelWithHint});
+      this.alignLabelWithHint,
+      this.titleWidget});
 
   final String? title;
   final String label;
@@ -55,14 +56,17 @@ class EditTextFieldWidget extends StatelessWidget {
   final int? maxLines;
   final bool? alignLabelWithHint;
 
+  final Widget? titleWidget;
+
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title ?? '',
-              style:
-                  titleStyle ?? context.titleLarge?.copyWith(fontSize: 12.sp)),
+          titleWidget ??
+              Text(title ?? '',
+                  style: titleStyle ??
+                      context.titleLarge?.copyWith(fontSize: 12.sp)),
           const Gap(height: 8),
           TextFormField(
             controller: controller,

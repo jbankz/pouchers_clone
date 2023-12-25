@@ -34,7 +34,7 @@ mixin _$NotificationModel {
   @DateTimeSerializer()
   DateTime? get createdAt => throw _privateConstructorUsedError;
   @HiveField(5)
-  @JsonKey(name: 'is_read', defaultValue: false)
+  @JsonKey(name: 'is_read')
   bool get isRead => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -58,9 +58,7 @@ abstract class $NotificationModelCopyWith<$Res> {
       @HiveField(4)
       @DateTimeSerializer()
       DateTime? createdAt,
-      @HiveField(5)
-      @JsonKey(name: 'is_read', defaultValue: false)
-      bool isRead});
+      @HiveField(5) @JsonKey(name: 'is_read') bool isRead});
 }
 
 /// @nodoc
@@ -129,9 +127,7 @@ abstract class _$$NotificationModelImplCopyWith<$Res>
       @HiveField(4)
       @DateTimeSerializer()
       DateTime? createdAt,
-      @HiveField(5)
-      @JsonKey(name: 'is_read', defaultValue: false)
-      bool isRead});
+      @HiveField(5) @JsonKey(name: 'is_read') bool isRead});
 }
 
 /// @nodoc
@@ -194,9 +190,7 @@ class _$NotificationModelImpl implements _NotificationModel {
       @HiveField(4)
       @DateTimeSerializer()
       this.createdAt,
-      @HiveField(5)
-      @JsonKey(name: 'is_read', defaultValue: false)
-      this.isRead = false});
+      @HiveField(5) @JsonKey(name: 'is_read') this.isRead = false});
 
   factory _$NotificationModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$NotificationModelImplFromJson(json);
@@ -221,7 +215,7 @@ class _$NotificationModelImpl implements _NotificationModel {
   final DateTime? createdAt;
   @override
   @HiveField(5)
-  @JsonKey(name: 'is_read', defaultValue: false)
+  @JsonKey(name: 'is_read')
   final bool isRead;
 
   @override
@@ -266,19 +260,18 @@ class _$NotificationModelImpl implements _NotificationModel {
 
 abstract class _NotificationModel implements NotificationModel {
   factory _NotificationModel(
-      {@HiveField(0) final num? id,
-      @HiveField(1)
-      @JsonKey(name: 'notification_id')
-      final String? notificationId,
-      @HiveField(2) final String? title,
-      @HiveField(3) final String? body,
-      @JsonKey(name: 'created_at')
-      @HiveField(4)
-      @DateTimeSerializer()
-      final DateTime? createdAt,
-      @HiveField(5)
-      @JsonKey(name: 'is_read', defaultValue: false)
-      final bool isRead}) = _$NotificationModelImpl;
+          {@HiveField(0) final num? id,
+          @HiveField(1)
+          @JsonKey(name: 'notification_id')
+          final String? notificationId,
+          @HiveField(2) final String? title,
+          @HiveField(3) final String? body,
+          @JsonKey(name: 'created_at')
+          @HiveField(4)
+          @DateTimeSerializer()
+          final DateTime? createdAt,
+          @HiveField(5) @JsonKey(name: 'is_read') final bool isRead}) =
+      _$NotificationModelImpl;
 
   factory _NotificationModel.fromJson(Map<String, dynamic> json) =
       _$NotificationModelImpl.fromJson;
@@ -303,7 +296,7 @@ abstract class _NotificationModel implements NotificationModel {
   DateTime? get createdAt;
   @override
   @HiveField(5)
-  @JsonKey(name: 'is_read', defaultValue: false)
+  @JsonKey(name: 'is_read')
   bool get isRead;
   @override
   @JsonKey(ignore: true)

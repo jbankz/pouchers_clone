@@ -7,7 +7,6 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../domain/dto/mobile_dto.dart';
-import '../../../domain/model/cable_service.dart';
 import '../../../domain/model/discounts.dart';
 import '../../../domain/model/get_cable_service.dart';
 import '../../../domain/model/mobile_data_services.dart';

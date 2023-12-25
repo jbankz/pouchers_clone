@@ -150,6 +150,8 @@ extension DateTimeExtensions on DateTime {
   // Formats the date and time as "dd MMM, hh:mm a"
   String get dayMonthTime => DateFormat('dd MMM, hh:mm a').format(this);
 
+  String get monthDayYear => DateFormat('MMM, dd, yyyy').format(this);
+
   // Formats the date and time as "MM dd, hh:mm a"
   String get monthDayTime => DateFormat('MMM dd, hh:mm a').format(this);
 

@@ -5,7 +5,9 @@ import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/helpers/response_handler.dart';
 import 'package:Pouchers/app/helpers/session_manager.dart';
 import 'package:Pouchers/routes.dart';
+import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/extension.dart';
 import 'package:Pouchers/utils/logger.dart';
 import 'package:Pouchers/utils/strings.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -107,6 +109,7 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
           child: OverlaySupport.global(
             child: AppTheme(
               child: MaterialApp(
+                 
                   title: AppConstants.appName,
                   theme: kThemeData,
                   darkTheme: kThemeData,
@@ -120,6 +123,7 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
         ),
       );
 }
+
 
 class ProviderLogger extends ProviderObserver {
   @override
@@ -324,4 +328,6 @@ class ProviderLogger extends ProviderObserver {
 // I/flutter (11047):     }
 // I/flutter (11047):   }
 // I/flutter (11047): ]
+
+
 

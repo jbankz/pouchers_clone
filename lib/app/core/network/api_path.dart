@@ -134,6 +134,10 @@ class ApiPath {
   static const String getMerchants = '$_apiVersionOne/utility/merchants';
   static const String validateCustomerInfo =
       '$_apiVersionOne/utility/customer-validation';
+  static const String buyVoucher = '$_apiVersionOne/voucher/buy';
+  static const String vouchers = '$_apiVersionOne/voucher';
+  static const String redeemVoucher = '$_apiVersionOne/voucher/redeem';
+  static const String giftVoucher = '$_apiVersionOne/voucher/gift';
 
   static String authenticator = Platform.isAndroid
       ? 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'

@@ -63,6 +63,13 @@ import '../ui/features/utilities/presentation/views/education/education_view.dar
 import '../ui/features/utilities/presentation/views/electricty/electricity_view.dart';
 import '../ui/features/utilities/presentation/views/electricty/schedule_electricity_view.dart';
 import '../ui/features/utilities/presentation/views/internet/internet_view.dart';
+
+import '../ui/features/voucher/presentation/views/buy_voucher_view.dart';
+import '../ui/features/voucher/presentation/views/gift_voucher_view.dart';
+import '../ui/features/voucher/presentation/views/redeem_voucher_view.dart';
+import '../ui/features/voucher/presentation/views/voucher_history_view.dart';
+import '../ui/features/voucher/presentation/views/voucher_success_view.dart';
+import '../ui/features/voucher/presentation/views/voucher_view.dart';
 import '../ui/widgets/success_state.dart';
 import 'core/manager/biometric_manager.dart';
 import 'core/manager/dojah_manager.dart';
@@ -171,6 +178,15 @@ import 'core/manager/session_manager.dart';
         page: ProfileImageView,
         opaque: false,
         transitionsBuilder: TransitionsBuilders.fadeIn),
+    AdaptiveRoute(page: VoucherView),
+    AdaptiveRoute(page: BuyVoucherView),
+    AdaptiveRoute(page: RedeemVoucherView),
+    AdaptiveRoute(page: GiftVoucherView),
+    CustomRoute(
+        page: VoucherSuccessView,
+        opaque: false,
+        transitionsBuilder: TransitionsBuilders.slideBottom),
+    AdaptiveRoute(page: VoucherHistoryView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

@@ -5,6 +5,8 @@ import 'package:Pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
 import 'package:Pouchers/ui/features/transfer/domain/model/attributes.dart';
 import 'package:Pouchers/ui/features/utilities/data/dao/billers_dao.dart';
 import 'package:Pouchers/ui/features/utilities/data/dao/cable_services_dao.dart';
+import 'package:Pouchers/ui/features/voucher/data/dao/vouchers_dao.dart';
+import 'package:Pouchers/ui/features/voucher/domain/enum/voucher_status.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -27,6 +29,7 @@ import '../../../ui/features/transfer/domain/model/local_bank.dart';
 import '../../../ui/features/utilities/domain/model/billers.dart';
 import '../../../ui/features/utilities/domain/model/cable_service.dart';
 import '../../../ui/features/utilities/domain/model/get_cable_service.dart';
+import '../../../ui/features/voucher/domain/model/vouchers.dart';
 import '../../app.locator.dart';
 
 /// initialize local data storage
@@ -51,6 +54,8 @@ Future<void> initializeDB() async {
       ..registerAdapter(BillersAdapter())
       ..registerAdapter(GetCableServiceAdapter())
       ..registerAdapter(CableServiceAdapter())
+      ..registerAdapter(VouchersAdapter())
+      ..registerAdapter(VoucherStatusAdapter())
       ..registerAdapter(HiveStoreResponseDataAdapter());
   } catch (e) {
     debugPrint(e.toString());
@@ -70,6 +75,7 @@ class HiveManager {
     merchantDao = MerchantDao();
     billersDao = BillersDao();
     cableServicesDao = CableServicesDao();
+    vouchersDao = VouchersDao();
   }
 
   Future clearAllBox() async {
@@ -84,6 +90,7 @@ class HiveManager {
     await merchantDao.truncate();
     await billersDao.truncate();
     await cableServicesDao.truncate();
+    await vouchersDao.truncate();
   }
 
   Future<Box<T>> openBox<T>(String boxName) async {

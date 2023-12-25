@@ -105,31 +105,22 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                       title: AppString.airtime,
                                       onPressed: () => PageRouter.pushNamed(
                                           Routes.airtimeView)),
-                                  // onPressed: () => pushTo(context,
-                                  //     const BuyAirtime(isGuest: false))),
                                   Gap(width: 37.w),
                                   BuildQuickActionButton(
                                       icon: AppImage.dataIcon,
                                       title: AppString.data,
                                       onPressed: () => PageRouter.pushNamed(
                                           Routes.dataView)),
-                                  // onPressed: () => pushTo(context,
-                                  //     const BuyData(isGuest: false))),
                                   Gap(width: 37.w),
                                   BuildQuickActionButton(
                                       icon: AppImage.televisionIcon,
                                       title: AppString.cableTv,
                                       onPressed: () => PageRouter.pushNamed(
                                           Routes.cableTvView)),
-                                  // onPressed: () => pushTo(context,
-                                  //     const BuyCable(isGuest: false))),
                                   Gap(width: 37.w),
                                   BuildQuickActionButton(
                                       icon: AppImage.electricityIcon,
                                       title: AppString.electricity,
-                                      // onPressed: () => pushTo(context,
-                                      //     const BuyElectricity(isGuest: false))),
-
                                       onPressed: () => PageRouter.pushNamed(
                                           Routes.electricityView)),
                                 ],
@@ -144,28 +135,24 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                       title: AppString.internet,
                                       onPressed: () => PageRouter.pushNamed(
                                           Routes.internetView)),
-                                  // onPressed: () => pushTo(context,
-                                  //     const BuyInternet(isGuest: false))),
                                   Gap(width: 37.w),
                                   BuildQuickActionButton(
                                       icon: AppImage.bettingIcon,
                                       title: AppString.betting,
                                       onPressed: () => PageRouter.pushNamed(
                                           Routes.bettingView)),
-                                  // onPressed: () => pushTo(context,
-                                  //     const Betting(isGuest: false))),
                                   Gap(width: 37.w),
                                   BuildQuickActionButton(
                                       icon: AppImage.voucherIcon,
                                       title: AppString.vouchers,
-                                      onPressed: () => pushTo(context,
-                                          const Vouchers(isGuest: false))),
+                                      onPressed: () => PageRouter.pushNamed(
+                                          Routes.voucherView)),
+                                  // onPressed: () => pushTo(context,
+                                  //     const Vouchers(isGuest: false))),
                                   Gap(width: 37.w),
                                   BuildQuickActionButton(
                                       icon: AppImage.educationIcon,
                                       title: AppString.education,
-                                      // onPressed: () => pushTo(context,
-                                      //     const BuyEducation(isGuest: false))),
                                       onPressed: () => PageRouter.pushNamed(
                                           Routes.educationView)),
                                 ],
