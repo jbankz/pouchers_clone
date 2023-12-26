@@ -11,6 +11,7 @@ class UserDto {
   final String? gender;
   final String? resetCode;
   final String? dob;
+  final String? fcmToken;
 
   UserDto(
       {this.bvn,
@@ -24,7 +25,8 @@ class UserDto {
       this.email,
       this.phoneNumber,
       this.resetCode,
-      this.dob});
+      this.dob,
+      this.fcmToken});
 
   Map<String, dynamic> toJson() => {
         if (bvn != null) 'bvn': bvn,
@@ -38,6 +40,7 @@ class UserDto {
         if (phoneNumber != null) 'phone_number': phoneNumber,
         if (email != null) 'email': email,
         if (resetCode != null) 'reset_code': resetCode,
-        if (dob != null) 'dob': dob
+        if (dob != null) 'dob': dob,
+        if (fcmToken != null) 'fcm_token': fcmToken,
       };
 }

@@ -36,8 +36,6 @@ class UserNotifier extends _$UserNotifier {
 
   Future<void> getUserProfile([CancelToken? cancelToken]) async {
     try {
-      // if (userDao.user.tierLevels != 2) return;
-
       state = state.copyWith(isBusy: true);
       await ref
           .read(getUsersProfileProvider.call(cancelToken: cancelToken).future);
@@ -138,7 +136,9 @@ class UserNotifier extends _$UserNotifier {
   }
 
   Future<void> updateProfile(UserDto userDto,
-      {CancelToken? cancelToken, Function()? success}) async {
+      {CancelToken? cancelToken,
+      Function()? success,
+      bool showNotificationTray = true}) async {
     try {
       state = state.copyWith(isBusy: true);
 
@@ -146,7 +146,9 @@ class UserNotifier extends _$UserNotifier {
           .call(userDto: userDto, cancelToken: cancelToken)
           .future);
 
-      triggerNotificationTray(AppString.profileUpdateSuccessful);
+      if (showNotificationTray) {
+        triggerNotificationTray(AppString.profileUpdateSuccessful);
+      }
 
       if (success != null) success();
     } catch (e) {

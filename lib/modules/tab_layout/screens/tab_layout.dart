@@ -192,7 +192,7 @@ class _TabLayoutState extends ConsumerState<TabLayout> with ResponseHandler {
     showSimpleNotification(
         Text(
           notification.body!,
-          style: kHeadline6Style.copyWith(color: Colors.white),
+          style: kHeadline6Style.copyWith(color: Colors.white)
         ),
         duration: const Duration(seconds: 10),
         background: kPrimaryColor,

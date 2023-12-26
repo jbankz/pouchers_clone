@@ -2,30 +2,35 @@ import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/features/dashboard/model/bottom_nav.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../app/core/manager/firebase_messaging_manager.dart';
 import '../../../../modules/transactions/screens/transactions.dart';
 import '../../../../utils/session_timeout_listener.dart';
+import '../../profile/presentation/notifier/user_notifier.dart';
 import 'account/views/account_view.dart';
 import 'card/presentation/view/virtual_card_view.dart';
 import 'home/views/home_view.dart';
 
-class DashboardView extends StatefulWidget {
+class DashboardView extends ConsumerStatefulWidget {
   const DashboardView({super.key, this.gottenIndex = 0});
 
   final int gottenIndex;
 
   @override
-  State<DashboardView> createState() => _DashboardViewState();
+  ConsumerState<DashboardView> createState() => _DashboardViewState();
 }
 
-class _DashboardViewState extends State<DashboardView> {
+class _DashboardViewState extends ConsumerState<DashboardView> {
   int _pageIndex = 0;
 
   @override
   void initState() {
     super.initState();
     _pageIndex = widget.gottenIndex;
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) async => await FirebaseMessagingManager.initializeInstance(ref));
   }
 
   @override
