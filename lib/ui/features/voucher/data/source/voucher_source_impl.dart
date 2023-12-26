@@ -32,29 +32,14 @@ class VoucherSourceImpl implements VoucherSource {
   @override
   Future<List<Vouchers>> vouchers(VoucherDto voucherDto,
       {CancelToken? cancelToken}) async {
-    // final response = await _networkService.request(
-    //     path: ApiPath.vouchers,
-    //     requestType: RequestType.get,
-    //     data: voucherDto.toJson(),
-    //     cancelToken: cancelToken);
-    // return (response.data?['data']?['vouchers'] as List<dynamic>)
-    //     .map((e) => Vouchers.fromJson(e as Map<String, dynamic>))
-    //     .toList();
-    await Future.delayed(const Duration(seconds: 5));
-
-    return List.generate(
-        25,
-        (index) => Vouchers.fromJson({
-              "code": "#P${index}7LSAHJOF",
-              "amount": index,
-              "buyer_id": "user-dcd7bb168cee11edae5cab1b683c4b5d",
-              "giftee_id": "user-3db1581276e611edae97730f9590a604",
-              "status": "active",
-              "redeemed": false,
-              "created_at": DateTime.now()
-                  .subtract(const Duration(days: 5))
-                  .toIso8601String()
-            })).toList();
+    final response = await _networkService.request(
+        path: ApiPath.vouchers,
+        requestType: RequestType.get,
+        data: voucherDto.toJson(),
+        cancelToken: cancelToken);
+    return (response.data?['data']?['vouchers'] as List<dynamic>)
+        .map((data) => Vouchers.fromJson(data as Map<String, dynamic>))
+        .toList();
   }
 
   @override

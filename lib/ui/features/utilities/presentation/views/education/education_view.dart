@@ -3,11 +3,9 @@ import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stacked/stacked_annotations.dart';
 
@@ -18,7 +16,6 @@ import '../../../../../../modules/utilities/screens/buy_education.dart';
 import '../../../../../../utils/field_validator.dart';
 import '../../../../../../utils/formatters/currency_formatter.dart';
 import '../../../../../common/app_colors.dart';
-import '../../../../../common/app_images.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/bottom_sheet.dart';
 import '../../../../../widgets/dialog/bottom_sheet.dart';
@@ -39,9 +36,7 @@ import '../../state/billers_state.dart';
 import '../sheet/provider_services_sheets.dart';
 import '../sheet/providers_sheets.dart';
 import '../sheet/summary_sheet.dart';
-import '../widget/scheduling_widget.dart';
 import 'education_view.form.dart';
-import 'electricity_view.form.dart';
 import 'skeleton/education_skeleton.dart';
 
 @FormView(fields: [
@@ -218,6 +213,7 @@ class _EducationViewState extends ConsumerState<EducationView>
     final feedback = await Sheets.showSheet(
       child: SummaryWidget(
         summaryDto: SummaryDto(
+            isGuest: billerState.isGuest,
             title: _billers?.name,
             imageUrl: _billers?.logoUrl,
             recipient: _billers?.displayName,

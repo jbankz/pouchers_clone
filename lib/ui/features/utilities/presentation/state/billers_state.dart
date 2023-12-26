@@ -11,19 +11,19 @@ part 'billers_state.freezed.dart';
 
 @Freezed(copyWith: true)
 class BillersState<T> with _$BillersState<T> {
-  const factory BillersState({
-    @Default(false) bool isBusy,
-    @Default(false) bool isPurchasing,
-    @Default(false) bool isGettingServices,
-    @Default(false) bool isScheduling,
-    @Default(false) bool isValidatingCustomerInfo,
-    String? errorMessage,
-    StackTrace? stackTrace,
-    @Default([]) List<Billers> billers,
-    Discounts? discounts,
-    @Default([]) List<AirtimeTopDeals> airtimeTopDeals,
-    @Default([]) List<MobileOperatorServices> mobileOperatorServices,
-    ValidateCustomer? validateCustomerInfo,
-    GetCableService? cableService,
-  }) = _BillersState<T>;
+  const factory BillersState(
+      {@Default(false) bool isGuest,
+      @Default(false) bool isBusy,
+      @Default(false) bool isPurchasing,
+      @Default(false) bool isGettingServices,
+      @Default(false) bool isScheduling,
+      @Default(false) bool isValidatingCustomerInfo,
+      String? errorMessage,
+      StackTrace? stackTrace,
+      @Default([]) List<Billers> billers,
+      Discounts? discounts,
+      @Default([]) List<AirtimeTopDeals> airtimeTopDeals,
+      @Default([]) List<MobileOperatorServices> mobileOperatorServices,
+      ValidateCustomer? validateCustomerInfo,
+      GetCableService? cableService}) = _BillersState<T>;
 }

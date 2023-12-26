@@ -1,4 +1,5 @@
 import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/first_security_question_view.dart';
+import 'package:Pouchers/ui/features/payment/presentation/view/ussd_view.dart';
 import 'package:Pouchers/ui/features/profile/presentation/views/wallet/fund_wallet_view.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
@@ -13,8 +14,11 @@ import '../ui/features/authentication/presentation/view/2fa/two_fa_google_authen
 import '../ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_view.dart';
 import '../ui/features/authentication/presentation/view/2fa/two_fa_intro_view.dart';
 import '../ui/features/authentication/presentation/view/password/confirm_password_view.dart';
+import '../ui/features/guest/guest_email_view.dart';
+import '../ui/features/guest/guest_view.dart';
 import '../ui/features/notification/presentation/view/notification_details_view.dart';
 import '../ui/features/notification/presentation/view/notification_view.dart';
+import '../ui/features/payment/presentation/view/debit_card_view.dart';
 import '../ui/features/profile/presentation/views/account/account_details_view.dart';
 import '../ui/features/profile/presentation/views/biometric/biometric_setup_view.dart';
 import '../ui/features/profile/presentation/views/biometric/biometric_view.dart';
@@ -105,11 +109,11 @@ import 'core/manager/session_manager.dart';
         page: DashboardView,
         opaque: false,
         transitionsBuilder: TransitionsBuilders.fadeIn),
-    // AdaptiveRoute(page: GuestView),
-    // AdaptiveRoute(page: GetGuestEmailView),
+    AdaptiveRoute(page: GuestView),
+    AdaptiveRoute(page: GetGuestEmailView),
     AdaptiveRoute(page: AirtimeView),
     AdaptiveRoute(page: DataView),
-    // AdaptiveRoute(page: DebitCardView),
+    AdaptiveRoute(page: DebitCardView),
     AdaptiveRoute(page: OtpView),
     AdaptiveRoute(page: AccountSettingsView),
     AdaptiveRoute(page: TagView),
@@ -187,6 +191,7 @@ import 'core/manager/session_manager.dart';
         opaque: false,
         transitionsBuilder: TransitionsBuilders.slideBottom),
     AdaptiveRoute(page: VoucherHistoryView),
+    AdaptiveRoute(page: UssdView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

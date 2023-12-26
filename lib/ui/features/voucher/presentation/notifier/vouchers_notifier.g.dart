@@ -6,7 +6,7 @@ part of 'vouchers_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$vouchersNotifierHash() => r'68f510c34c7d7f5d74155d67c475d1d1ed965f49';
+String _$vouchersNotifierHash() => r'92bb59b1a946d5beb3fde44a4662219d3ee28d66';
 
 /// See also [VouchersNotifier].
 @ProviderFor(VouchersNotifier)

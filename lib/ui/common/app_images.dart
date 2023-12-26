@@ -82,6 +82,7 @@ class AppImage {
   static String nairaCardIcon = "${_iconPath}naira_card_icon.svg";
   static String dollarCardIcon = "${_iconPath}dollar_card_icon.svg";
   static String poucherLogo = "${_iconPath}pouchers_logo.svg";
+  static String call = "${_iconPath}call.svg";
   static String miniPoucherLogo = "${_iconPath}mini_pouchers_logo.svg";
   static String education = "${_iconPath}education.svg";
   static String mail = "${_iconPath}mail.svg";
@@ -136,4 +137,5 @@ class AppImage {
   static String ngn = "${_imagePath}ngn.png";
   static String arrowDown = "${_iconPath}arrow_down.svg";
   static String ticket = "${_iconPath}ticket_one.svg";
+  static String ussd = "${_iconPath}ussd.svg";
 }

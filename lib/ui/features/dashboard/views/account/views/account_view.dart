@@ -24,9 +24,8 @@ class AccountView extends ConsumerWidget {
   const AccountView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => 2 < 2
-      ? const ProfilePage()
-      : ValueListenableBuilder<Box>(
+  Widget build(BuildContext context, WidgetRef ref) =>
+      ValueListenableBuilder<Box>(
           valueListenable: userDao.getListenable(),
           builder: (_, box, __) {
             final user = userDao.returnUser(box);

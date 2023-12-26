@@ -24,6 +24,7 @@ import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import '../../../../guest/notifier/guest_notifier.dart';
 import '../../../domain/dto/billers_dto.dart';
 import '../../../domain/dto/mobile_dto.dart';
 import '../../../domain/dto/summary_dto.dart';
@@ -90,6 +91,8 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
+    final guestState = ref.watch(guestNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(title: Text(AppString.electricity)),
       body: SafeArea(
@@ -130,15 +133,16 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
                                       ?.copyWith(fontSize: 16))),
                           inputFormatters: [context.digitsOnly, _formatter]),
                       const Gap(height: 24),
-                      SchedulingWidget(
-                          title: AppString.scheduleElectricityHint,
-                          description: AppString.scheduleElectricityHint1,
-                          tapped: () => PageRouter.pushNamed(
-                              Routes.scheduleElectricityView))
+                      if (!billerState.isGuest)
+                        SchedulingWidget(
+                            title: AppString.scheduleElectricityHint,
+                            description: AppString.scheduleElectricityHint1,
+                            tapped: () => PageRouter.pushNamed(
+                                Routes.scheduleElectricityView))
                     ],
                   ),
                 ),
-                _buildBeneficiarySwitch(),
+                if (!billerState.isGuest) _buildBeneficiarySwitch(),
                 const Gap(height: 44),
                 ElevatedButtonWidget(
                   title: AppString.proceed,
@@ -287,6 +291,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
     final feedback = await Sheets.showSheet(
       child: SummaryWidget(
         summaryDto: SummaryDto(
+          isGuest: billerState.isGuest,
           recipientWidget: _buildRecipientWidget(billerState),
           title: _billers?.name,
           imageUrl: _billers?.logoUrl,
@@ -395,6 +400,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
       subscriptionTypeController.text = response.name ?? '';
       amountController.text =
           _formatter.format(_cableService?.price.toString() ?? '');
+      numberFocusNode.requestFocus();
     }
     setState(() {});
   }

@@ -20,29 +20,27 @@ class PaymentWidget extends StatelessWidget {
   final double? width;
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: width?.w,
-      child: CupertinoButton(
-        padding: EdgeInsets.zero,
-        onPressed: onPressed,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircleAvatar(
-              radius: 28.r,
-              backgroundColor: AppColors.kColorBackgroundLight,
-              child: SvgPicture.asset(asset),
-            ),
-            const Gap(height: 16),
-            Text(title,
-                style: context.headlineMedium?.copyWith(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black))
-          ],
+  Widget build(BuildContext context) => SizedBox(
+        width: width?.w,
+        child: CupertinoButton(
+          padding: EdgeInsets.zero,
+          onPressed: onPressed,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircleAvatar(
+                radius: 28.r,
+                backgroundColor: AppColors.kColorBackgroundLight,
+                child: SvgPicture.asset(asset),
+              ),
+              const Gap(height: 16),
+              Text(title,
+                  style: context.headlineMedium?.copyWith(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black))
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

@@ -9,6 +9,7 @@ class AppString {
   static String recoverPassword = 'Recover Password';
   static String setPassword = 'Set Password';
   static String register = 'Register';
+  static String chooseBank = 'Choose a bank';
   static String buyVoucher = 'Buy Voucher';
   static String redeemVoucher = 'Redeem Voucher';
   static String giftVoucher = 'Gift Voucher';
@@ -36,7 +37,7 @@ class AppString {
       "Enter your email address and we’ll send you a message after you have completed a transaction.";
   static String getFullInfo =
       "Enter your full name and email address.\nWe’ll send you a message after you have\ncompleted a transaction.";
-  static String fullNameInstruction = 'Enter your full name';
+  static String fullNameInstruction = 'Enter Your Full Name';
   static String fullName = 'Full Name';
   static String emailInstruction = 'Enter Email Address';
   static String emailPesonalizedInstruction = 'Enter Your Email Address';
@@ -61,14 +62,14 @@ class AppString {
   static String payWithCard = "Pay with Card";
   static String payWithUssd = "Pay with USSD";
   static String paymentOption = "Select payment option";
-  static String cardNumber = "Card number";
-  static String cardNumberInstruction = "Enter card number";
+  static String cardNumber = "Card Number";
+  static String cardNumberInstruction = "Enter Card Number";
   static String cardExpiry = "Expiry";
   static String cardExpiryInstruction = "MM/YY";
   static String cardCVV = "CVC/CVV";
   static String cardCVVInstruction = "CVC/CVV";
   static String paga = "Secured by Paga";
-  static String payWithDebitCard = "Pay with debit card";
+  static String payWithDebitCard = "Pay with Debit Card";
   static String cardDetails = "Enter your card details below";
   static String createAnAccount = "Create an Account";
   static String loginAccount = "Log in to Pouchers";
@@ -332,6 +333,10 @@ class AppString {
       'When your friends sign up using this referral code you get a redeemable ';
   static String tenPoints = '10 Points';
   static String tapToCopy = 'Tap above to copy the code';
+  static String tapToDial = 'Tap to dial the code';
+  static String tapToDial1 =
+      'Dial the code above on the sim linked to your bank account.';
+  static String tapToDial2 = 'Tap the button below after completing payment.';
   static String sendInvite = 'Send Invite';
 
   static String youHaveNoReferral = 'You have no rewards.';
@@ -424,14 +429,14 @@ class AppString {
   static String transferCompletedMessage =
       'Your money has been successfully delivered!';
   static String transferFee = 'Transfer fee';
-  static String transferMoney = 'Transfer money';
+  static String transferMoney = 'Transfer Money';
   static String amountCannotBeEmpty = 'Amount field cannot be empty';
   static String selectBank = 'Select Bank';
   static String selectBankInst = 'Enter Bank Name';
   static String transferToFriend = 'To Poucher Friend';
   static String transferToFriendInst =
       'Send money quicker and free to a friend.';
-  static String transferToBank = 'To bank account';
+  static String transferToBank = 'To Bank Account';
   static String transferToBankInst = 'Send to 10 digit NUBAN account number.';
   static String notification = 'Notification';
   static String accountDetails = 'Account Details';

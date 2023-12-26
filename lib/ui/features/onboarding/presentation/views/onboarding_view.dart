@@ -1,7 +1,9 @@
+import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/guest/notifier/guest_notifier.dart';
 import 'package:Pouchers/ui/features/onboarding/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/widgets/outline_button_widget.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -10,9 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../app/core/manager/session_manager.dart';
 import '../../../../../app/core/theme/light_theme.dart';
-import '../../../../../app/navigators/navigators.dart';
-import '../../../../../modules/onboarding/screens/welcome_guest.dart';
 import '../../../../widgets/elevated_button_widget.dart';
 import '../../../../widgets/gap.dart';
 import '../notifier/timer_notifier.dart';
@@ -26,18 +27,20 @@ class OnboardingView extends ConsumerStatefulWidget {
 
 class _OnboardingViewState extends ConsumerState<OnboardingView> {
   late TimerNotifier _timerNotifier;
+  late GuestNotifier _guestNotifier;
 
   @override
   void initState() {
-    _timerNotifier = ref.read(sliderModel);
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
     super.initState();
+    _timerNotifier = ref.read(sliderModel);
+    _guestNotifier = ref.read(guestNotifierProvider.notifier);
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
-    _timerNotifier.dispose();
     super.dispose();
+    _timerNotifier.dispose();
   }
 
   @override
@@ -91,9 +94,10 @@ class _OnboardingViewState extends ConsumerState<OnboardingView> {
                 const Gap(height: 24),
                 CupertinoButton(
                   padding: EdgeInsets.zero,
-                  onPressed: () => pushTo(context, WelcomeGuest(),
-                      settings:
-                          const RouteSettings(name: WelcomeGuest.routeName)),
+                  onPressed: () => _guestNotifier.setGuessStatus(),
+                  // onPressed: () => pushTo(context, WelcomeGuest(),
+                  //     settings:
+                  //         const RouteSettings(name: WelcomeGuest.routeName)),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

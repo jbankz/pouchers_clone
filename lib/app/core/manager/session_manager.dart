@@ -37,6 +37,11 @@ class SessionManager {
   bool get isLoggedIn =>
       sharedPreferences.getBool(AppKeys.isLoggedInKey) ?? false;
 
+  set isGuest(bool value) =>
+      sharedPreferences.setBool(AppKeys.isGuestKey, value);
+
+  bool get isGuest => sharedPreferences.getBool(AppKeys.isGuestKey) ?? false;
+
   set toggleBalanceVisibility(bool value) =>
       sharedPreferences.setBool(AppKeys.balanceVisibilityKey, value);
 

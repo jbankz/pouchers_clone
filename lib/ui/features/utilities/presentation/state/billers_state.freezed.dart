@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$BillersState<T> {
+  bool get isGuest => throw _privateConstructorUsedError;
   bool get isBusy => throw _privateConstructorUsedError;
   bool get isPurchasing => throw _privateConstructorUsedError;
   bool get isGettingServices => throw _privateConstructorUsedError;
@@ -45,7 +46,8 @@ abstract class $BillersStateCopyWith<T, $Res> {
       _$BillersStateCopyWithImpl<T, $Res, BillersState<T>>;
   @useResult
   $Res call(
-      {bool isBusy,
+      {bool isGuest,
+      bool isBusy,
       bool isPurchasing,
       bool isGettingServices,
       bool isScheduling,
@@ -77,6 +79,7 @@ class _$BillersStateCopyWithImpl<T, $Res, $Val extends BillersState<T>>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? isGuest = null,
     Object? isBusy = null,
     Object? isPurchasing = null,
     Object? isGettingServices = null,
@@ -92,6 +95,10 @@ class _$BillersStateCopyWithImpl<T, $Res, $Val extends BillersState<T>>
     Object? cableService = freezed,
   }) {
     return _then(_value.copyWith(
+      isGuest: null == isGuest
+          ? _value.isGuest
+          : isGuest // ignore: cast_nullable_to_non_nullable
+              as bool,
       isBusy: null == isBusy
           ? _value.isBusy
           : isBusy // ignore: cast_nullable_to_non_nullable
@@ -194,7 +201,8 @@ abstract class _$$BillersStateImplCopyWith<T, $Res>
   @override
   @useResult
   $Res call(
-      {bool isBusy,
+      {bool isGuest,
+      bool isBusy,
       bool isPurchasing,
       bool isGettingServices,
       bool isScheduling,
@@ -227,6 +235,7 @@ class __$$BillersStateImplCopyWithImpl<T, $Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? isGuest = null,
     Object? isBusy = null,
     Object? isPurchasing = null,
     Object? isGettingServices = null,
@@ -242,6 +251,10 @@ class __$$BillersStateImplCopyWithImpl<T, $Res>
     Object? cableService = freezed,
   }) {
     return _then(_$BillersStateImpl<T>(
+      isGuest: null == isGuest
+          ? _value.isGuest
+          : isGuest // ignore: cast_nullable_to_non_nullable
+              as bool,
       isBusy: null == isBusy
           ? _value.isBusy
           : isBusy // ignore: cast_nullable_to_non_nullable
@@ -302,7 +315,8 @@ class __$$BillersStateImplCopyWithImpl<T, $Res>
 
 class _$BillersStateImpl<T> implements _BillersState<T> {
   const _$BillersStateImpl(
-      {this.isBusy = false,
+      {this.isGuest = false,
+      this.isBusy = false,
       this.isPurchasing = false,
       this.isGettingServices = false,
       this.isScheduling = false,
@@ -319,6 +333,9 @@ class _$BillersStateImpl<T> implements _BillersState<T> {
         _airtimeTopDeals = airtimeTopDeals,
         _mobileOperatorServices = mobileOperatorServices;
 
+  @override
+  @JsonKey()
+  final bool isGuest;
   @override
   @JsonKey()
   final bool isBusy;
@@ -375,7 +392,7 @@ class _$BillersStateImpl<T> implements _BillersState<T> {
 
   @override
   String toString() {
-    return 'BillersState<$T>(isBusy: $isBusy, isPurchasing: $isPurchasing, isGettingServices: $isGettingServices, isScheduling: $isScheduling, isValidatingCustomerInfo: $isValidatingCustomerInfo, errorMessage: $errorMessage, stackTrace: $stackTrace, billers: $billers, discounts: $discounts, airtimeTopDeals: $airtimeTopDeals, mobileOperatorServices: $mobileOperatorServices, validateCustomerInfo: $validateCustomerInfo, cableService: $cableService)';
+    return 'BillersState<$T>(isGuest: $isGuest, isBusy: $isBusy, isPurchasing: $isPurchasing, isGettingServices: $isGettingServices, isScheduling: $isScheduling, isValidatingCustomerInfo: $isValidatingCustomerInfo, errorMessage: $errorMessage, stackTrace: $stackTrace, billers: $billers, discounts: $discounts, airtimeTopDeals: $airtimeTopDeals, mobileOperatorServices: $mobileOperatorServices, validateCustomerInfo: $validateCustomerInfo, cableService: $cableService)';
   }
 
   @override
@@ -383,6 +400,7 @@ class _$BillersStateImpl<T> implements _BillersState<T> {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BillersStateImpl<T> &&
+            (identical(other.isGuest, isGuest) || other.isGuest == isGuest) &&
             (identical(other.isBusy, isBusy) || other.isBusy == isBusy) &&
             (identical(other.isPurchasing, isPurchasing) ||
                 other.isPurchasing == isPurchasing) &&
@@ -413,6 +431,7 @@ class _$BillersStateImpl<T> implements _BillersState<T> {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      isGuest,
       isBusy,
       isPurchasing,
       isGettingServices,
@@ -437,7 +456,8 @@ class _$BillersStateImpl<T> implements _BillersState<T> {
 
 abstract class _BillersState<T> implements BillersState<T> {
   const factory _BillersState(
-      {final bool isBusy,
+      {final bool isGuest,
+      final bool isBusy,
       final bool isPurchasing,
       final bool isGettingServices,
       final bool isScheduling,
@@ -451,6 +471,8 @@ abstract class _BillersState<T> implements BillersState<T> {
       final ValidateCustomer? validateCustomerInfo,
       final GetCableService? cableService}) = _$BillersStateImpl<T>;
 
+  @override
+  bool get isGuest;
   @override
   bool get isBusy;
   @override

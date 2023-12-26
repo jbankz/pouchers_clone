@@ -1,4 +1,6 @@
+import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/app.router.dart';
+import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
@@ -33,8 +35,11 @@ class BillersNotifier extends _$BillersNotifier {
 
   Discounts? _discounts;
 
+  final _session = locator<SessionManager>();
+
   @override
   BillersState build() => BillersState(
+      isGuest: _session.isGuest,
       billers: _billers,
       airtimeTopDeals: ref.read(airtimeTopDealsProvider),
       mobileOperatorServices: _mobileOperatorServices,

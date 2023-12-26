@@ -8,6 +8,7 @@ class SummaryDto {
   final num? fee;
   final num? cashBack;
   final Widget? recipientWidget;
+  final bool isGuest;
 
   SummaryDto(
       {this.imageUrl,
@@ -16,5 +17,6 @@ class SummaryDto {
       this.amount,
       this.fee,
       this.cashBack,
-      this.recipientWidget});
+      this.recipientWidget,
+      this.isGuest = false});
 }

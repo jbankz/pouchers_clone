@@ -108,7 +108,7 @@ class _InternetViewState extends ConsumerState<InternetView>
                     ],
                   ),
                 ),
-                _buildBeneficiarySwitch(),
+                if (!billerState.isGuest) _buildBeneficiarySwitch(),
                 const Gap(height: 44),
                 ElevatedButtonWidget(
                   title: AppString.proceed,
@@ -252,6 +252,7 @@ class _InternetViewState extends ConsumerState<InternetView>
     final feedback = await Sheets.showSheet(
       child: SummaryWidget(
         summaryDto: SummaryDto(
+          isGuest: billerState.isGuest,
           recipientWidget: _buildRecipientWidget(billerState),
           title: _billers?.name,
           imageUrl: _billers?.logoUrl,

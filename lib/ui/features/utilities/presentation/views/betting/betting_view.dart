@@ -24,6 +24,8 @@ import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_images.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/dialog/bottom_sheet.dart';
+import '../../../../../widgets/dialog/guest_maximum_modal_sheet.dart';
+import '../../../../../widgets/dialog/guest_modal_sheet.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
@@ -112,6 +114,12 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
                       const Gap(height: 12),
                       TopDealsWidget(callback: (topDeal) {
                         if (billerState.isPurchasing) return;
+
+                        if (billerState.isGuest) {
+                          BottomSheets.showAlertDialog(
+                              child: const GuestDiscountSheet());
+                          return;
+                        }
                         _airtimeTopDeals = topDeal;
                         amountController.text =
                             _formatter.format(topDeal.amount.toString());
@@ -145,9 +153,17 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
                         : () async {
                             if (!formKey.currentState!.validate()) return;
 
-                            final feedback = await Sheets.showSheet(
+                            if (billerState.isGuest &&
+                                _formatter.getUnformattedValue() > 10000) {
+                              BottomSheets.showAlertDialog(
+                                  child: const GuestMaximumSheet());
+                              return;
+                            }
+
+                            final feedback = await BottomSheets.showSheet(
                                 child: SummaryWidget(
                                     summaryDto: SummaryDto(
+                                        isGuest: billerState.isGuest,
                                         title: _billers?.displayName,
                                         imageUrl: _billers?.logoUrl,
                                         recipient: numberController.text,

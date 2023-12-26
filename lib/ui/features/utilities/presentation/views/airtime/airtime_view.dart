@@ -1,4 +1,5 @@
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
+import 'package:Pouchers/ui/features/guest/notifier/guest_notifier.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
@@ -7,7 +8,6 @@ import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -21,6 +21,8 @@ import '../../../../../../utils/formatters/currency_formatter.dart';
 import '../../../../../common/app_images.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/dialog/bottom_sheet.dart';
+import '../../../../../widgets/dialog/guest_maximum_modal_sheet.dart';
+import '../../../../../widgets/dialog/guest_modal_sheet.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
@@ -76,6 +78,8 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
+    final guestState = ref.watch(guestNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(title: Text(AppString.airtime)),
       body: SafeArea(
@@ -147,6 +151,13 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                       const Gap(height: 12),
                       TopDealsWidget(callback: (topDeal) {
                         if (billerState.isPurchasing) return;
+
+                        if (billerState.isGuest) {
+                          BottomSheets.showAlertDialog(
+                              child: const GuestDiscountSheet());
+                          return;
+                        }
+
                         _airtimeTopDeals = topDeal;
                         amountController.text =
                             _formatter.format(topDeal.amount.toString());
@@ -170,11 +181,12 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                         inputFormatters: [context.digitsOnly, _formatter],
                       ),
                       const Gap(height: 24),
-                      SchedulingWidget(
-                          title: AppString.scheduleAirtimeHint,
-                          description: AppString.scheduleAirtimeHint1,
-                          tapped: () =>
-                              PageRouter.pushNamed(Routes.scheduledAirtimeView))
+                      if (!billerState.isGuest)
+                        SchedulingWidget(
+                            title: AppString.scheduleAirtimeHint,
+                            description: AppString.scheduleAirtimeHint1,
+                            tapped: () => PageRouter.pushNamed(
+                                Routes.scheduledAirtimeView))
                     ],
                   ),
                 ),
@@ -186,9 +198,17 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                         : () async {
                             if (!formKey.currentState!.validate()) return;
 
-                            final feedback = await Sheets.showSheet(
+                            if (billerState.isGuest &&
+                                _formatter.getUnformattedValue() > 10000) {
+                              BottomSheets.showAlertDialog(
+                                  child: const GuestMaximumSheet());
+                              return;
+                            }
+
+                            final feedback = await BottomSheets.showSheet(
                                 child: SummaryWidget(
                                     summaryDto: SummaryDto(
+                                        isGuest: billerState.isGuest,
                                         title: _billers?.displayName,
                                         imageUrl: _billers?.logoUrl,
                                         recipient: phoneController.text,

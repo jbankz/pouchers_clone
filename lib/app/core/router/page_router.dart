@@ -12,7 +12,7 @@ class PageRouter {
   static final _navigation = locator<NavigationService>();
   static NavigationService get navigation => _navigation;
 
-  static Future<void> pushNamed(String routeName, {dynamic args}) async =>
+  static Future<dynamic> pushNamed(String routeName, {dynamic args}) async =>
       await _navigation.navigateTo(routeName, arguments: args);
 
   static Future<void> pushWidget(Widget view, {dynamic args}) async =>

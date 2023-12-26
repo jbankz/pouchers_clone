@@ -12,8 +12,8 @@ import '../../../utils/constant/theme_color_constants.dart';
 import '../../../utils/strings.dart';
 import '../elevated_button_widget.dart';
 
-class GuestDiscountSheet extends StatelessWidget {
-  const GuestDiscountSheet({super.key});
+class GuestMaximumSheet extends StatelessWidget {
+  const GuestMaximumSheet({super.key});
 
   @override
   Widget build(BuildContext context) => Align(
@@ -32,39 +32,44 @@ class GuestDiscountSheet extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  height: 170.h,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(AppImage.speaker),
-                          fit: BoxFit.contain)),
-                ),
-                const Gap(height: 25),
+                const Gap(height: 32),
                 Text(AppString.joinPouchers,
                     style: context.headlineMedium
                         ?.copyWith(fontSize: 18, fontWeight: FontWeight.w500)),
-                const SizedBox(
-                  height: kSmallPadding,
-                ),
+                const Gap(height: 10),
                 RichText(
                   text: TextSpan(
-                      text: AppString.joinPouchers1,
+                      text: 'The maximum amount for a guest is limited to ',
                       style: context.titleLarge?.copyWith(
                           color: AppColors.kIconGrey,
                           fontWeight: FontWeight.w400),
                       children: [
                         TextSpan(
-                            text: AppString.joinPouchers2,
+                            text: '${10000.toNaira.replaceAll('.00', '')}.\n\n',
                             style: context.titleLarge?.copyWith(
-                                color: AppColors.kPrimaryColor,
-                                fontWeight: FontWeight.w500)),
+                                color: AppColors.kPrimaryTextColor,
+                                fontWeight: FontWeight.w700)),
                         TextSpan(
-                          text: AppString.joinPouchers3,
-                          style: context.titleLarge?.copyWith(
-                              color: AppColors.kIconGrey,
-                              fontWeight: FontWeight.w400),
-                        )
+                            text: 'Sign up',
+                            style: context.titleLarge?.copyWith(
+                                color: AppColors.kPrimaryTextColor,
+                                fontWeight: FontWeight.w700)),
+                        TextSpan(
+                            text: ' or ',
+                            style: context.titleLarge?.copyWith(
+                                color: AppColors.kIconGrey,
+                                fontWeight: FontWeight.w400)),
+                        TextSpan(
+                            text: 'Login',
+                            style: context.titleLarge?.copyWith(
+                                color: AppColors.kPrimaryTextColor,
+                                fontWeight: FontWeight.w700)),
+                        TextSpan(
+                            text:
+                                ' to remove this limit and get amazing cash backs on bill purchases and many other exciting offers.',
+                            style: context.titleLarge?.copyWith(
+                                color: AppColors.kIconGrey,
+                                fontWeight: FontWeight.w400)),
                       ]),
                 ),
                 const Gap(height: 40),

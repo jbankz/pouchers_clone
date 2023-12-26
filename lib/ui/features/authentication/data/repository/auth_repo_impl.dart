@@ -49,6 +49,7 @@ class AuthRepoImpl implements AuthRepo {
 
     _session
       ..accessToken = response?.data?.token ?? ''
+      ..isGuest = false
       ..isLoggedIn = true;
 
     /// Secure users credentials

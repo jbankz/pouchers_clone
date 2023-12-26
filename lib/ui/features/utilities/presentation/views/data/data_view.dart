@@ -25,6 +25,7 @@ import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import '../../../../guest/notifier/guest_notifier.dart';
 import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/airtime_top_deals.dart';
 import '../../../domain/model/billers.dart';
@@ -76,6 +77,8 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
+    final guestState = ref.watch(guestNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(title: Text(AppString.data)),
       body: SafeArea(
@@ -173,11 +176,12 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                         },
                       ),
                       const Gap(height: 24),
-                      SchedulingWidget(
-                          title: AppString.scheduleDataHint,
-                          description: AppString.scheduleDataHint1,
-                          tapped: () =>
-                              PageRouter.pushNamed(Routes.scheduleDataView))
+                      if (!billerState.isGuest)
+                        SchedulingWidget(
+                            title: AppString.scheduleDataHint,
+                            description: AppString.scheduleDataHint1,
+                            tapped: () =>
+                                PageRouter.pushNamed(Routes.scheduleDataView))
                     ],
                   ),
                 ),
@@ -189,9 +193,10 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                         : () async {
                             if (!formKey.currentState!.validate()) return;
 
-                            final feedback = await Sheets.showSheet(
+                            final feedback = await BottomSheets.showSheet(
                                 child: SummaryWidget(
                                     summaryDto: SummaryDto(
+                                        isGuest: billerState.isGuest,
                                         title: _billers?.displayName,
                                         imageUrl: _billers?.logoUrl,
                                         recipient: phoneController.text,
