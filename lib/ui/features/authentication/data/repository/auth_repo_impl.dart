@@ -1,5 +1,6 @@
 import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/core/manager/hive_manager.dart';
+import 'package:Pouchers/app/core/manager/intercom_manager.dart';
 import 'package:Pouchers/app/core/manager/secure_manager.dart';
 import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/ui/features/authentication/data/source/auth_source.dart';
@@ -47,6 +48,7 @@ class AuthRepoImpl implements AuthRepo {
     final response =
         await _authSource.signIn(authDto, cancelToken: cancelToken);
 
+    /// Cache user session data
     _session
       ..accessToken = response?.data?.token ?? ''
       ..isGuest = false
@@ -56,6 +58,9 @@ class AuthRepoImpl implements AuthRepo {
     _securedManager
       ..storeEmailCred(authDto.email ?? '')
       ..storePasswordCred(authDto.password ?? '');
+
+    /// log users information to [Intercom]
+    await IntercomManager.loginIdentifiedUser(response?.data);
 
     /// Cache users data
     userDao.save(response?.data);

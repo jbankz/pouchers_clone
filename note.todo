@@ -1,8 +1,8 @@
 Check and Fix Scheduled payments screen
-Implement scheduleing
+Implement scheduleing => DONE
 Check and Fix Requests list screen
 Implement logout feature => DONE
-Implement auto session logout
+Implement auto session logout => 
 Set up firebase push notification
 
 

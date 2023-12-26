@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../modules/transactions/screens/transactions.dart';
+import '../../../../utils/session_timeout_listener.dart';
 import 'account/views/account_view.dart';
 import 'card/presentation/view/virtual_card_view.dart';
 import 'home/views/home_view.dart';
@@ -29,22 +30,24 @@ class _DashboardViewState extends State<DashboardView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      body: SafeArea(
-        child: PageTransitionSwitcher(
-          child: switch (_pageIndex) {
-            0 => const HomeView(),
-            1 => const VirtualCardView(),
-            2 => const Transactions(),
-            3 => const AccountView(),
-            int() => const Scaffold()
-          },
-          transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
-              SharedAxisTransition(
-                  animation: primaryAnimation,
-                  secondaryAnimation: secondaryAnimation,
-                  transitionType: SharedAxisTransitionType.horizontal,
-                  fillColor: Colors.transparent,
-                  child: child),
+      body: SessionTimeOutListener(
+        child: SafeArea(
+          child: PageTransitionSwitcher(
+            child: switch (_pageIndex) {
+              0 => const HomeView(),
+              1 => const VirtualCardView(),
+              2 => const Transactions(),
+              3 => const AccountView(),
+              int() => const Scaffold()
+            },
+            transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
+                SharedAxisTransition(
+                    animation: primaryAnimation,
+                    secondaryAnimation: secondaryAnimation,
+                    transitionType: SharedAxisTransitionType.horizontal,
+                    fillColor: Colors.transparent,
+                    child: child),
+          ),
         ),
       ),
       bottomNavigationBar: Container(

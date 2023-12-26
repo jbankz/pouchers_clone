@@ -63,4 +63,16 @@ class AppConfig {
   static String get dojahAppId =>
       dotenv.env[AppConstants.dojahAppId] ??
       '${AppConstants.dojahAppId} $_notFound';
+
+  static String get intercomAppId =>
+      dotenv.env[AppConstants.intercomAppId] ??
+      '${AppConstants.intercomAppId} $_notFound';
+
+  static String get iosIntercomId =>
+      dotenv.env[AppConstants.iosIntercomId] ??
+      '${AppConstants.iosIntercomId} $_notFound';
+
+  static String get androidIntercomId =>
+      dotenv.env[AppConstants.androidIntercomId] ??
+      '${AppConstants.androidIntercomId} $_notFound';
 }

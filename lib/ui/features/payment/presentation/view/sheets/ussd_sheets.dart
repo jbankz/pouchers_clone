@@ -1,5 +1,4 @@
 import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/features/transfer/domain/model/attributes.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,6 @@ class _UssdSheetsState extends ConsumerState<UssdSheets> {
   late LocalBankNotifier _localBankNotifier;
 
   String _searchQuery = '';
-  Attributes? _attributes;
 
   final CancelToken _cancelToken = CancelToken();
 

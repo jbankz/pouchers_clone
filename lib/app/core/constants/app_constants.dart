@@ -12,4 +12,7 @@ class AppConstants {
   static String dojahNin = 'DOJAH_NIN_KEY';
   static String dojahPublicKey = 'DOJAH_PUBLIC_KEY';
   static String dojahAppId = 'DOJAH_APP_ID';
+  static String intercomAppId = 'INTERCOM_APP_ID';
+  static String iosIntercomId = 'INTERCOM_IOS_KEY';
+  static String androidIntercomId = 'INTERCOM_ANDROID_KEY';
 }
