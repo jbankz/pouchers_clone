@@ -18,9 +18,13 @@ import '../../../../../../common/app_strings.dart';
 import '../../../../../../widgets/gap.dart';
 
 class BalanceIndicatorWidget extends HookConsumerWidget {
-  const BalanceIndicatorWidget({super.key, required this.amount});
+  const BalanceIndicatorWidget(
+      {super.key,
+      required this.amount,
+      this.balanceColor = AppColors.kPrimaryTextColor});
 
   final num amount;
+  final Color balanceColor;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -107,7 +111,7 @@ class BalanceIndicatorWidget extends HookConsumerWidget {
                   : Text(
                       'Balance - ${num.parse((wallet.balance) ?? '0').toNaira}',
                       style: context.titleLarge?.copyWith(
-                          color: AppColors.kPrimaryTextColor,
+                          color: balanceColor,
                           fontSize: 14,
                           fontWeight: FontWeight.w500),
                     ),

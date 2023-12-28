@@ -2,8 +2,13 @@ import 'package:Pouchers/ui/notification/notification_tray.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pdf/src/widgets/widget.dart';
+import 'package:printing/printing.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:pdf/widgets.dart' as pw;
+
+import '../core/manager/pdf_manager.dart';
 
 class AppHelper {
   static Future<void> copy(String value) async {
@@ -46,5 +51,19 @@ class AppHelper {
   static Future<void> handleError(dynamic e) async {
     triggerNotificationTray(e.toString(),
         error: true, ignoreIfNull: e.toString().isNull);
+  }
+
+  static Future<void> shareReceipt(
+      {Uint8List? uint8list, pw.Widget? widget}) async {
+    try {
+      final String path = uint8list != null ? '.png' : '.pdf';
+      await Printing.sharePdf(
+        bytes: uint8list ??
+            await PdfManager.generateReceipt(widget ?? pw.SizedBox.shrink()),
+        filename: 'Receipt_${DateTime.now().millisecondsSinceEpoch}$path',
+      );
+    } catch (e) {
+      debugPrint('Error sharing pdf: $e');
+    }
   }
 }

@@ -14,8 +14,10 @@ class MobileDto {
   final String? merchantAccount;
   final String? merchantReferenceNumber;
   final String? merchantService;
+  final String? tag;
   final bool isMerchantPayment;
   final bool makeMerchantServiceArray;
+  final String? note;
 
   MobileDto({
     this.category,
@@ -33,6 +35,8 @@ class MobileDto {
     this.merchantService,
     this.isMerchantPayment = false,
     this.makeMerchantServiceArray = true,
+    this.tag,
+    this.note,
   });
 
   Map<String, dynamic> toJson() {
@@ -79,6 +83,12 @@ class MobileDto {
         'merchantService':
             makeMerchantServiceArray ? [merchantService] : merchantService
       });
+    }
+    if (tag != null) {
+      result.addAll({'tag': tag!.replaceAll('@', '')});
+    }
+    if (note != null) {
+      result.addAll({'note': note});
     }
     return result;
   }

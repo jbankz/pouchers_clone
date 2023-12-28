@@ -23,8 +23,6 @@ class _SplashViewState extends State<SplashView> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
-      
-
         await Future.wait([
           initializeDB(),
           IntercomManager.initialize(),

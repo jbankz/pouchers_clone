@@ -70,6 +70,7 @@ mixin _$User {
   @JsonKey(name: 'referral_code')
   @HiveField(16)
   String? get referralCode => throw _privateConstructorUsedError;
+  @TagSerializer()
   @HiveField(17)
   String? get tag => throw _privateConstructorUsedError;
   @HiveField(18)
@@ -149,7 +150,7 @@ abstract class $UserCopyWith<$Res> {
       @HiveField(15)
       bool isUploadedIdentityCard,
       @JsonKey(name: 'referral_code') @HiveField(16) String? referralCode,
-      @HiveField(17) String? tag,
+      @TagSerializer() @HiveField(17) String? tag,
       @HiveField(18) String? dob,
       @JsonKey(name: 'profile_picture') @HiveField(19) String? profilePicture,
       @HiveField(20) String? address,
@@ -397,7 +398,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       @HiveField(15)
       bool isUploadedIdentityCard,
       @JsonKey(name: 'referral_code') @HiveField(16) String? referralCode,
-      @HiveField(17) String? tag,
+      @TagSerializer() @HiveField(17) String? tag,
       @HiveField(18) String? dob,
       @JsonKey(name: 'profile_picture') @HiveField(19) String? profilePicture,
       @HiveField(20) String? address,
@@ -637,7 +638,7 @@ class _$UserImpl implements _User {
       @HiveField(15)
       this.isUploadedIdentityCard = false,
       @JsonKey(name: 'referral_code') @HiveField(16) this.referralCode,
-      @HiveField(17) this.tag,
+      @TagSerializer() @HiveField(17) this.tag,
       @HiveField(18) this.dob,
       @JsonKey(name: 'profile_picture') @HiveField(19) this.profilePicture,
       @HiveField(20) this.address,
@@ -732,6 +733,7 @@ class _$UserImpl implements _User {
   @HiveField(16)
   final String? referralCode;
   @override
+  @TagSerializer()
   @HiveField(17)
   final String? tag;
   @override
@@ -941,7 +943,7 @@ abstract class _User implements User {
       @HiveField(15)
       final bool isUploadedIdentityCard,
       @JsonKey(name: 'referral_code') @HiveField(16) final String? referralCode,
-      @HiveField(17) final String? tag,
+      @TagSerializer() @HiveField(17) final String? tag,
       @HiveField(18) final String? dob,
       @JsonKey(name: 'profile_picture')
       @HiveField(19)
@@ -1037,6 +1039,7 @@ abstract class _User implements User {
   @HiveField(16)
   String? get referralCode;
   @override
+  @TagSerializer()
   @HiveField(17)
   String? get tag;
   @override

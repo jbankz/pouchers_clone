@@ -18,8 +18,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stacked/stacked_annotations.dart';
 
 import '../../../../../app/formatter/money_formatter.dart';
-import '../../../../../app/navigators/navigators.dart';
-import '../../../../../modules/make_payment/screens/transfer_poucher_friend.dart';
 import '../../../../../utils/field_validator.dart';
 import '../../../../common/app_colors.dart';
 import '../../../../widgets/edit_text_field_with.dart';
@@ -298,10 +296,11 @@ class _TransferMoneySheetState extends ConsumerState<TransferMoneySheet>
               title: AppString.transferToFriend,
               content: AppString.transferToFriendInst,
               isFree: true,
-              onTap: () => pushTo(
-                  context, const TransferPoucherFriend(isRequestMoney: false),
-                  settings: const RouteSettings(
-                      name: TransferPoucherFriend.routeName))),
+              // onTap: () => pushTo(
+              //     context, const TransferPoucherFriend(isRequestMoney: false),
+              //     settings:
+              //         const RouteSettings(name: TransferPoucherFriend.routeName)),
+              onTap: () => PageRouter.pushNamed(Routes.transferMoneyView)),
           const Gap(height: 30),
           _buildTile(
               context: context,

@@ -152,7 +152,8 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       isUploadedIdentityCard:
           json['is_uploaded_identity_card'] as bool? ?? false,
       referralCode: json['referral_code'] as String?,
-      tag: json['tag'] as String?,
+      tag: _$JsonConverterFromJson<String, String>(
+          json['tag'], const TagSerializer().fromJson),
       dob: json['dob'] as String?,
       profilePicture: json['profile_picture'] as String?,
       address: json['address'] as String?,
@@ -191,7 +192,8 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'fcm_token': instance.fcmToken,
       'is_uploaded_identity_card': instance.isUploadedIdentityCard,
       'referral_code': instance.referralCode,
-      'tag': instance.tag,
+      'tag': _$JsonConverterToJson<String, String>(
+          instance.tag, const TagSerializer().toJson),
       'dob': instance.dob,
       'profile_picture': instance.profilePicture,
       'address': instance.address,
@@ -207,3 +209,15 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'refreshToken': instance.refreshToken,
       'tokenExpireAt': instance.tokenExpireAt,
     };
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) =>
+    json == null ? null : fromJson(json as Json);
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) =>
+    value == null ? null : toJson(value);

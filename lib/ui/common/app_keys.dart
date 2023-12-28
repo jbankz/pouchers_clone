@@ -19,4 +19,5 @@ class AppKeys {
   static const String billersDaoKey = 'billersDaoKey';
   static const String cableServicesDaoKey = 'cableServicesDaoKey';
   static const String vouchersDaoKey = 'vouchersDaoKey';
+  static const String contactsDaoKey = 'contactsDaoKey';
 }

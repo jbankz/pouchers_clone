@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/profile/data/dao/contacts_dao.dart';
 import 'package:Pouchers/ui/features/profile/data/dao/referral_dao.dart';
 import 'package:Pouchers/ui/features/profile/data/source/user/user_source.dart';
 import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
@@ -81,4 +82,18 @@ class UserRepoImpl implements UserRepo {
   Future<bool> disableAccount(String reason,
           {CancelToken? cancelToken}) async =>
       await _userSource.disableAccount(reason, cancelToken: cancelToken);
+
+  @override
+  Future<User?> user(
+          {required UserDto userDto, CancelToken? cancelToken}) async =>
+      await _userSource.user(userDto: userDto, cancelToken: cancelToken);
+
+  @override
+  Future<List<User>> contacts(
+      {required UserDto userDto, CancelToken? cancelToken}) async {
+    final poucherContacts =
+        await _userSource.contacts(userDto: userDto, cancelToken: cancelToken);
+    contactDao.save(poucherContacts);
+    return poucherContacts;
+  }
 }

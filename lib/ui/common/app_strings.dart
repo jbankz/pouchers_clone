@@ -280,7 +280,7 @@ class AppString {
   static String completedFunding = 'I have completed payment';
   static String accountNumber = 'Account number';
   static String accountNumberInst = 'Enter Account number';
-  static String accountName = 'Account name';
+  static String accountName = 'Account Name';
   static String bankName = 'Bank name';
   static String fundInstr1 = 'Login to your bank app';
   static String fundInstr2 = 'Select ';
@@ -457,8 +457,10 @@ class AppString {
   static String subscriptionType = 'Subscription Type';
   static String selectFrequency = 'Select frequency';
   static String successFullBillSchedule = 'Bill schedule successfully created';
+  static String successFullTransferSchedule =
+      'Transfer schedule successfully created';
   static String choosePeriod = 'Choose top-up period';
-  static String frequency = 'Select frequency';
+  static String frequency = 'Select Frequency';
 
   static String weekDays = 'Top up will be done every weekday';
   static String weekDates =
@@ -493,4 +495,31 @@ class AppString {
       'Your voucher has been successfully\nredeemed.';
   static String giftVoucherSuccess =
       'Your voucher has been successfully gifted.';
+  static String transactionReceipt = 'Transaction Receipt';
+  static String transactionDate = 'Transaction Date';
+  static String transactionSender = 'Sender';
+  static String transactionBeneficiary = 'Beneficiary';
+  static String transactionAmount = 'Transaction Amount';
+  static String transactionStatus = 'Status';
+  static String transactionStatusMessage =
+      'Your transfer is successful and the beneficiary\'s account has been credited.';
+  static String enterPoucherTag = 'enter poucher tag';
+  static String addNote = 'Add note';
+  static String sendMoney = 'Send Money';
+  static String sendTo = 'Send to';
+  static String chooseFromContact = 'Choose from my contacts';
+  static String chooseFromContactInst =
+      'See which of your friends are enjoying Pouchers, send money to them quickly.';
+  static String enableContact = 'Enable contacts';
+
+  static String noteHint = 'Add a note (Optional)';
+  static String send = 'Send';
+  static String aboutToTransfer = 'You are about to transfer the sum of ';
+
+  static String image = 'Image';
+  static String pdf = 'PDF';
+  static String shareReceipt = 'Share receipt';
+  static String schedule = 'Schedule';
+  static String scheduleTransfer = 'Schedule Transfer';
+  static String share = 'Share';
 }

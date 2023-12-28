@@ -120,7 +120,7 @@ class PdfInvoiceApi {
                   widget(
                     text: sender,
                     subText:
-                        "${userProfile.firstName!.substring(0, 1).toUpperCase()}${userProfile.firstName!.substring(1).toLowerCase()} ${userProfile.lastName!.substring(0, 1).toUpperCase()}${userProfile.lastName!.substring(1).toLowerCase()}",
+                        "${userProfile.firstName?.substring(0, 1).toUpperCase()}${userProfile.firstName?.substring(1).toLowerCase()} ${userProfile.lastName?.substring(0, 1).toUpperCase()}${userProfile.lastName?.substring(1).toLowerCase()}",
                   ),
                   transferType == "localBank"
                       ? widget(

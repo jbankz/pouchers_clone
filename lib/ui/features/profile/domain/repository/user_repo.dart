@@ -21,4 +21,7 @@ abstract class UserRepo {
   Future<Referral?> referral({CancelToken? cancelToken});
   Future<bool> disableAccount(String reason, {CancelToken? cancelToken});
   Future<bool> deleteAccount({CancelToken? cancelToken});
+  Future<User?> user({required UserDto userDto, CancelToken? cancelToken});
+  Future<List<User>> contacts(
+      {required UserDto userDto, CancelToken? cancelToken});
 }

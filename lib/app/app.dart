@@ -55,7 +55,11 @@ import '../ui/features/profile/presentation/views/profile/profile_image_view.dar
 import '../ui/features/profile/presentation/views/profile/profile_view.dart';
 import '../ui/features/profile/presentation/views/referral/referral_view.dart';
 import '../ui/features/tiers/presentation/view/tier_view.dart';
-import '../ui/features/transfer/presentation/transfer_money_confirmation_view.dart';
+import '../ui/features/transfer/presentation/views/schedule_transfer_view.dart';
+import '../ui/features/transfer/presentation/views/transfer_money_confirmation_view.dart';
+import '../ui/features/transfer/presentation/views/transfer_money_view.dart';
+import '../ui/features/transfer/presentation/views/transfer_receipt_view.dart';
+import '../ui/features/transfer/presentation/views/transfer_success_view.dart';
 import '../ui/features/utilities/presentation/views/airtime/airtime_view.dart';
 import '../ui/features/utilities/presentation/views/airtime/schedule_airtime_view.dart';
 import '../ui/features/utilities/presentation/views/betting/betting_view.dart';
@@ -192,6 +196,10 @@ import 'core/manager/session_manager.dart';
         transitionsBuilder: TransitionsBuilders.slideBottom),
     AdaptiveRoute(page: VoucherHistoryView),
     AdaptiveRoute(page: UssdView),
+    AdaptiveRoute(page: TransferMoneyView),
+    AdaptiveRoute(page: TransferSuccessState),
+    AdaptiveRoute(page: ScheduleTransferMoneyView),
+    AdaptiveRoute(page: TransferReceipt),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

@@ -6,7 +6,7 @@ class Debouncer {
   final int milliseconds;
   Timer? _timer;
 
-  Debouncer({required this.milliseconds});
+  Debouncer({ this.milliseconds = 600});
 
   void run(VoidCallback action) {
     _timer?.cancel();

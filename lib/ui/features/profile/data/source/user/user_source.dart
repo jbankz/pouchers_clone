@@ -18,7 +18,10 @@ abstract class UserSource {
       {required UserDto userDto, CancelToken? cancelToken});
   Future<User?> validatePhoneOtp(
       {required UserDto userDto, CancelToken? cancelToken});
+  Future<User?> user({required UserDto userDto, CancelToken? cancelToken});
   Future<Referral?> referral({CancelToken? cancelToken});
   Future<bool> disableAccount(String reason, {CancelToken? cancelToken});
   Future<bool> deleteAccount({CancelToken? cancelToken});
+  Future<List<User>> contacts(
+      {required UserDto userDto, CancelToken? cancelToken});
 }

@@ -3,9 +3,16 @@ class TransferMoneyDto {
   final String? accountNumber;
   final String? bankName;
   final String? transactionPin;
+  final String? tag;
+  final String? note;
 
   TransferMoneyDto(
-      {this.amount, this.accountNumber, this.bankName, this.transactionPin});
+      {this.amount,
+      this.accountNumber,
+      this.bankName,
+      this.transactionPin,
+      this.tag,
+      this.note});
 
   Map<String, dynamic> toJson() {
     final result = <String, dynamic>{};
@@ -21,6 +28,12 @@ class TransferMoneyDto {
     }
     if (transactionPin != null) {
       result.addAll({'transactionPin': transactionPin});
+    }
+    if (tag != null) {
+      result.addAll({'tag': tag!.replaceAll('@', '')});
+    }
+    if (note != null) {
+      result.addAll({'note': note});
     }
 
     return result;

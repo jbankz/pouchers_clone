@@ -1726,5 +1726,295 @@ class _ValidateBankAccountProviderElement
   CancelToken? get cancelToken =>
       (origin as ValidateBankAccountProvider).cancelToken;
 }
+
+String _$getUserByTagHash() => r'b7159346872b896c6bfed4af4e1a25990be132cf';
+
+/// See also [getUserByTag].
+@ProviderFor(getUserByTag)
+const getUserByTagProvider = GetUserByTagFamily();
+
+/// See also [getUserByTag].
+class GetUserByTagFamily extends Family<AsyncValue<User?>> {
+  /// See also [getUserByTag].
+  const GetUserByTagFamily();
+
+  /// See also [getUserByTag].
+  GetUserByTagProvider call({
+    required UserDto userDto,
+    CancelToken? cancelToken,
+  }) {
+    return GetUserByTagProvider(
+      userDto: userDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  GetUserByTagProvider getProviderOverride(
+    covariant GetUserByTagProvider provider,
+  ) {
+    return call(
+      userDto: provider.userDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getUserByTagProvider';
+}
+
+/// See also [getUserByTag].
+class GetUserByTagProvider extends AutoDisposeFutureProvider<User?> {
+  /// See also [getUserByTag].
+  GetUserByTagProvider({
+    required UserDto userDto,
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => getUserByTag(
+            ref as GetUserByTagRef,
+            userDto: userDto,
+            cancelToken: cancelToken,
+          ),
+          from: getUserByTagProvider,
+          name: r'getUserByTagProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getUserByTagHash,
+          dependencies: GetUserByTagFamily._dependencies,
+          allTransitiveDependencies:
+              GetUserByTagFamily._allTransitiveDependencies,
+          userDto: userDto,
+          cancelToken: cancelToken,
+        );
+
+  GetUserByTagProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final UserDto userDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<User?> Function(GetUserByTagRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetUserByTagProvider._internal(
+        (ref) => create(ref as GetUserByTagRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userDto: userDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<User?> createElement() {
+    return _GetUserByTagProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetUserByTagProvider &&
+        other.userDto == userDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetUserByTagRef on AutoDisposeFutureProviderRef<User?> {
+  /// The parameter `userDto` of this provider.
+  UserDto get userDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _GetUserByTagProviderElement
+    extends AutoDisposeFutureProviderElement<User?> with GetUserByTagRef {
+  _GetUserByTagProviderElement(super.provider);
+
+  @override
+  UserDto get userDto => (origin as GetUserByTagProvider).userDto;
+  @override
+  CancelToken? get cancelToken => (origin as GetUserByTagProvider).cancelToken;
+}
+
+String _$getContactsHash() => r'1e16cd644858ba7342c35f6da859972fd250788f';
+
+/// See also [getContacts].
+@ProviderFor(getContacts)
+const getContactsProvider = GetContactsFamily();
+
+/// See also [getContacts].
+class GetContactsFamily extends Family<AsyncValue<List<User>>> {
+  /// See also [getContacts].
+  const GetContactsFamily();
+
+  /// See also [getContacts].
+  GetContactsProvider call({
+    required UserDto userDto,
+    CancelToken? cancelToken,
+  }) {
+    return GetContactsProvider(
+      userDto: userDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  GetContactsProvider getProviderOverride(
+    covariant GetContactsProvider provider,
+  ) {
+    return call(
+      userDto: provider.userDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getContactsProvider';
+}
+
+/// See also [getContacts].
+class GetContactsProvider extends AutoDisposeFutureProvider<List<User>> {
+  /// See also [getContacts].
+  GetContactsProvider({
+    required UserDto userDto,
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => getContacts(
+            ref as GetContactsRef,
+            userDto: userDto,
+            cancelToken: cancelToken,
+          ),
+          from: getContactsProvider,
+          name: r'getContactsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getContactsHash,
+          dependencies: GetContactsFamily._dependencies,
+          allTransitiveDependencies:
+              GetContactsFamily._allTransitiveDependencies,
+          userDto: userDto,
+          cancelToken: cancelToken,
+        );
+
+  GetContactsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final UserDto userDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<User>> Function(GetContactsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetContactsProvider._internal(
+        (ref) => create(ref as GetContactsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userDto: userDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<User>> createElement() {
+    return _GetContactsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetContactsProvider &&
+        other.userDto == userDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetContactsRef on AutoDisposeFutureProviderRef<List<User>> {
+  /// The parameter `userDto` of this provider.
+  UserDto get userDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _GetContactsProviderElement
+    extends AutoDisposeFutureProviderElement<List<User>> with GetContactsRef {
+  _GetContactsProviderElement(super.provider);
+
+  @override
+  UserDto get userDto => (origin as GetContactsProvider).userDto;
+  @override
+  CancelToken? get cancelToken => (origin as GetContactsProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -2,6 +2,7 @@ import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../common/app_strings.dart';
@@ -41,7 +42,12 @@ class ElevatedButtonWidget extends StatelessWidget {
       );
 
   ElevatedButton _buildButtonState(BuildContext context) => ElevatedButton(
-        onPressed: onPressed,
+        onPressed: () async {
+          if (onPressed != null) {
+            await HapticFeedback.selectionClick();
+            onPressed!();
+          }
+        },
         style: ButtonStyle(
             side: outlinedColor == null
                 ? MaterialStateBorderSide.resolveWith(

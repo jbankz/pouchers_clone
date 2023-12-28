@@ -91,3 +91,17 @@ Future<BankAccountDetails> validateBankAccount(
     await ref
         .read(validateAccountNumberUseCaseModule)
         .execute(parameter: walletDto, cancelToken: cancelToken);
+
+@riverpod
+Future<User?> getUserByTag(GetUserByTagRef ref,
+        {required UserDto userDto, CancelToken? cancelToken}) async =>
+    await ref
+        .read(getUserByTagUseCaseModule)
+        .execute(parameter: userDto, cancelToken: cancelToken);
+
+@riverpod
+Future<List<User>> getContacts(GetContactsRef ref,
+        {required UserDto userDto, CancelToken? cancelToken}) async =>
+    await ref
+        .read(getContactsUseCaseModule)
+        .execute(parameter: userDto, cancelToken: cancelToken);

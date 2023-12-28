@@ -149,6 +149,7 @@ extension DateTimeExtensions on DateTime {
 
   // Formats the date and time as "dd MMM, hh:mm a"
   String get dayMonthTime => DateFormat('dd MMM, hh:mm a').format(this);
+  String get dayMonthTime1 => DateFormat('hh:mm a, MMM dd, yyyy').format(this);
 
   String get monthDayYear => DateFormat('MMM, dd, yyyy').format(this);
 
@@ -290,6 +291,9 @@ extension ContextExtensions on BuildContext {
 
   Color get background => Theme.of(this).colorScheme.background;
   Color get dialogBackgroundColor => Theme.of(this).dialogBackgroundColor;
+  Color? get bottomBackgroundColor =>
+      Theme.of(this).bottomSheetTheme.backgroundColor;
+  Color? get dragHandleColor => Theme.of(this).bottomSheetTheme.dragHandleColor;
 
   void nextFocus([FocusNode? node]) => FocusScope.of(this).requestFocus(node);
   void unfocus({UnfocusDisposition disposition = UnfocusDisposition.scope}) =>

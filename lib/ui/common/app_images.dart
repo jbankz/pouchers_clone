@@ -117,6 +117,7 @@ class AppImage {
   static String failedBadge = "${_iconPath}failed_badge.svg";
   static String pendingBadge = "${_iconPath}pending_badge.svg";
   static String virtualCards = "${_imagePath}virtual_cards.png";
+  static String logo1 = "${_iconPath}logo.png";
   static String ellipses = "${_imagePath}ellipses.png";
   static String virtualNaira = "${_imagePath}virtual_naira.png";
   static String virtualDollar = "${_imagePath}virtual_dollar.png";
@@ -138,4 +139,8 @@ class AppImage {
   static String arrowDown = "${_iconPath}arrow_down.svg";
   static String ticket = "${_iconPath}ticket_one.svg";
   static String ussd = "${_iconPath}ussd.svg";
+  static String forwardArrow = "${_iconPath}forward_arrow.svg";
+  static String recycle = "${_iconPath}recycle.svg";
+  static String gallery = "${_iconPath}gallery.svg";
+  static String searchContact = "${_iconPath}search_contact.svg";
 }

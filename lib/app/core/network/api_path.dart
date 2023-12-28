@@ -142,4 +142,8 @@ class ApiPath {
   static String authenticator = Platform.isAndroid
       ? 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'
       : 'https://apps.apple.com/us/app/google-authenticator/id388497605';
+
+  static const String scheduleP2P = '$_apiVersionOne/payment/p2p/schedule';
+  static const String transferP2P = '$_apiVersionOne/payment/p2p-transfer';
+  static const String contacts = '$_apiVersionOne/user/pouchers-contacts';
 }

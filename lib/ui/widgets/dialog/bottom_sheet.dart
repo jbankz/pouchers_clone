@@ -9,14 +9,22 @@ class BottomSheets {
   static Future<T?> showSheet<T>(
           {bool isDismissible = true,
           bool isScrollControlled = true,
+          bool showDragHandle = true,
           bool useSafeArea = false,
           bool wrap = true,
-          required Widget child}) =>
+          bool enableDrag = false,
+          required Widget child,
+          Color? barrierColor,
+          double? elevation}) =>
       showModalBottomSheet<T>(
           context: PageRouter.globalContext,
           useSafeArea: useSafeArea,
           isScrollControlled: isScrollControlled,
           isDismissible: isDismissible,
+          barrierColor: barrierColor,
+          elevation: elevation,
+          enableDrag: enableDrag,
+          showDragHandle: showDragHandle,
           builder: (_) => wrap ? Wrap(children: [child]) : child);
 
   static Future<dynamic> showAlertDialog(

@@ -32,7 +32,7 @@ class CardNotifier extends _$CardNotifier {
   VirtualAccountBalance? _accountBalance;
 
   @override
-  CardState build() => CardState(isBusy: true, cards: _cards);
+  CardState build() => CardState(cards: _cards);
 
   Future<void> createNairaVirtualCard(CardDto parameter,
       [CancelToken? cancelToken]) async {

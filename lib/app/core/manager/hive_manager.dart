@@ -18,6 +18,7 @@ import '../../../ui/features/merchant/domain/model/get_merchants.dart';
 import '../../../ui/features/merchant/domain/model/merchants.dart';
 import '../../../ui/features/notification/data/dao/notification_dao.dart';
 import '../../../ui/features/notification/domain/model/notification_model.dart';
+import '../../../ui/features/profile/data/dao/contacts_dao.dart';
 import '../../../ui/features/profile/data/dao/referral_dao.dart';
 import '../../../ui/features/profile/data/dao/user_dao.dart';
 import '../../../ui/features/profile/data/dao/wallet_dao.dart';
@@ -76,6 +77,7 @@ class HiveManager {
     billersDao = BillersDao();
     cableServicesDao = CableServicesDao();
     vouchersDao = VouchersDao();
+    contactDao = ContactDao();
   }
 
   Future clearAllBox() async {
@@ -91,6 +93,7 @@ class HiveManager {
     await billersDao.truncate();
     await cableServicesDao.truncate();
     await vouchersDao.truncate();
+    await contactDao.truncate();
   }
 
   Future<Box<T>> openBox<T>(String boxName) async {

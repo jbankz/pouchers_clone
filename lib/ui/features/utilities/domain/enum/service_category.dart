@@ -6,7 +6,8 @@ enum ServiceCategory {
   betting('betting-purchase'),
   voucher('voucher-purchase'),
   education('education-purchase'),
-  internet('internet-purchase');
+  internet('internet-purchase'),
+  p2p('p2p-transfer');
 
   const ServiceCategory(this.value);
 

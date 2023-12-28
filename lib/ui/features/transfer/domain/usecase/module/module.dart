@@ -4,6 +4,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../../app/core/usecase/poucher_usecase.dart';
 import '../local_bank_usecase.dart';
+import '../p2p_transfer_usecase.dart';
+import '../schedule_p2p_transfer_usecase.dart';
 import '../transfer_to_local_bank_usecase.dart';
 
 final getLocalBanksUseCaseModule = Provider<PoucherUseCaseWithOutParam>(
@@ -12,3 +14,9 @@ final getLocalBanksUseCaseModule = Provider<PoucherUseCaseWithOutParam>(
 final transferToLocalBankUseCaseModule =
     Provider<PoucherUseCaseWithRequiredParam>(
         (ref) => TransferToLocalBankUseCaseImpl(ref.read(localBankRepoModule)));
+
+final p2pTransferCaseModule = Provider<PoucherUseCaseWithRequiredParam>(
+    (ref) => P2PTransferUseCaseImpl(ref.read(transferRepoModule)));
+
+final scheduleP2pTransferCaseModule = Provider<PoucherUseCaseWithRequiredParam>(
+    (ref) => ScheduleP2PTransferUseCaseImpl(ref.read(transferRepoModule)));

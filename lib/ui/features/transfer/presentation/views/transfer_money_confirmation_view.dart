@@ -9,10 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
-import '../domain/dto/confirm_transfer_money_dto.dart';
-import '../domain/dto/transfer_money_dto.dart';
-import 'notifier/local_bank_notifier.dart';
+import '../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import '../../domain/dto/confirm_transfer_money_dto.dart';
+import '../../domain/dto/transfer_money_dto.dart';
+import '../notifier/local_bank_notifier.dart';
 
 class TransferMoneyConfirmationView extends ConsumerStatefulWidget {
   const TransferMoneyConfirmationView(

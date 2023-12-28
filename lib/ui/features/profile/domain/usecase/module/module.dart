@@ -1,4 +1,5 @@
 import 'package:Pouchers/ui/features/profile/data/repository/module/module.dart';
+import 'package:Pouchers/ui/features/profile/domain/usecase/get_contacts_usecase.dart';
 import 'package:Pouchers/ui/features/profile/domain/usecase/request_phone_number_otp_usecase.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -7,6 +8,7 @@ import '../../../../../../app/core/usecase/poucher_usecase.dart';
 import '../change_phone_number_usecase.dart';
 import '../delete_account_usecase.dart';
 import '../disable_account_usecase.dart';
+import '../get_profile_by_tag_usecase.dart';
 import '../get_profile_usecase.dart';
 import '../referral_usecase.dart';
 import '../update_profile_usecase.dart';
@@ -58,3 +60,9 @@ final disableAccountUsecaseImpl = Provider<PoucherUseCaseWithRequiredParam>(
 final validateAccountNumberUseCaseModule =
     Provider<PoucherUseCaseWithRequiredParam>((ref) =>
         ValidateBankAccountNumberUseCaseImpl(ref.read(walletRepoModule)));
+
+final getUserByTagUseCaseModule = Provider<PoucherUseCaseWithRequiredParam>(
+    (ref) => GetProfileByTagUseCaseImpl(ref.read(userRepoModule)));
+
+final getContactsUseCaseModule = Provider<PoucherUseCaseWithRequiredParam>(
+    (ref) => GetContactsUseCaseImpl(ref.read(userRepoModule)));

@@ -303,5 +303,299 @@ class _TransferToLocalBankProviderElement
   CancelToken? get cancelToken =>
       (origin as TransferToLocalBankProvider).cancelToken;
 }
+
+String _$p2pTransferHash() => r'd857bdca69bccb400d48ae454d66d14761f37b4a';
+
+/// See also [p2pTransfer].
+@ProviderFor(p2pTransfer)
+const p2pTransferProvider = P2pTransferFamily();
+
+/// See also [p2pTransfer].
+class P2pTransferFamily extends Family<AsyncValue<Transfer>> {
+  /// See also [p2pTransfer].
+  const P2pTransferFamily();
+
+  /// See also [p2pTransfer].
+  P2pTransferProvider call(
+    TransferMoneyDto transferMoneyDto, {
+    CancelToken? cancelToken,
+  }) {
+    return P2pTransferProvider(
+      transferMoneyDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  P2pTransferProvider getProviderOverride(
+    covariant P2pTransferProvider provider,
+  ) {
+    return call(
+      provider.transferMoneyDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'p2pTransferProvider';
+}
+
+/// See also [p2pTransfer].
+class P2pTransferProvider extends AutoDisposeFutureProvider<Transfer> {
+  /// See also [p2pTransfer].
+  P2pTransferProvider(
+    TransferMoneyDto transferMoneyDto, {
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => p2pTransfer(
+            ref as P2pTransferRef,
+            transferMoneyDto,
+            cancelToken: cancelToken,
+          ),
+          from: p2pTransferProvider,
+          name: r'p2pTransferProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$p2pTransferHash,
+          dependencies: P2pTransferFamily._dependencies,
+          allTransitiveDependencies:
+              P2pTransferFamily._allTransitiveDependencies,
+          transferMoneyDto: transferMoneyDto,
+          cancelToken: cancelToken,
+        );
+
+  P2pTransferProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.transferMoneyDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final TransferMoneyDto transferMoneyDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<Transfer> Function(P2pTransferRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: P2pTransferProvider._internal(
+        (ref) => create(ref as P2pTransferRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        transferMoneyDto: transferMoneyDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Transfer> createElement() {
+    return _P2pTransferProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is P2pTransferProvider &&
+        other.transferMoneyDto == transferMoneyDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, transferMoneyDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin P2pTransferRef on AutoDisposeFutureProviderRef<Transfer> {
+  /// The parameter `transferMoneyDto` of this provider.
+  TransferMoneyDto get transferMoneyDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _P2pTransferProviderElement
+    extends AutoDisposeFutureProviderElement<Transfer> with P2pTransferRef {
+  _P2pTransferProviderElement(super.provider);
+
+  @override
+  TransferMoneyDto get transferMoneyDto =>
+      (origin as P2pTransferProvider).transferMoneyDto;
+  @override
+  CancelToken? get cancelToken => (origin as P2pTransferProvider).cancelToken;
+}
+
+String _$scheduleP2pTransferHash() =>
+    r'78e2b54cabd2cf3fa10f03e765cdd4c75f14fab5';
+
+/// See also [scheduleP2pTransfer].
+@ProviderFor(scheduleP2pTransfer)
+const scheduleP2pTransferProvider = ScheduleP2pTransferFamily();
+
+/// See also [scheduleP2pTransfer].
+class ScheduleP2pTransferFamily extends Family<AsyncValue<Schedule>> {
+  /// See also [scheduleP2pTransfer].
+  const ScheduleP2pTransferFamily();
+
+  /// See also [scheduleP2pTransfer].
+  ScheduleP2pTransferProvider call(
+    MobileDto mobileDto, {
+    CancelToken? cancelToken,
+  }) {
+    return ScheduleP2pTransferProvider(
+      mobileDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  ScheduleP2pTransferProvider getProviderOverride(
+    covariant ScheduleP2pTransferProvider provider,
+  ) {
+    return call(
+      provider.mobileDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'scheduleP2pTransferProvider';
+}
+
+/// See also [scheduleP2pTransfer].
+class ScheduleP2pTransferProvider extends AutoDisposeFutureProvider<Schedule> {
+  /// See also [scheduleP2pTransfer].
+  ScheduleP2pTransferProvider(
+    MobileDto mobileDto, {
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => scheduleP2pTransfer(
+            ref as ScheduleP2pTransferRef,
+            mobileDto,
+            cancelToken: cancelToken,
+          ),
+          from: scheduleP2pTransferProvider,
+          name: r'scheduleP2pTransferProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$scheduleP2pTransferHash,
+          dependencies: ScheduleP2pTransferFamily._dependencies,
+          allTransitiveDependencies:
+              ScheduleP2pTransferFamily._allTransitiveDependencies,
+          mobileDto: mobileDto,
+          cancelToken: cancelToken,
+        );
+
+  ScheduleP2pTransferProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.mobileDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final MobileDto mobileDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<Schedule> Function(ScheduleP2pTransferRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ScheduleP2pTransferProvider._internal(
+        (ref) => create(ref as ScheduleP2pTransferRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        mobileDto: mobileDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Schedule> createElement() {
+    return _ScheduleP2pTransferProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ScheduleP2pTransferProvider &&
+        other.mobileDto == mobileDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, mobileDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ScheduleP2pTransferRef on AutoDisposeFutureProviderRef<Schedule> {
+  /// The parameter `mobileDto` of this provider.
+  MobileDto get mobileDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _ScheduleP2pTransferProviderElement
+    extends AutoDisposeFutureProviderElement<Schedule>
+    with ScheduleP2pTransferRef {
+  _ScheduleP2pTransferProviderElement(super.provider);
+
+  @override
+  MobileDto get mobileDto => (origin as ScheduleP2pTransferProvider).mobileDto;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as ScheduleP2pTransferProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

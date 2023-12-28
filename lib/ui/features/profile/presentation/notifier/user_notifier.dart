@@ -9,6 +9,7 @@ import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/idenitification_type.dart';
 import 'package:Pouchers/ui/notification/notification_tray.dart';
 import 'package:dio/dio.dart';
+import 'package:fast_contacts/fast_contacts.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../app/app.logger.dart';
@@ -17,6 +18,7 @@ import '../../data/dao/referral_dao.dart';
 import '../../domain/dto/user_dto.dart';
 import '../../domain/model/mocked/reasons.dart';
 import '../../domain/model/referral/referral.dart';
+import '../../domain/model/user.dart';
 import '../state/user_state.dart';
 import 'module/module.dart';
 
@@ -29,6 +31,8 @@ class UserNotifier extends _$UserNotifier {
   final DojahManager _dojahManager = locator<DojahManager>();
   Referral? _referral;
   final SessionManager _sessionManager = locator<SessionManager>();
+  User? _user;
+  List<User> _pouchersContacts = [];
 
   @override
   UserState build() =>
@@ -223,6 +227,21 @@ class UserNotifier extends _$UserNotifier {
     }
   }
 
+  Future<void> getUserByTag(UserDto userDto, {CancelToken? cancelToken}) async {
+    try {
+      state = state.copyWith(isGettingUserByTag: true);
+
+      _user = await ref.read(getUserByTagProvider
+          .call(userDto: userDto, cancelToken: cancelToken)
+          .future);
+    } catch (e) {
+      _logger.e(e.toString());
+      _user = null;
+    } finally {
+      state = state.copyWith(isGettingUserByTag: false, user: _user);
+    }
+  }
+
   Future<void> deleteAccount([CancelToken? cancelToken]) async {
     try {
       state = state.copyWith(isBusy: true);
@@ -230,8 +249,6 @@ class UserNotifier extends _$UserNotifier {
       await ref
           .read(deleteAccountProvider.call(cancelToken: cancelToken).future);
 
-      /// clear users sessions
-      ///
       PageRouter.pushReplacement(Routes.signInView);
     } catch (e) {
       _logger.e(e.toString());
@@ -244,5 +261,39 @@ class UserNotifier extends _$UserNotifier {
   Future<void> logout() async {
     await _sessionManager.logOut();
     PageRouter.pushReplacement(Routes.signInView);
+  }
+
+  Future<void> getContacts({CancelToken? cancelToken}) async {
+    try {
+      state = state.copyWith(isGettinContacts: true);
+      final List<String> nativeContacts = [];
+
+      final contacts = await FastContacts.getAllContacts();
+      for (var contact in contacts) {
+        for (var phone in contact.phones) {
+          nativeContacts.add(phone.number);
+        }
+      }
+
+      _pouchersContacts = await ref.read(getContactsProvider
+          .call(
+              userDto: UserDto(contacts: [
+                "09058702550",
+                "00010000000",
+                "00000011111",
+                "09032332135",
+                "31234415443",
+                "31234415432",
+                "31234415434",
+                "31234415489"
+              ]),
+              cancelToken: cancelToken)
+          .future);
+    } catch (e) {
+      _logger.e(e.toString());
+    } finally {
+      state =
+          state.copyWith(isGettinContacts: false, contacts: _pouchersContacts);
+    }
   }
 }

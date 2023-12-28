@@ -4,6 +4,10 @@ import 'package:Pouchers/ui/features/transfer/domain/usecase/module/module.dart'
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../utilities/domain/dto/mobile_dto.dart';
+import '../../../../utilities/domain/model/schedule.dart';
+import '../../../domain/model/transfer.dart';
+
 part 'module.g.dart';
 
 @riverpod
@@ -18,3 +22,19 @@ Future<bool> transferToLocalBank(
     await ref
         .read(transferToLocalBankUseCaseModule)
         .execute(parameter: transferMoneyDto, cancelToken: cancelToken);
+
+@riverpod
+Future<Transfer> p2pTransfer(
+        P2pTransferRef ref, TransferMoneyDto transferMoneyDto,
+        {CancelToken? cancelToken}) async =>
+    await ref
+        .read(p2pTransferCaseModule)
+        .execute(parameter: transferMoneyDto, cancelToken: cancelToken);
+
+@riverpod
+Future<Schedule> scheduleP2pTransfer(
+        ScheduleP2pTransferRef ref, MobileDto mobileDto,
+        {CancelToken? cancelToken}) async =>
+    await ref
+        .read(scheduleP2pTransferCaseModule)
+        .execute(parameter: mobileDto, cancelToken: cancelToken);

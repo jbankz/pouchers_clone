@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../../app/serializer/tag_serializer.dart';
+
 part 'user.freezed.dart';
 part 'user.g.dart';
 
@@ -41,7 +43,7 @@ class User with _$User {
       @HiveField(15)
       bool isUploadedIdentityCard,
       @JsonKey(name: 'referral_code') @HiveField(16) String? referralCode,
-      @HiveField(17) String? tag,
+      @TagSerializer() @HiveField(17) String? tag,
       @HiveField(18) String? dob,
       @JsonKey(name: 'profile_picture') @HiveField(19) String? profilePicture,
       @HiveField(20) String? address,
