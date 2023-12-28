@@ -451,7 +451,7 @@ class _P2pTransferProviderElement
 }
 
 String _$scheduleP2pTransferHash() =>
-    r'78e2b54cabd2cf3fa10f03e765cdd4c75f14fab5';
+    r'c43125e6dea3ac907829b2c5f5b2f45c3a3ce169';
 
 /// See also [scheduleP2pTransfer].
 @ProviderFor(scheduleP2pTransfer)
@@ -596,6 +596,152 @@ class _ScheduleP2pTransferProviderElement
   @override
   CancelToken? get cancelToken =>
       (origin as ScheduleP2pTransferProvider).cancelToken;
+}
+
+String _$requestMoneyHash() => r'2015ff71a654139db92943e6cf70f79035a245d3';
+
+/// See also [requestMoney].
+@ProviderFor(requestMoney)
+const requestMoneyProvider = RequestMoneyFamily();
+
+/// See also [requestMoney].
+class RequestMoneyFamily extends Family<AsyncValue<bool>> {
+  /// See also [requestMoney].
+  const RequestMoneyFamily();
+
+  /// See also [requestMoney].
+  RequestMoneyProvider call(
+    TransferMoneyDto transferMoneyDto, {
+    CancelToken? cancelToken,
+  }) {
+    return RequestMoneyProvider(
+      transferMoneyDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  RequestMoneyProvider getProviderOverride(
+    covariant RequestMoneyProvider provider,
+  ) {
+    return call(
+      provider.transferMoneyDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'requestMoneyProvider';
+}
+
+/// See also [requestMoney].
+class RequestMoneyProvider extends AutoDisposeFutureProvider<bool> {
+  /// See also [requestMoney].
+  RequestMoneyProvider(
+    TransferMoneyDto transferMoneyDto, {
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => requestMoney(
+            ref as RequestMoneyRef,
+            transferMoneyDto,
+            cancelToken: cancelToken,
+          ),
+          from: requestMoneyProvider,
+          name: r'requestMoneyProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$requestMoneyHash,
+          dependencies: RequestMoneyFamily._dependencies,
+          allTransitiveDependencies:
+              RequestMoneyFamily._allTransitiveDependencies,
+          transferMoneyDto: transferMoneyDto,
+          cancelToken: cancelToken,
+        );
+
+  RequestMoneyProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.transferMoneyDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final TransferMoneyDto transferMoneyDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<bool> Function(RequestMoneyRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: RequestMoneyProvider._internal(
+        (ref) => create(ref as RequestMoneyRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        transferMoneyDto: transferMoneyDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<bool> createElement() {
+    return _RequestMoneyProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is RequestMoneyProvider &&
+        other.transferMoneyDto == transferMoneyDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, transferMoneyDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin RequestMoneyRef on AutoDisposeFutureProviderRef<bool> {
+  /// The parameter `transferMoneyDto` of this provider.
+  TransferMoneyDto get transferMoneyDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _RequestMoneyProviderElement
+    extends AutoDisposeFutureProviderElement<bool> with RequestMoneyRef {
+  _RequestMoneyProviderElement(super.provider);
+
+  @override
+  TransferMoneyDto get transferMoneyDto =>
+      (origin as RequestMoneyProvider).transferMoneyDto;
+  @override
+  CancelToken? get cancelToken => (origin as RequestMoneyProvider).cancelToken;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

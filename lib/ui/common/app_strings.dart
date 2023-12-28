@@ -522,4 +522,11 @@ class AppString {
   static String schedule = 'Schedule';
   static String scheduleTransfer = 'Schedule Transfer';
   static String share = 'Share';
+  static String requestComplete = 'Request completed';
+  static String requestCompleteMessage =
+      'Your have successfully sent a money request!';
+  static String requestMoney = 'Request Money';
+  static String requestMoneyFrom = 'Request from';
+  static String selectReceipient = 'Select recipient';
+  static String aboutToRequest = 'You are about to request the sum of ';
 }

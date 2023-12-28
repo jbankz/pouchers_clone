@@ -2,7 +2,6 @@ import 'package:Pouchers/app/config/app_helper.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/transfer/domain/model/transfer.dart';
-import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/ui/widgets/profile_image.dart';
 import 'package:Pouchers/utils/extension.dart';

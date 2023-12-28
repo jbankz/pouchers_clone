@@ -36,5 +36,13 @@ Future<Schedule> scheduleP2pTransfer(
         ScheduleP2pTransferRef ref, MobileDto mobileDto,
         {CancelToken? cancelToken}) async =>
     await ref
-        .read(scheduleP2pTransferCaseModule)
+        .read(scheduleP2pTransferUseCaseModule)
         .execute(parameter: mobileDto, cancelToken: cancelToken);
+
+@riverpod
+Future<bool> requestMoney(
+        RequestMoneyRef ref, TransferMoneyDto transferMoneyDto,
+        {CancelToken? cancelToken}) async =>
+    await ref
+        .read(requestMoneyUseCaseModule)
+        .execute(parameter: transferMoneyDto, cancelToken: cancelToken);

@@ -296,10 +296,6 @@ class _TransferMoneySheetState extends ConsumerState<TransferMoneySheet>
               title: AppString.transferToFriend,
               content: AppString.transferToFriendInst,
               isFree: true,
-              // onTap: () => pushTo(
-              //     context, const TransferPoucherFriend(isRequestMoney: false),
-              //     settings:
-              //         const RouteSettings(name: TransferPoucherFriend.routeName)),
               onTap: () => PageRouter.pushNamed(Routes.transferMoneyView)),
           const Gap(height: 30),
           _buildTile(

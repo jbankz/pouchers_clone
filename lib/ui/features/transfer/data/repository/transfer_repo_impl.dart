@@ -21,4 +21,10 @@ class TransferRepoImpl implements TransferRepository {
   Future<Schedule> schedule(MobileDto mobileDto,
           {CancelToken? cancelToken}) async =>
       await _transferSource.schedule(mobileDto, cancelToken: cancelToken);
+
+  @override
+  Future<bool> requestMoney(TransferMoneyDto transferMoneyDto,
+          {CancelToken? cancelToken}) async =>
+      await _transferSource.requestMoney(transferMoneyDto,
+          cancelToken: cancelToken);
 }

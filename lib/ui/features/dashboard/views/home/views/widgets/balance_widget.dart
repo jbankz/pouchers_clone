@@ -91,15 +91,18 @@ class BalanceWidget extends HookConsumerWidget {
                       clipBehavior: Clip.none,
                       children: [
                         BuildActionButton(
-                            icon: AppImage.bag,
-                            title: AppString.request,
-                            width: 46,
-                            onTap: () => pushTo(
-                                context,
-                                const TransferPoucherFriend(
-                                    isRequestMoney: true),
-                                settings: const RouteSettings(
-                                    name: TransferPoucherFriend.routeName))),
+                          icon: AppImage.bag,
+                          title: AppString.request,
+                          width: 46,
+                          onTap: () => PageRouter.pushNamed(
+                              Routes.transferMoneyView,
+                              args: const TransferMoneyViewArguments(
+                                  isRequestingMoney: true)),
+                          // onTap: () => pushTo(context,
+                          //     const TransferPoucherFriend(isRequestMoney: true),
+                          //     settings: const RouteSettings(
+                          //         name: TransferPoucherFriend.routeName)),
+                        ),
                         if (totalUnreadMessages > 0)
                           Positioned(
                             left: 30.w,

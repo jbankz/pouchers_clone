@@ -31,10 +31,11 @@ class TransferConfirmationSheet extends ConsumerStatefulWidget {
 class _TransferConfirmationSheetState
     extends ConsumerState<TransferConfirmationSheet> {
   final CancelToken _cancelToken = CancelToken();
-
+  bool isRequested = false;
   @override
   void initState() {
     super.initState();
+    isRequested = widget.isRequested;
   }
 
   @override
@@ -66,7 +67,9 @@ class _TransferConfirmationSheetState
               const Gap(height: 9),
               RichText(
                 text: TextSpan(
-                    text: AppString.aboutToTransfer,
+                    text: isRequested
+                        ? AppString.aboutToRequest
+                        : AppString.aboutToTransfer,
                     style: context.titleLarge?.copyWith(
                         color: AppColors.kIconGrey,
                         fontWeight: FontWeight.w400),
@@ -78,7 +81,7 @@ class _TransferConfirmationSheetState
                               color: AppColors.kPrimaryTextColor,
                               fontWeight: FontWeight.w700)),
                       TextSpan(
-                          text: ' to ',
+                          text: isRequested ? ' from ' : ' to ',
                           style: context.titleLarge?.copyWith(
                               color: AppColors.kIconGrey,
                               fontWeight: FontWeight.w400)),

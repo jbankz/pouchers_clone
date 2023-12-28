@@ -146,4 +146,5 @@ class ApiPath {
   static const String scheduleP2P = '$_apiVersionOne/payment/p2p/schedule';
   static const String transferP2P = '$_apiVersionOne/payment/p2p-transfer';
   static const String contacts = '$_apiVersionOne/user/pouchers-contacts';
+  static const String requestMoney = '$_apiVersionOne/payment/request-money';
 }

@@ -8,5 +8,7 @@ import '../../../domain/model/transfer.dart';
 abstract class TransferSource {
   Future<Transfer> p2pTransfer(TransferMoneyDto transferMoneyDto,
       {CancelToken? cancelToken});
+  Future<bool> requestMoney(TransferMoneyDto transferMoneyDto,
+      {CancelToken? cancelToken});
   Future<Schedule> schedule(MobileDto mobileDto, {CancelToken? cancelToken});
 }

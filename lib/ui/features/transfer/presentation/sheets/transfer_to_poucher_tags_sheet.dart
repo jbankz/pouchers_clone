@@ -26,7 +26,9 @@ import 'transfer_to_poucher_tags_sheet.form.dart';
 
 @FormView(fields: [FormTextField(name: 'tag')])
 class TransferToPoucherTagSheet extends ConsumerStatefulWidget {
-  const TransferToPoucherTagSheet({super.key});
+  const TransferToPoucherTagSheet({super.key, this.isRequestingMoney = false});
+
+  final bool isRequestingMoney;
 
   @override
   ConsumerState<TransferToPoucherTagSheet> createState() =>
@@ -43,12 +45,12 @@ class _TransferToPoucherTagSheetState
   final _debouncer = Debouncer();
 
   PermissionStatus? _permission;
-
+  bool isRequestingMoney = false;
   @override
   void initState() {
     super.initState();
     // tagFocusNode.requestFocus();
-
+    isRequestingMoney = widget.isRequestingMoney;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _userNotifier = ref.read(userNotifierProvider.notifier);
       _checkContactPermission();
@@ -85,7 +87,9 @@ class _TransferToPoucherTagSheetState
             child: Column(
               children: [
                 Text(
-                  AppString.sendMoney,
+                  isRequestingMoney
+                      ? AppString.requestMoney
+                      : AppString.sendMoney,
                   style: context.headlineMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                     fontSize: 15,
@@ -100,7 +104,9 @@ class _TransferToPoucherTagSheetState
                       EditTextFieldWidget(
                         controller: tagController,
                         focusNode: tagFocusNode,
-                        title: AppString.sendTo,
+                        title: isRequestingMoney
+                            ? AppString.requestMoneyFrom
+                            : AppString.sendTo,
                         label: AppString.enterPoucherTag,
                         validator: FieldValidator.validateString(),
                         keyboardType: TextInputType.text,

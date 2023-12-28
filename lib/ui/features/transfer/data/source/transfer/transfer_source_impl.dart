@@ -35,4 +35,15 @@ class TransferSourceImpl implements TransferSource {
         cancelToken: cancelToken);
     return Schedule.fromJson(response.data['data'] as Map<String, dynamic>);
   }
+
+  @override
+  Future<bool> requestMoney(TransferMoneyDto transferMoneyDto,
+      {CancelToken? cancelToken}) async {
+    final response = await _networkService.request(
+        path: ApiPath.requestMoney,
+        requestType: RequestType.post,
+        data: transferMoneyDto.toJson(),
+        cancelToken: cancelToken);
+    return response.statusCode == 200;
+  }
 }

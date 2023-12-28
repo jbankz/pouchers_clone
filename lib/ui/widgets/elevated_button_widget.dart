@@ -42,12 +42,12 @@ class ElevatedButtonWidget extends StatelessWidget {
       );
 
   ElevatedButton _buildButtonState(BuildContext context) => ElevatedButton(
-        onPressed: () async {
-          if (onPressed != null) {
-            await HapticFeedback.selectionClick();
-            onPressed!();
-          }
-        },
+        onPressed: onPressed == null
+            ? null
+            : () async {
+                await HapticFeedback.selectionClick();
+                onPressed!();
+              },
         style: ButtonStyle(
             side: outlinedColor == null
                 ? MaterialStateBorderSide.resolveWith(

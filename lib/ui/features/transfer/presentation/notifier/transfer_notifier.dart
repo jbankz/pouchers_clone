@@ -69,4 +69,28 @@ class TransferNotifier extends _$TransferNotifier {
       state = state.copyWith(isBusy: false);
     }
   }
+
+  Future<void> requestMoney(
+      {required TransferMoneyDto transferMoneyDto,
+      CancelToken? cancelToken}) async {
+    try {
+      state = state.copyWith(isBusy: true);
+
+      await ref.read(requestMoneyProvider
+          .call(transferMoneyDto, cancelToken: cancelToken)
+          .future);
+
+      PageRouter.pushNamed(Routes.successState,
+          args: SuccessStateArguments(
+              title: AppString.requestComplete,
+              message: AppString.requestCompleteMessage,
+              btnTitle: AppString.proceed,
+              tap: () => PageRouter.popToRoot(Routes.dashboardView)));
+    } catch (e) {
+      _logger.e(e.toString());
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isBusy: false);
+    }
+  }
 }

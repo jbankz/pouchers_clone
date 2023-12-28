@@ -1231,8 +1231,12 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i73.TransferMoneyView: (data) {
+      final args = data.getArgs<TransferMoneyViewArguments>(
+        orElse: () => const TransferMoneyViewArguments(),
+      );
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i73.TransferMoneyView(),
+        builder: (context) => _i73.TransferMoneyView(
+            key: args.key, isRequestingMoney: args.isRequestingMoney),
         settings: data,
       );
     },
@@ -1714,6 +1718,33 @@ class UssdViewArguments {
   @override
   int get hashCode {
     return key.hashCode ^ amount.hashCode;
+  }
+}
+
+class TransferMoneyViewArguments {
+  const TransferMoneyViewArguments({
+    this.key,
+    this.isRequestingMoney = false,
+  });
+
+  final _i77.Key? key;
+
+  final bool isRequestingMoney;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "isRequestingMoney": "$isRequestingMoney"}';
+  }
+
+  @override
+  bool operator ==(covariant TransferMoneyViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key && other.isRequestingMoney == isRequestingMoney;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ isRequestingMoney.hashCode;
   }
 }
 
@@ -2826,14 +2857,18 @@ extension NavigatorStateExtension on _i84.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToTransferMoneyView([
+  Future<dynamic> navigateToTransferMoneyView({
+    _i77.Key? key,
+    bool isRequestingMoney = false,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.transferMoneyView,
+        arguments: TransferMoneyViewArguments(
+            key: key, isRequestingMoney: isRequestingMoney),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -3944,14 +3979,18 @@ extension NavigatorStateExtension on _i84.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithTransferMoneyView([
+  Future<dynamic> replaceWithTransferMoneyView({
+    _i77.Key? key,
+    bool isRequestingMoney = false,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.transferMoneyView,
+        arguments: TransferMoneyViewArguments(
+            key: key, isRequestingMoney: isRequestingMoney),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
