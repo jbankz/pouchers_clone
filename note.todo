@@ -4,8 +4,8 @@ Check and Fix Requests list screen
 Implement logout feature => DONE
 Implement auto session logout => DONE
 Set up firebase push notification => DONE 
-Tranfer feature =>
-Request feature =>
+Tranfer feature => DONE
+Request feature => DONE
 Transactions => 
 
 
@@ -13,63 +13,3 @@ Transactions =>
 
 diaz@blondmail.com
 Qwerty@1
-
-
-https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/user/profile/test
-https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/payment/p2p-transfer
-https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/payment/p2p/schedule
-
-
-
-
-
-
-
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-class ReceiptTicketWidget extends StatefulWidget {
-  final Widget child;
-  final Color color;
-  final bool isCornerRounded;
-
-  const ReceiptTicketWidget(
-      {super.key,
-      required this.child,
-      this.color = Colors.white,
-      this.isCornerRounded = false});
-
-  @override
-  State<ReceiptTicketWidget> createState() => _ReceiptTicketWidgetState();
-}
-
-class _ReceiptTicketWidgetState extends State<ReceiptTicketWidget> {
-  @override
-  Widget build(BuildContext context) => ClipPath(
-        clipper: TicketClipper(),
-        child: AnimatedContainer(
-          duration: const Duration(seconds: 3),
-          decoration: BoxDecoration(
-              color: widget.color,
-              borderRadius: widget.isCornerRounded
-                  ? BorderRadius.circular(20.r)
-                  : BorderRadius.circular(0.0)),
-          child: widget.child,
-        ),
-      );
-}
-
-class TicketClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) => Path()
-    ..lineTo(0.0, size.height)
-    ..lineTo(size.width, size.height)
-    ..lineTo(size.width, 0.0)
-    ..addOval(
-        Rect.fromCircle(center: Offset(0.0, size.height / 2), radius: 20.0))
-    ..addOval(Rect.fromCircle(
-        center: Offset(size.width, size.height / 2), radius: 20.0));
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}

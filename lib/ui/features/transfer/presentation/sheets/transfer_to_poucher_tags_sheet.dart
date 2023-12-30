@@ -49,7 +49,7 @@ class _TransferToPoucherTagSheetState
   @override
   void initState() {
     super.initState();
-    // tagFocusNode.requestFocus();
+    tagFocusNode.requestFocus();
     isRequestingMoney = widget.isRequestingMoney;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _userNotifier = ref.read(userNotifierProvider.notifier);
