@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -15,12 +14,10 @@ class VirtualKeyPad extends StatefulWidget {
       required this.keyPadController,
       required this.onComplete,
       this.onTyping,
-      // this.padding = const EdgeInsets.symmetric(horizontal: 49),
       this.keypadConfig});
 
   final Function()? onTyping;
   final Function(String) onComplete;
-  // final EdgeInsets padding;
   final VirtualKeyPadController keyPadController;
   final KeypadConfig? keypadConfig;
 
@@ -39,16 +36,26 @@ class _VirtualKeyPadState extends State<VirtualKeyPad> {
       await HapticFeedback.selectionClick();
     }
 
-    if (widget.keyPadController.applyPinLength) if (_completed) return;
+    if (widget.keyPadController.applyPinLength && _completed) return;
+
+    final String value = widget.keyPadController.pins.join();
+
+    final bool isCompletedDecimal = (value.contains('.') &&
+        (widget.keypadConfig?.decimal != null) &&
+        value.substring(value.indexOf('.')).length >
+            (widget.keypadConfig?.decimal ?? 0));
 
     widget.keyPadController.addPin(code);
 
+    if (isCompletedDecimal) {
+      widget.keyPadController.pins.removeLast();
+      return;
+    }
+
     if (widget.onTyping != null) widget.onTyping!();
 
-    if (widget.keyPadController.applyPinLength) {
-      if (_completed) {
-        widget.onComplete(_jointPin);
-      }
+    if (widget.keyPadController.applyPinLength && _completed) {
+      widget.onComplete(_jointPin);
     }
   }
 
@@ -58,6 +65,16 @@ class _VirtualKeyPadState extends State<VirtualKeyPad> {
     }
 
     widget.keyPadController.removePin();
+
+    if (widget.onTyping != null) widget.onTyping!();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.keyPadController.addListener(() => setState(() {}));
   }
 
   @override
@@ -70,17 +87,20 @@ class _VirtualKeyPadState extends State<VirtualKeyPad> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ButtonWidget(
-                    title: '1',
-                    onPressed: () => _addPin('1'),
-                    keypadConfig: widget.keypadConfig),
+                  title: '1',
+                  onPressed: () => _addPin('1'),
+                  keypadConfig: widget.keypadConfig,
+                ),
                 ButtonWidget(
-                    title: '2',
-                    onPressed: () => _addPin('2'),
-                    keypadConfig: widget.keypadConfig),
+                  title: '2',
+                  onPressed: () => _addPin('2'),
+                  keypadConfig: widget.keypadConfig,
+                ),
                 ButtonWidget(
-                    title: '3',
-                    onPressed: () => _addPin('3'),
-                    keypadConfig: widget.keypadConfig)
+                  title: '3',
+                  onPressed: () => _addPin('3'),
+                  keypadConfig: widget.keypadConfig,
+                ),
               ],
             ),
             const Gap(height: 23),
@@ -88,17 +108,20 @@ class _VirtualKeyPadState extends State<VirtualKeyPad> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ButtonWidget(
-                    title: '4',
-                    onPressed: () => _addPin('4'),
-                    keypadConfig: widget.keypadConfig),
+                  title: '4',
+                  onPressed: () => _addPin('4'),
+                  keypadConfig: widget.keypadConfig,
+                ),
                 ButtonWidget(
-                    title: '5',
-                    onPressed: () => _addPin('5'),
-                    keypadConfig: widget.keypadConfig),
+                  title: '5',
+                  onPressed: () => _addPin('5'),
+                  keypadConfig: widget.keypadConfig,
+                ),
                 ButtonWidget(
-                    title: '6',
-                    onPressed: () => _addPin('6'),
-                    keypadConfig: widget.keypadConfig)
+                  title: '6',
+                  onPressed: () => _addPin('6'),
+                  keypadConfig: widget.keypadConfig,
+                ),
               ],
             ),
             const Gap(height: 23),
@@ -106,17 +129,20 @@ class _VirtualKeyPadState extends State<VirtualKeyPad> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ButtonWidget(
-                    title: '7',
-                    onPressed: () => _addPin('7'),
-                    keypadConfig: widget.keypadConfig),
+                  title: '7',
+                  onPressed: () => _addPin('7'),
+                  keypadConfig: widget.keypadConfig,
+                ),
                 ButtonWidget(
-                    title: '8',
-                    onPressed: () => _addPin('8'),
-                    keypadConfig: widget.keypadConfig),
+                  title: '8',
+                  onPressed: () => _addPin('8'),
+                  keypadConfig: widget.keypadConfig,
+                ),
                 ButtonWidget(
-                    title: '9',
-                    onPressed: () => _addPin('9'),
-                    keypadConfig: widget.keypadConfig)
+                  title: '9',
+                  onPressed: () => _addPin('9'),
+                  keypadConfig: widget.keypadConfig,
+                ),
               ],
             ),
             const Gap(height: 23),
@@ -124,22 +150,24 @@ class _VirtualKeyPadState extends State<VirtualKeyPad> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ButtonWidget(
-                    title: (widget.keypadConfig?.showPoint ?? false) ? '.' : '',
-                    onPressed: (widget.keypadConfig?.showPoint ?? false)
-                        ? () => _addPin('.')
-                        : null,
-                    keypadConfig: widget.keypadConfig),
+                  title: (widget.keypadConfig?.showPoint ?? false) ? '.' : '',
+                  onPressed: (widget.keypadConfig?.showPoint ?? false)
+                      ? () => _addPin('.')
+                      : null,
+                  keypadConfig: widget.keypadConfig,
+                ),
                 ButtonWidget(
-                    title: '0',
-                    onPressed: () => _addPin('0'),
-                    keypadConfig: widget.keypadConfig),
+                  title: '0',
+                  onPressed: () => _addPin('0'),
+                  keypadConfig: widget.keypadConfig,
+                ),
                 ButtonWidget(
                     child: Icon(Icons.backspace_outlined,
                         color: widget.keypadConfig?.keypadColor ??
                             AppColors.kPrimaryTextColor),
-                    onPressed: () => _removePin())
+                    onPressed: () => _removePin()),
               ],
-            )
+            ),
           ],
         ),
       );
@@ -156,17 +184,22 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TextButton(
-      onPressed: onPressed,
-      style: ButtonStyle(
+        onPressed: onPressed,
+        style: ButtonStyle(
           enableFeedback: true,
           overlayColor: MaterialStateColor.resolveWith(
-              (_) => AppColors.kGreyScale.withOpacity(.30)),
-          visualDensity: VisualDensity.adaptivePlatformDensity),
-      child: child ??
-          Text(title ?? '',
+            (_) => AppColors.kGreyScale.withOpacity(.30),
+          ),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        child: child ??
+            Text(
+              title ?? '',
               style: context.titleLarge?.copyWith(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: keypadConfig?.keypadColor ??
-                      AppColors.kPrimaryTextColor)));
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: keypadConfig?.keypadColor ?? AppColors.kPrimaryTextColor,
+              ),
+            ),
+      );
 }

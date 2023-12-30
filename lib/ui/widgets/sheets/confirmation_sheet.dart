@@ -75,8 +75,7 @@ class _TransferConfirmationSheetState
                         fontWeight: FontWeight.w400),
                     children: [
                       TextSpan(
-                          text:
-                              '${widget.amount.toNaira.replaceAll('.00', '')}.',
+                          text: widget.amount.toNaira.replaceAll('.00', ''),
                           style: context.titleLarge?.copyWith(
                               color: AppColors.kPrimaryTextColor,
                               fontWeight: FontWeight.w700)),

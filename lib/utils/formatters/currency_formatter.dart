@@ -92,13 +92,9 @@ class CurrencyFormatter extends TextInputFormatter {
     return RegExp('[0-9]').hasMatch(lastChar);
   }
 
-  String getFormattedValue() {
-    return _newString;
-  }
+  String getFormattedValue() => _newString;
 
-  num getUnformattedValue() {
-    return _isNegative ? (_newNum * -1) : _newNum;
-  }
+  num getUnformattedValue() => _isNegative ? (_newNum * -1) : _newNum;
 
   String format(String value) {
     if (enableNegative) {

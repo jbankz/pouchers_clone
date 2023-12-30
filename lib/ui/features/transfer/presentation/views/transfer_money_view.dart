@@ -1,6 +1,14 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:dio/dio.dart';
+
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/profile/data/dao/wallet_dao.dart';
+import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
 import 'package:Pouchers/ui/features/profile/presentation/views/wallet/widget/balance_indicator_widget.dart';
 import 'package:Pouchers/ui/features/transfer/domain/dto/transfer_money_dto.dart';
 import 'package:Pouchers/ui/features/transfer/presentation/notifier/transfer_notifier.dart';
@@ -11,18 +19,13 @@ import 'package:Pouchers/ui/widgets/keypad/config/keypad_config.dart';
 import 'package:Pouchers/ui/widgets/keypad/virtual_keypad.dart';
 import 'package:Pouchers/ui/widgets/profile_image.dart';
 import 'package:Pouchers/utils/extension.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:Pouchers/ui/widgets/sheets/confirmation_sheet.dart';
+import 'package:Pouchers/ui/features/transfer/presentation/state/transfer_state.dart';
 
+import '../../../../../app/formatter/money_formatter.dart';
 import '../../../../widgets/keypad/virtual_key_pad_controller.dart';
-import '../../../../widgets/sheets/confirmation_sheet.dart';
-import '../../../profile/domain/model/user.dart';
 import '../sheets/transfer_to_poucher_note_sheet.dart';
 import '../sheets/transfer_to_poucher_tags_sheet.dart';
-import '../state/transfer_state.dart';
 
 class TransferMoneyView extends ConsumerStatefulWidget {
   const TransferMoneyView({super.key, this.isRequestingMoney = false});
@@ -36,9 +39,7 @@ class TransferMoneyView extends ConsumerStatefulWidget {
 class _TransferMoneyViewState extends ConsumerState<TransferMoneyView> {
   final VirtualKeyPadController _controller =
       VirtualKeyPadController(applyPinLength: false);
-
   final CancelToken _cancelToken = CancelToken();
-
   late TransferNotifier _transferNotifier;
 
   User? _userTag;
@@ -46,8 +47,18 @@ class _TransferMoneyViewState extends ConsumerState<TransferMoneyView> {
   String get _fullName =>
       '${_userTag?.firstName?.titleCase ?? ''} ${_userTag?.lastName?.titleCase ?? ''}';
   String? _note;
-  bool get _isBtnDisEnabled => _controller.pins.isEmpty || _userTag == null;
+  bool get _isBtnDisabled =>
+      _controller.pins.isEmpty || _userTag == null || _errorMessage.isNotEmpty;
+
   bool isRequestingMoney = false;
+
+  String _errorMessage = '';
+
+  final MoneyMaskedTextController _moneyMaskedTextController =
+      MoneyMaskedTextController(
+          leftSymbol: AppString.nairaSymbol,
+          amountColor: AppColors.white,
+          koboColor: AppColors.white.withOpacity(.50));
 
   @override
   void initState() {
@@ -97,7 +108,39 @@ class _TransferMoneyViewState extends ConsumerState<TransferMoneyView> {
                     const Gap(height: 22),
                     _buildTagContainer(context),
                     const Gap(height: 84),
-                    _buildAmountText(context),
+                    TextFormField(
+                      textAlign: TextAlign.center,
+                      controller: _moneyMaskedTextController,
+                      readOnly: true,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      style: TextStyle(
+                        color: AppColors.white,
+                        fontSize: 40.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 0.toNaira,
+                        hintStyle: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 40.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        fillColor: Colors.transparent,
+                        filled: false,
+                        focusedBorder: InputBorder.none,
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                      ),
+                    ),
+                    Text(
+                      _errorMessage,
+                      style: context.headlineLarge?.copyWith(
+                          color: AppColors.kColorOrange, fontSize: 12),
+                    ),
                     const Gap(height: 52),
                   ],
                 ),
@@ -117,8 +160,9 @@ class _TransferMoneyViewState extends ConsumerState<TransferMoneyView> {
         child: InkWell(
           onTap: () async {
             _userTag = await BottomSheets.showSheet(
-                child: TransferToPoucherTagSheet(
-                    isRequestingMoney: isRequestingMoney)) as User?;
+              child: TransferToPoucherTagSheet(
+                  isRequestingMoney: isRequestingMoney),
+            ) as User?;
             setState(() {});
           },
           borderRadius: BorderRadius.circular(8.r),
@@ -142,9 +186,11 @@ class _TransferMoneyViewState extends ConsumerState<TransferMoneyView> {
                             image: _userTag?.profilePicture ?? '',
                             height: 38,
                             width: 38)
-                        : Text('@',
+                        : Text(
+                            '@',
                             style: context.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700, fontSize: 16)),
+                                fontWeight: FontWeight.w700, fontSize: 16),
+                          ),
                     const Gap(width: 5),
                     Expanded(
                       child: Text(
@@ -217,19 +263,27 @@ class _TransferMoneyViewState extends ConsumerState<TransferMoneyView> {
         ),
       );
 
-  Widget _buildAmountText(BuildContext context) => Text(
-        _controller.pins.isEmpty ? 0.toNaira : _controller.pins.join().naira,
-        style: context.titleLarge?.copyWith(
-          color: AppColors.kBackgroundColor,
-          fontWeight: FontWeight.w700,
-          fontSize: 40,
-        ),
-      );
-
   Widget _buildVirtualKeyPad() => VirtualKeyPad(
-      keyPadController: _controller,
-      keypadConfig: KeypadConfig(keypadColor: AppColors.white, showPoint: true),
-      onComplete: (_) {});
+        keyPadController: _controller,
+        keypadConfig: KeypadConfig(
+            keypadColor: AppColors.white, showPoint: true, decimal: 2),
+        onTyping: () {
+          _controller.pins.join().isEmpty
+              ? _moneyMaskedTextController.updateValue(0)
+              : _moneyMaskedTextController
+                  .updateValue(double.parse(_controller.pins.join()));
+
+          if (_moneyMaskedTextController.numberValue >
+              num.parse(walletDao.wallet.balance ?? '0')) {
+            _errorMessage = AppString.insufficientFund;
+          } else {
+            _errorMessage = '';
+          }
+
+          setState(() {});
+        },
+        onComplete: (_) {},
+      );
 
   Widget _buildTransferButton(
           BuildContext context, TransferState transferState) =>
@@ -237,34 +291,38 @@ class _TransferMoneyViewState extends ConsumerState<TransferMoneyView> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: ElevatedButtonWidget(
           loading: transferState.isBusy,
-          bacgroundColor: _isBtnDisEnabled ? null : AppColors.kPurpleDeep,
+          bacgroundColor: _isBtnDisabled ? null : AppColors.kPurpleDeep,
           title: isRequestingMoney ? AppString.request : AppString.transfer,
-          onPressed: _isBtnDisEnabled
+          onPressed: _isBtnDisabled
               ? null
               : () async {
+                  if (isRequestingMoney) {
+                    _transferNotifier.requestMoney(
+                        transferMoneyDto: TransferMoneyDto(
+                            tag: _userTag?.tag,
+                            amount: _moneyMaskedTextController.numberValue
+                                .toString(),
+                            note: _note),
+                        cancelToken: _cancelToken);
+                    return;
+                  }
+
                   final response = await BottomSheets.showAlertDialog(
-                    child: TransferConfirmationSheet(
-                        isRequested: isRequestingMoney,
-                        amount: num.parse(_controller.pins.join()),
-                        receipient: _fullName),
-                  ) as String?;
+                      child: TransferConfirmationSheet(
+                          isRequested: isRequestingMoney,
+                          amount: _moneyMaskedTextController.numberValue,
+                          receipient: _fullName)) as String?;
 
                   if (response != null) {
-                    isRequestingMoney
-                        ? _transferNotifier.requestMoney(
-                            transferMoneyDto: TransferMoneyDto(
-                                tag: _userTag?.tag,
-                                amount: _controller.pins.join(),
-                                note: _note),
-                            cancelToken: _cancelToken)
-                        : _transferNotifier.p2pTransfer(
-                            TransferMoneyDto(
-                                tag: _userTag?.tag,
-                                amount: _controller.pins.join(),
-                                note: _note,
-                                transactionPin: response),
-                            _cancelToken,
-                          );
+                    _transferNotifier.p2pTransfer(
+                      TransferMoneyDto(
+                          tag: _userTag?.tag,
+                          amount:
+                              _moneyMaskedTextController.numberValue.toString(),
+                          note: _note,
+                          transactionPin: response),
+                      _cancelToken,
+                    );
                   }
                 },
         ),
