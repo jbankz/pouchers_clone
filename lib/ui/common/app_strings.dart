@@ -495,6 +495,8 @@ class AppString {
       'Your voucher has been successfully\nredeemed.';
   static String giftVoucherSuccess =
       'Your voucher has been successfully gifted.';
+  static String transactionSuccess = 'Transaction Successful';
+  static String transactionSuccessSummary = 'Below is your transaction summary';
   static String transactionReceipt = 'Transaction Receipt';
   static String transactionDate = 'Transaction Date';
   static String transactionSender = 'Sender';
@@ -529,4 +531,14 @@ class AppString {
   static String requestMoneyFrom = 'Request from';
   static String selectReceipient = 'Select recipient';
   static String aboutToRequest = 'You are about to request the sum of ';
+  static String history = 'History';
+  static String analytics = 'Analytics';
+  static String transactions = 'Transactions';
+  static String emptyTransactions = 'Sorry, you have no transaction';
+  static String sender = 'Sender';
+  static String senderTag = 'Sender Poucher Tag';
+  static String beneficiary = 'Beneficiary';
+  static String beneficiaryTag = 'Beneficiary Poucher Tag';
+  static String transactionNumber = 'Transaction Number';
+  static String getReceipt = 'Get Receipt';
 }

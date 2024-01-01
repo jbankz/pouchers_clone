@@ -13,6 +13,10 @@ import 'package:hive_flutter/adapters.dart';
 import '../../../modules/login/models/login_response.dart';
 import '../../../ui/features/admin/data/dao/banner_dao.dart';
 import '../../../ui/features/admin/domain/model/banner.dart';
+import '../../../ui/features/dashboard/views/card/domain/enum/currency.dart';
+import '../../../ui/features/dashboard/views/transaction/data/dao/transaction_dao.dart';
+import '../../../ui/features/dashboard/views/transaction/domain/enum/transaction_type.dart';
+import '../../../ui/features/dashboard/views/transaction/domain/model/transaction_history.dart';
 import '../../../ui/features/merchant/data/dao/merchant_dao.dart';
 import '../../../ui/features/merchant/domain/model/get_merchants.dart';
 import '../../../ui/features/merchant/domain/model/merchants.dart';
@@ -27,6 +31,7 @@ import '../../../ui/features/profile/domain/model/user.dart';
 import '../../../ui/features/profile/domain/model/wallet.dart';
 import '../../../ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
 import '../../../ui/features/transfer/domain/model/local_bank.dart';
+import '../../../ui/features/utilities/domain/enum/service_category.dart';
 import '../../../ui/features/utilities/domain/model/billers.dart';
 import '../../../ui/features/utilities/domain/model/cable_service.dart';
 import '../../../ui/features/utilities/domain/model/get_cable_service.dart';
@@ -57,6 +62,11 @@ Future<void> initializeDB() async {
       ..registerAdapter(CableServiceAdapter())
       ..registerAdapter(VouchersAdapter())
       ..registerAdapter(VoucherStatusAdapter())
+      ..registerAdapter(TransactionHistoryAdapter())
+      ..registerAdapter(ExtraDetailsAdapter())
+      ..registerAdapter(CurrencyAdapter())
+      ..registerAdapter(TransactionTypeAdapter())
+      ..registerAdapter(ServiceCategoryAdapter())
       ..registerAdapter(HiveStoreResponseDataAdapter());
   } catch (e) {
     debugPrint(e.toString());
@@ -78,6 +88,7 @@ class HiveManager {
     cableServicesDao = CableServicesDao();
     vouchersDao = VouchersDao();
     contactDao = ContactDao();
+    transactionHistoryDao = TransactionHistoryDao();
   }
 
   Future clearAllBox() async {
@@ -94,6 +105,7 @@ class HiveManager {
     await cableServicesDao.truncate();
     await vouchersDao.truncate();
     await contactDao.truncate();
+    await transactionHistoryDao.truncate();
   }
 
   Future<Box<T>> openBox<T>(String boxName) async {
@@ -124,3 +136,4 @@ class HiveManager {
     }
   }
 }
+// transfer, airtime, data, cable, electricity, internet, voucher, betting, education, admin-credit-wallet, admin-debit-wallet

@@ -280,6 +280,16 @@ ThemeData kThemeData = ThemeData.light().copyWith(
       titleTextStyle: kBodyText1Style.copyWith(
           color: kPrimaryTextColor, fontSize: 15, fontWeight: FontWeight.w500),
     ),
+    tabBarTheme: TabBarTheme(
+        dividerColor: AppColors.kColorBackgroundLight200,
+        dividerHeight: 2,
+        labelPadding: const EdgeInsets.only(bottom: 12),
+        indicatorColor: AppColors.kPrimaryColor,
+        indicatorSize: TabBarIndicatorSize.tab,
+        labelStyle: kHeadline2TextStyle.copyWith(
+            fontSize: 14, fontWeight: FontWeight.w500),
+        unselectedLabelStyle: kHeadline3TextStyle.copyWith(
+            fontSize: 14, fontWeight: FontWeight.w500)),
     bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: AppColors.white,
         modalBarrierColor: AppColors.kPrimaryTextColor.withOpacity(.30),
@@ -339,11 +349,10 @@ ThemeData kThemeData = ThemeData.light().copyWith(
               }
               return AppColors.kPrimaryColor;
             }),
-            textStyle: MaterialStateProperty.resolveWith((states) =>
-                kHeadline6Style.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.white,
-                    fontSize: 16)),
+            textStyle: MaterialStateProperty.resolveWith((states) => kHeadline6Style.copyWith(
+                fontWeight: FontWeight.w700,
+                color: AppColors.white,
+                fontSize: 16)),
             shape: MaterialStateProperty.resolveWith((states) => RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r))),
             foregroundColor:

@@ -32,7 +32,7 @@ Future<pw.Widget> generateTransferReceipt(Transfer? transfer) async {
                       fontWeight: pw.FontWeight.bold),
                   textAlign: pw.TextAlign.left),
               pw.SizedBox(height: 12.h),
-              pw.Text(DateTime.now().dayMonthTime1,
+              pw.Text(transfer?.transactionDate ?? '',
                   style: pw.TextStyle(
                       color:
                           PdfColor.fromInt(AppColors.kSecondaryTextColor.value),

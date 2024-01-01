@@ -4,7 +4,7 @@ class TagSerializer implements JsonConverter<String, String> {
   const TagSerializer();
 
   @override
-  String fromJson(String json) => '@$json';
+  String fromJson(String json) => json.startsWith('@') ? json : '@$json';
 
   @override
   String toJson(String object) => object;

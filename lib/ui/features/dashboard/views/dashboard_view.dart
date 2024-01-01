@@ -12,6 +12,7 @@ import '../../profile/presentation/notifier/user_notifier.dart';
 import 'account/views/account_view.dart';
 import 'card/presentation/view/virtual_card_view.dart';
 import 'home/views/home_view.dart';
+import 'transaction/presentation/view/transaction_history_view.dart';
 
 class DashboardView extends ConsumerStatefulWidget {
   const DashboardView({super.key, this.gottenIndex = 0});
@@ -41,7 +42,8 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
             child: switch (_pageIndex) {
               0 => const HomeView(),
               1 => const VirtualCardView(),
-              2 => const Transactions(),
+              2 => const TransactionHistoryView(),
+              // 2 => const Transactions(),
               3 => const AccountView(),
               int() => const Scaffold()
             },

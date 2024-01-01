@@ -94,6 +94,7 @@ class AppImage {
   static String faceId = "${_iconPath}face_id.svg";
   static String fingerprint = "${_iconPath}fingerprint.svg";
   static String success = "${_imagePath}success.json";
+  static String check = "${_iconPath}check.png";
   static String home = "${_iconPath}home.svg";
   static String card = "${_iconPath}card.svg";
   static String transaction = "${_iconPath}transaction.svg";

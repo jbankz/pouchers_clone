@@ -9,7 +9,9 @@ import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/gap.dart';
 
 class EmptyVoucherView extends StatelessWidget {
-  const EmptyVoucherView({super.key});
+  const EmptyVoucherView({super.key, this.message});
+
+  final String? message;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -25,7 +27,7 @@ class EmptyVoucherView extends StatelessWidget {
                 color: AppColors.kIconGrey),
           ),
           const Gap(height: 14),
-          Text(AppString.emptyVoucher,
+          Text(message ?? AppString.emptyVoucher,
               style: context.headlineMedium?.copyWith(
                   color: AppColors.kIconGrey,
                   fontWeight: FontWeight.w400,

@@ -14,6 +14,7 @@ import '../ui/features/authentication/presentation/view/2fa/two_fa_google_authen
 import '../ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_view.dart';
 import '../ui/features/authentication/presentation/view/2fa/two_fa_intro_view.dart';
 import '../ui/features/authentication/presentation/view/password/confirm_password_view.dart';
+import '../ui/features/dashboard/views/transaction/presentation/view/transaction_details_view.dart';
 import '../ui/features/guest/guest_email_view.dart';
 import '../ui/features/guest/guest_view.dart';
 import '../ui/features/notification/presentation/view/notification_details_view.dart';
@@ -200,6 +201,7 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: TransferSuccessState),
     AdaptiveRoute(page: ScheduleTransferMoneyView),
     AdaptiveRoute(page: TransferReceipt),
+    AdaptiveRoute(page: TransactionDetailsView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
