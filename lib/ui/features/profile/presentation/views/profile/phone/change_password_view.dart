@@ -67,7 +67,7 @@ class _ChangePhoneNumberViewState extends ConsumerState<ChangePhoneNumberView>
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   children: [
-                    Text(AppString.changePhone,
+                    Text(AppString.changePhoneNumber,
                         style: context.headlineMedium?.copyWith(
                             fontWeight: FontWeight.w700, fontSize: 24)),
                     const Gap(height: 8),

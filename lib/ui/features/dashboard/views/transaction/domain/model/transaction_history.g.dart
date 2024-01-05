@@ -94,13 +94,17 @@ class ExtraDetailsAdapter extends TypeAdapter<_$ExtraDetailsImpl> {
       senderTag: fields[1] as String?,
       receiverTag: fields[2] as String?,
       receiverPicture: fields[3] as String?,
+      phoneNumber: fields[4] as String?,
+      category: fields[5] as ServiceCategory?,
+      subCategory: fields[6] as String?,
+      amount: fields[7] as num,
     );
   }
 
   @override
   void write(BinaryWriter writer, _$ExtraDetailsImpl obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.senderName)
       ..writeByte(1)
@@ -108,7 +112,15 @@ class ExtraDetailsAdapter extends TypeAdapter<_$ExtraDetailsImpl> {
       ..writeByte(2)
       ..write(obj.receiverTag)
       ..writeByte(3)
-      ..write(obj.receiverPicture);
+      ..write(obj.receiverPicture)
+      ..writeByte(4)
+      ..write(obj.phoneNumber)
+      ..writeByte(5)
+      ..write(obj.category)
+      ..writeByte(6)
+      ..write(obj.subCategory)
+      ..writeByte(7)
+      ..write(obj.amount);
   }
 
   @override
@@ -231,6 +243,12 @@ _$ExtraDetailsImpl _$$ExtraDetailsImplFromJson(Map<String, dynamic> json) =>
       receiverTag: _$JsonConverterFromJson<String, String>(
           json['receiver_tag'], const TagSerializer().fromJson),
       receiverPicture: json['receiver_picture'] as String?,
+      phoneNumber: json['phoneNumber'] as String?,
+      category: $enumDecodeNullable(_$ServiceCategoryEnumMap, json['category']),
+      subCategory: json['subCategory'] as String?,
+      amount: json['amount'] == null
+          ? 0
+          : const StringToNumSerializer().fromJson(json['amount']),
     );
 
 Map<String, dynamic> _$$ExtraDetailsImplToJson(_$ExtraDetailsImpl instance) =>
@@ -241,4 +259,8 @@ Map<String, dynamic> _$$ExtraDetailsImplToJson(_$ExtraDetailsImpl instance) =>
       'receiver_tag': _$JsonConverterToJson<String, String>(
           instance.receiverTag, const TagSerializer().toJson),
       'receiver_picture': instance.receiverPicture,
+      'phoneNumber': instance.phoneNumber,
+      'category': _$ServiceCategoryEnumMap[instance.category],
+      'subCategory': instance.subCategory,
+      'amount': const StringToNumSerializer().toJson(instance.amount),
     };

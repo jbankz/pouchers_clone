@@ -124,7 +124,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                           ?.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center),
                   const Gap(height: 2),
-                  Text('@${user.tag ?? ''}',
+                  Text(user.tag ?? '',
                       style: context.headlineMedium?.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
@@ -240,7 +240,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                             context: context,
                             isLast: true,
                             key: AppString.tag,
-                            value: '@${user.tag ?? ''}'),
+                            value: user.tag ?? ''),
                       ],
                     ),
                   )

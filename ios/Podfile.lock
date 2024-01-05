@@ -1,4 +1,6 @@
 PODS:
+  - app_settings (5.1.1):
+    - Flutter
   - fast_contacts (0.0.1):
     - Flutter
   - Firebase/CoreOnly (10.17.0):
@@ -143,6 +145,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - app_settings (from `.symlinks/plugins/app_settings/ios`)
   - fast_contacts (from `.symlinks/plugins/fast_contacts/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
@@ -189,6 +192,8 @@ SPEC REPOS:
     - TOCropViewController
 
 EXTERNAL SOURCES:
+  app_settings:
+    :path: ".symlinks/plugins/app_settings/ios"
   fast_contacts:
     :path: ".symlinks/plugins/fast_contacts/ios"
   firebase_core:
@@ -239,6 +244,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
+  app_settings: 017320c6a680cdc94c799949d95b84cb69389ebc
   fast_contacts: d5f0da976a40f8fd07a9ff730c2e9bee8c3898dd
   Firebase: f4ac0b02927af9253ae094d23deecf0890da7374
   firebase_core: efc9455611b8769fa90fbdae5da182600bd6901c
@@ -281,6 +287,6 @@ SPEC CHECKSUMS:
   url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
 
-PODFILE CHECKSUM: bf2e07db254c3872fce4a7f09b452dfbad3687b8
+PODFILE CHECKSUM: d34dd0c43701123dc60d83e0b6b2582314cbc0a9
 
 COCOAPODS: 1.14.3

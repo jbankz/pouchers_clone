@@ -1,5 +1,6 @@
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart';
+import 'package:Pouchers/ui/features/utilities/domain/enum/service_category.dart';
 import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -19,12 +20,13 @@ class TransactionDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final bool isDebitTransaction =
         transactionHistory.transactionType == TransactionType.debit;
 
     final Color color =
         isDebitTransaction ? AppColors.kColorRedDeep : AppColors.limeGreen;
-        
+
     final String amount = isDebitTransaction
         ? '-${transactionHistory.amount.toNaira}'
         : '+${transactionHistory.amount.toNaira}';
@@ -120,34 +122,28 @@ class TransactionDetailsView extends StatelessWidget {
                     .toList(),
               ),
               const Gap(height: 27),
-              _buildTile(
-                  context: context,
-                  title: AppString.sender,
-                  value:
-                      transactionHistory.extraDetails?.senderName?.titleCase ??
-                          ''),
-              const Gap(height: 16),
-              _buildTile(
-                  context: context,
-                  title: AppString.senderTag,
-                  value:
-                      transactionHistory.extraDetails?.senderTag?.titleCase ??
-                          ''),
-              const Gap(height: 16),
-              _buildTile(
-                  context: context,
-                  title: AppString.beneficiary,
-                  value: transactionHistory.beneficiaryName?.titleCase ?? ''),
-              const Gap(height: 16),
-              _buildTile(
-                  context: context,
-                  title: AppString.beneficiaryTag,
-                  value: transactionHistory.extraDetails?.receiverTag ?? ''),
-              const Gap(height: 16),
-              _buildTile(
-                  context: context,
-                  title: AppString.status,
-                  value: transactionHistory.status?.titleCase ?? ''),
+              switch (transactionHistory.transactionCategory) {
+                ServiceCategory.p2p => _buildTransferDetails(context),
+                ServiceCategory.airtime => _buildProviderDetails(context),
+                ServiceCategory.data => _buildProviderDetails(context),
+                ServiceCategory.cable => const SizedBox.shrink(),
+                ServiceCategory.electricity => const SizedBox.shrink(),
+                ServiceCategory.betting => const SizedBox.shrink(),
+                ServiceCategory.voucherPurchase => _buildStatusDetails(context),
+                ServiceCategory.education => const SizedBox.shrink(),
+                ServiceCategory.internet => const SizedBox.shrink(),
+                ServiceCategory.voucherRedeem => _buildStatusDetails(context),
+                ServiceCategory.fundWallet => const SizedBox.shrink(),
+                ServiceCategory.createVirtualCard => const SizedBox.shrink(),
+                ServiceCategory.fundVirtualCard => const SizedBox.shrink(),
+                ServiceCategory.localBankTransfer => const SizedBox.shrink(),
+                ServiceCategory.adminDebitWallet =>
+                  _buildStatusDetails(context),
+                ServiceCategory.adminCreditWallet =>
+                  _buildStatusDetails(context),
+                ServiceCategory.referralBonusPayment => const SizedBox.shrink(),
+                null => const SizedBox.shrink(),
+              },
               const Gap(height: 29),
               Container(
                 width: double.infinity,
@@ -185,6 +181,63 @@ class TransactionDetailsView extends StatelessWidget {
           )),
     );
   }
+
+  Row _buildStatusDetails(BuildContext context) => _buildTile(
+      context: context,
+      title: AppString.status,
+      value: transactionHistory.status?.titleCase ?? '');
+
+  Column _buildProviderDetails(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildTile(
+              context: context,
+              title: AppString.status,
+              value: transactionHistory.status?.titleCase ?? ''),
+          const Gap(height: 16),
+          _buildTile(
+              context: context,
+              title: AppString.operator,
+              value: transactionHistory.extraDetails?.subCategory ?? ''),
+          const Gap(height: 16),
+          _buildTile(
+              context: context,
+              title: AppString.phoneNumber,
+              value: transactionHistory.extraDetails?.phoneNumber ?? ''),
+        ],
+      );
+
+  Column _buildTransferDetails(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildTile(
+              context: context,
+              title: AppString.status,
+              value: transactionHistory.status?.titleCase ?? ''),
+          const Gap(height: 16),
+          _buildTile(
+              context: context,
+              title: AppString.sender,
+              value:
+                  transactionHistory.extraDetails?.senderName?.titleCase ?? ''),
+          const Gap(height: 16),
+          _buildTile(
+              context: context,
+              title: AppString.senderTag,
+              value:
+                  transactionHistory.extraDetails?.senderTag?.titleCase ?? ''),
+          const Gap(height: 16),
+          _buildTile(
+              context: context,
+              title: AppString.beneficiary,
+              value: transactionHistory.beneficiaryName?.titleCase ?? ''),
+          const Gap(height: 16),
+          _buildTile(
+              context: context,
+              title: AppString.beneficiaryTag,
+              value: transactionHistory.extraDetails?.receiverTag ?? ''),
+        ],
+      );
 
   Row _buildTile(
           {required BuildContext context,

@@ -51,7 +51,7 @@ class AccountView extends ConsumerWidget {
                           ?.copyWith(fontSize: 12, fontWeight: FontWeight.w700),
                       textAlign: TextAlign.center),
                   const Gap(height: 4),
-                  Text('@${user.tag ?? ''}',
+                  Text(user.tag ?? '',
                       style: context.headlineMedium?.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,

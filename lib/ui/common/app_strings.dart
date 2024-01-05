@@ -314,14 +314,13 @@ class AppString {
   static String save = 'Save';
   static String profileUpdateSuccessful =
       'User\'s profile updated successfully';
-  static String changePhoneNumber = 'Change phone number';
-  static String sendCode = 'Send code';
+  static String changePhoneNumber = 'Change Phone Number';
+  static String sendCode = 'Send Code';
 
   static String requestPhoneHint =
       'To change your phone number, a code will be sent to the email associated with this account.';
   static String requestVerificationPhoneHint =
       'Enter the code sent to your email address.';
-  static String changePhone = 'Change Phone number';
   static String changePhoneInstr = 'Enter your new phone number.';
   static String resetCodeSent = 'Reset code sent';
   static String referrals = 'Referrals';
@@ -541,4 +540,6 @@ class AppString {
   static String beneficiaryTag = 'Beneficiary Poucher Tag';
   static String transactionNumber = 'Transaction Number';
   static String getReceipt = 'Get Receipt';
+
+  static String operator = 'Operator';
 }

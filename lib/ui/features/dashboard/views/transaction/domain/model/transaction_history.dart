@@ -65,9 +65,14 @@ class ExtraDetails with _$ExtraDetails {
       @JsonKey(name: 'receiver_tag')
       @TagSerializer()
       String? receiverTag,
-      @HiveField(3)
-      @JsonKey(name: 'receiver_picture')
-      String? receiverPicture}) = _ExtraDetails;
+      @HiveField(3) @JsonKey(name: 'receiver_picture') String? receiverPicture,
+      @HiveField(4) String? phoneNumber,
+      @HiveField(5) ServiceCategory? category,
+      @HiveField(6) String? subCategory,
+      @StringToNumSerializer()
+      @Default(0)
+      @HiveField(7)
+      num amount}) = _ExtraDetails;
 
   factory ExtraDetails.fromJson(Map<String, dynamic> json) =>
       _$ExtraDetailsFromJson(json);

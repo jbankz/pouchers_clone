@@ -67,25 +67,19 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      widget.sessionTimeOut!
-          ? handleExpiredToken(
-              context,
-            )
-          : null;
+      widget.sessionTimeOut! ? handleExpiredToken() : null;
 
       setState(() {});
       if (widget.disabled!) {
-        Future.delayed(Duration(seconds: 1)).then((value) => showDialog(
+        Future.delayed(const Duration(seconds: 1)).then((value) => showDialog(
             barrierDismissible: false,
             context: context,
-            builder: (ctx) {
-              return SecurityModal(
-                textTheme: Theme.of(context).textTheme,
-                title: accountDisabled,
-                message: accountDisabledSub,
-                button: contactSupport,
-              );
-            }));
+            builder: (ctx) => SecurityModal(
+                  textTheme: Theme.of(context).textTheme,
+                  title: accountDisabled,
+                  message: accountDisabledSub,
+                  button: contactSupport,
+                )));
       }
     });
   }
@@ -140,14 +134,14 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SvgPicture.asset(AssetPaths.poucherLogo),
-                SizedBox(
+                const SizedBox(
                   height: kMicroPadding,
                 ),
                 Text(
                   logInPoucher,
                   style: textTheme.headline1,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: kPadding,
                 ),
                 Text(
@@ -155,7 +149,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                   style: textTheme.bodyText1!
                       .copyWith(fontWeight: FontWeight.normal, height: 1.6),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: kLargePadding,
                 ),
                 TextInputNoIcon(
@@ -197,19 +191,19 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                         });
                       },
                       child: obscure
-                          ? Icon(
+                          ? const Icon(
                               Icons.visibility_outlined,
                               color: kSecondaryTextColor,
                             )
-                          : Icon(Icons.visibility_off_outlined,
+                          : const Icon(Icons.visibility_off_outlined,
                               color: kSecondaryTextColor)),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: kSmallPadding,
                 ),
                 inkWell(
                   onTap: () {
-                    pushTo(context, ForgotPassword(),
+                    pushTo(context, const ForgotPassword(),
                         settings: const RouteSettings(
                             name: ForgotPassword.routeName));
                   },
@@ -222,7 +216,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: kMicroPadding,
                 ),
                 Consumer(builder: (context, ref, _) {
@@ -230,7 +224,8 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                       NotifierState<VerifyEmailResponse> next) async {
                     if (next.status == NotifierStatus.done) {
                       setState(() {
-                        nowDate = DateTime.now().add(Duration(minutes: 5));
+                        nowDate =
+                            DateTime.now().add(const Duration(minutes: 5));
                       });
 
                       ref.read(biometricProvider.notifier).state = ref
@@ -248,7 +243,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                       if (next.data!.data!.tag == null) {
                         pushTo(
                             context,
-                            PoucherTag(
+                            const PoucherTag(
                               fromLogin: true,
                             ),
                             settings: const RouteSettings(
@@ -256,7 +251,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                       } else if (!next.data!.data!.isCreatedPin!) {
                         pushTo(
                             context,
-                            CreatePin(
+                            const CreatePin(
                               fromLogin: true,
                             ),
                             settings:
@@ -268,7 +263,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                               email: _email!.trim());
                           pushTo(
                             context,
-                            BiometricsPage(),
+                            const BiometricsPage(),
                           );
                         } else {
                           UserCredentials? cred = await getUserCredentials();
@@ -291,7 +286,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                     } else if (next.status == NotifierStatus.error) {
                       if (next.message!.startsWith("User is not verified")) {
                         showErrorBar(context, "next.message!");
-                        Future.delayed(Duration(seconds: 2)).then(
+                        Future.delayed(const Duration(seconds: 2)).then(
                           (value) => pushTo(
                               context,
                               VerifyAccount(
@@ -328,10 +323,10 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                   );
                   return ref.watch(logInProvider).when(
                       done: (done) => _widget,
-                      loading: () => SpinKitDemo(),
+                      loading: () => const SpinKitDemo(),
                       error: (val) => _widget);
                 }),
-                SizedBox(
+                const SizedBox(
                   height: kMediumPadding,
                 ),
                 Center(
@@ -354,14 +349,14 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                         )
                       ])),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: kLargePadding,
                 ),
                 widget.firstTime!
-                    ? SizedBox()
+                    ? const SizedBox()
                     : ref.watch(biometricProvider).isLoginBiometricActive ==
                             null
-                        ? SizedBox()
+                        ? const SizedBox()
                         : ref.watch(biometricProvider).isLoginBiometricActive!
                             ? inkWell(
                                 onTap: () {
@@ -369,8 +364,9 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                                 },
                                 child: Container(
                                   alignment: Alignment.center,
-                                  padding: EdgeInsets.all(kRegularPadding),
-                                  decoration: BoxDecoration(
+                                  padding:
+                                      const EdgeInsets.all(kRegularPadding),
+                                  decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: kBackgroundColor,
                                   ),
@@ -384,7 +380,7 @@ class _LogInAccountState extends ConsumerState<LogInAccount>
                                   ),
                                 ),
                               )
-                            : SizedBox()
+                            : const SizedBox()
               ],
             ),
           ),

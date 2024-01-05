@@ -1,7 +1,7 @@
 name: Pouchers
 description: A Financial Application
 
-publish_to: 'none' 
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -17,7 +17,7 @@ dependencies:
   flutter_inappwebview: ^5.8.0
   flutter_secure_storage: ^9.0.0
   flutter_native_splash: ^2.2.6
-#  flutter_downloader: ^1.10.1+2
+  #  flutter_downloader: ^1.10.1+2
   fluttercontactpicker: ^4.7.0
   cached_network_image: ^3.2.2
   firebase_messaging: ^14.4.1
@@ -90,7 +90,7 @@ dependencies:
 
   screenshot: ^2.1.0
   flutter_contacts: ^1.1.7+1
-
+  app_settings: ^5.1.1
 
 dev_dependencies:
   flutter_test:
@@ -114,7 +114,6 @@ flutter_icons:
   adaptive_icon_background: "#ffffff"
   adaptive_icon_foreground: "assets/images/appicon.png"
 
-
 flutter_native_splash:
   color: "#ffffff"
   image: "assets/images/background.png"
@@ -125,9 +124,7 @@ flutter_native_splash:
   flutter_lints: ^1.0.0
 
 flutter:
-
   uses-material-design: true
-
 
   assets:
     - assets/icons/
@@ -162,12 +159,12 @@ analyzer:
 
 scripts:
   build: dart run build_runner build --delete-conflicting-outputs
-  clean: 
+  clean:
     - flutter clean
     - flutter pub get
     - dart run build_runner build --delete-conflicting-outputs
   watch: dart run build_runner watch
-  lint:  dart run custom_lint
+  lint: dart run custom_lint
   pod:
     - cd ios
     - pod repo update

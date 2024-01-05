@@ -638,6 +638,15 @@ mixin _$ExtraDetails {
   @HiveField(3)
   @JsonKey(name: 'receiver_picture')
   String? get receiverPicture => throw _privateConstructorUsedError;
+  @HiveField(4)
+  String? get phoneNumber => throw _privateConstructorUsedError;
+  @HiveField(5)
+  ServiceCategory? get category => throw _privateConstructorUsedError;
+  @HiveField(6)
+  String? get subCategory => throw _privateConstructorUsedError;
+  @StringToNumSerializer()
+  @HiveField(7)
+  num get amount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -661,9 +670,11 @@ abstract class $ExtraDetailsCopyWith<$Res> {
       @JsonKey(name: 'receiver_tag')
       @TagSerializer()
       String? receiverTag,
-      @HiveField(3)
-      @JsonKey(name: 'receiver_picture')
-      String? receiverPicture});
+      @HiveField(3) @JsonKey(name: 'receiver_picture') String? receiverPicture,
+      @HiveField(4) String? phoneNumber,
+      @HiveField(5) ServiceCategory? category,
+      @HiveField(6) String? subCategory,
+      @StringToNumSerializer() @HiveField(7) num amount});
 }
 
 /// @nodoc
@@ -683,6 +694,10 @@ class _$ExtraDetailsCopyWithImpl<$Res, $Val extends ExtraDetails>
     Object? senderTag = freezed,
     Object? receiverTag = freezed,
     Object? receiverPicture = freezed,
+    Object? phoneNumber = freezed,
+    Object? category = freezed,
+    Object? subCategory = freezed,
+    Object? amount = null,
   }) {
     return _then(_value.copyWith(
       senderName: freezed == senderName
@@ -701,6 +716,22 @@ class _$ExtraDetailsCopyWithImpl<$Res, $Val extends ExtraDetails>
           ? _value.receiverPicture
           : receiverPicture // ignore: cast_nullable_to_non_nullable
               as String?,
+      phoneNumber: freezed == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as ServiceCategory?,
+      subCategory: freezed == subCategory
+          ? _value.subCategory
+          : subCategory // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amount: null == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as num,
     ) as $Val);
   }
 }
@@ -723,9 +754,11 @@ abstract class _$$ExtraDetailsImplCopyWith<$Res>
       @JsonKey(name: 'receiver_tag')
       @TagSerializer()
       String? receiverTag,
-      @HiveField(3)
-      @JsonKey(name: 'receiver_picture')
-      String? receiverPicture});
+      @HiveField(3) @JsonKey(name: 'receiver_picture') String? receiverPicture,
+      @HiveField(4) String? phoneNumber,
+      @HiveField(5) ServiceCategory? category,
+      @HiveField(6) String? subCategory,
+      @StringToNumSerializer() @HiveField(7) num amount});
 }
 
 /// @nodoc
@@ -743,6 +776,10 @@ class __$$ExtraDetailsImplCopyWithImpl<$Res>
     Object? senderTag = freezed,
     Object? receiverTag = freezed,
     Object? receiverPicture = freezed,
+    Object? phoneNumber = freezed,
+    Object? category = freezed,
+    Object? subCategory = freezed,
+    Object? amount = null,
   }) {
     return _then(_$ExtraDetailsImpl(
       senderName: freezed == senderName
@@ -761,6 +798,22 @@ class __$$ExtraDetailsImplCopyWithImpl<$Res>
           ? _value.receiverPicture
           : receiverPicture // ignore: cast_nullable_to_non_nullable
               as String?,
+      phoneNumber: freezed == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as ServiceCategory?,
+      subCategory: freezed == subCategory
+          ? _value.subCategory
+          : subCategory // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amount: null == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as num,
     ));
   }
 }
@@ -779,7 +832,11 @@ class _$ExtraDetailsImpl implements _ExtraDetails {
       @JsonKey(name: 'receiver_tag')
       @TagSerializer()
       this.receiverTag,
-      @HiveField(3) @JsonKey(name: 'receiver_picture') this.receiverPicture});
+      @HiveField(3) @JsonKey(name: 'receiver_picture') this.receiverPicture,
+      @HiveField(4) this.phoneNumber,
+      @HiveField(5) this.category,
+      @HiveField(6) this.subCategory,
+      @StringToNumSerializer() @HiveField(7) this.amount = 0});
 
   factory _$ExtraDetailsImpl.fromJson(Map<String, dynamic> json) =>
       _$$ExtraDetailsImplFromJson(json);
@@ -802,10 +859,24 @@ class _$ExtraDetailsImpl implements _ExtraDetails {
   @HiveField(3)
   @JsonKey(name: 'receiver_picture')
   final String? receiverPicture;
+  @override
+  @HiveField(4)
+  final String? phoneNumber;
+  @override
+  @HiveField(5)
+  final ServiceCategory? category;
+  @override
+  @HiveField(6)
+  final String? subCategory;
+  @override
+  @JsonKey()
+  @StringToNumSerializer()
+  @HiveField(7)
+  final num amount;
 
   @override
   String toString() {
-    return 'ExtraDetails(senderName: $senderName, senderTag: $senderTag, receiverTag: $receiverTag, receiverPicture: $receiverPicture)';
+    return 'ExtraDetails(senderName: $senderName, senderTag: $senderTag, receiverTag: $receiverTag, receiverPicture: $receiverPicture, phoneNumber: $phoneNumber, category: $category, subCategory: $subCategory, amount: $amount)';
   }
 
   @override
@@ -820,13 +891,20 @@ class _$ExtraDetailsImpl implements _ExtraDetails {
             (identical(other.receiverTag, receiverTag) ||
                 other.receiverTag == receiverTag) &&
             (identical(other.receiverPicture, receiverPicture) ||
-                other.receiverPicture == receiverPicture));
+                other.receiverPicture == receiverPicture) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
+            (identical(other.subCategory, subCategory) ||
+                other.subCategory == subCategory) &&
+            (identical(other.amount, amount) || other.amount == amount));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, senderName, senderTag, receiverTag, receiverPicture);
+  int get hashCode => Object.hash(runtimeType, senderName, senderTag,
+      receiverTag, receiverPicture, phoneNumber, category, subCategory, amount);
 
   @JsonKey(ignore: true)
   @override
@@ -844,18 +922,23 @@ class _$ExtraDetailsImpl implements _ExtraDetails {
 
 abstract class _ExtraDetails implements ExtraDetails {
   factory _ExtraDetails(
-      {@HiveField(0) @JsonKey(name: 'sender_name') final String? senderName,
-      @HiveField(1)
-      @JsonKey(name: 'sender_tag')
-      @TagSerializer()
-      final String? senderTag,
-      @HiveField(2)
-      @JsonKey(name: 'receiver_tag')
-      @TagSerializer()
-      final String? receiverTag,
-      @HiveField(3)
-      @JsonKey(name: 'receiver_picture')
-      final String? receiverPicture}) = _$ExtraDetailsImpl;
+          {@HiveField(0) @JsonKey(name: 'sender_name') final String? senderName,
+          @HiveField(1)
+          @JsonKey(name: 'sender_tag')
+          @TagSerializer()
+          final String? senderTag,
+          @HiveField(2)
+          @JsonKey(name: 'receiver_tag')
+          @TagSerializer()
+          final String? receiverTag,
+          @HiveField(3)
+          @JsonKey(name: 'receiver_picture')
+          final String? receiverPicture,
+          @HiveField(4) final String? phoneNumber,
+          @HiveField(5) final ServiceCategory? category,
+          @HiveField(6) final String? subCategory,
+          @StringToNumSerializer() @HiveField(7) final num amount}) =
+      _$ExtraDetailsImpl;
 
   factory _ExtraDetails.fromJson(Map<String, dynamic> json) =
       _$ExtraDetailsImpl.fromJson;
@@ -878,6 +961,19 @@ abstract class _ExtraDetails implements ExtraDetails {
   @HiveField(3)
   @JsonKey(name: 'receiver_picture')
   String? get receiverPicture;
+  @override
+  @HiveField(4)
+  String? get phoneNumber;
+  @override
+  @HiveField(5)
+  ServiceCategory? get category;
+  @override
+  @HiveField(6)
+  String? get subCategory;
+  @override
+  @StringToNumSerializer()
+  @HiveField(7)
+  num get amount;
   @override
   @JsonKey(ignore: true)
   _$$ExtraDetailsImplCopyWith<_$ExtraDetailsImpl> get copyWith =>

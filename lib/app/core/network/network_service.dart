@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:Pouchers/app/app.locator.dart';
 import 'package:dio/dio.dart';
 
+import '../../helpers/response_handler.dart';
 import '../manager/session_manager.dart';
 import 'error_wrapper.dart';
 
 enum RequestType { post, get, put, delete, upload, patch }
 
-class NetworkService {
+class NetworkService with ResponseHandler {
   static const int connectTimeout = 500000;
   static const int receiveTimeout = 500000;
   Dio? dio;
@@ -99,6 +100,7 @@ class NetworkService {
       final apiError = ApiError.fromDio(error);
       if (apiError.errorType == 401) {
         // Handle 401 errors if needed
+        handleExpiredToken();
       }
       return Future.error(apiError, stackTrace);
     }

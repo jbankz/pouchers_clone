@@ -14,6 +14,7 @@ import '../../../../../common/app_strings.dart';
 import '../../../../payment/domain/dto/debit_card_dto.dart';
 import '../../../../profile/presentation/views/wallet/widget/balance_indicator_widget.dart';
 import '../../../domain/dto/summary_dto.dart';
+import '../widget/utility_icon.dart';
 
 class SummaryWidget extends StatefulWidget {
   const SummaryWidget({super.key, required this.summaryDto});
@@ -60,21 +61,22 @@ class _SummaryWidgetState extends State<SummaryWidget> {
         },
       );
 
-  Widget _buildImage() => Container(
-        height: 70.h,
-        width: 70.w,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: AppColors.paleLavenderGray,
-        ),
-        child: CachedNetworkImage(
-          height: 70.h,
-          width: 70.w,
-          imageUrl: widget.summaryDto.imageUrl ?? '',
-          fit: BoxFit.fill,
-          errorWidget: (_, __, ___) => const SizedBox.shrink(),
-        ),
-      );
+  // Widget _buildImage() => Container(
+  //       height: 70.h,
+  //       width: 70.w,
+  //       decoration: const BoxDecoration(
+  //         shape: BoxShape.circle,
+  //         color: AppColors.paleLavenderGray,
+  //       ),
+  //       child: CachedNetworkImage(
+  //         height: 34.h,
+  //         width: 34.w,
+  //         imageUrl: widget.summaryDto.imageUrl ?? '',
+  //         errorWidget: (_, __, ___) => const SizedBox.shrink(),
+  //       ),
+  //     );
+
+  Widget _buildImage() => UtitlityIcon(image: widget.summaryDto.imageUrl ?? '');
 
   Widget _buildTitle() => Text(
         widget.summaryDto.title ?? '',

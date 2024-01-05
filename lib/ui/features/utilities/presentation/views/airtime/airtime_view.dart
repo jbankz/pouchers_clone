@@ -18,6 +18,7 @@ import '../../../../../../app/app.router.dart';
 import '../../../../../../app/core/router/page_router.dart';
 import '../../../../../../utils/field_validator.dart';
 import '../../../../../../utils/formatters/currency_formatter.dart';
+import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_images.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/dialog/bottom_sheet.dart';
@@ -209,9 +210,16 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                                 child: SummaryWidget(
                                     summaryDto: SummaryDto(
                                         isGuest: billerState.isGuest,
-                                        title: _billers?.displayName,
+                                        title: AppString.airtime,
                                         imageUrl: _billers?.logoUrl,
                                         recipient: phoneController.text,
+                                        recipientWidget: Text(
+                                          phoneController.text,
+                                          style: context.titleLarge?.copyWith(
+                                              color: AppColors.kPurple100,
+                                              fontWeight: FontWeight.w700),
+                                          textAlign: TextAlign.right,
+                                        ),
                                         amount:
                                             _formatter.getUnformattedValue(),
                                         cashBack: _airtimeTopDeals?.cashBack,

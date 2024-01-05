@@ -1,77 +1,72 @@
 import 'dart:io';
 
+import 'package:Pouchers/app/app.router.dart';
+import 'package:Pouchers/app/core/router/page_router.dart';
+import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:Pouchers/app/helpers/session_manager.dart';
-import 'package:Pouchers/app/navigators/navigators.dart';
-import 'package:Pouchers/modules/login/screens/login.dart';
-import 'package:Pouchers/utils/constant/theme_color_constants.dart';
-import 'package:Pouchers/utils/widgets.dart';
+
+import '../../ui/common/app_colors.dart';
 
 mixin ResponseHandler {
-  void restartApplication(BuildContext context, String? message) {
-    SessionManager.clear();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(
-        const Duration(milliseconds: 1000),
-        () => pushToAndClearStack(
-          context,
-          const LogInAccount(),
-        ),
-      );
-    });
-  }
-//10:28 am
-  //iphone 11
+  void handleExpiredToken() => _showLogoutDialog();
 
-  handleExpiredToken(
-    BuildContext context,
-  ) async {
-    _showLogoutDialog(context);
-  }
+  void _showLogoutDialog() {
+    const Text content = Text('Your session has expired',
+        style: TextStyle(color: kPrimaryColor));
 
-  void _showLogoutDialog(BuildContext context) {
-    var content = const Text(
-      'Your session has expired',
-      style: TextStyle(color: kPrimaryColor),
-    );
-    if (Platform.isIOS) {
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return CupertinoAlertDialog(
+    showDialog(
+        context: PageRouter.globalContext,
+        barrierDismissible: false,
+        barrierColor: Colors.transparent,
+        builder: (BuildContext context) => CupertinoAlertDialog(
               content: content,
               actions: <Widget>[
                 CupertinoDialogAction(
-                    child: const Text('OK'),
                     isDefaultAction: true,
-                    onPressed: () {
-                      Navigator.pop(context);
-                      // pushToAndClearStack(context, LogInAccount());
-                    }),
+                    onPressed: () =>
+                        PageRouter.pushReplacement(Routes.signInView),
+                    child: Text('OK',
+                        style: context.headlineLarge?.copyWith(
+                            color: AppColors.kPrimaryBlack, fontSize: 14))),
               ],
-            );
-          });
-    } else {
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              content: content,
-              backgroundColor: kPrimaryWhite,
-              actions: <Widget>[
-                LargeButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    // pushToAndClearStack(context, LogInAccount());
-                  },
-                  title: 'OK',
-                )
-              ],
-            );
-          });
-    }
+            ));
+
+    // if (Platform.isAndroid) {
+    //   showDialog(
+    //       context: PageRouter.globalContext,
+    //       barrierDismissible: false,
+    //       barrierColor: Colors.transparent,
+    //       builder: (BuildContext context) => CupertinoAlertDialog(
+    //             content: content,
+    //             actions: <Widget>[
+    //               CupertinoDialogAction(
+    //                   isDefaultAction: true,
+    //                   onPressed: () {
+    //                     PageRouter.pushReplacement(Routes.signInView);
+    //                   },
+    //                   child: Text('OK',
+    //                       style: context.headlineLarge?.copyWith(
+    //                           color: AppColors.kPrimaryBlack, fontSize: 14))),
+    //             ],
+    //           ));
+    // } else {
+    //   showDialog(
+    //       context: PageRouter.globalContext,
+    //       barrierDismissible: false,
+    //       barrierColor: Colors.transparent,
+    //       builder: (BuildContext context) => AlertDialog(
+    //             content: content,
+    //             backgroundColor: kPrimaryWhite,
+    //             actions: <Widget>[
+    //               ElevatedButtonWidget(
+    //                   title: 'Ok',
+    //                   onPressed: () =>
+    //                       PageRouter.pushReplacement(Routes.signInView))
+    //             ],
+    //           ));
+    // }
   }
 }

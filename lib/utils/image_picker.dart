@@ -5,12 +5,14 @@ import 'dart:math';
 import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../ui/common/app_strings.dart';
 
@@ -100,14 +102,20 @@ class ImagePickerHandler {
       );
 
   Future<XFile?>? _handleProfileAction(
-      {@required ProfileOptionAction? action}) {
+      {@required ProfileOptionAction? action}) async {
     switch (action!) {
       case ProfileOptionAction.viewImage:
         PageRouter.pushNamed(Routes.profileImageView);
         return null;
       case ProfileOptionAction.library:
+        final permission = await Permission.photos.request();
+        if (!(permission.isGranted)) await AppSettings.openAppSettings();
+
         return _getImage(ImageSource.gallery);
       case ProfileOptionAction.profileCamera:
+        final permission = await Permission.camera.request();
+        if (!(permission.isGranted)) await AppSettings.openAppSettings();
+
         return _getImage(ImageSource.camera);
       case ProfileOptionAction.remove:
         break;
