@@ -332,6 +332,10 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
             amount: _formatter.getUnformattedValue(),
             cashBack: _airtimeTopDeals?.cashBack,
             fee: 0),
+        biometricVerification: (pin) {
+          _submitForActualUser(pin: pin);
+          return;
+        },
       ),
     );
 

@@ -1,10 +1,8 @@
 import 'package:Pouchers/ui/features/merchant/presentation/state/merchant_state.dart';
-import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -16,7 +14,6 @@ import '../../../../../../utils/field_validator.dart';
 import '../../../../../../utils/formatters/currency_formatter.dart';
 import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_strings.dart';
-import '../../../../../widgets/bottom_sheet.dart';
 import '../../../../../widgets/dialog/bottom_sheet.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
@@ -56,15 +53,11 @@ class EducationView extends ConsumerStatefulWidget {
 class _EducationViewState extends ConsumerState<EducationView>
     with $EducationView {
   late BillersNotifier _billersNotifier;
-  late MerchantsNotifier _merchantsNotifier;
   final CancelToken _cancelToken = CancelToken();
-  final FlutterContactPicker _contactPicker = FlutterContactPicker();
-  final _debouncer = Debouncer(milliseconds: 600);
 
   Billers? _billers;
   CableService? _cableService;
 
-  bool _beneficiary = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final CurrencyFormatter _formatter = CurrencyFormatter(
       enableNegative: false, name: '', symbol: '', decimalDigits: 0);
@@ -86,8 +79,6 @@ class _EducationViewState extends ConsumerState<EducationView>
     _billersNotifier = ref.read(billersNotifierProvider.notifier)
       ..billers(BillersCategory.education, _cancelToken)
       ..billersDiscounts(BillersCategory.education, _cancelToken);
-    _merchantsNotifier = ref.read(merchantsNotifierProvider.notifier)
-      ..getMerchants(_cancelToken);
   }
 
   @override
@@ -140,9 +131,7 @@ class _EducationViewState extends ConsumerState<EducationView>
                     title: AppString.proceed,
                     loading: billerState.isPurchasing,
                     onPressed: _isProceedButtonEnabled(billerState)
-                        ? () =>
-                            // _onProceedButtonPressed(billerState, merchantState)
-                            _handlePayment(billerState)
+                        ? () => _handlePayment(billerState)
                         : null),
               ],
             ),
@@ -205,54 +194,6 @@ class _EducationViewState extends ConsumerState<EducationView>
 
   bool _isProceedButtonEnabled(BillersState billerState) =>
       _billers != null && formKey.currentState?.validate() == true;
-
-  Future<void> _onProceedButtonPressed(
-      BillersState billerState, MerchantState merchantState) async {
-    final feedback = await Sheets.showSheet(
-      child: SummaryWidget(
-        summaryDto: SummaryDto(
-            isGuest: billerState.isGuest,
-            title: _billers?.name,
-            imageUrl: _billers?.logoUrl,
-            recipient: _billers?.displayName,
-            amount: _formatter.getUnformattedValue(),
-            cashBack: 0,
-            fee: 0),
-      ),
-    ) as bool?;
-
-    if (feedback != null && feedback) {
-      final pin =
-          await BottomSheets.showSheet(child: const PinConfirmationSheet())
-              as String?;
-      if (pin != null) _submit(pin, merchantState);
-    }
-  }
-
-  Future<void> _submit(String pin, MerchantState merchantState) async {
-    await _billersNotifier.purchaseService(
-      mobileDto: MobileDto(
-        isMerchantPayment: true,
-        amount: _formatter.getUnformattedValue(),
-        merchantAccount: _billers?.operatorpublicid,
-        merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
-        merchantService: _cableService?.code,
-        transactionPin: pin,
-        subCategory: _billers?.displayName,
-        category: ServiceCategory.education,
-        applyDiscount: false,
-      ),
-      onSuccess: () => PageRouter.pushNamed(
-        Routes.successState,
-        args: SuccessStateArguments(
-            title: AppString.rechargeSuccessful,
-            message: AppString.completedElectricityPurchase,
-            btnTitle: AppString.complete,
-            tap: () => PageRouter.popToRoot(Routes.educationView)),
-      ),
-      cancelToken: _cancelToken,
-    );
-  }
 
   void _onProviderTextFieldTapped() {
     BottomSheets.showSheet(child: const ProvidersSheet()).then((response) {
@@ -345,6 +286,10 @@ class _EducationViewState extends ConsumerState<EducationView>
             amount: _formatter.getUnformattedValue(),
             cashBack: 0,
             fee: 0),
+        biometricVerification: (pin) {
+          _submitForActualUser(pin: pin);
+          return;
+        },
       ),
     );
 

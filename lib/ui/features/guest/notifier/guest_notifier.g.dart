@@ -6,7 +6,7 @@ part of 'guest_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$guestNotifierHash() => r'175951497eefc4943d13f8111106a188631f7721';
+String _$guestNotifierHash() => r'0420e2d440c025ce6be527d935941cc78c1c50bb';
 
 /// See also [GuestNotifier].
 @ProviderFor(GuestNotifier)

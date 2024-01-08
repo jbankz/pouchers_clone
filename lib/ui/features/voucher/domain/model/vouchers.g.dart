@@ -65,7 +65,9 @@ class VouchersAdapter extends TypeAdapter<_$VouchersImpl> {
 _$VouchersImpl _$$VouchersImplFromJson(Map<String, dynamic> json) =>
     _$VouchersImpl(
       code: json['code'] as String?,
-      amount: json['amount'] as num? ?? 0,
+      amount: json['amount'] == null
+          ? 0
+          : const StringToNumSerializer().fromJson(json['amount']),
       buyerId: json['buyer_id'] as String?,
       gifteeId: json['giftee_id'] as String?,
       status: $enumDecodeNullable(_$VoucherStatusEnumMap, json['status']) ??
@@ -78,7 +80,7 @@ _$VouchersImpl _$$VouchersImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$VouchersImplToJson(_$VouchersImpl instance) =>
     <String, dynamic>{
       'code': instance.code,
-      'amount': instance.amount,
+      'amount': const StringToNumSerializer().toJson(instance.amount),
       'buyer_id': instance.buyerId,
       'giftee_id': instance.gifteeId,
       'status': _$VoucherStatusEnumMap[instance.status]!,

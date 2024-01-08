@@ -11,14 +11,19 @@ import 'package:hive_flutter/adapters.dart';
 
 import '../../../../../common/app_strings.dart';
 import '../../../../payment/domain/dto/debit_card_dto.dart';
+import '../../../../profile/presentation/views/biometric/biometric_verification_view.dart';
 import '../../../../profile/presentation/views/wallet/widget/balance_indicator_widget.dart';
 import '../../../domain/dto/summary_dto.dart';
 import '../widget/utility_icon.dart';
 
 class SummaryWidget extends StatefulWidget {
-  const SummaryWidget({super.key, required this.summaryDto});
+  const SummaryWidget(
+      {super.key,
+      required this.summaryDto,
+      required this.biometricVerification});
 
   final SummaryDto summaryDto;
+  final Function(String pin) biometricVerification;
 
   @override
   State<SummaryWidget> createState() => _SummaryWidgetState();
@@ -33,7 +38,7 @@ class _SummaryWidgetState extends State<SummaryWidget> {
   Widget build(BuildContext context) => ValueListenableBuilder<Box>(
         valueListenable: walletDao.getListenable(),
         builder: (_, box, __) {
-          final bool isAffordable = (widget.summaryDto.amount ?? 0) >
+          final bool isNotAffordable = (widget.summaryDto.amount ?? 0) >
               num.parse(walletDao.retrieve(box).balance ?? '0');
 
           return SafeArea(
@@ -51,7 +56,10 @@ class _SummaryWidgetState extends State<SummaryWidget> {
                     if (!widget.summaryDto.isGuest) _buildBalanceIndicator(),
                     const Gap(height: 35),
                     if (widget.summaryDto.isGuest) _buildPaymentOptions(),
-                    _buildProceedButton(isAffordable),
+                    BiometricVerification(
+                        isNotAffordable: isNotAffordable,
+                        callback: widget.biometricVerification),
+                    _buildProceedButton(isNotAffordable),
                   ],
                 ),
               ],
@@ -59,21 +67,6 @@ class _SummaryWidgetState extends State<SummaryWidget> {
           );
         },
       );
-
-  // Widget _buildImage() => Container(
-  //       height: 70.h,
-  //       width: 70.w,
-  //       decoration: const BoxDecoration(
-  //         shape: BoxShape.circle,
-  //         color: AppColors.paleLavenderGray,
-  //       ),
-  //       child: CachedNetworkImage(
-  //         height: 34.h,
-  //         width: 34.w,
-  //         imageUrl: widget.summaryDto.imageUrl ?? '',
-  //         errorWidget: (_, __, ___) => const SizedBox.shrink(),
-  //       ),
-  //     );
 
   Widget _buildImage() => UtitlityIcon(image: widget.summaryDto.imageUrl ?? '');
 
@@ -224,14 +217,5 @@ class _SummaryWidgetState extends State<SummaryWidget> {
                 amount: widget.summaryDto.amount?.toNaira)) as DebitCardDto?;
 
     PageRouter.pop(response);
-
-    // if (response != null) {
-    //   PageRouter.pushNamed(Routes.successState,
-    //       args: SuccessStateArguments(
-    //           title: AppString.rechargeSuccessful,
-    //           message: AppString.completedAirtimePurchase,
-    //           btnTitle: AppString.proceed,
-    //           tap: () => PageRouter.popToRoot(Routes.guestView)));
-    // }
   }
 }

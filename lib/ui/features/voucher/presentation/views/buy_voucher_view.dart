@@ -1,5 +1,6 @@
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/features/authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import 'package:Pouchers/ui/features/profile/data/dao/wallet_dao.dart';
 import 'package:Pouchers/ui/features/voucher/domain/dto/voucher_dto.dart';
 import 'package:Pouchers/ui/features/voucher/presentation/notifier/vouchers_notifier.dart';
 import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
@@ -12,10 +13,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked_annotations.dart';
 
+import '../../../../../app/core/router/page_router.dart';
 import '../../../../../utils/field_validator.dart';
 import '../../../../../utils/formatters/currency_formatter.dart';
 import '../../../../common/app_strings.dart';
 import '../../../../widgets/edit_text_field_with.dart';
+import '../../../profile/presentation/views/biometric/biometric_verification_view.dart';
 import 'buy_voucher_view.form.dart';
 
 @FormView(fields: [FormTextField(name: 'amount')])
@@ -122,14 +125,22 @@ class _BuyVoucherViewState extends ConsumerState<BuyVoucherView>
                 ),
               ),
               const Gap(height: 16),
+              BiometricVerification(
+                  isNotAffordable: _formatter.getUnformattedValue() >
+                      (num.parse(walletDao.wallet.balance ?? '0')),
+                  popScreenWhenVerificationCompletes: false,
+                  callback: (pin) => _submitRequest(pin)),
               ElevatedButtonWidget(
                   title: AppString.buyVoucher,
                   loading: voucherState.isBusy,
-                  onPressed: () {
-                    if (!_formKey.currentState!.validate()) return;
+                  onPressed: _formatter.getUnformattedValue() >
+                          (num.parse(walletDao.wallet.balance ?? '0'))
+                      ? null
+                      : () {
+                          if (!_formKey.currentState!.validate()) return;
 
-                    _submitData();
-                  })
+                          _submitData();
+                        })
             ],
           ),
         ),
@@ -175,14 +186,22 @@ class _BuyVoucherViewState extends ConsumerState<BuyVoucherView>
       );
 
   void _submitData() {
+    // _vouchersNotifier.buyVoucher(
+    //     VoucherDto(
+    //         amount: _formatter.getUnformattedValue(),
+    //         transactionPin: value),
+    //     cancelToken: _cancelToken);
     BottomSheets.showSheet(child: const PinConfirmationSheet()).then((value) {
-      if (value != null) {
-        _vouchersNotifier.buyVoucher(
-            VoucherDto(
-                amount: _formatter.getUnformattedValue(),
-                transactionPin: value),
-            cancelToken: _cancelToken);
-      }
+      if (value != null) _submitRequest(value);
     });
+  }
+
+  void _submitRequest(String pin) {
+    if (!_formKey.currentState!.validate()) return;
+
+    _vouchersNotifier.buyVoucher(
+        VoucherDto(
+            amount: _formatter.getUnformattedValue(), transactionPin: pin),
+        cancelToken: _cancelToken);
   }
 }

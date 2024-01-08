@@ -23,6 +23,7 @@ mixin _$Vouchers {
   @HiveField(0)
   String? get code => throw _privateConstructorUsedError;
   @HiveField(1)
+  @StringToNumSerializer()
   num get amount => throw _privateConstructorUsedError;
   @HiveField(2)
   @JsonKey(name: 'buyer_id')
@@ -52,7 +53,7 @@ abstract class $VouchersCopyWith<$Res> {
   @useResult
   $Res call(
       {@HiveField(0) String? code,
-      @HiveField(1) num amount,
+      @HiveField(1) @StringToNumSerializer() num amount,
       @HiveField(2) @JsonKey(name: 'buyer_id') String? buyerId,
       @HiveField(3) @JsonKey(name: 'giftee_id') String? gifteeId,
       @HiveField(4) VoucherStatus status,
@@ -127,7 +128,7 @@ abstract class _$$VouchersImplCopyWith<$Res>
   @useResult
   $Res call(
       {@HiveField(0) String? code,
-      @HiveField(1) num amount,
+      @HiveField(1) @StringToNumSerializer() num amount,
       @HiveField(2) @JsonKey(name: 'buyer_id') String? buyerId,
       @HiveField(3) @JsonKey(name: 'giftee_id') String? gifteeId,
       @HiveField(4) VoucherStatus status,
@@ -196,7 +197,7 @@ class __$$VouchersImplCopyWithImpl<$Res>
 class _$VouchersImpl implements _Vouchers {
   _$VouchersImpl(
       {@HiveField(0) this.code,
-      @HiveField(1) this.amount = 0,
+      @HiveField(1) @StringToNumSerializer() this.amount = 0,
       @HiveField(2) @JsonKey(name: 'buyer_id') this.buyerId,
       @HiveField(3) @JsonKey(name: 'giftee_id') this.gifteeId,
       @HiveField(4) this.status = VoucherStatus.inactive,
@@ -215,6 +216,7 @@ class _$VouchersImpl implements _Vouchers {
   @override
   @JsonKey()
   @HiveField(1)
+  @StringToNumSerializer()
   final num amount;
   @override
   @HiveField(2)
@@ -282,7 +284,7 @@ class _$VouchersImpl implements _Vouchers {
 abstract class _Vouchers implements Vouchers {
   factory _Vouchers(
       {@HiveField(0) final String? code,
-      @HiveField(1) final num amount,
+      @HiveField(1) @StringToNumSerializer() final num amount,
       @HiveField(2) @JsonKey(name: 'buyer_id') final String? buyerId,
       @HiveField(3) @JsonKey(name: 'giftee_id') final String? gifteeId,
       @HiveField(4) final VoucherStatus status,
@@ -300,6 +302,7 @@ abstract class _Vouchers implements Vouchers {
   String? get code;
   @override
   @HiveField(1)
+  @StringToNumSerializer()
   num get amount;
   @override
   @HiveField(2)

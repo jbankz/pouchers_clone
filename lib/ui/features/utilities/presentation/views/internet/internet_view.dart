@@ -251,30 +251,6 @@ class _InternetViewState extends ConsumerState<InternetView>
   bool _isProceedButtonEnabled(BillersState billerState) =>
       _billers != null && formKey.currentState?.validate() == true;
 
-  Future<void> _onProceedButtonPressed(BillersState billerState) async {
-    final feedback = await Sheets.showSheet(
-      child: SummaryWidget(
-        summaryDto: SummaryDto(
-          isGuest: billerState.isGuest,
-          recipientWidget: _buildRecipientWidget(billerState),
-          title: _billers?.name,
-          imageUrl: _billers?.logoUrl,
-          recipient: numberController.text,
-          amount: _cableService?.price ?? 0,
-          cashBack: 0,
-          fee: 0,
-        ),
-      ),
-    ) as bool?;
-
-    if (feedback != null && feedback) {
-      final pin = await BottomSheets.showSheet(
-        child: const PinConfirmationSheet(),
-      ) as String?;
-      if (pin != null) _submit(pin);
-    }
-  }
-
   Widget _buildRecipientWidget(BillersState billerState) => Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -294,32 +270,6 @@ class _InternetViewState extends ConsumerState<InternetView>
           ),
         ],
       );
-
-  Future<void> _submit(String pin) async {
-    await _billersNotifier.purchaseService(
-      mobileDto: MobileDto(
-          isMerchantPayment: true,
-          amount: _cableService?.price,
-          merchantAccount: _billers?.operatorpublicid,
-          merchantReferenceNumber:
-              ref.watch(billersNotifierProvider).cableService?.referenceNumber,
-          merchantService: _cableService?.code,
-          transactionPin: pin,
-          subCategory: _billers?.displayName,
-          category: ServiceCategory.internet,
-          applyDiscount: false),
-      onSuccess: () => PageRouter.pushNamed(
-        Routes.successState,
-        args: SuccessStateArguments(
-          title: AppString.rechargeSuccessful,
-          message: AppString.completedCablePurchase,
-          btnTitle: AppString.complete,
-          tap: () => PageRouter.popToRoot(Routes.internetView),
-        ),
-      ),
-      cancelToken: _cancelToken,
-    );
-  }
 
   Future<void> _validateCustomer() async {
     await _billersNotifier.validateCustomerInfo(
@@ -440,6 +390,10 @@ class _InternetViewState extends ConsumerState<InternetView>
           cashBack: 0,
           fee: 0,
         ),
+        biometricVerification: (pin) {
+          _submitForActualUser(pin: pin);
+          return;
+        },
       ),
     );
 

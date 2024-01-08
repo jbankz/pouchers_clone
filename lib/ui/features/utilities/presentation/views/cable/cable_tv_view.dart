@@ -294,6 +294,10 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
           cashBack: 0,
           fee: 0,
         ),
+        biometricVerification: (pin) {
+          _submitForActualUser(pin: pin);
+          return;
+        },
       ),
     );
 

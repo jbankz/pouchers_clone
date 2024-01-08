@@ -93,7 +93,6 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
-    final guestState = ref.watch(guestNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(AppString.electricity)),
@@ -433,6 +432,10 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
           cashBack: 0,
           fee: 0,
         ),
+        biometricVerification: (pin) {
+          _submitForActualUser(pin: pin);
+          return;
+        },
       ),
     );
 

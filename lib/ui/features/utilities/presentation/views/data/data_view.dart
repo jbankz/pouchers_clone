@@ -281,6 +281,10 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
             amount: _mobileOperatorServices?.servicePrice,
             cashBack: _airtimeTopDeals?.cashBack,
             fee: 0),
+        biometricVerification: (pin) {
+          _submitForActualUser(pin: pin);
+          return;
+        },
       ),
     );
 

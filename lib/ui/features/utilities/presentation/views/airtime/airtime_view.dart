@@ -274,6 +274,10 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
           cashBack: _airtimeTopDeals?.cashBack,
           fee: 0,
         ),
+        biometricVerification: (pin) {
+          _submitForActualUser(pin: pin);
+          return;
+        },
       ),
     );
 

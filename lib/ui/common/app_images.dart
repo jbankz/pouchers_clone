@@ -144,4 +144,5 @@ class AppImage {
   static String recycle = "${_iconPath}recycle.svg";
   static String gallery = "${_iconPath}gallery.svg";
   static String searchContact = "${_iconPath}search_contact.svg";
+  static String mingcuteFaceid = "${_iconPath}mingcute_faceid.svg";
 }
