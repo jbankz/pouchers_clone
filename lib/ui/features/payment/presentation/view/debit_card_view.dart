@@ -77,6 +77,7 @@ class _DebitCardViewState extends State<DebitCardView> with $DebitCardView {
                       ),
                       const Gap(height: 35),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
                             child: EditTextFieldWidget(

@@ -5,7 +5,6 @@ import 'package:Pouchers/ui/features/profile/data/dao/wallet_dao.dart';
 import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/utils/extension.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -99,6 +98,7 @@ class _SummaryWidgetState extends State<SummaryWidget> {
             _buildRow('Amount', widget.summaryDto.amount?.toNaira ?? ''),
             const Gap(height: 22),
             _buildRow('Fee', widget.summaryDto.fee?.toNaira ?? ''),
+            const Gap(height: 22),
             if (!widget.summaryDto.isGuest)
               _buildRow('Cashback', widget.summaryDto.cashBack?.toNaira ?? ''),
           ],
@@ -223,13 +223,15 @@ class _SummaryWidgetState extends State<SummaryWidget> {
             args: UssdViewArguments(
                 amount: widget.summaryDto.amount?.toNaira)) as DebitCardDto?;
 
-    if (response != null) {
-      PageRouter.pushNamed(Routes.successState,
-          args: SuccessStateArguments(
-              title: AppString.rechargeSuccessful,
-              message: AppString.completedAirtimePurchase,
-              btnTitle: AppString.proceed,
-              tap: () => PageRouter.popToRoot(Routes.guestView)));
-    }
+    PageRouter.pop(response);
+
+    // if (response != null) {
+    //   PageRouter.pushNamed(Routes.successState,
+    //       args: SuccessStateArguments(
+    //           title: AppString.rechargeSuccessful,
+    //           message: AppString.completedAirtimePurchase,
+    //           btnTitle: AppString.proceed,
+    //           tap: () => PageRouter.popToRoot(Routes.guestView)));
+    // }
   }
 }

@@ -25,12 +25,16 @@ import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import '../../../../dashboard/views/card/domain/enum/currency.dart';
+import '../../../../dashboard/views/card/presentation/notifier/module/module.dart';
 import '../../../../guest/notifier/guest_notifier.dart';
+import '../../../../payment/domain/dto/debit_card_dto.dart';
 import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/airtime_top_deals.dart';
 import '../../../domain/model/billers.dart';
 import '../../../domain/model/mobile_data_services.dart';
 import '../../notifier/billers_notifier.dart';
+import '../../state/billers_state.dart';
 import '../sheet/summary_sheet.dart';
 import '../widget/scheduling_widget.dart';
 import '../widget/utility_icon.dart';
@@ -193,26 +197,28 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                         : () async {
                             if (!formKey.currentState!.validate()) return;
 
-                            final feedback = await BottomSheets.showSheet(
-                                child: SummaryWidget(
-                                    summaryDto: SummaryDto(
-                                        isGuest: billerState.isGuest,
-                                        title: _billers?.displayName,
-                                        imageUrl: _billers?.logoUrl,
-                                        recipient: phoneController.text,
-                                        amount: _mobileOperatorServices
-                                            ?.servicePrice,
-                                        cashBack: _airtimeTopDeals?.cashBack,
-                                        fee: 0))) as bool?;
+                            await _handlePayment(billerState);
 
-                            if (feedback != null && feedback) {
-                              final pin = await BottomSheets.showSheet(
-                                      child: const PinConfirmationSheet())
-                                  as String?;
-                              if (pin != null) {
-                                _submit(pin);
-                              }
-                            }
+                            // final feedback = await BottomSheets.showSheet(
+                            //     child: SummaryWidget(
+                            //         summaryDto: SummaryDto(
+                            //             isGuest: billerState.isGuest,
+                            //             title: _billers?.displayName,
+                            //             imageUrl: _billers?.logoUrl,
+                            //             recipient: phoneController.text,
+                            //             amount: _mobileOperatorServices
+                            //                 ?.servicePrice,
+                            //             cashBack: _airtimeTopDeals?.cashBack,
+                            //             fee: 0))) as bool?;
+
+                            // if (feedback != null && feedback) {
+                            //   final pin = await BottomSheets.showSheet(
+                            //           child: const PinConfirmationSheet())
+                            //       as String?;
+                            //   if (pin != null) {
+                            //     _submit(pin);
+                            //   }
+                            // }
                           })
               ],
             ),
@@ -241,4 +247,76 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
               btnTitle: AppString.proceed,
               tap: () => PageRouter.popToRoot(Routes.dataView))),
       cancelToken: _cancelToken);
+
+  Future<void> _submitForGuest(dynamic feedback) async {
+    final guest = ref.watch(paramModule);
+    final bool isCardPayment =
+        (feedback is DebitCardDto? && feedback?.bank == null);
+
+    _billersNotifier.purchaseServiceForGuest(
+        isCardPayment: isCardPayment,
+        mobileDto: MobileDto(
+            category: ServiceCategory.data,
+            subCategory: _billers?.displayName,
+            amount: _mobileOperatorServices?.servicePrice,
+            mobileOperatorPublicId: _billers?.operatorpublicid,
+            mobileOperatorServiceId:
+                _mobileOperatorServices?.serviceId.toString() ?? '',
+            currency: Currency.NGN,
+            email: guest.customerEmail,
+            phoneNumber: phoneController.text,
+            payer: Payer(email: guest.customerEmail, name: guest.customerName),
+            bank: feedback?.bank),
+        cancelToken: _cancelToken);
+  }
+
+  Future<void> _handlePayment(BillersState billerState) async {
+    final feedback = await BottomSheets.showSheet(
+      child: SummaryWidget(
+        summaryDto: SummaryDto(
+            isGuest: billerState.isGuest,
+            title: _billers?.displayName,
+            imageUrl: _billers?.logoUrl,
+            recipient: phoneController.text,
+            amount: _mobileOperatorServices?.servicePrice,
+            cashBack: _airtimeTopDeals?.cashBack,
+            fee: 0),
+      ),
+    );
+
+    if (feedback != null) {
+      if (billerState.isGuest) {
+        // Handle for guest
+        // You can add guest-specific logic here
+        _submitForGuest(feedback);
+      } else if (feedback is bool && feedback) {
+        // Handle for actual user
+        final pin = await BottomSheets.showSheet(
+          child: const PinConfirmationSheet(),
+        ) as String?;
+        if (pin != null) _submitForActualUser(pin: pin);
+      }
+    }
+  }
+
+  Future<void> _submitForActualUser({String? pin}) =>
+      _billersNotifier.purchaseService(
+          mobileDto: MobileDto(
+              category: ServiceCategory.data,
+              subCategory: _billers?.displayName,
+              amount: _mobileOperatorServices?.servicePrice,
+              destinationPhoneNumber: phoneController.text,
+              mobileOperatorPublicId: _billers?.operatorpublicid,
+              applyDiscount: false,
+              mobileOperatorServiceId:
+                  _mobileOperatorServices?.serviceId.toString() ?? '',
+              isDataBundle: true,
+              transactionPin: pin),
+          onSuccess: () => PageRouter.pushNamed(Routes.successState,
+              args: SuccessStateArguments(
+                  title: AppString.rechargeSuccessful,
+                  message: AppString.completedAirtimePurchase,
+                  btnTitle: AppString.complete,
+                  tap: () => PageRouter.popToRoot(Routes.dataView))),
+          cancelToken: _cancelToken);
 }

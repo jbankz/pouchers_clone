@@ -3,6 +3,7 @@ import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/airtime_top_deals.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/billers.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/cable_service.dart';
+import 'package:Pouchers/ui/features/utilities/domain/model/guest_services_purchase.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/mobile_data_services.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/schedule.dart';
@@ -27,7 +28,7 @@ class BillersSourceImpl implements BillerSource {
         path: '${ApiPath.billers}/${billersDto.billersCategory?.name}',
         requestType: RequestType.get,
         cancelToken: cancelToken);
-    return (response.data?['data'] as List<dynamic>)
+    return (response.data?['data']?['billers'] as List<dynamic>)
         .map((e) => Billers.fromJson(e as Map<String, dynamic>))
         .toList();
   }
@@ -100,7 +101,6 @@ class BillersSourceImpl implements BillerSource {
         requestType: RequestType.get,
         cancelToken: cancelToken);
 
-        
     return GetCableService.fromJson(
         response.data?['data'] as Map<String, dynamic>);
   }
@@ -114,6 +114,30 @@ class BillersSourceImpl implements BillerSource {
         data: billersDto.toJson(),
         cancelToken: cancelToken);
     return ValidateCustomer.fromJson(
+        response.data?['data'] as Map<String, dynamic>);
+  }
+
+  @override
+  Future<GuestServicesPurchase> guestCardPayment(MobileDto billersDto,
+      {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.guestCardPayment,
+        requestType: RequestType.post,
+        data: billersDto.toJson(),
+        cancelToken: cancelToken);
+    return GuestServicesPurchase.fromJson(
+        response.data?['data'] as Map<String, dynamic>);
+  }
+
+  @override
+  Future<GuestServicesPurchase> guestUSSDPayment(MobileDto billersDto,
+      {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.guestUssdPayment,
+        requestType: RequestType.post,
+        data: billersDto.toJson(),
+        cancelToken: cancelToken);
+    return GuestServicesPurchase.fromJson(
         response.data?['data'] as Map<String, dynamic>);
   }
 }

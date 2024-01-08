@@ -1,3 +1,5 @@
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
+
 import '../enum/service_category.dart';
 
 class MobileDto {
@@ -18,6 +20,11 @@ class MobileDto {
   final bool isMerchantPayment;
   final bool makeMerchantServiceArray;
   final String? note;
+  final String? email;
+  final String? phoneNumber;
+  final Payer? payer;
+  final Currency? currency;
+  final String? bank;
 
   MobileDto({
     this.category,
@@ -37,6 +44,11 @@ class MobileDto {
     this.makeMerchantServiceArray = true,
     this.tag,
     this.note,
+    this.email,
+    this.payer,
+    this.currency,
+    this.phoneNumber,
+    this.bank,
   });
 
   Map<String, dynamic> toJson() {
@@ -90,6 +102,38 @@ class MobileDto {
     if (note != null) {
       result.addAll({'note': note});
     }
+    if (payer != null) {
+      result.addAll({'payer': payer?.toJson()});
+    }
+    if (email != null) {
+      result.addAll({'email': email});
+    }
+    if (currency != null) {
+      result.addAll({'currency': currency?.name});
+    }
+    if (phoneNumber != null) {
+      result.addAll({'phone_number': phoneNumber});
+    }
+    if (bank != null) {
+      result.addAll({'bank': bank});
+    }
+    return result;
+  }
+}
+
+class Payer {
+  final String? name;
+  final String? email;
+
+  Payer({this.name, this.email});
+
+  Map<String, dynamic> toJson() {
+    final result = <String, dynamic>{};
+
+    if (name != null) result.addAll({'name': name});
+
+    if (email != null) result.addAll({'email': email});
+
     return result;
   }
 }

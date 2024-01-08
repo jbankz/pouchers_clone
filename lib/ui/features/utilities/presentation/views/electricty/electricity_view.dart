@@ -18,13 +18,15 @@ import '../../../../../../utils/formatters/currency_formatter.dart';
 import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_images.dart';
 import '../../../../../common/app_strings.dart';
-import '../../../../../widgets/bottom_sheet.dart';
 import '../../../../../widgets/dialog/bottom_sheet.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import '../../../../dashboard/views/card/domain/enum/currency.dart';
+import '../../../../dashboard/views/card/presentation/notifier/module/module.dart';
 import '../../../../guest/notifier/guest_notifier.dart';
+import '../../../../payment/domain/dto/debit_card_dto.dart';
 import '../../../domain/dto/billers_dto.dart';
 import '../../../domain/dto/mobile_dto.dart';
 import '../../../domain/dto/summary_dto.dart';
@@ -66,8 +68,8 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
 
   bool _beneficiary = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final CurrencyFormatter _formatter = CurrencyFormatter(
-      enableNegative: false, name: '', symbol: '', decimalDigits: 0);
+  final CurrencyFormatter _formatter =
+      CurrencyFormatter(enableNegative: false, name: '', symbol: '');
 
   @override
   void initState() {
@@ -125,7 +127,8 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
                           readOnly: billerState.isPurchasing,
                           keyboardType: TextInputType.number,
                           onFieldSubmitted: (_) {},
-                          validator: FieldValidator.validateAmount(),
+                          validator:
+                              FieldValidator.validateAmount(minAmount: 500),
                           prefix: IconButton(
                               onPressed: () {},
                               icon: Text(AppString.nairaSymbol,
@@ -148,7 +151,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
                   title: AppString.proceed,
                   loading: billerState.isPurchasing,
                   onPressed: _isProceedButtonEnabled(billerState)
-                      ? () => _onProceedButtonPressed(billerState)
+                      ? () => _handlePayment(billerState)
                       : null,
                 ),
               ],
@@ -287,30 +290,6 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
       billerState.validateCustomerInfo?.customerName != null &&
       formKey.currentState?.validate() == true;
 
-  Future<void> _onProceedButtonPressed(BillersState billerState) async {
-    final feedback = await Sheets.showSheet(
-      child: SummaryWidget(
-        summaryDto: SummaryDto(
-          isGuest: billerState.isGuest,
-          recipientWidget: _buildRecipientWidget(billerState),
-          title: _billers?.name,
-          imageUrl: _billers?.logoUrl,
-          recipient: numberController.text,
-          amount: _formatter.getUnformattedValue(),
-          cashBack: 0,
-          fee: 0,
-        ),
-      ),
-    ) as bool?;
-
-    if (feedback != null && feedback) {
-      final pin =
-          await BottomSheets.showSheet(child: const PinConfirmationSheet())
-              as String?;
-      if (pin != null) _submit(pin);
-    }
-  }
-
   Widget _buildRecipientWidget(BillersState billerState) => Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -330,32 +309,6 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
           ),
         ],
       );
-
-  Future<void> _submit(String pin) async {
-    await _billersNotifier.purchaseService(
-      mobileDto: MobileDto(
-        isMerchantPayment: true,
-        amount: _formatter.getUnformattedValue(),
-        merchantAccount: _billers?.operatorpublicid,
-        merchantReferenceNumber:
-            ref.watch(billersNotifierProvider).cableService?.referenceNumber,
-        merchantService: _cableService?.code,
-        transactionPin: pin,
-        subCategory: _billers?.displayName,
-        category: ServiceCategory.cable,
-        applyDiscount: false,
-      ),
-      onSuccess: () => PageRouter.pushNamed(
-        Routes.successState,
-        args: SuccessStateArguments(
-            title: AppString.rechargeSuccessful,
-            message: AppString.completedElectricityPurchase,
-            btnTitle: AppString.complete,
-            tap: () => PageRouter.popToRoot(Routes.electricityView)),
-      ),
-      cancelToken: _cancelToken,
-    );
-  }
 
   Future<void> _validateCustomer() async {
     await _billersNotifier.validateCustomerInfo(
@@ -398,8 +351,8 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
     if (response != null) {
       _cableService = response;
       subscriptionTypeController.text = response.name ?? '';
-      amountController.text =
-          _formatter.format(_cableService?.price.toString() ?? '');
+      amountController.text = _cableService?.price.toString() ?? '';
+      // _formatter.format(_cableService?.price.toString() ?? '');
       numberFocusNode.requestFocus();
     }
     setState(() {});
@@ -416,5 +369,87 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
         _validateCustomer();
       }
     });
+  }
+
+  Future<void> _submitForActualUser({String? pin}) =>
+      _billersNotifier.purchaseService(
+          mobileDto: MobileDto(
+              isMerchantPayment: true,
+              amount: _formatter.getUnformattedValue(),
+              merchantAccount: _billers?.operatorpublicid,
+              merchantReferenceNumber: ref
+                  .watch(billersNotifierProvider)
+                  .cableService
+                  ?.referenceNumber,
+              merchantService: _cableService?.code,
+              transactionPin: pin,
+              subCategory: _billers?.displayName,
+              category: ServiceCategory.cable,
+              applyDiscount: false),
+          onSuccess: () => PageRouter.pushNamed(Routes.successState,
+              args: SuccessStateArguments(
+                  title: AppString.rechargeSuccessful,
+                  message: AppString.completedAirtimePurchase,
+                  btnTitle: AppString.complete,
+                  tap: () => PageRouter.popToRoot(Routes.electricityView))),
+          cancelToken: _cancelToken);
+
+  Future<void> _submitForGuest(dynamic feedback) async {
+    final guest = ref.watch(paramModule);
+    final bool isCardPayment =
+        (feedback is DebitCardDto? && feedback?.bank == null);
+
+    _billersNotifier.purchaseServiceForGuest(
+        isCardPayment: isCardPayment,
+        mobileDto: MobileDto(
+            isMerchantPayment: true,
+            amount: _formatter.getUnformattedValue(),
+            merchantAccount: _billers?.operatorpublicid,
+            merchantReferenceNumber: ref
+                .watch(billersNotifierProvider)
+                .cableService
+                ?.referenceNumber,
+            merchantService: _cableService?.code,
+            subCategory: _billers?.displayName,
+            makeMerchantServiceArray: false,
+            category: ServiceCategory.cable,
+            currency: Currency.NGN,
+            email: guest.customerEmail,
+            payer: Payer(email: guest.customerEmail, name: guest.customerName),
+            bank: feedback?.bank),
+        cancelToken: _cancelToken);
+  }
+
+  Future<void> _handlePayment(BillersState billerState) async {
+    final feedback = await BottomSheets.showSheet(
+      child: SummaryWidget(
+        summaryDto: SummaryDto(
+          isGuest: billerState.isGuest,
+          recipientWidget: _buildRecipientWidget(billerState),
+          title: _billers?.name,
+          imageUrl: _billers?.logoUrl,
+          recipient: numberController.text,
+          amount: _formatter.getUnformattedValue(),
+          cashBack: 0,
+          fee: 0,
+        ),
+      ),
+    );
+
+    if (feedback != null) {
+      if (billerState.isGuest) {
+        // Handle for guest
+        // You can add guest-specific logic here
+        _submitForGuest(feedback);
+      } else if (feedback is bool && feedback) {
+        // Handle for actual user
+        final pin = await BottomSheets.showSheet(
+          child: const PinConfirmationSheet(),
+        ) as String?;
+        if (pin != null) {
+          _submitForActualUser(pin: pin);
+        }
+      }
+    }
   }
 }

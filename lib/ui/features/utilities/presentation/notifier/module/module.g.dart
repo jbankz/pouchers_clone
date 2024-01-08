@@ -1075,5 +1075,305 @@ class _ValidateCustomerInfoProviderElement
   CancelToken? get cancelToken =>
       (origin as ValidateCustomerInfoProvider).cancelToken;
 }
+
+String _$guestCardPaymentHash() => r'a30a544adbf40c0dcd3de552ea045e03ac4ffa76';
+
+/// See also [guestCardPayment].
+@ProviderFor(guestCardPayment)
+const guestCardPaymentProvider = GuestCardPaymentFamily();
+
+/// See also [guestCardPayment].
+class GuestCardPaymentFamily extends Family<AsyncValue<GuestServicesPurchase>> {
+  /// See also [guestCardPayment].
+  const GuestCardPaymentFamily();
+
+  /// See also [guestCardPayment].
+  GuestCardPaymentProvider call({
+    required MobileDto parameter,
+    CancelToken? cancelToken,
+  }) {
+    return GuestCardPaymentProvider(
+      parameter: parameter,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  GuestCardPaymentProvider getProviderOverride(
+    covariant GuestCardPaymentProvider provider,
+  ) {
+    return call(
+      parameter: provider.parameter,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'guestCardPaymentProvider';
+}
+
+/// See also [guestCardPayment].
+class GuestCardPaymentProvider
+    extends AutoDisposeFutureProvider<GuestServicesPurchase> {
+  /// See also [guestCardPayment].
+  GuestCardPaymentProvider({
+    required MobileDto parameter,
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => guestCardPayment(
+            ref as GuestCardPaymentRef,
+            parameter: parameter,
+            cancelToken: cancelToken,
+          ),
+          from: guestCardPaymentProvider,
+          name: r'guestCardPaymentProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$guestCardPaymentHash,
+          dependencies: GuestCardPaymentFamily._dependencies,
+          allTransitiveDependencies:
+              GuestCardPaymentFamily._allTransitiveDependencies,
+          parameter: parameter,
+          cancelToken: cancelToken,
+        );
+
+  GuestCardPaymentProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.parameter,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final MobileDto parameter;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<GuestServicesPurchase> Function(GuestCardPaymentRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GuestCardPaymentProvider._internal(
+        (ref) => create(ref as GuestCardPaymentRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        parameter: parameter,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<GuestServicesPurchase> createElement() {
+    return _GuestCardPaymentProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GuestCardPaymentProvider &&
+        other.parameter == parameter &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, parameter.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GuestCardPaymentRef
+    on AutoDisposeFutureProviderRef<GuestServicesPurchase> {
+  /// The parameter `parameter` of this provider.
+  MobileDto get parameter;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _GuestCardPaymentProviderElement
+    extends AutoDisposeFutureProviderElement<GuestServicesPurchase>
+    with GuestCardPaymentRef {
+  _GuestCardPaymentProviderElement(super.provider);
+
+  @override
+  MobileDto get parameter => (origin as GuestCardPaymentProvider).parameter;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as GuestCardPaymentProvider).cancelToken;
+}
+
+String _$guestUssdPaymentHash() => r'c2d818cbaf982f5c182b7058a89ee588c574f19e';
+
+/// See also [guestUssdPayment].
+@ProviderFor(guestUssdPayment)
+const guestUssdPaymentProvider = GuestUssdPaymentFamily();
+
+/// See also [guestUssdPayment].
+class GuestUssdPaymentFamily extends Family<AsyncValue<GuestServicesPurchase>> {
+  /// See also [guestUssdPayment].
+  const GuestUssdPaymentFamily();
+
+  /// See also [guestUssdPayment].
+  GuestUssdPaymentProvider call({
+    required MobileDto parameter,
+    CancelToken? cancelToken,
+  }) {
+    return GuestUssdPaymentProvider(
+      parameter: parameter,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  GuestUssdPaymentProvider getProviderOverride(
+    covariant GuestUssdPaymentProvider provider,
+  ) {
+    return call(
+      parameter: provider.parameter,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'guestUssdPaymentProvider';
+}
+
+/// See also [guestUssdPayment].
+class GuestUssdPaymentProvider
+    extends AutoDisposeFutureProvider<GuestServicesPurchase> {
+  /// See also [guestUssdPayment].
+  GuestUssdPaymentProvider({
+    required MobileDto parameter,
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => guestUssdPayment(
+            ref as GuestUssdPaymentRef,
+            parameter: parameter,
+            cancelToken: cancelToken,
+          ),
+          from: guestUssdPaymentProvider,
+          name: r'guestUssdPaymentProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$guestUssdPaymentHash,
+          dependencies: GuestUssdPaymentFamily._dependencies,
+          allTransitiveDependencies:
+              GuestUssdPaymentFamily._allTransitiveDependencies,
+          parameter: parameter,
+          cancelToken: cancelToken,
+        );
+
+  GuestUssdPaymentProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.parameter,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final MobileDto parameter;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<GuestServicesPurchase> Function(GuestUssdPaymentRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GuestUssdPaymentProvider._internal(
+        (ref) => create(ref as GuestUssdPaymentRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        parameter: parameter,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<GuestServicesPurchase> createElement() {
+    return _GuestUssdPaymentProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GuestUssdPaymentProvider &&
+        other.parameter == parameter &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, parameter.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GuestUssdPaymentRef
+    on AutoDisposeFutureProviderRef<GuestServicesPurchase> {
+  /// The parameter `parameter` of this provider.
+  MobileDto get parameter;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _GuestUssdPaymentProviderElement
+    extends AutoDisposeFutureProviderElement<GuestServicesPurchase>
+    with GuestUssdPaymentRef {
+  _GuestUssdPaymentProviderElement(super.provider);
+
+  @override
+  MobileDto get parameter => (origin as GuestUssdPaymentProvider).parameter;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as GuestUssdPaymentProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

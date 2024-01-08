@@ -22,6 +22,8 @@ class GuestNotifier extends _$GuestNotifier {
     PageRouter.pushNamed(Routes.guestView);
   }
 
+  void resetGuest() => _session.isGuest = false;
+
   void setRouteDestination(String route) =>
       PageRouter.pushNamed(Routes.getGuestEmailView,
           args: GetGuestEmailViewArguments(route: route));
@@ -31,6 +33,7 @@ class GuestNotifier extends _$GuestNotifier {
       required String fullName,
       required String email}) {
     state = state.copyWith(fullName: fullName, email: email);
+
     PageRouter.pushNamed(route);
   }
 }

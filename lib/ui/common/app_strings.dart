@@ -540,6 +540,6 @@ class AppString {
   static String beneficiaryTag = 'Beneficiary Poucher Tag';
   static String transactionNumber = 'Transaction Number';
   static String getReceipt = 'Get Receipt';
-
   static String operator = 'Operator';
+  static String serviceUnavailable = 'Service Unavailable';
 }

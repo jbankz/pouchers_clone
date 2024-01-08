@@ -64,6 +64,8 @@ class ApiError {
         }
       case 429:
         message = AppString.tooManyRequest;
+      case 503:
+        message = AppString.serviceUnavailable;
 
       default:
     }

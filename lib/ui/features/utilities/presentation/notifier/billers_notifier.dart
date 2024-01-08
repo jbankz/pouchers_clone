@@ -3,6 +3,7 @@ import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/billers_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
@@ -69,6 +70,8 @@ class BillersNotifier extends _$BillersNotifier {
   Future<void> billersDiscounts(BillersCategory parameter,
       [CancelToken? cancelToken]) async {
     try {
+      if (_session.isGuest) return;
+
       state = state.copyWith(isBusy: true);
 
       _discounts = await ref.read(billersDiscountsProvider
@@ -194,5 +197,34 @@ class BillersNotifier extends _$BillersNotifier {
   void resetCustomerInfo() {
     _validateCustomerInfo = null;
     state = state.copyWith(validateCustomerInfo: _validateCustomerInfo);
+  }
+
+  Future<void> purchaseServiceForGuest(
+      {required bool isCardPayment,
+      required MobileDto mobileDto,
+      CancelToken? cancelToken}) async {
+    try {
+      state = state.copyWith(isPurchasing: true);
+
+      isCardPayment
+          ? await ref.read(guestCardPaymentProvider
+              .call(parameter: mobileDto, cancelToken: cancelToken)
+              .future)
+          : await ref.read(guestUssdPaymentProvider
+              .call(parameter: mobileDto, cancelToken: cancelToken)
+              .future);
+
+      // PageRouter.pushNamed(Routes.successState,
+      //     args: SuccessStateArguments(
+      //         title: AppString.rechargeSuccessful,
+      //         message: AppString.completedAirtimePurchase,
+      //         btnTitle: AppString.proceed,
+      //         tap: () => PageRouter.popToRoot(Routes.guestView)));
+    } catch (e) {
+      _logger.e(e.toString());
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(isPurchasing: false);
+    }
   }
 }

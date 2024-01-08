@@ -7,6 +7,8 @@ import '../airtime_top_deals_usecase.dart';
 import '../billers_usecase.dart';
 import '../cables_service_usecase.dart';
 import '../discounts_usecase.dart';
+import '../guest_card_payment_usecase.dart';
+import '../guest_ussd_payment_usecase.dart';
 import '../mobile_data_services_usecase.dart';
 import '../schedule_usecase.dart';
 import '../utility_usecase.dart';
@@ -38,3 +40,9 @@ final getCableServiceUseCaseModule = Provider<PoucherUseCaseWithRequiredParam>(
 final validateCustomerInfoUseCaseModule =
     Provider<PoucherUseCaseWithRequiredParam>(
         (ref) => ValidateCustomerInfoUseCaseImpl(ref.read(billersRepoModule)));
+
+final guestUssdPaymentUseCaseModule = Provider<PoucherUseCaseWithRequiredParam>(
+    (ref) => GuestUssdPaymentUseCaseImpl(ref.read(billersRepoModule)));
+
+final guestCardPaymentUseCaseModule = Provider<PoucherUseCaseWithRequiredParam>(
+    (ref) => GuestCardPaymentUseCaseImpl(ref.read(billersRepoModule)));

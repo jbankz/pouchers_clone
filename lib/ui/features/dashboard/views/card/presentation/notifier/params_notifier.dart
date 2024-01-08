@@ -19,6 +19,12 @@ class ParamNotifier extends ChangeNotifier {
   String get country => _country;
   String get bvn => _bvn;
 
+  String _customerEmail = '';
+  String _customerName = '';
+
+  String get customerEmail => _customerEmail;
+  String get customerName => _customerName;
+
   CardActivityType _cardActivityType = CardActivityType.creating;
   CardActivityType get cardActivityType => _cardActivityType;
 
@@ -78,6 +84,12 @@ class ParamNotifier extends ChangeNotifier {
 
   void setChangePassword(bool value) {
     _userJustWantsToChangeTherePassword = value;
+    notifyListeners();
+  }
+
+  void setGuestInformations({required String email, required String name}) {
+    _customerEmail = email;
+    _customerName = name;
     notifyListeners();
   }
 }

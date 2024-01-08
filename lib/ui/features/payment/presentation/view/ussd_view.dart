@@ -154,7 +154,7 @@ class _UssdViewState extends State<UssdView> with $UssdView {
                     onPressed: () {
                       if (!formKey.currentState!.validate()) return;
 
-                      PageRouter.pop(DebitCardDto());
+                      PageRouter.pop(DebitCardDto(bank: _attribute?.name));
                     }),
               ],
             ),

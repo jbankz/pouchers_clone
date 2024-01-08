@@ -150,4 +150,9 @@ class ApiPath {
 
   static String transactionsHistory =
       '$_apiVersionOne/user/transaction-history';
+
+  static String guestUssdPayment =
+      '$_apiVersionOne/guest-user/utility/ussd/pay';
+  static String guestCardPayment =
+      '$_apiVersionOne/guest-user/utility/card/pay';
 }

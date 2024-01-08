@@ -22,6 +22,9 @@ import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import '../../../../dashboard/views/card/domain/enum/currency.dart';
+import '../../../../dashboard/views/card/presentation/notifier/module/module.dart';
+import '../../../../payment/domain/dto/debit_card_dto.dart';
 import '../../../domain/dto/billers_dto.dart';
 import '../../../domain/dto/mobile_dto.dart';
 import '../../../domain/dto/summary_dto.dart';
@@ -114,7 +117,7 @@ class _InternetViewState extends ConsumerState<InternetView>
                   title: AppString.proceed,
                   loading: billerState.isPurchasing,
                   onPressed: _isProceedButtonEnabled(billerState)
-                      ? () => _onProceedButtonPressed(billerState)
+                      ? () => _handlePayment(billerState)
                       : null,
                 ),
               ],
@@ -373,5 +376,85 @@ class _InternetViewState extends ConsumerState<InternetView>
         _validateCustomer();
       }
     });
+  }
+
+  Future<void> _submitForActualUser({String? pin}) =>
+      _billersNotifier.purchaseService(
+          mobileDto: MobileDto(
+              isMerchantPayment: true,
+              amount: _cableService?.price,
+              merchantAccount: _billers?.operatorpublicid,
+              merchantReferenceNumber: ref
+                  .watch(billersNotifierProvider)
+                  .cableService
+                  ?.referenceNumber,
+              merchantService: _cableService?.code,
+              transactionPin: pin,
+              subCategory: _billers?.displayName,
+              category: ServiceCategory.internet,
+              applyDiscount: false),
+          onSuccess: () => PageRouter.pushNamed(Routes.successState,
+              args: SuccessStateArguments(
+                  title: AppString.rechargeSuccessful,
+                  message: AppString.completedAirtimePurchase,
+                  btnTitle: AppString.complete,
+                  tap: () => PageRouter.popToRoot(Routes.internetView))),
+          cancelToken: _cancelToken);
+
+  Future<void> _submitForGuest(dynamic feedback) async {
+    final guest = ref.watch(paramModule);
+    final bool isCardPayment =
+        (feedback is DebitCardDto? && feedback?.bank == null);
+
+    _billersNotifier.purchaseServiceForGuest(
+        isCardPayment: isCardPayment,
+        mobileDto: MobileDto(
+            isMerchantPayment: true,
+            amount: _cableService?.price,
+            merchantAccount: _billers?.operatorpublicid,
+            merchantReferenceNumber: ref
+                .watch(billersNotifierProvider)
+                .cableService
+                ?.referenceNumber,
+            merchantService: _cableService?.code,
+            subCategory: _billers?.displayName,
+            makeMerchantServiceArray: false,
+            category: ServiceCategory.internet,
+            currency: Currency.NGN,
+            email: guest.customerEmail,
+            payer: Payer(email: guest.customerEmail, name: guest.customerName),
+            bank: feedback?.bank),
+        cancelToken: _cancelToken);
+  }
+
+  Future<void> _handlePayment(BillersState billerState) async {
+    final feedback = await BottomSheets.showSheet(
+      child: SummaryWidget(
+        summaryDto: SummaryDto(
+          isGuest: billerState.isGuest,
+          recipientWidget: _buildRecipientWidget(billerState),
+          title: _billers?.name,
+          imageUrl: _billers?.logoUrl,
+          recipient: numberController.text,
+          amount: _cableService?.price ?? 0,
+          cashBack: 0,
+          fee: 0,
+        ),
+      ),
+    );
+
+    if (feedback != null) {
+      if (billerState.isGuest) {
+        // Handle for guest
+        // You can add guest-specific logic here
+        _submitForGuest(feedback);
+      } else if (feedback is bool && feedback) {
+        // Handle for actual user
+        final pin = await BottomSheets.showSheet(
+          child: const PinConfirmationSheet(),
+        ) as String?;
+        if (pin != null) _submitForActualUser(pin: pin);
+      }
+    }
   }
 }

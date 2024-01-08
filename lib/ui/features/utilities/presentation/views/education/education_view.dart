@@ -12,7 +12,6 @@ import 'package:stacked/stacked_annotations.dart';
 import '../../../../../../app/app.router.dart';
 import '../../../../../../app/core/router/page_router.dart';
 import '../../../../../../app/core/skeleton/widgets.dart';
-import '../../../../../../modules/utilities/screens/buy_education.dart';
 import '../../../../../../utils/field_validator.dart';
 import '../../../../../../utils/formatters/currency_formatter.dart';
 import '../../../../../common/app_colors.dart';
@@ -23,7 +22,10 @@ import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import '../../../../dashboard/views/card/domain/enum/currency.dart';
+import '../../../../dashboard/views/card/presentation/notifier/module/module.dart';
 import '../../../../merchant/presentation/notifier/merchants_notifier.dart';
+import '../../../../payment/domain/dto/debit_card_dto.dart';
 import '../../../domain/dto/billers_dto.dart';
 import '../../../domain/dto/mobile_dto.dart';
 import '../../../domain/dto/summary_dto.dart';
@@ -94,64 +96,60 @@ class _EducationViewState extends ConsumerState<EducationView>
     final merchantState = ref.watch(merchantsNotifierProvider);
 
     final bool isLoading = billerState.isBusy && merchantState.isBusy;
-    return 2 < 2
-        ? BuyEducation(isGuest: false)
-        : Scaffold(
-            appBar: AppBar(title: Text(AppString.education)),
-            body: SafeArea(
-              minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              child: Skeleton(
-                isLoading: isLoading,
-                skeleton: const EducationSkeleton(),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      appBar: AppBar(title: Text(AppString.education)),
+      body: SafeArea(
+        minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        child: Skeleton(
+          isLoading: isLoading,
+          skeleton: const EducationSkeleton(),
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ListView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
                     children: [
-                      Expanded(
-                        child: ListView(
-                          keyboardDismissBehavior:
-                              ScrollViewKeyboardDismissBehavior.onDrag,
-                          children: [
-                            _buildProviderTextField(billerState),
-                            const Gap(height: 24),
-                            _buildSubscriptionTypeTextField(),
-                            const Gap(height: 24),
-                            EditTextFieldWidget(
-                                title: AppString.amount,
-                                label: AppString.amountInstruction,
-                                controller: amountController,
-                                focusNode: amountFocusNode,
-                                readOnly: true,
-                                keyboardType: TextInputType.number,
-                                onFieldSubmitted: (_) {},
-                                validator: FieldValidator.validateAmount(),
-                                prefix: IconButton(
-                                    onPressed: () {},
-                                    icon: Text(AppString.nairaSymbol,
-                                        style: context.headlineMedium
-                                            ?.copyWith(fontSize: 16))),
-                                inputFormatters: [
-                                  context.digitsOnly,
-                                  _formatter
-                                ]),
-                          ],
-                        ),
-                      ),
-                      const Gap(height: 16),
-                      ElevatedButtonWidget(
-                          title: AppString.proceed,
-                          loading: billerState.isPurchasing,
-                          onPressed: _isProceedButtonEnabled(billerState)
-                              ? () => _onProceedButtonPressed(
-                                  billerState, merchantState)
-                              : null),
+                      _buildProviderTextField(billerState),
+                      const Gap(height: 24),
+                      _buildSubscriptionTypeTextField(),
+                      const Gap(height: 24),
+                      EditTextFieldWidget(
+                          title: AppString.amount,
+                          label: AppString.amountInstruction,
+                          controller: amountController,
+                          focusNode: amountFocusNode,
+                          readOnly: true,
+                          keyboardType: TextInputType.number,
+                          onFieldSubmitted: (_) {},
+                          validator: FieldValidator.validateAmount(),
+                          prefix: IconButton(
+                              onPressed: () {},
+                              icon: Text(AppString.nairaSymbol,
+                                  style: context.headlineMedium
+                                      ?.copyWith(fontSize: 16))),
+                          inputFormatters: [context.digitsOnly, _formatter]),
                     ],
                   ),
                 ),
-              ),
+                const Gap(height: 16),
+                ElevatedButtonWidget(
+                    title: AppString.proceed,
+                    loading: billerState.isPurchasing,
+                    onPressed: _isProceedButtonEnabled(billerState)
+                        ? () =>
+                            // _onProceedButtonPressed(billerState, merchantState)
+                            _handlePayment(billerState)
+                        : null),
+              ],
             ),
-          );
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildProviderTextField(BillersState billerState) =>
@@ -287,5 +285,83 @@ class _EducationViewState extends ConsumerState<EducationView>
           _formatter.format(_cableService?.price.toString() ?? '');
     }
     setState(() {});
+  }
+
+  Future<void> _submitForActualUser({String? pin}) {
+    final MerchantState merchantState = ref.watch(merchantsNotifierProvider);
+    return _billersNotifier.purchaseService(
+        mobileDto: MobileDto(
+          isMerchantPayment: true,
+          amount: _formatter.getUnformattedValue(),
+          merchantAccount: _billers?.operatorpublicid,
+          merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
+          merchantService: _cableService?.code,
+          transactionPin: pin,
+          subCategory: _billers?.displayName,
+          category: ServiceCategory.education,
+          applyDiscount: false,
+        ),
+        onSuccess: () => PageRouter.pushNamed(Routes.successState,
+            args: SuccessStateArguments(
+                title: AppString.rechargeSuccessful,
+                message: AppString.completedAirtimePurchase,
+                btnTitle: AppString.complete,
+                tap: () => PageRouter.popToRoot(Routes.educationView))),
+        cancelToken: _cancelToken);
+  }
+
+  Future<void> _submitForGuest(dynamic feedback) async {
+    final guest = ref.watch(paramModule);
+    final MerchantState merchantState = ref.watch(merchantsNotifierProvider);
+    final bool isCardPayment =
+        (feedback is DebitCardDto? && feedback?.bank == null);
+
+    _billersNotifier.purchaseServiceForGuest(
+        isCardPayment: isCardPayment,
+        mobileDto: MobileDto(
+            isMerchantPayment: true,
+            amount: _formatter.getUnformattedValue(),
+            merchantAccount: _billers?.operatorpublicid,
+            merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
+            merchantService: _cableService?.code,
+            subCategory: _billers?.displayName,
+            category: ServiceCategory.education,
+            applyDiscount: false,
+            currency: Currency.NGN,
+            email: guest.customerEmail,
+            payer: Payer(email: guest.customerEmail, name: guest.customerName),
+            bank: feedback?.bank),
+        cancelToken: _cancelToken);
+  }
+
+  Future<void> _handlePayment(BillersState billerState) async {
+    final feedback = await BottomSheets.showSheet(
+      child: SummaryWidget(
+        summaryDto: SummaryDto(
+            isGuest: billerState.isGuest,
+            title: _billers?.name,
+            imageUrl: _billers?.logoUrl,
+            recipient: _billers?.displayName,
+            amount: _formatter.getUnformattedValue(),
+            cashBack: 0,
+            fee: 0),
+      ),
+    );
+
+    if (feedback != null) {
+      if (billerState.isGuest) {
+        // Handle for guest
+        // You can add guest-specific logic here
+        _submitForGuest(feedback);
+      } else if (feedback is bool && feedback) {
+        // Handle for actual user
+        final pin = await BottomSheets.showSheet(
+          child: const PinConfirmationSheet(),
+        ) as String?;
+        if (pin != null) {
+          _submitForActualUser(pin: pin);
+        }
+      }
+    }
   }
 }

@@ -1,5 +1,7 @@
+import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/widgets/edit_text_field_with.dart';
 import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
@@ -103,9 +105,12 @@ class _GetGuestEmailViewState extends ConsumerState<GetGuestEmailView>
   void _submit() {
     if (!formKey.currentState!.validate()) return;
 
-    _guestNotifier.setGuestInformation(
-        route: widget.route,
-        fullName: nameController.text,
-        email: emailController.text);
+    ref.read(paramModule).setGuestInformations(
+        email: emailController.text, name: nameController.text);
+    PageRouter.pushNamed(widget.route);
+    // _guestNotifier.setGuestInformation(
+    //     route: widget.route,
+    //     fullName: nameController.text,
+    //     email: emailController.text);
   }
 }

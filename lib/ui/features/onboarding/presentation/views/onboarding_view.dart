@@ -41,6 +41,7 @@ class _OnboardingViewState extends ConsumerState<OnboardingView> {
   void dispose() {
     super.dispose();
     _timerNotifier.dispose();
+    _guestNotifier.resetGuest();
   }
 
   @override

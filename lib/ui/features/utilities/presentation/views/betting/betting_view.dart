@@ -1,10 +1,10 @@
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/merchant/presentation/notifier/merchants_notifier.dart';
 import 'package:Pouchers/ui/features/merchant/presentation/state/merchant_state.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
-import 'package:Pouchers/ui/widgets/bottom_sheet.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
@@ -30,6 +30,8 @@ import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import '../../../../dashboard/views/card/domain/enum/currency.dart';
+import '../../../../payment/domain/dto/debit_card_dto.dart';
 import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/airtime_top_deals.dart';
 import '../../../domain/model/billers.dart';
@@ -160,24 +162,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
                               return;
                             }
 
-                            final feedback = await BottomSheets.showSheet(
-                                child: SummaryWidget(
-                                    summaryDto: SummaryDto(
-                                        isGuest: billerState.isGuest,
-                                        title: _billers?.displayName,
-                                        imageUrl: _billers?.logoUrl,
-                                        recipient: numberController.text,
-                                        amount:
-                                            _formatter.getUnformattedValue(),
-                                        cashBack: _airtimeTopDeals?.cashBack,
-                                        fee: 0))) as bool?;
-
-                            if (feedback != null && feedback) {
-                              final pin = await BottomSheets.showSheet(
-                                      child: const PinConfirmationSheet())
-                                  as String?;
-                              if (pin != null) _submit(pin, merchantState);
-                            }
+                            await _handlePayment(billerState);
                           })
               ],
             ),
@@ -286,4 +271,82 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
                             color: AppColors.kPrimaryColor.withOpacity(.30))),
                   )),
         );
+
+  Future<void> _submitForActualUser({String? pin}) {
+    final merchantState = ref.watch(merchantsNotifierProvider);
+
+    return _billersNotifier.purchaseService(
+        mobileDto: MobileDto(
+            isMerchantPayment: true,
+            category: ServiceCategory.betting,
+            merchantAccount: _billers?.operatorpublicid,
+            makeMerchantServiceArray: false,
+            merchantService: _billers?.operatorpublicid,
+            merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
+            subCategory: _billers?.displayName,
+            amount: _formatter.getUnformattedValue(),
+            applyDiscount: false,
+            transactionPin: pin),
+        onSuccess: () => PageRouter.pushNamed(Routes.successState,
+            args: SuccessStateArguments(
+                title: AppString.rechargeSuccessful,
+                message: AppString.completedAirtimePurchase,
+                btnTitle: AppString.complete,
+                tap: () => PageRouter.popToRoot(Routes.bettingView))),
+        cancelToken: _cancelToken);
+  }
+
+  Future<void> _submitForGuest(dynamic feedback) async {
+    final guest = ref.watch(paramModule);
+    final merchantState = ref.watch(merchantsNotifierProvider);
+
+    final bool isCardPayment =
+        (feedback is DebitCardDto? && feedback?.bank == null);
+
+    _billersNotifier.purchaseServiceForGuest(
+        isCardPayment: isCardPayment,
+        mobileDto: MobileDto(
+            isMerchantPayment: true,
+            category: ServiceCategory.betting,
+            merchantAccount: _billers?.operatorpublicid,
+            makeMerchantServiceArray: false,
+            merchantService: _billers?.operatorpublicid,
+            merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
+            subCategory: _billers?.displayName,
+            amount: _formatter.getUnformattedValue(),
+            currency: Currency.NGN,
+            email: guest.customerEmail,
+            payer: Payer(email: guest.customerEmail, name: guest.customerName),
+            bank: feedback?.bank),
+        cancelToken: _cancelToken);
+  }
+
+  Future<void> _handlePayment(BillersState billerState) async {
+    final feedback = await BottomSheets.showSheet(
+      child: SummaryWidget(
+        summaryDto: SummaryDto(
+            isGuest: billerState.isGuest,
+            title: _billers?.displayName,
+            imageUrl: _billers?.logoUrl,
+            recipient: numberController.text,
+            amount: _formatter.getUnformattedValue(),
+            cashBack: _airtimeTopDeals?.cashBack,
+            fee: 0),
+      ),
+    );
+
+    if (feedback != null) {
+      if (billerState.isGuest) {
+        // Handle for guest
+        // You can add guest-specific logic here
+        _submitForGuest(feedback);
+      } else if (feedback is bool && feedback) {
+        // Handle for actual user
+        final pin = await BottomSheets.showSheet(
+          child: const PinConfirmationSheet(),
+        ) as String?;
+        if (pin != null) _submitForActualUser(pin: pin);
+      }
+    }
+  }
 }
