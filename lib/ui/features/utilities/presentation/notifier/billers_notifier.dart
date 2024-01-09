@@ -3,7 +3,6 @@ import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/billers_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
@@ -16,12 +15,10 @@ import '../../../../../app/config/app_helper.dart';
 import '../../domain/dto/mobile_dto.dart';
 import '../../domain/enum/billers_category.dart';
 import '../../domain/model/billers.dart';
-import '../../domain/model/cable_service.dart';
 import '../../domain/model/get_cable_service.dart';
 import '../../domain/model/mobile_data_services.dart';
 import '../../domain/model/validate_customer.dart';
 import '../state/billers_state.dart';
-import 'dart:collection';
 
 part 'billers_notifier.g.dart';
 

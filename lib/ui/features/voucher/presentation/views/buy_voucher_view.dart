@@ -13,7 +13,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked_annotations.dart';
 
-import '../../../../../app/core/router/page_router.dart';
 import '../../../../../utils/field_validator.dart';
 import '../../../../../utils/formatters/currency_formatter.dart';
 import '../../../../common/app_strings.dart';
@@ -136,11 +135,11 @@ class _BuyVoucherViewState extends ConsumerState<BuyVoucherView>
                   onPressed: _formatter.getUnformattedValue() >
                           (num.parse(walletDao.wallet.balance ?? '0'))
                       ? null
-                      : () {
-                          if (!_formKey.currentState!.validate()) return;
-
-                          _submitData();
-                        })
+                      : () => BottomSheets.showSheet(
+                                  child: const PinConfirmationSheet())
+                              .then((value) {
+                            if (value != null) _submitRequest(value);
+                          }))
             ],
           ),
         ),
@@ -184,17 +183,6 @@ class _BuyVoucherViewState extends ConsumerState<BuyVoucherView>
           ),
         ),
       );
-
-  void _submitData() {
-    // _vouchersNotifier.buyVoucher(
-    //     VoucherDto(
-    //         amount: _formatter.getUnformattedValue(),
-    //         transactionPin: value),
-    //     cancelToken: _cancelToken);
-    BottomSheets.showSheet(child: const PinConfirmationSheet()).then((value) {
-      if (value != null) _submitRequest(value);
-    });
-  }
 
   void _submitRequest(String pin) {
     if (!_formKey.currentState!.validate()) return;
