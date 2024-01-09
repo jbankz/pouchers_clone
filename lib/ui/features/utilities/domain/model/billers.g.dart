@@ -23,13 +23,14 @@ class BillersAdapter extends TypeAdapter<_$BillersImpl> {
       status: fields[3] as String?,
       logoUrl: fields[4] as String?,
       operatorpublicid: fields[5] as String?,
+      isAvailable: fields[6] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, _$BillersImpl obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class BillersAdapter extends TypeAdapter<_$BillersImpl> {
       ..writeByte(4)
       ..write(obj.logoUrl)
       ..writeByte(5)
-      ..write(obj.operatorpublicid);
+      ..write(obj.operatorpublicid)
+      ..writeByte(6)
+      ..write(obj.isAvailable);
   }
 
   @override
@@ -67,6 +70,7 @@ _$BillersImpl _$$BillersImplFromJson(Map<String, dynamic> json) =>
       status: json['status'] as String?,
       logoUrl: json['logo_url'] as String?,
       operatorpublicid: json['operatorpublicid'] as String?,
+      isAvailable: json['isAvailable'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$BillersImplToJson(_$BillersImpl instance) =>
@@ -77,4 +81,5 @@ Map<String, dynamic> _$$BillersImplToJson(_$BillersImpl instance) =>
       'status': instance.status,
       'logo_url': instance.logoUrl,
       'operatorpublicid': instance.operatorpublicid,
+      'isAvailable': instance.isAvailable,
     };

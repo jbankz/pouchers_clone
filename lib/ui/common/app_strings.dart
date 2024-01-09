@@ -542,4 +542,8 @@ class AppString {
   static String getReceipt = 'Get Receipt';
   static String operator = 'Operator';
   static String serviceUnavailable = 'Service Unavailable';
+
+  static String completedPurchase = 'Purchase successful';
+  static String cardTransfer = 'Card transfer successful';
+  static String bankTransfer = 'Bank transfer successful';
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../common/app_colors.dart';
+import 'unavailable_widget.dart';
 
 class UtitlityIcon extends StatelessWidget {
   const UtitlityIcon(
@@ -11,17 +12,22 @@ class UtitlityIcon extends StatelessWidget {
       this.width = 70,
       this.image,
       this.isSelected = false,
+      this.isAvailable = true,
       this.onTap});
 
   final double? height;
   final double? width;
   final String? image;
   final bool isSelected;
+  final bool isAvailable;
   final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: onTap,
+        onTap: () {
+          if (!isAvailable) return;
+          if (onTap != null) onTap!();
+        },
         customBorder: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(height?.h ?? 0)),
         child: Stack(
@@ -31,14 +37,28 @@ class UtitlityIcon extends StatelessWidget {
               width: width?.w,
               decoration: const BoxDecoration(
                   color: AppColors.kContainerColor, shape: BoxShape.circle),
-              child: Center(
-                  child: image == null
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  image == null
                       ? const SizedBox.shrink()
                       : CachedNetworkImage(
                           height: 34.h,
                           width: 34.w,
                           imageUrl: image ?? '',
-                          fit: BoxFit.fill)),
+                          fit: BoxFit.fill,
+                        ),
+                  if (!isAvailable)
+                    Container(
+                      height: height?.h,
+                      width: width?.w,
+                      decoration: BoxDecoration(
+                          color: AppColors.kContainerColor.withOpacity(.50),
+                          shape: BoxShape.circle),
+                    ),
+                  if (!isAvailable) const UnavailableWidget(),
+                ],
+              ),
             ),
             if (isSelected)
               Positioned(

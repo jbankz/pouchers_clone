@@ -2,7 +2,6 @@ import 'package:Pouchers/ui/features/utilities/domain/dto/billers_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/airtime_top_deals.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/billers.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/cable_service.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/guest_services_purchase.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/mobile_data_services.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
@@ -28,8 +27,8 @@ class BillersSourceImpl implements BillerSource {
         path: '${ApiPath.billers}/${billersDto.billersCategory?.name}',
         requestType: RequestType.get,
         cancelToken: cancelToken);
-    return (response.data?['data']?['billers'] as List<dynamic>)
-        .map((e) => Billers.fromJson(e as Map<String, dynamic>))
+    return (response.data?['data'] as List<dynamic>)
+        .map((data) => Billers.fromJson(data as Map<String, dynamic>))
         .toList();
   }
 

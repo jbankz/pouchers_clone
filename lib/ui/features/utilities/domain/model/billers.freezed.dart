@@ -34,6 +34,8 @@ mixin _$Billers {
   String? get logoUrl => throw _privateConstructorUsedError;
   @HiveField(5)
   String? get operatorpublicid => throw _privateConstructorUsedError;
+  @HiveField(6)
+  bool get isAvailable => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,7 +53,8 @@ abstract class $BillersCopyWith<$Res> {
       @HiveField(2) String? category,
       @HiveField(3) String? status,
       @HiveField(4) @JsonKey(name: 'logo_url') String? logoUrl,
-      @HiveField(5) String? operatorpublicid});
+      @HiveField(5) String? operatorpublicid,
+      @HiveField(6) bool isAvailable});
 }
 
 /// @nodoc
@@ -73,6 +76,7 @@ class _$BillersCopyWithImpl<$Res, $Val extends Billers>
     Object? status = freezed,
     Object? logoUrl = freezed,
     Object? operatorpublicid = freezed,
+    Object? isAvailable = null,
   }) {
     return _then(_value.copyWith(
       name: freezed == name
@@ -99,6 +103,10 @@ class _$BillersCopyWithImpl<$Res, $Val extends Billers>
           ? _value.operatorpublicid
           : operatorpublicid // ignore: cast_nullable_to_non_nullable
               as String?,
+      isAvailable: null == isAvailable
+          ? _value.isAvailable
+          : isAvailable // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -116,7 +124,8 @@ abstract class _$$BillersImplCopyWith<$Res> implements $BillersCopyWith<$Res> {
       @HiveField(2) String? category,
       @HiveField(3) String? status,
       @HiveField(4) @JsonKey(name: 'logo_url') String? logoUrl,
-      @HiveField(5) String? operatorpublicid});
+      @HiveField(5) String? operatorpublicid,
+      @HiveField(6) bool isAvailable});
 }
 
 /// @nodoc
@@ -136,6 +145,7 @@ class __$$BillersImplCopyWithImpl<$Res>
     Object? status = freezed,
     Object? logoUrl = freezed,
     Object? operatorpublicid = freezed,
+    Object? isAvailable = null,
   }) {
     return _then(_$BillersImpl(
       name: freezed == name
@@ -162,6 +172,10 @@ class __$$BillersImplCopyWithImpl<$Res>
           ? _value.operatorpublicid
           : operatorpublicid // ignore: cast_nullable_to_non_nullable
               as String?,
+      isAvailable: null == isAvailable
+          ? _value.isAvailable
+          : isAvailable // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -176,7 +190,8 @@ class _$BillersImpl implements _Billers {
       @HiveField(2) this.category,
       @HiveField(3) this.status,
       @HiveField(4) @JsonKey(name: 'logo_url') this.logoUrl,
-      @HiveField(5) this.operatorpublicid});
+      @HiveField(5) this.operatorpublicid,
+      @HiveField(6) this.isAvailable = false});
 
   factory _$BillersImpl.fromJson(Map<String, dynamic> json) =>
       _$$BillersImplFromJson(json);
@@ -201,10 +216,14 @@ class _$BillersImpl implements _Billers {
   @override
   @HiveField(5)
   final String? operatorpublicid;
+  @override
+  @JsonKey()
+  @HiveField(6)
+  final bool isAvailable;
 
   @override
   String toString() {
-    return 'Billers(name: $name, displayName: $displayName, category: $category, status: $status, logoUrl: $logoUrl, operatorpublicid: $operatorpublicid)';
+    return 'Billers(name: $name, displayName: $displayName, category: $category, status: $status, logoUrl: $logoUrl, operatorpublicid: $operatorpublicid, isAvailable: $isAvailable)';
   }
 
   @override
@@ -220,13 +239,15 @@ class _$BillersImpl implements _Billers {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl) &&
             (identical(other.operatorpublicid, operatorpublicid) ||
-                other.operatorpublicid == operatorpublicid));
+                other.operatorpublicid == operatorpublicid) &&
+            (identical(other.isAvailable, isAvailable) ||
+                other.isAvailable == isAvailable));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, name, displayName, category,
-      status, logoUrl, operatorpublicid);
+      status, logoUrl, operatorpublicid, isAvailable);
 
   @JsonKey(ignore: true)
   @override
@@ -249,7 +270,8 @@ abstract class _Billers implements Billers {
       @HiveField(2) final String? category,
       @HiveField(3) final String? status,
       @HiveField(4) @JsonKey(name: 'logo_url') final String? logoUrl,
-      @HiveField(5) final String? operatorpublicid}) = _$BillersImpl;
+      @HiveField(5) final String? operatorpublicid,
+      @HiveField(6) final bool isAvailable}) = _$BillersImpl;
 
   factory _Billers.fromJson(Map<String, dynamic> json) = _$BillersImpl.fromJson;
 
@@ -273,6 +295,9 @@ abstract class _Billers implements Billers {
   @override
   @HiveField(5)
   String? get operatorpublicid;
+  @override
+  @HiveField(6)
+  bool get isAvailable;
   @override
   @JsonKey(ignore: true)
   _$$BillersImplCopyWith<_$BillersImpl> get copyWith =>

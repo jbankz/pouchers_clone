@@ -51,7 +51,6 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
   final FlutterContactPicker _contactPicker = FlutterContactPicker();
 
   Billers? _billers;
-  AirtimeTopDeals? _airtimeTopDeals;
   String _frequency = '';
 
   @override

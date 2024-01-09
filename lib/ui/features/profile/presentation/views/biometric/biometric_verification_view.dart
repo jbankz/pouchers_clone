@@ -1,3 +1,5 @@
+import 'package:Pouchers/app/app.locator.dart';
+import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
@@ -27,41 +29,42 @@ class BiometricVerification extends ConsumerWidget {
     final hasBiometricPay = biometricDao.pay;
     return ValueListenableBuilder<Box>(
       valueListenable: biometricDao.getListenable(),
-      builder: (_, box, __) => !hasBiometricPay
-          ? const SizedBox.shrink()
-          : CupertinoButton(
-              onPressed: isNotAffordable
-                  ? null
-                  : () async {
-                      await HapticFeedback.selectionClick();
+      builder: (_, box, __) =>
+          !hasBiometricPay || locator<SessionManager>().isGuest
+              ? const SizedBox.shrink()
+              : CupertinoButton(
+                  onPressed: isNotAffordable
+                      ? null
+                      : () async {
+                          await HapticFeedback.selectionClick();
 
-                      ref.read(biometricNotifier.notifier).authenticateUser(
-                        callbackAction: () async {
-                          final pin = await ref
-                              .read(biometricNotifier.notifier)
-                              .retrieveTransactionPin();
-                          callback(pin);
-                          if (popScreenWhenVerificationCompletes) {
-                            PageRouter.pop();
-                          }
+                          ref.read(biometricNotifier.notifier).authenticateUser(
+                            callbackAction: () async {
+                              final pin = await ref
+                                  .read(biometricNotifier.notifier)
+                                  .retrieveTransactionPin();
+                              callback(pin);
+                              if (popScreenWhenVerificationCompletes) {
+                                PageRouter.pop();
+                              }
+                            },
+                            failure: () {
+                              biometricDao.login = false;
+                              return;
+                            },
+                          );
                         },
-                        failure: () {
-                          biometricDao.login = false;
-                          return;
-                        },
-                      );
-                    },
-              padding: EdgeInsets.zero,
-              child: Column(
-                children: [
-                  SvgPicture.asset(AppImage.mingcuteFaceid,
-                      color: isNotAffordable
-                          ? AppColors.kPurple100.withOpacity(.2)
-                          : null),
-                  const Gap(height: 20),
-                ],
-              ),
-            ),
+                  padding: EdgeInsets.zero,
+                  child: Column(
+                    children: [
+                      SvgPicture.asset(AppImage.mingcuteFaceid,
+                          color: isNotAffordable
+                              ? AppColors.kPurple100.withOpacity(.2)
+                              : null),
+                      const Gap(height: 20),
+                    ],
+                  ),
+                ),
     );
   }
 }

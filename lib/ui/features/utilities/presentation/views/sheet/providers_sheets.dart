@@ -1,4 +1,5 @@
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/utilities/presentation/views/widget/unavailable_widget.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,11 @@ class ProvidersSheet extends HookConsumerWidget {
                         itemBuilder: (_, index) {
                           final service = billerState.billers[index];
                           return GestureDetector(
-                            onTap: () => PageRouter.pop(service),
+                            onTap: () {
+                              if (!service.isAvailable) return;
+
+                              PageRouter.pop(service);
+                            },
                             child: Container(
                                 width: double.infinity,
                                 color: Colors.transparent,
@@ -73,6 +78,9 @@ class ProvidersSheet extends HookConsumerWidget {
                                         textAlign: TextAlign.left,
                                         overflow: TextOverflow.ellipsis),
                                   ),
+                                  const Gap(width: 12),
+                                  if (!service.isAvailable)
+                                    const UnavailableWidget()
                                 ])),
                           );
                         },

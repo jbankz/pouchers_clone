@@ -56,8 +56,10 @@ class BillersNotifier extends _$BillersNotifier {
 
       _billers
           .sort((a, b) => (a.displayName ?? '').compareTo(b.displayName ?? ''));
-    } catch (e) {
-      _logger.e(e.toString());
+    } catch (e, trace) {
+      _logger
+        ..e(e.toString())
+        ..e(trace);
       AppHelper.handleError(e);
     } finally {
       state = state.copyWith(isBusy: false, billers: _billers);
@@ -211,12 +213,14 @@ class BillersNotifier extends _$BillersNotifier {
               .call(parameter: mobileDto, cancelToken: cancelToken)
               .future);
 
-      // PageRouter.pushNamed(Routes.successState,
-      //     args: SuccessStateArguments(
-      //         title: AppString.rechargeSuccessful,
-      //         message: AppString.completedAirtimePurchase,
-      //         btnTitle: AppString.proceed,
-      //         tap: () => PageRouter.popToRoot(Routes.guestView)));
+      PageRouter.pushNamed(Routes.successState,
+          args: SuccessStateArguments(
+              title: AppString.completedPurchase,
+              message: isCardPayment
+                  ? AppString.cardTransfer
+                  : AppString.bankTransfer,
+              btnTitle: AppString.proceed,
+              tap: () => PageRouter.popToRoot(Routes.guestView)));
     } catch (e) {
       _logger.e(e.toString());
       AppHelper.handleError(e);

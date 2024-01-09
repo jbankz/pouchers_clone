@@ -81,7 +81,6 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
-    final guestState = ref.watch(guestNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(AppString.data)),
@@ -136,21 +135,22 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                       const Gap(height: 12),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: List.generate(
-                            billerState.billers.length,
-                            (index) => Flexible(
-                                    child: UtitlityIcon(
-                                  isSelected: billerState.billers[index].name ==
-                                      _billers?.name,
-                                  image: billerState.billers[index].logoUrl,
-                                  onTap: () {
-                                    if (billerState.isPurchasing) return;
+                        children:
+                            List.generate(billerState.billers.length, (index) {
+                          final biller = billerState.billers[index];
+                          return Flexible(
+                              child: UtitlityIcon(
+                            isAvailable: biller.isAvailable,
+                            isSelected: biller.name == _billers?.name,
+                            image: biller.logoUrl,
+                            onTap: () {
+                              if (billerState.isPurchasing) return;
 
-                                    _mobileOperatorServices = null;
-                                    setState(() =>
-                                        _billers = billerState.billers[index]);
-                                  },
-                                ))).toList(),
+                              _mobileOperatorServices = null;
+                              setState(() => _billers = biller);
+                            },
+                          ));
+                        }).toList(),
                       ),
                       const Gap(height: 24),
                       EditTextFieldWidget(
