@@ -16,6 +16,6 @@ class UnavailableWidget extends StatelessWidget {
       child: Text('Unavailable',
           style: context.headlineMedium?.copyWith(
               color: AppColors.white,
-              fontSize: 8.sp,
+              fontSize: 6.sp,
               fontWeight: FontWeight.w400)));
 }

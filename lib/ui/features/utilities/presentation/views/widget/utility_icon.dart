@@ -43,8 +43,8 @@ class UtitlityIcon extends StatelessWidget {
                   image == null
                       ? const SizedBox.shrink()
                       : CachedNetworkImage(
-                          height: 34.h,
-                          width: 34.w,
+                          height: 40.h,
+                          width: 40.w,
                           imageUrl: image ?? '',
                           fit: BoxFit.fill,
                         ),

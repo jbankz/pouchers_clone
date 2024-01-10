@@ -28,6 +28,7 @@ class AuthRepoImpl implements AuthRepo {
   final AuthSource _authSource;
   final _session = locator<SessionManager>();
   final _securedManager = locator<SecuredManager>();
+  final _hiveManager = locator<HiveManager>();
 
   AuthRepoImpl(this._authSource);
 
@@ -47,6 +48,9 @@ class AuthRepoImpl implements AuthRepo {
       {CancelToken? cancelToken}) async {
     final response =
         await _authSource.signIn(authDto, cancelToken: cancelToken);
+
+    /// Clears hive database
+    await _hiveManager.clearHiveBox(reset: true);
 
     /// Cache user session data
     _session

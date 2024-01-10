@@ -52,7 +52,7 @@ class SessionManager {
     try {
       await sharedPreferences.clear();
       await _securedManager.clearAllSecurities();
-      await _hiveManager.clearAllBox();
+      await _hiveManager.clearHiveBox();
 
       return true;
     } catch (e) {

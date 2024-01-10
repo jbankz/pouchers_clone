@@ -73,9 +73,12 @@ class _TagViewState extends ConsumerState<TagView> with $TagView {
                         focusNode: tagFocusNode,
                         keyboardType: TextInputType.text,
                         textInputAction: TextInputAction.done,
-                        prefix: Text('@ ',
-                            style: context.titleLarge
-                                ?.copyWith(color: AppColors.kPrimaryTextColor)),
+                        prefix: IconButton(
+                          onPressed: () {},
+                          icon: Text('@',
+                              style: context.titleLarge?.copyWith(
+                                  color: AppColors.kPrimaryTextColor)),
+                        ),
                         validator: FieldValidator.validateString(),
                         onFieldSubmitted: (_) => _submit()),
                   ],

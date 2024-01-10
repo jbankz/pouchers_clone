@@ -91,21 +91,30 @@ class HiveManager {
     transactionHistoryDao = TransactionHistoryDao();
   }
 
-  Future clearAllBox() async {
+  Future<void> clearHiveBox({bool reset = false}) async {
     await userDao.truncate();
     await walletDao.truncate();
     await cardsDao.truncate();
     await referralDao.truncate();
-    await biometricDao.truncate();
-    await localBankDao.truncate();
-    await notificationDao.truncate();
-    await bannerDao.truncate();
-    await merchantDao.truncate();
-    await billersDao.truncate();
-    await cableServicesDao.truncate();
-    await vouchersDao.truncate();
-    await contactDao.truncate();
     await transactionHistoryDao.truncate();
+
+    if (reset) {
+      await notificationDao.truncate();
+      await merchantDao.truncate();
+      await billersDao.truncate();
+      await cableServicesDao.truncate();
+      await vouchersDao.truncate();
+    } else {
+      await biometricDao.truncate();
+      await localBankDao.truncate();
+      await notificationDao.truncate();
+      await bannerDao.truncate();
+      await merchantDao.truncate();
+      await billersDao.truncate();
+      await cableServicesDao.truncate();
+      await vouchersDao.truncate();
+      await contactDao.truncate();
+    }
   }
 
   Future<Box<T>> openBox<T>(String boxName) async {
@@ -136,4 +145,3 @@ class HiveManager {
     }
   }
 }
-// transfer, airtime, data, cable, electricity, internet, voucher, betting, education, admin-credit-wallet, admin-debit-wallet

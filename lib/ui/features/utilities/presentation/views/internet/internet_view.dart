@@ -1,3 +1,5 @@
+import 'package:Pouchers/ui/features/merchant/domain/model/get_merchants.dart';
+import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
@@ -16,7 +18,6 @@ import '../../../../../../utils/field_validator.dart';
 import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_images.dart';
 import '../../../../../common/app_strings.dart';
-import '../../../../../widgets/bottom_sheet.dart';
 import '../../../../../widgets/dialog/bottom_sheet.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
@@ -24,6 +25,7 @@ import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
 import '../../../../dashboard/views/card/domain/enum/currency.dart';
 import '../../../../dashboard/views/card/presentation/notifier/module/module.dart';
+import '../../../../merchant/presentation/notifier/merchants_notifier.dart';
 import '../../../../payment/domain/dto/debit_card_dto.dart';
 import '../../../domain/dto/billers_dto.dart';
 import '../../../domain/dto/mobile_dto.dart';
@@ -60,9 +62,11 @@ class _InternetViewState extends ConsumerState<InternetView>
 
   Billers? _billers;
   CableService? _cableService;
+  final _debouncer = Debouncer();
 
   bool _beneficiary = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late MerchantsNotifier _merchantsNotifier;
 
   @override
   void initState() {
@@ -77,21 +81,27 @@ class _InternetViewState extends ConsumerState<InternetView>
     disposeForm();
   }
 
-  void _initializeNotifiers() {
-    _billersNotifier = ref.read(billersNotifierProvider.notifier)
-      ..billers(BillersCategory.internet, _cancelToken)
-      ..billersDiscounts(BillersCategory.internet, _cancelToken);
+  Future<void> _initializeNotifiers() async {
+    _billersNotifier = ref.read(billersNotifierProvider.notifier);
+    _merchantsNotifier = ref.read(merchantsNotifierProvider.notifier);
+
+    await _billersNotifier.billers(BillersCategory.internet, _cancelToken);
+    await _billersNotifier.billersDiscounts(
+        BillersCategory.internet, _cancelToken);
+    await _merchantsNotifier.getMerchants(_cancelToken);
   }
 
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
+    final getMerchantState = ref.watch(merchantsNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(title: Text(AppString.internet)),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: Skeleton(
-          isLoading: billerState.isBusy,
+          isLoading: billerState.isBusy || getMerchantState.isBusy,
           skeleton: const InternetSkeleton(),
           child: Form(
             key: formKey,
@@ -107,7 +117,11 @@ class _InternetViewState extends ConsumerState<InternetView>
                       const Gap(height: 24),
                       _buildSubscriptionTypeTextField(),
                       const Gap(height: 24),
-                      _buildSmartCardNumberTextField(billerState),
+                      _buildSmartCardNumberTextField(
+                          billerState, getMerchantState.getMerchant),
+                      const Gap(height: 8),
+                      _buildCustomerInfoText(billerState),
+                      const Gap(height: 24),
                     ],
                   ),
                 ),
@@ -117,7 +131,8 @@ class _InternetViewState extends ConsumerState<InternetView>
                   title: AppString.proceed,
                   loading: billerState.isPurchasing,
                   onPressed: _isProceedButtonEnabled(billerState)
-                      ? () => _handlePayment(billerState)
+                      ? () => _handlePayment(
+                          billerState, getMerchantState.getMerchant)
                       : null,
                 ),
               ],
@@ -203,7 +218,8 @@ class _InternetViewState extends ConsumerState<InternetView>
           ],
         );
 
-  Widget _buildSmartCardNumberTextField(BillersState billerState) =>
+  Widget _buildSmartCardNumberTextField(
+          BillersState billerState, GetMerchant? getMerchant) =>
       EditTextFieldWidget(
         title: AppString.accountId,
         label: AppString.accountIdInstr,
@@ -216,11 +232,12 @@ class _InternetViewState extends ConsumerState<InternetView>
         onFieldSubmitted: (_) {},
         validator: FieldValidator.validateInt(),
         inputFormatters: [context.digitsOnly],
+        onChanged: (v) => _debouncer.run(() => _validateCustomer(getMerchant)),
         suffixIcon: CupertinoButton(
           padding: EdgeInsets.zero,
           child: SvgPicture.asset(AppImage.contactBook, fit: BoxFit.scaleDown),
           onPressed: () async {
-            _onContactBookIconPressed(billerState);
+            _onContactBookIconPressed(billerState, getMerchant);
             setState(() {});
           },
         ),
@@ -271,14 +288,13 @@ class _InternetViewState extends ConsumerState<InternetView>
         ],
       );
 
-  Future<void> _validateCustomer() async {
+  Future<void> _validateCustomer(GetMerchant? getMerchant) async {
     await _billersNotifier.validateCustomerInfo(
       biller: BillersDto(
         merchantAccount: _billers?.operatorpublicid,
-        billersCategory: BillersCategory.cable,
-        merchantReferenceNumber:
-            ref.watch(billersNotifierProvider).cableService?.referenceNumber,
-        merchantServiceProductCode: _cableService?.shortCode,
+        billersCategory: BillersCategory.internet,
+        merchantReferenceNumber: getMerchant?.referenceNumber,
+        merchantServiceProductCode: _cableService?.code,
       ),
       cancelToken: _cancelToken,
     );
@@ -315,7 +331,8 @@ class _InternetViewState extends ConsumerState<InternetView>
     setState(() {});
   }
 
-  void _onContactBookIconPressed(BillersState billerState) {
+  void _onContactBookIconPressed(
+      BillersState billerState, GetMerchant? getMerchant) {
     if (billerState.isPurchasing || _cableService == null) return;
 
     _contactPicker.selectContact().then((contact) {
@@ -323,21 +340,19 @@ class _InternetViewState extends ConsumerState<InternetView>
         numberController.text =
             contact.phoneNumbers?.first.formatCountryCode ?? '';
         context.nextFocus(subscriptionTypeFocusNode);
-        _validateCustomer();
+        _validateCustomer(getMerchant);
       }
     });
   }
 
-  Future<void> _submitForActualUser({String? pin}) =>
+  Future<void> _submitForActualUser(
+          {String? pin, required GetMerchant? getMerchant}) =>
       _billersNotifier.purchaseService(
           mobileDto: MobileDto(
               isMerchantPayment: true,
               amount: _cableService?.price,
               merchantAccount: _billers?.operatorpublicid,
-              merchantReferenceNumber: ref
-                  .watch(billersNotifierProvider)
-                  .cableService
-                  ?.referenceNumber,
+              merchantReferenceNumber: getMerchant?.referenceNumber,
               merchantService: _cableService?.code,
               transactionPin: pin,
               subCategory: _billers?.displayName,
@@ -351,7 +366,8 @@ class _InternetViewState extends ConsumerState<InternetView>
                   tap: () => PageRouter.popToRoot(Routes.internetView))),
           cancelToken: _cancelToken);
 
-  Future<void> _submitForGuest(dynamic feedback) async {
+  Future<void> _submitForGuest(
+      dynamic feedback, GetMerchant? getMerchant) async {
     final guest = ref.watch(paramModule);
     final bool isCardPayment =
         (feedback is DebitCardDto? && feedback?.bank == null);
@@ -362,10 +378,7 @@ class _InternetViewState extends ConsumerState<InternetView>
             isMerchantPayment: true,
             amount: _cableService?.price,
             merchantAccount: _billers?.operatorpublicid,
-            merchantReferenceNumber: ref
-                .watch(billersNotifierProvider)
-                .cableService
-                ?.referenceNumber,
+            merchantReferenceNumber: getMerchant?.referenceNumber,
             merchantService: _cableService?.code,
             subCategory: _billers?.displayName,
             makeMerchantServiceArray: false,
@@ -377,7 +390,8 @@ class _InternetViewState extends ConsumerState<InternetView>
         cancelToken: _cancelToken);
   }
 
-  Future<void> _handlePayment(BillersState billerState) async {
+  Future<void> _handlePayment(
+      BillersState billerState, GetMerchant? getMerchant) async {
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(
         summaryDto: SummaryDto(
@@ -391,7 +405,7 @@ class _InternetViewState extends ConsumerState<InternetView>
           fee: 0,
         ),
         biometricVerification: (pin) {
-          _submitForActualUser(pin: pin);
+          _submitForActualUser(pin: pin, getMerchant: getMerchant);
           return;
         },
       ),
@@ -401,14 +415,29 @@ class _InternetViewState extends ConsumerState<InternetView>
       if (billerState.isGuest) {
         // Handle for guest
         // You can add guest-specific logic here
-        _submitForGuest(feedback);
+        _submitForGuest(feedback, getMerchant);
       } else if (feedback is bool && feedback) {
         // Handle for actual user
         final pin = await BottomSheets.showSheet(
           child: const PinConfirmationSheet(),
         ) as String?;
-        if (pin != null) _submitForActualUser(pin: pin);
+        if (pin != null) {
+          _submitForActualUser(pin: pin, getMerchant: getMerchant);
+        }
       }
     }
   }
+
+  Widget _buildCustomerInfoText(BillersState billerState) => Align(
+        alignment: Alignment.centerLeft,
+        child: billerState.isValidatingCustomerInfo
+            ? const CupertinoActivityIndicator()
+            : billerState.validateCustomerInfo == null
+                ? const SizedBox.shrink()
+                : Text(
+                    'Account name: ${billerState.validateCustomerInfo?.customerName ?? ''}',
+                    style: context.headlineMedium
+                        ?.copyWith(color: AppColors.kIconGrey),
+                  ),
+      );
 }

@@ -15,7 +15,6 @@ import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import '../../../../../../../../app/core/skeleton/widgets.dart';
 import '../../../../../../../common/app_colors.dart';
 import '../../../../../../../widgets/gap.dart';
-import '../../../../../../utilities/domain/enum/service_category.dart';
 import '../../../data/dao/transaction_dao.dart';
 import '../../../domain/dto/transaction_filter.dart';
 import '../../../domain/enum/transaction_type.dart';

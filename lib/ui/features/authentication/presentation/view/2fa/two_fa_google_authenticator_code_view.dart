@@ -120,7 +120,7 @@ class _TwoFaGoogleAuthenticatorCodeViewState
       case TwoFaType.twoFaSetup:
         PageRouter.popToRoot(Routes.twoFaAuthView);
       case TwoFaType.twoFaLoginVerification:
-        PageRouter.pushReplacement(Routes.tabLayout);
+        PageRouter.pushReplacement(Routes.dashboardView);
       case null:
     }
   }

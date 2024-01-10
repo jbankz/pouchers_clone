@@ -157,7 +157,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               ),
                             ])),
                     const Gap(height: 32),
-                    const SlidersWidget()
+                    const SlidersWidget(),
+                    const Gap(height: 16),
                   ],
                 ),
               ),

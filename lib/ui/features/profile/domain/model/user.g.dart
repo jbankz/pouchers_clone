@@ -24,7 +24,7 @@ class UserAdapter extends TypeAdapter<_$UserImpl> {
       lastName: fields[4] as String?,
       verificationToken: fields[5] as String?,
       verificationTokenExpires: fields[6] as String?,
-      tierLevels: fields[7] as int?,
+      tierLevels: fields[7] as int,
       passwordResetToken: fields[8] as String?,
       passwordResetTokenExpires: fields[9] as String?,
       pinResetToken: fields[10] as String?,

@@ -1,7 +1,6 @@
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/merchant/presentation/notifier/merchants_notifier.dart';
-import 'package:Pouchers/ui/features/merchant/presentation/state/merchant_state.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
@@ -67,13 +66,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _billersNotifier = ref.read(billersNotifierProvider.notifier)
-        ..billers(BillersCategory.betting, _cancelToken)
-        ..billersDiscounts(BillersCategory.betting, _cancelToken);
-      _merchantsNotifier = ref.read(merchantsNotifierProvider.notifier)
-        ..getMerchants(_cancelToken);
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _initializeNotifiers());
   }
 
   @override
@@ -87,16 +80,26 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
   final CurrencyFormatter _formatter = CurrencyFormatter(
       enableNegative: false, name: '', symbol: '', decimalDigits: 0);
 
+  Future<void> _initializeNotifiers() async {
+    _billersNotifier = ref.read(billersNotifierProvider.notifier);
+    _merchantsNotifier = ref.read(merchantsNotifierProvider.notifier);
+
+    await _billersNotifier.billers(BillersCategory.betting, _cancelToken);
+    await _billersNotifier.billersDiscounts(
+        BillersCategory.betting, _cancelToken);
+    await _merchantsNotifier.getMerchants(_cancelToken);
+  }
+
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
-    final merchantState = ref.watch(merchantsNotifierProvider);
+    final getMerchantState = ref.watch(merchantsNotifierProvider);
     return Scaffold(
       appBar: AppBar(title: Text(AppString.betting)),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: Skeleton(
-          isLoading: billerState.isBusy,
+          isLoading: billerState.isBusy || getMerchantState.isBusy,
           skeleton: const BettingSkeleton(),
           child: Form(
             key: formKey,
@@ -192,27 +195,6 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
           },
         ),
       );
-
-  Future<void> _submit(String pin, MerchantState merchantState) =>
-      _billersNotifier.purchaseService(
-          mobileDto: MobileDto(
-              isMerchantPayment: true,
-              category: ServiceCategory.betting,
-              merchantAccount: _billers?.operatorpublicid,
-              // merchantService: merchantState.getMerchant?.,
-              merchantReferenceNumber:
-                  merchantState.getMerchant?.referenceNumber,
-              subCategory: _billers?.displayName,
-              amount: _formatter.getUnformattedValue(),
-              applyDiscount: false,
-              transactionPin: pin),
-          onSuccess: () => PageRouter.pushNamed(Routes.successState,
-              args: SuccessStateArguments(
-                  title: AppString.rechargeSuccessful,
-                  message: AppString.completedBettingPurchase,
-                  btnTitle: AppString.complete,
-                  tap: () => PageRouter.popToRoot(Routes.bettingView))),
-          cancelToken: _cancelToken);
 
   void _onContactBookIconPressed(BillersState billerState) {
     if (billerState.isPurchasing) return;

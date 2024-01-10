@@ -61,6 +61,7 @@ class _EducationViewState extends ConsumerState<EducationView>
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final CurrencyFormatter _formatter = CurrencyFormatter(
       enableNegative: false, name: '', symbol: '', decimalDigits: 0);
+  late MerchantsNotifier _merchantsNotifier;
 
   @override
   void initState() {
@@ -75,24 +76,27 @@ class _EducationViewState extends ConsumerState<EducationView>
     disposeForm();
   }
 
-  void _initializeNotifiers() {
-    _billersNotifier = ref.read(billersNotifierProvider.notifier)
-      ..billers(BillersCategory.education, _cancelToken)
-      ..billersDiscounts(BillersCategory.education, _cancelToken);
+  Future<void> _initializeNotifiers() async {
+    _billersNotifier = ref.read(billersNotifierProvider.notifier);
+    _merchantsNotifier = ref.read(merchantsNotifierProvider.notifier);
+
+    await _billersNotifier.billers(BillersCategory.education, _cancelToken);
+    await _billersNotifier.billersDiscounts(
+        BillersCategory.education, _cancelToken);
+    await _merchantsNotifier.getMerchants(_cancelToken);
   }
 
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
-    final merchantState = ref.watch(merchantsNotifierProvider);
+    final getMerchantState = ref.watch(merchantsNotifierProvider);
 
-    final bool isLoading = billerState.isBusy && merchantState.isBusy;
     return Scaffold(
       appBar: AppBar(title: Text(AppString.education)),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: Skeleton(
-          isLoading: isLoading,
+          isLoading: billerState.isBusy || getMerchantState.isBusy,
           skeleton: const EducationSkeleton(),
           child: Form(
             key: formKey,
@@ -264,10 +268,10 @@ class _EducationViewState extends ConsumerState<EducationView>
             amount: _formatter.getUnformattedValue(),
             merchantAccount: _billers?.operatorpublicid,
             merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
+            makeMerchantServiceArray: false,
             merchantService: _cableService?.code,
             subCategory: _billers?.displayName,
             category: ServiceCategory.education,
-            applyDiscount: false,
             currency: Currency.NGN,
             email: guest.customerEmail,
             payer: Payer(email: guest.customerEmail, name: guest.customerName),

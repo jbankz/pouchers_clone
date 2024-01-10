@@ -1,3 +1,4 @@
+import 'package:Pouchers/ui/features/merchant/domain/model/get_merchants.dart';
 import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -25,7 +26,7 @@ import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
 import '../../../../dashboard/views/card/domain/enum/currency.dart';
 import '../../../../dashboard/views/card/presentation/notifier/module/module.dart';
-import '../../../../guest/notifier/guest_notifier.dart';
+import '../../../../merchant/presentation/notifier/merchants_notifier.dart';
 import '../../../../payment/domain/dto/debit_card_dto.dart';
 import '../../../domain/dto/billers_dto.dart';
 import '../../../domain/dto/mobile_dto.dart';
@@ -65,6 +66,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
 
   Billers? _billers;
   CableService? _cableService;
+  late MerchantsNotifier _merchantsNotifier;
 
   bool _beneficiary = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -84,22 +86,27 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
     disposeForm();
   }
 
-  void _initializeNotifiers() {
-    _billersNotifier = ref.read(billersNotifierProvider.notifier)
-      ..billers(BillersCategory.electricity, _cancelToken)
-      ..billersDiscounts(BillersCategory.electricity, _cancelToken);
+  Future<void> _initializeNotifiers() async {
+    _billersNotifier = ref.read(billersNotifierProvider.notifier);
+    _merchantsNotifier = ref.read(merchantsNotifierProvider.notifier);
+
+    await _billersNotifier.billers(BillersCategory.electricity, _cancelToken);
+    await _billersNotifier.billersDiscounts(
+        BillersCategory.electricity, _cancelToken);
+    await _merchantsNotifier.getMerchants(_cancelToken);
   }
 
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
+    final getMerchantState = ref.watch(merchantsNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(AppString.electricity)),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: Skeleton(
-          isLoading: billerState.isBusy,
+          isLoading: billerState.isBusy || getMerchantState.isBusy,
           skeleton: const ElectricitySkeleton(),
           child: Form(
             key: formKey,
@@ -115,7 +122,8 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
                       const Gap(height: 24),
                       _buildSubscriptionTypeTextField(),
                       const Gap(height: 24),
-                      _buildMeterNumberTextField(billerState),
+                      _buildMeterNumberTextField(
+                          billerState, getMerchantState.getMerchant),
                       _buildCustomerInfoText(billerState),
                       const Gap(height: 24),
                       EditTextFieldWidget(
@@ -212,7 +220,8 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
       const Icon(Icons.keyboard_arrow_down_outlined,
           color: AppColors.kSecondaryTextColor);
 
-  Widget _buildMeterNumberTextField(BillersState billerState) =>
+  Widget _buildMeterNumberTextField(
+          BillersState billerState, GetMerchant? getMerchant) =>
       EditTextFieldWidget(
         title: AppString.meterNumber,
         controller: numberController,
@@ -223,15 +232,15 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
             _cableService == null,
         onFieldSubmitted: (_) {},
         onChanged: (value) => _debouncer.run(() {
-          if (value.length >= 10) _validateCustomer();
+          if (value.length >= 11) _validateCustomer(getMerchant);
         }),
-        validator: FieldValidator.validateMeterNumber(cardLength: 10),
+        validator: FieldValidator.validateMeterNumber(cardLength: 11),
         inputFormatters: [context.digitsOnly],
         suffixIcon: CupertinoButton(
           padding: EdgeInsets.zero,
           child: SvgPicture.asset(AppImage.contactBook, fit: BoxFit.scaleDown),
           onPressed: () async {
-            _onContactBookIconPressed(billerState);
+            _onContactBookIconPressed(billerState, getMerchant);
             setState(() {});
           },
         ),
@@ -309,14 +318,13 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
         ],
       );
 
-  Future<void> _validateCustomer() async {
+  Future<void> _validateCustomer(GetMerchant? getMerchant) async {
     await _billersNotifier.validateCustomerInfo(
       biller: BillersDto(
         merchantAccount: _billers?.operatorpublicid,
         billersCategory: BillersCategory.cable,
-        merchantReferenceNumber:
-            ref.watch(billersNotifierProvider).cableService?.referenceNumber,
-        merchantServiceProductCode: _cableService?.shortCode,
+        merchantReferenceNumber: getMerchant?.referenceNumber,
+        merchantServiceProductCode: _cableService?.code,
       ),
       cancelToken: _cancelToken,
     );
@@ -357,7 +365,8 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
     setState(() {});
   }
 
-  void _onContactBookIconPressed(BillersState billerState) {
+  void _onContactBookIconPressed(
+      BillersState billerState, GetMerchant? getMerchant) {
     if (billerState.isPurchasing || _cableService == null) return;
 
     _contactPicker.selectContact().then((contact) {
@@ -365,7 +374,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
         numberController.text =
             contact.phoneNumbers?.first.formatCountryCode ?? '';
         context.nextFocus(amountFocusNode);
-        _validateCustomer();
+        _validateCustomer(getMerchant);
       }
     });
   }
@@ -449,9 +458,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
         final pin = await BottomSheets.showSheet(
           child: const PinConfirmationSheet(),
         ) as String?;
-        if (pin != null) {
-          _submitForActualUser(pin: pin);
-        }
+        if (pin != null) _submitForActualUser(pin: pin);
       }
     }
   }

@@ -122,8 +122,8 @@ class BillersNotifier extends _$BillersNotifier {
                   MobileDto(mobileOperatorPublicId: mobileOperatorPublicId),
               cancelToken: cancelToken)
           .future);
-    } catch (e) {
-      _logger.e(e.toString());
+    } catch (e, trace) {
+      _logger.e(trace);
       AppHelper.handleError(e);
       PageRouter.pop();
     } finally {
