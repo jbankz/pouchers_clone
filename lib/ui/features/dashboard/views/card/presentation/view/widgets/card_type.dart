@@ -1,5 +1,3 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
@@ -9,13 +7,20 @@ import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/params_notifier.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/sheets/kyc_request_prompt.dart';
+import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
+import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
+import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../../../../../app/app.router.dart';
+import '../../../../../../../../app/core/router/page_router.dart';
 import '../../../../../../../common/app_strings.dart';
 import '../../../../../../../widgets/gap.dart';
 
@@ -52,7 +57,7 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
   Widget build(BuildContext context) {
     final appState = ref.watch(adminNotifierProvider);
 
-    final envs = (appState.data as List<Envs>);
+    final envs = appState.data;
 
     final Envs nairaCreation = envs.isEmpty
         ? Envs()
@@ -61,69 +66,72 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
     final Envs dollarCreation = envs.isEmpty
         ? Envs()
         : envs.singleWhere((env) => env.name == 'dollar_card_creation_fee');
-    return Wrap(
-      children: [
-        SizedBox(
-          width: double.infinity,
-          child: SafeArea(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
-                children: [
-                  Text(AppString.cardType,
-                      style: context.titleMedium?.copyWith(
-                          fontSize: 15, fontWeight: FontWeight.w700)),
-                  const Gap(height: 31),
-                  Skeleton(
-                    isLoading: appState.isBusy,
-                    skeleton: ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (_, __) => Container(
-                              height: 150.h,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(13.r),
-                                  color: Colors.white),
-                            ),
-                        separatorBuilder: (_, __) => const Gap(height: 30),
-                        itemCount: widget.currency != null ? 1 : 2),
+    return ValueListenableBuilder<Box>(
+        valueListenable: userDao.getListenable(),
+        builder: (_, box, __) {
+          final user = userDao.returnUser(box);
+          return Wrap(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: SafeArea(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        if (widget.currency != Currency.NGN)
-                          _buildCardWidget(
-                              title: AppString.virtualNairaCard,
-                              fee:
-                                  num.parse(nairaCreation.value ?? '0').toNaira,
-                              icon: AppImage.nairaSign,
-                              color: AppColors.kGreen100Color,
-                              callback: () {
-                                _paramNotifier.setCardType(CardType.naira);
-                                PageRouter.pushNamed(Routes.requestBVNView);
-                              }),
-                        if (widget.currency != Currency.NGN)
-                          const Gap(height: 30),
-                        if (widget.currency != Currency.USD)
-                          _buildCardWidget(
-                              title: AppString.virtualDollarCard,
-                              fee: num.parse(dollarCreation.value ?? '0')
-                                  .toDollar,
-                              icon: AppImage.dollarSign,
-                              color: AppColors.kBrightPurple,
-                              callback: () {
-                                _paramNotifier.setCardType(CardType.dollar);
-                                PageRouter.pushNamed(Routes.requestBVNView);
-                              }),
+                        Text(AppString.cardType,
+                            style: context.titleMedium?.copyWith(
+                                fontSize: 15, fontWeight: FontWeight.w700)),
+                        const Gap(height: 31),
+                        Skeleton(
+                          isLoading: appState.isBusy,
+                          skeleton: ListView.separated(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (_, __) => Container(
+                                    height: 150.h,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(13.r),
+                                        color: Colors.white),
+                                  ),
+                              separatorBuilder: (_, __) =>
+                                  const Gap(height: 30),
+                              itemCount: widget.currency != null ? 1 : 2),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (widget.currency != Currency.NGN)
+                                _buildCardWidget(
+                                    title: AppString.virtualNairaCard,
+                                    fee: num.parse(nairaCreation.value ?? '0')
+                                        .toNaira,
+                                    icon: AppImage.nairaSign,
+                                    color: const Color.fromRGBO(34, 123, 65, 1),
+                                    callback: () =>
+                                        _createCard(user, CardType.naira)),
+                              if (widget.currency != Currency.NGN)
+                                const Gap(height: 30),
+                              if (widget.currency != Currency.USD)
+                                _buildCardWidget(
+                                    title: AppString.virtualDollarCard,
+                                    fee: num.parse(dollarCreation.value ?? '0')
+                                        .toDollar,
+                                    icon: AppImage.dollarSign,
+                                    color: AppColors.kBrightPurple,
+                                    callback: () =>
+                                        _createCard(user, CardType.dollar)),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        )
-      ],
-    );
+                ),
+              )
+            ],
+          );
+        });
   }
 
   Widget _buildCardWidget(
@@ -184,4 +192,22 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
           ),
         ),
       );
+
+  Future<void> _createCard(User user, CardType cardType) async {
+    if (user.tierLevels < 2) {
+      final response =
+          await BottomSheets.showAlertDialog(child: const KycRequestPrompt())
+              as bool;
+
+      if (response) {
+        PageRouter.pushNamed(Routes.bvnView,
+            args: const BvnViewArguments(
+                routeName: Routes.accountVerificationView));
+      }
+    } else {
+      _paramNotifier
+        ..setCardType(cardType)
+        ..setUsersInformations(country: 'Nigeria', bvn: '');
+    }
+  }
 }

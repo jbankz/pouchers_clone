@@ -6,9 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../app/core/manager/firebase_messaging_manager.dart';
-import '../../../../modules/transactions/screens/transactions.dart';
 import '../../../../utils/session_timeout_listener.dart';
-import '../../profile/presentation/notifier/user_notifier.dart';
 import 'account/views/account_view.dart';
 import 'card/presentation/view/virtual_card_view.dart';
 import 'home/views/home_view.dart';

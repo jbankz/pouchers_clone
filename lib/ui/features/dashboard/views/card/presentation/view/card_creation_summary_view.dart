@@ -270,7 +270,7 @@ class _CardCreationSymmaryViewState
         CardDto(
             amount: ((widget.cardDto.amount ?? 0) + totalNairaFee),
             country: param.country,
-            bvn: param.bvn,
+            // bvn: param.bvn,
             transactionPin: pin,
             brand: CardBrand.Verve,
             currency: Currency.NGN),
@@ -283,7 +283,7 @@ class _CardCreationSymmaryViewState
             amount: ((totalDollarFee + (widget.cardDto.amount ?? 0)) *
                 (param.exchangeRate ?? 0)),
             country: param.country,
-            bvn: param.bvn,
+            // bvn: param.bvn,
             transactionPin: pin,
             brand: CardBrand.Visa,
             currency: Currency.USD),

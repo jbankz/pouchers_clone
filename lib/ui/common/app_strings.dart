@@ -551,4 +551,8 @@ class AppString {
   static String cityState = 'City/State';
   static String logOutPrompt = 'Are you sure you want to logout?';
   static String markAllAsRead = 'Mark all as read';
+
+  static String completeKyc = 'Complete KYC';
+  static String completeKycInstr =
+      'Your BVN (Bank Verification Number) is needed to complete the creation of a Virtual Card.';
 }
