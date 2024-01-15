@@ -19,7 +19,7 @@ import 'app/core/theme/app_theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  AppConfig.setAppEnv(kDebugMode ? AppEnv.staging : AppEnv.production);
+  AppConfig.setAppEnv(kDebugMode ? AppEnv.production : AppEnv.production);
 
   await dotenv.load(fileName: AppConfig.fileName);
 

@@ -20,7 +20,6 @@ class TransactionDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final bool isDebitTransaction =
         transactionHistory.transactionType == TransactionType.debit;
 

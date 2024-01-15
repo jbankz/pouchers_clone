@@ -46,7 +46,7 @@ dependencies:
   share_plus: ^7.2.1
   local_auth: ^2.1.2
   equatable: ^2.0.5
-  fl_chart: ^0.64.0
+  fl_chart: ^0.66.0
   printing: ^5.11.0
   riverpod: ^2.0.2
   lottie: ^2.7.0
@@ -91,6 +91,7 @@ dependencies:
   screenshot: ^2.1.0
   flutter_contacts: ^1.1.7+1
   app_settings: ^5.1.1
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:

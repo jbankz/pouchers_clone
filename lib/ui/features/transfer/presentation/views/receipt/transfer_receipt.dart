@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_images.dart';
@@ -13,6 +14,7 @@ Future<pw.Widget> generateTransferReceipt(Transfer? transfer) async {
   final dmSansFont = await rootBundle.load("assets/fonts/DMSans-Bold.ttf");
   final img = await rootBundle.load(AppImage.logo1);
   final imageBytes = img.buffer.asUint8List();
+  final robotFont = await PdfGoogleFonts.robotoBold();
 
   final pw.Font getDmSansFont = pw.Font.ttf(dmSansFont);
   return pw.Column(children: [
@@ -72,7 +74,7 @@ Future<pw.Widget> generateTransferReceipt(Transfer? transfer) async {
     _buildTileWidget(
         title: AppString.transactionAmount,
         value: '${AppString.nairaSymbol}${(transfer?.amount ?? 0)}',
-        font: getDmSansFont),
+        font: robotFont),
     pw.SizedBox(height: 26.h),
     _buildTileWidget(
         title: AppString.transactionStatus,

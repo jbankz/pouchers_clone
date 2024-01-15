@@ -5,8 +5,11 @@ import 'package:Pouchers/app/config/app_helper.dart';
 import 'package:Pouchers/app/core/manager/image_manager.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
+import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
+import 'package:Pouchers/ui/features/profile/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/upload/presentation/notifier/module/module.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../app/app.logger.dart';
@@ -66,7 +69,9 @@ class UploadNotifier extends _$UploadNotifier {
           .call(uploadDto: uploadDto, cancelToken: cancelToken)
           .future);
 
-      userDao.save(userDao.user.copyWith(profilePicture: imageUrl));
+      await ref.read(updateProfileProvider
+          .call(userDto: UserDto(profilePicture: imageUrl))
+          .future);
     } catch (e) {
       _logger.e(e);
       AppHelper.handleError(e);

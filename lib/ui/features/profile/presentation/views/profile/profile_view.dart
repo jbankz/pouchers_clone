@@ -65,8 +65,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
           final String name =
               '${user.firstName ?? ''} ${user.lastName ?? ''}'.titleCase;
           final bool isAccountVerified = user.tierLevels == 3;
-          final bool isBVNVerified = (user.tierLevels ?? 0) > 1;
-
+          final bool isBVNVerified = (user.tierLevels) > 1;
           return Scaffold(
             backgroundColor: AppColors.kPurpleColor800,
             appBar: AppBar(

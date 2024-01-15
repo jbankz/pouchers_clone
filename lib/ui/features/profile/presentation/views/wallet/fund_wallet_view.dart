@@ -173,7 +173,9 @@ class _FundWalletViewState extends ConsumerState<FundWalletView> {
                                                 fontWeight: FontWeight.w700)),
                                       ]))),
                           const Gap(height: 20),
-                          HintWidget(hint: AppString.fundInstr6),
+                          HintWidget(
+                              hint:
+                                  'Select ${wallet.bankProvider?.titleCase ?? ''}'),
                           const Gap(height: 20),
                           HintWidget(
                               hint:

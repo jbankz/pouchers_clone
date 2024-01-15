@@ -198,27 +198,6 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                             if (!formKey.currentState!.validate()) return;
 
                             await _handlePayment(billerState);
-
-                            // final feedback = await BottomSheets.showSheet(
-                            //     child: SummaryWidget(
-                            //         summaryDto: SummaryDto(
-                            //             isGuest: billerState.isGuest,
-                            //             title: _billers?.displayName,
-                            //             imageUrl: _billers?.logoUrl,
-                            //             recipient: phoneController.text,
-                            //             amount: _mobileOperatorServices
-                            //                 ?.servicePrice,
-                            //             cashBack: _airtimeTopDeals?.cashBack,
-                            //             fee: 0))) as bool?;
-
-                            // if (feedback != null && feedback) {
-                            //   final pin = await BottomSheets.showSheet(
-                            //           child: const PinConfirmationSheet())
-                            //       as String?;
-                            //   if (pin != null) {
-                            //     _submit(pin);
-                            //   }
-                            // }
                           })
               ],
             ),
@@ -227,26 +206,6 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
       ),
     );
   }
-
-  Future<void> _submit(String pin) => _billersNotifier.purchaseService(
-      mobileDto: MobileDto(
-          category: ServiceCategory.data,
-          subCategory: _billers?.displayName,
-          amount: _mobileOperatorServices?.servicePrice,
-          destinationPhoneNumber: phoneController.text,
-          mobileOperatorPublicId: _billers?.operatorpublicid,
-          applyDiscount: false,
-          mobileOperatorServiceId:
-              _mobileOperatorServices?.serviceId.toString() ?? '',
-          isDataBundle: true,
-          transactionPin: pin),
-      onSuccess: () => PageRouter.pushNamed(Routes.successState,
-          args: SuccessStateArguments(
-              title: AppString.complete,
-              message: AppString.completedDataPurchase,
-              btnTitle: AppString.proceed,
-              tap: () => PageRouter.popToRoot(Routes.dataView))),
-      cancelToken: _cancelToken);
 
   Future<void> _submitForGuest(dynamic feedback) async {
     final guest = ref.watch(paramModule);
@@ -290,11 +249,8 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
 
     if (feedback != null) {
       if (billerState.isGuest) {
-        // Handle for guest
-        // You can add guest-specific logic here
         _submitForGuest(feedback);
       } else if (feedback is bool && feedback) {
-        // Handle for actual user
         final pin = await BottomSheets.showSheet(
           child: const PinConfirmationSheet(),
         ) as String?;

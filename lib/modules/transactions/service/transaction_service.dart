@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Pouchers/app/app.locator.dart';
+import 'package:Pouchers/app/config/app_config.dart';
+import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/app/helpers/service_constants.dart';
 import 'package:Pouchers/app/helpers/service_response.dart';
 import 'package:Pouchers/modules/transactions/model/transaction_model.dart';
@@ -63,11 +66,12 @@ class TransactionService {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
-      HttpHeaders.authorizationHeader: "Bearer $token"
+      HttpHeaders.authorizationHeader:
+          "Bearer ${locator<SessionManager>().accessToken}"
     };
 
     String url =
-        "${baseUrl()}/user/transaction-analytics?month=$month&year=$year";
+        "${AppConfig.apiUrl}/v1/user/transaction-analytics?month=$month&year=$year";
 
     logPrint(url);
 

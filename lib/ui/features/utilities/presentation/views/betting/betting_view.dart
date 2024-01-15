@@ -30,7 +30,9 @@ import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
 import '../../../../dashboard/views/card/domain/enum/currency.dart';
+import '../../../../merchant/domain/model/get_merchants.dart';
 import '../../../../payment/domain/dto/debit_card_dto.dart';
+import '../../../domain/dto/billers_dto.dart';
 import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/airtime_top_deals.dart';
 import '../../../domain/model/billers.dart';
@@ -262,7 +264,6 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
             isMerchantPayment: true,
             category: ServiceCategory.betting,
             merchantAccount: _billers?.operatorpublicid,
-            makeMerchantServiceArray: false,
             merchantService: _billers?.operatorpublicid,
             merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
             subCategory: _billers?.displayName,

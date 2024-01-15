@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
+import 'package:printing/printing.dart';
 
 import '../../../../../../common/app_colors.dart';
 import '../../../../../../common/app_images.dart';
@@ -18,6 +19,7 @@ Future<pw.Widget> generateTransactionReceipt(
   final img = await rootBundle.load(AppImage.check);
   final imageBytes = img.buffer.asUint8List();
   final pw.Font getDmSansFont = pw.Font.ttf(dmSansFont);
+  final robotFont = await PdfGoogleFonts.robotoBold();
 
   final bool isDebitTransaction =
       transactionHistory?.transactionType == TransactionType.debit;
@@ -65,7 +67,7 @@ Future<pw.Widget> generateTransactionReceipt(
               style: pw.TextStyle(
                   color: PdfColor.fromInt(color.value),
                   fontSize: 20,
-                  font: getDmSansFont,
+                  font: robotFont,
                   fontWeight: pw.FontWeight.normal)),
         ),
       ],

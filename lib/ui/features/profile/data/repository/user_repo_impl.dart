@@ -42,6 +42,7 @@ class UserRepoImpl implements UserRepo {
       {required UserDto userDto, CancelToken? cancelToken}) async {
     final user = await _userSource.updateProfile(
         userDto: userDto, cancelToken: cancelToken);
+
     await userDao.save(user);
     return user;
   }

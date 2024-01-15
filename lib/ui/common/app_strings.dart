@@ -174,7 +174,7 @@ class AppString {
   static String helpAndSupportInstruction = 'Send feedback or get support';
   static String aboutPourcher = 'About Pouchers';
   static String aboutPourcherInstruction = 'Learn more about Pouchers';
-  static String logOut = 'Log out';
+  static String logOut = 'Log Out';
   static String changePassword = 'Change Password';
   static String changePasswordInstruction = 'Update your password to a new one';
   static String changeTransactionPin = 'Change Transaction Pin';
@@ -443,7 +443,7 @@ class AppString {
   static String nairaSymbol = '₦';
   static String scheduleAirtimeSub = "Auto top airtime at regular intervals.";
   static String scheduleAirtime = "Schedule Airtime";
-  static String selectType = "Select type";
+  static String selectType = "Select Type";
 
   static String completedDataPurchase = 'Your data has been delivered';
   static String completedAirtimePurchase = 'Your airtime has been delivered';

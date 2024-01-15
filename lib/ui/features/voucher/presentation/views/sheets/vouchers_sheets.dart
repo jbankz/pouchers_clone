@@ -50,7 +50,10 @@ class _VouchersSheetState extends ConsumerState<VouchersSheet> {
       child: ValueListenableBuilder<Box>(
           valueListenable: vouchersDao.getListenable(),
           builder: (_, box, __) {
-            final vouchers = vouchersDao.retrieve(box);
+            final vouchers = vouchersDao
+                .retrieve(box)
+                .where((element) => !element.redeemed)
+                .toList();
             return SafeArea(
               minimum: EdgeInsets.symmetric(horizontal: 20.w),
               child: Wrap(
