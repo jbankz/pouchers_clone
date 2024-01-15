@@ -1,5 +1,6 @@
 import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/helpers/response_handler.dart';
+import 'package:Pouchers/modules/create_account/screens/verify_account.dart';
 import 'package:Pouchers/routes.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
 import 'package:Pouchers/utils/logger.dart';
@@ -15,11 +16,11 @@ import 'app/app.router.dart';
 import 'app/config/app_config.dart';
 import 'app/core/constants/app_constants.dart';
 import 'app/core/theme/app_theme.dart';
-
+  
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  AppConfig.setAppEnv(kDebugMode ? AppEnv.production : AppEnv.production);
+  AppConfig.setAppEnv(kDebugMode ? AppEnv.staging : AppEnv.production);
 
   await dotenv.load(fileName: AppConfig.fileName);
 
@@ -52,6 +53,7 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
                   themeMode: ThemeMode.light,
                   navigatorKey: StackedService.navigatorKey,
                   onGenerateRoute: StackedRouter().onGenerateRoute,
+                  // home: OtpView(email: 'jay@gmail.com'),
                   routes: {...appRoutes}),
             ),
           ),

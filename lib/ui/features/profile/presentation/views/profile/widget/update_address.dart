@@ -59,7 +59,7 @@ class _UpdateAddressWidgetState extends ConsumerState<UpdateAddressWidget>
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                AppString.fullName,
+                AppString.residentialAddress,
                 style: context.headlineLarge?.copyWith(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -68,8 +68,8 @@ class _UpdateAddressWidgetState extends ConsumerState<UpdateAddressWidget>
               const Gap(height: 20),
               EditTextFieldWidget(
                   readOnly: userState.isBusy,
-                  title: AppString.lastName,
-                  label: AppString.lastNameInstruction,
+                  title: AppString.residentialAddress,
+                  label: AppString.residentialAddress,
                   controller: addressController,
                   focusNode: addressFocusNode,
                   keyboardType: TextInputType.text,

@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/app/helpers/response_handler.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

@@ -50,10 +50,10 @@ class _OtpViewState extends ConsumerState<OtpView> with $OtpView {
 
   @override
   void dispose() {
+    super.dispose();
     _otpTimerNotifier.cancelTimer();
     _cancelToken.cancel();
     disposeForm();
-    super.dispose();
   }
 
   @override
