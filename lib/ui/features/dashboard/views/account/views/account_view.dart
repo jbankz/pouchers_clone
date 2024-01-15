@@ -1,6 +1,5 @@
 import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/modules/profile/profile_page.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
@@ -17,8 +16,10 @@ import '../../../../../../app/navigators/navigators.dart';
 import '../../../../../../modules/account/screens/account_settings/schedule_payments.dart';
 import '../../../../../../modules/account/screens/request/requests.dart';
 import '../../../../../common/app_strings.dart';
+import '../../../../../widgets/dialog/bottom_sheet.dart';
 import '../../../../../widgets/profile_image.dart';
 import 'widgets/account_tile.dart';
+import 'widgets/logout_prompt_widget.dart';
 
 class AccountView extends ConsumerWidget {
   const AccountView({super.key});
@@ -125,20 +126,21 @@ class AccountView extends ConsumerWidget {
                       desc: AppString.helpAndSupportInstruction,
                       tapped: IntercomManager.displayMessenger),
                   const Gap(height: 23),
-                  // AccountTile(
-                  //     icon: AppImage.logo,
-                  //     title: AppString.aboutPourcher,
-                  //     desc: AppString.aboutPourcherInstruction,
-                  //     tapped: () {}),
-                  // const Gap(height: 32),
                   AccountTile(
                       icon: AppImage.logOut,
                       title: AppString.logOut,
                       color: AppColors.kColorOrange,
-                      tapped: () async =>
-                          ref.read(userNotifierProvider.notifier).logout())
+                      tapped: () => _showPrompt(ref))
                 ])),
               ),
             );
           });
+
+  Future<void> _showPrompt(WidgetRef ref) async {
+    final response =
+        await BottomSheets.showAlertDialog(child: const LogoutPrompt())
+            as bool?;
+
+    if (response != null) ref.read(userNotifierProvider.notifier).logout();
+  }
 }

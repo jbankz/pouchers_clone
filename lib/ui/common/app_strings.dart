@@ -550,4 +550,6 @@ class AppString {
 
   static String postalCode = 'Postal Code';
   static String cityState = 'City/State';
+
+  static String logOutPrompt = 'Are you sure you want to logout?';
 }
