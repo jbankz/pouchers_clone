@@ -326,6 +326,7 @@ class AppString {
   static String referrals = 'Referrals';
   static String invite = 'Invite';
   static String rewards = 'Rewards';
+  static String residentialAddress = 'Residential Address';
 
   static String referAndEarn = 'Refer & Earn';
   static String howToEarn =

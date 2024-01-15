@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
+import 'package:Pouchers/ui/features/profile/presentation/views/profile/widget/update_address.dart';
 import 'package:Pouchers/ui/features/upload/domain/dto/upload_dto.dart';
 import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
 import 'package:Pouchers/utils/date_picker.dart';
@@ -237,9 +238,18 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                             }),
                         _buildTile(
                             context: context,
-                            isLast: true,
                             key: AppString.tag,
                             value: user.tag ?? ''),
+                        _buildTile(
+                            context: context,
+                            key: AppString.residentialAddress,
+                            value: user.address ?? '',
+                            isLast: true,
+                            onTap: () {
+                              BottomSheets.showInputAlertDialog(
+                                  barrierDismissible: false,
+                                  child: const UpdateAddressWidget());
+                            }),
                       ],
                     ),
                   )

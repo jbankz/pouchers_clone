@@ -15,6 +15,7 @@ class UserDto {
   final String? tag;
   final String? profilePicture;
   final List<String>? contacts;
+  final String? address;
 
   UserDto(
       {this.bvn,
@@ -32,7 +33,8 @@ class UserDto {
       this.fcmToken,
       this.tag,
       this.contacts,
-      this.profilePicture});
+      this.profilePicture,
+      this.address});
 
   Map<String, dynamic> toJson() => {
         if (bvn != null) 'bvn': bvn,
@@ -51,5 +53,6 @@ class UserDto {
         if (tag != null) 'tag': tag,
         if (contacts != null) 'contacts': contacts,
         if (profilePicture != null) 'profile_picture': profilePicture,
+        if (address != null) 'address': address
       };
 }
