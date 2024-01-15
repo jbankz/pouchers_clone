@@ -75,75 +75,109 @@ class _NotificationViewState extends ConsumerState<NotificationView> {
             final notifications = notificationDao.retrieve(box);
             return SafeArea(
               minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              child: Skeleton(
-                isLoading: notificationState.isBusy,
-                skeleton: const NotificationSkeleton(),
-                child: SmartRefresher(
-                  controller: _refreshController,
-                  enablePullUp: true,
-                  onRefresh: _refreshNotification,
-                  onLoading: _paginateNotification,
-                  child: ListView.separated(
-                      itemBuilder: (_, index) {
-                        final notification = notifications[index];
-                        return CupertinoButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: () {
-                            _notificationNotifier.readNotification(notification,
-                                cancelToken: _cancelToken);
-
-                            PageRouter.pushNamed(Routes.notificationDetailsView,
-                                args: NotificationDetailsViewArguments(
-                                    notificationModel: notification));
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Visibility(
+                    visible: notificationDao.unreadMessages.isNotEmpty,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        InkWell(
+                          child: Text(AppString.markAllAsRead,
+                              style: context.headlineMedium?.copyWith(
+                                  color: AppColors.kPurpleColor, fontSize: 12)),
+                          onTap: () {
+                            notificationDao.readAllNotifications();
                           },
-                          color: Colors.transparent,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  height: 10.h,
-                                  width: 10.w,
-                                  margin: EdgeInsets.only(top: 5.h),
-                                  decoration: BoxDecoration(
-                                      color: notification.isRead
-                                          ? AppColors.kLightColor200
-                                          : AppColors.limeGreen,
-                                      shape: BoxShape.circle)),
-                              const Gap(width: 8),
-                              Flexible(
-                                child: Column(
+                        ),
+                        const Gap(height: 20),
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    child: Skeleton(
+                      isLoading: notificationState.isBusy,
+                      skeleton: const NotificationSkeleton(),
+                      child: SmartRefresher(
+                        controller: _refreshController,
+                        enablePullUp: true,
+                        onRefresh: _refreshNotification,
+                        onLoading: _paginateNotification,
+                        child: ListView.separated(
+                            itemBuilder: (_, index) {
+                              final notification = notifications[index];
+                              return CupertinoButton(
+                                padding: EdgeInsets.zero,
+                                onPressed: () {
+                                  _notificationNotifier.readNotification(
+                                      notification,
+                                      cancelToken: _cancelToken);
+
+                                  PageRouter.pushNamed(
+                                      Routes.notificationDetailsView,
+                                      args: NotificationDetailsViewArguments(
+                                          notificationModel: notification));
+                                },
+                                color: Colors.transparent,
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(notification.title ?? '',
-                                        style: context.headlineMedium?.copyWith(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis),
-                                    const Gap(height: 8),
-                                    Text(
-                                        notification.createdAt?.monthTime ?? '',
-                                        style: context.headlineMedium?.copyWith(
-                                            color:
-                                                AppColors.kSecondaryTextColor,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis),
+                                    Container(
+                                        height: 10.h,
+                                        width: 10.w,
+                                        margin: EdgeInsets.only(top: 5.h),
+                                        decoration: BoxDecoration(
+                                            color: notification.isRead
+                                                ? AppColors.kLightColor200
+                                                : AppColors.limeGreen,
+                                            shape: BoxShape.circle)),
+                                    const Gap(width: 8),
+                                    Flexible(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(notification.title ?? '',
+                                              style: context.headlineMedium
+                                                  ?.copyWith(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis),
+                                          const Gap(height: 8),
+                                          Text(
+                                              notification
+                                                      .createdAt?.monthTime ??
+                                                  '',
+                                              style: context.headlineMedium
+                                                  ?.copyWith(
+                                                      color: AppColors
+                                                          .kSecondaryTextColor,
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis),
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 ),
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                      separatorBuilder: (_, __) => const Column(children: [
-                            Gap(height: 15),
-                            Divider(),
-                            Gap(height: 15)
-                          ]),
-                      itemCount: notifications.length),
-                ),
+                              );
+                            },
+                            separatorBuilder: (_, __) => const Column(
+                                    children: [
+                                      Gap(height: 15),
+                                      Divider(),
+                                      Gap(height: 15)
+                                    ]),
+                            itemCount: notifications.length),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           }),

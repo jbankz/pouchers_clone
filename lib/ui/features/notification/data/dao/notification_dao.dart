@@ -16,6 +16,9 @@ class NotificationDao {
 
   Box get box => _box;
 
+  Iterable<NotificationModel> get unreadMessages =>
+      _box.values.cast<NotificationModel>().where((element) => !element.isRead);
+
   NotificationDao() {
     openBox().then((value) => _box = value);
   }
@@ -48,4 +51,10 @@ class NotificationDao {
       (keys == null ? _box.listenable() : _box.listenable(keys: keys));
 
   Future truncate() async => await _box.clear();
+
+  void readAllNotifications() {
+    for (NotificationModel notification in unreadMessages) {
+      updateReadStatus(notification);
+    }
+  }
 }
