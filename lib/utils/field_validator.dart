@@ -47,7 +47,7 @@ class FieldValidator {
           return error ?? 'Expected minimum value is $min';
         }
         if (num.parse(value) > max) {
-          return error ?? 'Expected maximum value is $min';
+          return error ?? 'Expected maximum value is $max';
         }
         return null;
       };

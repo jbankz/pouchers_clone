@@ -106,6 +106,11 @@ mixin _$User {
   String? get refreshToken => throw _privateConstructorUsedError;
   @HiveField(29)
   String? get tokenExpireAt => throw _privateConstructorUsedError;
+  @HiveField(30)
+  String? get state => throw _privateConstructorUsedError;
+  @HiveField(31)
+  @JsonKey(name: 'postal_code')
+  String? get postalCode => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -169,7 +174,9 @@ abstract class $UserCopyWith<$Res> {
       bool? isPaymentBiometricActive,
       @HiveField(27) String? token,
       @HiveField(28) String? refreshToken,
-      @HiveField(29) String? tokenExpireAt});
+      @HiveField(29) String? tokenExpireAt,
+      @HiveField(30) String? state,
+      @HiveField(31) @JsonKey(name: 'postal_code') String? postalCode});
 }
 
 /// @nodoc
@@ -218,6 +225,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? token = freezed,
     Object? refreshToken = freezed,
     Object? tokenExpireAt = freezed,
+    Object? state = freezed,
+    Object? postalCode = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -352,6 +361,14 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.tokenExpireAt
           : tokenExpireAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      state: freezed == state
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postalCode: freezed == postalCode
+          ? _value.postalCode
+          : postalCode // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -415,7 +432,9 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       bool? isPaymentBiometricActive,
       @HiveField(27) String? token,
       @HiveField(28) String? refreshToken,
-      @HiveField(29) String? tokenExpireAt});
+      @HiveField(29) String? tokenExpireAt,
+      @HiveField(30) String? state,
+      @HiveField(31) @JsonKey(name: 'postal_code') String? postalCode});
 }
 
 /// @nodoc
@@ -461,6 +480,8 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? token = freezed,
     Object? refreshToken = freezed,
     Object? tokenExpireAt = freezed,
+    Object? state = freezed,
+    Object? postalCode = freezed,
   }) {
     return _then(_$UserImpl(
       id: freezed == id
@@ -595,6 +616,14 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.tokenExpireAt
           : tokenExpireAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      state: freezed == state
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postalCode: freezed == postalCode
+          ? _value.postalCode
+          : postalCode // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -653,7 +682,9 @@ class _$UserImpl implements _User {
       this.isPaymentBiometricActive,
       @HiveField(27) this.token,
       @HiveField(28) this.refreshToken,
-      @HiveField(29) this.tokenExpireAt});
+      @HiveField(29) this.tokenExpireAt,
+      @HiveField(30) this.state,
+      @HiveField(31) @JsonKey(name: 'postal_code') this.postalCode});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -777,10 +808,17 @@ class _$UserImpl implements _User {
   @override
   @HiveField(29)
   final String? tokenExpireAt;
+  @override
+  @HiveField(30)
+  final String? state;
+  @override
+  @HiveField(31)
+  @JsonKey(name: 'postal_code')
+  final String? postalCode;
 
   @override
   String toString() {
-    return 'User(id: $id, phoneNumber: $phoneNumber, userId: $userId, email: $email, firstName: $firstName, lastName: $lastName, verificationToken: $verificationToken, verificationTokenExpires: $verificationTokenExpires, tierLevels: $tierLevels, passwordResetToken: $passwordResetToken, passwordResetTokenExpires: $passwordResetTokenExpires, pinResetToken: $pinResetToken, pinResetTokenExpires: $pinResetTokenExpires, status: $status, deviceToken: $deviceToken, fcmToken: $fcmToken, isUploadedIdentityCard: $isUploadedIdentityCard, referralCode: $referralCode, tag: $tag, dob: $dob, profilePicture: $profilePicture, address: $address, pin: $pin, gender: $gender, iscreatedpin: $iscreatedpin, twoFactorTempSecret: $twoFactorTempSecret, is2faActive: $is2faActive, utilityBill: $utilityBill, isLoginBiometricActive: $isLoginBiometricActive, isPaymentBiometricActive: $isPaymentBiometricActive, token: $token, refreshToken: $refreshToken, tokenExpireAt: $tokenExpireAt)';
+    return 'User(id: $id, phoneNumber: $phoneNumber, userId: $userId, email: $email, firstName: $firstName, lastName: $lastName, verificationToken: $verificationToken, verificationTokenExpires: $verificationTokenExpires, tierLevels: $tierLevels, passwordResetToken: $passwordResetToken, passwordResetTokenExpires: $passwordResetTokenExpires, pinResetToken: $pinResetToken, pinResetTokenExpires: $pinResetTokenExpires, status: $status, deviceToken: $deviceToken, fcmToken: $fcmToken, isUploadedIdentityCard: $isUploadedIdentityCard, referralCode: $referralCode, tag: $tag, dob: $dob, profilePicture: $profilePicture, address: $address, pin: $pin, gender: $gender, iscreatedpin: $iscreatedpin, twoFactorTempSecret: $twoFactorTempSecret, is2faActive: $is2faActive, utilityBill: $utilityBill, isLoginBiometricActive: $isLoginBiometricActive, isPaymentBiometricActive: $isPaymentBiometricActive, token: $token, refreshToken: $refreshToken, tokenExpireAt: $tokenExpireAt, state: $state, postalCode: $postalCode)';
   }
 
   @override
@@ -799,14 +837,14 @@ class _$UserImpl implements _User {
                 other.lastName == lastName) &&
             (identical(other.verificationToken, verificationToken) ||
                 other.verificationToken == verificationToken) &&
-            (identical(other.verificationTokenExpires, verificationTokenExpires) ||
+            (identical(
+                    other.verificationTokenExpires, verificationTokenExpires) ||
                 other.verificationTokenExpires == verificationTokenExpires) &&
             (identical(other.tierLevels, tierLevels) ||
                 other.tierLevels == tierLevels) &&
             (identical(other.passwordResetToken, passwordResetToken) ||
                 other.passwordResetToken == passwordResetToken) &&
-            (identical(other.passwordResetTokenExpires,
-                    passwordResetTokenExpires) ||
+            (identical(other.passwordResetTokenExpires, passwordResetTokenExpires) ||
                 other.passwordResetTokenExpires == passwordResetTokenExpires) &&
             (identical(other.pinResetToken, pinResetToken) ||
                 other.pinResetToken == pinResetToken) &&
@@ -845,7 +883,10 @@ class _$UserImpl implements _User {
             (identical(other.refreshToken, refreshToken) ||
                 other.refreshToken == refreshToken) &&
             (identical(other.tokenExpireAt, tokenExpireAt) ||
-                other.tokenExpireAt == tokenExpireAt));
+                other.tokenExpireAt == tokenExpireAt) &&
+            (identical(other.state, state) || other.state == state) &&
+            (identical(other.postalCode, postalCode) ||
+                other.postalCode == postalCode));
   }
 
   @JsonKey(ignore: true)
@@ -884,7 +925,9 @@ class _$UserImpl implements _User {
         isPaymentBiometricActive,
         token,
         refreshToken,
-        tokenExpireAt
+        tokenExpireAt,
+        state,
+        postalCode
       ]);
 
   @JsonKey(ignore: true)
@@ -958,7 +1001,11 @@ abstract class _User implements User {
       final bool? isPaymentBiometricActive,
       @HiveField(27) final String? token,
       @HiveField(28) final String? refreshToken,
-      @HiveField(29) final String? tokenExpireAt}) = _$UserImpl;
+      @HiveField(29) final String? tokenExpireAt,
+      @HiveField(30) final String? state,
+      @HiveField(31)
+      @JsonKey(name: 'postal_code')
+      final String? postalCode}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -1081,6 +1128,13 @@ abstract class _User implements User {
   @override
   @HiveField(29)
   String? get tokenExpireAt;
+  @override
+  @HiveField(30)
+  String? get state;
+  @override
+  @HiveField(31)
+  @JsonKey(name: 'postal_code')
+  String? get postalCode;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

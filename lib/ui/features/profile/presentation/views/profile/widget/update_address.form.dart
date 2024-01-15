@@ -12,6 +12,8 @@ import 'package:stacked/stacked.dart';
 const bool _autoTextFieldValidation = true;
 
 const String AddressValueKey = 'address';
+const String StateValueKey = 'state';
+const String PostalValueKey = 'postal';
 
 final Map<String, TextEditingController>
     _UpdateAddressWidgetTextEditingControllers = {};
@@ -21,13 +23,21 @@ final Map<String, FocusNode> _UpdateAddressWidgetFocusNodes = {};
 final Map<String, String? Function(String?)?>
     _UpdateAddressWidgetTextValidations = {
   AddressValueKey: null,
+  StateValueKey: null,
+  PostalValueKey: null,
 };
 
 mixin $UpdateAddressWidget {
   TextEditingController get addressController =>
       _getFormTextEditingController(AddressValueKey);
+  TextEditingController get stateController =>
+      _getFormTextEditingController(StateValueKey);
+  TextEditingController get postalController =>
+      _getFormTextEditingController(PostalValueKey);
 
   FocusNode get addressFocusNode => _getFormFocusNode(AddressValueKey);
+  FocusNode get stateFocusNode => _getFormFocusNode(StateValueKey);
+  FocusNode get postalFocusNode => _getFormFocusNode(PostalValueKey);
 
   TextEditingController _getFormTextEditingController(
     String key, {
@@ -54,6 +64,8 @@ mixin $UpdateAddressWidget {
   /// with the latest textController values
   void syncFormWithViewModel(FormStateHelper model) {
     addressController.addListener(() => _updateFormData(model));
+    stateController.addListener(() => _updateFormData(model));
+    postalController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
   }
@@ -66,6 +78,8 @@ mixin $UpdateAddressWidget {
   )
   void listenToFormUpdated(FormViewModel model) {
     addressController.addListener(() => _updateFormData(model));
+    stateController.addListener(() => _updateFormData(model));
+    postalController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
   }
@@ -76,6 +90,8 @@ mixin $UpdateAddressWidget {
       model.formValueMap
         ..addAll({
           AddressValueKey: addressController.text,
+          StateValueKey: stateController.text,
+          PostalValueKey: postalController.text,
         }),
     );
 
@@ -118,6 +134,8 @@ extension ValueProperties on FormStateHelper {
   }
 
   String? get addressValue => this.formValueMap[AddressValueKey] as String?;
+  String? get stateValue => this.formValueMap[StateValueKey] as String?;
+  String? get postalValue => this.formValueMap[PostalValueKey] as String?;
 
   set addressValue(String? value) {
     this.setData(
@@ -131,30 +149,75 @@ extension ValueProperties on FormStateHelper {
     }
   }
 
+  set stateValue(String? value) {
+    this.setData(
+      this.formValueMap..addAll({StateValueKey: value}),
+    );
+
+    if (_UpdateAddressWidgetTextEditingControllers.containsKey(StateValueKey)) {
+      _UpdateAddressWidgetTextEditingControllers[StateValueKey]?.text =
+          value ?? '';
+    }
+  }
+
+  set postalValue(String? value) {
+    this.setData(
+      this.formValueMap..addAll({PostalValueKey: value}),
+    );
+
+    if (_UpdateAddressWidgetTextEditingControllers.containsKey(
+        PostalValueKey)) {
+      _UpdateAddressWidgetTextEditingControllers[PostalValueKey]?.text =
+          value ?? '';
+    }
+  }
+
   bool get hasAddress =>
       this.formValueMap.containsKey(AddressValueKey) &&
       (addressValue?.isNotEmpty ?? false);
+  bool get hasState =>
+      this.formValueMap.containsKey(StateValueKey) &&
+      (stateValue?.isNotEmpty ?? false);
+  bool get hasPostal =>
+      this.formValueMap.containsKey(PostalValueKey) &&
+      (postalValue?.isNotEmpty ?? false);
 
   bool get hasAddressValidationMessage =>
       this.fieldsValidationMessages[AddressValueKey]?.isNotEmpty ?? false;
+  bool get hasStateValidationMessage =>
+      this.fieldsValidationMessages[StateValueKey]?.isNotEmpty ?? false;
+  bool get hasPostalValidationMessage =>
+      this.fieldsValidationMessages[PostalValueKey]?.isNotEmpty ?? false;
 
   String? get addressValidationMessage =>
       this.fieldsValidationMessages[AddressValueKey];
+  String? get stateValidationMessage =>
+      this.fieldsValidationMessages[StateValueKey];
+  String? get postalValidationMessage =>
+      this.fieldsValidationMessages[PostalValueKey];
 }
 
 extension Methods on FormStateHelper {
   setAddressValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[AddressValueKey] = validationMessage;
+  setStateValidationMessage(String? validationMessage) =>
+      this.fieldsValidationMessages[StateValueKey] = validationMessage;
+  setPostalValidationMessage(String? validationMessage) =>
+      this.fieldsValidationMessages[PostalValueKey] = validationMessage;
 
   /// Clears text input fields on the Form
   void clearForm() {
     addressValue = '';
+    stateValue = '';
+    postalValue = '';
   }
 
   /// Validates text input fields on the Form
   void validateForm() {
     this.setValidationMessages({
       AddressValueKey: getValidationMessage(AddressValueKey),
+      StateValueKey: getValidationMessage(StateValueKey),
+      PostalValueKey: getValidationMessage(PostalValueKey),
     });
   }
 }
@@ -175,4 +238,6 @@ String? getValidationMessage(String key) {
 void updateValidationData(FormStateHelper model) =>
     model.setValidationMessages({
       AddressValueKey: getValidationMessage(AddressValueKey),
+      StateValueKey: getValidationMessage(StateValueKey),
+      PostalValueKey: getValidationMessage(PostalValueKey),
     });

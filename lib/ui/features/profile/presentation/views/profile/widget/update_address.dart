@@ -16,7 +16,11 @@ import 'package:stacked/stacked_annotations.dart';
 import '../../../../../../../app/core/router/page_router.dart';
 import 'update_address.form.dart';
 
-@FormView(fields: [FormTextField(name: 'address')])
+@FormView(fields: [
+  FormTextField(name: 'address'),
+  FormTextField(name: 'state'),
+  FormTextField(name: 'postal')
+])
 class UpdateAddressWidget extends ConsumerStatefulWidget {
   const UpdateAddressWidget({super.key});
 
@@ -36,6 +40,8 @@ class _UpdateAddressWidgetState extends ConsumerState<UpdateAddressWidget>
     super.initState();
     _userNotifier = ref.read(userNotifierProvider.notifier);
     addressController.text = userDao.user.address ?? '';
+    stateController.text = userDao.user.state ?? '';
+    postalController.text = userDao.user.postalCode ?? '';
     addressFocusNode.requestFocus();
   }
 
@@ -73,8 +79,30 @@ class _UpdateAddressWidgetState extends ConsumerState<UpdateAddressWidget>
                   controller: addressController,
                   focusNode: addressFocusNode,
                   keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
                   validator: FieldValidator.validateString(),
+                  onFieldSubmitted: (_) => context.nextFocus(stateFocusNode)),
+              const Gap(height: 20),
+              EditTextFieldWidget(
+                  readOnly: userState.isBusy,
+                  title: AppString.cityState,
+                  label: AppString.cityState,
+                  controller: stateController,
+                  focusNode: stateFocusNode,
+                  keyboardType: TextInputType.text,
+                  validator: FieldValidator.validateString(),
+                  onFieldSubmitted: (_) => context.nextFocus(postalFocusNode)),
+              const Gap(height: 20),
+              EditTextFieldWidget(
+                  readOnly: userState.isBusy,
+                  title: AppString.postalCode,
+                  label: AppString.postalCode,
+                  controller: postalController,
+                  focusNode: postalFocusNode,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [context.digitsOnly],
+                  textInputAction: TextInputAction.done,
+                  validator:
+                      FieldValidator.validateNum(max: 1000000000, min: 4),
                   onFieldSubmitted: (_) => _submit()),
               const Gap(height: 20),
               Align(
@@ -119,7 +147,12 @@ class _UpdateAddressWidgetState extends ConsumerState<UpdateAddressWidget>
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
 
-    _userNotifier.updateProfile(UserDto(address: addressController.text),
-        cancelToken: _cancelToken, success: () => PageRouter.pop());
+    _userNotifier.updateProfile(
+        UserDto(
+            address: addressController.text,
+            state: stateController.text,
+            postalCode: postalController.text),
+        cancelToken: _cancelToken,
+        success: () => PageRouter.pop());
   }
 }

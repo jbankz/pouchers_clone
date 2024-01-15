@@ -16,6 +16,8 @@ class UserDto {
   final String? profilePicture;
   final List<String>? contacts;
   final String? address;
+  final String? state;
+  final String? postalCode;
 
   UserDto(
       {this.bvn,
@@ -34,7 +36,9 @@ class UserDto {
       this.tag,
       this.contacts,
       this.profilePicture,
-      this.address});
+      this.address,
+      this.state,
+      this.postalCode});
 
   Map<String, dynamic> toJson() => {
         if (bvn != null) 'bvn': bvn,
@@ -53,6 +57,8 @@ class UserDto {
         if (tag != null) 'tag': tag,
         if (contacts != null) 'contacts': contacts,
         if (profilePicture != null) 'profile_picture': profilePicture,
-        if (address != null) 'address': address
+        if (address != null) 'address': address,
+        if (state != null) 'state': state,
+        if (postalCode != null) 'postal_code': postalCode,
       };
 }

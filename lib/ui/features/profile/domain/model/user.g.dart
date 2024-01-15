@@ -47,13 +47,15 @@ class UserAdapter extends TypeAdapter<_$UserImpl> {
       token: fields[27] as String?,
       refreshToken: fields[28] as String?,
       tokenExpireAt: fields[29] as String?,
+      state: fields[30] as String?,
+      postalCode: fields[31] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, _$UserImpl obj) {
     writer
-      ..writeByte(30)
+      ..writeByte(32)
       ..writeByte(0)
       ..write(obj.phoneNumber)
       ..writeByte(1)
@@ -113,7 +115,11 @@ class UserAdapter extends TypeAdapter<_$UserImpl> {
       ..writeByte(28)
       ..write(obj.refreshToken)
       ..writeByte(29)
-      ..write(obj.tokenExpireAt);
+      ..write(obj.tokenExpireAt)
+      ..writeByte(30)
+      ..write(obj.state)
+      ..writeByte(31)
+      ..write(obj.postalCode);
   }
 
   @override
@@ -170,6 +176,8 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       token: json['token'] as String?,
       refreshToken: json['refreshToken'] as String?,
       tokenExpireAt: json['tokenExpireAt'] as String?,
+      state: json['state'] as String?,
+      postalCode: json['postal_code'] as String?,
     );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
@@ -208,6 +216,8 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'token': instance.token,
       'refreshToken': instance.refreshToken,
       'tokenExpireAt': instance.tokenExpireAt,
+      'state': instance.state,
+      'postal_code': instance.postalCode,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

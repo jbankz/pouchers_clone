@@ -16,11 +16,11 @@ import 'app/app.router.dart';
 import 'app/config/app_config.dart';
 import 'app/core/constants/app_constants.dart';
 import 'app/core/theme/app_theme.dart';
-  
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  AppConfig.setAppEnv(kDebugMode ? AppEnv.staging : AppEnv.production);
+  AppConfig.setAppEnv(kDebugMode ? AppEnv.production : AppEnv.production);
 
   await dotenv.load(fileName: AppConfig.fileName);
 
