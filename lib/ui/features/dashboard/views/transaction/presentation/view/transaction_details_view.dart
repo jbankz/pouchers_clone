@@ -28,7 +28,7 @@ class TransactionDetailsView extends StatelessWidget {
 
     final String amount = isDebitTransaction
         ? '-${transactionHistory.amount.toNaira}'
-        : '+${transactionHistory.amount.toNaira}';
+        : '+${(transactionHistory.amount + transactionHistory.transactionFee).toNaira}';
 
     return Scaffold(
       appBar: AppBar(title: Text(AppString.transactionReceipt)),
@@ -132,7 +132,8 @@ class TransactionDetailsView extends StatelessWidget {
                 ServiceCategory.education => const SizedBox.shrink(),
                 ServiceCategory.internet => const SizedBox.shrink(),
                 ServiceCategory.voucherRedeem => _buildStatusDetails(context),
-                ServiceCategory.fundWallet => const SizedBox.shrink(),
+                ServiceCategory.fundWallet =>
+                  _buildWalletFundingDetails(context),
                 ServiceCategory.createVirtualCard => const SizedBox.shrink(),
                 ServiceCategory.fundVirtualCard => const SizedBox.shrink(),
                 ServiceCategory.localBankTransfer => const SizedBox.shrink(),
@@ -180,6 +181,26 @@ class TransactionDetailsView extends StatelessWidget {
           )),
     );
   }
+
+  Column _buildWalletFundingDetails(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildTile(
+              context: context,
+              title: AppString.status,
+              value: transactionHistory.status?.titleCase ?? ''),
+          const Gap(height: 16),
+          _buildTile(
+              context: context,
+              title: AppString.amountReceived,
+              value: transactionHistory.amount.toNaira),
+          const Gap(height: 16),
+          _buildTile(
+              context: context,
+              title: AppString.transactionFee,
+              value: transactionHistory.transactionFee.toNaira)
+        ],
+      );
 
   Row _buildStatusDetails(BuildContext context) => _buildTile(
       context: context,

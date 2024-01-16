@@ -30,3 +30,8 @@ Future<UnreadPaymentRequest> unreadPaymentNotification(
     await ref
         .read(getUnreadPaymentNotificationUseCaseModule)
         .execute(cancelToken);
+
+@riverpod
+Future<bool> readAllNotification(ReadAllNotificationRef ref,
+        {CancelToken? cancelToken}) async =>
+    await ref.read(readAllNotificationUseCaseModule).execute(cancelToken);

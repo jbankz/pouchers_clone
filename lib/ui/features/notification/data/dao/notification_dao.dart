@@ -52,9 +52,9 @@ class NotificationDao {
 
   Future truncate() async => await _box.clear();
 
-  void readAllNotifications() {
+  Future<void> readAllNotifications() async {
     for (NotificationModel notification in unreadMessages) {
-      updateReadStatus(notification);
+      await updateReadStatus(notification);
     }
   }
 }

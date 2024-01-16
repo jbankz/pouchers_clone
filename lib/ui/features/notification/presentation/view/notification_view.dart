@@ -84,13 +84,13 @@ class _NotificationViewState extends ConsumerState<NotificationView> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         InkWell(
-                          child: Text(AppString.markAllAsRead,
-                              style: context.headlineMedium?.copyWith(
-                                  color: AppColors.kPurpleColor, fontSize: 12)),
-                          onTap: () {
-                            notificationDao.readAllNotifications();
-                          },
-                        ),
+                            child: Text(AppString.markAllAsRead,
+                                style: context.headlineMedium?.copyWith(
+                                    color: AppColors.kPurpleColor,
+                                    fontSize: 12)),
+                            onTap: () =>
+                                _notificationNotifier.readAllNotification(
+                                    cancelToken: _cancelToken)),
                         const Gap(height: 20),
                       ],
                     ),

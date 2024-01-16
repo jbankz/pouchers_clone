@@ -33,4 +33,8 @@ class NotificationRepoImpl implements NotificationRepo {
           {CancelToken? cancelToken}) async =>
       await _notificationSource.unReadPaymentNotification(
           cancelToken: cancelToken);
+
+  @override
+  Future<bool> readAllNotification({CancelToken? cancelToken}) async =>
+      await _notificationSource.readAllNotification(cancelToken: cancelToken);
 }

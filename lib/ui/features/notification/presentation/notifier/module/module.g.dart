@@ -458,5 +458,136 @@ class _UnreadPaymentNotificationProviderElement
   CancelToken? get cancelToken =>
       (origin as UnreadPaymentNotificationProvider).cancelToken;
 }
+
+String _$readAllNotificationHash() =>
+    r'e2871b1d85849824a222cbd6e4145adfa4a20145';
+
+/// See also [readAllNotification].
+@ProviderFor(readAllNotification)
+const readAllNotificationProvider = ReadAllNotificationFamily();
+
+/// See also [readAllNotification].
+class ReadAllNotificationFamily extends Family<AsyncValue<bool>> {
+  /// See also [readAllNotification].
+  const ReadAllNotificationFamily();
+
+  /// See also [readAllNotification].
+  ReadAllNotificationProvider call({
+    CancelToken? cancelToken,
+  }) {
+    return ReadAllNotificationProvider(
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  ReadAllNotificationProvider getProviderOverride(
+    covariant ReadAllNotificationProvider provider,
+  ) {
+    return call(
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'readAllNotificationProvider';
+}
+
+/// See also [readAllNotification].
+class ReadAllNotificationProvider extends AutoDisposeFutureProvider<bool> {
+  /// See also [readAllNotification].
+  ReadAllNotificationProvider({
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => readAllNotification(
+            ref as ReadAllNotificationRef,
+            cancelToken: cancelToken,
+          ),
+          from: readAllNotificationProvider,
+          name: r'readAllNotificationProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$readAllNotificationHash,
+          dependencies: ReadAllNotificationFamily._dependencies,
+          allTransitiveDependencies:
+              ReadAllNotificationFamily._allTransitiveDependencies,
+          cancelToken: cancelToken,
+        );
+
+  ReadAllNotificationProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<bool> Function(ReadAllNotificationRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ReadAllNotificationProvider._internal(
+        (ref) => create(ref as ReadAllNotificationRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<bool> createElement() {
+    return _ReadAllNotificationProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ReadAllNotificationProvider &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ReadAllNotificationRef on AutoDisposeFutureProviderRef<bool> {
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _ReadAllNotificationProviderElement
+    extends AutoDisposeFutureProviderElement<bool> with ReadAllNotificationRef {
+  _ReadAllNotificationProviderElement(super.provider);
+
+  @override
+  CancelToken? get cancelToken =>
+      (origin as ReadAllNotificationProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

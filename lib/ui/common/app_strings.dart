@@ -555,4 +555,6 @@ class AppString {
   static String completeKyc = 'Complete KYC';
   static String completeKycInstr =
       'Your BVN (Bank Verification Number) is needed to complete the creation of a Virtual Card.';
+  static String amountReceived = "Amount Received";
+  static String transactionFee = "Transaction Fee";
 }

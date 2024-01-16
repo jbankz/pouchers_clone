@@ -11,4 +11,5 @@ abstract class NotificationRepo {
       {CancelToken? cancelToken});
   Future<UnreadPaymentRequest> unReadPaymentNotification(
       {CancelToken? cancelToken});
+  Future<bool> readAllNotification({CancelToken? cancelToken});
 }

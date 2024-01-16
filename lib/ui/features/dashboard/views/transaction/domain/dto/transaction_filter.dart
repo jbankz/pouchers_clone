@@ -18,6 +18,7 @@ List<TransactionFilter> filters = [
   TransactionFilter(key: 'Voucher', value: 'voucher'),
   TransactionFilter(key: 'Transfer', value: 'transfer'),
   TransactionFilter(key: 'Education', value: 'education'),
+  // TransactionFilter(key: 'Wallet', value: ServiceCategory.fundWallet.value),
   TransactionFilter(
       key: 'Admin Credit Wallet',
       value: ServiceCategory.adminCreditWallet.value),

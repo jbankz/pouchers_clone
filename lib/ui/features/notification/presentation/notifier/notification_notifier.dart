@@ -15,7 +15,7 @@ part 'notification_notifier.g.dart';
 class NotificationNotifier extends _$NotificationNotifier {
   final _logger = getLogger('NotificationNotifier');
 
-  List<NotificationModel> _notifications = [];
+  final List<NotificationModel> _notifications = [];
   UnreadPaymentRequest? _unreadPaymentModel;
 
   int _page = 1;
@@ -65,6 +65,16 @@ class NotificationNotifier extends _$NotificationNotifier {
       await ref.read(readNotificationProvider
           .call(notification.notificationId ?? '', cancelToken: cancelToken)
           .future);
+    } catch (e) {
+      _logger.e(e.toString());
+    } finally {}
+  }
+
+  Future<void> readAllNotification({CancelToken? cancelToken}) async {
+    try {
+      await notificationDao.readAllNotifications();
+      await ref.read(
+          readAllNotificationProvider.call(cancelToken: cancelToken).future);
     } catch (e) {
       _logger.e(e.toString());
     } finally {}

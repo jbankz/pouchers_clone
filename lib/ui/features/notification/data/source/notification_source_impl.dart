@@ -47,4 +47,14 @@ class NotificationSourceImpl implements NotificationSource {
     return UnreadPaymentRequest.fromJson(
         response.data?['data'] as Map<String, dynamic>);
   }
+
+  @override
+  Future<bool> readAllNotification({CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: '${ApiPath.notification}/read-all',
+        requestType: RequestType.patch,
+        cancelToken: cancelToken);
+
+    return response.statusCode == 200;
+  }
 }

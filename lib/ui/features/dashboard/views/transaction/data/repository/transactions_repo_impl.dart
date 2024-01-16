@@ -17,8 +17,9 @@ class TransactionsRepoImpl implements TransactionsRepo {
       CancelToken? cancelToken}) async {
     final transactions = await _transactionsSource.getTransactionsHistory(
         transactionDto: transactionDto, cancelToken: cancelToken);
+
     if (transactionDto.category == null) {
-      transactionHistoryDao.save(transactions);
+      transactionHistoryDao.save(transactions, clear: transactionDto.page == 1);
     }
     return transactions;
   }

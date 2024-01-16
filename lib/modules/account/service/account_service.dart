@@ -875,14 +875,15 @@ class AccountService {
     Map<String, String> _authHeaders = {
       HttpHeaders.connectionHeader: "keep-alive",
       HttpHeaders.contentTypeHeader: "application/json",
-      HttpHeaders.authorizationHeader: "Bearer $token"
+      HttpHeaders.authorizationHeader:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidXNlci0xNWUzNWRmMmFmOWUxMWVlODFhODVmMTkxYjFhNTNmZSIsImlhdCI6MTcwNTQzOTYxOSwiZXhwIjoxNzA1NTI2MDE5fQ.NRw_qFGjPUqQqwEnYpSGCJGFlGclggGrFdxFcCgYoOg"
     };
 
     String url = status == null
-        ? "${baseUrl()}/payment/requests?page=$page&type=$type"
-        : "${baseUrl()}/payment/requests?page=$page&type=$type&status=$status";
+        ? "https://api.pouchers.io/api/v1/payment/requests?page=$page&type=$type"
+        : "https://api.pouchers.io/api/v1/payment/requests?page=$page&type=$type&status=$status";
 
-    logPrint(url);
+    logPrint("Jayceee========${_authHeaders}");
 
     try {
       http.Response response = await http.get(

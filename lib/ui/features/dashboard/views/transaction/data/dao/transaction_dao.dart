@@ -26,10 +26,11 @@ class TransactionHistoryDao {
 
   List<TransactionHistory> get transactions => fetchTransactionHistory(_box);
 
-  Future<void> save(List<TransactionHistory> transactions) async {
+  Future<void> save(List<TransactionHistory> transactions,
+      {bool clear = true}) async {
     if (transactions.isEmpty) return;
 
-    _box.clear();
+    if (clear) _box.clear();
 
     for (var transaction in transactions) {
       await _box.put(transaction.transactionId, transaction);

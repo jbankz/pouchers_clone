@@ -9,6 +9,7 @@ abstract class NotificationSource {
       {CancelToken? cancelToken});
   Future<bool> readNotification(String notificationId,
       {CancelToken? cancelToken});
+  Future<bool> readAllNotification({CancelToken? cancelToken});
   Future<UnreadPaymentRequest> unReadPaymentNotification(
       {CancelToken? cancelToken});
 }
