@@ -1,12 +1,14 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../../app/core/constants/db_constants.dart';
+
 part 'billers.freezed.dart';
 part 'billers.g.dart';
 
 @freezed
+@HiveType(typeId: DbConstants.twelve)
 class Billers with _$Billers {
-  @HiveType(typeId: 12, adapterName: 'BillersAdapter')
   factory Billers({
     @HiveField(0) String? name,
     @HiveField(1) @JsonKey(name: 'display_name') String? displayName,

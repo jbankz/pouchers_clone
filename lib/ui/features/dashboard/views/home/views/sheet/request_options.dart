@@ -1,13 +1,12 @@
 import 'package:Pouchers/app/app.router.dart';
+import 'package:Pouchers/modules/account/screens/request/requests.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/utils/extension.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../../../app/core/router/page_router.dart';
-import '../../../../../../../modules/account/screens/request/sent.dart';
 import '../../../../../../common/app_strings.dart';
 import '../../../../../../widgets/gap.dart';
 import '../../../../../notification/presentation/notifier/notification_notifier.dart';
@@ -46,17 +45,18 @@ class RequestOptionSheet extends HookConsumerWidget {
                           isRequestingMoney: true)),
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 13.h),
+                    width: double.infinity,
                     color: Colors.transparent,
                     child: Row(
                       children: [
                         Flexible(
-                          child: Text('New Requests',
+                          child: Text(AppString.newRequest,
                               style: context.headlineMedium?.copyWith(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.kPrimaryTextColor)),
                         ),
-                        Gap(width: 12),
+                        const Gap(width: 12),
                         if (totalUnreadMessages > 0)
                           Container(
                             height: 20.h,
@@ -79,11 +79,12 @@ class RequestOptionSheet extends HookConsumerWidget {
                 const Divider(),
                 const Gap(height: 4),
                 InkWell(
-                  onTap: ()=> PageRouter.pushWidget(SentRequests()),
+                  onTap: () => PageRouter.pushNamed(Routes.requestView),
                   child: Container(
+                    width: double.infinity,
                     padding: EdgeInsets.symmetric(vertical: 13.h),
                     color: Colors.transparent,
-                    child: Text('Request History',
+                    child: Text(AppString.requestHistory,
                         style: context.headlineMedium?.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,

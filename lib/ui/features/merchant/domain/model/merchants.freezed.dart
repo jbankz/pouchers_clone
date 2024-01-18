@@ -140,7 +140,6 @@ class __$$MerchantImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 11, adapterName: 'MerchantAdapter')
 class _$MerchantImpl implements _Merchant {
   _$MerchantImpl(
       {@HiveField(0) this.name,

@@ -6,17 +6,17 @@ part of 'billers.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class BillersAdapter extends TypeAdapter<_$BillersImpl> {
+class BillersAdapter extends TypeAdapter<Billers> {
   @override
   final int typeId = 12;
 
   @override
-  _$BillersImpl read(BinaryReader reader) {
+  Billers read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$BillersImpl(
+    return Billers(
       name: fields[0] as String?,
       displayName: fields[1] as String?,
       category: fields[2] as String?,
@@ -28,7 +28,7 @@ class BillersAdapter extends TypeAdapter<_$BillersImpl> {
   }
 
   @override
-  void write(BinaryWriter writer, _$BillersImpl obj) {
+  void write(BinaryWriter writer, Billers obj) {
     writer
       ..writeByte(7)
       ..writeByte(0)

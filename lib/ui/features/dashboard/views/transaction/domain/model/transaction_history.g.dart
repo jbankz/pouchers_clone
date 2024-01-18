@@ -6,17 +6,17 @@ part of 'transaction_history.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TransactionHistoryAdapter extends TypeAdapter<_$TransactionHistoryImpl> {
+class TransactionHistoryAdapter extends TypeAdapter<TransactionHistory> {
   @override
   final int typeId = 17;
 
   @override
-  _$TransactionHistoryImpl read(BinaryReader reader) {
+  TransactionHistory read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$TransactionHistoryImpl(
+    return TransactionHistory(
       transactionId: fields[0] as String?,
       userId: fields[2] as String?,
       amount: fields[3] as num,
@@ -35,7 +35,7 @@ class TransactionHistoryAdapter extends TypeAdapter<_$TransactionHistoryImpl> {
   }
 
   @override
-  void write(BinaryWriter writer, _$TransactionHistoryImpl obj) {
+  void write(BinaryWriter writer, TransactionHistory obj) {
     writer
       ..writeByte(14)
       ..writeByte(0)
@@ -79,17 +79,17 @@ class TransactionHistoryAdapter extends TypeAdapter<_$TransactionHistoryImpl> {
           typeId == other.typeId;
 }
 
-class ExtraDetailsAdapter extends TypeAdapter<_$ExtraDetailsImpl> {
+class ExtraDetailsAdapter extends TypeAdapter<ExtraDetails> {
   @override
   final int typeId = 18;
 
   @override
-  _$ExtraDetailsImpl read(BinaryReader reader) {
+  ExtraDetails read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$ExtraDetailsImpl(
+    return ExtraDetails(
       senderName: fields[0] as String?,
       senderTag: fields[1] as String?,
       receiverTag: fields[2] as String?,
@@ -102,7 +102,7 @@ class ExtraDetailsAdapter extends TypeAdapter<_$ExtraDetailsImpl> {
   }
 
   @override
-  void write(BinaryWriter writer, _$ExtraDetailsImpl obj) {
+  void write(BinaryWriter writer, ExtraDetails obj) {
     writer
       ..writeByte(8)
       ..writeByte(0)

@@ -6,17 +6,17 @@ part of 'wallet.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class WalletAdapter extends TypeAdapter<_$WalletImpl> {
+class WalletAdapter extends TypeAdapter<Wallet> {
   @override
   final int typeId = 5;
 
   @override
-  _$WalletImpl read(BinaryReader reader) {
+  Wallet read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$WalletImpl(
+    return Wallet(
       walletId: fields[0] as String?,
       userId: fields[1] as String?,
       credit: fields[2] as String?,
@@ -30,7 +30,7 @@ class WalletAdapter extends TypeAdapter<_$WalletImpl> {
   }
 
   @override
-  void write(BinaryWriter writer, _$WalletImpl obj) {
+  void write(BinaryWriter writer, Wallet obj) {
     writer
       ..writeByte(9)
       ..writeByte(0)

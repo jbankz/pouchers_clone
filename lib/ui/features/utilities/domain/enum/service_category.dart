@@ -1,10 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../../app/core/constants/db_constants.dart';
+
 part 'service_category.g.dart';
 
+@HiveType(typeId: DbConstants.twentyOne)
 @JsonEnum(valueField: 'value', fieldRename: FieldRename.kebab)
-@HiveType(typeId: 21, adapterName: 'ServiceCategoryAdapter')
 enum ServiceCategory {
   @HiveField(0)
   @HiveField(1)

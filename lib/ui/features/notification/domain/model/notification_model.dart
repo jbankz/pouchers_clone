@@ -2,12 +2,14 @@ import 'package:Pouchers/app/serializer/date_time_serializer.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../../../../app/core/constants/db_constants.dart';
+
 part 'notification_model.freezed.dart';
 part 'notification_model.g.dart';
 
 @freezed
+@HiveType(typeId: DbConstants.eight)
 class NotificationModel with _$NotificationModel {
-  @HiveType(typeId: 8, adapterName: 'NotificationModelAdapter')
   factory NotificationModel(
       {@HiveField(0) num? id,
       @HiveField(1) @JsonKey(name: 'notification_id') String? notificationId,

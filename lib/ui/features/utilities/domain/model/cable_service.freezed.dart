@@ -170,7 +170,6 @@ class __$$CableServiceImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 14, adapterName: 'CableServiceAdapter')
 class _$CableServiceImpl implements _CableService {
   _$CableServiceImpl(
       {@HiveField(0) this.name,

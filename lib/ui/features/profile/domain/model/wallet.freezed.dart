@@ -214,7 +214,6 @@ class __$$WalletImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 5, adapterName: 'WalletAdapter')
 class _$WalletImpl implements _Wallet {
   _$WalletImpl(
       {@JsonKey(name: 'wallet_id') @HiveField(0) this.walletId,

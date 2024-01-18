@@ -1,8 +1,10 @@
 import 'package:hive/hive.dart';
 
+import '../../../../../app/core/constants/db_constants.dart';
+
 part 'voucher_status.g.dart';
 
-@HiveType(typeId: 16, adapterName: 'VoucherStatusAdapter')
+@HiveType(typeId: DbConstants.sixteen)
 enum VoucherStatus {
   @HiveField(0)
   inactive('inactive'),

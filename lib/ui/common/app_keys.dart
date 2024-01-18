@@ -21,4 +21,5 @@ class AppKeys {
   static const String vouchersDaoKey = 'vouchersDaoKey';
   static const String contactsDaoKey = 'contactsDaoKey';
   static const String transactionHistoryDaoKey = 'transactionHistoryDaoKey';
+  static const String requestDaoKey = 'requestDaoKey';
 }

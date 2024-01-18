@@ -6,24 +6,24 @@ part of 'referral.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ReferralAdapter extends TypeAdapter<_$ReferralImpl> {
+class ReferralAdapter extends TypeAdapter<Referral> {
   @override
   final int typeId = 2;
 
   @override
-  _$ReferralImpl read(BinaryReader reader) {
+  Referral read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$ReferralImpl(
+    return Referral(
       earning: (fields[0] as List?)?.cast<Earning>(),
       referralTrail: (fields[1] as List?)?.cast<ReferralTrail>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, _$ReferralImpl obj) {
+  void write(BinaryWriter writer, Referral obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)

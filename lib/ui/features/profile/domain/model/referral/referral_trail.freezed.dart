@@ -218,7 +218,6 @@ class __$$ReferralTrailImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 4, adapterName: 'ReferralTrailAdapter')
 class _$ReferralTrailImpl implements _ReferralTrail {
   _$ReferralTrailImpl(
       {@HiveField(0) this.id,

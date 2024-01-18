@@ -6,17 +6,17 @@ part of 'get_merchants.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class GetMerchantAdapter extends TypeAdapter<_$GetMerchantImpl> {
+class GetMerchantAdapter extends TypeAdapter<GetMerchant> {
   @override
   final int typeId = 10;
 
   @override
-  _$GetMerchantImpl read(BinaryReader reader) {
+  GetMerchant read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$GetMerchantImpl(
+    return GetMerchant(
       responseCode: fields[0] as num,
       responseCategoryCode: fields[1] as String?,
       referenceNumber: fields[2] as String?,
@@ -25,7 +25,7 @@ class GetMerchantAdapter extends TypeAdapter<_$GetMerchantImpl> {
   }
 
   @override
-  void write(BinaryWriter writer, _$GetMerchantImpl obj) {
+  void write(BinaryWriter writer, GetMerchant obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)

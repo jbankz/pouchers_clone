@@ -6,17 +6,17 @@ part of 'local_bank.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class LocalBankAdapter extends TypeAdapter<_$LocalBankImpl> {
+class LocalBankAdapter extends TypeAdapter<LocalBank> {
   @override
   final int typeId = 6;
 
   @override
-  _$LocalBankImpl read(BinaryReader reader) {
+  LocalBank read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$LocalBankImpl(
+    return LocalBank(
       id: fields[0] as String?,
       type: fields[1] as String?,
       attributes: fields[2] as Attributes?,
@@ -24,7 +24,7 @@ class LocalBankAdapter extends TypeAdapter<_$LocalBankImpl> {
   }
 
   @override
-  void write(BinaryWriter writer, _$LocalBankImpl obj) {
+  void write(BinaryWriter writer, LocalBank obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)

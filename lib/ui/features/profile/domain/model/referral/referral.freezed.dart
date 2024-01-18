@@ -118,7 +118,6 @@ class __$$ReferralImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 2, adapterName: 'ReferralAdapter')
 class _$ReferralImpl implements _Referral {
   _$ReferralImpl(
       {@EarningSerializer()

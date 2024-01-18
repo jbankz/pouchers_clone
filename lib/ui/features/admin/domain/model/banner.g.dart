@@ -6,17 +6,17 @@ part of 'banner.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class BannerAdapter extends TypeAdapter<_$BannerImpl> {
+class BannerAdapter extends TypeAdapter<Banner> {
   @override
   final int typeId = 9;
 
   @override
-  _$BannerImpl read(BinaryReader reader) {
+  Banner read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$BannerImpl(
+    return Banner(
       id: fields[0] as String?,
       imageUrl: fields[1] as String?,
       type: fields[2] as String?,
@@ -24,7 +24,7 @@ class BannerAdapter extends TypeAdapter<_$BannerImpl> {
   }
 
   @override
-  void write(BinaryWriter writer, _$BannerImpl obj) {
+  void write(BinaryWriter writer, Banner obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)

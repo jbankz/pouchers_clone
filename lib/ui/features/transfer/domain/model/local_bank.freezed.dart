@@ -143,7 +143,6 @@ class __$$LocalBankImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 6, adapterName: 'LocalBankAdapter')
 class _$LocalBankImpl implements _LocalBank {
   _$LocalBankImpl(
       {@HiveField(0) this.id,

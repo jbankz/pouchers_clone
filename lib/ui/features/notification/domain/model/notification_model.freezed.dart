@@ -179,7 +179,6 @@ class __$$NotificationModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 8, adapterName: 'NotificationModelAdapter')
 class _$NotificationModelImpl implements _NotificationModel {
   _$NotificationModelImpl(
       {@HiveField(0) this.id,

@@ -6,23 +6,23 @@ part of 'earning.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class EarningAdapter extends TypeAdapter<_$EarningImpl> {
+class EarningAdapter extends TypeAdapter<Earning> {
   @override
   final int typeId = 3;
 
   @override
-  _$EarningImpl read(BinaryReader reader) {
+  Earning read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$EarningImpl(
+    return Earning(
       totalEarnings: fields[0] as String?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, _$EarningImpl obj) {
+  void write(BinaryWriter writer, Earning obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)

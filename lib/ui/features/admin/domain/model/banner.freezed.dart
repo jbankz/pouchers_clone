@@ -125,7 +125,6 @@ class __$$BannerImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 9, adapterName: 'BannerAdapter')
 class _$BannerImpl implements _Banner {
   _$BannerImpl(
       {@HiveField(0) this.id,

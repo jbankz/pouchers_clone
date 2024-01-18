@@ -557,4 +557,8 @@ class AppString {
       'Your BVN (Bank Verification Number) is needed to complete the creation of a Virtual Card.';
   static String amountReceived = "Amount Received";
   static String transactionFee = "Transaction Fee";
+
+  static String requestHistory = 'Request History';
+  static String newRequest = 'New Requests';
+  static String emptyRequest = 'Sorry, you have no requests yet';
 }

@@ -2,9 +2,11 @@
 
 import 'package:hive/hive.dart';
 
+import '../../../../../../../app/core/constants/db_constants.dart';
+
 part 'currency.g.dart';
 
-@HiveType(typeId: 19, adapterName: 'CurrencyAdapter')
+@HiveType(typeId: DbConstants.nineteen)
 enum Currency {
   @HiveField(0)
   NGN,

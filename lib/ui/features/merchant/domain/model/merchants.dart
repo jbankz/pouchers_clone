@@ -1,12 +1,14 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../../../../app/core/constants/db_constants.dart';
+
 part 'merchants.freezed.dart';
 part 'merchants.g.dart';
 
 @freezed
+@HiveType(typeId: DbConstants.eleven)
 class Merchant with _$Merchant {
-  @HiveType(typeId: 11, adapterName: 'MerchantAdapter')
   factory Merchant(
       {@HiveField(0) String? name,
       @HiveField(1) String? uuid,

@@ -3,6 +3,7 @@ import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/currency.d
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../../../../app/core/constants/db_constants.dart';
 import '../../../../../../../app/serializer/date_time_serializer.dart';
 import '../../../../../../../app/serializer/tag_serializer.dart';
 import '../../../../../utilities/domain/enum/service_category.dart';
@@ -12,8 +13,8 @@ part 'transaction_history.freezed.dart';
 part 'transaction_history.g.dart';
 
 @freezed
+@HiveType(typeId: DbConstants.seventeen)
 class TransactionHistory with _$TransactionHistory {
-  @HiveType(typeId: 17, adapterName: 'TransactionHistoryAdapter')
   factory TransactionHistory(
       {@HiveField(0) @JsonKey(name: 'transaction_id') String? transactionId,
       @HiveField(2) @JsonKey(name: 'user_id') String? userId,
@@ -53,8 +54,8 @@ class TransactionHistory with _$TransactionHistory {
 }
 
 @freezed
+@HiveType(typeId: DbConstants.eighteen)
 class ExtraDetails with _$ExtraDetails {
-  @HiveType(typeId: 18, adapterName: 'ExtraDetailsAdapter')
   factory ExtraDetails(
       {@HiveField(0) @JsonKey(name: 'sender_name') String? senderName,
       @HiveField(1)

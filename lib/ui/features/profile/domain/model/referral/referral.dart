@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../../../app/core/constants/db_constants.dart';
 import 'earning.dart';
 import 'referral_trail.dart';
 import 'serializer/earning_serializer.dart';
@@ -10,8 +11,8 @@ part 'referral.freezed.dart';
 part 'referral.g.dart';
 
 @freezed
+@HiveType(typeId: DbConstants.two)
 class Referral with _$Referral {
-  @HiveType(typeId: 2, adapterName: 'ReferralAdapter')
   factory Referral(
       {@Default([]) @EarningSerializer() @HiveField(0) List<Earning>? earning,
       @Default([])

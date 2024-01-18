@@ -630,7 +630,6 @@ class __$$UserImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 1, adapterName: 'UserAdapter')
 class _$UserImpl implements _User {
   _$UserImpl(
       {this.id,

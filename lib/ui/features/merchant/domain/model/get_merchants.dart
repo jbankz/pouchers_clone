@@ -2,12 +2,14 @@ import 'package:Pouchers/ui/features/merchant/domain/model/merchants.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../../../../app/core/constants/db_constants.dart';
+
 part 'get_merchants.freezed.dart';
 part 'get_merchants.g.dart';
 
 @freezed
+@HiveType(typeId: DbConstants.ten)
 class GetMerchant with _$GetMerchant {
-  @HiveType(typeId: 10, adapterName: 'GetMerchantAdapter')
   factory GetMerchant(
       {@Default(0) @HiveField(0) num responseCode,
       @HiveField(1) String? responseCategoryCode,

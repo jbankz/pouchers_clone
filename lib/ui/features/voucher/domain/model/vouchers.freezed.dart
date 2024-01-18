@@ -193,7 +193,6 @@ class __$$VouchersImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 15, adapterName: 'VouchersAdapter')
 class _$VouchersImpl implements _Vouchers {
   _$VouchersImpl(
       {@HiveField(0) this.code,

@@ -6,17 +6,17 @@ part of 'cable_service.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class CableServiceAdapter extends TypeAdapter<_$CableServiceImpl> {
+class CableServiceAdapter extends TypeAdapter<CableService> {
   @override
   final int typeId = 14;
 
   @override
-  _$CableServiceImpl read(BinaryReader reader) {
+  CableService read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$CableServiceImpl(
+    return CableService(
       name: fields[0] as String?,
       code: fields[1] as String?,
       category: fields[2] as String?,
@@ -27,7 +27,7 @@ class CableServiceAdapter extends TypeAdapter<_$CableServiceImpl> {
   }
 
   @override
-  void write(BinaryWriter writer, _$CableServiceImpl obj) {
+  void write(BinaryWriter writer, CableService obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)

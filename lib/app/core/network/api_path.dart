@@ -155,4 +155,5 @@ class ApiPath {
       '$_apiVersionOne/guest-user/utility/ussd/pay';
   static String guestCardPayment =
       '$_apiVersionOne/guest-user/utility/card/pay';
+  static String request = '$_apiVersionOne/payment/requests';
 }

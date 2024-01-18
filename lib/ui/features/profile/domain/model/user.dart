@@ -1,14 +1,15 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../../app/core/constants/db_constants.dart';
 import '../../../../../app/serializer/tag_serializer.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
 
 @freezed
+@HiveType(typeId: DbConstants.one)
 class User with _$User {
-  @HiveType(typeId: 1, adapterName: 'UserAdapter')
   factory User({
     int? id,
     @JsonKey(name: 'phone_number') @HiveField(0) String? phoneNumber,

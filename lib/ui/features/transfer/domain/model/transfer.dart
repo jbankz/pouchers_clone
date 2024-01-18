@@ -2,14 +2,15 @@ import 'package:Pouchers/app/serializer/string_to_num_serializer.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../../app/core/constants/db_constants.dart';
 import '../../../../../app/serializer/tag_serializer.dart';
 
 part 'transfer.freezed.dart';
 part 'transfer.g.dart';
 
 @freezed
+@HiveType(typeId: DbConstants.seven)
 class Transfer with _$Transfer {
-  @HiveType(typeId: 7, adapterName: 'AttributesAdapter')
   factory Transfer(
       {@JsonKey(name: 'transaction_id') String? transactionId,
       @JsonKey(name: 'sender_name') String? senderName,

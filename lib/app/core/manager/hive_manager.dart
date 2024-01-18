@@ -1,6 +1,7 @@
 import 'package:Pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/referral/earning.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/referral/referral.dart';
+import 'package:Pouchers/ui/features/requests/domain/model/request_model.dart';
 import 'package:Pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
 import 'package:Pouchers/ui/features/transfer/domain/model/attributes.dart';
 import 'package:Pouchers/ui/features/utilities/data/dao/billers_dao.dart';
@@ -30,6 +31,8 @@ import '../../../ui/features/profile/domain/model/referral/referral_trail.dart';
 import '../../../ui/features/profile/domain/model/user.dart';
 import '../../../ui/features/profile/domain/model/wallet.dart';
 import '../../../ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
+import '../../../ui/features/requests/data/dao/request_received_dao.dart';
+import '../../../ui/features/requests/data/dao/request_sent_dao.dart';
 import '../../../ui/features/transfer/domain/model/local_bank.dart';
 import '../../../ui/features/utilities/domain/enum/service_category.dart';
 import '../../../ui/features/utilities/domain/model/billers.dart';
@@ -67,7 +70,8 @@ Future<void> initializeDB() async {
       ..registerAdapter(CurrencyAdapter())
       ..registerAdapter(TransactionTypeAdapter())
       ..registerAdapter(ServiceCategoryAdapter())
-      ..registerAdapter(HiveStoreResponseDataAdapter());
+      ..registerAdapter(HiveStoreResponseDataAdapter())
+      ..registerAdapter(RequestModelAdapter());
   } catch (e) {
     debugPrint(e.toString());
   }
@@ -89,6 +93,8 @@ class HiveManager {
     vouchersDao = VouchersDao();
     contactDao = ContactDao();
     transactionHistoryDao = TransactionHistoryDao();
+    requestSentDao = RequestSentDao();
+    requestReceivedDao = RequestReceivedDao();
   }
 
   Future<void> clearHiveBox({bool reset = false}) async {
@@ -97,6 +103,8 @@ class HiveManager {
     await cardsDao.truncate();
     await referralDao.truncate();
     await transactionHistoryDao.truncate();
+    await requestSentDao.truncate();
+    await requestReceivedDao.truncate();
 
     if (reset) {
       await notificationDao.truncate();

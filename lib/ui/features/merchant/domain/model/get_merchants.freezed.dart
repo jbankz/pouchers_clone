@@ -141,7 +141,6 @@ class __$$GetMerchantImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 10, adapterName: 'GetMerchantAdapter')
 class _$GetMerchantImpl implements _GetMerchant {
   _$GetMerchantImpl(
       {@HiveField(0) this.responseCode = 0,

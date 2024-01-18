@@ -6,21 +6,21 @@ part of 'transfer.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AttributesAdapter extends TypeAdapter<_$TransferImpl> {
+class TransferAdapter extends TypeAdapter<Transfer> {
   @override
   final int typeId = 7;
 
   @override
-  _$TransferImpl read(BinaryReader reader) {
+  Transfer read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$TransferImpl();
+    return Transfer();
   }
 
   @override
-  void write(BinaryWriter writer, _$TransferImpl obj) {
+  void write(BinaryWriter writer, Transfer obj) {
     writer.writeByte(0);
   }
 
@@ -30,7 +30,7 @@ class AttributesAdapter extends TypeAdapter<_$TransferImpl> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AttributesAdapter &&
+      other is TransferAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -145,4 +145,5 @@ class AppImage {
   static String gallery = "${_iconPath}gallery.svg";
   static String searchContact = "${_iconPath}search_contact.svg";
   static String mingcuteFaceid = "${_iconPath}mingcute_faceid.svg";
+  static String emptyRequest = "${_iconPath}empty_request.svg";
 }

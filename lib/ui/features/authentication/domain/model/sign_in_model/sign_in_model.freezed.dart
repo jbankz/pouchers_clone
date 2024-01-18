@@ -158,7 +158,6 @@ class __$$SignInModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 0, adapterName: 'SignInModelAdapter')
 class _$SignInModelImpl implements _SignInModel {
   _$SignInModelImpl(
       {@HiveField(0) this.status,

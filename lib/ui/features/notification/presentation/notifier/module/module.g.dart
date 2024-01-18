@@ -460,7 +460,7 @@ class _UnreadPaymentNotificationProviderElement
 }
 
 String _$readAllNotificationHash() =>
-    r'e2871b1d85849824a222cbd6e4145adfa4a20145';
+    r'36e056c6cc73f02264acbf257932f9f836e6f46c';
 
 /// See also [readAllNotification].
 @ProviderFor(readAllNotification)

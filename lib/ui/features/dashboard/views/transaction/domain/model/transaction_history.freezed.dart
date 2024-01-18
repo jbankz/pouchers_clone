@@ -346,7 +346,6 @@ class __$$TransactionHistoryImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 17, adapterName: 'TransactionHistoryAdapter')
 class _$TransactionHistoryImpl implements _TransactionHistory {
   _$TransactionHistoryImpl(
       {@HiveField(0) @JsonKey(name: 'transaction_id') this.transactionId,
@@ -820,7 +819,6 @@ class __$$ExtraDetailsImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 18, adapterName: 'ExtraDetailsAdapter')
 class _$ExtraDetailsImpl implements _ExtraDetails {
   _$ExtraDetailsImpl(
       {@HiveField(0) @JsonKey(name: 'sender_name') this.senderName,

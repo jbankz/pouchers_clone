@@ -1,12 +1,14 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../../app/core/constants/db_constants.dart';
+
 part 'wallet.freezed.dart';
 part 'wallet.g.dart';
 
 @freezed
+@HiveType(typeId: DbConstants.five)
 class Wallet with _$Wallet {
-  @HiveType(typeId: 5, adapterName: 'WalletAdapter')
   factory Wallet(
           {@JsonKey(name: 'wallet_id') @HiveField(0) String? walletId,
           @JsonKey(name: 'user_id') @HiveField(1) String? userId,

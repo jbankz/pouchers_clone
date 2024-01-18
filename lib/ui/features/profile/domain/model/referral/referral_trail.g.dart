@@ -6,17 +6,17 @@ part of 'referral_trail.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ReferralTrailAdapter extends TypeAdapter<_$ReferralTrailImpl> {
+class ReferralTrailAdapter extends TypeAdapter<ReferralTrail> {
   @override
   final int typeId = 4;
 
   @override
-  _$ReferralTrailImpl read(BinaryReader reader) {
+  ReferralTrail read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$ReferralTrailImpl(
+    return ReferralTrail(
       id: fields[0] as int?,
       referredUserId: fields[1] as String?,
       isPaid: fields[2] as bool?,
@@ -29,7 +29,7 @@ class ReferralTrailAdapter extends TypeAdapter<_$ReferralTrailImpl> {
   }
 
   @override
-  void write(BinaryWriter writer, _$ReferralTrailImpl obj) {
+  void write(BinaryWriter writer, ReferralTrail obj) {
     writer
       ..writeByte(8)
       ..writeByte(0)

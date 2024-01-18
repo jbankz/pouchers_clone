@@ -195,7 +195,6 @@ class __$$TransferImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 7, adapterName: 'AttributesAdapter')
 class _$TransferImpl implements _Transfer {
   _$TransferImpl(
       {@JsonKey(name: 'transaction_id') this.transactionId,

@@ -1,14 +1,15 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../../../app/core/constants/db_constants.dart';
 import '../../../../../../app/serializer/date_time_serializer.dart';
 
 part 'referral_trail.freezed.dart';
 part 'referral_trail.g.dart';
 
 @freezed
+@HiveType(typeId: DbConstants.four)
 class ReferralTrail with _$ReferralTrail {
-  @HiveType(typeId: 4, adapterName: 'ReferralTrailAdapter')
   factory ReferralTrail({
     @HiveField(0) int? id,
     @JsonKey(name: 'referred_user_id') @HiveField(1) String? referredUserId,

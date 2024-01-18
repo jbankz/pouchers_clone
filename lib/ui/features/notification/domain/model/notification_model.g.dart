@@ -6,17 +6,17 @@ part of 'notification_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class NotificationModelAdapter extends TypeAdapter<_$NotificationModelImpl> {
+class NotificationModelAdapter extends TypeAdapter<NotificationModel> {
   @override
   final int typeId = 8;
 
   @override
-  _$NotificationModelImpl read(BinaryReader reader) {
+  NotificationModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$NotificationModelImpl(
+    return NotificationModel(
       id: fields[0] as num?,
       notificationId: fields[1] as String?,
       title: fields[2] as String?,
@@ -27,7 +27,7 @@ class NotificationModelAdapter extends TypeAdapter<_$NotificationModelImpl> {
   }
 
   @override
-  void write(BinaryWriter writer, _$NotificationModelImpl obj) {
+  void write(BinaryWriter writer, NotificationModel obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)

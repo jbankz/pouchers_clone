@@ -182,7 +182,6 @@ class __$$BillersImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 12, adapterName: 'BillersAdapter')
 class _$BillersImpl implements _Billers {
   _$BillersImpl(
       {@HiveField(0) this.name,

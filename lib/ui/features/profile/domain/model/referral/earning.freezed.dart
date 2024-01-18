@@ -97,7 +97,6 @@ class __$$EarningImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 3, adapterName: 'EarningAdapter')
 class _$EarningImpl implements _Earning {
   _$EarningImpl(
       {@JsonKey(name: 'total_earnings') @HiveField(0) this.totalEarnings});

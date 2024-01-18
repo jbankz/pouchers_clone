@@ -1,14 +1,15 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../../app/core/constants/db_constants.dart';
 import 'attributes.dart';
 
 part 'local_bank.freezed.dart';
 part 'local_bank.g.dart';
 
 @freezed
+@HiveType(typeId: DbConstants.six)
 class LocalBank with _$LocalBank {
-  @HiveType(typeId: 6, adapterName: 'LocalBankAdapter')
   factory LocalBank(
       {@HiveField(0) String? id,
       @HiveField(1) String? type,

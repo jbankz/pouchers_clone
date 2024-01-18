@@ -6,17 +6,17 @@ part of 'sign_in_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class SignInModelAdapter extends TypeAdapter<_$SignInModelImpl> {
+class SignInModelAdapter extends TypeAdapter<SignInModel> {
   @override
   final int typeId = 0;
 
   @override
-  _$SignInModelImpl read(BinaryReader reader) {
+  SignInModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$SignInModelImpl(
+    return SignInModel(
       status: fields[0] as String?,
       message: fields[1] as String?,
       code: fields[2] as int?,
@@ -25,7 +25,7 @@ class SignInModelAdapter extends TypeAdapter<_$SignInModelImpl> {
   }
 
   @override
-  void write(BinaryWriter writer, _$SignInModelImpl obj) {
+  void write(BinaryWriter writer, SignInModel obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)

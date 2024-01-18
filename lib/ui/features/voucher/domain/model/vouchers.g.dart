@@ -6,17 +6,17 @@ part of 'vouchers.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class VouchersAdapter extends TypeAdapter<_$VouchersImpl> {
+class VouchersAdapter extends TypeAdapter<Vouchers> {
   @override
   final int typeId = 15;
 
   @override
-  _$VouchersImpl read(BinaryReader reader) {
+  Vouchers read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$VouchersImpl(
+    return Vouchers(
       code: fields[0] as String?,
       amount: fields[1] as num,
       buyerId: fields[2] as String?,
@@ -28,7 +28,7 @@ class VouchersAdapter extends TypeAdapter<_$VouchersImpl> {
   }
 
   @override
-  void write(BinaryWriter writer, _$VouchersImpl obj) {
+  void write(BinaryWriter writer, Vouchers obj) {
     writer
       ..writeByte(7)
       ..writeByte(0)

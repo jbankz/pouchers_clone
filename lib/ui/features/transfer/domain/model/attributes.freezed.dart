@@ -127,7 +127,6 @@ class __$$AttributesImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 7, adapterName: 'AttributesAdapter')
 class _$AttributesImpl implements _Attributes {
   _$AttributesImpl(
       {@HiveField(0) this.nipCode,
