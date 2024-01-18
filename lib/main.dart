@@ -53,7 +53,6 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
                   themeMode: ThemeMode.light,
                   navigatorKey: StackedService.navigatorKey,
                   onGenerateRoute: StackedRouter().onGenerateRoute,
-                  // home: OtpView(email: 'jay@gmail.com'),
                   routes: {...appRoutes}),
             ),
           ),

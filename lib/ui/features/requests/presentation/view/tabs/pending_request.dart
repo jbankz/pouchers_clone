@@ -1,7 +1,10 @@
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
+import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/ui/features/requests/data/dao/request_received_dao.dart';
 import 'package:Pouchers/ui/features/requests/presentation/notifier/request_notifier.dart';
 import 'package:Pouchers/ui/features/requests/presentation/view/widget/request_empty_state.dart';
+import 'package:Pouchers/ui/notification/notification_tray.dart';
 import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:dio/dio.dart';
@@ -9,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
+import '../../../../../../app/app.router.dart';
+import '../../../../../../app/core/router/page_router.dart';
 import '../../../domain/enum/request_type.dart';
 import '../../../domain/model/filter_model.dart';
 import '../sheet/request_filter_sheet.dart';
@@ -79,7 +84,7 @@ class _PendingRequestViewState extends ConsumerState<PendingRequestView> {
         valueListenable: requestReceivedDao.getListenable(),
         builder: (_, box, __) {
           final requests = requestReceivedDao.retrieve(box);
-
+          final bool isBvnVerified = userDao.user.tierLevels > 1;
           return Column(
             children: [
               FilterActionButton(value: _filter.key, tap: _triggerFilterModal),
@@ -97,7 +102,19 @@ class _PendingRequestViewState extends ConsumerState<PendingRequestView> {
                       ? const EmptyRequestState()
                       : ListView.separated(
                           itemBuilder: (_, index) => RequestWidget(
-                              showStatus: false, request: requests[index]),
+                              showStatus: false,
+                              request: requests[index],
+                              tapped: () {
+                                if (!isBvnVerified) {
+                                  triggerNotificationTray(
+                                      AppString.verifyBVNproceed,
+                                      error: true);
+                                  return;
+                                }
+                                PageRouter.pushNamed(Routes.requestMoneyView,
+                                    args: RequestMoneyViewArguments(
+                                        request: requests[index]));
+                              }),
                           separatorBuilder: (_, __) => const Gap(height: 6),
                           itemCount: requests.length),
                 ),

@@ -113,7 +113,6 @@ class HiveManager {
       await cableServicesDao.truncate();
       await vouchersDao.truncate();
     } else {
-      await biometricDao.truncate();
       await localBankDao.truncate();
       await notificationDao.truncate();
       await bannerDao.truncate();
@@ -122,6 +121,7 @@ class HiveManager {
       await cableServicesDao.truncate();
       await vouchersDao.truncate();
       await contactDao.truncate();
+      await biometricDao.truncate();
     }
   }
 

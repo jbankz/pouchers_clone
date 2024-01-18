@@ -561,4 +561,14 @@ class AppString {
   static String requestHistory = 'Request History';
   static String newRequest = 'New Requests';
   static String emptyRequest = 'Sorry, you have no requests yet';
+  static String paymentSuccessful = 'Payment successful';
+  static String requestDeclined = 'Request declined';
+  static String successfullyPaid =
+      'Your have successfully paid the money request!';
+  static String declinedSuccessfully =
+      'Your have successfully declined the money request!';
+  static String declineReason = 'Reason for decline';
+  static String aboutToDecline = 'You are about to decline the request of ';
+  static String approve = 'Approve';
+  static String decline = 'Decline';
 }

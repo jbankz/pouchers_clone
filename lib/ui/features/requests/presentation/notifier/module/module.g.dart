@@ -171,5 +171,153 @@ class _RequestsProviderElement
   @override
   CancelToken? get cancelToken => (origin as RequestsProvider).cancelToken;
 }
+
+String _$requestedMoneyHash() => r'c50d17b0bd43d8a1981032d30cbec3e7a7f4b04a';
+
+/// See also [requestedMoney].
+@ProviderFor(requestedMoney)
+const requestedMoneyProvider = RequestedMoneyFamily();
+
+/// See also [requestedMoney].
+class RequestedMoneyFamily extends Family<AsyncValue<RequestedMoneyModel>> {
+  /// See also [requestedMoney].
+  const RequestedMoneyFamily();
+
+  /// See also [requestedMoney].
+  RequestedMoneyProvider call(
+    RequestDto requestDto, {
+    CancelToken? cancelToken,
+  }) {
+    return RequestedMoneyProvider(
+      requestDto,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  RequestedMoneyProvider getProviderOverride(
+    covariant RequestedMoneyProvider provider,
+  ) {
+    return call(
+      provider.requestDto,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'requestedMoneyProvider';
+}
+
+/// See also [requestedMoney].
+class RequestedMoneyProvider
+    extends AutoDisposeFutureProvider<RequestedMoneyModel> {
+  /// See also [requestedMoney].
+  RequestedMoneyProvider(
+    RequestDto requestDto, {
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => requestedMoney(
+            ref as RequestedMoneyRef,
+            requestDto,
+            cancelToken: cancelToken,
+          ),
+          from: requestedMoneyProvider,
+          name: r'requestedMoneyProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$requestedMoneyHash,
+          dependencies: RequestedMoneyFamily._dependencies,
+          allTransitiveDependencies:
+              RequestedMoneyFamily._allTransitiveDependencies,
+          requestDto: requestDto,
+          cancelToken: cancelToken,
+        );
+
+  RequestedMoneyProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.requestDto,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final RequestDto requestDto;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<RequestedMoneyModel> Function(RequestedMoneyRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: RequestedMoneyProvider._internal(
+        (ref) => create(ref as RequestedMoneyRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        requestDto: requestDto,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<RequestedMoneyModel> createElement() {
+    return _RequestedMoneyProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is RequestedMoneyProvider &&
+        other.requestDto == requestDto &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, requestDto.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin RequestedMoneyRef on AutoDisposeFutureProviderRef<RequestedMoneyModel> {
+  /// The parameter `requestDto` of this provider.
+  RequestDto get requestDto;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _RequestedMoneyProviderElement
+    extends AutoDisposeFutureProviderElement<RequestedMoneyModel>
+    with RequestedMoneyRef {
+  _RequestedMoneyProviderElement(super.provider);
+
+  @override
+  RequestDto get requestDto => (origin as RequestedMoneyProvider).requestDto;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as RequestedMoneyProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

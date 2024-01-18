@@ -17,7 +17,8 @@ class ProfileImage extends StatelessWidget {
       this.loading = false,
       this.width = 80,
       this.height = 80,
-      this.shape = BoxShape.circle});
+      this.shape = BoxShape.circle,
+      this.tag});
 
   final String image;
   final String initials;
@@ -27,12 +28,14 @@ class ProfileImage extends StatelessWidget {
   final double? height;
   final double? width;
   final BoxShape shape;
+  final String? tag;
+
   @override
   Widget build(BuildContext context) => Stack(
         clipBehavior: Clip.none,
         children: [
           Hero(
-            tag: image,
+            tag: tag ?? image,
             child: Material(
               shape: const CircleBorder(),
               child: InkWell(

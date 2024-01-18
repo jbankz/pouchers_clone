@@ -156,4 +156,5 @@ class ApiPath {
   static String guestCardPayment =
       '$_apiVersionOne/guest-user/utility/card/pay';
   static String request = '$_apiVersionOne/payment/requests';
+  static String requestedMoney = '$_apiVersionOne/payment/request';
 }

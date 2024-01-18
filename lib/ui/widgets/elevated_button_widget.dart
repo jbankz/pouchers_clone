@@ -17,7 +17,8 @@ class ElevatedButtonWidget extends StatelessWidget {
       this.loading = false,
       this.padding = EdgeInsets.zero,
       this.bacgroundColor,
-      this.outlinedColor});
+      this.outlinedColor,
+      this.textStyle});
 
   final double? height;
   final double? width;
@@ -27,6 +28,7 @@ class ElevatedButtonWidget extends StatelessWidget {
   final bool loading;
   final Color? bacgroundColor;
   final Color? outlinedColor;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -57,7 +59,10 @@ class ElevatedButtonWidget extends StatelessWidget {
             backgroundColor: bacgroundColor == null
                 ? context.buttonBackgroundColor
                 : MaterialStateColor.resolveWith((states) => bacgroundColor!)),
-        child: Text(title),
+        child: Text(
+          title,
+          style: textStyle,
+        ),
       );
 
   ElevatedButton _buildLoadingButtonState(BuildContext context) =>

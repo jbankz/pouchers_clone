@@ -1,5 +1,6 @@
 import 'package:Pouchers/ui/features/requests/domain/dto/request_dto.dart';
 import 'package:Pouchers/ui/features/requests/domain/model/request_model.dart';
+import 'package:Pouchers/ui/features/requests/domain/model/requested_money_model.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/network/api_path.dart';
@@ -22,5 +23,18 @@ class RequestSourceImpl implements RequestSource {
     return (response.data?['data']?['requests'] as List<dynamic>)
         .map((e) => RequestModel.fromJson(e as Map<String, dynamic>))
         .toList();
+  }
+
+  @override
+  Future<RequestedMoneyModel> requestedMoney(RequestDto requestDto,
+      {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.requestedMoney,
+        requestType: RequestType.patch,
+        data: requestDto.toJson(),
+        cancelToken: cancelToken);
+
+    return RequestedMoneyModel.fromJson(
+        response.data?['data'] as Map<String, dynamic>);
   }
 }

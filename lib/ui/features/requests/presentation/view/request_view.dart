@@ -1,4 +1,5 @@
 import 'package:Pouchers/ui/common/app_colors.dart';
+import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,8 +16,9 @@ class RequestView extends StatelessWidget {
           backgroundColor: AppColors.kPurpleColor800,
           appBar: AppBar(
               backgroundColor: AppColors.kPurpleColor800,
-              bottom: const TabBar(tabs: [Text('Completed'), Text('Pending')]),
-              title: const Text("Requests")),
+              bottom: TabBar(
+                  tabs: [Text(AppString.completed), Text(AppString.pending)]),
+              title: Text(AppString.request)),
           body: SafeArea(
               minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               child: const TabBarView(

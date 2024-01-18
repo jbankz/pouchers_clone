@@ -2,6 +2,7 @@ import 'package:Pouchers/ui/features/requests/data/dao/request_sent_dao.dart';
 import 'package:Pouchers/ui/features/requests/domain/dto/request_dto.dart';
 import 'package:Pouchers/ui/features/requests/domain/enum/request_type.dart';
 import 'package:Pouchers/ui/features/requests/domain/model/request_model.dart';
+import 'package:Pouchers/ui/features/requests/domain/model/requested_money_model.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/repository/request_repo.dart';
@@ -26,4 +27,9 @@ class RequestRepoImpl implements RequestRepo {
 
     return requests;
   }
+
+  @override
+  Future<RequestedMoneyModel> requestedMoney(RequestDto requestDto,
+          {CancelToken? cancelToken}) async =>
+      await _requestSource.requestedMoney(requestDto, cancelToken: cancelToken);
 }
