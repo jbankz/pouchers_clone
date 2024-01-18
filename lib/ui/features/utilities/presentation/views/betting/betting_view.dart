@@ -4,7 +4,9 @@ import 'package:Pouchers/ui/features/merchant/presentation/notifier/merchants_no
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
+import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:Pouchers/utils/logger.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -155,7 +157,9 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
                 ElevatedButtonWidget(
                     title: AppString.proceed,
                     loading: billerState.isPurchasing,
-                    onPressed: _billers == null
+                    onPressed: (_billers == null ||
+                            billerState.validateCustomerInfo?.customerName ==
+                                null)
                         ? null
                         : () async {
                             if (!formKey.currentState!.validate()) return;
@@ -177,25 +181,47 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
     );
   }
 
-  Widget _buildSmartCardNumberTextField(BillersState billerState) =>
-      EditTextFieldWidget(
-        title: AppString.accountId,
-        label: AppString.accountIdInstr,
-        controller: numberController,
-        focusNode: numberFocusNode,
-        keyboardType: TextInputType.number,
-        readOnly: billerState.isPurchasing || _billers == null,
-        onFieldSubmitted: (_) {},
-        validator: FieldValidator.validateInt(),
-        inputFormatters: [context.digitsOnly],
-        suffixIcon: CupertinoButton(
-          padding: EdgeInsets.zero,
-          child: SvgPicture.asset(AppImage.contactBook, fit: BoxFit.scaleDown),
-          onPressed: () async {
-            _onContactBookIconPressed(billerState);
-            setState(() {});
-          },
-        ),
+  Widget _buildSmartCardNumberTextField(BillersState billerState) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          EditTextFieldWidget(
+            title: AppString.accountId,
+            label: AppString.accountIdInstr,
+            controller: numberController,
+            focusNode: numberFocusNode,
+            keyboardType: TextInputType.number,
+            readOnly: billerState.isPurchasing || _billers == null,
+            onFieldSubmitted: (_) {},
+            validator: FieldValidator.validateInt(),
+            inputFormatters: [context.digitsOnly],
+            onChanged: (_) => Debouncer().run(() => _validateCustomer()),
+            suffixIcon: CupertinoButton(
+              padding: EdgeInsets.zero,
+              child:
+                  SvgPicture.asset(AppImage.contactBook, fit: BoxFit.scaleDown),
+              onPressed: () async {
+                _onContactBookIconPressed(billerState);
+                setState(() {});
+              },
+            ),
+          ),
+          const Gap(height: 8),
+          _buildCustomerInfoText(billerState),
+        ],
+      );
+
+  Widget _buildCustomerInfoText(BillersState billerState) => Align(
+        alignment: Alignment.centerLeft,
+        child: billerState.isValidatingCustomerInfo
+            ? const CupertinoActivityIndicator()
+            : billerState.validateCustomerInfo == null
+                ? const SizedBox.shrink()
+                : Text(
+                    'Account name: ${billerState.validateCustomerInfo?.customerName?.titleCase ?? ''}',
+                    style: context.headlineMedium
+                        ?.copyWith(color: AppColors.kIconGrey),
+                  ),
       );
 
   void _onContactBookIconPressed(BillersState billerState) {
@@ -206,8 +232,21 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
         numberController.text =
             contact.phoneNumbers?.first.formatCountryCode ?? '';
         context.nextFocus();
+        _validateCustomer();
       }
     });
+  }
+
+  Future<void> _validateCustomer() async {
+    await _billersNotifier.validateCustomerInfo(
+      biller: BillersDto(
+        billersCategory: BillersCategory.betting,
+        merchantAccount: _billers?.operatorpublicid,
+        merchantReferenceNumber: numberController.text,
+        merchantServiceProductCode: _billers?.operatorpublicid,
+      ),
+      cancelToken: _cancelToken,
+    );
   }
 
   Widget _buildProviderTextField(BillersState billerState) =>
@@ -231,6 +270,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
 
   void _onProviderTextFieldTapped() =>
       BottomSheets.showSheet(child: const ProvidersSheet()).then((response) {
+        logger.d(response?.toJson());
         if (response != null) {
           _billers = response;
           providerController.text = response.name ?? '';
@@ -256,28 +296,25 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
                   )),
         );
 
-  Future<void> _submitForActualUser({String? pin}) {
-    final merchantState = ref.watch(merchantsNotifierProvider);
-
-    return _billersNotifier.purchaseService(
-        mobileDto: MobileDto(
-            isMerchantPayment: true,
-            category: ServiceCategory.betting,
-            merchantAccount: _billers?.operatorpublicid,
-            merchantService: _billers?.operatorpublicid,
-            merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
-            subCategory: _billers?.displayName,
-            amount: _formatter.getUnformattedValue(),
-            applyDiscount: false,
-            transactionPin: pin),
-        onSuccess: () => PageRouter.pushNamed(Routes.successState,
-            args: SuccessStateArguments(
-                title: AppString.rechargeSuccessful,
-                message: AppString.completedAirtimePurchase,
-                btnTitle: AppString.complete,
-                tap: () => PageRouter.popToRoot(Routes.bettingView))),
-        cancelToken: _cancelToken);
-  }
+  Future<void> _submitForActualUser({String? pin}) async =>
+      _billersNotifier.purchaseService(
+          mobileDto: MobileDto(
+              isMerchantPayment: true,
+              category: ServiceCategory.betting,
+              merchantAccount: _billers?.operatorpublicid,
+              merchantService: _billers?.operatorpublicid,
+              merchantReferenceNumber: numberController.text,
+              subCategory: _billers?.displayName,
+              amount: _formatter.getUnformattedValue(),
+              applyDiscount: false,
+              transactionPin: pin),
+          onSuccess: () => PageRouter.pushNamed(Routes.successState,
+              args: SuccessStateArguments(
+                  title: AppString.rechargeSuccessful,
+                  message: AppString.completedAirtimePurchase,
+                  btnTitle: AppString.complete,
+                  tap: () => PageRouter.popToRoot(Routes.bettingView))),
+          cancelToken: _cancelToken);
 
   Future<void> _submitForGuest(dynamic feedback) async {
     final guest = ref.watch(paramModule);
