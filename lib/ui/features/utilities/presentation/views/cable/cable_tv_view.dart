@@ -374,9 +374,9 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
     await _billersNotifier.purchaseService(
       mobileDto: MobileDto(
         isMerchantPayment: true,
-        amount: _cableService?.price,
+        amount: 100,
         merchantAccount: _billers?.operatorpublicid,
-        merchantReferenceNumber: getMerchant?.referenceNumber,
+        merchantReferenceNumber: numberController.text,
         merchantService: _cableService?.code,
         transactionPin: pin,
         subCategory: _billers?.displayName,
@@ -401,7 +401,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
       biller: BillersDto(
         merchantAccount: _billers?.operatorpublicid,
         billersCategory: BillersCategory.cable,
-        merchantReferenceNumber: getMerchant?.referenceNumber,
+        merchantReferenceNumber: numberController.text,
         merchantServiceProductCode: _cableService?.code,
       ),
       cancelToken: _cancelToken,

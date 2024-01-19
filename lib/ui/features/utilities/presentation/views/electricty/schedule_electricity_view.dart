@@ -305,8 +305,7 @@ class _ScheduleElectricityViewState
           frequency: _frequency,
           amount: _formatter.getUnformattedValue(),
           merchantAccount: _billers?.operatorpublicid,
-          merchantReferenceNumber:
-              ref.watch(billersNotifierProvider).cableService?.referenceNumber,
+          merchantReferenceNumber: numberController.text,
           makeMerchantServiceArray: false,
           merchantService: _cableService?.code,
           transactionPin: pin,
@@ -321,10 +320,9 @@ class _ScheduleElectricityViewState
     await _billersNotifier.validateCustomerInfo(
       biller: BillersDto(
         merchantAccount: _billers?.operatorpublicid,
-        billersCategory: BillersCategory.cable,
-        merchantReferenceNumber:
-            ref.watch(billersNotifierProvider).cableService?.referenceNumber,
-        merchantServiceProductCode: _cableService?.shortCode,
+        billersCategory: BillersCategory.electricity,
+        merchantReferenceNumber: numberController.text,
+        merchantServiceProductCode: _cableService?.code,
       ),
       cancelToken: _cancelToken,
     );

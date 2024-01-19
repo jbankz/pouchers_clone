@@ -14,7 +14,6 @@ import 'package:hive/hive.dart';
 import '../../../../../../app/core/manager/intercom_manager.dart';
 import '../../../../../../app/navigators/navigators.dart';
 import '../../../../../../modules/account/screens/account_settings/schedule_payments.dart';
-import '../../../../../../modules/account/screens/request/requests.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/dialog/bottom_sheet.dart';
 import '../../../../../widgets/profile_image.dart';
@@ -95,12 +94,14 @@ class AccountView extends ConsumerWidget {
                       tapped: () => PageRouter.pushNamed(Routes.referralView)),
                   const Gap(height: 23),
                   AccountTile(
-                      icon: AppImage.requestIcon,
-                      title: AppString.request,
-                      desc: AppString.requestHint,
-                      tapped: () => pushTo(context, ManageRequest(),
-                          settings: const RouteSettings(
-                              name: ManageRequest.routeName))),
+                    icon: AppImage.requestIcon,
+                    title: AppString.request,
+                    desc: AppString.requestHint,
+                    tapped: () => PageRouter.pushNamed(Routes.requestView),
+                    // tapped: () => pushTo(context, ManageRequest(),
+                    //     settings:
+                    //         const RouteSettings(name: ManageRequest.routeName)),
+                  ),
                   const Gap(height: 23),
                   AccountTile(
                       icon: AppImage.user,

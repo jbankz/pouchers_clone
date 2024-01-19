@@ -294,8 +294,7 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
           frequency: _frequency,
           amount: _cableService?.price,
           merchantAccount: _billers?.operatorpublicid,
-          merchantReferenceNumber:
-              ref.watch(billersNotifierProvider).cableService?.referenceNumber,
+          merchantReferenceNumber: numberController.text,
           makeMerchantServiceArray: false,
           merchantService: _cableService?.code,
           transactionPin: pin,
@@ -309,12 +308,10 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
   Future<void> _validateCustomer() async {
     await _billersNotifier.validateCustomerInfo(
       biller: BillersDto(
-        merchantAccount: _billers?.operatorpublicid,
-        billersCategory: BillersCategory.cable,
-        merchantReferenceNumber:
-            ref.watch(billersNotifierProvider).cableService?.referenceNumber,
-        merchantServiceProductCode: _cableService?.shortCode,
-      ),
+          merchantAccount: _billers?.operatorpublicid,
+          billersCategory: BillersCategory.cable,
+          merchantReferenceNumber: numberController.text,
+          merchantServiceProductCode: _cableService?.code),
       cancelToken: _cancelToken,
     );
   }

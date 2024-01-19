@@ -18,7 +18,7 @@ String baseUrl({int version = 1}) {
   //     ? "https://poucher-api.enyata.com/api/v$version"
   //     : "https://api.pouchers.io/api/v$version";
 
-  return 'https://poucher-backend-14fc00be4800.herokuapp.com/api/v$version';
+  return 'https://api.pouchers.io/api/v$version';
 }
 //https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/auth/validate-password-reset-code
 //https://poucher-backend-14fc00be4800.herokuapp.com/api/v1/user/change-phone

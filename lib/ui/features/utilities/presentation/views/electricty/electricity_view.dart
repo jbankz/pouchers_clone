@@ -232,9 +232,9 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
             _cableService == null,
         onFieldSubmitted: (_) {},
         onChanged: (value) => _debouncer.run(() {
-          if (value.length >= 11) _validateCustomer(getMerchant);
+          if (value.length >= 10) _validateCustomer(getMerchant);
         }),
-        validator: FieldValidator.validateMeterNumber(cardLength: 11),
+        validator: FieldValidator.validateMeterNumber(cardLength: 10),
         inputFormatters: [context.digitsOnly],
         suffixIcon: CupertinoButton(
           padding: EdgeInsets.zero,
@@ -322,8 +322,8 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
     await _billersNotifier.validateCustomerInfo(
       biller: BillersDto(
         merchantAccount: _billers?.operatorpublicid,
-        billersCategory: BillersCategory.cable,
-        merchantReferenceNumber: getMerchant?.referenceNumber,
+        billersCategory: BillersCategory.electricity,
+        merchantReferenceNumber: numberController.text,
         merchantServiceProductCode: _cableService?.code,
       ),
       cancelToken: _cancelToken,
@@ -358,7 +358,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
     if (response != null) {
       _cableService = response;
       subscriptionTypeController.text = response.name ?? '';
-      amountController.text = _cableService?.price.toString() ?? '';
+      // amountController.text = _cableService?.price.toString() ?? '';
       // _formatter.format(_cableService?.price.toString() ?? '');
       numberFocusNode.requestFocus();
     }
@@ -385,14 +385,11 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
               isMerchantPayment: true,
               amount: _formatter.getUnformattedValue(),
               merchantAccount: _billers?.operatorpublicid,
-              merchantReferenceNumber: ref
-                  .watch(billersNotifierProvider)
-                  .cableService
-                  ?.referenceNumber,
+              merchantReferenceNumber: numberController.text,
               merchantService: _cableService?.code,
               transactionPin: pin,
               subCategory: _billers?.displayName,
-              category: ServiceCategory.cable,
+              category: ServiceCategory.electricity,
               applyDiscount: false),
           onSuccess: () => PageRouter.pushNamed(Routes.successState,
               args: SuccessStateArguments(
@@ -413,14 +410,11 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
             isMerchantPayment: true,
             amount: _formatter.getUnformattedValue(),
             merchantAccount: _billers?.operatorpublicid,
-            merchantReferenceNumber: ref
-                .watch(billersNotifierProvider)
-                .cableService
-                ?.referenceNumber,
+            merchantReferenceNumber: numberController.text,
             merchantService: _cableService?.code,
             subCategory: _billers?.displayName,
             makeMerchantServiceArray: false,
-            category: ServiceCategory.cable,
+            category: ServiceCategory.electricity,
             currency: Currency.NGN,
             email: guest.customerEmail,
             payer: Payer(email: guest.customerEmail, name: guest.customerName),

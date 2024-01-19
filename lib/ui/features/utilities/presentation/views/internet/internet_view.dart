@@ -293,7 +293,7 @@ class _InternetViewState extends ConsumerState<InternetView>
       biller: BillersDto(
         merchantAccount: _billers?.operatorpublicid,
         billersCategory: BillersCategory.internet,
-        merchantReferenceNumber: getMerchant?.referenceNumber,
+        merchantReferenceNumber: numberController.text,
         merchantServiceProductCode: _cableService?.code,
       ),
       cancelToken: _cancelToken,
@@ -352,7 +352,7 @@ class _InternetViewState extends ConsumerState<InternetView>
               isMerchantPayment: true,
               amount: _cableService?.price,
               merchantAccount: _billers?.operatorpublicid,
-              merchantReferenceNumber: getMerchant?.referenceNumber,
+              merchantReferenceNumber: numberController.text,
               merchantService: _cableService?.code,
               transactionPin: pin,
               subCategory: _billers?.displayName,
