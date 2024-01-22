@@ -245,6 +245,7 @@ class AppString {
   static String bvnCompleted = 'BVN verification successful';
   static String idCompleted = 'ID validation successful';
   static String pending = ' Not Verified';
+  static String pendingOne = 'Pending';
   static String verified = 'Verified';
   static String failed = 'Failed';
   static String uploadId = 'Upload ID';
@@ -535,6 +536,7 @@ class AppString {
   static String analytics = 'Analytics';
   static String transactions = 'Transactions';
   static String emptyTransactions = 'Sorry, you have no transaction';
+  static String emptySchedules = 'Sorry, you have no schdules';
   static String sender = 'Sender';
   static String senderTag = 'Sender Poucher Tag';
   static String beneficiary = 'Beneficiary';
@@ -571,4 +573,5 @@ class AppString {
   static String aboutToDecline = 'You are about to decline the request of ';
   static String approve = 'Approve';
   static String decline = 'Decline';
+  static String deleteSchedule = 'Delete schedule';
 }

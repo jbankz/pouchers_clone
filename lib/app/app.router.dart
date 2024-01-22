@@ -5,11 +5,11 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:flutter/material.dart' as _i81;
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as _i80;
 import 'package:Pouchers/modules/tab_layout/screens/tab_layout.dart' as _i51;
 import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/enum/two_fa_type.dart'
-    as _i82;
+    as _i83;
 import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/first_security_question_view.dart'
     as _i42;
 import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/second_security_question_view.dart'
@@ -29,7 +29,7 @@ import 'package:Pouchers/ui/features/authentication/presentation/view/otp/otp_vi
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/confirm_password_view.dart'
     as _i49;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/enum/password_confirmation_type.dart'
-    as _i83;
+    as _i84;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/forgot_password_view.dart'
     as _i20;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/set_new_password_view.dart'
@@ -57,7 +57,7 @@ import 'package:Pouchers/ui/features/dashboard/views/account/views/account_setti
 import 'package:Pouchers/ui/features/dashboard/views/account/views/account_verification.dart'
     as _i26;
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart'
-    as _i81;
+    as _i82;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/bvn_requirement_view.dart'
     as _i30;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/card_calculator_view.dart'
@@ -69,13 +69,13 @@ import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/virt
 import 'package:Pouchers/ui/features/dashboard/views/dashboard_view.dart'
     as _i7;
 import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart'
-    as _i87;
+    as _i89;
 import 'package:Pouchers/ui/features/dashboard/views/transaction/presentation/view/transaction_details_view.dart'
     as _i77;
 import 'package:Pouchers/ui/features/guest/guest_email_view.dart' as _i9;
 import 'package:Pouchers/ui/features/guest/guest_view.dart' as _i8;
 import 'package:Pouchers/ui/features/notification/domain/model/notification_model.dart'
-    as _i85;
+    as _i86;
 import 'package:Pouchers/ui/features/notification/presentation/view/notification_details_view.dart'
     as _i54;
 import 'package:Pouchers/ui/features/notification/presentation/view/notification_view.dart'
@@ -119,17 +119,21 @@ import 'package:Pouchers/ui/features/profile/presentation/views/referral/referra
 import 'package:Pouchers/ui/features/profile/presentation/views/wallet/fund_wallet_view.dart'
     as _i33;
 import 'package:Pouchers/ui/features/requests/domain/model/request_model.dart'
-    as _i88;
+    as _i90;
 import 'package:Pouchers/ui/features/requests/presentation/view/request_money_view.dart'
     as _i79;
 import 'package:Pouchers/ui/features/requests/presentation/view/request_view.dart'
     as _i78;
+import 'package:Pouchers/ui/features/schedules/domain/model/schedule_model.dart'
+    as _i87;
+import 'package:Pouchers/ui/features/schedules/presentation/view/schedule_view.dart'
+    as _i80;
 import 'package:Pouchers/ui/features/tiers/presentation/view/tier_view.dart'
     as _i25;
 import 'package:Pouchers/ui/features/transfer/domain/dto/confirm_transfer_money_dto.dart'
-    as _i84;
+    as _i85;
 import 'package:Pouchers/ui/features/transfer/domain/model/transfer.dart'
-    as _i86;
+    as _i88;
 import 'package:Pouchers/ui/features/transfer/presentation/views/schedule_transfer_view.dart'
     as _i75;
 import 'package:Pouchers/ui/features/transfer/presentation/views/transfer_money_confirmation_view.dart'
@@ -176,7 +180,7 @@ import 'package:Pouchers/ui/features/voucher/presentation/views/voucher_view.dar
     as _i66;
 import 'package:Pouchers/ui/widgets/success_state.dart' as _i6;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i89;
+import 'package:stacked_services/stacked_services.dart' as _i91;
 
 class Routes {
   static const splashView = '/';
@@ -340,6 +344,8 @@ class Routes {
 
   static const requestMoneyView = '/request-money-view';
 
+  static const scheduleView = '/schedule-view';
+
   static const all = <String>{
     splashView,
     onboardingView,
@@ -419,6 +425,7 @@ class Routes {
     transactionDetailsView,
     requestView,
     requestMoneyView,
+    scheduleView,
   };
 }
 
@@ -736,11 +743,15 @@ class StackedRouter extends _i1.RouterBase {
       Routes.requestMoneyView,
       page: _i79.RequestMoneyView,
     ),
+    _i1.RouteDef(
+      Routes.scheduleView,
+      page: _i80.ScheduleView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashView: (data) {
-      return _i80.PageRouteBuilder<dynamic>(
+      return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i2.SplashView(),
         settings: data,
@@ -749,7 +760,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i3.OnboardingView: (data) {
-      return _i80.PageRouteBuilder<dynamic>(
+      return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i3.OnboardingView(),
         settings: data,
@@ -758,7 +769,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i4.SignUpView: (data) {
-      return _i80.PageRouteBuilder<dynamic>(
+      return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i4.SignUpView(),
         settings: data,
@@ -767,7 +778,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i5.SignInView: (data) {
-      return _i80.PageRouteBuilder<dynamic>(
+      return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i5.SignInView(),
         settings: data,
@@ -779,7 +790,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SuccessStateArguments>(
         orElse: () => const SuccessStateArguments(),
       );
-      return _i80.PageRouteBuilder<dynamic>(
+      return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i6.SuccessState(
                 key: args.key,
@@ -797,7 +808,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<DashboardViewArguments>(
         orElse: () => const DashboardViewArguments(),
       );
-      return _i80.PageRouteBuilder<dynamic>(
+      return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i7.DashboardView(key: args.key, gottenIndex: args.gottenIndex),
         settings: data,
@@ -986,7 +997,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i34.VirtualCardDetailView: (data) {
-      return _i80.PageRouteBuilder<dynamic>(
+      return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i34.VirtualCardDetailView(),
         settings: data,
@@ -995,7 +1006,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i35.ProfileView: (data) {
-      return _i80.PageRouteBuilder<dynamic>(
+      return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i35.ProfileView(),
         settings: data,
@@ -1090,7 +1101,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ConfirmPasswordViewArguments>(
         orElse: () => const ConfirmPasswordViewArguments(),
       );
-      return _i80.PageRouteBuilder<dynamic>(
+      return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i49.ConfirmPasswordView(
                 key: args.key,
@@ -1111,7 +1122,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<TabLayoutArguments>(
         orElse: () => const TabLayoutArguments(),
       );
-      return _i80.PageRouteBuilder<dynamic>(
+      return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i51.TabLayout(gottenIndex: args.gottenIndex),
         settings: data,
@@ -1150,14 +1161,22 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i56.ScheduledAirtimeView: (data) {
+      final args = data.getArgs<ScheduledAirtimeViewArguments>(
+        orElse: () => const ScheduledAirtimeViewArguments(),
+      );
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i56.ScheduledAirtimeView(),
+        builder: (context) =>
+            _i56.ScheduledAirtimeView(key: args.key, schedule: args.schedule),
         settings: data,
       );
     },
     _i57.ScheduleDataView: (data) {
+      final args = data.getArgs<ScheduleDataViewArguments>(
+        orElse: () => const ScheduleDataViewArguments(),
+      );
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i57.ScheduleDataView(),
+        builder: (context) =>
+            _i57.ScheduleDataView(key: args.key, schedule: args.schedule),
         settings: data,
       );
     },
@@ -1204,7 +1223,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i65.ProfileImageView: (data) {
-      return _i80.PageRouteBuilder<dynamic>(
+      return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i65.ProfileImageView(),
         settings: data,
@@ -1237,7 +1256,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i70.VoucherSuccessView: (data) {
-      return _i80.PageRouteBuilder<dynamic>(
+      return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i70.VoucherSuccessView(),
         settings: data,
@@ -1283,7 +1302,7 @@ class StackedRouter extends _i1.RouterBase {
       );
       return _i1.buildAdaptivePageRoute<dynamic>(
         builder: (context) => _i75.ScheduleTransferMoneyView(
-            key: args.key, transfer: args.transfer),
+            key: args.key, transfer: args.transfer, schedule: args.schedule),
         settings: data,
       );
     },
@@ -1319,6 +1338,12 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
+    _i80.ScheduleView: (data) {
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i80.ScheduleView(),
+        settings: data,
+      );
+    },
   };
 
   @override
@@ -1337,7 +1362,7 @@ class SuccessStateArguments {
     this.tap,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
   final String title;
 
@@ -1378,7 +1403,7 @@ class DashboardViewArguments {
     this.gottenIndex = 0,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
   final int gottenIndex;
 
@@ -1407,7 +1432,7 @@ class GetGuestEmailViewArguments {
 
   final String route;
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
   @override
   String toString() {
@@ -1432,7 +1457,7 @@ class DebitCardViewArguments {
     this.amount,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
   final String? amount;
 
@@ -1459,7 +1484,7 @@ class OtpViewArguments {
     this.email,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
   final String? email;
 
@@ -1486,7 +1511,7 @@ class TagViewArguments {
     this.callback,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
   final dynamic Function()? callback;
 
@@ -1513,7 +1538,7 @@ class SetNewPasswordViewArguments {
     required this.email,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
   final String email;
 
@@ -1540,7 +1565,7 @@ class VerifyPasswordAccountViewArguments {
     this.email,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
   final String? email;
 
@@ -1567,7 +1592,7 @@ class BvnViewArguments {
     required this.routeName,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
   final String routeName;
 
@@ -1594,9 +1619,9 @@ class CardCreationSymmaryViewArguments {
     required this.cardDto,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
-  final _i81.CardDto cardDto;
+  final _i82.CardDto cardDto;
 
   @override
   String toString() {
@@ -1618,12 +1643,12 @@ class CardCreationSymmaryViewArguments {
 class TwoFaGoogleAuthenticatorCodeViewArguments {
   const TwoFaGoogleAuthenticatorCodeViewArguments({
     this.key,
-    this.twoFaType = _i82.TwoFaType.twoFaSetup,
+    this.twoFaType = _i83.TwoFaType.twoFaSetup,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
-  final _i82.TwoFaType? twoFaType;
+  final _i83.TwoFaType? twoFaType;
 
   @override
   String toString() {
@@ -1645,12 +1670,12 @@ class TwoFaGoogleAuthenticatorCodeViewArguments {
 class ConfirmPasswordViewArguments {
   const ConfirmPasswordViewArguments({
     this.key,
-    this.passwordConfirmationType = _i83.PasswordConfirmationType.disable,
+    this.passwordConfirmationType = _i84.PasswordConfirmationType.disable,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
-  final _i83.PasswordConfirmationType? passwordConfirmationType;
+  final _i84.PasswordConfirmationType? passwordConfirmationType;
 
   @override
   String toString() {
@@ -1698,9 +1723,9 @@ class TransferMoneyConfirmationViewArguments {
     required this.confirmTransferMoney,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
-  final _i84.ConfirmTransferMoney confirmTransferMoney;
+  final _i85.ConfirmTransferMoney confirmTransferMoney;
 
   @override
   String toString() {
@@ -1726,9 +1751,9 @@ class NotificationDetailsViewArguments {
     required this.notificationModel,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
-  final _i85.NotificationModel notificationModel;
+  final _i86.NotificationModel notificationModel;
 
   @override
   String toString() {
@@ -1747,13 +1772,67 @@ class NotificationDetailsViewArguments {
   }
 }
 
+class ScheduledAirtimeViewArguments {
+  const ScheduledAirtimeViewArguments({
+    this.key,
+    this.schedule,
+  });
+
+  final _i81.Key? key;
+
+  final _i87.ScheduleModel? schedule;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "schedule": "$schedule"}';
+  }
+
+  @override
+  bool operator ==(covariant ScheduledAirtimeViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key && other.schedule == schedule;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ schedule.hashCode;
+  }
+}
+
+class ScheduleDataViewArguments {
+  const ScheduleDataViewArguments({
+    this.key,
+    this.schedule,
+  });
+
+  final _i81.Key? key;
+
+  final _i87.ScheduleModel? schedule;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "schedule": "$schedule"}';
+  }
+
+  @override
+  bool operator ==(covariant ScheduleDataViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key && other.schedule == schedule;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ schedule.hashCode;
+  }
+}
+
 class UssdViewArguments {
   const UssdViewArguments({
     this.key,
     this.amount,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
   final String? amount;
 
@@ -1780,7 +1859,7 @@ class TransferMoneyViewArguments {
     this.isRequestingMoney = false,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
   final bool isRequestingMoney;
 
@@ -1805,26 +1884,31 @@ class ScheduleTransferMoneyViewArguments {
   const ScheduleTransferMoneyViewArguments({
     this.key,
     this.transfer,
+    this.schedule,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
-  final _i86.Transfer? transfer;
+  final _i88.Transfer? transfer;
+
+  final _i87.ScheduleModel? schedule;
 
   @override
   String toString() {
-    return '{"key": "$key", "transfer": "$transfer"}';
+    return '{"key": "$key", "transfer": "$transfer", "schedule": "$schedule"}';
   }
 
   @override
   bool operator ==(covariant ScheduleTransferMoneyViewArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key && other.transfer == transfer;
+    return other.key == key &&
+        other.transfer == transfer &&
+        other.schedule == schedule;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ transfer.hashCode;
+    return key.hashCode ^ transfer.hashCode ^ schedule.hashCode;
   }
 }
 
@@ -1834,9 +1918,9 @@ class TransferReceiptArguments {
     this.transfer,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
-  final _i86.Transfer? transfer;
+  final _i88.Transfer? transfer;
 
   @override
   String toString() {
@@ -1861,9 +1945,9 @@ class TransactionDetailsViewArguments {
     required this.transactionHistory,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
-  final _i87.TransactionHistory transactionHistory;
+  final _i89.TransactionHistory transactionHistory;
 
   @override
   String toString() {
@@ -1888,9 +1972,9 @@ class RequestMoneyViewArguments {
     required this.request,
   });
 
-  final _i80.Key? key;
+  final _i81.Key? key;
 
-  final _i88.RequestModel request;
+  final _i90.RequestModel request;
 
   @override
   String toString() {
@@ -1909,7 +1993,7 @@ class RequestMoneyViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i89.NavigationService {
+extension NavigatorStateExtension on _i91.NavigationService {
   Future<dynamic> navigateToSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -1967,7 +2051,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToSuccessState({
-    _i80.Key? key,
+    _i81.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -1992,7 +2076,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToDashboardView({
-    _i80.Key? key,
+    _i81.Key? key,
     int gottenIndex = 0,
     int? routerId,
     bool preventDuplicates = true,
@@ -2024,7 +2108,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
 
   Future<dynamic> navigateToGetGuestEmailView({
     required String route,
-    _i80.Key? key,
+    _i81.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2068,7 +2152,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToDebitCardView({
-    _i80.Key? key,
+    _i81.Key? key,
     String? amount,
     int? routerId,
     bool preventDuplicates = true,
@@ -2085,7 +2169,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToOtpView({
-    _i80.Key? key,
+    _i81.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -2116,7 +2200,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToTagView({
-    _i80.Key? key,
+    _i81.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -2217,7 +2301,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToSetNewPasswordView({
-    _i80.Key? key,
+    _i81.Key? key,
     required String email,
     int? routerId,
     bool preventDuplicates = true,
@@ -2234,7 +2318,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToVerifyPasswordAccountView({
-    _i80.Key? key,
+    _i81.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -2293,7 +2377,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToBvnView({
-    _i80.Key? key,
+    _i81.Key? key,
     required String routeName,
     int? routerId,
     bool preventDuplicates = true,
@@ -2366,8 +2450,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToCardCreationSymmaryView({
-    _i80.Key? key,
-    required _i81.CardDto cardDto,
+    _i81.Key? key,
+    required _i82.CardDto cardDto,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2565,8 +2649,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToTwoFaGoogleAuthenticatorCodeView({
-    _i80.Key? key,
-    _i82.TwoFaType? twoFaType = _i82.TwoFaType.twoFaSetup,
+    _i81.Key? key,
+    _i83.TwoFaType? twoFaType = _i83.TwoFaType.twoFaSetup,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2611,9 +2695,9 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToConfirmPasswordView({
-    _i80.Key? key,
-    _i83.PasswordConfirmationType? passwordConfirmationType =
-        _i83.PasswordConfirmationType.disable,
+    _i81.Key? key,
+    _i84.PasswordConfirmationType? passwordConfirmationType =
+        _i84.PasswordConfirmationType.disable,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2660,8 +2744,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToTransferMoneyConfirmationView({
-    _i80.Key? key,
-    required _i84.ConfirmTransferMoney confirmTransferMoney,
+    _i81.Key? key,
+    required _i85.ConfirmTransferMoney confirmTransferMoney,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2692,8 +2776,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToNotificationDetailsView({
-    _i80.Key? key,
-    required _i85.NotificationModel notificationModel,
+    _i81.Key? key,
+    required _i86.NotificationModel notificationModel,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2723,28 +2807,34 @@ extension NavigatorStateExtension on _i89.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToScheduledAirtimeView([
+  Future<dynamic> navigateToScheduledAirtimeView({
+    _i81.Key? key,
+    _i87.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.scheduledAirtimeView,
+        arguments: ScheduledAirtimeViewArguments(key: key, schedule: schedule),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
         transition: transition);
   }
 
-  Future<dynamic> navigateToScheduleDataView([
+  Future<dynamic> navigateToScheduleDataView({
+    _i81.Key? key,
+    _i87.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.scheduleDataView,
+        arguments: ScheduleDataViewArguments(key: key, schedule: schedule),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2948,7 +3038,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToUssdView({
-    _i80.Key? key,
+    _i81.Key? key,
     String? amount,
     int? routerId,
     bool preventDuplicates = true,
@@ -2965,7 +3055,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToTransferMoneyView({
-    _i80.Key? key,
+    _i81.Key? key,
     bool isRequestingMoney = false,
     int? routerId,
     bool preventDuplicates = true,
@@ -2997,8 +3087,9 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToScheduleTransferMoneyView({
-    _i80.Key? key,
-    _i86.Transfer? transfer,
+    _i81.Key? key,
+    _i88.Transfer? transfer,
+    _i87.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3006,8 +3097,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.scheduleTransferMoneyView,
-        arguments:
-            ScheduleTransferMoneyViewArguments(key: key, transfer: transfer),
+        arguments: ScheduleTransferMoneyViewArguments(
+            key: key, transfer: transfer, schedule: schedule),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -3015,8 +3106,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToTransferReceipt({
-    _i80.Key? key,
-    _i86.Transfer? transfer,
+    _i81.Key? key,
+    _i88.Transfer? transfer,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3032,8 +3123,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToTransactionDetailsView({
-    _i80.Key? key,
-    required _i87.TransactionHistory transactionHistory,
+    _i81.Key? key,
+    required _i89.TransactionHistory transactionHistory,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3064,8 +3155,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> navigateToRequestMoneyView({
-    _i80.Key? key,
-    required _i88.RequestModel request,
+    _i81.Key? key,
+    required _i90.RequestModel request,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3074,6 +3165,20 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.requestMoneyView,
         arguments: RequestMoneyViewArguments(key: key, request: request),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToScheduleView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.scheduleView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -3137,7 +3242,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithSuccessState({
-    _i80.Key? key,
+    _i81.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -3162,7 +3267,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithDashboardView({
-    _i80.Key? key,
+    _i81.Key? key,
     int gottenIndex = 0,
     int? routerId,
     bool preventDuplicates = true,
@@ -3194,7 +3299,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
 
   Future<dynamic> replaceWithGetGuestEmailView({
     required String route,
-    _i80.Key? key,
+    _i81.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3238,7 +3343,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithDebitCardView({
-    _i80.Key? key,
+    _i81.Key? key,
     String? amount,
     int? routerId,
     bool preventDuplicates = true,
@@ -3255,7 +3360,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithOtpView({
-    _i80.Key? key,
+    _i81.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -3286,7 +3391,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithTagView({
-    _i80.Key? key,
+    _i81.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -3387,7 +3492,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithSetNewPasswordView({
-    _i80.Key? key,
+    _i81.Key? key,
     required String email,
     int? routerId,
     bool preventDuplicates = true,
@@ -3404,7 +3509,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithVerifyPasswordAccountView({
-    _i80.Key? key,
+    _i81.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -3463,7 +3568,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithBvnView({
-    _i80.Key? key,
+    _i81.Key? key,
     required String routeName,
     int? routerId,
     bool preventDuplicates = true,
@@ -3536,8 +3641,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithCardCreationSymmaryView({
-    _i80.Key? key,
-    required _i81.CardDto cardDto,
+    _i81.Key? key,
+    required _i82.CardDto cardDto,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3736,8 +3841,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithTwoFaGoogleAuthenticatorCodeView({
-    _i80.Key? key,
-    _i82.TwoFaType? twoFaType = _i82.TwoFaType.twoFaSetup,
+    _i81.Key? key,
+    _i83.TwoFaType? twoFaType = _i83.TwoFaType.twoFaSetup,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3782,9 +3887,9 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithConfirmPasswordView({
-    _i80.Key? key,
-    _i83.PasswordConfirmationType? passwordConfirmationType =
-        _i83.PasswordConfirmationType.disable,
+    _i81.Key? key,
+    _i84.PasswordConfirmationType? passwordConfirmationType =
+        _i84.PasswordConfirmationType.disable,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3831,8 +3936,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithTransferMoneyConfirmationView({
-    _i80.Key? key,
-    required _i84.ConfirmTransferMoney confirmTransferMoney,
+    _i81.Key? key,
+    required _i85.ConfirmTransferMoney confirmTransferMoney,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3863,8 +3968,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithNotificationDetailsView({
-    _i80.Key? key,
-    required _i85.NotificationModel notificationModel,
+    _i81.Key? key,
+    required _i86.NotificationModel notificationModel,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3894,28 +3999,34 @@ extension NavigatorStateExtension on _i89.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithScheduledAirtimeView([
+  Future<dynamic> replaceWithScheduledAirtimeView({
+    _i81.Key? key,
+    _i87.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.scheduledAirtimeView,
+        arguments: ScheduledAirtimeViewArguments(key: key, schedule: schedule),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
         transition: transition);
   }
 
-  Future<dynamic> replaceWithScheduleDataView([
+  Future<dynamic> replaceWithScheduleDataView({
+    _i81.Key? key,
+    _i87.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.scheduleDataView,
+        arguments: ScheduleDataViewArguments(key: key, schedule: schedule),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -4119,7 +4230,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithUssdView({
-    _i80.Key? key,
+    _i81.Key? key,
     String? amount,
     int? routerId,
     bool preventDuplicates = true,
@@ -4136,7 +4247,7 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithTransferMoneyView({
-    _i80.Key? key,
+    _i81.Key? key,
     bool isRequestingMoney = false,
     int? routerId,
     bool preventDuplicates = true,
@@ -4168,8 +4279,9 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithScheduleTransferMoneyView({
-    _i80.Key? key,
-    _i86.Transfer? transfer,
+    _i81.Key? key,
+    _i88.Transfer? transfer,
+    _i87.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -4177,8 +4289,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.scheduleTransferMoneyView,
-        arguments:
-            ScheduleTransferMoneyViewArguments(key: key, transfer: transfer),
+        arguments: ScheduleTransferMoneyViewArguments(
+            key: key, transfer: transfer, schedule: schedule),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -4186,8 +4298,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithTransferReceipt({
-    _i80.Key? key,
-    _i86.Transfer? transfer,
+    _i81.Key? key,
+    _i88.Transfer? transfer,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -4203,8 +4315,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithTransactionDetailsView({
-    _i80.Key? key,
-    required _i87.TransactionHistory transactionHistory,
+    _i81.Key? key,
+    required _i89.TransactionHistory transactionHistory,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -4235,8 +4347,8 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }
 
   Future<dynamic> replaceWithRequestMoneyView({
-    _i80.Key? key,
-    required _i88.RequestModel request,
+    _i81.Key? key,
+    required _i90.RequestModel request,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -4245,6 +4357,20 @@ extension NavigatorStateExtension on _i89.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.requestMoneyView,
         arguments: RequestMoneyViewArguments(key: key, request: request),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithScheduleView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.scheduleView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

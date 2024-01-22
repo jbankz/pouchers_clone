@@ -35,6 +35,8 @@ mixin _$Transfer {
   @JsonKey(name: 'transaction_date')
   String? get transactionDate => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
+  String? get frequency => throw _privateConstructorUsedError;
+  String? get scheduleId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -55,7 +57,9 @@ abstract class $TransferCopyWith<$Res> {
       String? note,
       @StringToNumSerializer() num amount,
       @JsonKey(name: 'transaction_date') String? transactionDate,
-      String? status});
+      String? status,
+      String? frequency,
+      String? scheduleId});
 }
 
 /// @nodoc
@@ -79,6 +83,8 @@ class _$TransferCopyWithImpl<$Res, $Val extends Transfer>
     Object? amount = null,
     Object? transactionDate = freezed,
     Object? status = freezed,
+    Object? frequency = freezed,
+    Object? scheduleId = freezed,
   }) {
     return _then(_value.copyWith(
       transactionId: freezed == transactionId
@@ -113,6 +119,14 @@ class _$TransferCopyWithImpl<$Res, $Val extends Transfer>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String?,
+      frequency: freezed == frequency
+          ? _value.frequency
+          : frequency // ignore: cast_nullable_to_non_nullable
+              as String?,
+      scheduleId: freezed == scheduleId
+          ? _value.scheduleId
+          : scheduleId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -133,7 +147,9 @@ abstract class _$$TransferImplCopyWith<$Res>
       String? note,
       @StringToNumSerializer() num amount,
       @JsonKey(name: 'transaction_date') String? transactionDate,
-      String? status});
+      String? status,
+      String? frequency,
+      String? scheduleId});
 }
 
 /// @nodoc
@@ -155,6 +171,8 @@ class __$$TransferImplCopyWithImpl<$Res>
     Object? amount = null,
     Object? transactionDate = freezed,
     Object? status = freezed,
+    Object? frequency = freezed,
+    Object? scheduleId = freezed,
   }) {
     return _then(_$TransferImpl(
       transactionId: freezed == transactionId
@@ -189,6 +207,14 @@ class __$$TransferImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String?,
+      frequency: freezed == frequency
+          ? _value.frequency
+          : frequency // ignore: cast_nullable_to_non_nullable
+              as String?,
+      scheduleId: freezed == scheduleId
+          ? _value.scheduleId
+          : scheduleId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -204,7 +230,9 @@ class _$TransferImpl implements _Transfer {
       this.note,
       @StringToNumSerializer() this.amount = 0,
       @JsonKey(name: 'transaction_date') this.transactionDate,
-      this.status});
+      this.status,
+      this.frequency,
+      this.scheduleId});
 
   factory _$TransferImpl.fromJson(Map<String, dynamic> json) =>
       _$$TransferImplFromJson(json);
@@ -233,10 +261,14 @@ class _$TransferImpl implements _Transfer {
   final String? transactionDate;
   @override
   final String? status;
+  @override
+  final String? frequency;
+  @override
+  final String? scheduleId;
 
   @override
   String toString() {
-    return 'Transfer(transactionId: $transactionId, senderName: $senderName, receiverName: $receiverName, receiverTag: $receiverTag, note: $note, amount: $amount, transactionDate: $transactionDate, status: $status)';
+    return 'Transfer(transactionId: $transactionId, senderName: $senderName, receiverName: $receiverName, receiverTag: $receiverTag, note: $note, amount: $amount, transactionDate: $transactionDate, status: $status, frequency: $frequency, scheduleId: $scheduleId)';
   }
 
   @override
@@ -256,13 +288,27 @@ class _$TransferImpl implements _Transfer {
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.transactionDate, transactionDate) ||
                 other.transactionDate == transactionDate) &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.frequency, frequency) ||
+                other.frequency == frequency) &&
+            (identical(other.scheduleId, scheduleId) ||
+                other.scheduleId == scheduleId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, transactionId, senderName,
-      receiverName, receiverTag, note, amount, transactionDate, status);
+  int get hashCode => Object.hash(
+      runtimeType,
+      transactionId,
+      senderName,
+      receiverName,
+      receiverTag,
+      note,
+      amount,
+      transactionDate,
+      status,
+      frequency,
+      scheduleId);
 
   @JsonKey(ignore: true)
   @override
@@ -287,7 +333,9 @@ abstract class _Transfer implements Transfer {
       final String? note,
       @StringToNumSerializer() final num amount,
       @JsonKey(name: 'transaction_date') final String? transactionDate,
-      final String? status}) = _$TransferImpl;
+      final String? status,
+      final String? frequency,
+      final String? scheduleId}) = _$TransferImpl;
 
   factory _Transfer.fromJson(Map<String, dynamic> json) =
       _$TransferImpl.fromJson;
@@ -315,6 +363,10 @@ abstract class _Transfer implements Transfer {
   String? get transactionDate;
   @override
   String? get status;
+  @override
+  String? get frequency;
+  @override
+  String? get scheduleId;
   @override
   @JsonKey(ignore: true)
   _$$TransferImplCopyWith<_$TransferImpl> get copyWith =>

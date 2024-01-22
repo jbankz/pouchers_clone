@@ -29,6 +29,9 @@ extension StringExtensions on String {
   // Replaces underscores with spaces
   String get removeUnderscore => replaceAll('_', ' ');
 
+  // Replaces hiphen with spaces
+  String get removeHyphen => replaceAll('-', ' ');
+
   // Format number to USA phone number format
   String _formatPhoneNumber(num phoneNumber) {
     // Convert the number to a string

@@ -57,6 +57,7 @@ import '../ui/features/profile/presentation/views/profile/profile_view.dart';
 import '../ui/features/profile/presentation/views/referral/referral_view.dart';
 import '../ui/features/requests/presentation/view/request_money_view.dart';
 import '../ui/features/requests/presentation/view/request_view.dart';
+import '../ui/features/schedules/presentation/view/schedule_view.dart';
 import '../ui/features/tiers/presentation/view/tier_view.dart';
 import '../ui/features/transfer/presentation/views/schedule_transfer_view.dart';
 import '../ui/features/transfer/presentation/views/transfer_money_confirmation_view.dart';
@@ -206,6 +207,7 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: TransactionDetailsView),
     AdaptiveRoute(page: RequestView),
     AdaptiveRoute(page: RequestMoneyView),
+    AdaptiveRoute(page: ScheduleView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

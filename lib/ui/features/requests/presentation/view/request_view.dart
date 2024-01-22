@@ -16,8 +16,10 @@ class RequestView extends StatelessWidget {
           backgroundColor: AppColors.kPurpleColor800,
           appBar: AppBar(
               backgroundColor: AppColors.kPurpleColor800,
-              bottom: TabBar(
-                  tabs: [Text(AppString.completed), Text(AppString.pending)]),
+              bottom: TabBar(tabs: [
+                Text(AppString.completed),
+                Text(AppString.pendingOne)
+              ]),
               title: Text(AppString.request)),
           body: SafeArea(
               minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),

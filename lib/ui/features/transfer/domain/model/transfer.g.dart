@@ -52,6 +52,8 @@ _$TransferImpl _$$TransferImplFromJson(Map<String, dynamic> json) =>
           : const StringToNumSerializer().fromJson(json['amount']),
       transactionDate: json['transaction_date'] as String?,
       status: json['status'] as String?,
+      frequency: json['frequency'] as String?,
+      scheduleId: json['scheduleId'] as String?,
     );
 
 Map<String, dynamic> _$$TransferImplToJson(_$TransferImpl instance) =>
@@ -65,6 +67,8 @@ Map<String, dynamic> _$$TransferImplToJson(_$TransferImpl instance) =>
       'amount': const StringToNumSerializer().toJson(instance.amount),
       'transaction_date': instance.transactionDate,
       'status': instance.status,
+      'frequency': instance.frequency,
+      'scheduleId': instance.scheduleId,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

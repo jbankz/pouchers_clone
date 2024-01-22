@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:Pouchers/app/app.router.dart';
+import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/app/helpers/network_helpers.dart';
 import 'package:Pouchers/app/helpers/session_manager.dart';
 import 'package:Pouchers/app/navigators/navigators.dart';
@@ -9,7 +11,6 @@ import 'package:Pouchers/modules/account/providers/account_provider.dart';
 import 'package:Pouchers/modules/account/screens/account_settings/account_settings.dart';
 import 'package:Pouchers/modules/account/screens/account_settings/schedule_payments.dart';
 import 'package:Pouchers/modules/account/screens/referral/referral.dart';
-import 'package:Pouchers/modules/account/screens/request/requests.dart';
 import 'package:Pouchers/modules/login/screens/login.dart';
 import 'package:Pouchers/modules/profile/profile_kyc.dart';
 import 'package:Pouchers/modules/profile/profile_tier_list.dart';
@@ -350,13 +351,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       AssetPaths.requestIcon,
                     ),
                     textTheme: textTheme,
-                    onTap: () {
-                      pushTo(
-                        context,
-                        ManageRequest(),
-                        settings: RouteSettings(name: ManageRequest.routeName),
-                      );
-                    },
+                    onTap: () => PageRouter.pushNamed(Routes.requestView),
                   ),
                   ProfileRoleWidget(
                     text: accountSetting,

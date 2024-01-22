@@ -1,10 +1,10 @@
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:Pouchers/utils/logger.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,11 +22,16 @@ import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import '../../../../schedules/domain/model/schedule_model.dart';
+import '../../../../schedules/presentation/notifier/schedule_notifier.dart';
+import '../../../../transfer/presentation/notifier/transfer_notifier.dart';
+import '../../../domain/enum/billers_category.dart';
 import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/billers.dart';
 import '../../../domain/model/mobile_data_services.dart';
 import '../../notifier/billers_notifier.dart';
 import '../sheet/frequency_sheet.dart';
+import '../widget/delete_schedule_widget.dart';
 import '../widget/utility_icon.dart';
 import 'schedule_data_view.form.dart';
 import 'sheets/data_bundle_sheets.dart';
@@ -38,7 +43,9 @@ import 'skeleton/data_skeleton.dart';
   FormTextField(name: 'frequency')
 ])
 class ScheduleDataView extends ConsumerStatefulWidget {
-  const ScheduleDataView({super.key});
+  const ScheduleDataView({super.key, this.schedule});
+
+  final ScheduleModel? schedule;
 
   @override
   ConsumerState<ScheduleDataView> createState() => _ScheduleDataViewState();
@@ -49,6 +56,7 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
   late BillersNotifier _billersNotifier;
   final CancelToken _cancelToken = CancelToken();
   final FlutterContactPicker _contactPicker = FlutterContactPicker();
+  late ScheduleNotifier _scheduleNotifier;
 
   Billers? _billers;
   MobileOperatorServices? _mobileOperatorServices;
@@ -57,8 +65,14 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _billersNotifier = ref.read(billersNotifierProvider.notifier));
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _billersNotifier = ref.read(billersNotifierProvider.notifier)
+        ..billers(BillersCategory.data, _cancelToken)
+        ..billersDiscounts(BillersCategory.data, _cancelToken);
+      _scheduleNotifier = ref.read(scheduleNotifierProvider.notifier);
+      _frequency = widget.schedule?.frequency ?? '';
+      phoneController.text = widget.schedule?.recipient ?? '';
+    });
   }
 
   @override
@@ -75,6 +89,9 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
+    final transferState = ref.watch(transferNotifierProvider);
+    final scheduleState = ref.watch(scheduleNotifierProvider);
+    final bool isBusy = (billerState.isBusy || scheduleState.isBusy);
     return Scaffold(
       appBar: AppBar(title: Text(AppString.scheduleData)),
       body: SafeArea(
@@ -100,10 +117,7 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
                         onFieldSubmitted: (_) =>
                             context.nextFocus(amountFocusNode),
                         validator: FieldValidator.validatePhone(),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(11)
-                        ],
+                        inputFormatters: [context.digitsOnly, context.limit()],
                         suffixIcon: CupertinoButton(
                             padding: EdgeInsets.zero,
                             child: SvgPicture.asset(AppImage.contactBook,
@@ -224,7 +238,12 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
                             final pin = await BottomSheets.showSheet(
                                 child: const PinConfirmationSheet()) as String?;
                             if (pin != null) _submit(pin);
-                          })
+                          }),
+                DeleteScheduleWidget(
+                    enabled: _frequency.isNotEmpty && !isBusy,
+                    onTap: () => _scheduleNotifier.deleteSchedule(
+                        scheduleId: widget.schedule?.scheduleId,
+                        cancelToken: _cancelToken)),
               ],
             ),
           ),
@@ -233,17 +252,29 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
     );
   }
 
-  Future<void> _submit(String pin) => _billersNotifier.schedule(
-      mobileDto: MobileDto(
-          frequency: _frequency,
-          amount: _formatter.getUnformattedValue(),
-          transactionPin: pin,
-          subCategory: _billers?.displayName,
-          category: ServiceCategory.data,
-          destinationPhoneNumber: phoneController.text,
-          mobileOperatorServiceId:
-              _mobileOperatorServices?.serviceId.toString(),
-          mobileOperatorPublicId: _billers?.operatorpublicid),
-      route: Routes.scheduleDataView,
-      cancelToken: _cancelToken);
+  Future<void> _submit(String pin) async {
+    if (widget.schedule != null) {
+      _scheduleNotifier.updateSchedule(
+          mobileDto: MobileDto(
+              scheduleId: widget.schedule?.scheduleId,
+              frequency: _frequency,
+              transactionPin: pin,
+              amount: _formatter.getUnformattedValue()),
+          cancelToken: _cancelToken);
+    } else {
+      _billersNotifier.schedule(
+          mobileDto: MobileDto(
+              frequency: _frequency,
+              amount: _formatter.getUnformattedValue(),
+              transactionPin: pin,
+              subCategory: _billers?.displayName,
+              category: ServiceCategory.data,
+              destinationPhoneNumber: phoneController.text,
+              mobileOperatorServiceId:
+                  _mobileOperatorServices?.serviceId.toString(),
+              mobileOperatorPublicId: _billers?.operatorpublicid),
+          route: Routes.scheduleDataView,
+          cancelToken: _cancelToken);
+    }
+  }
 }

@@ -2,6 +2,8 @@ import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/schedules/domain/model/schedule_model.dart';
+import 'package:Pouchers/ui/features/schedules/presentation/notifier/schedule_notifier.dart';
 import 'package:Pouchers/ui/features/transfer/presentation/notifier/transfer_notifier.dart';
 import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
@@ -21,14 +23,16 @@ import '../../../authentication/presentation/view/pin/sheet/pin_confirmation_she
 import '../../../utilities/domain/dto/mobile_dto.dart';
 import '../../../utilities/domain/enum/service_category.dart';
 import '../../../utilities/presentation/views/sheet/frequency_sheet.dart';
+import '../../../utilities/presentation/views/widget/delete_schedule_widget.dart';
 import '../../domain/model/transfer.dart';
 import 'schedule_transfer_view.form.dart';
 
 @FormView(fields: [FormTextField(name: 'frequency')])
 class ScheduleTransferMoneyView extends ConsumerStatefulWidget {
-  const ScheduleTransferMoneyView({super.key, this.transfer});
+  const ScheduleTransferMoneyView({super.key, this.transfer, this.schedule});
 
   final Transfer? transfer;
+  final ScheduleModel? schedule;
 
   @override
   ConsumerState<ScheduleTransferMoneyView> createState() =>
@@ -39,6 +43,7 @@ class _ScheduleTransferMoneyViewState
     extends ConsumerState<ScheduleTransferMoneyView>
     with $ScheduleTransferMoneyView {
   late TransferNotifier _transferNotifier;
+  late ScheduleNotifier _scheduleNotifier;
 
   final CancelToken _cancelToken = CancelToken();
   String _frequency = '';
@@ -47,6 +52,8 @@ class _ScheduleTransferMoneyViewState
   void initState() {
     super.initState();
     _transferNotifier = ref.read(transferNotifierProvider.notifier);
+    _scheduleNotifier = ref.read(scheduleNotifierProvider.notifier);
+    _frequency = widget.schedule?.frequency ?? '';
   }
 
   @override
@@ -58,6 +65,8 @@ class _ScheduleTransferMoneyViewState
   @override
   Widget build(BuildContext context) {
     final transferState = ref.watch(transferNotifierProvider);
+    final scheduleState = ref.watch(scheduleNotifierProvider);
+    final bool isBusy = (transferState.isBusy || scheduleState.isBusy);
     return Scaffold(
       appBar: AppBar(title: Text(AppString.scheduleTransfer)),
       body: SafeArea(
@@ -156,8 +165,7 @@ class _ScheduleTransferMoneyViewState
                                   color: AppColors.kBlueColor),
                               const Gap(width: 5),
                               Expanded(
-                                  child: Text(
-                                      'Next top-up date is ${DateTime.now().dayMonthTime1}',
+                                  child: Text('Next top-up date is $_frequency',
                                       style: PageRouter
                                           .globalContext.headlineMedium
                                           ?.copyWith(
@@ -173,12 +181,17 @@ class _ScheduleTransferMoneyViewState
             )),
             ElevatedButtonWidget(
                 title: AppString.save,
-                loading: transferState.isBusy,
+                loading: isBusy,
                 onPressed: () async {
                   final pin = await BottomSheets.showSheet(
                       child: const PinConfirmationSheet()) as String?;
                   if (pin != null) _submit(pin);
-                })
+                }),
+            DeleteScheduleWidget(
+                enabled: _frequency.isNotEmpty && !isBusy,
+                onTap: () => _scheduleNotifier.deleteSchedule(
+                    scheduleId: widget.schedule?.scheduleId,
+                    cancelToken: _cancelToken)),
           ],
         ),
       ),
@@ -186,14 +199,15 @@ class _ScheduleTransferMoneyViewState
   }
 
   Row _buildTile({required String title, required String value}) => Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-              child: Text(title,
-                  style: PageRouter.globalContext.headlineMedium?.copyWith(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.kIconGrey),
-                  textAlign: TextAlign.left)),
+          Text(title,
+              style: PageRouter.globalContext.headlineMedium?.copyWith(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.kIconGrey),
+              textAlign: TextAlign.left),
+          const Gap(width: 23),
           Expanded(
               child: Text(value,
                   style: PageRouter.globalContext.headlineMedium
@@ -202,14 +216,25 @@ class _ScheduleTransferMoneyViewState
         ],
       );
 
-  Future<void> _submit(String pin) => _transferNotifier.schedule(
-      mobileDto: MobileDto(
-          category: ServiceCategory.p2p,
-          subCategory: 'none',
-          frequency: _frequency,
-          tag: widget.transfer?.receiverTag,
-          amount: widget.transfer?.amount,
-          note: widget.transfer?.note,
-          transactionPin: pin),
-      cancelToken: _cancelToken);
+  Future<void> _submit(String pin) async {
+    if (widget.schedule != null) {
+      _scheduleNotifier.updateSchedule(
+          mobileDto: MobileDto(
+              scheduleId: widget.schedule?.scheduleId,
+              frequency: _frequency,
+              transactionPin: pin),
+          cancelToken: _cancelToken);
+    } else {
+      _transferNotifier.schedule(
+          mobileDto: MobileDto(
+              category: ServiceCategory.p2p,
+              subCategory: 'none',
+              frequency: _frequency,
+              tag: widget.transfer?.receiverTag,
+              amount: widget.transfer?.amount,
+              note: widget.transfer?.note,
+              transactionPin: pin),
+          cancelToken: _cancelToken);
+    }
+  }
 }

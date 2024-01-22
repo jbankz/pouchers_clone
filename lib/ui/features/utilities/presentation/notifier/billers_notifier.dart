@@ -149,7 +149,7 @@ class BillersNotifier extends _$BillersNotifier {
               title: AppString.complete,
               message: AppString.successFullBillSchedule,
               btnTitle: AppString.proceed,
-              tap: () => PageRouter.popToRoot(Routes.tabLayout)));
+              tap: () => PageRouter.popToRoot(Routes.dashboardView)));
     } catch (e) {
       _logger.e(e.toString());
       AppHelper.handleError(e);

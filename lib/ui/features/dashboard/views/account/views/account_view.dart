@@ -94,14 +94,10 @@ class AccountView extends ConsumerWidget {
                       tapped: () => PageRouter.pushNamed(Routes.referralView)),
                   const Gap(height: 23),
                   AccountTile(
-                    icon: AppImage.requestIcon,
-                    title: AppString.request,
-                    desc: AppString.requestHint,
-                    tapped: () => PageRouter.pushNamed(Routes.requestView),
-                    // tapped: () => pushTo(context, ManageRequest(),
-                    //     settings:
-                    //         const RouteSettings(name: ManageRequest.routeName)),
-                  ),
+                      icon: AppImage.requestIcon,
+                      title: AppString.request,
+                      desc: AppString.requestHint,
+                      tapped: () => PageRouter.pushNamed(Routes.requestView)),
                   const Gap(height: 23),
                   AccountTile(
                       icon: AppImage.user,
@@ -111,15 +107,17 @@ class AccountView extends ConsumerWidget {
                           PageRouter.pushNamed(Routes.accountSettingsView)),
                   const Gap(height: 23),
                   AccountTile(
-                      icon: AppImage.sync,
-                      title: AppString.scheduledPayments,
-                      desc: AppString.scheduledPaymentsInstruction,
-                      tapped: () => pushTo(
-                            context,
-                            const SchedulePayments(),
-                            settings: const RouteSettings(
-                                name: SchedulePayments.routeName),
-                          )),
+                    icon: AppImage.sync,
+                    title: AppString.scheduledPayments,
+                    desc: AppString.scheduledPaymentsInstruction,
+                    tapped: () => PageRouter.pushNamed(Routes.scheduleView),
+                    // tapped: () => pushTo(
+                    //   context,
+                    //   const SchedulePayments(),
+                    //   settings:
+                    //       const RouteSettings(name: SchedulePayments.routeName),
+                    // ),
+                  ),
                   const Gap(height: 23),
                   AccountTile(
                       icon: AppImage.customerService,

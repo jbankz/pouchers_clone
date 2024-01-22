@@ -4,7 +4,6 @@ import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,11 +21,14 @@ import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import '../../../../schedules/domain/model/schedule_model.dart';
+import '../../../../schedules/presentation/notifier/schedule_notifier.dart';
+import '../../../domain/enum/billers_category.dart';
 import '../../../domain/enum/service_category.dart';
-import '../../../domain/model/airtime_top_deals.dart';
 import '../../../domain/model/billers.dart';
 import '../../notifier/billers_notifier.dart';
 import '../sheet/frequency_sheet.dart';
+import '../widget/delete_schedule_widget.dart';
 import '../widget/utility_icon.dart';
 import 'schedule_airtime_view.form.dart';
 import 'skeleton/airtime_skeleton.dart';
@@ -37,7 +39,9 @@ import 'skeleton/airtime_skeleton.dart';
   FormTextField(name: 'frequency')
 ])
 class ScheduledAirtimeView extends ConsumerStatefulWidget {
-  const ScheduledAirtimeView({super.key});
+  const ScheduledAirtimeView({super.key, this.schedule});
+
+  final ScheduleModel? schedule;
 
   @override
   ConsumerState<ScheduledAirtimeView> createState() =>
@@ -49,6 +53,7 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
   late BillersNotifier _billersNotifier;
   final CancelToken _cancelToken = CancelToken();
   final FlutterContactPicker _contactPicker = FlutterContactPicker();
+  late ScheduleNotifier _scheduleNotifier;
 
   Billers? _billers;
   String _frequency = '';
@@ -56,8 +61,18 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _billersNotifier = ref.read(billersNotifierProvider.notifier));
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scheduleNotifier = ref.read(scheduleNotifierProvider.notifier);
+      _billersNotifier = ref.read(billersNotifierProvider.notifier)
+        ..billers(BillersCategory.airtime, _cancelToken)
+        ..billersDiscounts(BillersCategory.airtime, _cancelToken);
+      _frequency = widget.schedule?.frequency ?? '';
+      phoneController.text = widget.schedule?.recipient ?? '';
+      amountController.text =
+          _formatter.format(widget.schedule?.amount.toString() ?? '0');
+      _billers = Billers(name: widget.schedule?.subCategory);
+    });
   }
 
   @override
@@ -74,6 +89,10 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
+    final scheduleState = ref.watch(scheduleNotifierProvider);
+
+    final bool isBusy = (billerState.isScheduling || scheduleState.isBusy);
+
     return Scaffold(
       appBar: AppBar(title: Text(AppString.scheduleAirtime)),
       body: SafeArea(
@@ -95,20 +114,17 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
                       controller: phoneController,
                       focusNode: phoneFocusNode,
                       keyboardType: TextInputType.phone,
-                      readOnly: billerState.isScheduling,
+                      readOnly: isBusy,
                       onFieldSubmitted: (_) =>
                           context.nextFocus(amountFocusNode),
                       validator: FieldValidator.validatePhone(),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(11)
-                      ],
+                      inputFormatters: [context.digitsOnly, context.limit()],
                       suffixIcon: CupertinoButton(
                           padding: EdgeInsets.zero,
                           child: SvgPicture.asset(AppImage.contactBook,
                               fit: BoxFit.scaleDown),
                           onPressed: () async {
-                            if (billerState.isScheduling) return;
+                            if (isBusy) return;
 
                             final Contact? contact =
                                 await _contactPicker.selectContact();
@@ -135,7 +151,7 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
                                     _billers?.name,
                                 image: billerState.billers[index].logoUrl,
                                 onTap: () {
-                                  if (billerState.isScheduling) return;
+                                  if (isBusy) return;
 
                                   setState(() =>
                                       _billers = billerState.billers[index]);
@@ -148,7 +164,7 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
                       label: AppString.amountInstruction,
                       controller: amountController,
                       focusNode: amountFocusNode,
-                      readOnly: billerState.isScheduling,
+                      readOnly: isBusy,
                       keyboardType: TextInputType.number,
                       onFieldSubmitted: (_) =>
                           context.nextFocus(frequencyFocusNode),
@@ -158,10 +174,7 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
                           icon: Text(AppString.nairaSymbol,
                               style: context.headlineMedium
                                   ?.copyWith(fontSize: 16))),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        _formatter
-                      ],
+                      inputFormatters: [context.digitsOnly, _formatter],
                     ),
                     const Gap(height: 24),
                     EditTextFieldWidget(
@@ -204,7 +217,7 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
                 )),
                 ElevatedButtonWidget(
                     title: AppString.proceed,
-                    loading: billerState.isScheduling,
+                    loading: isBusy,
                     onPressed: _billers == null || _frequency.isEmpty
                         ? null
                         : () async {
@@ -213,7 +226,12 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
                             final pin = await BottomSheets.showSheet(
                                 child: const PinConfirmationSheet()) as String?;
                             if (pin != null) _submit(pin);
-                          })
+                          }),
+                DeleteScheduleWidget(
+                    enabled: _frequency.isNotEmpty && !isBusy,
+                    onTap: () => _scheduleNotifier.deleteSchedule(
+                        scheduleId: widget.schedule?.scheduleId,
+                        cancelToken: _cancelToken)),
               ],
             ),
           ),
@@ -222,15 +240,27 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
     );
   }
 
-  Future<void> _submit(String pin) => _billersNotifier.schedule(
-      mobileDto: MobileDto(
-          frequency: _frequency,
-          amount: _formatter.getUnformattedValue(),
-          transactionPin: pin,
-          subCategory: _billers?.displayName,
-          category: ServiceCategory.airtime,
-          destinationPhoneNumber: phoneController.text,
-          mobileOperatorPublicId: _billers?.operatorpublicid),
-      route: Routes.scheduledAirtimeView,
-      cancelToken: _cancelToken);
+  Future<void> _submit(String pin) async {
+    if (widget.schedule != null) {
+      _scheduleNotifier.updateSchedule(
+          mobileDto: MobileDto(
+              scheduleId: widget.schedule?.scheduleId,
+              amount: _formatter.getUnformattedValue(),
+              frequency: _frequency,
+              transactionPin: pin),
+          cancelToken: _cancelToken);
+    } else {
+      _billersNotifier.schedule(
+          mobileDto: MobileDto(
+              frequency: _frequency,
+              amount: _formatter.getUnformattedValue(),
+              transactionPin: pin,
+              subCategory: _billers?.name,
+              category: ServiceCategory.airtime,
+              destinationPhoneNumber: phoneController.text,
+              mobileOperatorPublicId: _billers?.operatorpublicid),
+          route: Routes.scheduledAirtimeView,
+          cancelToken: _cancelToken);
+    }
+  }
 }

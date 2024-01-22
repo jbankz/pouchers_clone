@@ -25,6 +25,7 @@ class MobileDto {
   final Payer? payer;
   final Currency? currency;
   final String? bank;
+  final String? scheduleId;
 
   MobileDto({
     this.category,
@@ -49,6 +50,7 @@ class MobileDto {
     this.currency,
     this.phoneNumber,
     this.bank,
+    this.scheduleId,
   });
 
   Map<String, dynamic> toJson() {

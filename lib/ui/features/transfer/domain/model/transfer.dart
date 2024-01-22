@@ -19,7 +19,9 @@ class Transfer with _$Transfer {
       String? note,
       @StringToNumSerializer() @Default(0) num amount,
       @JsonKey(name: 'transaction_date') String? transactionDate,
-      String? status}) = _Transfer;
+      String? status,
+      String? frequency,
+      String? scheduleId}) = _Transfer;
 
   factory Transfer.fromJson(Map<String, dynamic> json) =>
       _$TransferFromJson(json);

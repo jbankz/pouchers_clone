@@ -6,7 +6,7 @@ part of 'transfer_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$transferNotifierHash() => r'c47d779656c90dc24f7958dcf50d4bf50a68c62a';
+String _$transferNotifierHash() => r'add6bcacd5589845a0b6cb24b093ca64fb0e5ea6';
 
 /// See also [TransferNotifier].
 @ProviderFor(TransferNotifier)
