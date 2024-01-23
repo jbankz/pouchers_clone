@@ -234,7 +234,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
         onChanged: (value) => _debouncer.run(() {
           if (value.length >= 10) _validateCustomer(getMerchant);
         }),
-        validator: FieldValidator.validateMeterNumber(cardLength: 10),
+        validator: FieldValidator.validateMeterNumber(cardLength: 11),
         inputFormatters: [context.digitsOnly],
         suffixIcon: CupertinoButton(
           padding: EdgeInsets.zero,

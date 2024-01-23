@@ -20,5 +20,6 @@ String transactionTitle(TransactionHistory transaction) =>
       ServiceCategory.fundWallet => 'Wallet Funding',
       ServiceCategory.referralBonusPayment => 'Referral Bonus',
       ServiceCategory.internet => 'Internet Purchase',
+      ServiceCategory.moneyRequest => "Request Money",
       null => '',
     };

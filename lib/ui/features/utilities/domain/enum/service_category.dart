@@ -42,7 +42,9 @@ enum ServiceCategory {
   @HiveField(16)
   adminCreditWallet('admin-credit-wallet'),
   @HiveField(17)
-  referralBonusPayment('referral-bonus-payment');
+  referralBonusPayment('referral-bonus-payment'),
+  @HiveField(18)
+  moneyRequest('money-request');
 
   const ServiceCategory(this.value);
 

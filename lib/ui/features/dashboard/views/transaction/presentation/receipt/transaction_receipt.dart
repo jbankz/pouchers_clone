@@ -9,6 +9,7 @@ import 'package:printing/printing.dart';
 import '../../../../../../common/app_colors.dart';
 import '../../../../../../common/app_images.dart';
 import '../../../../../../common/app_strings.dart';
+import '../../../../../utilities/domain/enum/service_category.dart';
 import '../../domain/enum/transaction_type.dart';
 import '../../domain/model/transaction_history.dart';
 import '../../domain/parser/parse_transaction_title.dart';
@@ -93,31 +94,36 @@ Future<pw.Widget> generateTransactionReceipt(
           .toList(),
     ),
     pw.SizedBox(height: 27),
-    _buildTile(
-        title: AppString.sender,
-        value: transactionHistory.extraDetails?.senderName?.titleCase ?? '',
-        font: getDmSansFont),
-    pw.SizedBox(height: 16),
-    _buildTile(
-        title: AppString.senderTag,
-        value: transactionHistory.extraDetails?.senderTag ?? '',
-        font: getDmSansFont),
-    pw.SizedBox(height: 16),
-    _buildTile(
-        title: AppString.beneficiary,
-        value: transactionHistory.beneficiaryName?.titleCase ?? '',
-        font: getDmSansFont),
-    pw.SizedBox(height: 16),
-    _buildTile(
-        title: AppString.beneficiaryTag,
-        value: transactionHistory.extraDetails?.receiverTag ?? '',
-        font: getDmSansFont),
-    pw.SizedBox(height: 16),
-    _buildTile(
-        title: AppString.status,
-        value: transactionHistory.status?.titleCase ?? '',
-        font: getDmSansFont),
-    pw.SizedBox(height: 16),
+    switch (transactionHistory.transactionCategory) {
+      ServiceCategory.p2p => _buildTransferReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
+      ServiceCategory.airtime => _buildAirtimeOrDataReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
+      ServiceCategory.data => _buildAirtimeOrDataReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
+      ServiceCategory.voucherPurchase => _buildStatusReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
+      ServiceCategory.voucherRedeem => _buildStatusReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
+      ServiceCategory.fundWallet => _buildWalletFundingReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
+      ServiceCategory.adminDebitWallet => _buildStatusReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
+      ServiceCategory.adminCreditWallet => _buildStatusReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
+      ServiceCategory.referralBonusPayment => pw.SizedBox.shrink(),
+      ServiceCategory.moneyRequest => pw.SizedBox.shrink(),
+      ServiceCategory.cable => pw.SizedBox.shrink(),
+      ServiceCategory.electricity => pw.SizedBox.shrink(),
+      ServiceCategory.betting => pw.SizedBox.shrink(),
+      ServiceCategory.education => pw.SizedBox.shrink(),
+      ServiceCategory.internet => pw.SizedBox.shrink(),
+      ServiceCategory.createVirtualCard => pw.SizedBox.shrink(),
+      ServiceCategory.fundVirtualCard => pw.SizedBox.shrink(),
+      ServiceCategory.localBankTransfer => pw.SizedBox.shrink(),
+      null => pw.SizedBox.shrink()
+    },
+    pw.SizedBox(height: 27),
     pw.Container(
       width: double.infinity,
       padding: pw.EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -148,6 +154,90 @@ Future<pw.Widget> generateTransactionReceipt(
     pw.SizedBox(height: 14),
   ]);
 }
+
+pw.Column _buildWalletFundingReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTile(
+            title: AppString.status,
+            value: transactionHistory?.status?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.amountReceived,
+            value: (transactionHistory?.amount ?? 0).toNaira,
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.transactionFee,
+            value: (transactionHistory?.transactionFee ?? 0).toNaira,
+            font: robotFont),
+      ],
+    );
+
+_buildStatusReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    _buildTile(
+        title: AppString.status,
+        value: transactionHistory?.status?.titleCase ?? '',
+        font: robotFont);
+
+pw.Column _buildTransferReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTile(
+            title: AppString.status,
+            value: transactionHistory?.status?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.sender,
+            value:
+                transactionHistory?.extraDetails?.senderName?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.senderTag,
+            value: transactionHistory?.extraDetails?.senderTag?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.beneficiary,
+            value: transactionHistory?.beneficiaryName?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.beneficiaryTag,
+            value: transactionHistory?.extraDetails?.receiverTag ?? '',
+            font: robotFont),
+      ],
+    );
+
+pw.Column _buildAirtimeOrDataReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTile(
+            title: AppString.status,
+            value: transactionHistory?.status?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.operator,
+            value: transactionHistory?.extraDetails?.subCategory ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.phoneNumber,
+            value: transactionHistory?.extraDetails?.phoneNumber ?? '',
+            font: robotFont),
+      ],
+    );
 
 pw.Row _buildTile(
         {required String title, required String value, required Font? font}) =>

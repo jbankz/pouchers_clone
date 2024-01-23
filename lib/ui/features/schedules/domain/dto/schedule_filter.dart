@@ -10,7 +10,7 @@ List<ScheduleFilter> scheduleFilters = [
   ScheduleFilter(key: 'Airtime', value: 'airtime'),
   ScheduleFilter(key: 'Transfer', value: 'transfer'),
   ScheduleFilter(key: 'Data', value: 'data'),
-  ScheduleFilter(key: 'Internet', value: 'internet'),
   ScheduleFilter(key: 'Electricity', value: 'electricity'),
-  ScheduleFilter(key: 'Betting', value: 'betting'),
+  // ScheduleFilter(key: 'Internet', value: 'internet'),
+  // ScheduleFilter(key: 'Betting', value: 'betting'),
 ];

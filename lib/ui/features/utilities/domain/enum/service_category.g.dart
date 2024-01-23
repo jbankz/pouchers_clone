@@ -47,6 +47,8 @@ class ServiceCategoryAdapter extends TypeAdapter<ServiceCategory> {
         return ServiceCategory.adminCreditWallet;
       case 17:
         return ServiceCategory.referralBonusPayment;
+      case 18:
+        return ServiceCategory.moneyRequest;
       default:
         return ServiceCategory.airtime;
     }
@@ -105,6 +107,9 @@ class ServiceCategoryAdapter extends TypeAdapter<ServiceCategory> {
         break;
       case ServiceCategory.referralBonusPayment:
         writer.writeByte(17);
+        break;
+      case ServiceCategory.moneyRequest:
+        writer.writeByte(18);
         break;
     }
   }

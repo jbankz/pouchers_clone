@@ -1,5 +1,6 @@
 import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:Pouchers/utils/logger.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,6 +23,8 @@ import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import '../../../../schedules/domain/model/schedule_model.dart';
+import '../../../../schedules/presentation/notifier/schedule_notifier.dart';
 import '../../../domain/dto/billers_dto.dart';
 import '../../../domain/dto/mobile_dto.dart';
 import '../../../domain/enum/billers_category.dart';
@@ -34,6 +37,7 @@ import '../cable/skeleton/cable_skeleton.dart';
 import '../sheet/frequency_sheet.dart';
 import '../sheet/provider_services_sheets.dart';
 import '../sheet/providers_sheets.dart';
+import '../widget/delete_schedule_widget.dart';
 import 'schedule_electricity_view.form.dart';
 
 @FormView(fields: [
@@ -44,7 +48,9 @@ import 'schedule_electricity_view.form.dart';
   FormTextField(name: 'amount')
 ])
 class ScheduleElectricityView extends ConsumerStatefulWidget {
-  const ScheduleElectricityView({super.key});
+  const ScheduleElectricityView({super.key, this.schedule});
+
+  final ScheduleModel? schedule;
 
   @override
   ConsumerState<ScheduleElectricityView> createState() =>
@@ -57,7 +63,7 @@ class _ScheduleElectricityViewState
   late BillersNotifier _billersNotifier;
   final CancelToken _cancelToken = CancelToken();
   final FlutterContactPicker _contactPicker = FlutterContactPicker();
-  final _debouncer = Debouncer(milliseconds: 600);
+  final _debouncer = Debouncer();
   String _frequency = '';
 
   Billers? _billers;
@@ -66,6 +72,7 @@ class _ScheduleElectricityViewState
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final CurrencyFormatter _formatter = CurrencyFormatter(
       enableNegative: false, name: '', symbol: '', decimalDigits: 0);
+  late ScheduleNotifier _scheduleNotifier;
 
   @override
   void initState() {
@@ -80,14 +87,27 @@ class _ScheduleElectricityViewState
     disposeForm();
   }
 
-  void _initializeNotifiers() {
+  Future<void> _initializeNotifiers() async {
+    _scheduleNotifier = ref.read(scheduleNotifierProvider.notifier);
     _billersNotifier = ref.read(billersNotifierProvider.notifier)
       ..resetCustomerInfo();
+    await _billersNotifier.billers(BillersCategory.electricity, _cancelToken);
+    await _billersNotifier.billersDiscounts(
+        BillersCategory.electricity, _cancelToken);
+
+    _frequency = widget.schedule?.frequency ?? '';
+    _billers = Billers(name: widget.schedule?.subCategory);
+    numberController.text = widget.schedule?.recipient ?? '';
+    providerController.text = widget.schedule?.subCategory ?? '';
   }
 
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
+    final scheduleState = ref.watch(scheduleNotifierProvider);
+
+    final bool isBusy = (billerState.isBusy || scheduleState.isBusy);
+
     return Scaffold(
       appBar: AppBar(title: Text(AppString.scheduleElectricity)),
       body: SafeArea(
@@ -177,6 +197,13 @@ class _ScheduleElectricityViewState
                       ? () => _onProceedButtonPressed(billerState)
                       : null,
                 ),
+                Center(
+                  child: DeleteScheduleWidget(
+                      enabled: widget.schedule != null,
+                      onTap: () => _scheduleNotifier.deleteSchedule(
+                          scheduleId: widget.schedule?.scheduleId,
+                          cancelToken: _cancelToken)),
+                ),
               ],
             ),
           ),
@@ -204,7 +231,7 @@ class _ScheduleElectricityViewState
         },
       );
 
-  Widget? _buildProviderPrefix() => _billers == null
+  Widget? _buildProviderPrefix() => _billers?.logoUrl == null
       ? null
       : Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
@@ -247,10 +274,10 @@ class _ScheduleElectricityViewState
             _cableService == null,
         onFieldSubmitted: (_) {},
         onChanged: (value) => _debouncer.run(() {
-          if (value.length >= 10) _validateCustomer();
+          if (value.length >= 11) _validateCustomer();
         }),
-        validator: FieldValidator.validateMeterNumber(cardLength: 10),
-        inputFormatters: [context.digitsOnly],
+        validator: FieldValidator.validateMeterNumber(cardLength: 11),
+        inputFormatters: [context.digitsOnly, context.limit()],
         suffixIcon: CupertinoButton(
           padding: EdgeInsets.zero,
           child: SvgPicture.asset(AppImage.contactBook, fit: BoxFit.scaleDown),
@@ -300,20 +327,31 @@ class _ScheduleElectricityViewState
   }
 
   Future<void> _submit(String pin) async {
-    await _billersNotifier.schedule(
-      mobileDto: MobileDto(
-          frequency: _frequency,
-          amount: _formatter.getUnformattedValue(),
-          merchantAccount: _billers?.operatorpublicid,
-          merchantReferenceNumber: numberController.text,
-          makeMerchantServiceArray: false,
-          merchantService: _cableService?.code,
-          transactionPin: pin,
-          subCategory: _billers?.displayName,
-          category: ServiceCategory.electricity),
-      route: Routes.scheduleElectricityView,
-      cancelToken: _cancelToken,
-    );
+    if (widget.schedule != null) {
+      _scheduleNotifier.updateSchedule(
+          mobileDto: MobileDto(
+            scheduleId: widget.schedule?.scheduleId,
+            frequency: _frequency,
+            amount: _formatter.getUnformattedValue(),
+            transactionPin: pin,
+          ),
+          cancelToken: _cancelToken);
+    } else {
+      await _billersNotifier.schedule(
+        mobileDto: MobileDto(
+            frequency: _frequency,
+            amount: _formatter.getUnformattedValue(),
+            merchantReferenceNumber: numberController.text,
+            makeMerchantServiceArray: false,
+            merchantService: _cableService?.code,
+            merchantAccount: _billers?.operatorpublicid,
+            transactionPin: pin,
+            subCategory: _billers?.name,
+            category: ServiceCategory.electricity),
+        route: Routes.scheduleElectricityView,
+        cancelToken: _cancelToken,
+      );
+    }
   }
 
   Future<void> _validateCustomer() async {

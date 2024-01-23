@@ -1187,8 +1187,12 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i59.ScheduleCableTvView: (data) {
+      final args = data.getArgs<ScheduleCableTvViewArguments>(
+        orElse: () => const ScheduleCableTvViewArguments(),
+      );
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i59.ScheduleCableTvView(),
+        builder: (context) =>
+            _i59.ScheduleCableTvView(key: args.key, schedule: args.schedule),
         settings: data,
       );
     },
@@ -1199,8 +1203,12 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i61.ScheduleElectricityView: (data) {
+      final args = data.getArgs<ScheduleElectricityViewArguments>(
+        orElse: () => const ScheduleElectricityViewArguments(),
+      );
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i61.ScheduleElectricityView(),
+        builder: (context) => _i61.ScheduleElectricityView(
+            key: args.key, schedule: args.schedule),
         settings: data,
       );
     },
@@ -1291,9 +1299,13 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i74.TransferSuccessState: (data) {
-      return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i74.TransferSuccessState(),
+      return _i81.PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const _i74.TransferSuccessState(),
         settings: data,
+        opaque: false,
+        transitionsBuilder:
+            data.transition ?? _i1.TransitionsBuilders.slideBottom,
       );
     },
     _i75.ScheduleTransferMoneyView: (data) {
@@ -1816,6 +1828,60 @@ class ScheduleDataViewArguments {
 
   @override
   bool operator ==(covariant ScheduleDataViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key && other.schedule == schedule;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ schedule.hashCode;
+  }
+}
+
+class ScheduleCableTvViewArguments {
+  const ScheduleCableTvViewArguments({
+    this.key,
+    this.schedule,
+  });
+
+  final _i81.Key? key;
+
+  final _i87.ScheduleModel? schedule;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "schedule": "$schedule"}';
+  }
+
+  @override
+  bool operator ==(covariant ScheduleCableTvViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key && other.schedule == schedule;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ schedule.hashCode;
+  }
+}
+
+class ScheduleElectricityViewArguments {
+  const ScheduleElectricityViewArguments({
+    this.key,
+    this.schedule,
+  });
+
+  final _i81.Key? key;
+
+  final _i87.ScheduleModel? schedule;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "schedule": "$schedule"}';
+  }
+
+  @override
+  bool operator ==(covariant ScheduleElectricityViewArguments other) {
     if (identical(this, other)) return true;
     return other.key == key && other.schedule == schedule;
   }
@@ -2855,14 +2921,17 @@ extension NavigatorStateExtension on _i91.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToScheduleCableTvView([
+  Future<dynamic> navigateToScheduleCableTvView({
+    _i81.Key? key,
+    _i87.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.scheduleCableTvView,
+        arguments: ScheduleCableTvViewArguments(key: key, schedule: schedule),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2883,14 +2952,18 @@ extension NavigatorStateExtension on _i91.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToScheduleElectricityView([
+  Future<dynamic> navigateToScheduleElectricityView({
+    _i81.Key? key,
+    _i87.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.scheduleElectricityView,
+        arguments:
+            ScheduleElectricityViewArguments(key: key, schedule: schedule),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -4047,14 +4120,17 @@ extension NavigatorStateExtension on _i91.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithScheduleCableTvView([
+  Future<dynamic> replaceWithScheduleCableTvView({
+    _i81.Key? key,
+    _i87.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.scheduleCableTvView,
+        arguments: ScheduleCableTvViewArguments(key: key, schedule: schedule),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -4075,14 +4151,18 @@ extension NavigatorStateExtension on _i91.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithScheduleElectricityView([
+  Future<dynamic> replaceWithScheduleElectricityView({
+    _i81.Key? key,
+    _i87.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.scheduleElectricityView,
+        arguments:
+            ScheduleElectricityViewArguments(key: key, schedule: schedule),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

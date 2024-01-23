@@ -1,4 +1,3 @@
-import 'package:Pouchers/ui/features/merchant/data/dao/merchant_dao.dart';
 import 'package:Pouchers/ui/features/merchant/domain/model/get_merchants.dart';
 import 'package:Pouchers/ui/features/merchant/presentation/notifier/module/module.dart';
 import 'package:dio/dio.dart';

@@ -78,11 +78,6 @@ class _ScheduleViewState extends ConsumerState<ScheduleView> {
     final scheduleState = ref.watch(scheduleNotifierProvider);
     final schedules = scheduleState.schedules;
 
-    // key: UniqueKey(),
-    //           controller: _refreshController,
-    //           onRefresh: _refreshTransactions,
-    //           onLoading: _paginateTransactions,
-
     return Scaffold(
       backgroundColor: AppColors.kPurpleColor800,
       appBar: AppBar(
@@ -142,19 +137,25 @@ class _ScheduleViewState extends ConsumerState<ScheduleView> {
                         ),
                     separatorBuilder: (_, __) => const Divider(),
                     itemCount: context.height.toInt()),
-                child: scheduleState.schedules.isEmpty
-                    ? Center(
-                        child:
-                            EmptyVoucherView(message: AppString.emptySchedules))
-                    : ListView.separated(
-                        itemCount: schedules.length,
-                        separatorBuilder: (_, __) => const Divider(),
-                        itemBuilder: (_, index) {
-                          final schedule = schedules[index];
-                          return ScheduledWidget(
-                              schedule: schedule,
-                              tapped: () => _handleClickedItem(schedule));
-                        }),
+                child: SmartRefresher(
+                  key: ValueKey<String>(_transactionFilter?.key ?? ''),
+                  controller: _refreshController,
+                  onRefresh: _refreshTransactions,
+                  onLoading: _paginateTransactions,
+                  child: scheduleState.schedules.isEmpty
+                      ? Center(
+                          child: EmptyVoucherView(
+                              message: AppString.emptySchedules))
+                      : ListView.separated(
+                          itemCount: schedules.length,
+                          separatorBuilder: (_, __) => const Divider(),
+                          itemBuilder: (_, index) {
+                            final schedule = schedules[index];
+                            return ScheduledWidget(
+                                schedule: schedule,
+                                tapped: () => _handleClickedItem(schedule));
+                          }),
+                ),
               ),
             ),
           ],
@@ -173,21 +174,37 @@ class _ScheduleViewState extends ConsumerState<ScheduleView> {
         await PageRouter.pushNamed(Routes.scheduleDataView,
             args: ScheduleDataViewArguments(schedule: schedule));
       case ServiceCategory.cable:
+        await PageRouter.pushNamed(Routes.scheduleCableTvView,
+            args: ScheduleCableTvViewArguments(schedule: schedule));
       case ServiceCategory.electricity:
+        await PageRouter.pushNamed(Routes.scheduleElectricityView,
+            args: ScheduleElectricityViewArguments(schedule: schedule));
       case ServiceCategory.betting:
+        return;
       case ServiceCategory.voucherPurchase:
+        return;
       case ServiceCategory.education:
+        return;
       case ServiceCategory.internet:
-      case ServiceCategory.p2p:
+        return;
       case ServiceCategory.voucherRedeem:
+        return;
       case ServiceCategory.fundWallet:
+        return;
       case ServiceCategory.createVirtualCard:
+        return;
       case ServiceCategory.fundVirtualCard:
+        return;
       case ServiceCategory.localBankTransfer:
+      case ServiceCategory.p2p:
         await _handleTransfer(schedule);
       case ServiceCategory.adminDebitWallet:
+        return;
       case ServiceCategory.adminCreditWallet:
+        return;
       case ServiceCategory.referralBonusPayment:
+        return;
+      case ServiceCategory.moneyRequest:
     }
     _refreshTransactions();
   }
@@ -199,7 +216,9 @@ class _ScheduleViewState extends ConsumerState<ScheduleView> {
             transfer: Transfer(
                 transactionId: schedule.scheduleId,
                 amount: schedule.amount,
-                receiverName: schedule.beneficiaryAccountName)));
+                receiverName: schedule.beneficiaryAccountName ??
+                    schedule.recipient ??
+                    '')));
     _refreshTransactions();
   }
 }

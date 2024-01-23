@@ -1,4 +1,3 @@
-import 'package:Pouchers/ui/features/merchant/domain/model/get_merchants.dart';
 import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -26,7 +25,6 @@ import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
 import '../../../../dashboard/views/card/domain/enum/currency.dart';
 import '../../../../dashboard/views/card/presentation/notifier/module/module.dart';
-import '../../../../merchant/presentation/notifier/merchants_notifier.dart';
 import '../../../../payment/domain/dto/debit_card_dto.dart';
 import '../../../domain/dto/billers_dto.dart';
 import '../../../domain/dto/mobile_dto.dart';
@@ -58,7 +56,6 @@ class CableTvView extends ConsumerStatefulWidget {
 
 class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
   late BillersNotifier _billersNotifier;
-  late MerchantsNotifier _merchantsNotifier;
   final CancelToken _cancelToken = CancelToken();
   final FlutterContactPicker _contactPicker = FlutterContactPicker();
   final _debouncer = Debouncer();
@@ -84,24 +81,21 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
 
   Future<void> _initializeNotifiers() async {
     _billersNotifier = ref.read(billersNotifierProvider.notifier);
-    _merchantsNotifier = ref.read(merchantsNotifierProvider.notifier);
 
     await _billersNotifier.billers(BillersCategory.cable, _cancelToken);
     await _billersNotifier.billersDiscounts(
         BillersCategory.cable, _cancelToken);
-    await _merchantsNotifier.getMerchants(_cancelToken);
   }
 
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
-    final getMerchantState = ref.watch(merchantsNotifierProvider);
     return Scaffold(
       appBar: AppBar(title: Text(AppString.cableTv)),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: Skeleton(
-          isLoading: billerState.isBusy || getMerchantState.isBusy,
+          isLoading: billerState.isBusy,
           skeleton: const CableSkeleton(),
           child: Form(
             key: formKey,
@@ -117,8 +111,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
                       const Gap(height: 24),
                       _buildSubscriptionTypeTextField(),
                       const Gap(height: 24),
-                      _buildSmartCardNumberTextField(
-                          billerState, getMerchantState.getMerchant),
+                      _buildSmartCardNumberTextField(billerState),
                       const Gap(height: 8),
                       _buildCustomerInfoText(billerState),
                       const Gap(height: 24),
@@ -137,8 +130,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
                   title: AppString.proceed,
                   loading: billerState.isPurchasing,
                   onPressed: _isProceedButtonEnabled(billerState)
-                      ? () => _handlePayment(
-                          billerState, getMerchantState.getMerchant)
+                      ? () => _handlePayment(billerState)
                       : null,
                 ),
               ],
@@ -219,8 +211,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
           ],
         );
 
-  Widget _buildSmartCardNumberTextField(
-          BillersState billerState, GetMerchant? getMerchant) =>
+  Widget _buildSmartCardNumberTextField(BillersState billerState) =>
       EditTextFieldWidget(
         title: AppString.smartCardNumber,
         controller: numberController,
@@ -231,7 +222,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
             _cableService == null,
         onFieldSubmitted: (_) {},
         onChanged: (value) => _debouncer.run(() {
-          if (value.length >= 10) _validateCustomer(getMerchant);
+          if (value.length >= 10) _validateCustomer();
         }),
         validator: FieldValidator.validateSmartCard(cardLength: 10),
         inputFormatters: [context.digitsOnly],
@@ -239,7 +230,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
           padding: EdgeInsets.zero,
           child: SvgPicture.asset(AppImage.contactBook, fit: BoxFit.scaleDown),
           onPressed: () async {
-            _onContactBookIconPressed(billerState, getMerchant);
+            _onContactBookIconPressed(billerState);
             setState(() {});
           },
         ),
@@ -285,8 +276,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
       billerState.validateCustomerInfo?.customerName != null &&
       formKey.currentState?.validate() == true;
 
-  Future<void> _handlePayment(
-      BillersState billerState, GetMerchant? getMerchant) async {
+  Future<void> _handlePayment(BillersState billerState) async {
     final feedback = await Sheets.showSheet(
       child: SummaryWidget(
         summaryDto: SummaryDto(
@@ -300,7 +290,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
           fee: 0,
         ),
         biometricVerification: (pin) {
-          _submitForActualUser(pin: pin, getMerchant: getMerchant);
+          _submitForActualUser(pin: pin);
           return;
         },
       ),
@@ -317,7 +307,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
           child: const PinConfirmationSheet(),
         ) as String?;
         if (pin != null) {
-          _submitForActualUser(pin: pin, getMerchant: getMerchant);
+          _submitForActualUser(pin: pin);
         }
       }
     }
@@ -369,8 +359,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
         ],
       );
 
-  Future<void> _submitForActualUser(
-      {String? pin, required GetMerchant? getMerchant}) async {
+  Future<void> _submitForActualUser({String? pin}) async {
     await _billersNotifier.purchaseService(
       mobileDto: MobileDto(
         isMerchantPayment: true,
@@ -396,7 +385,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
     );
   }
 
-  Future<void> _validateCustomer(GetMerchant? getMerchant) async {
+  Future<void> _validateCustomer() async {
     await _billersNotifier.validateCustomerInfo(
       biller: BillersDto(
         merchantAccount: _billers?.operatorpublicid,
@@ -441,8 +430,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
     setState(() {});
   }
 
-  void _onContactBookIconPressed(
-      BillersState billerState, GetMerchant? getMerchant) {
+  void _onContactBookIconPressed(BillersState billerState) {
     if (billerState.isPurchasing || _cableService == null) return;
 
     _contactPicker.selectContact().then((contact) {
@@ -451,7 +439,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
             contact.phoneNumbers?.first.formatCountryCode ?? '';
         context.nextFocus(subscriptionTypeFocusNode);
 
-        _validateCustomer(getMerchant);
+        _validateCustomer();
       }
     });
   }

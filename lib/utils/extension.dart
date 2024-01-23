@@ -94,6 +94,8 @@ extension CurrencyExtensions on num {
   // Formats the number as Nigerian Naira currency
 
   String get toNaira => NumberFormat.simpleCurrency(name: 'NGN').format(this);
+  String get toNairaWithoutsymbol =>
+      NumberFormat.simpleCurrency(name: '', decimalDigits: 2).format(this);
   String get ordinals => _getJustOrdinalIndicator(this);
 
   String _getJustOrdinalIndicator(num number) {

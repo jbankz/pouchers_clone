@@ -56,6 +56,7 @@ class ApiError {
       case 403:
       case 404:
       case 409:
+      case 412:
       case 422:
       case 500:
         message = getErrorData(response?.data).message?.removeUnderscore ?? '';

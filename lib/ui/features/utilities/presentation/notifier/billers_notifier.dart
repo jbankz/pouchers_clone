@@ -186,6 +186,7 @@ class BillersNotifier extends _$BillersNotifier {
           .future);
     } catch (e) {
       _logger.e(e.toString());
+      AppHelper.handleError(e);
     } finally {
       state = state.copyWith(
           isValidatingCustomerInfo: false,

@@ -188,7 +188,7 @@ class _ScheduleTransferMoneyViewState
                   if (pin != null) _submit(pin);
                 }),
             DeleteScheduleWidget(
-                enabled: _frequency.isNotEmpty && !isBusy,
+                enabled: widget.schedule != null,
                 onTap: () => _scheduleNotifier.deleteSchedule(
                     scheduleId: widget.schedule?.scheduleId,
                     cancelToken: _cancelToken)),

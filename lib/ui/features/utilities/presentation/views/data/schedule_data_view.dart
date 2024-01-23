@@ -1,7 +1,6 @@
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/utils/extension.dart';
-import 'package:Pouchers/utils/logger.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +71,7 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
       _scheduleNotifier = ref.read(scheduleNotifierProvider.notifier);
       _frequency = widget.schedule?.frequency ?? '';
       phoneController.text = widget.schedule?.recipient ?? '';
+      _billers = Billers(name: widget.schedule?.subCategory);
     });
   }
 
@@ -240,7 +240,7 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
                             if (pin != null) _submit(pin);
                           }),
                 DeleteScheduleWidget(
-                    enabled: _frequency.isNotEmpty && !isBusy,
+                    enabled: widget.schedule != null,
                     onTap: () => _scheduleNotifier.deleteSchedule(
                         scheduleId: widget.schedule?.scheduleId,
                         cancelToken: _cancelToken)),

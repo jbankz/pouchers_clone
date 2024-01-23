@@ -221,6 +221,7 @@ const _$ServiceCategoryEnumMap = {
   ServiceCategory.adminDebitWallet: 'admin-debit-wallet',
   ServiceCategory.adminCreditWallet: 'admin-credit-wallet',
   ServiceCategory.referralBonusPayment: 'referral-bonus-payment',
+  ServiceCategory.moneyRequest: 'money-request',
 };
 
 Value? _$JsonConverterFromJson<Json, Value>(

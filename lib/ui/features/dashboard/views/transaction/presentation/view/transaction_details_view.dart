@@ -13,22 +13,29 @@ import '../../domain/enum/transaction_type.dart';
 import '../../domain/parser/parse_transaction_title.dart';
 import '../receipt/transaction_receipt.dart';
 
-class TransactionDetailsView extends StatelessWidget {
+class TransactionDetailsView extends StatefulWidget {
   const TransactionDetailsView({super.key, required this.transactionHistory});
 
   final TransactionHistory transactionHistory;
 
   @override
+  State<TransactionDetailsView> createState() => _TransactionDetailsViewState();
+}
+
+class _TransactionDetailsViewState extends State<TransactionDetailsView> {
+  bool _generatingReceipt = false;
+
+  @override
   Widget build(BuildContext context) {
     final bool isDebitTransaction =
-        transactionHistory.transactionType == TransactionType.debit;
+        widget.transactionHistory.transactionType == TransactionType.debit;
 
     final Color color =
         isDebitTransaction ? AppColors.kColorRedDeep : AppColors.limeGreen;
 
     final String amount = isDebitTransaction
-        ? '-${transactionHistory.amount.toNaira}'
-        : '+${(transactionHistory.amount + transactionHistory.transactionFee).toNaira}';
+        ? '-${widget.transactionHistory.amount.toNaira}'
+        : '+${(widget.transactionHistory.amount + widget.transactionHistory.transactionFee).toNaira}';
 
     return Scaffold(
       appBar: AppBar(title: Text(AppString.transactionReceipt)),
@@ -77,7 +84,7 @@ class TransactionDetailsView extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      transactionTitle(transactionHistory),
+                      transactionTitle(widget.transactionHistory),
                       style: context.headlineMedium?.copyWith(
                           fontSize: 14,
                           color: AppColors.kBlueColorDark,
@@ -102,8 +109,10 @@ class TransactionDetailsView extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  transactionHistory.updatedAt?.monthDayYear ?? '',
-                  transactionHistory.updatedAt?.timeAloneWithMeridian12 ?? ''
+                  widget.transactionHistory.updatedAt?.monthDayYear ?? '',
+                  widget.transactionHistory.updatedAt
+                          ?.timeAloneWithMeridian12 ??
+                      ''
                 ]
                     .map((date) => Container(
                         margin: EdgeInsets.symmetric(horizontal: 14.w),
@@ -121,27 +130,28 @@ class TransactionDetailsView extends StatelessWidget {
                     .toList(),
               ),
               const Gap(height: 27),
-              switch (transactionHistory.transactionCategory) {
+              switch (widget.transactionHistory.transactionCategory) {
                 ServiceCategory.p2p => _buildTransferDetails(context),
-                ServiceCategory.airtime => _buildProviderDetails(context),
-                ServiceCategory.data => _buildProviderDetails(context),
-                ServiceCategory.cable => const SizedBox.shrink(),
-                ServiceCategory.electricity => const SizedBox.shrink(),
-                ServiceCategory.betting => const SizedBox.shrink(),
-                ServiceCategory.voucherPurchase => _buildStatusDetails(context),
-                ServiceCategory.education => const SizedBox.shrink(),
-                ServiceCategory.internet => const SizedBox.shrink(),
+                ServiceCategory.airtime => _buildAirtimeOrDataDetails(context),
+                ServiceCategory.data => _buildAirtimeOrDataDetails(context),
                 ServiceCategory.voucherRedeem => _buildStatusDetails(context),
+                ServiceCategory.voucherPurchase => _buildStatusDetails(context),
                 ServiceCategory.fundWallet =>
                   _buildWalletFundingDetails(context),
-                ServiceCategory.createVirtualCard => const SizedBox.shrink(),
-                ServiceCategory.fundVirtualCard => const SizedBox.shrink(),
-                ServiceCategory.localBankTransfer => const SizedBox.shrink(),
                 ServiceCategory.adminDebitWallet =>
                   _buildStatusDetails(context),
                 ServiceCategory.adminCreditWallet =>
                   _buildStatusDetails(context),
+                ServiceCategory.cable => const SizedBox.shrink(),
+                ServiceCategory.electricity => const SizedBox.shrink(),
+                ServiceCategory.betting => const SizedBox.shrink(),
+                ServiceCategory.education => const SizedBox.shrink(),
+                ServiceCategory.internet => const SizedBox.shrink(),
+                ServiceCategory.createVirtualCard => const SizedBox.shrink(),
+                ServiceCategory.fundVirtualCard => const SizedBox.shrink(),
+                ServiceCategory.localBankTransfer => const SizedBox.shrink(),
                 ServiceCategory.referralBonusPayment => const SizedBox.shrink(),
+                ServiceCategory.moneyRequest => const SizedBox.shrink(),
                 null => const SizedBox.shrink(),
               },
               const Gap(height: 29),
@@ -161,7 +171,7 @@ class TransactionDetailsView extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                         textAlign: TextAlign.center),
                     const Gap(height: 8),
-                    Text(transactionHistory.transactionId ?? '',
+                    Text(widget.transactionHistory.transactionId ?? '',
                         style: context.headlineMedium?.copyWith(
                             fontSize: 16,
                             color: AppColors.kPrimaryTextColor,
@@ -172,11 +182,15 @@ class TransactionDetailsView extends StatelessWidget {
               ),
               const Gap(height: 14),
               ElevatedButtonWidget(
-                title: AppString.getReceipt,
-                onPressed: () async => await AppHelper.shareReceipt(
-                    widget:
-                        await generateTransactionReceipt(transactionHistory)),
-              )
+                  title: AppString.getReceipt,
+                  loading: _generatingReceipt,
+                  onPressed: () async {
+                    setState(() => _generatingReceipt = true);
+                    await AppHelper.shareReceipt(
+                        widget: await generateTransactionReceipt(
+                            widget.transactionHistory));
+                    setState(() => _generatingReceipt = false);
+                  })
             ]),
           )),
     );
@@ -188,42 +202,42 @@ class TransactionDetailsView extends StatelessWidget {
           _buildTile(
               context: context,
               title: AppString.status,
-              value: transactionHistory.status?.titleCase ?? ''),
+              value: widget.transactionHistory.status?.titleCase ?? ''),
           const Gap(height: 16),
           _buildTile(
               context: context,
               title: AppString.amountReceived,
-              value: transactionHistory.amount.toNaira),
+              value: widget.transactionHistory.amount.toNaira),
           const Gap(height: 16),
           _buildTile(
               context: context,
               title: AppString.transactionFee,
-              value: transactionHistory.transactionFee.toNaira)
+              value: widget.transactionHistory.transactionFee.toNaira)
         ],
       );
 
   Row _buildStatusDetails(BuildContext context) => _buildTile(
       context: context,
       title: AppString.status,
-      value: transactionHistory.status?.titleCase ?? '');
+      value: widget.transactionHistory.status?.titleCase ?? '');
 
-  Column _buildProviderDetails(BuildContext context) => Column(
+  Column _buildAirtimeOrDataDetails(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildTile(
               context: context,
               title: AppString.status,
-              value: transactionHistory.status?.titleCase ?? ''),
+              value: widget.transactionHistory.status?.titleCase ?? ''),
           const Gap(height: 16),
           _buildTile(
               context: context,
               title: AppString.operator,
-              value: transactionHistory.extraDetails?.subCategory ?? ''),
+              value: widget.transactionHistory.extraDetails?.subCategory ?? ''),
           const Gap(height: 16),
           _buildTile(
               context: context,
               title: AppString.phoneNumber,
-              value: transactionHistory.extraDetails?.phoneNumber ?? ''),
+              value: widget.transactionHistory.extraDetails?.phoneNumber ?? ''),
         ],
       );
 
@@ -233,29 +247,32 @@ class TransactionDetailsView extends StatelessWidget {
           _buildTile(
               context: context,
               title: AppString.status,
-              value: transactionHistory.status?.titleCase ?? ''),
+              value: widget.transactionHistory.status?.titleCase ?? ''),
           const Gap(height: 16),
           _buildTile(
               context: context,
               title: AppString.sender,
-              value:
-                  transactionHistory.extraDetails?.senderName?.titleCase ?? ''),
+              value: widget
+                      .transactionHistory.extraDetails?.senderName?.titleCase ??
+                  ''),
           const Gap(height: 16),
           _buildTile(
               context: context,
               title: AppString.senderTag,
-              value:
-                  transactionHistory.extraDetails?.senderTag?.titleCase ?? ''),
+              value: widget
+                      .transactionHistory.extraDetails?.senderTag?.titleCase ??
+                  ''),
           const Gap(height: 16),
           _buildTile(
               context: context,
               title: AppString.beneficiary,
-              value: transactionHistory.beneficiaryName?.titleCase ?? ''),
+              value:
+                  widget.transactionHistory.beneficiaryName?.titleCase ?? ''),
           const Gap(height: 16),
           _buildTile(
               context: context,
               title: AppString.beneficiaryTag,
-              value: transactionHistory.extraDetails?.receiverTag ?? ''),
+              value: widget.transactionHistory.extraDetails?.receiverTag ?? ''),
         ],
       );
 

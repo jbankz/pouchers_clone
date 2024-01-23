@@ -1,6 +1,7 @@
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:Pouchers/utils/logger.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,7 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
       _frequency = widget.schedule?.frequency ?? '';
       phoneController.text = widget.schedule?.recipient ?? '';
       amountController.text =
-          _formatter.format(widget.schedule?.amount.toString() ?? '0');
+          widget.schedule?.amount.toNairaWithoutsymbol ?? '';
       _billers = Billers(name: widget.schedule?.subCategory);
     });
   }
@@ -99,7 +100,7 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
         minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: Skeleton(
           isLoading: billerState.isBusy,
-          skeleton: const AirtimeSkeleton(),
+          skeleton: const ScheduleAirtimeSkeleton(),
           child: Form(
             key: formKey,
             child: Column(
@@ -228,7 +229,7 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
                             if (pin != null) _submit(pin);
                           }),
                 DeleteScheduleWidget(
-                    enabled: _frequency.isNotEmpty && !isBusy,
+                    enabled: widget.schedule != null,
                     onTap: () => _scheduleNotifier.deleteSchedule(
                         scheduleId: widget.schedule?.scheduleId,
                         cancelToken: _cancelToken)),

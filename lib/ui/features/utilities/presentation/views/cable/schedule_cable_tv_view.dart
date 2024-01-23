@@ -22,6 +22,8 @@ import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import '../../../../schedules/domain/model/schedule_model.dart';
+import '../../../../schedules/presentation/notifier/schedule_notifier.dart';
 import '../../../domain/dto/billers_dto.dart';
 import '../../../domain/dto/mobile_dto.dart';
 import '../../../domain/enum/billers_category.dart';
@@ -33,6 +35,7 @@ import '../../state/billers_state.dart';
 import '../sheet/frequency_sheet.dart';
 import '../sheet/provider_services_sheets.dart';
 import '../sheet/providers_sheets.dart';
+import '../widget/delete_schedule_widget.dart';
 import 'schedule_cable_tv_view.form.dart';
 import 'skeleton/cable_skeleton.dart';
 
@@ -43,7 +46,9 @@ import 'skeleton/cable_skeleton.dart';
   FormTextField(name: 'frequency'),
 ])
 class ScheduleCableTvView extends ConsumerStatefulWidget {
-  const ScheduleCableTvView({super.key});
+  const ScheduleCableTvView({super.key, this.schedule});
+
+  final ScheduleModel? schedule;
 
   @override
   ConsumerState<ScheduleCableTvView> createState() =>
@@ -55,13 +60,14 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
   late BillersNotifier _billersNotifier;
   final CancelToken _cancelToken = CancelToken();
   final FlutterContactPicker _contactPicker = FlutterContactPicker();
-  final _debouncer = Debouncer(milliseconds: 600);
+  final _debouncer = Debouncer();
   String _frequency = '';
 
   Billers? _billers;
   CableService? _cableService;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late ScheduleNotifier _scheduleNotifier;
 
   @override
   void initState() {
@@ -76,13 +82,24 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
     disposeForm();
   }
 
-  void _initializeNotifiers() {
+  Future<void> _initializeNotifiers() async {
     _billersNotifier = ref.read(billersNotifierProvider.notifier);
+    _scheduleNotifier = ref.read(scheduleNotifierProvider.notifier);
+
+    await _billersNotifier.billers(BillersCategory.cable, _cancelToken);
+    await _billersNotifier.billersDiscounts(
+        BillersCategory.cable, _cancelToken);
+
+    _frequency = widget.schedule?.frequency ?? '';
   }
 
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
+    final scheduleState = ref.watch(scheduleNotifierProvider);
+
+    final bool isBusy = (billerState.isBusy || scheduleState.isBusy);
+
     return Scaffold(
       appBar: AppBar(title: Text(AppString.scheduleCableTv)),
       body: SafeArea(
@@ -158,6 +175,13 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
                   onPressed: _isProceedButtonEnabled(billerState)
                       ? () => _onProceedButtonPressed(billerState)
                       : null,
+                ),
+                Center(
+                  child: DeleteScheduleWidget(
+                      enabled: widget.schedule != null,
+                      onTap: () => _scheduleNotifier.deleteSchedule(
+                          scheduleId: widget.schedule?.scheduleId,
+                          cancelToken: _cancelToken)),
                 ),
               ],
             ),
@@ -289,20 +313,30 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
   }
 
   Future<void> _submit(String pin) async {
-    await _billersNotifier.schedule(
-      mobileDto: MobileDto(
-          frequency: _frequency,
-          amount: _cableService?.price,
-          merchantAccount: _billers?.operatorpublicid,
-          merchantReferenceNumber: numberController.text,
-          makeMerchantServiceArray: false,
-          merchantService: _cableService?.code,
-          transactionPin: pin,
-          subCategory: _billers?.displayName,
-          category: ServiceCategory.cable),
-      route: Routes.scheduleCableTvView,
-      cancelToken: _cancelToken,
-    );
+    if (widget.schedule != null) {
+      _scheduleNotifier.updateSchedule(
+          mobileDto: MobileDto(
+              scheduleId: widget.schedule?.scheduleId,
+              amount: widget.schedule?.amount,
+              frequency: _frequency,
+              transactionPin: pin),
+          cancelToken: _cancelToken);
+    } else {
+      await _billersNotifier.schedule(
+        mobileDto: MobileDto(
+            frequency: _frequency,
+            amount: _cableService?.price,
+            merchantAccount: _billers?.operatorpublicid,
+            merchantReferenceNumber: numberController.text,
+            makeMerchantServiceArray: false,
+            merchantService: _cableService?.code,
+            transactionPin: pin,
+            subCategory: _billers?.displayName,
+            category: ServiceCategory.cable),
+        route: Routes.scheduleCableTvView,
+        cancelToken: _cancelToken,
+      );
+    }
   }
 
   Future<void> _validateCustomer() async {

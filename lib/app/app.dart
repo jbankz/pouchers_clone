@@ -201,7 +201,10 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: VoucherHistoryView),
     AdaptiveRoute(page: UssdView),
     AdaptiveRoute(page: TransferMoneyView),
-    AdaptiveRoute(page: TransferSuccessState),
+    CustomRoute(
+        page: TransferSuccessState,
+        opaque: false,
+        transitionsBuilder: TransitionsBuilders.slideBottom),
     AdaptiveRoute(page: ScheduleTransferMoneyView),
     AdaptiveRoute(page: TransferReceipt),
     AdaptiveRoute(page: TransactionDetailsView),
