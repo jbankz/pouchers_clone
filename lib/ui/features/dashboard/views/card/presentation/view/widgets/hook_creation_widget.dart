@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../../../common/app_colors.dart';
-import '../../../../../../admin/domain/model/envs/envs.dart';
 import '../../../../../../admin/presentation/notifier/admin_notifier.dart';
 
 class HookCreationFeeWidget extends HookConsumerWidget {
@@ -19,7 +18,7 @@ class HookCreationFeeWidget extends HookConsumerWidget {
 
         final cardNotifier = ref.read(cardNotifierProvider.notifier);
 
-        final envs = (appState.data as List<Envs>);
+        final envs = appState.data;
 
         final totalNairaFee = cardNotifier.calculateTotalNairaFee(envs);
         final totalDollarFee = cardNotifier.calculateTotalDollarFee(envs);

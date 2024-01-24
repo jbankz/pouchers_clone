@@ -1,4 +1,3 @@
-import 'package:Pouchers/app/app.dart';
 import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/config/app_helper.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';

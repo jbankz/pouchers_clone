@@ -17,7 +17,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../../app/formatter/money_formatter.dart';
 import '../../../../../../widgets/keypad/virtual_key_pad_controller.dart';
+import '../../../../../profile/data/dao/wallet_dao.dart';
 import 'widgets/hook_creation_widget.dart';
 
 class CardCalculatorView extends ConsumerStatefulWidget {
@@ -33,13 +35,23 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
   late ParamNotifier _paramNotifier;
 
   final CancelToken _cancelToken = CancelToken();
+  late MoneyMaskedTextController _moneyMaskedTextController;
+  String _errorMessage = '';
+  bool get _isBtnDisabled =>
+      _controller.pins.isEmpty || _errorMessage.isNotEmpty;
 
   @override
   void initState() {
     super.initState();
+    _paramNotifier = ref.read(paramModule.notifier);
+    _moneyMaskedTextController = MoneyMaskedTextController(
+        leftSymbol: _paramNotifier.isNairaCardType
+            ? AppString.nairaSymbol
+            : AppString.dollarSymbol,
+        amountColor: AppColors.white,
+        koboColor: AppColors.white.withOpacity(.50));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _controller.addListener(() => setState(() {}));
-      _paramNotifier = ref.read(paramModule.notifier);
       if (!_paramNotifier.isNairaCardType) {
         ref
             .read(cardNotifierProvider.notifier)
@@ -107,38 +119,66 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
                             const Gap(height: 81),
                           ],
                         ),
-                  Text(
-                      _controller.pins.isEmpty
-                          ? param.isNairaCardType
-                              ? 0.toNaira
-                              : 0.toDollar
-                          : param.isNairaCardType
-                              ? _controller.pins.join().naira
-                              : _controller.pins.join().dollar,
-                      style: context.titleLarge?.copyWith(
-                          color: AppColors.kBackgroundColor,
+                  // Text(
+                  //     _controller.pins.isEmpty
+                  //         ? param.isNairaCardType
+                  //             ? 0.toNaira
+                  //             : 0.toDollar
+                  //         : param.isNairaCardType
+                  //             ? _controller.pins.join().naira
+                  //             : _controller.pins.join().dollar,
+                  //     style: context.titleLarge?.copyWith(
+                  //         color: AppColors.kBackgroundColor,
+                  //         fontWeight: FontWeight.w700,
+                  //         fontSize: 40)),
+                  TextFormField(
+                    textAlign: TextAlign.center,
+                    controller: _moneyMaskedTextController,
+                    readOnly: true,
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    style: TextStyle(
+                      color: AppColors.white,
+                      fontSize: 40.sp,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    decoration: InputDecoration(
+                        hintText:
+                            param.isNairaCardType ? 0.toDollar : 0.toNaira,
+                        hintStyle: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 40.sp,
                           fontWeight: FontWeight.w700,
-                          fontSize: 40)),
+                        ),
+                        fillColor: Colors.transparent,
+                        filled: false,
+                        focusedBorder: InputBorder.none,
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none,
+                        errorBorder: InputBorder.none),
+                  ),
                   const Gap(height: 11),
                   if (param.isCreatingCardActivity)
                     const HookCreationFeeWidget(),
+                  Text(
+                    _errorMessage,
+                    style: context.headlineLarge
+                        ?.copyWith(color: AppColors.kColorOrange, fontSize: 12),
+                  ),
                   const Gap(height: 52),
                 ],
               ),
             )),
-            VirtualKeyPad(
-                keyPadController: _controller,
-                keypadConfig:
-                    KeypadConfig(keypadColor: AppColors.white, showPoint: true),
-                onComplete: (_) {}),
+            _buildVirtualKeyPad(),
             const Gap(height: 23),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: ElevatedButtonWidget(
-                  bacgroundColor:
-                      _controller.pins.isEmpty ? null : AppColors.kPurpleDeep,
+                  bacgroundColor: _isBtnDisabled ? null : AppColors.kPurpleDeep,
                   title: AppString.fundCard,
-                  onPressed: _controller.pins.isEmpty
+                  onPressed: _isBtnDisabled
                       ? null
                       : () {
                           if (!param.isNairaCardType) {
@@ -148,8 +188,8 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
                           PageRouter.pushNamed(Routes.cardCreationSymmaryView,
                               args: CardCreationSymmaryViewArguments(
                                   cardDto: CardDto(
-                                      amount:
-                                          num.parse(_controller.pins.join()))));
+                                      amount: _moneyMaskedTextController
+                                          .numberValue)));
                         }),
             )
           ],
@@ -157,4 +197,26 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
       ),
     );
   }
+
+  Widget _buildVirtualKeyPad() => VirtualKeyPad(
+        keyPadController: _controller,
+        keypadConfig: KeypadConfig(
+            keypadColor: AppColors.white, showPoint: true, decimal: 2),
+        onTyping: () {
+          _controller.pins.join().isEmpty
+              ? _moneyMaskedTextController.updateValue(0)
+              : _moneyMaskedTextController
+                  .updateValue(double.parse(_controller.pins.join()));
+
+          if (_moneyMaskedTextController.numberValue >
+              num.parse(walletDao.wallet.balance ?? '0')) {
+            _errorMessage = AppString.insufficientFund;
+          } else {
+            _errorMessage = '';
+          }
+
+          setState(() {});
+        },
+        onComplete: (_) {},
+      );
 }

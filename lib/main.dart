@@ -15,6 +15,7 @@ import 'app/app.router.dart';
 import 'app/config/app_config.dart';
 import 'app/core/constants/app_constants.dart';
 import 'app/core/theme/app_theme.dart';
+import 'sample_graph.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,6 +53,10 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
                   themeMode: ThemeMode.light,
                   navigatorKey: StackedService.navigatorKey,
                   onGenerateRoute: StackedRouter().onGenerateRoute,
+                  // home: Scaffold(
+                  //   appBar: AppBar(),
+                  //   body: BarChartSample2(),
+                  // ),
                   routes: {...appRoutes}),
             ),
           ),

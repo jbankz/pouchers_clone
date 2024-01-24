@@ -4,6 +4,7 @@ import 'package:Pouchers/ui/features/utilities/domain/enum/service_category.dart
 import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:Pouchers/utils/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -131,27 +132,28 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
               ),
               const Gap(height: 27),
               switch (widget.transactionHistory.transactionCategory) {
-                ServiceCategory.p2p => _buildTransferDetails(context),
-                ServiceCategory.airtime => _buildAirtimeOrDataDetails(context),
-                ServiceCategory.data => _buildAirtimeOrDataDetails(context),
-                ServiceCategory.voucherRedeem => _buildStatusDetails(context),
-                ServiceCategory.voucherPurchase => _buildStatusDetails(context),
+                ServiceCategory.p2p => _buildTransferReceipt(context),
+                ServiceCategory.airtime => _buildAirtimeOrDataReceipt(context),
+                ServiceCategory.data => _buildAirtimeOrDataReceipt(context),
+                ServiceCategory.voucherRedeem => _buildStatusReceipt(context),
+                ServiceCategory.voucherPurchase => _buildStatusReceipt(context),
                 ServiceCategory.fundWallet =>
-                  _buildWalletFundingDetails(context),
+                  _buildWalletFundingReceipts(context),
                 ServiceCategory.adminDebitWallet =>
-                  _buildStatusDetails(context),
+                  _buildStatusReceipt(context),
                 ServiceCategory.adminCreditWallet =>
-                  _buildStatusDetails(context),
-                ServiceCategory.cable => const SizedBox.shrink(),
-                ServiceCategory.electricity => const SizedBox.shrink(),
-                ServiceCategory.betting => const SizedBox.shrink(),
+                  _buildStatusReceipt(context),
+                ServiceCategory.cable => _buildOperatorReceipts(context),
+                ServiceCategory.electricity => _buildOperatorReceipts(context),
+                ServiceCategory.betting => _buildOperatorReceipts(context),
+                ServiceCategory.localBankTransfer =>
+                  _buildTransferReceipt(context),
+                ServiceCategory.moneyRequest => _buildStatusReceipt(context),
+                ServiceCategory.referralBonusPayment => const SizedBox.shrink(),
                 ServiceCategory.education => const SizedBox.shrink(),
                 ServiceCategory.internet => const SizedBox.shrink(),
                 ServiceCategory.createVirtualCard => const SizedBox.shrink(),
                 ServiceCategory.fundVirtualCard => const SizedBox.shrink(),
-                ServiceCategory.localBankTransfer => const SizedBox.shrink(),
-                ServiceCategory.referralBonusPayment => const SizedBox.shrink(),
-                ServiceCategory.moneyRequest => const SizedBox.shrink(),
                 null => const SizedBox.shrink(),
               },
               const Gap(height: 29),
@@ -196,7 +198,7 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
     );
   }
 
-  Column _buildWalletFundingDetails(BuildContext context) => Column(
+  Column _buildWalletFundingReceipts(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildTile(
@@ -216,12 +218,27 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
         ],
       );
 
-  Row _buildStatusDetails(BuildContext context) => _buildTile(
+  Column _buildOperatorReceipts(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildTile(
+              context: context,
+              title: AppString.status,
+              value: widget.transactionHistory.status?.titleCase ?? ''),
+          const Gap(height: 16),
+          _buildTile(
+              context: context,
+              title: AppString.operator,
+              value: widget.transactionHistory.extraDetails?.subCategory ?? ''),
+        ],
+      );
+
+  Row _buildStatusReceipt(BuildContext context) => _buildTile(
       context: context,
       title: AppString.status,
       value: widget.transactionHistory.status?.titleCase ?? '');
 
-  Column _buildAirtimeOrDataDetails(BuildContext context) => Column(
+  Column _buildAirtimeOrDataReceipt(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildTile(
@@ -241,7 +258,7 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
         ],
       );
 
-  Column _buildTransferDetails(BuildContext context) => Column(
+  Column _buildTransferReceipt(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildTile(
@@ -272,7 +289,8 @@ class _TransactionDetailsViewState extends State<TransactionDetailsView> {
           _buildTile(
               context: context,
               title: AppString.beneficiaryTag,
-              value: widget.transactionHistory.extraDetails?.receiverTag ?? ''),
+              value:
+                  widget.transactionHistory.extraDetails?.receiverTag ?? 'N/A'),
         ],
       );
 

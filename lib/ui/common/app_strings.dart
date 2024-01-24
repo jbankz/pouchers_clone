@@ -443,6 +443,7 @@ class AppString {
   static String accountDetails = 'Account Details';
 
   static String nairaSymbol = '₦';
+  static String dollarSymbol = '\$';
   static String scheduleAirtimeSub = "Auto top airtime at regular intervals.";
   static String scheduleAirtime = "Schedule Airtime";
   static String selectType = "Select Type";

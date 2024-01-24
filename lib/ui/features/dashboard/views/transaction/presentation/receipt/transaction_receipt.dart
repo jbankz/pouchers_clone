@@ -111,16 +111,21 @@ Future<pw.Widget> generateTransactionReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.adminCreditWallet => _buildStatusReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
+      ServiceCategory.cable => _buildOperatorReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
+      ServiceCategory.electricity => _buildOperatorReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
+      ServiceCategory.betting => _buildOperatorReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
+      ServiceCategory.localBankTransfer => _buildTransferReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.referralBonusPayment => pw.SizedBox.shrink(),
-      ServiceCategory.moneyRequest => pw.SizedBox.shrink(),
-      ServiceCategory.cable => pw.SizedBox.shrink(),
-      ServiceCategory.electricity => pw.SizedBox.shrink(),
-      ServiceCategory.betting => pw.SizedBox.shrink(),
+      ServiceCategory.moneyRequest => _buildStatusReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.education => pw.SizedBox.shrink(),
       ServiceCategory.internet => pw.SizedBox.shrink(),
       ServiceCategory.createVirtualCard => pw.SizedBox.shrink(),
       ServiceCategory.fundVirtualCard => pw.SizedBox.shrink(),
-      ServiceCategory.localBankTransfer => pw.SizedBox.shrink(),
       null => pw.SizedBox.shrink()
     },
     pw.SizedBox(height: 27),
@@ -154,6 +159,23 @@ Future<pw.Widget> generateTransactionReceipt(
     pw.SizedBox(height: 14),
   ]);
 }
+
+pw.Column _buildOperatorReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTile(
+            title: AppString.status,
+            value: transactionHistory?.status?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.operator,
+            value: transactionHistory?.extraDetails?.subCategory ?? '',
+            font: robotFont)
+      ],
+    );
 
 pw.Column _buildWalletFundingReceipt(
         {TransactionHistory? transactionHistory, Font? robotFont}) =>
@@ -212,7 +234,7 @@ pw.Column _buildTransferReceipt(
         pw.SizedBox(height: 16),
         _buildTile(
             title: AppString.beneficiaryTag,
-            value: transactionHistory?.extraDetails?.receiverTag ?? '',
+            value: transactionHistory?.extraDetails?.receiverTag ?? 'N/A',
             font: robotFont),
       ],
     );
