@@ -6,12 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../../../app/core/manager/hive_manager.dart';
-import '../../../../../app/core/manager/session_manager.dart';
 import '../../domain/model/wallet.dart';
 
 late WalletDao walletDao;
 final _hiveManager = locator<HiveManager>();
-final _session = locator<SessionManager>();
 
 class WalletDao {
   late Box _box;

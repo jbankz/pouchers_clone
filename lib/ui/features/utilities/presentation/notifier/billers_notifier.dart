@@ -123,7 +123,9 @@ class BillersNotifier extends _$BillersNotifier {
               cancelToken: cancelToken)
           .future);
     } catch (e, trace) {
-      _logger.e(trace);
+      _logger
+        ..e(e.toString())
+        ..e(trace);
       AppHelper.handleError(e);
       PageRouter.pop();
     } finally {

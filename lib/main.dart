@@ -15,7 +15,6 @@ import 'app/app.router.dart';
 import 'app/config/app_config.dart';
 import 'app/core/constants/app_constants.dart';
 import 'app/core/theme/app_theme.dart';
-import 'sample_graph.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

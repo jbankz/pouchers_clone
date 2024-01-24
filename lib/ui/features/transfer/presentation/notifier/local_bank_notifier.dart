@@ -2,6 +2,7 @@ import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/config/app_helper.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/profile/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
 import 'package:Pouchers/ui/features/transfer/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/transfer/presentation/state/local_bank_state.dart';
@@ -9,6 +10,7 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../app/app.logger.dart';
+import '../../../profile/presentation/notifier/wallet_notifier.dart';
 import '../../domain/dto/transfer_money_dto.dart';
 
 part 'local_bank_notifier.g.dart';
@@ -38,6 +40,11 @@ class LocalBankNotifier extends _$LocalBankNotifier {
       await ref.read(transferToLocalBankProvider
           .call(transferMoneyDto, cancelToken: cancelToken)
           .future);
+
+      await ref
+          .read(walletNotifierProvider.notifier)
+          .getWalletBalance(cancelToken);
+
       PageRouter.pushNamed(Routes.successState,
           args: SuccessStateArguments(
               title: AppString.transferCompleted,
