@@ -159,4 +159,5 @@ class ApiPath {
   static String requestedMoney = '$_apiVersionOne/payment/request';
   static String schedules = '$_apiVersionOne/user/schedules';
   static String deleteSchedule = '$_apiVersionOne/payment/schedule';
+  static String analytics = '$_apiVersionOne/user/transaction-analytics';
 }

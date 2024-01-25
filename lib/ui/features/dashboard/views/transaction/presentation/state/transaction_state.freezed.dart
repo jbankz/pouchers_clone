@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$TransactionState<T> {
   bool get isBusy => throw _privateConstructorUsedError;
   List<TransactionHistory> get history => throw _privateConstructorUsedError;
+  TransactionAnalytic? get transaction => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
   StackTrace? get stackTrace => throw _privateConstructorUsedError;
 
@@ -35,8 +36,11 @@ abstract class $TransactionStateCopyWith<T, $Res> {
   $Res call(
       {bool isBusy,
       List<TransactionHistory> history,
+      TransactionAnalytic? transaction,
       String? errorMessage,
       StackTrace? stackTrace});
+
+  $TransactionAnalyticCopyWith<$Res>? get transaction;
 }
 
 /// @nodoc
@@ -54,6 +58,7 @@ class _$TransactionStateCopyWithImpl<T, $Res, $Val extends TransactionState<T>>
   $Res call({
     Object? isBusy = null,
     Object? history = null,
+    Object? transaction = freezed,
     Object? errorMessage = freezed,
     Object? stackTrace = freezed,
   }) {
@@ -66,6 +71,10 @@ class _$TransactionStateCopyWithImpl<T, $Res, $Val extends TransactionState<T>>
           ? _value.history
           : history // ignore: cast_nullable_to_non_nullable
               as List<TransactionHistory>,
+      transaction: freezed == transaction
+          ? _value.transaction
+          : transaction // ignore: cast_nullable_to_non_nullable
+              as TransactionAnalytic?,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -75,6 +84,18 @@ class _$TransactionStateCopyWithImpl<T, $Res, $Val extends TransactionState<T>>
           : stackTrace // ignore: cast_nullable_to_non_nullable
               as StackTrace?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $TransactionAnalyticCopyWith<$Res>? get transaction {
+    if (_value.transaction == null) {
+      return null;
+    }
+
+    return $TransactionAnalyticCopyWith<$Res>(_value.transaction!, (value) {
+      return _then(_value.copyWith(transaction: value) as $Val);
+    });
   }
 }
 
@@ -89,8 +110,12 @@ abstract class _$$TransactionStateImplCopyWith<T, $Res>
   $Res call(
       {bool isBusy,
       List<TransactionHistory> history,
+      TransactionAnalytic? transaction,
       String? errorMessage,
       StackTrace? stackTrace});
+
+  @override
+  $TransactionAnalyticCopyWith<$Res>? get transaction;
 }
 
 /// @nodoc
@@ -106,6 +131,7 @@ class __$$TransactionStateImplCopyWithImpl<T, $Res>
   $Res call({
     Object? isBusy = null,
     Object? history = null,
+    Object? transaction = freezed,
     Object? errorMessage = freezed,
     Object? stackTrace = freezed,
   }) {
@@ -118,6 +144,10 @@ class __$$TransactionStateImplCopyWithImpl<T, $Res>
           ? _value._history
           : history // ignore: cast_nullable_to_non_nullable
               as List<TransactionHistory>,
+      transaction: freezed == transaction
+          ? _value.transaction
+          : transaction // ignore: cast_nullable_to_non_nullable
+              as TransactionAnalytic?,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -136,6 +166,7 @@ class _$TransactionStateImpl<T> implements _TransactionState<T> {
   const _$TransactionStateImpl(
       {this.isBusy = false,
       final List<TransactionHistory> history = const [],
+      this.transaction,
       this.errorMessage,
       this.stackTrace})
       : _history = history;
@@ -153,13 +184,15 @@ class _$TransactionStateImpl<T> implements _TransactionState<T> {
   }
 
   @override
+  final TransactionAnalytic? transaction;
+  @override
   final String? errorMessage;
   @override
   final StackTrace? stackTrace;
 
   @override
   String toString() {
-    return 'TransactionState<$T>(isBusy: $isBusy, history: $history, errorMessage: $errorMessage, stackTrace: $stackTrace)';
+    return 'TransactionState<$T>(isBusy: $isBusy, history: $history, transaction: $transaction, errorMessage: $errorMessage, stackTrace: $stackTrace)';
   }
 
   @override
@@ -169,6 +202,8 @@ class _$TransactionStateImpl<T> implements _TransactionState<T> {
             other is _$TransactionStateImpl<T> &&
             (identical(other.isBusy, isBusy) || other.isBusy == isBusy) &&
             const DeepCollectionEquality().equals(other._history, _history) &&
+            (identical(other.transaction, transaction) ||
+                other.transaction == transaction) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
             (identical(other.stackTrace, stackTrace) ||
@@ -176,8 +211,13 @@ class _$TransactionStateImpl<T> implements _TransactionState<T> {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isBusy,
-      const DeepCollectionEquality().hash(_history), errorMessage, stackTrace);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isBusy,
+      const DeepCollectionEquality().hash(_history),
+      transaction,
+      errorMessage,
+      stackTrace);
 
   @JsonKey(ignore: true)
   @override
@@ -191,6 +231,7 @@ abstract class _TransactionState<T> implements TransactionState<T> {
   const factory _TransactionState(
       {final bool isBusy,
       final List<TransactionHistory> history,
+      final TransactionAnalytic? transaction,
       final String? errorMessage,
       final StackTrace? stackTrace}) = _$TransactionStateImpl<T>;
 
@@ -198,6 +239,8 @@ abstract class _TransactionState<T> implements TransactionState<T> {
   bool get isBusy;
   @override
   List<TransactionHistory> get history;
+  @override
+  TransactionAnalytic? get transaction;
   @override
   String? get errorMessage;
   @override

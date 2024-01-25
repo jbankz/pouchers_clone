@@ -22,4 +22,7 @@ class DbConstants {
   static const int twenty = 20;
   static const int twentyOne = 21;
   static const int twentyTwo = 22;
+  static const int twentyThree = 23;
+  static const int twentyFour = 24;
+  static const int twentyFive = 25;
 }

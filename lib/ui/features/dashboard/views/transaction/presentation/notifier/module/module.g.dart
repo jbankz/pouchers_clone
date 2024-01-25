@@ -180,5 +180,157 @@ class _GetTransactionsHistoryProviderElement
   CancelToken? get cancelToken =>
       (origin as GetTransactionsHistoryProvider).cancelToken;
 }
+
+String _$getTransactionsAnalyticHash() =>
+    r'85b1dade3d6d0ddca2ccf6a96ec4399f3d05850f';
+
+/// See also [getTransactionsAnalytic].
+@ProviderFor(getTransactionsAnalytic)
+const getTransactionsAnalyticProvider = GetTransactionsAnalyticFamily();
+
+/// See also [getTransactionsAnalytic].
+class GetTransactionsAnalyticFamily
+    extends Family<AsyncValue<TransactionAnalytic>> {
+  /// See also [getTransactionsAnalytic].
+  const GetTransactionsAnalyticFamily();
+
+  /// See also [getTransactionsAnalytic].
+  GetTransactionsAnalyticProvider call(
+    String month, {
+    CancelToken? cancelToken,
+  }) {
+    return GetTransactionsAnalyticProvider(
+      month,
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  GetTransactionsAnalyticProvider getProviderOverride(
+    covariant GetTransactionsAnalyticProvider provider,
+  ) {
+    return call(
+      provider.month,
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getTransactionsAnalyticProvider';
+}
+
+/// See also [getTransactionsAnalytic].
+class GetTransactionsAnalyticProvider
+    extends AutoDisposeFutureProvider<TransactionAnalytic> {
+  /// See also [getTransactionsAnalytic].
+  GetTransactionsAnalyticProvider(
+    String month, {
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => getTransactionsAnalytic(
+            ref as GetTransactionsAnalyticRef,
+            month,
+            cancelToken: cancelToken,
+          ),
+          from: getTransactionsAnalyticProvider,
+          name: r'getTransactionsAnalyticProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getTransactionsAnalyticHash,
+          dependencies: GetTransactionsAnalyticFamily._dependencies,
+          allTransitiveDependencies:
+              GetTransactionsAnalyticFamily._allTransitiveDependencies,
+          month: month,
+          cancelToken: cancelToken,
+        );
+
+  GetTransactionsAnalyticProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.month,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final String month;
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<TransactionAnalytic> Function(GetTransactionsAnalyticRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetTransactionsAnalyticProvider._internal(
+        (ref) => create(ref as GetTransactionsAnalyticRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        month: month,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<TransactionAnalytic> createElement() {
+    return _GetTransactionsAnalyticProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetTransactionsAnalyticProvider &&
+        other.month == month &&
+        other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, month.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetTransactionsAnalyticRef
+    on AutoDisposeFutureProviderRef<TransactionAnalytic> {
+  /// The parameter `month` of this provider.
+  String get month;
+
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _GetTransactionsAnalyticProviderElement
+    extends AutoDisposeFutureProviderElement<TransactionAnalytic>
+    with GetTransactionsAnalyticRef {
+  _GetTransactionsAnalyticProviderElement(super.provider);
+
+  @override
+  String get month => (origin as GetTransactionsAnalyticProvider).month;
+  @override
+  CancelToken? get cancelToken =>
+      (origin as GetTransactionsAnalyticProvider).cancelToken;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

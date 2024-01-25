@@ -6,7 +6,7 @@ part of 'local_bank_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$localBankNotifierHash() => r'f769cda82f21828bcc7541d2d43a3b8c3eb1cf68';
+String _$localBankNotifierHash() => r'2f67b09c92bc71938dfc420d407f6cc106a6c290';
 
 /// See also [LocalBankNotifier].
 @ProviderFor(LocalBankNotifier)

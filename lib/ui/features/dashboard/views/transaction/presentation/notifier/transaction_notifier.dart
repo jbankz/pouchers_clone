@@ -1,11 +1,11 @@
-import 'package:Pouchers/ui/features/dashboard/views/transaction/data/dao/transaction_dao.dart';
 import 'package:Pouchers/ui/features/dashboard/views/transaction/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/dashboard/views/transaction/presentation/state/transaction_state.dart';
-import 'package:dio/src/cancel_token.dart';
+import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../../../app/app.logger.dart';
 import '../../domain/dto/transaction_dto.dart';
+import '../../domain/model/transaction_analytic.dart';
 import '../../domain/model/transaction_history.dart';
 
 part 'transaction_notifier.g.dart';
@@ -15,10 +15,13 @@ class TransactionHistoryNotifier extends _$TransactionHistoryNotifier {
   final _logger = getLogger('TransactionHistoryNotifier');
 
   @override
-  TransactionState build() => const TransactionState();
+  TransactionState build() => TransactionState(
+      transaction: TransactionAnalytic(analytic: [], analyticsSummary: []));
 
   int _page = 1;
   List<TransactionHistory> _history = [];
+
+  TransactionAnalytic? _transaction;
 
   void increamentPageCount() => _page++;
 
@@ -40,6 +43,23 @@ class TransactionHistoryNotifier extends _$TransactionHistoryNotifier {
       _logger.e(e);
     } finally {
       state = state.copyWith(isBusy: false, history: _history);
+    }
+  }
+
+  Future<void> getTransactionsAnalytic(
+      {required String month,
+      CancelToken? cancelToken,
+      bool isBusy = true}) async {
+    try {
+      state = state.copyWith(isBusy: isBusy);
+
+      _transaction = await ref.read(getTransactionsAnalyticProvider
+          .call(month, cancelToken: cancelToken)
+          .future);
+    } catch (e) {
+      _logger.e(e);
+    } finally {
+      state = state.copyWith(isBusy: false, transaction: _transaction);
     }
   }
 }

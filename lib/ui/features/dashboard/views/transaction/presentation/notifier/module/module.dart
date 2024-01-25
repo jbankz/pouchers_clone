@@ -3,6 +3,7 @@ import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/tr
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../domain/model/transaction_analytic.dart';
 import '../../../domain/usecase/module/module.dart';
 
 part 'module.g.dart';
@@ -15,3 +16,11 @@ Future<List<TransactionHistory>> getTransactionsHistory(
     await ref
         .read(getTransactionsHistoryUseCase)
         .execute(parameter: parameter, cancelToken: cancelToken);
+
+@riverpod
+Future<TransactionAnalytic> getTransactionsAnalytic(
+        GetTransactionsAnalyticRef ref, String month,
+        {CancelToken? cancelToken}) async =>
+    await ref
+        .read(getTransactionsAnalyticUseCase)
+        .execute(parameter: month, cancelToken: cancelToken);

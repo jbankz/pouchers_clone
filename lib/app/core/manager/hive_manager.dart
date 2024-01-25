@@ -1,4 +1,5 @@
 import 'package:Pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
+import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_analytic.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/referral/earning.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/referral/referral.dart';
 import 'package:Pouchers/ui/features/requests/domain/model/request_model.dart';
@@ -15,6 +16,7 @@ import '../../../modules/login/models/login_response.dart';
 import '../../../ui/features/admin/data/dao/banner_dao.dart';
 import '../../../ui/features/admin/domain/model/banner.dart';
 import '../../../ui/features/dashboard/views/card/domain/enum/currency.dart';
+import '../../../ui/features/dashboard/views/transaction/data/dao/transaction_analytics_dao.dart';
 import '../../../ui/features/dashboard/views/transaction/data/dao/transaction_dao.dart';
 import '../../../ui/features/dashboard/views/transaction/domain/enum/transaction_type.dart';
 import '../../../ui/features/dashboard/views/transaction/domain/model/transaction_history.dart';
@@ -71,7 +73,10 @@ Future<void> initializeDB() async {
       ..registerAdapter(TransactionTypeAdapter())
       ..registerAdapter(ServiceCategoryAdapter())
       ..registerAdapter(HiveStoreResponseDataAdapter())
-      ..registerAdapter(RequestModelAdapter());
+      ..registerAdapter(RequestModelAdapter())
+      ..registerAdapter(TransactionAnalyticAdapter())
+      ..registerAdapter(AnalyticSummaryAdapter())
+      ..registerAdapter(AnalyticAdapter());
   } catch (e) {
     debugPrint(e.toString());
   }
@@ -95,6 +100,7 @@ class HiveManager {
     transactionHistoryDao = TransactionHistoryDao();
     requestSentDao = RequestSentDao();
     requestReceivedDao = RequestReceivedDao();
+    transactionAnalyticsDao = TransactionAnalyticsDao();
   }
 
   Future<void> clearHiveBox({bool reset = false}) async {
@@ -105,6 +111,7 @@ class HiveManager {
     await transactionHistoryDao.truncate();
     await requestSentDao.truncate();
     await requestReceivedDao.truncate();
+    await transactionAnalyticsDao.truncate();
 
     if (reset) {
       await notificationDao.truncate();

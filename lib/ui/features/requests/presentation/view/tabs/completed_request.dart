@@ -11,7 +11,7 @@ import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../../../domain/enum/request_type.dart';
 import '../../../domain/model/filter_model.dart';
-import '../sheet/request_filter_sheet.dart';
+import '../../../../../widgets/filter_sheet.dart';
 import '../widget/dropdown_widget.dart';
 import '../widget/request_skeleton.dart';
 import '../widget/request_widget.dart';
@@ -109,8 +109,9 @@ class _CompletedRequestViewState extends ConsumerState<CompletedRequestView> {
   }
 
   Future<void> _triggerFilterModal() async {
-    _filter = await BottomSheets.showSheet(child: const RequestFilterSheet())
-        as Filter;
+    _filter =
+        await BottomSheets.showSheet(child: FilterSheet(filters: requestFilter))
+            as Filter;
     setState(() {});
     _refresh();
   }

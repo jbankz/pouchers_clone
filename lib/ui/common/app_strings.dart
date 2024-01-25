@@ -575,4 +575,5 @@ class AppString {
   static String approve = 'Approve';
   static String decline = 'Decline';
   static String deleteSchedule = 'Delete schedule';
+  static String selectMonth = 'Select Month';
 }
