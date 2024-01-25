@@ -17,12 +17,17 @@ class IntercomManager {
   static Future<void> displayMessenger() async =>
       await _instance.displayMessenger();
 
-  static Future<void> loginIdentifiedUser(User? data) async =>
-      await _instance.loginIdentifiedUser(
-          userId: data?.userId,
-          statusCallback: IntercomStatusCallback(
-              onSuccess: () =>
-                  logger.i('Successfully logged users id: ${data?.userId}'),
-              onFailure: (error) =>
-                  logger.e('Failed to logged users id: ${data?.userId}')));
+  static Future<void> loginIdentifiedUser(User? data) async {
+    /// Logs the user out first
+    await _instance.logout();
+
+    /// Login the user again
+    await _instance.loginIdentifiedUser(
+        userId: data?.userId,
+        statusCallback: IntercomStatusCallback(
+            onSuccess: () =>
+                logger.i('Successfully logged users id: ${data?.userId}'),
+            onFailure: (error) =>
+                logger.e('Failed to logged users id: ${data?.userId}')));
+  }
 }

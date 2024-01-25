@@ -8,6 +8,7 @@ import 'package:Pouchers/utils/field_validator.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -168,8 +169,11 @@ class _SignInViewState extends ConsumerState<SignInView> with $SignInView {
         cancelToken: _cancelToken);
   }
 
-  void _authenticateUsingBiometric() =>
-      ref.read(biometricNotifier.notifier).authenticateUser(
-          callbackAction: () =>
-              _authNotifier.signInUserWithBiometric(cancelToken: _cancelToken));
+  Future<void> _authenticateUsingBiometric() async {
+    await HapticFeedback.selectionClick();
+    
+    ref.read(biometricNotifier.notifier).authenticateUser(
+        callbackAction: () =>
+            _authNotifier.signInUserWithBiometric(cancelToken: _cancelToken));
+  }
 }
