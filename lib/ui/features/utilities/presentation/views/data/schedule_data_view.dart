@@ -70,7 +70,9 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
       _scheduleNotifier = ref.read(scheduleNotifierProvider.notifier);
       _frequency = widget.schedule?.frequency ?? '';
       phoneController.text = widget.schedule?.recipient ?? '';
-      _billers = Billers(name: widget.schedule?.subCategory);
+      _billers = Billers(
+          name: widget.schedule?.subCategory,
+          operatorpublicid: widget.schedule?.mobileOperatorPublicId ?? '');
     });
   }
 
@@ -88,6 +90,10 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
+    final scheduleState = ref.watch(scheduleNotifierProvider);
+
+    final bool isBusy =
+        billerState.isScheduling || scheduleState.isBusy || billerState.isBusy;
     return Scaffold(
       appBar: AppBar(title: Text(AppString.scheduleData)),
       body: SafeArea(
@@ -109,7 +115,7 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
                         controller: phoneController,
                         focusNode: phoneFocusNode,
                         keyboardType: TextInputType.phone,
-                        readOnly: billerState.isScheduling,
+                        readOnly: isBusy,
                         onFieldSubmitted: (_) =>
                             context.nextFocus(amountFocusNode),
                         validator: FieldValidator.validatePhone(),
@@ -119,7 +125,7 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
                             child: SvgPicture.asset(AppImage.contactBook,
                                 fit: BoxFit.scaleDown),
                             onPressed: () async {
-                              if (billerState.isScheduling) return;
+                              if (isBusy) return;
 
                               final Contact? contact =
                                   await _contactPicker.selectContact();
@@ -146,7 +152,7 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
                                       _billers?.name,
                                   image: billerState.billers[index].logoUrl,
                                   onTap: () {
-                                    if (billerState.isScheduling) return;
+                                    if (isBusy) return;
 
                                     _mobileOperatorServices = null;
                                     setState(() =>
@@ -170,7 +176,7 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
                             Icons.keyboard_arrow_down_rounded,
                             color: AppColors.kSecondaryTextColor),
                         onTap: () async {
-                          if (billerState.isScheduling || _billers == null) {
+                          if (isBusy || _billers == null) {
                             return;
                           }
                           _mobileOperatorServices =
@@ -225,7 +231,7 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
                 ),
                 ElevatedButtonWidget(
                     title: AppString.proceed,
-                    loading: billerState.isScheduling,
+                    loading: isBusy,
                     onPressed: _billers == null || _frequency.isEmpty
                         ? null
                         : () async {

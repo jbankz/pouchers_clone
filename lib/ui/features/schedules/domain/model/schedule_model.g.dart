@@ -22,6 +22,7 @@ _$ScheduleModelImpl _$$ScheduleModelImplFromJson(Map<String, dynamic> json) =>
       status: json['status'] as String?,
       createdAt: _$JsonConverterFromJson<String, DateTime>(
           json['created_at'], const DateTimeSerializer().fromJson),
+      mobileOperatorPublicId: json['mobile_operator_public_id'] as String?,
     );
 
 Map<String, dynamic> _$$ScheduleModelImplToJson(_$ScheduleModelImpl instance) =>
@@ -38,6 +39,7 @@ Map<String, dynamic> _$$ScheduleModelImplToJson(_$ScheduleModelImpl instance) =>
       'status': instance.status,
       'created_at': _$JsonConverterToJson<String, DateTime>(
           instance.createdAt, const DateTimeSerializer().toJson),
+      'mobile_operator_public_id': instance.mobileOperatorPublicId,
     };
 
 const _$ServiceCategoryEnumMap = {

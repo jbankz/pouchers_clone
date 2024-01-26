@@ -6,7 +6,7 @@ part of 'valid_id_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$validIdNotifierHash() => r'79ef0ad1bbe05f56cee379a3b43ff6fb65c2f246';
+String _$validIdNotifierHash() => r'734c440c305c8796e76a83339506692d8e05d85e';
 
 /// See also [ValidIdNotifier].
 @ProviderFor(ValidIdNotifier)

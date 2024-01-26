@@ -39,6 +39,8 @@ mixin _$ScheduleModel {
   @DateTimeSerializer()
   @JsonKey(name: 'created_at')
   DateTime? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'mobile_operator_public_id')
+  String? get mobileOperatorPublicId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -63,7 +65,9 @@ abstract class $ScheduleModelCopyWith<$Res> {
       @JsonKey(name: 'beneficiary_account_name') String? beneficiaryAccountName,
       @JsonKey(name: 'current_provider') String? currentProvider,
       String? status,
-      @DateTimeSerializer() @JsonKey(name: 'created_at') DateTime? createdAt});
+      @DateTimeSerializer() @JsonKey(name: 'created_at') DateTime? createdAt,
+      @JsonKey(name: 'mobile_operator_public_id')
+      String? mobileOperatorPublicId});
 }
 
 /// @nodoc
@@ -90,6 +94,7 @@ class _$ScheduleModelCopyWithImpl<$Res, $Val extends ScheduleModel>
     Object? currentProvider = freezed,
     Object? status = freezed,
     Object? createdAt = freezed,
+    Object? mobileOperatorPublicId = freezed,
   }) {
     return _then(_value.copyWith(
       amount: null == amount
@@ -136,6 +141,10 @@ class _$ScheduleModelCopyWithImpl<$Res, $Val extends ScheduleModel>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      mobileOperatorPublicId: freezed == mobileOperatorPublicId
+          ? _value.mobileOperatorPublicId
+          : mobileOperatorPublicId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -159,7 +168,9 @@ abstract class _$$ScheduleModelImplCopyWith<$Res>
       @JsonKey(name: 'beneficiary_account_name') String? beneficiaryAccountName,
       @JsonKey(name: 'current_provider') String? currentProvider,
       String? status,
-      @DateTimeSerializer() @JsonKey(name: 'created_at') DateTime? createdAt});
+      @DateTimeSerializer() @JsonKey(name: 'created_at') DateTime? createdAt,
+      @JsonKey(name: 'mobile_operator_public_id')
+      String? mobileOperatorPublicId});
 }
 
 /// @nodoc
@@ -184,6 +195,7 @@ class __$$ScheduleModelImplCopyWithImpl<$Res>
     Object? currentProvider = freezed,
     Object? status = freezed,
     Object? createdAt = freezed,
+    Object? mobileOperatorPublicId = freezed,
   }) {
     return _then(_$ScheduleModelImpl(
       amount: null == amount
@@ -230,6 +242,10 @@ class __$$ScheduleModelImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      mobileOperatorPublicId: freezed == mobileOperatorPublicId
+          ? _value.mobileOperatorPublicId
+          : mobileOperatorPublicId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -248,7 +264,8 @@ class _$ScheduleModelImpl implements _ScheduleModel {
       @JsonKey(name: 'beneficiary_account_name') this.beneficiaryAccountName,
       @JsonKey(name: 'current_provider') this.currentProvider,
       this.status,
-      @DateTimeSerializer() @JsonKey(name: 'created_at') this.createdAt});
+      @DateTimeSerializer() @JsonKey(name: 'created_at') this.createdAt,
+      @JsonKey(name: 'mobile_operator_public_id') this.mobileOperatorPublicId});
 
   factory _$ScheduleModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ScheduleModelImplFromJson(json);
@@ -284,10 +301,13 @@ class _$ScheduleModelImpl implements _ScheduleModel {
   @DateTimeSerializer()
   @JsonKey(name: 'created_at')
   final DateTime? createdAt;
+  @override
+  @JsonKey(name: 'mobile_operator_public_id')
+  final String? mobileOperatorPublicId;
 
   @override
   String toString() {
-    return 'ScheduleModel(amount: $amount, recipient: $recipient, category: $category, scheduleId: $scheduleId, subCategory: $subCategory, frequency: $frequency, bankName: $bankName, beneficiaryAccountName: $beneficiaryAccountName, currentProvider: $currentProvider, status: $status, createdAt: $createdAt)';
+    return 'ScheduleModel(amount: $amount, recipient: $recipient, category: $category, scheduleId: $scheduleId, subCategory: $subCategory, frequency: $frequency, bankName: $bankName, beneficiaryAccountName: $beneficiaryAccountName, currentProvider: $currentProvider, status: $status, createdAt: $createdAt, mobileOperatorPublicId: $mobileOperatorPublicId)';
   }
 
   @override
@@ -314,7 +334,9 @@ class _$ScheduleModelImpl implements _ScheduleModel {
                 other.currentProvider == currentProvider) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.createdAt == createdAt) &&
+            (identical(other.mobileOperatorPublicId, mobileOperatorPublicId) ||
+                other.mobileOperatorPublicId == mobileOperatorPublicId));
   }
 
   @JsonKey(ignore: true)
@@ -331,7 +353,8 @@ class _$ScheduleModelImpl implements _ScheduleModel {
       beneficiaryAccountName,
       currentProvider,
       status,
-      createdAt);
+      createdAt,
+      mobileOperatorPublicId);
 
   @JsonKey(ignore: true)
   @override
@@ -362,7 +385,9 @@ abstract class _ScheduleModel implements ScheduleModel {
       final String? status,
       @DateTimeSerializer()
       @JsonKey(name: 'created_at')
-      final DateTime? createdAt}) = _$ScheduleModelImpl;
+      final DateTime? createdAt,
+      @JsonKey(name: 'mobile_operator_public_id')
+      final String? mobileOperatorPublicId}) = _$ScheduleModelImpl;
 
   factory _ScheduleModel.fromJson(Map<String, dynamic> json) =
       _$ScheduleModelImpl.fromJson;
@@ -397,6 +422,9 @@ abstract class _ScheduleModel implements ScheduleModel {
   @DateTimeSerializer()
   @JsonKey(name: 'created_at')
   DateTime? get createdAt;
+  @override
+  @JsonKey(name: 'mobile_operator_public_id')
+  String? get mobileOperatorPublicId;
   @override
   @JsonKey(ignore: true)
   _$$ScheduleModelImplCopyWith<_$ScheduleModelImpl> get copyWith =>
