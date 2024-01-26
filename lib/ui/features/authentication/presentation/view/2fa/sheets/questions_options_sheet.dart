@@ -17,16 +17,12 @@ class QuestionsOptionsSheet extends ConsumerStatefulWidget {
 }
 
 class _QuestionsOptionsSheetState extends ConsumerState<QuestionsOptionsSheet> {
-  late AuthNotifier _authNotifier;
   final CancelToken _cancelToken = CancelToken();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _authNotifier = ref.read(authNotifierProvider.notifier)
-        ..securityQuestions(_cancelToken);
-    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
   }
 
   @override

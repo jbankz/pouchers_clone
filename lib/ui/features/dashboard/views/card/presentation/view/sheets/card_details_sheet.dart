@@ -1,7 +1,6 @@
 import 'package:Pouchers/app/config/app_helper.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
@@ -22,18 +21,12 @@ class CardDetailsSheet extends ConsumerStatefulWidget {
 }
 
 class _CardDetailsSheetState extends ConsumerState<CardDetailsSheet> {
-  late CardNotifier _cardNotifier;
   final CancelToken _cancelToken = CancelToken();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _cardNotifier = ref.read(cardNotifierProvider.notifier)
-        ..getVirtualCardDetails(
-            CardDto(sudoId: ref.read(paramModule.notifier).cardDetail?.sudoId),
-            _cancelToken);
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
   }
 
   @override

@@ -21,16 +21,11 @@ class TierView extends ConsumerStatefulWidget {
 }
 
 class _TierViewState extends ConsumerState<TierView> {
-  late TierNotifier _tierNotifier;
-
   final CancelToken _cancelToken = CancelToken();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) =>
-        _tierNotifier = ref.read(tierNotifierProvider.notifier)
-          ..fetchTier(cancelToken: _cancelToken));
   }
 
   @override

@@ -1,6 +1,4 @@
 import 'package:Pouchers/app/core/manager/session_manager.dart';
-import 'package:Pouchers/modules/onboarding/screens/guest_email.dart';
-import 'package:Pouchers/ui/features/guest/guest_email_view.dart';
 import 'package:Pouchers/ui/features/guest/state/guest_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

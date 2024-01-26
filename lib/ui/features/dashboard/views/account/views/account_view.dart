@@ -12,8 +12,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 
 import '../../../../../../app/core/manager/intercom_manager.dart';
-import '../../../../../../app/navigators/navigators.dart';
-import '../../../../../../modules/account/screens/account_settings/schedule_payments.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/dialog/bottom_sheet.dart';
 import '../../../../../widgets/profile_image.dart';
@@ -111,12 +109,6 @@ class AccountView extends ConsumerWidget {
                     title: AppString.scheduledPayments,
                     desc: AppString.scheduledPaymentsInstruction,
                     tapped: () => PageRouter.pushNamed(Routes.scheduleView),
-                    // tapped: () => pushTo(
-                    //   context,
-                    //   const SchedulePayments(),
-                    //   settings:
-                    //       const RouteSettings(name: SchedulePayments.routeName),
-                    // ),
                   ),
                   const Gap(height: 23),
                   AccountTile(

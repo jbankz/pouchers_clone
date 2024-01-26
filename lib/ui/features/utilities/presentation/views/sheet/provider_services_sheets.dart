@@ -24,17 +24,12 @@ class ProviderServiceSheet extends ConsumerStatefulWidget {
 }
 
 class _ProviderServiceSheetState extends ConsumerState<ProviderServiceSheet> {
-  late BillersNotifier _billersNotifier;
   final CancelToken _cancelToken = CancelToken();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _billersNotifier = ref.read(billersNotifierProvider.notifier)
-        ..getCableProviderServices(
-            biller: widget.billersDto, cancelToken: _cancelToken);
-    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
   }
 
   @override

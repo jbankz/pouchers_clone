@@ -5,11 +5,10 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i81;
+import 'package:flutter/material.dart' as _i80;
 import 'package:flutter/material.dart';
-import 'package:Pouchers/modules/tab_layout/screens/tab_layout.dart' as _i51;
 import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/enum/two_fa_type.dart'
-    as _i83;
+    as _i82;
 import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/first_security_question_view.dart'
     as _i42;
 import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/second_security_question_view.dart'
@@ -29,7 +28,7 @@ import 'package:Pouchers/ui/features/authentication/presentation/view/otp/otp_vi
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/confirm_password_view.dart'
     as _i49;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/enum/password_confirmation_type.dart'
-    as _i84;
+    as _i83;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/forgot_password_view.dart'
     as _i20;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/set_new_password_view.dart'
@@ -57,7 +56,7 @@ import 'package:Pouchers/ui/features/dashboard/views/account/views/account_setti
 import 'package:Pouchers/ui/features/dashboard/views/account/views/account_verification.dart'
     as _i26;
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart'
-    as _i82;
+    as _i81;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/bvn_requirement_view.dart'
     as _i30;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/card_calculator_view.dart'
@@ -69,17 +68,17 @@ import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/virt
 import 'package:Pouchers/ui/features/dashboard/views/dashboard_view.dart'
     as _i7;
 import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart'
-    as _i89;
+    as _i88;
 import 'package:Pouchers/ui/features/dashboard/views/transaction/presentation/view/transaction_details_view.dart'
-    as _i77;
+    as _i76;
 import 'package:Pouchers/ui/features/guest/guest_email_view.dart' as _i9;
 import 'package:Pouchers/ui/features/guest/guest_view.dart' as _i8;
 import 'package:Pouchers/ui/features/notification/domain/model/notification_model.dart'
-    as _i86;
+    as _i85;
 import 'package:Pouchers/ui/features/notification/presentation/view/notification_details_view.dart'
-    as _i54;
-import 'package:Pouchers/ui/features/notification/presentation/view/notification_view.dart'
     as _i53;
+import 'package:Pouchers/ui/features/notification/presentation/view/notification_view.dart'
+    as _i52;
 import 'package:Pouchers/ui/features/onboarding/presentation/views/onboarding_view.dart'
     as _i3;
 import 'package:Pouchers/ui/features/onboarding/presentation/views/splash_view.dart'
@@ -87,9 +86,9 @@ import 'package:Pouchers/ui/features/onboarding/presentation/views/splash_view.d
 import 'package:Pouchers/ui/features/payment/presentation/view/debit_card_view.dart'
     as _i12;
 import 'package:Pouchers/ui/features/payment/presentation/view/ussd_view.dart'
-    as _i72;
+    as _i71;
 import 'package:Pouchers/ui/features/profile/presentation/views/account/account_details_view.dart'
-    as _i55;
+    as _i54;
 import 'package:Pouchers/ui/features/profile/presentation/views/biometric/biometric_setup_view.dart'
     as _i40;
 import 'package:Pouchers/ui/features/profile/presentation/views/biometric/biometric_view.dart'
@@ -111,7 +110,7 @@ import 'package:Pouchers/ui/features/profile/presentation/views/profile/phone/re
 import 'package:Pouchers/ui/features/profile/presentation/views/profile/phone/verify_phone_number_view.dart'
     as _i37;
 import 'package:Pouchers/ui/features/profile/presentation/views/profile/profile_image_view.dart'
-    as _i65;
+    as _i64;
 import 'package:Pouchers/ui/features/profile/presentation/views/profile/profile_view.dart'
     as _i35;
 import 'package:Pouchers/ui/features/profile/presentation/views/referral/referral_view.dart'
@@ -119,68 +118,68 @@ import 'package:Pouchers/ui/features/profile/presentation/views/referral/referra
 import 'package:Pouchers/ui/features/profile/presentation/views/wallet/fund_wallet_view.dart'
     as _i33;
 import 'package:Pouchers/ui/features/requests/domain/model/request_model.dart'
-    as _i90;
+    as _i89;
 import 'package:Pouchers/ui/features/requests/presentation/view/request_money_view.dart'
-    as _i79;
-import 'package:Pouchers/ui/features/requests/presentation/view/request_view.dart'
     as _i78;
+import 'package:Pouchers/ui/features/requests/presentation/view/request_view.dart'
+    as _i77;
 import 'package:Pouchers/ui/features/schedules/domain/model/schedule_model.dart'
-    as _i87;
+    as _i86;
 import 'package:Pouchers/ui/features/schedules/presentation/view/schedule_view.dart'
-    as _i80;
+    as _i79;
 import 'package:Pouchers/ui/features/tiers/presentation/view/tier_view.dart'
     as _i25;
 import 'package:Pouchers/ui/features/transfer/domain/dto/confirm_transfer_money_dto.dart'
-    as _i85;
+    as _i84;
 import 'package:Pouchers/ui/features/transfer/domain/model/transfer.dart'
-    as _i88;
+    as _i87;
 import 'package:Pouchers/ui/features/transfer/presentation/views/schedule_transfer_view.dart'
-    as _i75;
-import 'package:Pouchers/ui/features/transfer/presentation/views/transfer_money_confirmation_view.dart'
-    as _i52;
-import 'package:Pouchers/ui/features/transfer/presentation/views/transfer_money_view.dart'
-    as _i73;
-import 'package:Pouchers/ui/features/transfer/presentation/views/transfer_receipt_view.dart'
-    as _i76;
-import 'package:Pouchers/ui/features/transfer/presentation/views/transfer_success_view.dart'
     as _i74;
+import 'package:Pouchers/ui/features/transfer/presentation/views/transfer_money_confirmation_view.dart'
+    as _i51;
+import 'package:Pouchers/ui/features/transfer/presentation/views/transfer_money_view.dart'
+    as _i72;
+import 'package:Pouchers/ui/features/transfer/presentation/views/transfer_receipt_view.dart'
+    as _i75;
+import 'package:Pouchers/ui/features/transfer/presentation/views/transfer_success_view.dart'
+    as _i73;
 import 'package:Pouchers/ui/features/utilities/presentation/views/airtime/airtime_view.dart'
     as _i10;
 import 'package:Pouchers/ui/features/utilities/presentation/views/airtime/schedule_airtime_view.dart'
-    as _i56;
+    as _i55;
 import 'package:Pouchers/ui/features/utilities/presentation/views/betting/betting_view.dart'
-    as _i63;
+    as _i62;
 import 'package:Pouchers/ui/features/utilities/presentation/views/cable/cable_tv_view.dart'
-    as _i58;
+    as _i57;
 import 'package:Pouchers/ui/features/utilities/presentation/views/cable/schedule_cable_tv_view.dart'
-    as _i59;
+    as _i58;
 import 'package:Pouchers/ui/features/utilities/presentation/views/data/data_view.dart'
     as _i11;
 import 'package:Pouchers/ui/features/utilities/presentation/views/data/schedule_data_view.dart'
-    as _i57;
+    as _i56;
 import 'package:Pouchers/ui/features/utilities/presentation/views/education/education_view.dart'
-    as _i64;
+    as _i63;
 import 'package:Pouchers/ui/features/utilities/presentation/views/electricty/electricity_view.dart'
-    as _i60;
+    as _i59;
 import 'package:Pouchers/ui/features/utilities/presentation/views/electricty/schedule_electricity_view.dart'
-    as _i61;
+    as _i60;
 import 'package:Pouchers/ui/features/utilities/presentation/views/internet/internet_view.dart'
-    as _i62;
+    as _i61;
 import 'package:Pouchers/ui/features/voucher/presentation/views/buy_voucher_view.dart'
-    as _i67;
-import 'package:Pouchers/ui/features/voucher/presentation/views/gift_voucher_view.dart'
-    as _i69;
-import 'package:Pouchers/ui/features/voucher/presentation/views/redeem_voucher_view.dart'
-    as _i68;
-import 'package:Pouchers/ui/features/voucher/presentation/views/voucher_history_view.dart'
-    as _i71;
-import 'package:Pouchers/ui/features/voucher/presentation/views/voucher_success_view.dart'
-    as _i70;
-import 'package:Pouchers/ui/features/voucher/presentation/views/voucher_view.dart'
     as _i66;
+import 'package:Pouchers/ui/features/voucher/presentation/views/gift_voucher_view.dart'
+    as _i68;
+import 'package:Pouchers/ui/features/voucher/presentation/views/redeem_voucher_view.dart'
+    as _i67;
+import 'package:Pouchers/ui/features/voucher/presentation/views/voucher_history_view.dart'
+    as _i70;
+import 'package:Pouchers/ui/features/voucher/presentation/views/voucher_success_view.dart'
+    as _i69;
+import 'package:Pouchers/ui/features/voucher/presentation/views/voucher_view.dart'
+    as _i65;
 import 'package:Pouchers/ui/widgets/success_state.dart' as _i6;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i91;
+import 'package:stacked_services/stacked_services.dart' as _i90;
 
 class Routes {
   static const splashView = '/';
@@ -284,8 +283,6 @@ class Routes {
   static const confirmPasswordView = '/confirm-password-view';
 
   static const deleteView = '/delete-view';
-
-  static const tabLayout = '/tab-layout';
 
   static const transferMoneyConfirmationView =
       '/transfer-money-confirmation-view';
@@ -396,7 +393,6 @@ class Routes {
     disableView,
     confirmPasswordView,
     deleteView,
-    tabLayout,
     transferMoneyConfirmationView,
     notificationView,
     notificationDetailsView,
@@ -628,130 +624,126 @@ class StackedRouter extends _i1.RouterBase {
       page: _i50.DeleteView,
     ),
     _i1.RouteDef(
-      Routes.tabLayout,
-      page: _i51.TabLayout,
-    ),
-    _i1.RouteDef(
       Routes.transferMoneyConfirmationView,
-      page: _i52.TransferMoneyConfirmationView,
+      page: _i51.TransferMoneyConfirmationView,
     ),
     _i1.RouteDef(
       Routes.notificationView,
-      page: _i53.NotificationView,
+      page: _i52.NotificationView,
     ),
     _i1.RouteDef(
       Routes.notificationDetailsView,
-      page: _i54.NotificationDetailsView,
+      page: _i53.NotificationDetailsView,
     ),
     _i1.RouteDef(
       Routes.accountDetailsView,
-      page: _i55.AccountDetailsView,
+      page: _i54.AccountDetailsView,
     ),
     _i1.RouteDef(
       Routes.scheduledAirtimeView,
-      page: _i56.ScheduledAirtimeView,
+      page: _i55.ScheduledAirtimeView,
     ),
     _i1.RouteDef(
       Routes.scheduleDataView,
-      page: _i57.ScheduleDataView,
+      page: _i56.ScheduleDataView,
     ),
     _i1.RouteDef(
       Routes.cableTvView,
-      page: _i58.CableTvView,
+      page: _i57.CableTvView,
     ),
     _i1.RouteDef(
       Routes.scheduleCableTvView,
-      page: _i59.ScheduleCableTvView,
+      page: _i58.ScheduleCableTvView,
     ),
     _i1.RouteDef(
       Routes.electricityView,
-      page: _i60.ElectricityView,
+      page: _i59.ElectricityView,
     ),
     _i1.RouteDef(
       Routes.scheduleElectricityView,
-      page: _i61.ScheduleElectricityView,
+      page: _i60.ScheduleElectricityView,
     ),
     _i1.RouteDef(
       Routes.internetView,
-      page: _i62.InternetView,
+      page: _i61.InternetView,
     ),
     _i1.RouteDef(
       Routes.bettingView,
-      page: _i63.BettingView,
+      page: _i62.BettingView,
     ),
     _i1.RouteDef(
       Routes.educationView,
-      page: _i64.EducationView,
+      page: _i63.EducationView,
     ),
     _i1.RouteDef(
       Routes.profileImageView,
-      page: _i65.ProfileImageView,
+      page: _i64.ProfileImageView,
     ),
     _i1.RouteDef(
       Routes.voucherView,
-      page: _i66.VoucherView,
+      page: _i65.VoucherView,
     ),
     _i1.RouteDef(
       Routes.buyVoucherView,
-      page: _i67.BuyVoucherView,
+      page: _i66.BuyVoucherView,
     ),
     _i1.RouteDef(
       Routes.redeemVoucherView,
-      page: _i68.RedeemVoucherView,
+      page: _i67.RedeemVoucherView,
     ),
     _i1.RouteDef(
       Routes.giftVoucherView,
-      page: _i69.GiftVoucherView,
+      page: _i68.GiftVoucherView,
     ),
     _i1.RouteDef(
       Routes.voucherSuccessView,
-      page: _i70.VoucherSuccessView,
+      page: _i69.VoucherSuccessView,
     ),
     _i1.RouteDef(
       Routes.voucherHistoryView,
-      page: _i71.VoucherHistoryView,
+      page: _i70.VoucherHistoryView,
     ),
     _i1.RouteDef(
       Routes.ussdView,
-      page: _i72.UssdView,
+      page: _i71.UssdView,
     ),
     _i1.RouteDef(
       Routes.transferMoneyView,
-      page: _i73.TransferMoneyView,
+      page: _i72.TransferMoneyView,
     ),
     _i1.RouteDef(
       Routes.transferSuccessState,
-      page: _i74.TransferSuccessState,
+      page: _i73.TransferSuccessState,
     ),
     _i1.RouteDef(
       Routes.scheduleTransferMoneyView,
-      page: _i75.ScheduleTransferMoneyView,
+      page: _i74.ScheduleTransferMoneyView,
     ),
     _i1.RouteDef(
       Routes.transferReceipt,
-      page: _i76.TransferReceipt,
+      page: _i75.TransferReceipt,
     ),
     _i1.RouteDef(
       Routes.transactionDetailsView,
-      page: _i77.TransactionDetailsView,
+      page: _i76.TransactionDetailsView,
     ),
     _i1.RouteDef(
       Routes.requestView,
-      page: _i78.RequestView,
+      page: _i77.RequestView,
     ),
     _i1.RouteDef(
       Routes.requestMoneyView,
-      page: _i79.RequestMoneyView,
+      page: _i78.RequestMoneyView,
     ),
     _i1.RouteDef(
       Routes.scheduleView,
-      page: _i80.ScheduleView,
+      page: _i79.ScheduleView,
     ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashView: (data) {
-      return _i81.PageRouteBuilder<dynamic>(
+      return _i80.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i2.SplashView(),
         settings: data,
@@ -760,7 +752,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i3.OnboardingView: (data) {
-      return _i81.PageRouteBuilder<dynamic>(
+      return _i80.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i3.OnboardingView(),
         settings: data,
@@ -769,7 +761,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i4.SignUpView: (data) {
-      return _i81.PageRouteBuilder<dynamic>(
+      return _i80.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i4.SignUpView(),
         settings: data,
@@ -778,7 +770,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i5.SignInView: (data) {
-      return _i81.PageRouteBuilder<dynamic>(
+      return _i80.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i5.SignInView(),
         settings: data,
@@ -790,7 +782,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SuccessStateArguments>(
         orElse: () => const SuccessStateArguments(),
       );
-      return _i81.PageRouteBuilder<dynamic>(
+      return _i80.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i6.SuccessState(
                 key: args.key,
@@ -808,7 +800,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<DashboardViewArguments>(
         orElse: () => const DashboardViewArguments(),
       );
-      return _i81.PageRouteBuilder<dynamic>(
+      return _i80.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i7.DashboardView(key: args.key, gottenIndex: args.gottenIndex),
         settings: data,
@@ -997,7 +989,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i34.VirtualCardDetailView: (data) {
-      return _i81.PageRouteBuilder<dynamic>(
+      return _i80.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i34.VirtualCardDetailView(),
         settings: data,
@@ -1006,7 +998,7 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i35.ProfileView: (data) {
-      return _i81.PageRouteBuilder<dynamic>(
+      return _i80.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const _i35.ProfileView(),
         settings: data,
@@ -1101,7 +1093,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ConfirmPasswordViewArguments>(
         orElse: () => const ConfirmPasswordViewArguments(),
       );
-      return _i81.PageRouteBuilder<dynamic>(
+      return _i80.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i49.ConfirmPasswordView(
                 key: args.key,
@@ -1118,241 +1110,229 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
-    _i51.TabLayout: (data) {
-      final args = data.getArgs<TabLayoutArguments>(
-        orElse: () => const TabLayoutArguments(),
-      );
-      return _i81.PageRouteBuilder<dynamic>(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            _i51.TabLayout(gottenIndex: args.gottenIndex),
-        settings: data,
-        opaque: false,
-        transitionsBuilder: data.transition ?? _i1.TransitionsBuilders.fadeIn,
-      );
-    },
-    _i52.TransferMoneyConfirmationView: (data) {
+    _i51.TransferMoneyConfirmationView: (data) {
       final args =
           data.getArgs<TransferMoneyConfirmationViewArguments>(nullOk: false);
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => _i52.TransferMoneyConfirmationView(
+        builder: (context) => _i51.TransferMoneyConfirmationView(
             key: args.key, confirmTransferMoney: args.confirmTransferMoney),
         settings: data,
       );
     },
-    _i53.NotificationView: (data) {
+    _i52.NotificationView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i53.NotificationView(),
+        builder: (context) => const _i52.NotificationView(),
         settings: data,
       );
     },
-    _i54.NotificationDetailsView: (data) {
+    _i53.NotificationDetailsView: (data) {
       final args =
           data.getArgs<NotificationDetailsViewArguments>(nullOk: false);
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => _i54.NotificationDetailsView(
+        builder: (context) => _i53.NotificationDetailsView(
             key: args.key, notificationModel: args.notificationModel),
         settings: data,
       );
     },
-    _i55.AccountDetailsView: (data) {
+    _i54.AccountDetailsView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i55.AccountDetailsView(),
+        builder: (context) => const _i54.AccountDetailsView(),
         settings: data,
       );
     },
-    _i56.ScheduledAirtimeView: (data) {
+    _i55.ScheduledAirtimeView: (data) {
       final args = data.getArgs<ScheduledAirtimeViewArguments>(
         orElse: () => const ScheduledAirtimeViewArguments(),
       );
       return _i1.buildAdaptivePageRoute<dynamic>(
         builder: (context) =>
-            _i56.ScheduledAirtimeView(key: args.key, schedule: args.schedule),
+            _i55.ScheduledAirtimeView(key: args.key, schedule: args.schedule),
         settings: data,
       );
     },
-    _i57.ScheduleDataView: (data) {
+    _i56.ScheduleDataView: (data) {
       final args = data.getArgs<ScheduleDataViewArguments>(
         orElse: () => const ScheduleDataViewArguments(),
       );
       return _i1.buildAdaptivePageRoute<dynamic>(
         builder: (context) =>
-            _i57.ScheduleDataView(key: args.key, schedule: args.schedule),
+            _i56.ScheduleDataView(key: args.key, schedule: args.schedule),
         settings: data,
       );
     },
-    _i58.CableTvView: (data) {
+    _i57.CableTvView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i58.CableTvView(),
+        builder: (context) => const _i57.CableTvView(),
         settings: data,
       );
     },
-    _i59.ScheduleCableTvView: (data) {
+    _i58.ScheduleCableTvView: (data) {
       final args = data.getArgs<ScheduleCableTvViewArguments>(
         orElse: () => const ScheduleCableTvViewArguments(),
       );
       return _i1.buildAdaptivePageRoute<dynamic>(
         builder: (context) =>
-            _i59.ScheduleCableTvView(key: args.key, schedule: args.schedule),
+            _i58.ScheduleCableTvView(key: args.key, schedule: args.schedule),
         settings: data,
       );
     },
-    _i60.ElectricityView: (data) {
+    _i59.ElectricityView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i60.ElectricityView(),
+        builder: (context) => const _i59.ElectricityView(),
         settings: data,
       );
     },
-    _i61.ScheduleElectricityView: (data) {
+    _i60.ScheduleElectricityView: (data) {
       final args = data.getArgs<ScheduleElectricityViewArguments>(
         orElse: () => const ScheduleElectricityViewArguments(),
       );
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => _i61.ScheduleElectricityView(
+        builder: (context) => _i60.ScheduleElectricityView(
             key: args.key, schedule: args.schedule),
         settings: data,
       );
     },
-    _i62.InternetView: (data) {
+    _i61.InternetView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i62.InternetView(),
+        builder: (context) => const _i61.InternetView(),
         settings: data,
       );
     },
-    _i63.BettingView: (data) {
+    _i62.BettingView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i63.BettingView(),
+        builder: (context) => const _i62.BettingView(),
         settings: data,
       );
     },
-    _i64.EducationView: (data) {
+    _i63.EducationView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i64.EducationView(),
+        builder: (context) => const _i63.EducationView(),
         settings: data,
       );
     },
-    _i65.ProfileImageView: (data) {
-      return _i81.PageRouteBuilder<dynamic>(
+    _i64.ProfileImageView: (data) {
+      return _i80.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const _i65.ProfileImageView(),
+            const _i64.ProfileImageView(),
         settings: data,
         opaque: false,
         transitionsBuilder: data.transition ?? _i1.TransitionsBuilders.fadeIn,
       );
     },
-    _i66.VoucherView: (data) {
+    _i65.VoucherView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i66.VoucherView(),
+        builder: (context) => const _i65.VoucherView(),
         settings: data,
       );
     },
-    _i67.BuyVoucherView: (data) {
+    _i66.BuyVoucherView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i67.BuyVoucherView(),
+        builder: (context) => const _i66.BuyVoucherView(),
         settings: data,
       );
     },
-    _i68.RedeemVoucherView: (data) {
+    _i67.RedeemVoucherView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i68.RedeemVoucherView(),
+        builder: (context) => const _i67.RedeemVoucherView(),
         settings: data,
       );
     },
-    _i69.GiftVoucherView: (data) {
+    _i68.GiftVoucherView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i69.GiftVoucherView(),
+        builder: (context) => const _i68.GiftVoucherView(),
         settings: data,
       );
     },
-    _i70.VoucherSuccessView: (data) {
-      return _i81.PageRouteBuilder<dynamic>(
+    _i69.VoucherSuccessView: (data) {
+      return _i80.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const _i70.VoucherSuccessView(),
+            const _i69.VoucherSuccessView(),
         settings: data,
         opaque: false,
         transitionsBuilder:
             data.transition ?? _i1.TransitionsBuilders.slideBottom,
       );
     },
-    _i71.VoucherHistoryView: (data) {
+    _i70.VoucherHistoryView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i71.VoucherHistoryView(),
+        builder: (context) => const _i70.VoucherHistoryView(),
         settings: data,
       );
     },
-    _i72.UssdView: (data) {
+    _i71.UssdView: (data) {
       final args = data.getArgs<UssdViewArguments>(
         orElse: () => const UssdViewArguments(),
       );
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => _i72.UssdView(key: args.key, amount: args.amount),
+        builder: (context) => _i71.UssdView(key: args.key, amount: args.amount),
         settings: data,
       );
     },
-    _i73.TransferMoneyView: (data) {
+    _i72.TransferMoneyView: (data) {
       final args = data.getArgs<TransferMoneyViewArguments>(
         orElse: () => const TransferMoneyViewArguments(),
       );
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => _i73.TransferMoneyView(
+        builder: (context) => _i72.TransferMoneyView(
             key: args.key, isRequestingMoney: args.isRequestingMoney),
         settings: data,
       );
     },
-    _i74.TransferSuccessState: (data) {
-      return _i81.PageRouteBuilder<dynamic>(
+    _i73.TransferSuccessState: (data) {
+      return _i80.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const _i74.TransferSuccessState(),
+            const _i73.TransferSuccessState(),
         settings: data,
         opaque: false,
         transitionsBuilder:
             data.transition ?? _i1.TransitionsBuilders.slideBottom,
       );
     },
-    _i75.ScheduleTransferMoneyView: (data) {
+    _i74.ScheduleTransferMoneyView: (data) {
       final args = data.getArgs<ScheduleTransferMoneyViewArguments>(
         orElse: () => const ScheduleTransferMoneyViewArguments(),
       );
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => _i75.ScheduleTransferMoneyView(
+        builder: (context) => _i74.ScheduleTransferMoneyView(
             key: args.key, transfer: args.transfer, schedule: args.schedule),
         settings: data,
       );
     },
-    _i76.TransferReceipt: (data) {
+    _i75.TransferReceipt: (data) {
       final args = data.getArgs<TransferReceiptArguments>(
         orElse: () => const TransferReceiptArguments(),
       );
       return _i1.buildAdaptivePageRoute<dynamic>(
         builder: (context) =>
-            _i76.TransferReceipt(key: args.key, transfer: args.transfer),
+            _i75.TransferReceipt(key: args.key, transfer: args.transfer),
         settings: data,
       );
     },
-    _i77.TransactionDetailsView: (data) {
+    _i76.TransactionDetailsView: (data) {
       final args = data.getArgs<TransactionDetailsViewArguments>(nullOk: false);
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => _i77.TransactionDetailsView(
+        builder: (context) => _i76.TransactionDetailsView(
             key: args.key, transactionHistory: args.transactionHistory),
         settings: data,
       );
     },
-    _i78.RequestView: (data) {
+    _i77.RequestView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i78.RequestView(),
+        builder: (context) => const _i77.RequestView(),
         settings: data,
       );
     },
-    _i79.RequestMoneyView: (data) {
+    _i78.RequestMoneyView: (data) {
       final args = data.getArgs<RequestMoneyViewArguments>(nullOk: false);
       return _i1.buildAdaptivePageRoute<dynamic>(
         builder: (context) =>
-            _i79.RequestMoneyView(key: args.key, request: args.request),
+            _i78.RequestMoneyView(key: args.key, request: args.request),
         settings: data,
       );
     },
-    _i80.ScheduleView: (data) {
+    _i79.ScheduleView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i80.ScheduleView(),
+        builder: (context) => const _i79.ScheduleView(),
         settings: data,
       );
     },
@@ -1374,7 +1354,7 @@ class SuccessStateArguments {
     this.tap,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
   final String title;
 
@@ -1415,7 +1395,7 @@ class DashboardViewArguments {
     this.gottenIndex = 0,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
   final int gottenIndex;
 
@@ -1444,7 +1424,7 @@ class GetGuestEmailViewArguments {
 
   final String route;
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
   @override
   String toString() {
@@ -1469,7 +1449,7 @@ class DebitCardViewArguments {
     this.amount,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
   final String? amount;
 
@@ -1496,7 +1476,7 @@ class OtpViewArguments {
     this.email,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
   final String? email;
 
@@ -1523,7 +1503,7 @@ class TagViewArguments {
     this.callback,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
   final dynamic Function()? callback;
 
@@ -1550,7 +1530,7 @@ class SetNewPasswordViewArguments {
     required this.email,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
   final String email;
 
@@ -1577,7 +1557,7 @@ class VerifyPasswordAccountViewArguments {
     this.email,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
   final String? email;
 
@@ -1604,7 +1584,7 @@ class BvnViewArguments {
     required this.routeName,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
   final String routeName;
 
@@ -1631,9 +1611,9 @@ class CardCreationSymmaryViewArguments {
     required this.cardDto,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
-  final _i82.CardDto cardDto;
+  final _i81.CardDto cardDto;
 
   @override
   String toString() {
@@ -1655,12 +1635,12 @@ class CardCreationSymmaryViewArguments {
 class TwoFaGoogleAuthenticatorCodeViewArguments {
   const TwoFaGoogleAuthenticatorCodeViewArguments({
     this.key,
-    this.twoFaType = _i83.TwoFaType.twoFaSetup,
+    this.twoFaType = _i82.TwoFaType.twoFaSetup,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
-  final _i83.TwoFaType? twoFaType;
+  final _i82.TwoFaType? twoFaType;
 
   @override
   String toString() {
@@ -1682,12 +1662,12 @@ class TwoFaGoogleAuthenticatorCodeViewArguments {
 class ConfirmPasswordViewArguments {
   const ConfirmPasswordViewArguments({
     this.key,
-    this.passwordConfirmationType = _i84.PasswordConfirmationType.disable,
+    this.passwordConfirmationType = _i83.PasswordConfirmationType.disable,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
-  final _i84.PasswordConfirmationType? passwordConfirmationType;
+  final _i83.PasswordConfirmationType? passwordConfirmationType;
 
   @override
   String toString() {
@@ -1707,37 +1687,15 @@ class ConfirmPasswordViewArguments {
   }
 }
 
-class TabLayoutArguments {
-  const TabLayoutArguments({this.gottenIndex});
-
-  final int? gottenIndex;
-
-  @override
-  String toString() {
-    return '{"gottenIndex": "$gottenIndex"}';
-  }
-
-  @override
-  bool operator ==(covariant TabLayoutArguments other) {
-    if (identical(this, other)) return true;
-    return other.gottenIndex == gottenIndex;
-  }
-
-  @override
-  int get hashCode {
-    return gottenIndex.hashCode;
-  }
-}
-
 class TransferMoneyConfirmationViewArguments {
   const TransferMoneyConfirmationViewArguments({
     this.key,
     required this.confirmTransferMoney,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
-  final _i85.ConfirmTransferMoney confirmTransferMoney;
+  final _i84.ConfirmTransferMoney confirmTransferMoney;
 
   @override
   String toString() {
@@ -1763,9 +1721,9 @@ class NotificationDetailsViewArguments {
     required this.notificationModel,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
-  final _i86.NotificationModel notificationModel;
+  final _i85.NotificationModel notificationModel;
 
   @override
   String toString() {
@@ -1790,9 +1748,9 @@ class ScheduledAirtimeViewArguments {
     this.schedule,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
-  final _i87.ScheduleModel? schedule;
+  final _i86.ScheduleModel? schedule;
 
   @override
   String toString() {
@@ -1817,9 +1775,9 @@ class ScheduleDataViewArguments {
     this.schedule,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
-  final _i87.ScheduleModel? schedule;
+  final _i86.ScheduleModel? schedule;
 
   @override
   String toString() {
@@ -1844,9 +1802,9 @@ class ScheduleCableTvViewArguments {
     this.schedule,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
-  final _i87.ScheduleModel? schedule;
+  final _i86.ScheduleModel? schedule;
 
   @override
   String toString() {
@@ -1871,9 +1829,9 @@ class ScheduleElectricityViewArguments {
     this.schedule,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
-  final _i87.ScheduleModel? schedule;
+  final _i86.ScheduleModel? schedule;
 
   @override
   String toString() {
@@ -1898,7 +1856,7 @@ class UssdViewArguments {
     this.amount,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
   final String? amount;
 
@@ -1925,7 +1883,7 @@ class TransferMoneyViewArguments {
     this.isRequestingMoney = false,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
   final bool isRequestingMoney;
 
@@ -1953,11 +1911,11 @@ class ScheduleTransferMoneyViewArguments {
     this.schedule,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
-  final _i88.Transfer? transfer;
+  final _i87.Transfer? transfer;
 
-  final _i87.ScheduleModel? schedule;
+  final _i86.ScheduleModel? schedule;
 
   @override
   String toString() {
@@ -1984,9 +1942,9 @@ class TransferReceiptArguments {
     this.transfer,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
-  final _i88.Transfer? transfer;
+  final _i87.Transfer? transfer;
 
   @override
   String toString() {
@@ -2011,9 +1969,9 @@ class TransactionDetailsViewArguments {
     required this.transactionHistory,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
-  final _i89.TransactionHistory transactionHistory;
+  final _i88.TransactionHistory transactionHistory;
 
   @override
   String toString() {
@@ -2038,9 +1996,9 @@ class RequestMoneyViewArguments {
     required this.request,
   });
 
-  final _i81.Key? key;
+  final _i80.Key? key;
 
-  final _i90.RequestModel request;
+  final _i89.RequestModel request;
 
   @override
   String toString() {
@@ -2059,7 +2017,7 @@ class RequestMoneyViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i91.NavigationService {
+extension NavigatorStateExtension on _i90.NavigationService {
   Future<dynamic> navigateToSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -2117,7 +2075,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToSuccessState({
-    _i81.Key? key,
+    _i80.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -2142,7 +2100,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToDashboardView({
-    _i81.Key? key,
+    _i80.Key? key,
     int gottenIndex = 0,
     int? routerId,
     bool preventDuplicates = true,
@@ -2174,7 +2132,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
 
   Future<dynamic> navigateToGetGuestEmailView({
     required String route,
-    _i81.Key? key,
+    _i80.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2218,7 +2176,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToDebitCardView({
-    _i81.Key? key,
+    _i80.Key? key,
     String? amount,
     int? routerId,
     bool preventDuplicates = true,
@@ -2235,7 +2193,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToOtpView({
-    _i81.Key? key,
+    _i80.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -2266,7 +2224,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToTagView({
-    _i81.Key? key,
+    _i80.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -2367,7 +2325,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToSetNewPasswordView({
-    _i81.Key? key,
+    _i80.Key? key,
     required String email,
     int? routerId,
     bool preventDuplicates = true,
@@ -2384,7 +2342,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToVerifyPasswordAccountView({
-    _i81.Key? key,
+    _i80.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -2443,7 +2401,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToBvnView({
-    _i81.Key? key,
+    _i80.Key? key,
     required String routeName,
     int? routerId,
     bool preventDuplicates = true,
@@ -2516,8 +2474,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToCardCreationSymmaryView({
-    _i81.Key? key,
-    required _i82.CardDto cardDto,
+    _i80.Key? key,
+    required _i81.CardDto cardDto,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2715,8 +2673,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToTwoFaGoogleAuthenticatorCodeView({
-    _i81.Key? key,
-    _i83.TwoFaType? twoFaType = _i83.TwoFaType.twoFaSetup,
+    _i80.Key? key,
+    _i82.TwoFaType? twoFaType = _i82.TwoFaType.twoFaSetup,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2761,9 +2719,9 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToConfirmPasswordView({
-    _i81.Key? key,
-    _i84.PasswordConfirmationType? passwordConfirmationType =
-        _i84.PasswordConfirmationType.disable,
+    _i80.Key? key,
+    _i83.PasswordConfirmationType? passwordConfirmationType =
+        _i83.PasswordConfirmationType.disable,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2793,25 +2751,9 @@ extension NavigatorStateExtension on _i91.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToTabLayout({
-    int? gottenIndex,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return navigateTo<dynamic>(Routes.tabLayout,
-        arguments: TabLayoutArguments(gottenIndex: gottenIndex),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
   Future<dynamic> navigateToTransferMoneyConfirmationView({
-    _i81.Key? key,
-    required _i85.ConfirmTransferMoney confirmTransferMoney,
+    _i80.Key? key,
+    required _i84.ConfirmTransferMoney confirmTransferMoney,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2842,8 +2784,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToNotificationDetailsView({
-    _i81.Key? key,
-    required _i86.NotificationModel notificationModel,
+    _i80.Key? key,
+    required _i85.NotificationModel notificationModel,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2874,8 +2816,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToScheduledAirtimeView({
-    _i81.Key? key,
-    _i87.ScheduleModel? schedule,
+    _i80.Key? key,
+    _i86.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2891,8 +2833,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToScheduleDataView({
-    _i81.Key? key,
-    _i87.ScheduleModel? schedule,
+    _i80.Key? key,
+    _i86.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2922,8 +2864,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToScheduleCableTvView({
-    _i81.Key? key,
-    _i87.ScheduleModel? schedule,
+    _i80.Key? key,
+    _i86.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2953,8 +2895,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToScheduleElectricityView({
-    _i81.Key? key,
-    _i87.ScheduleModel? schedule,
+    _i80.Key? key,
+    _i86.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3111,7 +3053,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToUssdView({
-    _i81.Key? key,
+    _i80.Key? key,
     String? amount,
     int? routerId,
     bool preventDuplicates = true,
@@ -3128,7 +3070,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToTransferMoneyView({
-    _i81.Key? key,
+    _i80.Key? key,
     bool isRequestingMoney = false,
     int? routerId,
     bool preventDuplicates = true,
@@ -3160,9 +3102,9 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToScheduleTransferMoneyView({
-    _i81.Key? key,
-    _i88.Transfer? transfer,
-    _i87.ScheduleModel? schedule,
+    _i80.Key? key,
+    _i87.Transfer? transfer,
+    _i86.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3179,8 +3121,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToTransferReceipt({
-    _i81.Key? key,
-    _i88.Transfer? transfer,
+    _i80.Key? key,
+    _i87.Transfer? transfer,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3196,8 +3138,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToTransactionDetailsView({
-    _i81.Key? key,
-    required _i89.TransactionHistory transactionHistory,
+    _i80.Key? key,
+    required _i88.TransactionHistory transactionHistory,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3228,8 +3170,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> navigateToRequestMoneyView({
-    _i81.Key? key,
-    required _i90.RequestModel request,
+    _i80.Key? key,
+    required _i89.RequestModel request,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3315,7 +3257,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithSuccessState({
-    _i81.Key? key,
+    _i80.Key? key,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -3340,7 +3282,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithDashboardView({
-    _i81.Key? key,
+    _i80.Key? key,
     int gottenIndex = 0,
     int? routerId,
     bool preventDuplicates = true,
@@ -3372,7 +3314,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
 
   Future<dynamic> replaceWithGetGuestEmailView({
     required String route,
-    _i81.Key? key,
+    _i80.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3416,7 +3358,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithDebitCardView({
-    _i81.Key? key,
+    _i80.Key? key,
     String? amount,
     int? routerId,
     bool preventDuplicates = true,
@@ -3433,7 +3375,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithOtpView({
-    _i81.Key? key,
+    _i80.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -3464,7 +3406,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithTagView({
-    _i81.Key? key,
+    _i80.Key? key,
     dynamic Function()? callback,
     int? routerId,
     bool preventDuplicates = true,
@@ -3565,7 +3507,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithSetNewPasswordView({
-    _i81.Key? key,
+    _i80.Key? key,
     required String email,
     int? routerId,
     bool preventDuplicates = true,
@@ -3582,7 +3524,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithVerifyPasswordAccountView({
-    _i81.Key? key,
+    _i80.Key? key,
     String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -3641,7 +3583,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithBvnView({
-    _i81.Key? key,
+    _i80.Key? key,
     required String routeName,
     int? routerId,
     bool preventDuplicates = true,
@@ -3714,8 +3656,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithCardCreationSymmaryView({
-    _i81.Key? key,
-    required _i82.CardDto cardDto,
+    _i80.Key? key,
+    required _i81.CardDto cardDto,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3914,8 +3856,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithTwoFaGoogleAuthenticatorCodeView({
-    _i81.Key? key,
-    _i83.TwoFaType? twoFaType = _i83.TwoFaType.twoFaSetup,
+    _i80.Key? key,
+    _i82.TwoFaType? twoFaType = _i82.TwoFaType.twoFaSetup,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3960,9 +3902,9 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithConfirmPasswordView({
-    _i81.Key? key,
-    _i84.PasswordConfirmationType? passwordConfirmationType =
-        _i84.PasswordConfirmationType.disable,
+    _i80.Key? key,
+    _i83.PasswordConfirmationType? passwordConfirmationType =
+        _i83.PasswordConfirmationType.disable,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3992,25 +3934,9 @@ extension NavigatorStateExtension on _i91.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithTabLayout({
-    int? gottenIndex,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return replaceWith<dynamic>(Routes.tabLayout,
-        arguments: TabLayoutArguments(gottenIndex: gottenIndex),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
   Future<dynamic> replaceWithTransferMoneyConfirmationView({
-    _i81.Key? key,
-    required _i85.ConfirmTransferMoney confirmTransferMoney,
+    _i80.Key? key,
+    required _i84.ConfirmTransferMoney confirmTransferMoney,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -4041,8 +3967,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithNotificationDetailsView({
-    _i81.Key? key,
-    required _i86.NotificationModel notificationModel,
+    _i80.Key? key,
+    required _i85.NotificationModel notificationModel,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -4073,8 +3999,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithScheduledAirtimeView({
-    _i81.Key? key,
-    _i87.ScheduleModel? schedule,
+    _i80.Key? key,
+    _i86.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -4090,8 +4016,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithScheduleDataView({
-    _i81.Key? key,
-    _i87.ScheduleModel? schedule,
+    _i80.Key? key,
+    _i86.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -4121,8 +4047,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithScheduleCableTvView({
-    _i81.Key? key,
-    _i87.ScheduleModel? schedule,
+    _i80.Key? key,
+    _i86.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -4152,8 +4078,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithScheduleElectricityView({
-    _i81.Key? key,
-    _i87.ScheduleModel? schedule,
+    _i80.Key? key,
+    _i86.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -4310,7 +4236,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithUssdView({
-    _i81.Key? key,
+    _i80.Key? key,
     String? amount,
     int? routerId,
     bool preventDuplicates = true,
@@ -4327,7 +4253,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithTransferMoneyView({
-    _i81.Key? key,
+    _i80.Key? key,
     bool isRequestingMoney = false,
     int? routerId,
     bool preventDuplicates = true,
@@ -4359,9 +4285,9 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithScheduleTransferMoneyView({
-    _i81.Key? key,
-    _i88.Transfer? transfer,
-    _i87.ScheduleModel? schedule,
+    _i80.Key? key,
+    _i87.Transfer? transfer,
+    _i86.ScheduleModel? schedule,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -4378,8 +4304,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithTransferReceipt({
-    _i81.Key? key,
-    _i88.Transfer? transfer,
+    _i80.Key? key,
+    _i87.Transfer? transfer,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -4395,8 +4321,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithTransactionDetailsView({
-    _i81.Key? key,
-    required _i89.TransactionHistory transactionHistory,
+    _i80.Key? key,
+    required _i88.TransactionHistory transactionHistory,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -4427,8 +4353,8 @@ extension NavigatorStateExtension on _i91.NavigationService {
   }
 
   Future<dynamic> replaceWithRequestMoneyView({
-    _i81.Key? key,
-    required _i90.RequestModel request,
+    _i80.Key? key,
+    required _i89.RequestModel request,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,

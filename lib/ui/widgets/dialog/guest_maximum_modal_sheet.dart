@@ -1,7 +1,6 @@
 import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../utils/constant/theme_color_constants.dart';
-import '../../../utils/strings.dart';
 import '../elevated_button_widget.dart';
 
 class GuestMaximumSheet extends StatelessWidget {
@@ -81,7 +79,7 @@ class GuestMaximumSheet extends StatelessWidget {
                   child: GestureDetector(
                       onTap: () => PageRouter.pop(),
                       child: Text(
-                        cancel,
+                        AppString.cancel,
                         style: context.displayMedium
                             ?.copyWith(fontWeight: FontWeight.w700),
                         textAlign: TextAlign.center,

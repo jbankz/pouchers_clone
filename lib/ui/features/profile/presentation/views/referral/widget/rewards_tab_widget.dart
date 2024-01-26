@@ -29,16 +29,11 @@ class RewardTabWidget extends ConsumerStatefulWidget {
 }
 
 class _RewardTabWidgetState extends ConsumerState<RewardTabWidget> {
-  late UserNotifier _userNotifier;
-
   final CancelToken _cancelToken = CancelToken();
 
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => _userNotifier =
-        ref.read(userNotifierProvider.notifier)..referrals(_cancelToken));
   }
 
   @override

@@ -1,6 +1,5 @@
 import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
-import 'package:Pouchers/utils/logger.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -104,9 +103,6 @@ class _ScheduleElectricityViewState
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
-    final scheduleState = ref.watch(scheduleNotifierProvider);
-
-    final bool isBusy = (billerState.isBusy || scheduleState.isBusy);
 
     return Scaffold(
       appBar: AppBar(title: Text(AppString.scheduleElectricity)),

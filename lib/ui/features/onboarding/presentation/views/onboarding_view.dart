@@ -1,4 +1,3 @@
-import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
@@ -12,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../app/core/manager/session_manager.dart';
 import '../../../../../app/core/theme/light_theme.dart';
 import '../../../../widgets/elevated_button_widget.dart';
 import '../../../../widgets/gap.dart';

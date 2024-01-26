@@ -25,13 +25,11 @@ class FreezeCardInfoSheet extends ConsumerStatefulWidget {
 }
 
 class _FreezeCardInfoSheetState extends ConsumerState<FreezeCardInfoSheet> {
-  late CardNotifier _cardNotifier;
   final CancelToken _cancelToken = CancelToken();
 
   @override
   void initState() {
     super.initState();
-    _cardNotifier = ref.read(cardNotifierProvider.notifier);
   }
 
   @override

@@ -27,16 +27,12 @@ class AccountVerificationView extends ConsumerStatefulWidget {
 
 class _AccountVerificationViewState
     extends ConsumerState<AccountVerificationView> {
-  late UserNotifier _userNotifier;
   final CancelToken _cancelToken = CancelToken();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _userNotifier = ref.read(userNotifierProvider.notifier)
-        ..getUserProfile(_cancelToken);
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
   }
 
   @override

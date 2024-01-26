@@ -37,17 +37,16 @@ class TierStatsWidget extends HookConsumerWidget {
                           borderRadius: BorderRadius.vertical(
                               top: Radius.circular(8.r),
                               bottom: Radius.circular(8.r)),
-                          color: user.tierLevels! >= 3
+                          color: user.tierLevels >= 3
                               ? AppColors.kLightYellow200
                               : AppColors.kLight100),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          ProgressBar(status: user.tierLevels! >= 1),
+                          ProgressBar(status: user.tierLevels >= 1),
                           ProgressBar(
-                              height: 4.6, status: user.tierLevels! >= 2),
-                          ProgressBar(
-                              height: 4.6, status: user.tierLevels! >= 3)
+                              height: 4.6, status: user.tierLevels >= 2),
+                          ProgressBar(height: 4.6, status: user.tierLevels >= 3)
                         ],
                       ),
                     ),

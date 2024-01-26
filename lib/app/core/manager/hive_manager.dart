@@ -12,7 +12,6 @@ import 'package:Pouchers/ui/features/voucher/domain/enum/voucher_status.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
-import '../../../modules/login/models/login_response.dart';
 import '../../../ui/features/admin/data/dao/banner_dao.dart';
 import '../../../ui/features/admin/domain/model/banner.dart';
 import '../../../ui/features/dashboard/views/card/domain/enum/currency.dart';
@@ -72,7 +71,6 @@ Future<void> initializeDB() async {
       ..registerAdapter(CurrencyAdapter())
       ..registerAdapter(TransactionTypeAdapter())
       ..registerAdapter(ServiceCategoryAdapter())
-      ..registerAdapter(HiveStoreResponseDataAdapter())
       ..registerAdapter(RequestModelAdapter())
       ..registerAdapter(TransactionAnalyticAdapter())
       ..registerAdapter(AnalyticSummaryAdapter())

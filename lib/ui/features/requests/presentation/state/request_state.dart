@@ -1,4 +1,3 @@
-import 'package:Pouchers/ui/features/notification/domain/model/notification_model.dart';
 import 'package:Pouchers/ui/features/requests/domain/model/request_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

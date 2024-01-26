@@ -10,7 +10,6 @@ import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../transfer/data/dao/local_bank_dao.dart';
-import '../../../../transfer/presentation/notifier/local_bank_notifier.dart';
 
 class UssdSheets extends ConsumerStatefulWidget {
   const UssdSheets({super.key});
@@ -20,8 +19,6 @@ class UssdSheets extends ConsumerStatefulWidget {
 }
 
 class _UssdSheetsState extends ConsumerState<UssdSheets> {
-  late LocalBankNotifier _localBankNotifier;
-
   String _searchQuery = '';
 
   final CancelToken _cancelToken = CancelToken();
@@ -29,9 +26,6 @@ class _UssdSheetsState extends ConsumerState<UssdSheets> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) =>
-        _localBankNotifier = ref.read(localBankNotifierProvider.notifier)
-          ..getLocalBanks(_cancelToken));
   }
 
   @override

@@ -22,7 +22,6 @@ class VouchersSheet extends ConsumerStatefulWidget {
 }
 
 class _VouchersSheetState extends ConsumerState<VouchersSheet> {
-  late VouchersNotifier _vouchersNotifier;
   final CancelToken _cancelToken = CancelToken();
 
   @override
@@ -37,10 +36,7 @@ class _VouchersSheetState extends ConsumerState<VouchersSheet> {
     _cancelToken.cancel();
   }
 
-  void _initializeNotifier() {
-    _vouchersNotifier = ref.read(vouchersNotifierProvider.notifier)
-      ..getVouchers(cancelToken: _cancelToken);
-  }
+  void _initializeNotifier() {}
 
   @override
   Widget build(BuildContext context) {

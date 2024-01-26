@@ -136,60 +136,7 @@ class UserSourceImpl implements UserSource {
         data: userDto.toJson(),
         cancelToken: cancelToken);
 
-    final sample = {
-      "status": "success",
-      "message": "User's contacts on pouchers fetched successfully",
-      "code": 200,
-      "data": [
-        {
-          "id": 2,
-          "phone_number": "09058702550",
-          "email": "da@enyata.com",
-          "first_name": "dayo",
-          "last_name": "asha",
-          "profile_picture": null,
-          "tag": 'daya'
-        },
-        {
-          "id": 4,
-          "phone_number": "00010000000",
-          "email": "r@enyata.com",
-          "first_name": "test2",
-          "last_name": "test2",
-          "profile_picture": null,
-          "tag": 'daya'
-        },
-        {
-          "id": 5,
-          "phone_number": "00000011111",
-          "email": "w@enyata.com",
-          "first_name": "test3",
-          "last_name": "test3",
-          "profile_picture": null,
-          "tag": 'daya'
-        },
-        {
-          "id": 23,
-          "phone_number": "09032332135",
-          "email": "oke1@gmail.com",
-          "first_name": "oke",
-          "last_name": "oke",
-          "profile_picture": null,
-          "tag": 'daya'
-        },
-        {
-          "id": 32,
-          "phone_number": "31234415443",
-          "email": "timtim@snowwhite.com",
-          "first_name": "johnny",
-          "last_name": "akinpelu",
-          "profile_picture": null,
-          "tag": 'daya'
-        }
-      ]
-    };
-
-    return (sample['data'] as List<dynamic>)
+    return (response.data?['data'] as List<dynamic>)
         .map((data) => User.fromJson(data as Map<String, dynamic>))
         .toList();
   }

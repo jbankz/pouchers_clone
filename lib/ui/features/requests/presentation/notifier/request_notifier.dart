@@ -1,7 +1,3 @@
-import 'package:Pouchers/ui/features/notification/data/dao/notification_dao.dart';
-import 'package:Pouchers/ui/features/notification/domain/dto/notification_dto.dart';
-import 'package:Pouchers/ui/features/notification/presentation/notifier/module/module.dart';
-import 'package:Pouchers/ui/features/notification/presentation/view/state/notification_state.dart';
 import 'package:Pouchers/ui/features/requests/data/dao/request_sent_dao.dart';
 import 'package:Pouchers/ui/features/requests/domain/dto/request_dto.dart';
 import 'package:Pouchers/ui/features/requests/domain/model/request_model.dart';

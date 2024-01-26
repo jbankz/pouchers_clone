@@ -9,6 +9,8 @@
 /// Maybe this should be generated for the user as well?
 ///
 /// import 'package:customer_app/services/stackdriver/stackdriver_service.dart';
+library;
+
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
@@ -29,14 +31,14 @@ class SimpleLogPrinter extends LogPrinter {
 
   @override
   List<String> log(LogEvent event) {
-    var color = PrettyPrinter.levelColors[event.level];
-    var emoji = PrettyPrinter.levelEmojis[event.level];
-    var methodName = _getMethodName();
+    final color = PrettyPrinter.levelColors[event.level];
+    final emoji = PrettyPrinter.levelEmojis[event.level];
+    final methodName = _getMethodName();
 
-    var methodNameSection =
+    final methodNameSection =
         printCallingFunctionName && methodName != null ? ' | $methodName' : '';
-    var stackLog = event.stackTrace.toString();
-    var output =
+    final stackLog = event.stackTrace.toString();
+    final output =
         '$emoji $className$methodNameSection - ${event.message}${event.error != null ? '\nERROR: ${event.error}\n' : ''}${printCallStack ? '\nSTACKTRACE:\n$stackLog' : ''}';
 
     if (exludeLogsFromClasses
@@ -44,7 +46,7 @@ class SimpleLogPrinter extends LogPrinter {
         (showOnlyClass != null && className != showOnlyClass)) return [];
 
     final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
-    List<String> result = [];
+    final List<String> result = [];
 
     for (var line in output.split('\n')) {
       result.addAll(pattern.allMatches(line).map((match) {
@@ -81,12 +83,10 @@ class SimpleLogPrinter extends LogPrinter {
     }
   }
 
-  List<String> _splitClassNameWords(String className) {
-    return className
-        .split(RegExp(r'(?=[A-Z])'))
-        .map((e) => e.toLowerCase())
-        .toList();
-  }
+  List<String> _splitClassNameWords(String className) => className
+      .split(RegExp(r'(?=[A-Z])'))
+      .map((e) => e.toLowerCase())
+      .toList();
 
   /// When the faulty word exists in the begging this method will not be very usefull
   String _findMostMatchedTrace(
@@ -110,17 +110,17 @@ class SimpleLogPrinter extends LogPrinter {
 final stackTraceRegex = RegExp(r'#[0-9]+[\s]+(.+) \(([^\s]+)\)');
 
 List<String>? _formatStackTrace(StackTrace stackTrace, int methodCount) {
-  var lines = stackTrace.toString().split('\n');
+  final lines = stackTrace.toString().split('\n');
 
-  var formatted = <String>[];
+  final formatted = <String>[];
   var count = 0;
   for (var line in lines) {
-    var match = stackTraceRegex.matchAsPrefix(line);
+    final match = stackTraceRegex.matchAsPrefix(line);
     if (match != null) {
       if (match.group(2)!.startsWith('package:logger')) {
         continue;
       }
-      var newLine = ("${match.group(1)}");
+      final newLine = ("${match.group(1)}");
       formatted.add(newLine.replaceAll('<anonymous closure>', '()'));
       if (++count == methodCount) {
         break;
@@ -143,17 +143,16 @@ Logger getLogger(
   bool printCallstack = false,
   List<String> exludeLogsFromClasses = const [],
   String? showOnlyClass,
-}) {
-  return Logger(
-    printer: SimpleLogPrinter(
-      className,
-      printCallingFunctionName: printCallingFunctionName,
-      printCallStack: printCallstack,
-      showOnlyClass: showOnlyClass,
-      exludeLogsFromClasses: exludeLogsFromClasses,
-    ),
-    output: MultiOutput([
-      if (!kReleaseMode) ConsoleOutput(),
-    ]),
-  );
-}
+}) =>
+    Logger(
+      printer: SimpleLogPrinter(
+        className,
+        printCallingFunctionName: printCallingFunctionName,
+        printCallStack: printCallstack,
+        showOnlyClass: showOnlyClass,
+        exludeLogsFromClasses: exludeLogsFromClasses,
+      ),
+      output: MultiOutput([
+        if (!kReleaseMode) ConsoleOutput(),
+      ]),
+    );

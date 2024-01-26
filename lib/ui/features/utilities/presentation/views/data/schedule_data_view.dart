@@ -23,7 +23,6 @@ import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
 import '../../../../schedules/domain/model/schedule_model.dart';
 import '../../../../schedules/presentation/notifier/schedule_notifier.dart';
-import '../../../../transfer/presentation/notifier/transfer_notifier.dart';
 import '../../../domain/enum/billers_category.dart';
 import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/billers.dart';
@@ -89,9 +88,6 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
-    final transferState = ref.watch(transferNotifierProvider);
-    final scheduleState = ref.watch(scheduleNotifierProvider);
-    final bool isBusy = (billerState.isBusy || scheduleState.isBusy);
     return Scaffold(
       appBar: AppBar(title: Text(AppString.scheduleData)),
       body: SafeArea(

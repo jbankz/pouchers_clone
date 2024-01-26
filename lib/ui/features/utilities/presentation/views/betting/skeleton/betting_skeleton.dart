@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../widgets/gap.dart';
-import '../../widget/utility_icon.dart';
 
 class BettingSkeleton extends StatelessWidget {
   const BettingSkeleton({super.key});

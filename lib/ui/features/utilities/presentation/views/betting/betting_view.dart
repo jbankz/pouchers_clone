@@ -6,7 +6,6 @@ import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
 import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
-import 'package:Pouchers/utils/logger.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -269,7 +268,6 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
 
   void _onProviderTextFieldTapped() =>
       BottomSheets.showSheet(child: const ProvidersSheet()).then((response) {
-        logger.d(response?.toJson());
         if (response != null) {
           _billers = response;
           providerController.text = response.name ?? '';

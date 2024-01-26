@@ -15,7 +15,6 @@ import 'package:stacked/stacked_annotations.dart';
 
 import '../../common/app_images.dart';
 import 'guest_email_view.form.dart';
-import 'notifier/guest_notifier.dart';
 
 @FormView(fields: [FormTextField(name: 'name'), FormTextField(name: 'email')])
 class GetGuestEmailView extends ConsumerStatefulWidget {
@@ -29,13 +28,10 @@ class GetGuestEmailView extends ConsumerStatefulWidget {
 
 class _GetGuestEmailViewState extends ConsumerState<GetGuestEmailView>
     with $GetGuestEmailView {
-  late GuestNotifier _guestNotifier;
-
   @override
   void initState() {
     super.initState();
     nameFocusNode.requestFocus();
-    _guestNotifier = ref.read(guestNotifierProvider.notifier);
   }
 
   final formKey = GlobalKey<FormState>();
@@ -61,7 +57,7 @@ class _GetGuestEmailViewState extends ConsumerState<GetGuestEmailView>
                         ScrollViewKeyboardDismissBehavior.onDrag,
                     children: [
                       const Gap(height: 68),
-                      SvgPicture.asset(AppImage.mail, fit: BoxFit.contain),
+                      SvgPicture.asset(AppImage.mail),
                       const Gap(height: 38),
                       Text(AppString.getFullInfo,
                           style: context.displaySmall?.copyWith(

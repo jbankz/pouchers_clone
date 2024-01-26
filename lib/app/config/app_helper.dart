@@ -2,11 +2,10 @@ import 'package:Pouchers/ui/notification/notification_tray.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pdf/src/widgets/widget.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:pdf/widgets.dart' as pw;
 
 import '../core/manager/pdf_manager.dart';
 

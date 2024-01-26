@@ -277,16 +277,7 @@ class UserNotifier extends _$UserNotifier {
 
       _pouchersContacts = await ref.read(getContactsProvider
           .call(
-              userDto: UserDto(contacts: [
-                "09058702550",
-                "00010000000",
-                "00000011111",
-                "09032332135",
-                "31234415443",
-                "31234415432",
-                "31234415434",
-                "31234415489"
-              ]),
+              userDto: UserDto(contacts: nativeContacts),
               cancelToken: cancelToken)
           .future);
     } catch (e) {

@@ -26,18 +26,19 @@ Future<void> setupLocator({
   EnvironmentFilter? environmentFilter,
 }) async {
 // Register environments
-  locator.registerEnvironment(
-      environment: environment, environmentFilter: environmentFilter);
+  locator
+    ..registerEnvironment(
+        environment: environment, environmentFilter: environmentFilter)
 
 // Register dependencies
-  locator.registerLazySingleton(() => NavigationService());
-  locator.registerLazySingleton(() => DialogService());
-  locator.registerLazySingleton(() => SnackbarService());
-  locator.registerLazySingleton(() => SessionManager());
-  locator.registerLazySingleton(() => BiometricManager());
-  locator.registerLazySingleton(() => FlutterSecureStorage());
-  locator.registerLazySingleton(() => SecuredManager());
-  locator.registerLazySingleton(() => HiveManager());
-  locator.registerLazySingleton(() => DojahManager());
-  locator.registerLazySingleton(() => ImageManager());
+    ..registerLazySingleton(() => NavigationService())
+    ..registerLazySingleton(() => DialogService())
+    ..registerLazySingleton(() => SnackbarService())
+    ..registerLazySingleton(() => SessionManager())
+    ..registerLazySingleton(() => BiometricManager())
+    ..registerLazySingleton(() => const FlutterSecureStorage())
+    ..registerLazySingleton(() => SecuredManager())
+    ..registerLazySingleton(() => HiveManager())
+    ..registerLazySingleton(() => DojahManager())
+    ..registerLazySingleton(() => ImageManager());
 }

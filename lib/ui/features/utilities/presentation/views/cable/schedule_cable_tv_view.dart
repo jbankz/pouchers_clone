@@ -96,9 +96,6 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
-    final scheduleState = ref.watch(scheduleNotifierProvider);
-
-    final bool isBusy = (billerState.isBusy || scheduleState.isBusy);
 
     return Scaffold(
       appBar: AppBar(title: Text(AppString.scheduleCableTv)),

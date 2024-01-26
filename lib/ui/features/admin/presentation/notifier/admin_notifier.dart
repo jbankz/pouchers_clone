@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../app/app.logger.dart';
-import '../../../../../app/core/state/app_state.dart';
 import '../../domain/model/banner.dart';
 import '../../domain/model/envs/envs.dart';
 import '../state/admin_state.dart';

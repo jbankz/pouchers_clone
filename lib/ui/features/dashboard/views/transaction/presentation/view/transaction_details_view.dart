@@ -4,7 +4,6 @@ import 'package:Pouchers/ui/features/utilities/domain/enum/service_category.dart
 import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/utils/extension.dart';
-import 'package:Pouchers/utils/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

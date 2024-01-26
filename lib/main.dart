@@ -1,8 +1,6 @@
 import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/helpers/response_handler.dart';
-import 'package:Pouchers/routes.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
-import 'package:Pouchers/utils/logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -52,32 +50,9 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
                   themeMode: ThemeMode.light,
                   navigatorKey: StackedService.navigatorKey,
                   onGenerateRoute: StackedRouter().onGenerateRoute,
-                  // home: Scaffold(
-                  //   appBar: AppBar(),
-                  //   body: BarChartSample2(),
-                  // ),
-                  routes: {...appRoutes}),
+                ),
             ),
           ),
         ),
       );
 }
-
-class ProviderLogger extends ProviderObserver {
-  @override
-  void didUpdateProvider(
-    ProviderBase provider,
-    Object? previousValue,
-    Object? newValue,
-    ProviderContainer container,
-  ) {
-    logger.i('''
-{
-  "provider": "${provider.name ?? provider.runtimeType}",
-  "previousValue": "$previousValue",
-  "newValue": "$newValue"
-}''');
-  }
-}
-
-

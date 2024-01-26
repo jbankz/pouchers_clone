@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../utils/constant/theme_color_constants.dart';
-import '../../../utils/strings.dart';
 import '../elevated_button_widget.dart';
 
 class GuestDiscountSheet extends StatelessWidget {
@@ -76,7 +75,7 @@ class GuestDiscountSheet extends StatelessWidget {
                   child: GestureDetector(
                       onTap: () => PageRouter.pop(),
                       child: Text(
-                        cancel,
+                        AppString.cancel,
                         style: context.displayMedium
                             ?.copyWith(fontWeight: FontWeight.w700),
                         textAlign: TextAlign.center,

@@ -2,7 +2,6 @@ import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/config/app_helper.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/profile/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
 import 'package:Pouchers/ui/features/transfer/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/transfer/presentation/state/local_bank_state.dart';

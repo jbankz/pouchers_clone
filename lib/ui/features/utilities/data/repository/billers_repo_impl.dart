@@ -1,4 +1,3 @@
-import 'package:Pouchers/ui/features/utilities/data/dao/billers_dao.dart';
 import 'package:Pouchers/ui/features/utilities/data/dao/cable_services_dao.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/billers_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
@@ -23,13 +22,8 @@ class BillersRepoImpl implements BillerRepo {
 
   @override
   Future<List<Billers>> billers(BillersDto billersDto,
-      {CancelToken? cancelToken}) async {
-    final providers =
-        await _billersSource.billers(billersDto, cancelToken: cancelToken);
-    // await billersDao.save(providers);
-
-    return providers;
-  }
+          {CancelToken? cancelToken}) async =>
+      await _billersSource.billers(billersDto, cancelToken: cancelToken);
 
   @override
   Future<Discounts?> discounts(BillersDto billersDto,

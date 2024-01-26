@@ -36,7 +36,6 @@ class CardCreationSymmaryView extends ConsumerStatefulWidget {
 class _CardCreationSymmaryViewState
     extends ConsumerState<CardCreationSymmaryView> {
   late CardNotifier _cardNotifier;
-  late WalletNotifier _walletNotifier;
   final CancelToken _cancelToken = CancelToken();
 
   @override
@@ -44,10 +43,7 @@ class _CardCreationSymmaryViewState
     super.initState();
     _cardNotifier = ref.read(cardNotifierProvider.notifier);
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _walletNotifier = ref.read(walletNotifierProvider.notifier)
-        ..getWalletBalance(_cancelToken);
-    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
   }
 
   @override
