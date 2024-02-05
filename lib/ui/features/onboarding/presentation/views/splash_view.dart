@@ -18,6 +18,8 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
+  final SessionManager _sessionManager = locator<SessionManager>();
+
   @override
   void initState() {
     super.initState();
@@ -26,7 +28,7 @@ class _SplashViewState extends State<SplashView> {
         await Future.wait([
           initializeDB(),
           IntercomManager.initialize(),
-          locator<SessionManager>().initializeSession(),
+          _sessionManager.initializeSession(),
           Firebase.initializeApp()
         ]);
         PageRouter.pushReplacement(Routes.onboardingView);

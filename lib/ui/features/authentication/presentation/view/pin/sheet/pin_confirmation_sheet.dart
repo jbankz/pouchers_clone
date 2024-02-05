@@ -12,6 +12,7 @@ import '../../../../../../widgets/gap.dart';
 import '../../../../../../widgets/keypad/account_pin_widget.dart';
 import '../../../../../../widgets/keypad/virtual_key_pad_controller.dart';
 import '../../../../../../widgets/keypad/virtual_keypad.dart';
+import '../../../../../profile/presentation/views/biometric/biometric_verification_view.dart';
 
 class PinConfirmationSheet extends ConsumerStatefulWidget {
   const PinConfirmationSheet({super.key, this.validatePinHere = false});
@@ -78,6 +79,17 @@ class _PinConfirmationSheetState extends ConsumerState<PinConfirmationSheet> {
                           }
                           PageRouter.pop(pin);
                         }),
+                    BiometricVerification(callback: (pin) async {
+                      if (widget.validatePinHere) {
+                        await ref
+                            .read(authNotifierProvider.notifier)
+                            .validatePin(pin, _cancelToken,
+                                onError: () => _keyPadController.clearAll(),
+                                onSuccess: () => PageRouter.pop(pin));
+                        return;
+                      }
+                      PageRouter.pop(pin);
+                    })
                   ],
                 ),
               ),

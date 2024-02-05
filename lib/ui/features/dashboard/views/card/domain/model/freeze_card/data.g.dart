@@ -60,4 +60,5 @@ Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
 const _$CardStatusEnumMap = {
   CardStatus.active: 'active',
   CardStatus.inactive: 'inactive',
+  CardStatus.success: 'success',
 };

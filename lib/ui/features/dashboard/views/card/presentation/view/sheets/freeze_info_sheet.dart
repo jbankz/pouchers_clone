@@ -126,7 +126,7 @@ class _FreezeCardInfoSheetState extends ConsumerState<FreezeCardInfoSheet> {
 
     if (pin != null) {
       ref.read(cardNotifierProvider.notifier).freezeCard(CardDto(
-          sudoId: ref.read(paramModule.notifier).cardDetail?.sudoId,
+          cardId: ref.read(paramModule.notifier).cardDetail?.cardId,
           status: CardStatus.inactive,
           currency: ref.read(paramModule.notifier).isNairaCardType
               ? Currency.NGN

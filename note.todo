@@ -1,0 +1,13 @@
+flat_rate, percentage = Discount Type
+
+
+
+flat_rate = amount - discount
+percentage = amount - (discount % amount)
+
+
+TODO
+
+Check CVV in cards 
+Update Utilities to make use of Discounts
+Check why users card is not displaying een after having a card => DONE 

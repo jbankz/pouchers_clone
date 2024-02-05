@@ -26,6 +26,11 @@ class AppConfig {
   static String get apiUrl =>
       dotenv.env[AppConstants.apiUrl] ?? '${AppConstants.apiUrl} $_notFound';
 
+  // Retrieve the API URL from environment variables, with a default value if $_notFound
+  static String get vgsApiUrl =>
+      dotenv.env[AppConstants.vgsApiUrl] ??
+      '${AppConstants.vgsApiUrl} $_notFound';
+
   // Retrieve the Terms of Use URL from environment variables, with a default value if $_notFound
   static String get termsOfUse =>
       dotenv.env[AppConstants.termsOfUse] ??

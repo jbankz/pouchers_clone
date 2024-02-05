@@ -12,7 +12,8 @@ import '../../../../../../../app/app.router.dart';
 import '../../../../../../../app/core/router/page_router.dart';
 import '../../../../../../widgets/dialog/bottom_sheet.dart';
 import '../../../../../admin/domain/model/envs/envs.dart';
-import '../../domain/model/get_card/data.dart';
+import '../../domain/model/cards/cards.dart';
+import '../../domain/model/get_card_transactions/datum.dart';
 import '../../domain/model/get_exchange_rate/get_exchange_rate.dart';
 import '../../domain/model/virtual_account_balance/virtual_account_balance.dart';
 import '../../domain/model/virtual_card_details/virtual_card_details.dart';
@@ -27,12 +28,12 @@ class CardNotifier extends _$CardNotifier {
   final _logger = getLogger('CardNotifier');
 
   GetExchangeRate? _exchangeRate;
-  List<Data> _cards = [];
   VirtualCardDetails? _cardDetails;
   VirtualAccountBalance? _accountBalance;
+  List<Datum> _transactions = [];
 
   @override
-  CardState build() => CardState(cards: _cards);
+  CardState build() => const CardState();
 
   Future<void> createNairaVirtualCard(CardDto parameter,
       [CancelToken? cancelToken]) async {
@@ -155,28 +156,27 @@ class CardNotifier extends _$CardNotifier {
     try {
       state = state.copyWith(isBusy: true);
 
-      await ref.read(getCardTransactionsProvider
+      final getCardTransactions = await ref.read(getCardTransactionsProvider
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
+      _transactions = getCardTransactions?.data ?? [];
     } catch (e) {
       _logger.e(e.toString());
     }
-    state = state.copyWith(isBusy: false);
+    state = state.copyWith(isBusy: false, transactions: _transactions);
   }
 
   Future<void> getCards(CardDto cardDto, [CancelToken? cancelToken]) async {
     try {
       state = state.copyWith(isBusy: cardsDao.cards.isEmpty);
 
-      final response = await ref.read(getCardsProvider
+      await ref.read(getCardsProvider
           .call(parameter: cardDto, cancelToken: cancelToken)
           .future);
-
-      _cards = response?.data ?? [];
     } catch (e) {
       _logger.e(e.toString());
     }
-    state = state.copyWith(isBusy: false, cards: _cards);
+    state = state.copyWith(isBusy: false);
   }
 
   Future<void> getToken(CardDto parameter, [CancelToken? cancelToken]) async {
@@ -244,7 +244,7 @@ class CardNotifier extends _$CardNotifier {
         (num.parse(fundingFee.value ?? '0')));
   }
 
-  void navigateToDetails(Data card) {
+  void navigateToDetails(Cards card) {
     ref.read(paramModule.notifier).setCardDetails(card);
     PageRouter.pushNamed(Routes.virtualCardDetailView);
   }

@@ -39,8 +39,9 @@ class _CardDetailsSheetState extends ConsumerState<CardDetailsSheet> {
   Widget build(BuildContext context) {
     final appState = ref.watch(cardNotifierProvider);
     final param = ref.watch(paramModule);
+    final cardDetail = param.cardDetail;
 
-    final data = appState.virtualCardDetails;
+    // final data = appState.virtualCardDetails;
     return Wrap(
       children: [
         SizedBox(
@@ -70,18 +71,18 @@ class _CardDetailsSheetState extends ConsumerState<CardDetailsSheet> {
                                 _buildTile(
                                     context: context,
                                     title: AppString.cardNumber,
-                                    value: data?.number ?? ''),
+                                    value: cardDetail?.accountNumber ?? ''),
                                 const Gap(height: 20),
                                 _buildTile(
                                     context: context,
                                     title: AppString.cardCVV,
-                                    value: data?.cvv ?? ''),
+                                    value: ''),
                                 const Gap(height: 20),
                                 _buildTile(
                                     context: context,
                                     title: AppString.cardExpiry,
                                     value:
-                                        '${data?.expiryMonth ?? ''}/${data?.expiryYear ?? ''}'),
+                                        '${cardDetail?.expiryMonth ?? ''}/${cardDetail?.expiryYear ?? ''}'),
                                 const Gap(height: 20),
                                 _buildTile(
                                     context: context,
@@ -107,7 +108,9 @@ class _CardDetailsSheetState extends ConsumerState<CardDetailsSheet> {
           required String title,
           required String value}) =>
       GestureDetector(
-        onTap: () => AppHelper.copy(value),
+        onTap: () {
+          if (value.isNotEmpty) AppHelper.copy(value);
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

@@ -21,8 +21,8 @@ VirtualAccountBalance _$VirtualAccountBalanceFromJson(
 
 /// @nodoc
 mixin _$VirtualAccountBalance {
-  num? get currentBalance => throw _privateConstructorUsedError;
-  num? get availableBalance => throw _privateConstructorUsedError;
+  num get currentBalance => throw _privateConstructorUsedError;
+  num get availableBalance => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +36,7 @@ abstract class $VirtualAccountBalanceCopyWith<$Res> {
           $Res Function(VirtualAccountBalance) then) =
       _$VirtualAccountBalanceCopyWithImpl<$Res, VirtualAccountBalance>;
   @useResult
-  $Res call({num? currentBalance, num? availableBalance});
+  $Res call({num currentBalance, num availableBalance});
 }
 
 /// @nodoc
@@ -53,18 +53,18 @@ class _$VirtualAccountBalanceCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentBalance = freezed,
-    Object? availableBalance = freezed,
+    Object? currentBalance = null,
+    Object? availableBalance = null,
   }) {
     return _then(_value.copyWith(
-      currentBalance: freezed == currentBalance
+      currentBalance: null == currentBalance
           ? _value.currentBalance
           : currentBalance // ignore: cast_nullable_to_non_nullable
-              as num?,
-      availableBalance: freezed == availableBalance
+              as num,
+      availableBalance: null == availableBalance
           ? _value.availableBalance
           : availableBalance // ignore: cast_nullable_to_non_nullable
-              as num?,
+              as num,
     ) as $Val);
   }
 }
@@ -78,7 +78,7 @@ abstract class _$$VirtualAccountBalanceImplCopyWith<$Res>
       __$$VirtualAccountBalanceImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({num? currentBalance, num? availableBalance});
+  $Res call({num currentBalance, num availableBalance});
 }
 
 /// @nodoc
@@ -93,18 +93,18 @@ class __$$VirtualAccountBalanceImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentBalance = freezed,
-    Object? availableBalance = freezed,
+    Object? currentBalance = null,
+    Object? availableBalance = null,
   }) {
     return _then(_$VirtualAccountBalanceImpl(
-      currentBalance: freezed == currentBalance
+      currentBalance: null == currentBalance
           ? _value.currentBalance
           : currentBalance // ignore: cast_nullable_to_non_nullable
-              as num?,
-      availableBalance: freezed == availableBalance
+              as num,
+      availableBalance: null == availableBalance
           ? _value.availableBalance
           : availableBalance // ignore: cast_nullable_to_non_nullable
-              as num?,
+              as num,
     ));
   }
 }
@@ -112,15 +112,18 @@ class __$$VirtualAccountBalanceImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$VirtualAccountBalanceImpl implements _VirtualAccountBalance {
-  _$VirtualAccountBalanceImpl({this.currentBalance, this.availableBalance});
+  _$VirtualAccountBalanceImpl(
+      {this.currentBalance = 0, this.availableBalance = 0});
 
   factory _$VirtualAccountBalanceImpl.fromJson(Map<String, dynamic> json) =>
       _$$VirtualAccountBalanceImplFromJson(json);
 
   @override
-  final num? currentBalance;
+  @JsonKey()
+  final num currentBalance;
   @override
-  final num? availableBalance;
+  @JsonKey()
+  final num availableBalance;
 
   @override
   String toString() {
@@ -160,16 +163,16 @@ class _$VirtualAccountBalanceImpl implements _VirtualAccountBalance {
 
 abstract class _VirtualAccountBalance implements VirtualAccountBalance {
   factory _VirtualAccountBalance(
-      {final num? currentBalance,
-      final num? availableBalance}) = _$VirtualAccountBalanceImpl;
+      {final num currentBalance,
+      final num availableBalance}) = _$VirtualAccountBalanceImpl;
 
   factory _VirtualAccountBalance.fromJson(Map<String, dynamic> json) =
       _$VirtualAccountBalanceImpl.fromJson;
 
   @override
-  num? get currentBalance;
+  num get currentBalance;
   @override
-  num? get availableBalance;
+  num get availableBalance;
   @override
   @JsonKey(ignore: true)
   _$$VirtualAccountBalanceImplCopyWith<_$VirtualAccountBalanceImpl>

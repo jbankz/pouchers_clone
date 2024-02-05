@@ -29,7 +29,10 @@ class _ProviderServiceSheetState extends ConsumerState<ProviderServiceSheet> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(billersNotifierProvider.notifier).getCableProviderServices(
+          biller: widget.billersDto, cancelToken: _cancelToken);
+    });
   }
 
   @override

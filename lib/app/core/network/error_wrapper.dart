@@ -23,17 +23,16 @@ class ApiError {
       final DioException dioError = error;
       switch (dioError.type) {
         case DioExceptionType.cancel:
-          break;
+          errorDescription = AppString.requestCancelled;
         case DioExceptionType.unknown:
           errorDescription = AppString.connectionFailed;
         case DioExceptionType.receiveTimeout:
         case DioExceptionType.sendTimeout:
-          errorDescription = AppString.connectionFailed;
+        case DioExceptionType.connectionTimeout:
+          errorDescription = AppString.connectionTimeout;
         case DioExceptionType.badResponse:
           errorType = dioError.response?.statusCode;
           errorDescription = _handleErrorFromStatusCode(dioError.response);
-        case DioExceptionType.connectionTimeout:
-          errorDescription = AppString.connectionTimeout;
         case DioExceptionType.badCertificate:
           break;
         case DioExceptionType.connectionError:

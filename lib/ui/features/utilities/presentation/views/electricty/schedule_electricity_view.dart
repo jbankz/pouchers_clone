@@ -1,3 +1,4 @@
+import 'package:Pouchers/app/app.logger.dart';
 import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -95,7 +96,9 @@ class _ScheduleElectricityViewState
         BillersCategory.electricity, _cancelToken);
 
     _frequency = widget.schedule?.frequency ?? '';
-    _billers = Billers(name: widget.schedule?.subCategory);
+    _billers = Billers(
+        name: widget.schedule?.subCategory,
+        operatorpublicid: widget.schedule?.mobileOperatorPublicId ?? '');
     numberController.text = widget.schedule?.recipient ?? '';
     providerController.text = widget.schedule?.subCategory ?? '';
   }

@@ -273,7 +273,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
           onSuccess: () => PageRouter.pushNamed(Routes.successState,
               args: SuccessStateArguments(
                   title: AppString.rechargeSuccessful,
-                  message: AppString.completedAirtimePurchase,
+                  message: AppString.completedDataPurchase,
                   btnTitle: AppString.complete,
                   tap: () => PageRouter.popToRoot(Routes.dataView))),
           cancelToken: _cancelToken);

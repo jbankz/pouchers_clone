@@ -118,7 +118,7 @@ class AppString {
       "Enter your email and we’ll send you a code to reset your password.";
   static String setNewPasswordSubText =
       "Your new password must be different from previous used passwords.";
-  static String noCode = 'Din\'t get the code?';
+  static String noCode = 'Didn\'t get the code?';
   static String resend = 'Resend';
   static String tagHint =
       'Create your unique Poucher tag to easily receive money anywhere.';
@@ -454,7 +454,7 @@ class AppString {
       'Your cable subscription has been delivered';
   static String completedElectricityPurchase =
       'Your electricity subscription has been delivered';
-  static String rechargeSuccessful = 'Recharge successful';
+  static String rechargeSuccessful = 'Recharge Successful';
 
   static String subscriptionType = 'Subscription Type';
   static String selectFrequency = 'Select frequency';

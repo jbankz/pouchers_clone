@@ -9,8 +9,8 @@ part of 'virtual_account_balance.dart';
 _$VirtualAccountBalanceImpl _$$VirtualAccountBalanceImplFromJson(
         Map<String, dynamic> json) =>
     _$VirtualAccountBalanceImpl(
-      currentBalance: json['currentBalance'] as num?,
-      availableBalance: json['availableBalance'] as num?,
+      currentBalance: json['currentBalance'] as num? ?? 0,
+      availableBalance: json['availableBalance'] as num? ?? 0,
     );
 
 Map<String, dynamic> _$$VirtualAccountBalanceImplToJson(

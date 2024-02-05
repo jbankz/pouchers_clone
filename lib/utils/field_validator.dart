@@ -180,12 +180,6 @@ class FieldValidator {
           return error ?? 'Spaces are not allowed';
         }
         if (error != null) return error;
-
-        /*   if (!value.contains('@gmail.com') &&
-          !value.contains('@yahoo.com') &&
-          !value.contains('@hotmail.com')) {
-        return error ?? 'Invalid email addresses not allowed';
-      } */
         return null;
       };
 

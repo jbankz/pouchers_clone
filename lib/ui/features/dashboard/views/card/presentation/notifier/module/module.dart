@@ -7,7 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../domain/model/created_virtual_card/created_virtual_card.dart';
 import '../../../domain/model/freeze_card/freeze_card.dart';
 import '../../../domain/model/fund_virtual_account/fund_virtual_account.dart';
-import '../../../domain/model/get_card/get_cards.dart';
+import '../../../domain/model/cards/cards.dart';
 import '../../../domain/model/get_card_token/get_card_token.dart';
 import '../../../domain/model/get_card_transactions/get_card_transactions.dart';
 import '../../../domain/model/get_exchange_rate/get_exchange_rate.dart';
@@ -82,7 +82,7 @@ Future<GetCardTransactions?> getCardTransactions(GetCardTransactionsRef ref,
         .execute(parameter: parameter, cancelToken: cancelToken);
 
 @riverpod
-Future<GetCards?> getCards(GetCardsRef ref,
+Future<List<Cards>?> getCards(GetCardsRef ref,
         {required CardDto parameter, CancelToken? cancelToken}) async =>
     await ref
         .read(getCardsUseCaseModule)

@@ -8,8 +8,8 @@ import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/virtual_a
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/virtual_card_details/virtual_card_details.dart';
 import 'package:dio/dio.dart';
 
+import '../model/cards/cards.dart';
 import '../model/created_virtual_card/created_virtual_card.dart';
-import '../model/get_card/get_cards.dart';
 
 abstract class CardRepo<T> {
   Future<VirtualCardDetails?> getVirtualCardDetails(
@@ -36,7 +36,7 @@ abstract class CardRepo<T> {
   Future<GetCardTransactions?> getCardTransactions(
       {required T cardDto, CancelToken? cancelToken});
 
-  Future<GetCards?> getCards({required T cardDto, CancelToken? cancelToken});
+  Future<List<Cards>?> getCards({required T cardDto, CancelToken? cancelToken});
 
   Future<GetCardToken?> getCardToken(
       {required T cardDto, CancelToken? cancelToken});

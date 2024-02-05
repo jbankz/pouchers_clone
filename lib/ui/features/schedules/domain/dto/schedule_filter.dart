@@ -11,6 +11,7 @@ List<ScheduleFilter> scheduleFilters = [
   ScheduleFilter(key: 'Transfer', value: 'transfer'),
   ScheduleFilter(key: 'Data', value: 'data'),
   ScheduleFilter(key: 'Electricity', value: 'electricity'),
+  ScheduleFilter(key: 'Cable', value: 'cable'),
   // ScheduleFilter(key: 'Internet', value: 'internet'),
   // ScheduleFilter(key: 'Betting', value: 'betting'),
 ];

@@ -18,13 +18,13 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$CardState<T> {
   bool get isBusy => throw _privateConstructorUsedError;
   GetExchangeRate? get exchangeRate => throw _privateConstructorUsedError;
-  List<Data> get cards => throw _privateConstructorUsedError;
   VirtualCardDetails? get virtualCardDetails =>
       throw _privateConstructorUsedError;
   VirtualAccountBalance? get virtualAccountBalance =>
       throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
   StackTrace? get stackTrace => throw _privateConstructorUsedError;
+  List<Datum> get transactions => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CardStateCopyWith<T, CardState<T>> get copyWith =>
@@ -40,11 +40,11 @@ abstract class $CardStateCopyWith<T, $Res> {
   $Res call(
       {bool isBusy,
       GetExchangeRate? exchangeRate,
-      List<Data> cards,
       VirtualCardDetails? virtualCardDetails,
       VirtualAccountBalance? virtualAccountBalance,
       String? errorMessage,
-      StackTrace? stackTrace});
+      StackTrace? stackTrace,
+      List<Datum> transactions});
 
   $GetExchangeRateCopyWith<$Res>? get exchangeRate;
   $VirtualCardDetailsCopyWith<$Res>? get virtualCardDetails;
@@ -66,11 +66,11 @@ class _$CardStateCopyWithImpl<T, $Res, $Val extends CardState<T>>
   $Res call({
     Object? isBusy = null,
     Object? exchangeRate = freezed,
-    Object? cards = null,
     Object? virtualCardDetails = freezed,
     Object? virtualAccountBalance = freezed,
     Object? errorMessage = freezed,
     Object? stackTrace = freezed,
+    Object? transactions = null,
   }) {
     return _then(_value.copyWith(
       isBusy: null == isBusy
@@ -81,10 +81,6 @@ class _$CardStateCopyWithImpl<T, $Res, $Val extends CardState<T>>
           ? _value.exchangeRate
           : exchangeRate // ignore: cast_nullable_to_non_nullable
               as GetExchangeRate?,
-      cards: null == cards
-          ? _value.cards
-          : cards // ignore: cast_nullable_to_non_nullable
-              as List<Data>,
       virtualCardDetails: freezed == virtualCardDetails
           ? _value.virtualCardDetails
           : virtualCardDetails // ignore: cast_nullable_to_non_nullable
@@ -101,6 +97,10 @@ class _$CardStateCopyWithImpl<T, $Res, $Val extends CardState<T>>
           ? _value.stackTrace
           : stackTrace // ignore: cast_nullable_to_non_nullable
               as StackTrace?,
+      transactions: null == transactions
+          ? _value.transactions
+          : transactions // ignore: cast_nullable_to_non_nullable
+              as List<Datum>,
     ) as $Val);
   }
 
@@ -154,11 +154,11 @@ abstract class _$$CardStateImplCopyWith<T, $Res>
   $Res call(
       {bool isBusy,
       GetExchangeRate? exchangeRate,
-      List<Data> cards,
       VirtualCardDetails? virtualCardDetails,
       VirtualAccountBalance? virtualAccountBalance,
       String? errorMessage,
-      StackTrace? stackTrace});
+      StackTrace? stackTrace,
+      List<Datum> transactions});
 
   @override
   $GetExchangeRateCopyWith<$Res>? get exchangeRate;
@@ -181,11 +181,11 @@ class __$$CardStateImplCopyWithImpl<T, $Res>
   $Res call({
     Object? isBusy = null,
     Object? exchangeRate = freezed,
-    Object? cards = null,
     Object? virtualCardDetails = freezed,
     Object? virtualAccountBalance = freezed,
     Object? errorMessage = freezed,
     Object? stackTrace = freezed,
+    Object? transactions = null,
   }) {
     return _then(_$CardStateImpl<T>(
       isBusy: null == isBusy
@@ -196,10 +196,6 @@ class __$$CardStateImplCopyWithImpl<T, $Res>
           ? _value.exchangeRate
           : exchangeRate // ignore: cast_nullable_to_non_nullable
               as GetExchangeRate?,
-      cards: null == cards
-          ? _value._cards
-          : cards // ignore: cast_nullable_to_non_nullable
-              as List<Data>,
       virtualCardDetails: freezed == virtualCardDetails
           ? _value.virtualCardDetails
           : virtualCardDetails // ignore: cast_nullable_to_non_nullable
@@ -216,6 +212,10 @@ class __$$CardStateImplCopyWithImpl<T, $Res>
           ? _value.stackTrace
           : stackTrace // ignore: cast_nullable_to_non_nullable
               as StackTrace?,
+      transactions: null == transactions
+          ? _value._transactions
+          : transactions // ignore: cast_nullable_to_non_nullable
+              as List<Datum>,
     ));
   }
 }
@@ -226,27 +226,18 @@ class _$CardStateImpl<T> implements _CardState<T> {
   const _$CardStateImpl(
       {this.isBusy = false,
       this.exchangeRate,
-      final List<Data> cards = const [],
       this.virtualCardDetails,
       this.virtualAccountBalance,
       this.errorMessage,
-      this.stackTrace})
-      : _cards = cards;
+      this.stackTrace,
+      final List<Datum> transactions = const []})
+      : _transactions = transactions;
 
   @override
   @JsonKey()
   final bool isBusy;
   @override
   final GetExchangeRate? exchangeRate;
-  final List<Data> _cards;
-  @override
-  @JsonKey()
-  List<Data> get cards {
-    if (_cards is EqualUnmodifiableListView) return _cards;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_cards);
-  }
-
   @override
   final VirtualCardDetails? virtualCardDetails;
   @override
@@ -255,10 +246,18 @@ class _$CardStateImpl<T> implements _CardState<T> {
   final String? errorMessage;
   @override
   final StackTrace? stackTrace;
+  final List<Datum> _transactions;
+  @override
+  @JsonKey()
+  List<Datum> get transactions {
+    if (_transactions is EqualUnmodifiableListView) return _transactions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_transactions);
+  }
 
   @override
   String toString() {
-    return 'CardState<$T>(isBusy: $isBusy, exchangeRate: $exchangeRate, cards: $cards, virtualCardDetails: $virtualCardDetails, virtualAccountBalance: $virtualAccountBalance, errorMessage: $errorMessage, stackTrace: $stackTrace)';
+    return 'CardState<$T>(isBusy: $isBusy, exchangeRate: $exchangeRate, virtualCardDetails: $virtualCardDetails, virtualAccountBalance: $virtualAccountBalance, errorMessage: $errorMessage, stackTrace: $stackTrace, transactions: $transactions)';
   }
 
   @override
@@ -269,7 +268,6 @@ class _$CardStateImpl<T> implements _CardState<T> {
             (identical(other.isBusy, isBusy) || other.isBusy == isBusy) &&
             (identical(other.exchangeRate, exchangeRate) ||
                 other.exchangeRate == exchangeRate) &&
-            const DeepCollectionEquality().equals(other._cards, _cards) &&
             (identical(other.virtualCardDetails, virtualCardDetails) ||
                 other.virtualCardDetails == virtualCardDetails) &&
             (identical(other.virtualAccountBalance, virtualAccountBalance) ||
@@ -277,7 +275,9 @@ class _$CardStateImpl<T> implements _CardState<T> {
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
             (identical(other.stackTrace, stackTrace) ||
-                other.stackTrace == stackTrace));
+                other.stackTrace == stackTrace) &&
+            const DeepCollectionEquality()
+                .equals(other._transactions, _transactions));
   }
 
   @override
@@ -285,11 +285,11 @@ class _$CardStateImpl<T> implements _CardState<T> {
       runtimeType,
       isBusy,
       exchangeRate,
-      const DeepCollectionEquality().hash(_cards),
       virtualCardDetails,
       virtualAccountBalance,
       errorMessage,
-      stackTrace);
+      stackTrace,
+      const DeepCollectionEquality().hash(_transactions));
 
   @JsonKey(ignore: true)
   @override
@@ -302,18 +302,16 @@ abstract class _CardState<T> implements CardState<T> {
   const factory _CardState(
       {final bool isBusy,
       final GetExchangeRate? exchangeRate,
-      final List<Data> cards,
       final VirtualCardDetails? virtualCardDetails,
       final VirtualAccountBalance? virtualAccountBalance,
       final String? errorMessage,
-      final StackTrace? stackTrace}) = _$CardStateImpl<T>;
+      final StackTrace? stackTrace,
+      final List<Datum> transactions}) = _$CardStateImpl<T>;
 
   @override
   bool get isBusy;
   @override
   GetExchangeRate? get exchangeRate;
-  @override
-  List<Data> get cards;
   @override
   VirtualCardDetails? get virtualCardDetails;
   @override
@@ -322,6 +320,8 @@ abstract class _CardState<T> implements CardState<T> {
   String? get errorMessage;
   @override
   StackTrace? get stackTrace;
+  @override
+  List<Datum> get transactions;
   @override
   @JsonKey(ignore: true)
   _$$CardStateImplCopyWith<T, _$CardStateImpl<T>> get copyWith =>

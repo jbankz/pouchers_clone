@@ -1228,14 +1228,14 @@ class _GetCardTransactionsProviderElement
       (origin as GetCardTransactionsProvider).cancelToken;
 }
 
-String _$getCardsHash() => r'6c73b1da6dd15e967c6c8c970db4613f05ffaab1';
+String _$getCardsHash() => r'3026f352bd98573babae58606b12474080090d57';
 
 /// See also [getCards].
 @ProviderFor(getCards)
 const getCardsProvider = GetCardsFamily();
 
 /// See also [getCards].
-class GetCardsFamily extends Family<AsyncValue<GetCards?>> {
+class GetCardsFamily extends Family<AsyncValue<List<Cards>?>> {
   /// See also [getCards].
   const GetCardsFamily();
 
@@ -1276,7 +1276,7 @@ class GetCardsFamily extends Family<AsyncValue<GetCards?>> {
 }
 
 /// See also [getCards].
-class GetCardsProvider extends AutoDisposeFutureProvider<GetCards?> {
+class GetCardsProvider extends AutoDisposeFutureProvider<List<Cards>?> {
   /// See also [getCards].
   GetCardsProvider({
     required CardDto parameter,
@@ -1315,7 +1315,7 @@ class GetCardsProvider extends AutoDisposeFutureProvider<GetCards?> {
 
   @override
   Override overrideWith(
-    FutureOr<GetCards?> Function(GetCardsRef provider) create,
+    FutureOr<List<Cards>?> Function(GetCardsRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -1333,7 +1333,7 @@ class GetCardsProvider extends AutoDisposeFutureProvider<GetCards?> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<GetCards?> createElement() {
+  AutoDisposeFutureProviderElement<List<Cards>?> createElement() {
     return _GetCardsProviderElement(this);
   }
 
@@ -1354,7 +1354,7 @@ class GetCardsProvider extends AutoDisposeFutureProvider<GetCards?> {
   }
 }
 
-mixin GetCardsRef on AutoDisposeFutureProviderRef<GetCards?> {
+mixin GetCardsRef on AutoDisposeFutureProviderRef<List<Cards>?> {
   /// The parameter `parameter` of this provider.
   CardDto get parameter;
 
@@ -1363,7 +1363,7 @@ mixin GetCardsRef on AutoDisposeFutureProviderRef<GetCards?> {
 }
 
 class _GetCardsProviderElement
-    extends AutoDisposeFutureProviderElement<GetCards?> with GetCardsRef {
+    extends AutoDisposeFutureProviderElement<List<Cards>?> with GetCardsRef {
   _GetCardsProviderElement(super.provider);
 
   @override

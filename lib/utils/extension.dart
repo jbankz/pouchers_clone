@@ -28,6 +28,7 @@ extension StringExtensions on String {
 
   // Replaces underscores with spaces
   String get removeUnderscore => replaceAll('_', ' ');
+  String get removeDoubleZeros => replaceAll('.00', ' ');
 
   // Replaces hiphen with spaces
   String get removeHyphen => replaceAll('-', ' ');

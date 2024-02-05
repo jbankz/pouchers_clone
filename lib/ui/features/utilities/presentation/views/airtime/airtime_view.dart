@@ -31,8 +31,8 @@ import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
 import '../../../domain/enum/service_category.dart';
-import '../../../domain/model/airtime_top_deals.dart';
 import '../../../domain/model/billers.dart';
+import '../../../domain/model/discounts.dart';
 import '../../notifier/billers_notifier.dart';
 import '../sheet/summary_sheet.dart';
 import '../widget/scheduling_widget.dart';
@@ -55,7 +55,6 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
   final FlutterContactPicker _contactPicker = FlutterContactPicker();
 
   Billers? _billers;
-  AirtimeTopDeals? _airtimeTopDeals;
 
   @override
   void initState() {
@@ -148,10 +147,6 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                           ));
                         }).toList(),
                       ),
-                      const Gap(height: 24),
-                      Text(AppString.topDeals,
-                          style: context.titleLarge?.copyWith(fontSize: 12.sp)),
-                      const Gap(height: 12),
                       TopDealsWidget(callback: (topDeal) {
                         if (billerState.isPurchasing) return;
 
@@ -161,9 +156,9 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                           return;
                         }
 
-                        _airtimeTopDeals = topDeal;
-                        amountController.text =
-                            _formatter.format(topDeal.amount.toString());
+                        amountController.text = _formatter
+                            .formatDouble(topDeal.toDouble())
+                            .toString();
                         setState(() {});
                       }),
                       const Gap(height: 24),
@@ -176,6 +171,8 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                         keyboardType: TextInputType.number,
                         onFieldSubmitted: (_) {},
                         validator: FieldValidator.validateAmount(),
+                        onChanged: (String value) => _formatter
+                            .formatDouble(double.tryParse(value) ?? 0),
                         prefix: IconButton(
                             onPressed: () {},
                             icon: Text(AppString.nairaSymbol,
@@ -189,10 +186,11 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                             title: AppString.scheduleAirtimeHint,
                             description: AppString.scheduleAirtimeHint1,
                             tapped: () => PageRouter.pushNamed(
-                                Routes.scheduledAirtimeView))
+                                Routes.scheduledAirtimeView)),
                     ],
                   ),
                 ),
+                const Gap(height: 16),
                 ElevatedButtonWidget(
                     title: AppString.proceed,
                     loading: billerState.isPurchasing,
@@ -217,23 +215,35 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
     );
   }
 
-  Future<void> _submitForActualUser({String? pin}) =>
-      _billersNotifier.purchaseService(
-          mobileDto: MobileDto(
-              category: ServiceCategory.airtime,
-              subCategory: _billers?.displayName,
-              amount: _formatter.getUnformattedValue(),
-              destinationPhoneNumber: phoneController.text,
-              mobileOperatorPublicId: _billers?.operatorpublicid,
-              applyDiscount: false,
-              transactionPin: pin),
-          onSuccess: () => PageRouter.pushNamed(Routes.successState,
-              args: SuccessStateArguments(
-                  title: AppString.rechargeSuccessful,
-                  message: AppString.completedAirtimePurchase,
-                  btnTitle: AppString.complete,
-                  tap: () => PageRouter.popToRoot(Routes.airtimeView))),
-          cancelToken: _cancelToken);
+  Future<void> _submitForActualUser(
+      {String? pin, required BillersState billerState}) async {
+    final bool isAppliedDiscount = ((billerState.discounts != null) &&
+        _formatter.getUnformattedValue() >=
+            (billerState.discounts?.threshold ?? 0));
+    final Discounts? discounts = billerState.discounts;
+
+    final amount =
+        discounts?.payment(_formatter.getUnformattedValue().toString()) ?? 0;
+
+    final mobileDto = MobileDto(
+        category: ServiceCategory.airtime,
+        subCategory: _billers?.displayName,
+        amount: amount,
+        destinationPhoneNumber: phoneController.text,
+        mobileOperatorPublicId: _billers?.operatorpublicid,
+        applyDiscount: isAppliedDiscount,
+        transactionPin: pin);
+
+    return _billersNotifier.purchaseService(
+        mobileDto: mobileDto,
+        onSuccess: () => PageRouter.pushNamed(Routes.successState,
+            args: SuccessStateArguments(
+                title: AppString.rechargeSuccessful,
+                message: AppString.completedAirtimePurchase,
+                btnTitle: AppString.complete,
+                tap: () => PageRouter.popToRoot(Routes.airtimeView))),
+        cancelToken: _cancelToken);
+  }
 
   Future<void> _submitForGuest(dynamic feedback) async {
     final guest = ref.watch(paramModule);
@@ -256,27 +266,31 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
   }
 
   Future<void> _handlePayment(BillersState billerState) async {
+    final Discounts? discounts = billerState.discounts;
+
+    final amount =
+        discounts?.payment(_formatter.getUnformattedValue().toString()) ?? 0;
+    final cashBack =
+        _formatter.getUnformattedValue() < (discounts?.threshold ?? 0)
+            ? 0
+            : (discounts?.discountValue ?? 0);
+
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(
         summaryDto: SummaryDto(
-          isGuest: billerState.isGuest,
-          title: AppString.airtime,
-          imageUrl: _billers?.logoUrl,
-          recipient: phoneController.text,
-          recipientWidget: Text(
-            phoneController.text,
-            style: context.titleLarge?.copyWith(
-              color: AppColors.kPurple100,
-              fontWeight: FontWeight.w700,
-            ),
-            textAlign: TextAlign.right,
-          ),
-          amount: _formatter.getUnformattedValue(),
-          cashBack: _airtimeTopDeals?.cashBack,
-          fee: 0,
-        ),
+            isGuest: billerState.isGuest,
+            title: AppString.airtime,
+            imageUrl: _billers?.logoUrl,
+            recipient: phoneController.text,
+            recipientWidget: Text(phoneController.text,
+                style: context.titleLarge?.copyWith(
+                    color: AppColors.kPurple100, fontWeight: FontWeight.w700),
+                textAlign: TextAlign.right),
+            amount: amount,
+            cashBack: cashBack,
+            fee: 0),
         biometricVerification: (pin) {
-          _submitForActualUser(pin: pin);
+          _submitForActualUser(pin: pin, billerState: billerState);
           return;
         },
       ),
@@ -292,7 +306,9 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
         final pin = await BottomSheets.showSheet(
           child: const PinConfirmationSheet(),
         ) as String?;
-        if (pin != null) _submitForActualUser(pin: pin);
+        if (pin != null) {
+          _submitForActualUser(pin: pin, billerState: billerState);
+        }
       }
     }
   }

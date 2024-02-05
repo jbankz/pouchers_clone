@@ -3,7 +3,6 @@ import 'package:Pouchers/ui/features/dashboard/views/card/data/source/card_sourc
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/created_virtual_card/created_virtual_card.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/freeze_card/freeze_card.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/fund_virtual_account/fund_virtual_account.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_card/get_cards.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_card_token/get_card_token.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_card_transactions/get_card_transactions.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_exchange_rate/get_exchange_rate.dart';
@@ -14,6 +13,7 @@ import 'package:Pouchers/ui/features/dashboard/views/card/domain/repository/card
 import 'package:dio/dio.dart';
 
 import '../../domain/dto/card_dto.dart';
+import '../../domain/model/cards/cards.dart';
 
 class CardRepoImpl implements CardRepo<CardDto> {
   final CardSource _cardSource;
@@ -62,11 +62,11 @@ class CardRepoImpl implements CardRepo<CardDto> {
           cardDto: cardDto, cancelToken: cancelToken);
 
   @override
-  Future<GetCards?> getCards(
+  Future<List<Cards>?> getCards(
       {required CardDto cardDto, CancelToken? cancelToken}) async {
     final cards =
         await _cardSource.getCards(cardDto: cardDto, cancelToken: cancelToken);
-    cardsDao.saveCards(cards?.data ?? []);
+    cardsDao.saveCards(cards ?? []);
     return cards;
   }
 

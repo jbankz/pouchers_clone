@@ -81,7 +81,7 @@ class _VirtualCardViewState extends ConsumerState<VirtualCardView> {
                             onTap: () => _cardNotifier.navigateToDetails(card),
                             borderRadius: BorderRadius.circular(16.r),
                             child: Hero(
-                              tag: card.sudoId ?? '',
+                              tag: card.cardId ?? '',
                               child: Container(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 21.w, vertical: 13.h),

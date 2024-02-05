@@ -6,21 +6,18 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../network_service.dart';
 
-final _dioProvider = Provider<Dio>((ref) {
-  final dio = Dio(BaseOptions(
-      connectTimeout:
-          const Duration(milliseconds: NetworkService.connectTimeout),
-      receiveTimeout:
-          const Duration(milliseconds: NetworkService.receiveTimeout),
-      baseUrl: AppConfig.apiUrl));
+final baseOption = BaseOptions(
+    connectTimeout: const Duration(milliseconds: NetworkService.connectTimeout),
+    receiveTimeout: const Duration(milliseconds: NetworkService.receiveTimeout),
+    baseUrl: AppConfig.apiUrl);
 
-  dio.interceptors.add(PrettyDioLogger(
-      requestHeader: kDebugMode,
-      requestBody: kDebugMode,
-      responseHeader: kDebugMode));
+final _prettyDialog = PrettyDioLogger(
+    requestHeader: kDebugMode,
+    requestBody: kDebugMode,
+    responseHeader: kDebugMode);
 
-  return dio;
-});
+final _dioProvider =
+    Provider<Dio>((ref) => Dio(baseOption)..interceptors.add(_prettyDialog));
 
 final networkServiceProvider = Provider<NetworkService>(
     (ref) => NetworkService.internal(dio: ref.watch(_dioProvider)));

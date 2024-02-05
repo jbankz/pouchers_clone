@@ -4,11 +4,11 @@ import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_brand
 class CardIcon {
   static String returnIcon(CardBrand? brand) {
     switch (brand) {
-      case CardBrand.Verve:
+      case CardBrand.verve:
         return AppImage.verve;
-      case CardBrand.Visa:
+      case CardBrand.visa:
         return AppImage.visa;
-      case CardBrand.MasterCard:
+      case CardBrand.masterCard:
         return AppImage.mastercard;
       default:
         return AppImage.visa;

@@ -11,13 +11,13 @@ class CardDto {
   String? transactionPin;
   Currency? currency;
   String? userId;
-  String? sudoId;
+  String? cardId;
   CardBrand? brand;
   CardStatus? status;
 
   CardDto(
       {this.userId,
-      this.sudoId,
+      this.cardId,
       this.amount,
       this.country,
       this.bvn,

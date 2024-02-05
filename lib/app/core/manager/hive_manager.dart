@@ -1,4 +1,7 @@
 import 'package:Pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_brand.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/cards/cards.dart';
 import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_analytic.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/referral/earning.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/referral/referral.dart';
@@ -74,7 +77,10 @@ Future<void> initializeDB() async {
       ..registerAdapter(RequestModelAdapter())
       ..registerAdapter(TransactionAnalyticAdapter())
       ..registerAdapter(AnalyticSummaryAdapter())
-      ..registerAdapter(AnalyticAdapter());
+      ..registerAdapter(AnalyticAdapter())
+      ..registerAdapter(CardsAdapter())
+      ..registerAdapter(CardTypeAdapter())
+      ..registerAdapter(CardBrandAdapter());
   } catch (e) {
     debugPrint(e.toString());
   }

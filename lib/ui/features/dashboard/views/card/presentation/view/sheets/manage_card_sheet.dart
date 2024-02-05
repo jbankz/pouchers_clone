@@ -33,11 +33,12 @@ class _ManageCardSheetState extends ConsumerState<ManageCardSheet> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final cardId = ref.read(paramModule.notifier).cardDetail?.sudoId ?? '';
+      final cardId = ref.read(paramModule.notifier).cardDetail?.cardId ?? '';
 
       _cardNotifier = ref.read(cardNotifierProvider.notifier)
-        ..getVirtualCardDetails(CardDto(sudoId: cardId), _cancelToken);
+        ..getVirtualCardDetails(CardDto(cardId: cardId), _cancelToken);
     });
   }
 
@@ -61,7 +62,7 @@ class _ManageCardSheetState extends ConsumerState<ManageCardSheet> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Text('${AppString.manage} card',
+                  Text('${AppString.manage} Card',
                       style: context.titleMedium?.copyWith(
                           fontSize: 15, fontWeight: FontWeight.w700)),
                   const Gap(height: 35),
@@ -94,12 +95,15 @@ class _ManageCardSheetState extends ConsumerState<ManageCardSheet> {
                         duration: const Duration(milliseconds: 350),
                         child: cardState.isBusy
                             ? const CupertinoActivityIndicator()
-                            : Switch.adaptive(
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                value: data?.status == CardStatus.inactive,
-                                onChanged: (value) =>
-                                    _triggerPinVerification(ref, value)),
+                            : Transform.scale(
+                                scale: .7,
+                                child: Switch.adaptive(
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    value: data?.status == CardStatus.inactive,
+                                    onChanged: (value) =>
+                                        _triggerPinVerification(ref, value)),
+                              ),
                       )
                     ],
                   ),
@@ -125,7 +129,7 @@ class _ManageCardSheetState extends ConsumerState<ManageCardSheet> {
       if (pin != null) {
         _cardNotifier.freezeCard(
             CardDto(
-                sudoId: ref.read(paramModule.notifier).cardDetail?.sudoId,
+                cardId: ref.read(paramModule.notifier).cardDetail?.cardId,
                 status: CardStatus.active,
                 currency: ref.read(paramModule.notifier).isNairaCardType
                     ? Currency.NGN

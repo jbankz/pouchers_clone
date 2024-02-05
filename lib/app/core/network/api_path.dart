@@ -16,7 +16,7 @@ class ApiPath {
   static const String verifyAccount = '$_apiVersionOne/auth/verify-email';
 
   /// The path for requesting a new OTP
-  static const String requestOtp = '$_apiVersionOne/auth/resend-otp';
+  static const String requestOtp = '$_apiVersionOne/auth/resend-confirmation';
 
   /// The path for creating a new users tag
   static const String createTag = '$_apiVersionOne/auth/create-tag';
@@ -62,13 +62,13 @@ class ApiPath {
   static const String fundVirtualCard = '$_cardPath/fund';
 
   /// virtual card balance
-  static const String balance = '$_apiVersionOne/$_cardPath/accounts/';
+  static const String balance = '$_apiVersionOne/card/accounts/';
 
   /// Card token
-  static const String token = '$_apiVersionOne/$_cardPath/';
+  static const String token = '$_apiVersionOne/card/';
 
   /// Card transactions
-  static const String transactions = '$_apiVersionOne/$_cardPath/';
+  static const String transactions = '$_apiVersionOne/card';
 
   /// Cards
   static const String cards = _cardPath;

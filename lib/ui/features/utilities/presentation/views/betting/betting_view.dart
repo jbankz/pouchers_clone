@@ -36,8 +36,10 @@ import '../../../domain/dto/billers_dto.dart';
 import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/airtime_top_deals.dart';
 import '../../../domain/model/billers.dart';
+import '../../../domain/model/cable_service.dart';
 import '../../notifier/billers_notifier.dart';
 import '../../state/billers_state.dart';
+import '../sheet/provider_services_sheets.dart';
 import '../sheet/providers_sheets.dart';
 import '../sheet/summary_sheet.dart';
 import 'betting_view.form.dart';
@@ -47,7 +49,8 @@ import 'widget/top_deal_widget.dart';
 @FormView(fields: [
   FormTextField(name: 'provider'),
   FormTextField(name: 'number'),
-  FormTextField(name: 'amount')
+  FormTextField(name: 'amount'),
+  FormTextField(name: 'subscriptionType')
 ])
 class BettingView extends ConsumerStatefulWidget {
   const BettingView({super.key});
@@ -64,6 +67,8 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
 
   Billers? _billers;
   AirtimeTopDeals? _airtimeTopDeals;
+  final _debouncer = Debouncer();
+  CableService? _cableService;
 
   @override
   void initState() {
@@ -113,6 +118,8 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
                         ScrollViewKeyboardDismissBehavior.onDrag,
                     children: [
                       _buildProviderTextField(billerState),
+                      const Gap(height: 24),
+                      _buildSubscriptionTypeTextField(),
                       const Gap(height: 24),
                       _buildSmartCardNumberTextField(billerState),
                       const Gap(height: 24),
@@ -193,7 +200,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
             onFieldSubmitted: (_) {},
             validator: FieldValidator.validateInt(),
             inputFormatters: [context.digitsOnly],
-            onChanged: (_) => Debouncer().run(() => _validateCustomer()),
+            onChanged: (_) => _debouncer.run(() => _validateCustomer()),
             suffixIcon: CupertinoButton(
               padding: EdgeInsets.zero,
               child:
@@ -238,10 +245,10 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
   Future<void> _validateCustomer() async {
     await _billersNotifier.validateCustomerInfo(
       biller: BillersDto(
-        billersCategory: BillersCategory.betting,
         merchantAccount: _billers?.operatorpublicid,
+        billersCategory: BillersCategory.betting,
         merchantReferenceNumber: numberController.text,
-        merchantServiceProductCode: _billers?.operatorpublicid,
+        merchantServiceProductCode: _cableService?.code,
       ),
       cancelToken: _cancelToken,
     );
@@ -272,6 +279,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
           _billers = response;
           providerController.text = response.name ?? '';
           numberController.clear();
+          _cableService == null;
           context.nextFocus();
         }
       });
@@ -299,7 +307,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
               isMerchantPayment: true,
               category: ServiceCategory.betting,
               merchantAccount: _billers?.operatorpublicid,
-              merchantService: _billers?.operatorpublicid,
+              merchantService: _cableService?.code,
               merchantReferenceNumber: numberController.text,
               subCategory: _billers?.displayName,
               amount: _formatter.getUnformattedValue(),
@@ -308,7 +316,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
           onSuccess: () => PageRouter.pushNamed(Routes.successState,
               args: SuccessStateArguments(
                   title: AppString.rechargeSuccessful,
-                  message: AppString.completedAirtimePurchase,
+                  message: AppString.completedBettingPurchase,
                   btnTitle: AppString.complete,
                   tap: () => PageRouter.popToRoot(Routes.bettingView))),
           cancelToken: _cancelToken);
@@ -327,7 +335,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
             category: ServiceCategory.betting,
             merchantAccount: _billers?.operatorpublicid,
             makeMerchantServiceArray: false,
-            merchantService: _billers?.operatorpublicid,
+            merchantService: _cableService?.code,
             merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
             subCategory: _billers?.displayName,
             amount: _formatter.getUnformattedValue(),
@@ -369,5 +377,41 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
         if (pin != null) _submitForActualUser(pin: pin);
       }
     }
+  }
+
+  Widget _buildSubscriptionTypeTextField() => EditTextFieldWidget(
+        title: AppString.subscriptionType,
+        label: AppString.subscriptionType,
+        controller: subscriptionTypeController,
+        focusNode: subscriptionTypeFocusNode,
+        readOnly: true,
+        keyboardType: TextInputType.text,
+        onFieldSubmitted: (_) {},
+        validator: FieldValidator.validateString(),
+        suffixIcon: const Icon(Icons.keyboard_arrow_down_outlined,
+            color: AppColors.kSecondaryTextColor),
+        onTap: () async {
+          _onSubscriptionTypeTextFieldTapped();
+          setState(() {});
+        },
+      );
+
+  Future<void> _onSubscriptionTypeTextFieldTapped() async {
+    if (_billers == null) return;
+
+    BottomSheets.showSheet(
+            child: ProviderServiceSheet(
+                billersDto: BillersDto(
+                    cableId: _billers?.operatorpublicid ?? '',
+                    path: BillersCategory.betting)))
+        .then((response) {
+      if (response != null) {
+        _cableService = response;
+        subscriptionTypeController.text = response.name ?? '';
+        context.nextFocus(numberFocusNode);
+      }
+    });
+
+    setState(() {});
   }
 }

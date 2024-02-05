@@ -1,9 +1,10 @@
+import 'package:Pouchers/app/config/app_config.dart';
 import 'package:Pouchers/app/core/network/network_service.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/created_virtual_card/created_virtual_card.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/freeze_card/freeze_card.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/fund_virtual_account/fund_virtual_account.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_card/get_cards.dart';
+import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/cards/cards.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_card_token/get_card_token.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_card_transactions/get_card_transactions.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_exchange_rate/get_exchange_rate.dart';
@@ -13,6 +14,7 @@ import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/virtual_c
 import 'package:dio/dio.dart';
 
 import '../../../../../../../app/core/network/api_path.dart';
+import '../../../../../../../app/core/network/module/network_module.dart';
 import 'card_source.dart';
 
 class CardSourceImpl implements CardSource<CardDto> {
@@ -46,7 +48,7 @@ class CardSourceImpl implements CardSource<CardDto> {
   Future<FreezeCard?> freezeCard(
       {required CardDto cardDto, CancelToken? cancelToken}) async {
     final response = await networkService.request(
-        path: '${ApiPath.freezeCard}/${cardDto.sudoId}',
+        path: '${ApiPath.freezeCard}/${cardDto.cardId}',
         requestType: RequestType.patch,
         data: cardDto.toJson(),
         cancelToken: cancelToken);
@@ -68,18 +70,18 @@ class CardSourceImpl implements CardSource<CardDto> {
   Future<VirtualAccountBalance?> getAccountBalance(
       {required CardDto cardDto, CancelToken? cancelToken}) async {
     final response = await networkService.request(
-        path: ApiPath.balance,
+        path: '${ApiPath.balance}/${cardDto.cardId}/balance',
         requestType: RequestType.get,
         cancelToken: cancelToken);
     return VirtualAccountBalance.fromJson(
-        response.data as Map<String, dynamic>);
+        response.data?['data'] as Map<String, dynamic>);
   }
 
   @override
   Future<GetCardToken?> getCardToken(
       {required CardDto cardDto, CancelToken? cancelToken}) async {
     final response = await networkService.request(
-        path: '${ApiPath.token}/_/token',
+        path: '${ApiPath.token}/${cardDto.cardId}/token',
         requestType: RequestType.get,
         cancelToken: cancelToken);
     return GetCardToken.fromJson(response.data as Map<String, dynamic>);
@@ -89,20 +91,23 @@ class CardSourceImpl implements CardSource<CardDto> {
   Future<GetCardTransactions?> getCardTransactions(
       {required CardDto cardDto, CancelToken? cancelToken}) async {
     final response = await networkService.request(
-        path: '${ApiPath.transactions}/_/transactions',
+        path: '${ApiPath.transactions}/${cardDto.cardId}/transactions',
         requestType: RequestType.get,
         cancelToken: cancelToken);
+
     return GetCardTransactions.fromJson(response.data as Map<String, dynamic>);
   }
 
   @override
-  Future<GetCards?> getCards(
+  Future<List<Cards>?> getCards(
       {required CardDto cardDto, CancelToken? cancelToken}) async {
     final response = await networkService.request(
         path: '${ApiPath.cards}/${cardDto.userId}/all',
         requestType: RequestType.get,
         cancelToken: cancelToken);
-    return GetCards.fromJson(response.data as Map<String, dynamic>);
+    return (response.data?['data'] as List<dynamic>)
+        .map((e) => Cards.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   @override
@@ -130,9 +135,27 @@ class CardSourceImpl implements CardSource<CardDto> {
   Future<VirtualCardDetails?> getVirtualCardDetails(
       {required CardDto cardDto, CancelToken? cancelToken}) async {
     final response = await networkService.request(
-        path: '${ApiPath.cards}/${cardDto.sudoId}',
+        path: '${ApiPath.cards}/${cardDto.cardId}/details',
         requestType: RequestType.get,
         cancelToken: cancelToken);
-    return VirtualCardDetails.fromJson(response.data as Map<String, dynamic>);
+
+    /// Retrieve Card Token
+    final cardToken =
+        await getCardToken(cardDto: cardDto, cancelToken: cancelToken);
+
+    /// Retrieve Card CVV
+    networkService.dio = Dio(baseOption.copyWith(baseUrl: AppConfig.vgsApiUrl));
+
+    final vgsSetup = await networkService.request(
+        path: '/cards/${cardDto.cardId}/secure-data/cvv2',
+        requestType: RequestType.get,
+        options: Options(
+            headers: {'Authorization': 'Bearer ${cardToken?.data?.token}'}),
+        cancelToken: cancelToken);
+
+    response.data?['data']?['cvv2'] = vgsSetup.data?['data']?['cvv2'];
+
+    return VirtualCardDetails.fromJson(
+        response.data?['data'] as Map<String, dynamic>);
   }
 }

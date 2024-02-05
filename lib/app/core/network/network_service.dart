@@ -100,10 +100,8 @@ class NetworkService with ResponseHandler {
       final apiError = ApiError.fromDio(error);
       if (apiError.errorType == 401) {
         // Handle 401 errors if needed
-        if (apiError.errorDescription?.toLowerCase().contains('token') ??
-            false) {
-          handleExpiredToken();
-        }
+        if ((apiError.errorDescription?.toLowerCase().contains('token') ??
+            false)) handleExpiredToken();
       }
       return Future.error(apiError, stackTrace);
     }

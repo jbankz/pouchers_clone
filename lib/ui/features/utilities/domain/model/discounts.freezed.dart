@@ -23,10 +23,12 @@ mixin _$Discounts {
   @JsonKey(name: 'product_category')
   String? get productCategory => throw _privateConstructorUsedError;
   @JsonKey(name: 'discount_value')
-  String? get discountValue => throw _privateConstructorUsedError;
+  @StringToNumSerializer()
+  num get discountValue => throw _privateConstructorUsedError;
   @JsonKey(name: 'discount_type')
-  String? get discountType => throw _privateConstructorUsedError;
-  String? get threshold => throw _privateConstructorUsedError;
+  DiscountType? get discountType => throw _privateConstructorUsedError;
+  @StringToNumSerializer()
+  num get threshold => throw _privateConstructorUsedError;
   String? get frequency => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
   @JsonKey(name: 'start_date')
@@ -49,9 +51,11 @@ abstract class $DiscountsCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'product_category') String? productCategory,
-      @JsonKey(name: 'discount_value') String? discountValue,
-      @JsonKey(name: 'discount_type') String? discountType,
-      String? threshold,
+      @JsonKey(name: 'discount_value')
+      @StringToNumSerializer()
+      num discountValue,
+      @JsonKey(name: 'discount_type') DiscountType? discountType,
+      @StringToNumSerializer() num threshold,
       String? frequency,
       String? status,
       @JsonKey(name: 'start_date') @DateTimeSerializer() String? startDate,
@@ -72,9 +76,9 @@ class _$DiscountsCopyWithImpl<$Res, $Val extends Discounts>
   @override
   $Res call({
     Object? productCategory = freezed,
-    Object? discountValue = freezed,
+    Object? discountValue = null,
     Object? discountType = freezed,
-    Object? threshold = freezed,
+    Object? threshold = null,
     Object? frequency = freezed,
     Object? status = freezed,
     Object? startDate = freezed,
@@ -85,18 +89,18 @@ class _$DiscountsCopyWithImpl<$Res, $Val extends Discounts>
           ? _value.productCategory
           : productCategory // ignore: cast_nullable_to_non_nullable
               as String?,
-      discountValue: freezed == discountValue
+      discountValue: null == discountValue
           ? _value.discountValue
           : discountValue // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as num,
       discountType: freezed == discountType
           ? _value.discountType
           : discountType // ignore: cast_nullable_to_non_nullable
-              as String?,
-      threshold: freezed == threshold
+              as DiscountType?,
+      threshold: null == threshold
           ? _value.threshold
           : threshold // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as num,
       frequency: freezed == frequency
           ? _value.frequency
           : frequency // ignore: cast_nullable_to_non_nullable
@@ -127,9 +131,11 @@ abstract class _$$DiscountsImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'product_category') String? productCategory,
-      @JsonKey(name: 'discount_value') String? discountValue,
-      @JsonKey(name: 'discount_type') String? discountType,
-      String? threshold,
+      @JsonKey(name: 'discount_value')
+      @StringToNumSerializer()
+      num discountValue,
+      @JsonKey(name: 'discount_type') DiscountType? discountType,
+      @StringToNumSerializer() num threshold,
       String? frequency,
       String? status,
       @JsonKey(name: 'start_date') @DateTimeSerializer() String? startDate,
@@ -148,9 +154,9 @@ class __$$DiscountsImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? productCategory = freezed,
-    Object? discountValue = freezed,
+    Object? discountValue = null,
     Object? discountType = freezed,
-    Object? threshold = freezed,
+    Object? threshold = null,
     Object? frequency = freezed,
     Object? status = freezed,
     Object? startDate = freezed,
@@ -161,18 +167,18 @@ class __$$DiscountsImplCopyWithImpl<$Res>
           ? _value.productCategory
           : productCategory // ignore: cast_nullable_to_non_nullable
               as String?,
-      discountValue: freezed == discountValue
+      discountValue: null == discountValue
           ? _value.discountValue
           : discountValue // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as num,
       discountType: freezed == discountType
           ? _value.discountType
           : discountType // ignore: cast_nullable_to_non_nullable
-              as String?,
-      threshold: freezed == threshold
+              as DiscountType?,
+      threshold: null == threshold
           ? _value.threshold
           : threshold // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as num,
       frequency: freezed == frequency
           ? _value.frequency
           : frequency // ignore: cast_nullable_to_non_nullable
@@ -198,9 +204,11 @@ class __$$DiscountsImplCopyWithImpl<$Res>
 class _$DiscountsImpl implements _Discounts {
   _$DiscountsImpl(
       {@JsonKey(name: 'product_category') this.productCategory,
-      @JsonKey(name: 'discount_value') this.discountValue,
+      @JsonKey(name: 'discount_value')
+      @StringToNumSerializer()
+      this.discountValue = 0,
       @JsonKey(name: 'discount_type') this.discountType,
-      this.threshold,
+      @StringToNumSerializer() this.threshold = 0,
       this.frequency,
       this.status,
       @JsonKey(name: 'start_date') @DateTimeSerializer() this.startDate,
@@ -214,12 +222,15 @@ class _$DiscountsImpl implements _Discounts {
   final String? productCategory;
   @override
   @JsonKey(name: 'discount_value')
-  final String? discountValue;
+  @StringToNumSerializer()
+  final num discountValue;
   @override
   @JsonKey(name: 'discount_type')
-  final String? discountType;
+  final DiscountType? discountType;
   @override
-  final String? threshold;
+  @JsonKey()
+  @StringToNumSerializer()
+  final num threshold;
   @override
   final String? frequency;
   @override
@@ -281,9 +292,11 @@ class _$DiscountsImpl implements _Discounts {
 abstract class _Discounts implements Discounts {
   factory _Discounts(
       {@JsonKey(name: 'product_category') final String? productCategory,
-      @JsonKey(name: 'discount_value') final String? discountValue,
-      @JsonKey(name: 'discount_type') final String? discountType,
-      final String? threshold,
+      @JsonKey(name: 'discount_value')
+      @StringToNumSerializer()
+      final num discountValue,
+      @JsonKey(name: 'discount_type') final DiscountType? discountType,
+      @StringToNumSerializer() final num threshold,
       final String? frequency,
       final String? status,
       @JsonKey(name: 'start_date')
@@ -301,12 +314,14 @@ abstract class _Discounts implements Discounts {
   String? get productCategory;
   @override
   @JsonKey(name: 'discount_value')
-  String? get discountValue;
+  @StringToNumSerializer()
+  num get discountValue;
   @override
   @JsonKey(name: 'discount_type')
-  String? get discountType;
+  DiscountType? get discountType;
   @override
-  String? get threshold;
+  @StringToNumSerializer()
+  num get threshold;
   @override
   String? get frequency;
   @override

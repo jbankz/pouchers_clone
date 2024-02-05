@@ -14,6 +14,7 @@ const bool _autoTextFieldValidation = true;
 const String ProviderValueKey = 'provider';
 const String NumberValueKey = 'number';
 const String AmountValueKey = 'amount';
+const String SubscriptionTypeValueKey = 'subscriptionType';
 
 final Map<String, TextEditingController> _BettingViewTextEditingControllers =
     {};
@@ -24,6 +25,7 @@ final Map<String, String? Function(String?)?> _BettingViewTextValidations = {
   ProviderValueKey: null,
   NumberValueKey: null,
   AmountValueKey: null,
+  SubscriptionTypeValueKey: null,
 };
 
 mixin $BettingView {
@@ -33,10 +35,14 @@ mixin $BettingView {
       _getFormTextEditingController(NumberValueKey);
   TextEditingController get amountController =>
       _getFormTextEditingController(AmountValueKey);
+  TextEditingController get subscriptionTypeController =>
+      _getFormTextEditingController(SubscriptionTypeValueKey);
 
   FocusNode get providerFocusNode => _getFormFocusNode(ProviderValueKey);
   FocusNode get numberFocusNode => _getFormFocusNode(NumberValueKey);
   FocusNode get amountFocusNode => _getFormFocusNode(AmountValueKey);
+  FocusNode get subscriptionTypeFocusNode =>
+      _getFormFocusNode(SubscriptionTypeValueKey);
 
   TextEditingController _getFormTextEditingController(
     String key, {
@@ -65,6 +71,7 @@ mixin $BettingView {
     providerController.addListener(() => _updateFormData(model));
     numberController.addListener(() => _updateFormData(model));
     amountController.addListener(() => _updateFormData(model));
+    subscriptionTypeController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
   }
@@ -79,6 +86,7 @@ mixin $BettingView {
     providerController.addListener(() => _updateFormData(model));
     numberController.addListener(() => _updateFormData(model));
     amountController.addListener(() => _updateFormData(model));
+    subscriptionTypeController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
   }
@@ -91,6 +99,7 @@ mixin $BettingView {
           ProviderValueKey: providerController.text,
           NumberValueKey: numberController.text,
           AmountValueKey: amountController.text,
+          SubscriptionTypeValueKey: subscriptionTypeController.text,
         }),
     );
 
@@ -135,6 +144,8 @@ extension ValueProperties on FormStateHelper {
   String? get providerValue => this.formValueMap[ProviderValueKey] as String?;
   String? get numberValue => this.formValueMap[NumberValueKey] as String?;
   String? get amountValue => this.formValueMap[AmountValueKey] as String?;
+  String? get subscriptionTypeValue =>
+      this.formValueMap[SubscriptionTypeValueKey] as String?;
 
   set providerValue(String? value) {
     this.setData(
@@ -166,6 +177,18 @@ extension ValueProperties on FormStateHelper {
     }
   }
 
+  set subscriptionTypeValue(String? value) {
+    this.setData(
+      this.formValueMap..addAll({SubscriptionTypeValueKey: value}),
+    );
+
+    if (_BettingViewTextEditingControllers.containsKey(
+        SubscriptionTypeValueKey)) {
+      _BettingViewTextEditingControllers[SubscriptionTypeValueKey]?.text =
+          value ?? '';
+    }
+  }
+
   bool get hasProvider =>
       this.formValueMap.containsKey(ProviderValueKey) &&
       (providerValue?.isNotEmpty ?? false);
@@ -175,6 +198,9 @@ extension ValueProperties on FormStateHelper {
   bool get hasAmount =>
       this.formValueMap.containsKey(AmountValueKey) &&
       (amountValue?.isNotEmpty ?? false);
+  bool get hasSubscriptionType =>
+      this.formValueMap.containsKey(SubscriptionTypeValueKey) &&
+      (subscriptionTypeValue?.isNotEmpty ?? false);
 
   bool get hasProviderValidationMessage =>
       this.fieldsValidationMessages[ProviderValueKey]?.isNotEmpty ?? false;
@@ -182,6 +208,9 @@ extension ValueProperties on FormStateHelper {
       this.fieldsValidationMessages[NumberValueKey]?.isNotEmpty ?? false;
   bool get hasAmountValidationMessage =>
       this.fieldsValidationMessages[AmountValueKey]?.isNotEmpty ?? false;
+  bool get hasSubscriptionTypeValidationMessage =>
+      this.fieldsValidationMessages[SubscriptionTypeValueKey]?.isNotEmpty ??
+      false;
 
   String? get providerValidationMessage =>
       this.fieldsValidationMessages[ProviderValueKey];
@@ -189,6 +218,8 @@ extension ValueProperties on FormStateHelper {
       this.fieldsValidationMessages[NumberValueKey];
   String? get amountValidationMessage =>
       this.fieldsValidationMessages[AmountValueKey];
+  String? get subscriptionTypeValidationMessage =>
+      this.fieldsValidationMessages[SubscriptionTypeValueKey];
 }
 
 extension Methods on FormStateHelper {
@@ -198,12 +229,16 @@ extension Methods on FormStateHelper {
       this.fieldsValidationMessages[NumberValueKey] = validationMessage;
   setAmountValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[AmountValueKey] = validationMessage;
+  setSubscriptionTypeValidationMessage(String? validationMessage) =>
+      this.fieldsValidationMessages[SubscriptionTypeValueKey] =
+          validationMessage;
 
   /// Clears text input fields on the Form
   void clearForm() {
     providerValue = '';
     numberValue = '';
     amountValue = '';
+    subscriptionTypeValue = '';
   }
 
   /// Validates text input fields on the Form
@@ -212,6 +247,7 @@ extension Methods on FormStateHelper {
       ProviderValueKey: getValidationMessage(ProviderValueKey),
       NumberValueKey: getValidationMessage(NumberValueKey),
       AmountValueKey: getValidationMessage(AmountValueKey),
+      SubscriptionTypeValueKey: getValidationMessage(SubscriptionTypeValueKey),
     });
   }
 }
@@ -234,4 +270,5 @@ void updateValidationData(FormStateHelper model) =>
       ProviderValueKey: getValidationMessage(ProviderValueKey),
       NumberValueKey: getValidationMessage(NumberValueKey),
       AmountValueKey: getValidationMessage(AmountValueKey),
+      SubscriptionTypeValueKey: getValidationMessage(SubscriptionTypeValueKey),
     });

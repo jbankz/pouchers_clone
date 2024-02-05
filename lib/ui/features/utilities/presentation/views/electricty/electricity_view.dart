@@ -234,7 +234,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
         onChanged: (value) => _debouncer.run(() {
           if (value.length >= 10) _validateCustomer(getMerchant);
         }),
-        validator: FieldValidator.validateMeterNumber(cardLength: 11),
+        validator: FieldValidator.validateMeterNumber(cardLength: 10),
         inputFormatters: [context.digitsOnly],
         suffixIcon: CupertinoButton(
           padding: EdgeInsets.zero,
@@ -394,7 +394,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
           onSuccess: () => PageRouter.pushNamed(Routes.successState,
               args: SuccessStateArguments(
                   title: AppString.rechargeSuccessful,
-                  message: AppString.completedAirtimePurchase,
+                  message: AppString.completedElectricityPurchase,
                   btnTitle: AppString.complete,
                   tap: () => PageRouter.popToRoot(Routes.electricityView))),
           cancelToken: _cancelToken);

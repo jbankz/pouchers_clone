@@ -4,6 +4,7 @@ import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_statu
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/params_notifier.dart';
+import 'package:Pouchers/ui/features/profile/data/dao/wallet_dao.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
 import 'package:Pouchers/ui/features/profile/presentation/views/wallet/widget/balance_indicator_widget.dart';
 import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
@@ -18,7 +19,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../../../common/app_strings.dart';
 import '../../../../../admin/presentation/notifier/admin_notifier.dart';
 import '../../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
-import '../../../../../profile/domain/model/wallet.dart';
 import '../../domain/dto/card_dto.dart';
 import '../../domain/enum/card_brand.dart';
 import '../../domain/enum/currency.dart';
@@ -66,7 +66,7 @@ class _CardCreationSymmaryViewState
 
         final bool insufficient =
             ((widget.cardDto.amount ?? 0) + totalNairaFee) >
-                num.parse((walletState.data as Wallet?)?.balance ?? '0');
+                num.parse((walletDao.wallet.balance ?? '0'));
 
         final grandTotal = param.isNairaCardType
             ? ((widget.cardDto.amount ?? 0) + totalNairaFee)
@@ -188,13 +188,6 @@ class _CardCreationSymmaryViewState
                         ])),
                     const Gap(height: 113),
                     BalanceIndicatorWidget(amount: grandTotal),
-                    const Gap(height: 9),
-                    if (!walletState.isBusy && insufficient)
-                      Text(
-                        AppString.insufficientFund,
-                        style: context.titleLarge?.copyWith(
-                            color: AppColors.kColorOrange, fontSize: 12),
-                      )
                   ],
                 )),
                 const Gap(height: 16),
@@ -226,7 +219,7 @@ class _CardCreationSymmaryViewState
             country: param.country,
             // bvn: param.bvn,
             transactionPin: pin,
-            brand: CardBrand.Verve,
+            brand: CardBrand.verve,
             currency: Currency.NGN),
         _cancelToken);
   }
@@ -239,7 +232,7 @@ class _CardCreationSymmaryViewState
             country: param.country,
             // bvn: param.bvn,
             transactionPin: pin,
-            brand: CardBrand.Visa,
+            brand: CardBrand.visa,
             currency: Currency.USD),
         _cancelToken);
   }

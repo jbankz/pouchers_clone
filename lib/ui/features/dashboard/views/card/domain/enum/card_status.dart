@@ -1,1 +1,1 @@
-enum CardStatus { active, inactive }
+enum CardStatus { active, inactive, success }
