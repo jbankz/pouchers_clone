@@ -83,8 +83,6 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
     _billersNotifier = ref.read(billersNotifierProvider.notifier);
 
     await _billersNotifier.billers(BillersCategory.cable, _cancelToken);
-    await _billersNotifier.billersDiscounts(
-        BillersCategory.cable, _cancelToken);
   }
 
   @override

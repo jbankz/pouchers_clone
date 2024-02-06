@@ -91,8 +91,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
     _merchantsNotifier = ref.read(merchantsNotifierProvider.notifier);
 
     await _billersNotifier.billers(BillersCategory.electricity, _cancelToken);
-    await _billersNotifier.billersDiscounts(
-        BillersCategory.electricity, _cancelToken);
+
     await _merchantsNotifier.getMerchants(_cancelToken);
   }
 

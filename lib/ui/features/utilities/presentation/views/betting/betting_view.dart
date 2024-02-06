@@ -92,8 +92,6 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
     _merchantsNotifier = ref.read(merchantsNotifierProvider.notifier);
 
     await _billersNotifier.billers(BillersCategory.betting, _cancelToken);
-    await _billersNotifier.billersDiscounts(
-        BillersCategory.betting, _cancelToken);
     await _merchantsNotifier.getMerchants(_cancelToken);
   }
 

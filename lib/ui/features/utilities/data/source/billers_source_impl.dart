@@ -33,14 +33,16 @@ class BillersSourceImpl implements BillerSource {
   }
 
   @override
-  Future<Discounts?> discounts(BillersDto billersDto,
+  Future<DiscountsData?> discounts(BillersDto billersDto,
       {CancelToken? cancelToken}) async {
     final response = await networkService.request(
-        path: '${ApiPath.billersDiscounts}/${billersDto.billersCategory?.name}',
+        path:
+            '${ApiPath.billersDiscounts}/${billersDto.billersCategory?.name}/${billersDto.operatorId}',
         requestType: RequestType.get,
         cancelToken: cancelToken);
 
-    return Discounts.fromJson(response.data?['data'] as Map<String, dynamic>);
+    return DiscountsData.fromJson(
+        response.data?['data'] as Map<String, dynamic>);
   }
 
   @override

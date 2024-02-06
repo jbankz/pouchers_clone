@@ -15,7 +15,7 @@ import '../model/validate_customer.dart';
 abstract class BillerRepo {
   Future<List<Billers>> billers(BillersDto billersDto,
       {CancelToken? cancelToken});
-  Future<Discounts?> discounts(BillersDto billersDto,
+  Future<DiscountsData?> discounts(BillersDto billersDto,
       {CancelToken? cancelToken});
   List<AirtimeTopDeals> topDeals();
   Future<Utility?> utilityPurchase(MobileDto mobileDto,

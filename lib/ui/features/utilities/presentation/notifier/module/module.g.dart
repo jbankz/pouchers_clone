@@ -171,14 +171,14 @@ class _BillersProviderElement
   CancelToken? get cancelToken => (origin as BillersProvider).cancelToken;
 }
 
-String _$billersDiscountsHash() => r'b4b254d66f6f8bd852e6852136c9df51b8d64008';
+String _$billersDiscountsHash() => r'3940d11e8cd55ce2affa7bad70c8ecabf5837632';
 
 /// See also [billersDiscounts].
 @ProviderFor(billersDiscounts)
 const billersDiscountsProvider = BillersDiscountsFamily();
 
 /// See also [billersDiscounts].
-class BillersDiscountsFamily extends Family<AsyncValue<Discounts?>> {
+class BillersDiscountsFamily extends Family<AsyncValue<DiscountsData?>> {
   /// See also [billersDiscounts].
   const BillersDiscountsFamily();
 
@@ -219,7 +219,8 @@ class BillersDiscountsFamily extends Family<AsyncValue<Discounts?>> {
 }
 
 /// See also [billersDiscounts].
-class BillersDiscountsProvider extends AutoDisposeFutureProvider<Discounts?> {
+class BillersDiscountsProvider
+    extends AutoDisposeFutureProvider<DiscountsData?> {
   /// See also [billersDiscounts].
   BillersDiscountsProvider({
     required BillersDto parameter,
@@ -259,7 +260,7 @@ class BillersDiscountsProvider extends AutoDisposeFutureProvider<Discounts?> {
 
   @override
   Override overrideWith(
-    FutureOr<Discounts?> Function(BillersDiscountsRef provider) create,
+    FutureOr<DiscountsData?> Function(BillersDiscountsRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -277,7 +278,7 @@ class BillersDiscountsProvider extends AutoDisposeFutureProvider<Discounts?> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<Discounts?> createElement() {
+  AutoDisposeFutureProviderElement<DiscountsData?> createElement() {
     return _BillersDiscountsProviderElement(this);
   }
 
@@ -298,7 +299,7 @@ class BillersDiscountsProvider extends AutoDisposeFutureProvider<Discounts?> {
   }
 }
 
-mixin BillersDiscountsRef on AutoDisposeFutureProviderRef<Discounts?> {
+mixin BillersDiscountsRef on AutoDisposeFutureProviderRef<DiscountsData?> {
   /// The parameter `parameter` of this provider.
   BillersDto get parameter;
 
@@ -307,7 +308,7 @@ mixin BillersDiscountsRef on AutoDisposeFutureProviderRef<Discounts?> {
 }
 
 class _BillersDiscountsProviderElement
-    extends AutoDisposeFutureProviderElement<Discounts?>
+    extends AutoDisposeFutureProviderElement<DiscountsData?>
     with BillersDiscountsRef {
   _BillersDiscountsProviderElement(super.provider);
 

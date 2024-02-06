@@ -124,7 +124,7 @@ class ApiPath {
   static const String banners = '$_apiVersionOne/admin-settings/banners';
   static const String billers = '$_apiVersionOne/utility/billers';
   static const String billersDiscounts =
-      '$_apiVersionOne/utility/discount/value';
+      '$_apiVersionOne/utility/discount/product';
   static const String mobile = '$_apiVersionOne/utility/mobile';
   static const String merchantPayment =
       '$_apiVersionOne/utility/merchantPayment';

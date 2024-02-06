@@ -2,11 +2,11 @@ import 'package:Pouchers/app/core/skeleton/widgets.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
+import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -20,6 +20,7 @@ import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_images.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/dialog/bottom_sheet.dart';
+import '../../../../../widgets/dialog/guest_modal_sheet.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
@@ -33,6 +34,7 @@ import '../../../domain/model/billers.dart';
 import '../../../domain/model/mobile_data_services.dart';
 import '../../notifier/billers_notifier.dart';
 import '../../state/billers_state.dart';
+import '../airtime/widget/top_deal_widget.dart';
 import '../sheet/summary_sheet.dart';
 import '../widget/scheduling_widget.dart';
 import '../widget/utility_icon.dart';
@@ -62,8 +64,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _billersNotifier = ref.read(billersNotifierProvider.notifier)
-        ..billers(BillersCategory.data, _cancelToken)
-        ..billersDiscounts(BillersCategory.data, _cancelToken);
+        ..billers(BillersCategory.data, _cancelToken);
     });
   }
 
@@ -105,10 +106,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                         onFieldSubmitted: (_) =>
                             context.nextFocus(amountFocusNode),
                         validator: FieldValidator.validatePhone(),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(11)
-                        ],
+                        inputFormatters: [context.digitsOnly, context.limit()],
                         suffixIcon: CupertinoButton(
                             padding: EdgeInsets.zero,
                             child: SvgPicture.asset(AppImage.contactBook,
@@ -146,10 +144,30 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
 
                               _mobileOperatorServices = null;
                               setState(() => _billers = biller);
+
+                              _billersNotifier.billersDiscounts(
+                                  parameter: BillersCategory.data,
+                                  operatorId: _billers?.operatorpublicid,
+                                  cancelToken: _cancelToken);
                             },
                           ));
                         }).toList(),
                       ),
+                      TopDealsWidget(
+                          category: BillersCategory.data,
+                          filteredServices: [],
+                          callback: (topDeal) {
+                            if (billerState.isPurchasing) return;
+
+                            if (billerState.isGuest) {
+                              BottomSheets.showAlertDialog(
+                                  child: const GuestDiscountSheet());
+                              return;
+                            }
+
+                            _mobileOperatorServices = topDeal;
+                            setState(() {});
+                          }),
                       const Gap(height: 24),
                       EditTextFieldWidget(
                         title: AppString.selectType,
@@ -187,6 +205,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                     ],
                   ),
                 ),
+                const Gap(height: 16),
                 ElevatedButtonWidget(
                     title: AppString.proceed,
                     loading: billerState.isPurchasing,
@@ -228,18 +247,19 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
   }
 
   Future<void> _handlePayment(BillersState billerState) async {
+    final discount = billerState.discounts?.discount;
+
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(
         summaryDto: SummaryDto(
             isGuest: billerState.isGuest,
-            title: _billers?.displayName,
+            title: _mobileOperatorServices?.dataValue,
             imageUrl: _billers?.logoUrl,
             recipient: phoneController.text,
-            amount: _mobileOperatorServices?.servicePrice,
-            cashBack: _airtimeTopDeals?.cashBack,
-            fee: 0),
+            amount: discount?.payment(_mobileOperatorServices?.servicePrice),
+            cashBack: discount?.discountValue),
         biometricVerification: (pin) {
-          _submitForActualUser(pin: pin);
+          _submitForActualUser(billerState: billerState, pin: pin);
           return;
         },
       ),
@@ -252,29 +272,39 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
         final pin = await BottomSheets.showSheet(
           child: const PinConfirmationSheet(),
         ) as String?;
-        if (pin != null) _submitForActualUser(pin: pin);
+        if (pin != null) {
+          _submitForActualUser(billerState: billerState, pin: pin);
+        }
       }
     }
   }
 
-  Future<void> _submitForActualUser({String? pin}) =>
-      _billersNotifier.purchaseService(
-          mobileDto: MobileDto(
-              category: ServiceCategory.data,
-              subCategory: _billers?.displayName,
-              amount: _mobileOperatorServices?.servicePrice,
-              destinationPhoneNumber: phoneController.text,
-              mobileOperatorPublicId: _billers?.operatorpublicid,
-              applyDiscount: false,
-              mobileOperatorServiceId:
-                  _mobileOperatorServices?.serviceId.toString() ?? '',
-              isDataBundle: true,
-              transactionPin: pin),
-          onSuccess: () => PageRouter.pushNamed(Routes.successState,
-              args: SuccessStateArguments(
-                  title: AppString.rechargeSuccessful,
-                  message: AppString.completedDataPurchase,
-                  btnTitle: AppString.complete,
-                  tap: () => PageRouter.popToRoot(Routes.dataView))),
-          cancelToken: _cancelToken);
+  Future<void> _submitForActualUser(
+      {required BillersState billerState, String? pin}) async {
+    final discount = billerState.discounts?.discount;
+    final isDiscount = (discount?.threshold ?? 0) <=
+        (_mobileOperatorServices?.servicePrice ?? 0);
+
+    final mobileDto = MobileDto(
+        category: ServiceCategory.data,
+        subCategory: _billers?.displayName,
+        amount: discount?.payment(_mobileOperatorServices?.servicePrice),
+        destinationPhoneNumber: phoneController.text,
+        mobileOperatorPublicId: _billers?.operatorpublicid,
+        applyDiscount: isDiscount,
+        mobileOperatorServiceId:
+            _mobileOperatorServices?.serviceId.toString() ?? '',
+        isDataBundle: true,
+        transactionPin: pin);
+
+    _billersNotifier.purchaseService(
+        mobileDto: mobileDto,
+        onSuccess: () => PageRouter.pushNamed(Routes.successState,
+            args: SuccessStateArguments(
+                title: AppString.rechargeSuccessful,
+                message: AppString.completedDataPurchase,
+                btnTitle: AppString.complete,
+                tap: () => PageRouter.popToRoot(Routes.dataView))),
+        cancelToken: _cancelToken);
+  }
 }

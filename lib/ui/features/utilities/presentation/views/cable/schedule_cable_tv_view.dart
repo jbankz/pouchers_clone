@@ -87,8 +87,6 @@ class _ScheduleCableTvViewState extends ConsumerState<ScheduleCableTvView>
     _scheduleNotifier = ref.read(scheduleNotifierProvider.notifier);
 
     await _billersNotifier.billers(BillersCategory.cable, _cancelToken);
-    await _billersNotifier.billersDiscounts(
-        BillersCategory.cable, _cancelToken);
 
     _frequency = widget.schedule?.frequency ?? '';
   }

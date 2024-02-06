@@ -6,6 +6,7 @@ class BillersDto {
   final String? merchantAccount;
   final String? merchantReferenceNumber;
   final String? merchantServiceProductCode;
+  final String? operatorId;
   final BillersCategory? path;
 
   BillersDto(
@@ -14,7 +15,8 @@ class BillersDto {
       this.merchantAccount,
       this.merchantReferenceNumber,
       this.merchantServiceProductCode,
-      this.path});
+      this.path,
+      this.operatorId});
 
   Map<String, dynamic> toJson() {
     final result = <String, dynamic>{};

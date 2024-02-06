@@ -8,6 +8,7 @@ percentage = amount - (discount % amount)
 
 TODO
 
-Check CVV in cards 
-Update Utilities to make use of Discounts
+Check CVV in cards => DONE
 Check why users card is not displaying een after having a card => DONE 
+Update Utilities to make use of Discounts => 
+Hide google json files from github => 

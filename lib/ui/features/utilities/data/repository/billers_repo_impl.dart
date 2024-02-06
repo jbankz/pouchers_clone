@@ -26,7 +26,7 @@ class BillersRepoImpl implements BillerRepo {
       await _billersSource.billers(billersDto, cancelToken: cancelToken);
 
   @override
-  Future<Discounts?> discounts(BillersDto billersDto,
+  Future<DiscountsData?> discounts(BillersDto billersDto,
           {CancelToken? cancelToken}) async =>
       await _billersSource.discounts(billersDto, cancelToken: cancelToken);
 

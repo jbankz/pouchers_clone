@@ -14,6 +14,194 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+DiscountsData _$DiscountsDataFromJson(Map<String, dynamic> json) {
+  return _DiscountsData.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DiscountsData {
+  Discounts? get discount => throw _privateConstructorUsedError;
+  List<MobileOperatorServices> get filteredServices =>
+      throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $DiscountsDataCopyWith<DiscountsData> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DiscountsDataCopyWith<$Res> {
+  factory $DiscountsDataCopyWith(
+          DiscountsData value, $Res Function(DiscountsData) then) =
+      _$DiscountsDataCopyWithImpl<$Res, DiscountsData>;
+  @useResult
+  $Res call(
+      {Discounts? discount, List<MobileOperatorServices> filteredServices});
+
+  $DiscountsCopyWith<$Res>? get discount;
+}
+
+/// @nodoc
+class _$DiscountsDataCopyWithImpl<$Res, $Val extends DiscountsData>
+    implements $DiscountsDataCopyWith<$Res> {
+  _$DiscountsDataCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? discount = freezed,
+    Object? filteredServices = null,
+  }) {
+    return _then(_value.copyWith(
+      discount: freezed == discount
+          ? _value.discount
+          : discount // ignore: cast_nullable_to_non_nullable
+              as Discounts?,
+      filteredServices: null == filteredServices
+          ? _value.filteredServices
+          : filteredServices // ignore: cast_nullable_to_non_nullable
+              as List<MobileOperatorServices>,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $DiscountsCopyWith<$Res>? get discount {
+    if (_value.discount == null) {
+      return null;
+    }
+
+    return $DiscountsCopyWith<$Res>(_value.discount!, (value) {
+      return _then(_value.copyWith(discount: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$DiscountsDataImplCopyWith<$Res>
+    implements $DiscountsDataCopyWith<$Res> {
+  factory _$$DiscountsDataImplCopyWith(
+          _$DiscountsDataImpl value, $Res Function(_$DiscountsDataImpl) then) =
+      __$$DiscountsDataImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {Discounts? discount, List<MobileOperatorServices> filteredServices});
+
+  @override
+  $DiscountsCopyWith<$Res>? get discount;
+}
+
+/// @nodoc
+class __$$DiscountsDataImplCopyWithImpl<$Res>
+    extends _$DiscountsDataCopyWithImpl<$Res, _$DiscountsDataImpl>
+    implements _$$DiscountsDataImplCopyWith<$Res> {
+  __$$DiscountsDataImplCopyWithImpl(
+      _$DiscountsDataImpl _value, $Res Function(_$DiscountsDataImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? discount = freezed,
+    Object? filteredServices = null,
+  }) {
+    return _then(_$DiscountsDataImpl(
+      discount: freezed == discount
+          ? _value.discount
+          : discount // ignore: cast_nullable_to_non_nullable
+              as Discounts?,
+      filteredServices: null == filteredServices
+          ? _value._filteredServices
+          : filteredServices // ignore: cast_nullable_to_non_nullable
+              as List<MobileOperatorServices>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$DiscountsDataImpl implements _DiscountsData {
+  _$DiscountsDataImpl(
+      {this.discount,
+      final List<MobileOperatorServices> filteredServices = const []})
+      : _filteredServices = filteredServices;
+
+  factory _$DiscountsDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DiscountsDataImplFromJson(json);
+
+  @override
+  final Discounts? discount;
+  final List<MobileOperatorServices> _filteredServices;
+  @override
+  @JsonKey()
+  List<MobileOperatorServices> get filteredServices {
+    if (_filteredServices is EqualUnmodifiableListView)
+      return _filteredServices;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_filteredServices);
+  }
+
+  @override
+  String toString() {
+    return 'DiscountsData(discount: $discount, filteredServices: $filteredServices)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DiscountsDataImpl &&
+            (identical(other.discount, discount) ||
+                other.discount == discount) &&
+            const DeepCollectionEquality()
+                .equals(other._filteredServices, _filteredServices));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, discount,
+      const DeepCollectionEquality().hash(_filteredServices));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DiscountsDataImplCopyWith<_$DiscountsDataImpl> get copyWith =>
+      __$$DiscountsDataImplCopyWithImpl<_$DiscountsDataImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$DiscountsDataImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DiscountsData implements DiscountsData {
+  factory _DiscountsData(
+          {final Discounts? discount,
+          final List<MobileOperatorServices> filteredServices}) =
+      _$DiscountsDataImpl;
+
+  factory _DiscountsData.fromJson(Map<String, dynamic> json) =
+      _$DiscountsDataImpl.fromJson;
+
+  @override
+  Discounts? get discount;
+  @override
+  List<MobileOperatorServices> get filteredServices;
+  @override
+  @JsonKey(ignore: true)
+  _$$DiscountsDataImplCopyWith<_$DiscountsDataImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 Discounts _$DiscountsFromJson(Map<String, dynamic> json) {
   return _Discounts.fromJson(json);
 }

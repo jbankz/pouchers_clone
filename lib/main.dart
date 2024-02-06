@@ -22,7 +22,7 @@ Future<void> main() async {
   await dotenv.load(fileName: AppConfig.fileName);
 
   await setupLocator();
-
+ 
   runApp(const MyApp());
 }
 

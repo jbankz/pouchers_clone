@@ -92,8 +92,6 @@ class _ScheduleElectricityViewState
     _billersNotifier = ref.read(billersNotifierProvider.notifier)
       ..resetCustomerInfo();
     await _billersNotifier.billers(BillersCategory.electricity, _cancelToken);
-    await _billersNotifier.billersDiscounts(
-        BillersCategory.electricity, _cancelToken);
 
     _frequency = widget.schedule?.frequency ?? '';
     _billers = Billers(

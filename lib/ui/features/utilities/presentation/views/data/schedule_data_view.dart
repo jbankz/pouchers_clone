@@ -65,8 +65,7 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _billersNotifier = ref.read(billersNotifierProvider.notifier)
-        ..billers(BillersCategory.data, _cancelToken)
-        ..billersDiscounts(BillersCategory.data, _cancelToken);
+        ..billers(BillersCategory.data, _cancelToken);
       _scheduleNotifier = ref.read(scheduleNotifierProvider.notifier);
       _frequency = widget.schedule?.frequency ?? '';
       phoneController.text = widget.schedule?.recipient ?? '';

@@ -6,6 +6,24 @@ part of 'discounts.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+_$DiscountsDataImpl _$$DiscountsDataImplFromJson(Map<String, dynamic> json) =>
+    _$DiscountsDataImpl(
+      discount: json['discount'] == null
+          ? null
+          : Discounts.fromJson(json['discount'] as Map<String, dynamic>),
+      filteredServices: (json['filteredServices'] as List<dynamic>?)
+              ?.map((e) =>
+                  MobileOperatorServices.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+    );
+
+Map<String, dynamic> _$$DiscountsDataImplToJson(_$DiscountsDataImpl instance) =>
+    <String, dynamic>{
+      'discount': instance.discount,
+      'filteredServices': instance.filteredServices,
+    };
+
 _$DiscountsImpl _$$DiscountsImplFromJson(Map<String, dynamic> json) =>
     _$DiscountsImpl(
       productCategory: json['product_category'] as String?,

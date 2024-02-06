@@ -59,10 +59,9 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _billersNotifier = ref.read(billersNotifierProvider.notifier)
-        ..billers(BillersCategory.airtime, _cancelToken)
-        ..billersDiscounts(BillersCategory.airtime, _cancelToken);
+        ..billers(BillersCategory.airtime, _cancelToken);
     });
   }
 
@@ -80,6 +79,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
+    final discountData = billerState.discounts;
 
     return Scaffold(
       appBar: AppBar(title: Text(AppString.airtime)),
@@ -143,24 +143,34 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                               if (billerState.isPurchasing) return;
 
                               setState(() => _billers = biller);
+
+                              _billersNotifier.billersDiscounts(
+                                  parameter: BillersCategory.airtime,
+                                  operatorId: _billers?.operatorpublicid,
+                                  cancelToken: _cancelToken);
                             },
                           ));
                         }).toList(),
                       ),
-                      TopDealsWidget(callback: (topDeal) {
-                        if (billerState.isPurchasing) return;
+                      TopDealsWidget(
+                          category: BillersCategory.airtime,
+                          filteredServices:
+                              discountData?.discount?.topDeals ?? [],
+                          callback: (topDeal) {
+                            if (billerState.isPurchasing) return;
 
-                        if (billerState.isGuest) {
-                          BottomSheets.showAlertDialog(
-                              child: const GuestDiscountSheet());
-                          return;
-                        }
+                            if (billerState.isGuest) {
+                              BottomSheets.showAlertDialog(
+                                  child: const GuestDiscountSheet());
+                              return;
+                            }
 
-                        amountController.text = _formatter
-                            .formatDouble(topDeal.toDouble())
-                            .toString();
-                        setState(() {});
-                      }),
+                            amountController.text = _formatter
+                                .formatDouble(topDeal.servicePrice.toDouble())
+                                .toString();
+
+                            setState(() {});
+                          }),
                       const Gap(height: 24),
                       EditTextFieldWidget(
                         title: AppString.amount,
@@ -217,13 +227,12 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
 
   Future<void> _submitForActualUser(
       {String? pin, required BillersState billerState}) async {
-    final bool isAppliedDiscount = ((billerState.discounts != null) &&
-        _formatter.getUnformattedValue() >=
-            (billerState.discounts?.threshold ?? 0));
-    final Discounts? discounts = billerState.discounts;
+    final Discounts? discounts = billerState.discounts?.discount;
 
-    final amount =
-        discounts?.payment(_formatter.getUnformattedValue().toString()) ?? 0;
+    final bool isAppliedDiscount = ((billerState.discounts != null) &&
+        _formatter.getUnformattedValue() >= (discounts?.threshold ?? 0));
+
+    final amount = discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
 
     final mobileDto = MobileDto(
         category: ServiceCategory.airtime,
@@ -266,14 +275,12 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
   }
 
   Future<void> _handlePayment(BillersState billerState) async {
-    final Discounts? discounts = billerState.discounts;
+    final Discounts? discounts = billerState.discounts?.discount;
 
-    final amount =
-        discounts?.payment(_formatter.getUnformattedValue().toString()) ?? 0;
-    final cashBack =
-        _formatter.getUnformattedValue() < (discounts?.threshold ?? 0)
-            ? 0
-            : (discounts?.discountValue ?? 0);
+    final bool isAppliedDiscount = ((discounts != null) &&
+        _formatter.getUnformattedValue() >= (discounts.threshold));
+
+    final amount = discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
 
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(
@@ -287,8 +294,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                     color: AppColors.kPurple100, fontWeight: FontWeight.w700),
                 textAlign: TextAlign.right),
             amount: amount,
-            cashBack: cashBack,
-            fee: 0),
+            cashBack: isAppliedDiscount ? discounts.discountValue : 0),
         biometricVerification: (pin) {
           _submitForActualUser(pin: pin, billerState: billerState);
           return;

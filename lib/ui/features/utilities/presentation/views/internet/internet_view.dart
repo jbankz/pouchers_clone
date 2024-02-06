@@ -86,8 +86,6 @@ class _InternetViewState extends ConsumerState<InternetView>
     _merchantsNotifier = ref.read(merchantsNotifierProvider.notifier);
 
     await _billersNotifier.billers(BillersCategory.internet, _cancelToken);
-    await _billersNotifier.billersDiscounts(
-        BillersCategory.internet, _cancelToken);
     await _merchantsNotifier.getMerchants(_cancelToken);
   }
 

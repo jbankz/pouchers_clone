@@ -15,7 +15,7 @@ class SummaryDto {
       this.title,
       this.recipient,
       this.amount,
-      this.fee,
+      this.fee = 0,
       this.cashBack,
       this.recipientWidget,
       this.isGuest = false});

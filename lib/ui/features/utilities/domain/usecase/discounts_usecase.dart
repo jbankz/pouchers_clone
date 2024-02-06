@@ -6,13 +6,13 @@ import '../../../../../app/core/usecase/poucher_usecase.dart';
 import '../model/discounts.dart';
 
 class BillersDiscountsUseCaseImpl
-    implements PoucherUseCaseWithRequiredParam<BillersDto, Discounts> {
+    implements PoucherUseCaseWithRequiredParam<BillersDto, DiscountsData> {
   final BillerRepo _billerRepo;
 
   BillersDiscountsUseCaseImpl(this._billerRepo);
 
   @override
-  Future<Discounts?> execute(
+  Future<DiscountsData?> execute(
           {required BillersDto parameter, CancelToken? cancelToken}) async =>
       await _billerRepo.discounts(parameter, cancelToken: cancelToken);
 }

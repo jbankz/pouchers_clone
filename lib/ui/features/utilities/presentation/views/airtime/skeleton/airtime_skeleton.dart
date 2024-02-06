@@ -47,28 +47,6 @@ class AirtimeSkeleton extends StatelessWidget {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12.r))),
                 const Gap(height: 12),
-                GridView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 6,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisSpacing: 14.w,
-                        crossAxisSpacing: 16.h,
-                        childAspectRatio: 1.5,
-                        crossAxisCount: 3),
-                    itemBuilder: (_, index) => Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            color: Colors.white))),
-                const Gap(height: 24),
-                Container(
-                    height: 10.h,
-                    margin: EdgeInsets.only(right: context.width * .7),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12.r))),
-                const Gap(height: 12),
                 Container(
                   height: 50.h,
                   decoration: BoxDecoration(

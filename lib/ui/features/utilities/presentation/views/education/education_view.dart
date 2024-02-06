@@ -81,8 +81,6 @@ class _EducationViewState extends ConsumerState<EducationView>
     _merchantsNotifier = ref.read(merchantsNotifierProvider.notifier);
 
     await _billersNotifier.billers(BillersCategory.education, _cancelToken);
-    await _billersNotifier.billersDiscounts(
-        BillersCategory.education, _cancelToken);
     await _merchantsNotifier.getMerchants(_cancelToken);
   }
 

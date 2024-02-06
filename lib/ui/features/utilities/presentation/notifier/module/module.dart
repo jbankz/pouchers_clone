@@ -24,7 +24,7 @@ Future<List<Billers>> billers(BillersRef ref,
         .execute(parameter: parameter, cancelToken: cancelToken);
 
 @riverpod
-Future<Discounts?> billersDiscounts(BillersDiscountsRef ref,
+Future<DiscountsData?> billersDiscounts(BillersDiscountsRef ref,
         {required BillersDto parameter, CancelToken? cancelToken}) async =>
     await ref
         .read(getBillersDiscountsUseCaseModule)

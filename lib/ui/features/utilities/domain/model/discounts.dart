@@ -3,9 +3,21 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../app/serializer/string_to_num_serializer.dart';
 import '../enum/discount_type.dart';
+import 'mobile_data_services.dart';
 
 part 'discounts.freezed.dart';
 part 'discounts.g.dart';
+
+@freezed
+class DiscountsData with _$DiscountsData {
+  factory DiscountsData(
+          {Discounts? discount,
+          @Default([]) List<MobileOperatorServices> filteredServices}) =
+      _DiscountsData;
+
+  factory DiscountsData.fromJson(Map<String, dynamic> json) =>
+      _$DiscountsDataFromJson(json);
+}
 
 @freezed
 class Discounts with _$Discounts {
@@ -28,8 +40,8 @@ class Discounts with _$Discounts {
 }
 
 extension ExtOnDiscounts on Discounts {
-  num payment(String param) {
-    final num amount = num.tryParse(param) ?? 0;
+  num payment(num? param) {
+    final num amount = param ?? 0;
 
     if (amount < threshold) return amount;
     if (discountType == DiscountType.flat) return amount - discountValue;
@@ -39,6 +51,9 @@ extension ExtOnDiscounts on Discounts {
     return 0;
   }
 
-  List<num> get topDeals => List.generate(6,
-      (index) => threshold + index * (num.parse((threshold / 2).toString())));
+  List<MobileOperatorServices> get topDeals => List.generate(
+      6,
+      (index) => MobileOperatorServices(
+          servicePrice:
+              threshold + index * (num.parse((threshold / 2).toString()))));
 }

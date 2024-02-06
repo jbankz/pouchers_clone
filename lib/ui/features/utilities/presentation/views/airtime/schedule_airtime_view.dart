@@ -65,8 +65,7 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scheduleNotifier = ref.read(scheduleNotifierProvider.notifier);
       _billersNotifier = ref.read(billersNotifierProvider.notifier)
-        ..billers(BillersCategory.airtime, _cancelToken)
-        ..billersDiscounts(BillersCategory.airtime, _cancelToken);
+        ..billers(BillersCategory.airtime, _cancelToken);
       _frequency = widget.schedule?.frequency ?? '';
       phoneController.text = widget.schedule?.recipient ?? '';
       amountController.text =

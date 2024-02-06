@@ -31,7 +31,7 @@ class BillersNotifier extends _$BillersNotifier {
   ValidateCustomer? _validateCustomerInfo;
   GetCableService? _getCableService;
 
-  Discounts? _discounts;
+  DiscountsData? _discounts;
 
   final _session = locator<SessionManager>();
 
@@ -66,16 +66,19 @@ class BillersNotifier extends _$BillersNotifier {
     }
   }
 
-  Future<void> billersDiscounts(BillersCategory parameter,
-      [CancelToken? cancelToken]) async {
+  Future<void> billersDiscounts(
+      {required BillersCategory parameter,
+      required String? operatorId,
+      CancelToken? cancelToken}) async {
     try {
       if (_session.isGuest) return;
 
-      state = state.copyWith(isBusy: true);
+      state = state.copyWith(isGettingDiscount: true);
 
       _discounts = await ref.read(billersDiscountsProvider
           .call(
-              parameter: BillersDto(billersCategory: parameter),
+              parameter: BillersDto(
+                  billersCategory: parameter, operatorId: operatorId),
               cancelToken: cancelToken)
           .future);
     } catch (e) {
@@ -83,7 +86,7 @@ class BillersNotifier extends _$BillersNotifier {
 
       AppHelper.handleError(e);
     } finally {
-      state = state.copyWith(isBusy: false, discounts: _discounts);
+      state = state.copyWith(isGettingDiscount: false, discounts: _discounts);
     }
   }
 
