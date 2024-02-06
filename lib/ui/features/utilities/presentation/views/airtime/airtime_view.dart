@@ -33,13 +33,14 @@ import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_
 import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/billers.dart';
 import '../../../domain/model/discounts.dart';
+import '../../../domain/model/top_deals_model.dart';
 import '../../notifier/billers_notifier.dart';
 import '../sheet/summary_sheet.dart';
 import '../widget/scheduling_widget.dart';
 import '../widget/utility_icon.dart';
 import 'airtime_view.form.dart';
 import 'skeleton/airtime_skeleton.dart';
-import 'widget/top_deal_widget.dart';
+import '../widget/top_deal_widget.dart';
 
 @FormView(fields: [FormTextField(name: 'phone'), FormTextField(name: 'amount')])
 class AirtimeView extends ConsumerStatefulWidget {
@@ -155,7 +156,10 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                       TopDealsWidget(
                           category: BillersCategory.airtime,
                           filteredServices:
-                              discountData?.discount?.topDeals ?? [],
+                              (discountData?.discount?.topDeals ?? [])
+                                  .map((topDeal) =>
+                                      TopDeals(price: topDeal.servicePrice))
+                                  .toList(),
                           callback: (topDeal) {
                             if (billerState.isPurchasing) return;
 
@@ -166,7 +170,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                             }
 
                             amountController.text = _formatter
-                                .formatDouble(topDeal.servicePrice.toDouble())
+                                .formatDouble(topDeal.price.toDouble())
                                 .toString();
 
                             setState(() {});

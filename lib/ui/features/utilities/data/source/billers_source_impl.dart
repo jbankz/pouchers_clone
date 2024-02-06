@@ -101,7 +101,6 @@ class BillersSourceImpl implements BillerSource {
             '${ApiPath.merchants}/${billersDto.cableId}/${billersDto.path?.name}',
         requestType: RequestType.get,
         cancelToken: cancelToken);
-
     return GetCableService.fromJson(
         response.data?['data'] as Map<String, dynamic>);
   }

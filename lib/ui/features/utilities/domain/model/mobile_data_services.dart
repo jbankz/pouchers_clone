@@ -11,6 +11,10 @@ class MobileOperatorServices with _$MobileOperatorServices {
       String? validityPeriod,
       String? dataValue,
       String? serviceName,
+      String? code,
+      String? name,
+      String? shortCode,
+      num? price,
       @Default(0) num serviceId}) = _MobileOperatorServices;
 
   factory MobileOperatorServices.fromJson(Map<String, dynamic> json) =>

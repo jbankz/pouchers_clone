@@ -19,6 +19,7 @@ import '../../../../../common/app_images.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/bottom_sheet.dart';
 import '../../../../../widgets/dialog/bottom_sheet.dart';
+import '../../../../../widgets/dialog/guest_modal_sheet.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
@@ -33,8 +34,11 @@ import '../../../domain/enum/billers_category.dart';
 import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/billers.dart';
 import '../../../domain/model/cable_service.dart';
+import '../../../domain/model/discounts.dart';
+import '../../../domain/model/top_deals_model.dart';
 import '../../notifier/billers_notifier.dart';
 import '../../state/billers_state.dart';
+import '../widget/top_deal_widget.dart';
 import '../sheet/provider_services_sheets.dart';
 import '../sheet/providers_sheets.dart';
 import '../sheet/summary_sheet.dart';
@@ -69,7 +73,10 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _initializeNotifiers());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _billersNotifier = ref.read(billersNotifierProvider.notifier)
+        ..billers(BillersCategory.cable, _cancelToken);
+    });
   }
 
   @override
@@ -79,15 +86,12 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
     disposeForm();
   }
 
-  Future<void> _initializeNotifiers() async {
-    _billersNotifier = ref.read(billersNotifierProvider.notifier);
-
-    await _billersNotifier.billers(BillersCategory.cable, _cancelToken);
-  }
-
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
+    final discountData = billerState.discounts;
+    final filteredServices = discountData?.filteredServices ?? [];
+
     return Scaffold(
       appBar: AppBar(title: Text(AppString.cableTv)),
       body: SafeArea(
@@ -106,6 +110,35 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
                         ScrollViewKeyboardDismissBehavior.onDrag,
                     children: [
                       _buildProviderTextField(billerState),
+                      TopDealsWidget(
+                          category: BillersCategory.cable,
+                          filteredServices: filteredServices
+                              .map((topDeal) => TopDeals(
+                                  name: topDeal.name,
+                                  code: topDeal.code,
+                                  price: topDeal.price ?? 0,
+                                  shortCode: topDeal.shortCode))
+                              .toList(),
+                          callback: (topDeal) {
+                            if (billerState.isPurchasing) return;
+
+                            if (billerState.isGuest) {
+                              BottomSheets.showAlertDialog(
+                                  child: const GuestDiscountSheet());
+                              return;
+                            }
+
+                            _cableService = CableService(
+                                name: topDeal.name,
+                                code: topDeal.code,
+                                price: topDeal.price,
+                                shortCode: topDeal.shortCode);
+
+                            subscriptionTypeController.text =
+                                _cableService?.name ?? '';
+                            context.nextFocus(numberFocusNode);
+                            setState(() {});
+                          }),
                       const Gap(height: 24),
                       _buildSubscriptionTypeTextField(),
                       const Gap(height: 24),
@@ -275,6 +308,12 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
       formKey.currentState?.validate() == true;
 
   Future<void> _handlePayment(BillersState billerState) async {
+    final Discounts? discounts = billerState.discounts?.discount;
+    final amount = discounts?.payment(_cableService?.price) ?? 0;
+
+    final bool isAppliedDiscount = ((discounts != null) &&
+        (_cableService?.price ?? 0) >= (discounts.threshold));
+
     final feedback = await Sheets.showSheet(
       child: SummaryWidget(
         summaryDto: SummaryDto(
@@ -283,9 +322,8 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
           title: _billers?.name,
           imageUrl: _billers?.logoUrl,
           recipient: numberController.text,
-          amount: _cableService?.price ?? 0,
-          cashBack: 0,
-          fee: 0,
+          amount: amount,
+          cashBack: isAppliedDiscount ? discounts.discountValue : 0,
         ),
         biometricVerification: (pin) {
           _submitForActualUser(pin: pin);
@@ -405,6 +443,11 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
         _cableService = null;
         _billersNotifier.resetCustomerInfo();
         context.nextFocus(subscriptionTypeFocusNode);
+
+        _billersNotifier.billersDiscounts(
+            parameter: BillersCategory.cable,
+            operatorId: _billers?.operatorpublicid,
+            cancelToken: _cancelToken);
       }
     });
   }

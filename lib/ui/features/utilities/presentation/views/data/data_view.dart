@@ -1,9 +1,9 @@
-import 'package:Pouchers/app/config/app_logger.dart';
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
+import 'package:Pouchers/ui/features/utilities/domain/model/top_deals_model.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,9 +35,9 @@ import '../../../domain/model/billers.dart';
 import '../../../domain/model/mobile_data_services.dart';
 import '../../notifier/billers_notifier.dart';
 import '../../state/billers_state.dart';
-import '../airtime/widget/top_deal_widget.dart';
 import '../sheet/summary_sheet.dart';
 import '../widget/scheduling_widget.dart';
+import '../widget/top_deal_widget.dart';
 import '../widget/utility_icon.dart';
 import 'data_view.form.dart';
 import 'sheets/data_bundle_sheets.dart';
@@ -157,7 +157,15 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                       ),
                       TopDealsWidget(
                           category: BillersCategory.data,
-                          filteredServices: filteredServices,
+                          filteredServices: filteredServices
+                              .map((topDeal) => TopDeals(
+                                  mobileOperatorId: topDeal.mobileOperatorId,
+                                  price: topDeal.servicePrice,
+                                  validityPeriod: topDeal.validityPeriod,
+                                  dataValue: topDeal.dataValue,
+                                  serviceName: topDeal.serviceName,
+                                  serviceId: topDeal.serviceId))
+                              .toList(),
                           callback: (topDeal) {
                             if (billerState.isPurchasing) return;
 
@@ -167,7 +175,14 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                               return;
                             }
 
-                            _mobileOperatorServices = topDeal;
+                            _mobileOperatorServices = MobileOperatorServices(
+                                mobileOperatorId: topDeal.mobileOperatorId ?? 0,
+                                servicePrice: topDeal.price,
+                                validityPeriod: topDeal.validityPeriod,
+                                dataValue: topDeal.dataValue,
+                                serviceName: topDeal.serviceName,
+                                serviceId: topDeal.serviceId ?? 0);
+
                             setState(() {});
                           }),
                       const Gap(height: 24),

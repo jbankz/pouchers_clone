@@ -26,6 +26,10 @@ mixin _$MobileOperatorServices {
   String? get validityPeriod => throw _privateConstructorUsedError;
   String? get dataValue => throw _privateConstructorUsedError;
   String? get serviceName => throw _privateConstructorUsedError;
+  String? get code => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  String? get shortCode => throw _privateConstructorUsedError;
+  num? get price => throw _privateConstructorUsedError;
   num get serviceId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -46,6 +50,10 @@ abstract class $MobileOperatorServicesCopyWith<$Res> {
       String? validityPeriod,
       String? dataValue,
       String? serviceName,
+      String? code,
+      String? name,
+      String? shortCode,
+      num? price,
       num serviceId});
 }
 
@@ -68,6 +76,10 @@ class _$MobileOperatorServicesCopyWithImpl<$Res,
     Object? validityPeriod = freezed,
     Object? dataValue = freezed,
     Object? serviceName = freezed,
+    Object? code = freezed,
+    Object? name = freezed,
+    Object? shortCode = freezed,
+    Object? price = freezed,
     Object? serviceId = null,
   }) {
     return _then(_value.copyWith(
@@ -91,6 +103,22 @@ class _$MobileOperatorServicesCopyWithImpl<$Res,
           ? _value.serviceName
           : serviceName // ignore: cast_nullable_to_non_nullable
               as String?,
+      code: freezed == code
+          ? _value.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      shortCode: freezed == shortCode
+          ? _value.shortCode
+          : shortCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      price: freezed == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as num?,
       serviceId: null == serviceId
           ? _value.serviceId
           : serviceId // ignore: cast_nullable_to_non_nullable
@@ -114,6 +142,10 @@ abstract class _$$MobileOperatorServicesImplCopyWith<$Res>
       String? validityPeriod,
       String? dataValue,
       String? serviceName,
+      String? code,
+      String? name,
+      String? shortCode,
+      num? price,
       num serviceId});
 }
 
@@ -135,6 +167,10 @@ class __$$MobileOperatorServicesImplCopyWithImpl<$Res>
     Object? validityPeriod = freezed,
     Object? dataValue = freezed,
     Object? serviceName = freezed,
+    Object? code = freezed,
+    Object? name = freezed,
+    Object? shortCode = freezed,
+    Object? price = freezed,
     Object? serviceId = null,
   }) {
     return _then(_$MobileOperatorServicesImpl(
@@ -158,6 +194,22 @@ class __$$MobileOperatorServicesImplCopyWithImpl<$Res>
           ? _value.serviceName
           : serviceName // ignore: cast_nullable_to_non_nullable
               as String?,
+      code: freezed == code
+          ? _value.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      shortCode: freezed == shortCode
+          ? _value.shortCode
+          : shortCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      price: freezed == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as num?,
       serviceId: null == serviceId
           ? _value.serviceId
           : serviceId // ignore: cast_nullable_to_non_nullable
@@ -175,6 +227,10 @@ class _$MobileOperatorServicesImpl implements _MobileOperatorServices {
       this.validityPeriod,
       this.dataValue,
       this.serviceName,
+      this.code,
+      this.name,
+      this.shortCode,
+      this.price,
       this.serviceId = 0});
 
   factory _$MobileOperatorServicesImpl.fromJson(Map<String, dynamic> json) =>
@@ -193,12 +249,20 @@ class _$MobileOperatorServicesImpl implements _MobileOperatorServices {
   @override
   final String? serviceName;
   @override
+  final String? code;
+  @override
+  final String? name;
+  @override
+  final String? shortCode;
+  @override
+  final num? price;
+  @override
   @JsonKey()
   final num serviceId;
 
   @override
   String toString() {
-    return 'MobileOperatorServices(mobileOperatorId: $mobileOperatorId, servicePrice: $servicePrice, validityPeriod: $validityPeriod, dataValue: $dataValue, serviceName: $serviceName, serviceId: $serviceId)';
+    return 'MobileOperatorServices(mobileOperatorId: $mobileOperatorId, servicePrice: $servicePrice, validityPeriod: $validityPeriod, dataValue: $dataValue, serviceName: $serviceName, code: $code, name: $name, shortCode: $shortCode, price: $price, serviceId: $serviceId)';
   }
 
   @override
@@ -216,14 +280,29 @@ class _$MobileOperatorServicesImpl implements _MobileOperatorServices {
                 other.dataValue == dataValue) &&
             (identical(other.serviceName, serviceName) ||
                 other.serviceName == serviceName) &&
+            (identical(other.code, code) || other.code == code) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.shortCode, shortCode) ||
+                other.shortCode == shortCode) &&
+            (identical(other.price, price) || other.price == price) &&
             (identical(other.serviceId, serviceId) ||
                 other.serviceId == serviceId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, mobileOperatorId, servicePrice,
-      validityPeriod, dataValue, serviceName, serviceId);
+  int get hashCode => Object.hash(
+      runtimeType,
+      mobileOperatorId,
+      servicePrice,
+      validityPeriod,
+      dataValue,
+      serviceName,
+      code,
+      name,
+      shortCode,
+      price,
+      serviceId);
 
   @JsonKey(ignore: true)
   @override
@@ -247,6 +326,10 @@ abstract class _MobileOperatorServices implements MobileOperatorServices {
       final String? validityPeriod,
       final String? dataValue,
       final String? serviceName,
+      final String? code,
+      final String? name,
+      final String? shortCode,
+      final num? price,
       final num serviceId}) = _$MobileOperatorServicesImpl;
 
   factory _MobileOperatorServices.fromJson(Map<String, dynamic> json) =
@@ -262,6 +345,14 @@ abstract class _MobileOperatorServices implements MobileOperatorServices {
   String? get dataValue;
   @override
   String? get serviceName;
+  @override
+  String? get code;
+  @override
+  String? get name;
+  @override
+  String? get shortCode;
+  @override
+  num? get price;
   @override
   num get serviceId;
   @override

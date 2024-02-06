@@ -4,22 +4,22 @@ class CardMonthInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    var newText = newValue.text;
+    final newText = newValue.text;
 
     if (newValue.selection.baseOffset == 0) {
       return newValue;
     }
 
-    var buffer = StringBuffer();
+    final buffer = StringBuffer();
     for (int i = 0; i < newText.length; i++) {
       buffer.write(newText[i]);
-      var nonZeroIndex = i + 1;
+      final nonZeroIndex = i + 1;
       if (nonZeroIndex % 2 == 0 && nonZeroIndex != newText.length) {
         buffer.write('/');
       }
     }
 
-    var string = buffer.toString();
+    final string = buffer.toString();
     return newValue.copyWith(
         text: string,
         selection: TextSelection.collapsed(offset: string.length));
@@ -30,22 +30,22 @@ class CardNumberInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    var text = newValue.text;
+    final text = newValue.text;
 
     if (newValue.selection.baseOffset == 0) {
       return newValue;
     }
 
-    var buffer = StringBuffer();
+    final buffer = StringBuffer();
     for (int i = 0; i < text.length; i++) {
       buffer.write(text[i]);
-      var nonZeroIndex = i + 1;
+      final nonZeroIndex = i + 1;
       if (nonZeroIndex % 4 == 0 && nonZeroIndex != text.length) {
         buffer.write('  '); // Add double spaces.
       }
     }
 
-    var string = buffer.toString();
+    final string = buffer.toString();
     return newValue.copyWith(
         text: string,
         selection: TextSelection.collapsed(offset: string.length));
@@ -87,7 +87,7 @@ class ThousandsSeparatorInputFormatter extends TextInputFormatter {
     }
 
     // Handle "deletion" of separator character
-    String oldValueText = oldValue.text.replaceAll(separator, '');
+    final String oldValueText = oldValue.text.replaceAll(separator, '');
     String newValueText = newValue.text.replaceAll(separator, '');
 
     if (oldValue.text.endsWith(separator) &&
@@ -97,7 +97,7 @@ class ThousandsSeparatorInputFormatter extends TextInputFormatter {
 
     // Only process if the old value and new value are different
     if (oldValueText != newValueText) {
-      int selectionIndex =
+      final int selectionIndex =
           newValue.text.length - newValue.selection.extentOffset;
       final chars = newValueText.split('');
 
