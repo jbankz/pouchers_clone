@@ -4,6 +4,7 @@ import 'package:Pouchers/ui/features/merchant/presentation/notifier/merchants_no
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
+import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
 import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -37,14 +38,15 @@ import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/airtime_top_deals.dart';
 import '../../../domain/model/billers.dart';
 import '../../../domain/model/cable_service.dart';
+import '../../../domain/model/top_deals_model.dart';
 import '../../notifier/billers_notifier.dart';
 import '../../state/billers_state.dart';
 import '../sheet/provider_services_sheets.dart';
 import '../sheet/providers_sheets.dart';
 import '../sheet/summary_sheet.dart';
+import '../widget/top_deal_widget.dart';
 import 'betting_view.form.dart';
 import 'skeleton/betting_skeleton.dart';
-import 'widget/top_deal_widget.dart';
 
 @FormView(fields: [
   FormTextField(name: 'provider'),
@@ -98,7 +100,10 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
+    final discountData = billerState.discounts;
+
     final getMerchantState = ref.watch(merchantsNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(title: Text(AppString.betting)),
       body: SafeArea(
@@ -120,23 +125,27 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
                       _buildSubscriptionTypeTextField(),
                       const Gap(height: 24),
                       _buildSmartCardNumberTextField(billerState),
-                      const Gap(height: 24),
-                      Text(AppString.topDeals,
-                          style: context.titleLarge?.copyWith(fontSize: 12.sp)),
-                      const Gap(height: 12),
-                      TopDealsWidget(callback: (topDeal) {
-                        if (billerState.isPurchasing) return;
+                      TopDealsWidget(
+                          category: BillersCategory.betting,
+                          filteredServices:
+                              (discountData?.discount?.topDeals ?? [])
+                                  .map((topDeal) =>
+                                      TopDeals(price: topDeal.servicePrice))
+                                  .toList(),
+                          callback: (topDeal) {
+                            if (billerState.isPurchasing) return;
 
-                        if (billerState.isGuest) {
-                          BottomSheets.showAlertDialog(
-                              child: const GuestDiscountSheet());
-                          return;
-                        }
-                        _airtimeTopDeals = topDeal;
-                        amountController.text =
-                            _formatter.format(topDeal.amount.toString());
-                        setState(() {});
-                      }),
+                            if (billerState.isGuest) {
+                              BottomSheets.showAlertDialog(
+                                  child: const GuestDiscountSheet());
+                              return;
+                            }
+
+                            amountController.text = _formatter
+                                .formatDouble(topDeal.price.toDouble());
+
+                            setState(() {});
+                          }),
                       const Gap(height: 24),
                       EditTextFieldWidget(
                         title: AppString.amount,
@@ -279,6 +288,11 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
           numberController.clear();
           _cableService == null;
           context.nextFocus();
+
+          _billersNotifier.billersDiscounts(
+              parameter: BillersCategory.betting,
+              operatorId: _billers?.operatorpublicid,
+              cancelToken: _cancelToken);
         }
       });
 
@@ -299,25 +313,36 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
                   )),
         );
 
-  Future<void> _submitForActualUser({String? pin}) async =>
-      _billersNotifier.purchaseService(
-          mobileDto: MobileDto(
-              isMerchantPayment: true,
-              category: ServiceCategory.betting,
-              merchantAccount: _billers?.operatorpublicid,
-              merchantService: _cableService?.code,
-              merchantReferenceNumber: numberController.text,
-              subCategory: _billers?.displayName,
-              amount: _formatter.getUnformattedValue(),
-              applyDiscount: false,
-              transactionPin: pin),
-          onSuccess: () => PageRouter.pushNamed(Routes.successState,
-              args: SuccessStateArguments(
-                  title: AppString.rechargeSuccessful,
-                  message: AppString.completedBettingPurchase,
-                  btnTitle: AppString.complete,
-                  tap: () => PageRouter.popToRoot(Routes.bettingView))),
-          cancelToken: _cancelToken);
+  Future<void> _submitForActualUser(
+      {String? pin, required BillersState billerState}) async {
+    final Discounts? discounts = billerState.discounts?.discount;
+
+    final bool isAppliedDiscount = (discounts != null &&
+        _formatter.getUnformattedValue() >= discounts.threshold);
+
+    final amount = discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
+
+    final mobileDto = MobileDto(
+        isMerchantPayment: true,
+        category: ServiceCategory.betting,
+        merchantAccount: _billers?.operatorpublicid,
+        merchantService: _cableService?.code,
+        merchantReferenceNumber: numberController.text,
+        subCategory: _billers?.displayName,
+        amount: amount,
+        applyDiscount: isAppliedDiscount,
+        transactionPin: pin);
+
+    _billersNotifier.purchaseService(
+        mobileDto: mobileDto,
+        onSuccess: () => PageRouter.pushNamed(Routes.successState,
+            args: SuccessStateArguments(
+                title: AppString.rechargeSuccessful,
+                message: AppString.completedBettingPurchase,
+                btnTitle: AppString.complete,
+                tap: () => PageRouter.popToRoot(Routes.bettingView))),
+        cancelToken: _cancelToken);
+  }
 
   Future<void> _submitForGuest(dynamic feedback) async {
     final guest = ref.watch(paramModule);
@@ -345,18 +370,25 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
   }
 
   Future<void> _handlePayment(BillersState billerState) async {
+    final Discounts? discounts = billerState.discounts?.discount;
+
+    final bool isAppliedDiscount = ((discounts != null) &&
+        _formatter.getUnformattedValue() >= (discounts.threshold));
+
+    final amount = discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
+
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(
         summaryDto: SummaryDto(
-            isGuest: billerState.isGuest,
-            title: _billers?.displayName,
-            imageUrl: _billers?.logoUrl,
-            recipient: numberController.text,
-            amount: _formatter.getUnformattedValue(),
-            cashBack: _airtimeTopDeals?.cashBack,
-            fee: 0),
+          isGuest: billerState.isGuest,
+          title: _billers?.displayName,
+          imageUrl: _billers?.logoUrl,
+          recipient: numberController.text,
+          amount: amount,
+          cashBack: isAppliedDiscount ? discounts.discountValue : 0,
+        ),
         biometricVerification: (pin) {
-          _submitForActualUser(pin: pin);
+          _submitForActualUser(pin: pin, billerState: billerState);
           return;
         },
       ),
@@ -372,7 +404,9 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
         final pin = await BottomSheets.showSheet(
           child: const PinConfirmationSheet(),
         ) as String?;
-        if (pin != null) _submitForActualUser(pin: pin);
+        if (pin != null) {
+          _submitForActualUser(pin: pin, billerState: billerState);
+        }
       }
     }
   }

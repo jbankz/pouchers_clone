@@ -170,8 +170,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                             }
 
                             amountController.text = _formatter
-                                .formatDouble(topDeal.price.toDouble())
-                                .toString();
+                                .formatDouble(topDeal.price.toDouble());
 
                             setState(() {});
                           }),
@@ -241,9 +240,9 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
     final mobileDto = MobileDto(
         category: ServiceCategory.airtime,
         subCategory: _billers?.displayName,
-        amount: amount,
         destinationPhoneNumber: phoneController.text,
         mobileOperatorPublicId: _billers?.operatorpublicid,
+        amount: amount,
         applyDiscount: isAppliedDiscount,
         transactionPin: pin);
 

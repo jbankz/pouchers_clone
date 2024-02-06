@@ -1,4 +1,5 @@
 import 'package:Pouchers/ui/features/merchant/domain/model/get_merchants.dart';
+import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
 import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -20,6 +21,7 @@ import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_images.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/dialog/bottom_sheet.dart';
+import '../../../../../widgets/dialog/guest_modal_sheet.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
@@ -35,12 +37,14 @@ import '../../../domain/enum/billers_category.dart';
 import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/billers.dart';
 import '../../../domain/model/cable_service.dart';
+import '../../../domain/model/top_deals_model.dart';
 import '../../notifier/billers_notifier.dart';
 import '../../state/billers_state.dart';
 import '../sheet/provider_services_sheets.dart';
 import '../sheet/providers_sheets.dart';
 import '../sheet/summary_sheet.dart';
 import '../widget/scheduling_widget.dart';
+import '../widget/top_deal_widget.dart';
 import 'electricity_view.form.dart';
 import 'skeleton/electricity_skeleton.dart';
 
@@ -99,6 +103,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
     final getMerchantState = ref.watch(merchantsNotifierProvider);
+    final discountData = billerState.discounts;
 
     return Scaffold(
       appBar: AppBar(title: Text(AppString.electricity)),
@@ -118,6 +123,26 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
                         ScrollViewKeyboardDismissBehavior.onDrag,
                     children: [
                       _buildProviderTextField(billerState),
+                      TopDealsWidget(
+                          category: BillersCategory.airtime,
+                          filteredServices:
+                              (discountData?.discount?.topDeals ?? [])
+                                  .map((topDeal) =>
+                                      TopDeals(price: topDeal.servicePrice))
+                                  .toList(),
+                          callback: (topDeal) {
+                            if (billerState.isPurchasing) return;
+
+                            if (billerState.isGuest) {
+                              BottomSheets.showAlertDialog(
+                                  child: const GuestDiscountSheet());
+                              return;
+                            }
+                            amountController.text = _formatter
+                                .formatDouble(topDeal.price.toDouble());
+
+                            setState(() {});
+                          }),
                       const Gap(height: 24),
                       _buildSubscriptionTypeTextField(),
                       const Gap(height: 24),
@@ -133,6 +158,8 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
                           readOnly: billerState.isPurchasing,
                           keyboardType: TextInputType.number,
                           onFieldSubmitted: (_) {},
+                          onChanged: (String value) => _formatter
+                              .formatDouble(double.tryParse(value) ?? 0),
                           validator:
                               FieldValidator.validateAmount(minAmount: 500),
                           prefix: IconButton(
@@ -339,6 +366,11 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
         _cableService = null;
         _billersNotifier.resetCustomerInfo();
         context.nextFocus(subscriptionTypeFocusNode);
+
+        _billersNotifier.billersDiscounts(
+            parameter: BillersCategory.electricity,
+            operatorId: _billers?.operatorpublicid,
+            cancelToken: _cancelToken);
       }
     });
   }
@@ -378,25 +410,36 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
     });
   }
 
-  Future<void> _submitForActualUser({String? pin}) =>
-      _billersNotifier.purchaseService(
-          mobileDto: MobileDto(
-              isMerchantPayment: true,
-              amount: _formatter.getUnformattedValue(),
-              merchantAccount: _billers?.operatorpublicid,
-              merchantReferenceNumber: numberController.text,
-              merchantService: _cableService?.code,
-              transactionPin: pin,
-              subCategory: _billers?.displayName,
-              category: ServiceCategory.electricity,
-              applyDiscount: false),
-          onSuccess: () => PageRouter.pushNamed(Routes.successState,
-              args: SuccessStateArguments(
-                  title: AppString.rechargeSuccessful,
-                  message: AppString.completedElectricityPurchase,
-                  btnTitle: AppString.complete,
-                  tap: () => PageRouter.popToRoot(Routes.electricityView))),
-          cancelToken: _cancelToken);
+  Future<void> _submitForActualUser(
+      {String? pin, required BillersState billerState}) async {
+    final Discounts? discounts = billerState.discounts?.discount;
+
+    final bool isAppliedDiscount = ((billerState.discounts != null) &&
+        _formatter.getUnformattedValue() >= (discounts?.threshold ?? 0));
+
+    final amount = discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
+
+    final mobileDto = MobileDto(
+        isMerchantPayment: true,
+        amount: amount,
+        merchantAccount: _billers?.operatorpublicid,
+        merchantReferenceNumber: numberController.text,
+        merchantService: _cableService?.code,
+        transactionPin: pin,
+        subCategory: _billers?.displayName,
+        category: ServiceCategory.electricity,
+        applyDiscount: isAppliedDiscount);
+
+    _billersNotifier.purchaseService(
+        mobileDto: mobileDto,
+        onSuccess: () => PageRouter.pushNamed(Routes.successState,
+            args: SuccessStateArguments(
+                title: AppString.rechargeSuccessful,
+                message: AppString.completedElectricityPurchase,
+                btnTitle: AppString.complete,
+                tap: () => PageRouter.popToRoot(Routes.electricityView))),
+        cancelToken: _cancelToken);
+  }
 
   Future<void> _submitForGuest(dynamic feedback) async {
     final guest = ref.watch(paramModule);
@@ -422,20 +465,25 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
   }
 
   Future<void> _handlePayment(BillersState billerState) async {
+    final Discounts? discounts = billerState.discounts?.discount;
+
+    final bool isAppliedDiscount = ((discounts != null) &&
+        _formatter.getUnformattedValue() >= (discounts.threshold));
+
+    final amount = discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
+
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(
         summaryDto: SummaryDto(
-          isGuest: billerState.isGuest,
-          recipientWidget: _buildRecipientWidget(billerState),
-          title: _billers?.name,
-          imageUrl: _billers?.logoUrl,
-          recipient: numberController.text,
-          amount: _formatter.getUnformattedValue(),
-          cashBack: 0,
-          fee: 0,
-        ),
+            isGuest: billerState.isGuest,
+            recipientWidget: _buildRecipientWidget(billerState),
+            title: _billers?.name,
+            imageUrl: _billers?.logoUrl,
+            recipient: numberController.text,
+            amount: amount,
+            cashBack: isAppliedDiscount ? discounts.discountValue : 0),
         biometricVerification: (pin) {
-          _submitForActualUser(pin: pin);
+          _submitForActualUser(pin: pin, billerState: billerState);
           return;
         },
       ),
@@ -451,7 +499,9 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
         final pin = await BottomSheets.showSheet(
           child: const PinConfirmationSheet(),
         ) as String?;
-        if (pin != null) _submitForActualUser(pin: pin);
+        if (pin != null) {
+          _submitForActualUser(pin: pin, billerState: billerState);
+        }
       }
     }
   }

@@ -206,6 +206,11 @@ class _EducationViewState extends ConsumerState<EducationView>
         _cableService = null;
         _billersNotifier.resetCustomerInfo();
         context.nextFocus(subscriptionTypeFocusNode);
+
+        // _billersNotifier.billersDiscounts(
+        //     parameter: BillersCategory.education,
+        //     operatorId: _billers?.operatorpublicid,
+        //     cancelToken: _cancelToken);
       }
     });
   }

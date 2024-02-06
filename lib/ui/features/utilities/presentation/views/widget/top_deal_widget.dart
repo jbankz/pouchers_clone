@@ -63,6 +63,7 @@ class TopDealsWidget extends HookConsumerWidget {
                     itemBuilder: (_, index) {
                       final deal = filteredServices[index];
                       return InkWell(
+                        borderRadius: BorderRadius.circular(10.r),
                         onTap: () {
                           if (billerState.isGuest) {
                             Sheets.showDialog(
@@ -81,7 +82,7 @@ class TopDealsWidget extends HookConsumerWidget {
                             ),
                           ),
                           child: SingleChildScrollView(
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -245,6 +246,7 @@ class TopDealsWidget extends HookConsumerWidget {
   Widget _returnWidget(TopDeals deal, BuildContext context) {
     switch (category) {
       case BillersCategory.airtime:
+      case BillersCategory.betting:
         return _buildAirtimeValues(deal, context);
       case BillersCategory.data:
         return _buildDataValues(deal, context);

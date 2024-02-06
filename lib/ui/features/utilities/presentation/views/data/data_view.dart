@@ -30,7 +30,6 @@ import '../../../../dashboard/views/card/domain/enum/currency.dart';
 import '../../../../dashboard/views/card/presentation/notifier/module/module.dart';
 import '../../../../payment/domain/dto/debit_card_dto.dart';
 import '../../../domain/enum/service_category.dart';
-import '../../../domain/model/airtime_top_deals.dart';
 import '../../../domain/model/billers.dart';
 import '../../../domain/model/mobile_data_services.dart';
 import '../../notifier/billers_notifier.dart';
@@ -57,7 +56,6 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
   final FlutterContactPicker _contactPicker = FlutterContactPicker();
 
   Billers? _billers;
-  AirtimeTopDeals? _airtimeTopDeals;
   MobileOperatorServices? _mobileOperatorServices;
 
   @override
