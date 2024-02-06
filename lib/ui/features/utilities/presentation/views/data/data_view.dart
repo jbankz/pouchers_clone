@@ -1,3 +1,4 @@
+import 'package:Pouchers/app/config/app_logger.dart';
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
@@ -80,6 +81,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
+    final filteredServices = billerState.discounts?.filteredServices ?? [];
 
     return Scaffold(
       appBar: AppBar(title: Text(AppString.data)),
@@ -155,7 +157,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                       ),
                       TopDealsWidget(
                           category: BillersCategory.data,
-                          filteredServices: [],
+                          filteredServices: filteredServices,
                           callback: (topDeal) {
                             if (billerState.isPurchasing) return;
 
@@ -247,7 +249,12 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
   }
 
   Future<void> _handlePayment(BillersState billerState) async {
-    final discount = billerState.discounts?.discount;
+    final Discounts? discounts = billerState.discounts?.discount;
+    final amount =
+        discounts?.payment(_mobileOperatorServices?.servicePrice) ?? 0;
+
+    final bool isAppliedDiscount = ((discounts != null) &&
+        (_mobileOperatorServices?.servicePrice ?? 0) >= (discounts.threshold));
 
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(
@@ -256,8 +263,8 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
             title: _mobileOperatorServices?.dataValue,
             imageUrl: _billers?.logoUrl,
             recipient: phoneController.text,
-            amount: discount?.payment(_mobileOperatorServices?.servicePrice),
-            cashBack: discount?.discountValue),
+            amount: amount,
+            cashBack: isAppliedDiscount ? discounts.discountValue : 0),
         biometricVerification: (pin) {
           _submitForActualUser(billerState: billerState, pin: pin);
           return;
@@ -281,17 +288,22 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
 
   Future<void> _submitForActualUser(
       {required BillersState billerState, String? pin}) async {
-    final discount = billerState.discounts?.discount;
-    final isDiscount = (discount?.threshold ?? 0) <=
-        (_mobileOperatorServices?.servicePrice ?? 0);
+    final Discounts? discounts = billerState.discounts?.discount;
+
+    final bool isAppliedDiscount = ((billerState.discounts != null) &&
+        (_mobileOperatorServices?.servicePrice ?? 0) >=
+            (discounts?.threshold ?? 0));
+
+    final amount =
+        discounts?.payment(_mobileOperatorServices?.servicePrice ?? 0) ?? 0;
 
     final mobileDto = MobileDto(
         category: ServiceCategory.data,
         subCategory: _billers?.displayName,
-        amount: discount?.payment(_mobileOperatorServices?.servicePrice),
+        amount: amount,
         destinationPhoneNumber: phoneController.text,
         mobileOperatorPublicId: _billers?.operatorpublicid,
-        applyDiscount: isDiscount,
+        applyDiscount: isAppliedDiscount,
         mobileOperatorServiceId:
             _mobileOperatorServices?.serviceId.toString() ?? '',
         isDataBundle: true,
