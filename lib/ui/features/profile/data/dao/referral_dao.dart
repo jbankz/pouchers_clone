@@ -25,7 +25,8 @@ class ReferralDao {
   Future<void> save(Referral? referral) async =>
       await _box.put(AppKeys.referralDaoKey, referral);
 
-  Referral returnReferral(Box box) => box.get(AppKeys.referralDaoKey);
+  Referral returnReferral(Box box) =>
+      box.get(AppKeys.referralDaoKey, defaultValue: Referral());
 
   ValueListenable<Box> getListenable({List<String>? keys}) =>
       (keys == null ? _box.listenable() : _box.listenable(keys: keys));
