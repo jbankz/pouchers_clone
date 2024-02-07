@@ -50,26 +50,34 @@ class ImagePickerHandler {
         builder: (context) => Wrap(
           children: <Widget>[
             ListTile(
-              title: const Center(child: Text('View Profile Photo')),
+              title: const Center(
+                  child: Text('View Profile Photo',
+                      style: TextStyle(color: AppColors.kPrimaryBlack))),
               onTap: () => PageRouter.pop(ProfileOptionAction.viewImage),
             ),
             const Divider(),
             ListTile(
-              title: const Center(child: Text('Pick From Library')),
+              title: const Center(
+                  child: Text('Pick From Library',
+                      style: TextStyle(color: AppColors.kPrimaryBlack))),
               onTap: () => PageRouter.pop(ProfileOptionAction.library),
             ),
             const Divider(),
             ListTile(
-              title: const Center(child: Text('Take A Photo')),
+              title: const Center(
+                  child: Text('Take A Photo',
+                      style: TextStyle(color: AppColors.kPrimaryBlack))),
               onTap: () => PageRouter.pop(ProfileOptionAction.profileCamera),
             ),
             InkWell(
               onTap: () => PageRouter.pop(ProfileOptionAction.remove),
               child: Container(
-                width: context.size?.width,
+                // width: context.size?.width,
                 padding: const EdgeInsets.all(12.0),
                 color: Colors.grey[200],
-                child: const Center(child: Text('Cancel')),
+                child: const Center(
+                    child: Text('Cancel',
+                        style: TextStyle(color: AppColors.kPrimaryBlack))),
               ),
             ),
           ],
