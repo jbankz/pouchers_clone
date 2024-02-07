@@ -18,6 +18,9 @@ class ApiPath {
   /// The path for requesting a new OTP
   static const String requestOtp = '$_apiVersionOne/auth/resend-confirmation';
 
+  static const String requestOtpForChangingPassword =
+      '$_apiVersionOne/auth/request-password-change';
+
   /// The path for creating a new users tag
   static const String createTag = '$_apiVersionOne/auth/create-tag';
 

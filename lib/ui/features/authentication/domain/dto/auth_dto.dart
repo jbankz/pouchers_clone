@@ -11,6 +11,7 @@ class AuthDto {
   final String? resetCode;
   final String? oldPin;
   final String? transactionPin;
+  final bool userJustWantsToChangeTherePassword;
 
   AuthDto({
     this.firstName,
@@ -25,6 +26,7 @@ class AuthDto {
     this.oldPin,
     this.resetCode,
     this.transactionPin,
+    this.userJustWantsToChangeTherePassword = false,
   });
 
   Map<String, dynamic> toJson() => {
