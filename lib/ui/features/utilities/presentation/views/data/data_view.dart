@@ -329,7 +329,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
                 title: AppString.rechargeSuccessful,
                 message: AppString.completedDataPurchase,
                 btnTitle: AppString.complete,
-                tap: () => PageRouter.popToRoot(Routes.dataView))),
+                tap: () => PageRouter.popToRoot(Routes.dashboardView))),
         cancelToken: _cancelToken);
   }
 }

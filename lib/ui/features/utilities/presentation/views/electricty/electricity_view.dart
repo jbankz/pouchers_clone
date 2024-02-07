@@ -437,7 +437,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
                 title: AppString.rechargeSuccessful,
                 message: AppString.completedElectricityPurchase,
                 btnTitle: AppString.complete,
-                tap: () => PageRouter.popToRoot(Routes.electricityView))),
+                tap: () => PageRouter.popToRoot(Routes.dashboardView))),
         cancelToken: _cancelToken);
   }
 

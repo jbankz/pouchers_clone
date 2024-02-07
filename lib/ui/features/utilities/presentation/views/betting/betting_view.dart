@@ -340,7 +340,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
                 title: AppString.rechargeSuccessful,
                 message: AppString.completedBettingPurchase,
                 btnTitle: AppString.complete,
-                tap: () => PageRouter.popToRoot(Routes.bettingView))),
+                tap: () => PageRouter.popToRoot(Routes.dashboardView))),
         cancelToken: _cancelToken);
   }
 

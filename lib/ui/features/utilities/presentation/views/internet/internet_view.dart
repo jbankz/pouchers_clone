@@ -361,7 +361,7 @@ class _InternetViewState extends ConsumerState<InternetView>
                   title: AppString.rechargeSuccessful,
                   message: AppString.completedAirtimePurchase,
                   btnTitle: AppString.complete,
-                  tap: () => PageRouter.popToRoot(Routes.internetView))),
+                  tap: () => PageRouter.popToRoot(Routes.dashboardView))),
           cancelToken: _cancelToken);
 
   Future<void> _submitForGuest(
