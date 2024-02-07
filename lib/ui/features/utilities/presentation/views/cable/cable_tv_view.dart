@@ -414,7 +414,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
           title: AppString.rechargeSuccessful,
           message: AppString.completedCablePurchase,
           btnTitle: AppString.complete,
-          tap: () => PageRouter.popToRoot(Routes.cableTvView),
+          tap: () => PageRouter.popToRoot(Routes.dashboardView),
         ),
       ),
       cancelToken: _cancelToken,

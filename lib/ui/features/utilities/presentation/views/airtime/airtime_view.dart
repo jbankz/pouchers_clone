@@ -253,7 +253,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                 title: AppString.rechargeSuccessful,
                 message: AppString.completedAirtimePurchase,
                 btnTitle: AppString.complete,
-                tap: () => PageRouter.popToRoot(Routes.airtimeView))),
+                tap: () => PageRouter.popToRoot(Routes.dashboardView))),
         cancelToken: _cancelToken);
   }
 

@@ -254,7 +254,7 @@ class _EducationViewState extends ConsumerState<EducationView>
                 title: AppString.rechargeSuccessful,
                 message: AppString.completedAirtimePurchase,
                 btnTitle: AppString.complete,
-                tap: () => PageRouter.popToRoot(Routes.educationView))),
+                tap: () => PageRouter.popToRoot(Routes.dashboardView))),
         cancelToken: _cancelToken);
   }
 
