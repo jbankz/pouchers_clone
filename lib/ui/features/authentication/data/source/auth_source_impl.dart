@@ -62,9 +62,17 @@ class AuthSourceImpl implements AuthSource {
   @override
   Future<RequestOtpModel?> requestOtp(AuthDto authDto,
       {CancelToken? cancelToken}) async {
+    final String path = authDto.userJustWantsToChangeTherePassword
+        ? ApiPath.requestOtpForChangingPassword
+        : ApiPath.requestOtp;
+
+    final type = authDto.userJustWantsToChangeTherePassword
+        ? RequestType.patch
+        : RequestType.post;
+
     final response = await networkService.request(
-        path: ApiPath.requestOtp,
-        requestType: RequestType.post,
+        path: path,
+        requestType: type,
         data: authDto.toJson(),
         cancelToken: cancelToken);
     return RequestOtpModel.fromJson(response.data as Map<String, dynamic>);

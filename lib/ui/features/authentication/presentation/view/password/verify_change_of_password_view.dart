@@ -8,6 +8,7 @@ import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/
 import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -61,7 +62,10 @@ class _VerifyChangeOfPasswordViewState
           ref.watch(paramModule).userJustWantsToChangeTherePassword;
       if (value) {
         await _authNotifier.requestOtp(
-            AuthDto(email: userDao.user.email), _cancelToken);
+            AuthDto(
+                email: userDao.user.email,
+                userJustWantsToChangeTherePassword: true),
+            _cancelToken);
       }
       if (!value) _otpTimerNotifier.startTimer();
     });
@@ -138,31 +142,41 @@ class _VerifyChangeOfPasswordViewState
                       children: [
                         Text(AppString.noCode, style: context.titleLarge),
                         const Gap(width: 8),
-                        InkWell(
-                          onTap: !timerState.isTimerFinished
-                              ? null
-                              : () => _authNotifier
-                                  .requestOtp(AuthDto(email: user.email)),
-                          borderRadius: BorderRadius.circular(20.r),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 14.w, vertical: 4.h),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.r),
-                                color: timerState.isTimerFinished
-                                    ? AppColors.kPurpleColor.withOpacity(.1)
-                                    : context.inputDecorationTheme.fillColor),
-                            child: Text(
-                                timerState.isTimerFinished
-                                    ? AppString.resend
-                                    : '${AppString.resend} in ${timerState.timerCount}s',
-                                style: context.titleLarge?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 12,
-                                    color: timerState.isTimerFinished
-                                        ? AppColors.kPrimaryColor
-                                        : null)),
-                          ),
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 350),
+                          child: authState.isBusy
+                              ? const CupertinoActivityIndicator()
+                              : InkWell(
+                                  onTap: !timerState.isTimerFinished
+                                      ? null
+                                      : () => _authNotifier.requestOtp(AuthDto(
+                                          email: user.email,
+                                          userJustWantsToChangeTherePassword:
+                                              true)),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 14.w, vertical: 4.h),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20.r),
+                                        color: timerState.isTimerFinished
+                                            ? AppColors.kPurpleColor
+                                                .withOpacity(.1)
+                                            : context.inputDecorationTheme
+                                                .fillColor),
+                                    child: Text(
+                                        timerState.isTimerFinished
+                                            ? AppString.resend
+                                            : '${AppString.resend} in ${timerState.timerCount}s',
+                                        style: context.titleLarge?.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 12,
+                                            color: timerState.isTimerFinished
+                                                ? AppColors.kPrimaryColor
+                                                : null)),
+                                  ),
+                                ),
                         ),
                       ],
                     ),

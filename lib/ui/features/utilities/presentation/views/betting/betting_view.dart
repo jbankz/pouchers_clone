@@ -35,7 +35,6 @@ import '../../../../dashboard/views/card/domain/enum/currency.dart';
 import '../../../../payment/domain/dto/debit_card_dto.dart';
 import '../../../domain/dto/billers_dto.dart';
 import '../../../domain/enum/service_category.dart';
-import '../../../domain/model/airtime_top_deals.dart';
 import '../../../domain/model/billers.dart';
 import '../../../domain/model/cable_service.dart';
 import '../../../domain/model/top_deals_model.dart';
@@ -68,7 +67,6 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
   final FlutterContactPicker _contactPicker = FlutterContactPicker();
 
   Billers? _billers;
-  AirtimeTopDeals? _airtimeTopDeals;
   final _debouncer = Debouncer();
   CableService? _cableService;
 
