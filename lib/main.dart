@@ -1,75 +1,58 @@
-import 'dart:io';
-
+import 'package:Pouchers/app/app.locator.dart';
+import 'package:Pouchers/app/helpers/response_handler.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/app/helpers/session_manager.dart';
-import 'package:flutter_boilerplate/utils/constants.dart';
-import 'package:path_provider/path_provider.dart' as path;
-import 'package:flutter_boilerplate/app/helpers/service_constants.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import 'app/app.router.dart';
+import 'app/config/app_config.dart';
+import 'app/core/constants/app_constants.dart';
+import 'app/core/theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Env.setEnvironment(EnvState.test);
-  Directory directory = await path.getApplicationDocumentsDirectory();
 
-  SessionManager.initSharedPreference().then((value) => runApp(const MyApp()));
+  AppConfig.setAppEnv(kDebugMode ? AppEnv.production : AppEnv.production);
+
+  await dotenv.load(fileName: AppConfig.fileName);
+
+  await setupLocator();
+ 
+  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Kappa",
-      theme: kThemeData,
-      debugShowCheckedModeBanner: false,
-      home: const MyHomePage(title: 'Flutter Boilerplate Page'),
-    );
-  }
+  State<MyApp> createState() => _MyAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
+class _MyAppState extends State<MyApp> with ResponseHandler {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+  Widget build(BuildContext context) => ProviderScope(
+        child: ScreenUtilInit(
+          designSize: const Size(375, 812),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          child: OverlaySupport.global(
+            child: AppTheme(
+              child: MaterialApp(
+                  title: AppConstants.appName,
+                  theme: kThemeData,
+                  darkTheme: kThemeData,
+                  debugShowCheckedModeBanner: false,
+                  themeMode: ThemeMode.light,
+                  navigatorKey: StackedService.navigatorKey,
+                  onGenerateRoute: StackedRouter().onGenerateRoute,
+                ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
+      );
 }

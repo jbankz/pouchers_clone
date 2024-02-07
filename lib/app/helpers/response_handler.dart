@@ -1,59 +1,34 @@
-import 'dart:io';
-
+import 'package:Pouchers/app/app.router.dart';
+import 'package:Pouchers/app/core/router/page_router.dart';
+import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/app/helpers/session_manager.dart';
-import 'package:flutter_boilerplate/app/navigators/navigators.dart';
-import 'package:flutter_boilerplate/utils/widgets.dart';
+
+import '../../ui/common/app_colors.dart';
 
 mixin ResponseHandler {
-  handleExpiredToken(BuildContext context) async {
-    _showLogoutDialog(context);
-  }
+  void handleExpiredToken() => _showLogoutDialog();
 
-  void _showLogoutDialog(BuildContext context) {
-    var content = const Text('Your session has expired');
-    if (Platform.isIOS) {
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return CupertinoAlertDialog(
+  void _showLogoutDialog() {
+    const Text content = Text('Your session has expired',
+        style: TextStyle(color: kPrimaryColor));
+
+    showDialog(
+        context: PageRouter.globalContext,
+        barrierDismissible: false,
+        barrierColor: Colors.transparent,
+        builder: (BuildContext context) => CupertinoAlertDialog(
               content: content,
               actions: <Widget>[
                 CupertinoDialogAction(
-                  child: const Text('OK'),
-                  isDefaultAction: true,
-                  onPressed: () async {
-                    Navigator.pop(context);
-                    await deleteSelectBoxes();
-                  },
-                ),
+                    isDefaultAction: true,
+                    onPressed: () =>
+                        PageRouter.pushReplacement(Routes.signInView),
+                    child: Text('OK',
+                        style: context.headlineLarge?.copyWith(
+                            color: AppColors.kPrimaryBlack, fontSize: 14))),
               ],
-            );
-          });
-    } else {
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              content: content,
-              actions: <Widget>[
-                LargeButton(
-                  onPressed: () async {
-                    Navigator.pop(context);
-                    await deleteSelectBoxes();
-                  },
-                  title: 'OK',
-                )
-              ],
-            );
-          });
-    }
-  }
-
-  Future<void> deleteSelectBoxes() async {
-    SessionManager.clear();
+            ));
   }
 }

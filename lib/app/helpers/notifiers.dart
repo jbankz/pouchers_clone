@@ -50,6 +50,10 @@ class NotifierState<T> {
   }
 }
 
+NotifierState<T> notifyIdle<T>() {
+  return NotifierState(status: NotifierStatus.idle);
+}
+
 NotifierState<T> notifyRight<T>({required T? data, String? message}) {
   return NotifierState<T>(
     status: NotifierStatus.done,
