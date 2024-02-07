@@ -22,7 +22,7 @@ Future<void> main() async {
   await dotenv.load(fileName: AppConfig.fileName);
 
   await setupLocator();
- 
+
   runApp(const MyApp());
 }
 
@@ -43,14 +43,14 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
           child: OverlaySupport.global(
             child: AppTheme(
               child: MaterialApp(
-                  title: AppConstants.appName,
-                  theme: kThemeData,
-                  darkTheme: kThemeData,
-                  debugShowCheckedModeBanner: false,
-                  themeMode: ThemeMode.light,
-                  navigatorKey: StackedService.navigatorKey,
-                  onGenerateRoute: StackedRouter().onGenerateRoute,
-                ),
+                title: AppConstants.appName,
+                theme: kThemeData,
+                darkTheme: kThemeData,
+                debugShowCheckedModeBanner: false,
+                themeMode: ThemeMode.light,
+                navigatorKey: StackedService.navigatorKey,
+                onGenerateRoute: StackedRouter().onGenerateRoute,
+              ),
             ),
           ),
         ),
