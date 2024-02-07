@@ -1,4 +1,6 @@
 import 'package:Pouchers/app/core/router/page_router.dart';
+import 'package:Pouchers/app/core/skeleton/widgets.dart';
+import 'package:Pouchers/ui/features/transfer/domain/model/local_bank.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/gap.dart';
 import '../../../../transfer/data/dao/local_bank_dao.dart';
+import '../../../../transfer/presentation/notifier/local_bank_notifier.dart';
 
 class UssdSheets extends ConsumerStatefulWidget {
   const UssdSheets({super.key});
@@ -26,6 +29,9 @@ class _UssdSheetsState extends ConsumerState<UssdSheets> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => ref
+        .read(localBankNotifierProvider.notifier)
+        .getLocalBanks(_cancelToken));
   }
 
   @override
@@ -50,26 +56,37 @@ class _UssdSheetsState extends ConsumerState<UssdSheets> {
               const Gap(height: 23),
               SizedBox(
                 height: context.height * .7,
-                child: ListView.separated(
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    itemBuilder: (_, index) {
-                      final bank = banks[index].attributes;
-                      return GestureDetector(
-                          onTap: () => PageRouter.pop(bank),
-                          child: Text(bank?.name ?? '',
-                              style: context.headlineMedium
-                                  ?.copyWith(fontWeight: FontWeight.w500)));
-                    },
-                    separatorBuilder: (_, __) => const Column(children: [
-                          Gap(height: 14),
-                          Divider(),
-                          Gap(height: 14)
-                        ]),
-                    itemCount: banks.length),
+                child: Skeleton(
+                  isLoading: ref.watch(localBankNotifierProvider).isBusy,
+                  skeleton: _buildBankListSkeleton(),
+                  child: _buildBankList(banks, context),
+                ),
               )
             ],
           ),
         );
       });
+
+  ListView _buildBankListSkeleton() => ListView.separated(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      itemBuilder: (_, index) =>
+          Container(height: 40.h, width: double.infinity, color: Colors.white),
+      separatorBuilder: (_, __) =>
+          const Column(children: [Gap(height: 7), Divider(), Gap(height: 7)]),
+      itemCount: context.height.toInt());
+
+  ListView _buildBankList(List<LocalBank> banks, BuildContext context) =>
+      ListView.separated(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          itemBuilder: (_, index) {
+            final bank = banks[index].attributes;
+            return GestureDetector(
+                onTap: () => PageRouter.pop(bank),
+                child: Text(bank?.name ?? '',
+                    style: context.headlineMedium
+                        ?.copyWith(fontWeight: FontWeight.w500)));
+          },
+          separatorBuilder: (_, __) => const Column(
+              children: [Gap(height: 14), Divider(), Gap(height: 14)]),
+          itemCount: banks.length);
 }
