@@ -286,13 +286,13 @@ class _EducationViewState extends ConsumerState<EducationView>
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(
         summaryDto: SummaryDto(
-            isGuest: billerState.isGuest,
-            title: _billers?.name,
-            imageUrl: _billers?.logoUrl,
-            recipient: _billers?.displayName,
-            amount: _formatter.getUnformattedValue(),
-            cashBack: 0,
-            fee: 0),
+          isGuest: billerState.isGuest,
+          title: _billers?.name,
+          imageUrl: _billers?.logoUrl,
+          recipient: _billers?.displayName,
+          amount: _formatter.getUnformattedValue(),
+          cashBack: 0,
+        ),
         biometricVerification: (pin) {
           _submitForActualUser(pin: pin);
           return;

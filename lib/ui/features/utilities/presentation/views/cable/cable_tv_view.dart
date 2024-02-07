@@ -309,10 +309,13 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
 
   Future<void> _handlePayment(BillersState billerState) async {
     final Discounts? discounts = billerState.discounts?.discount;
-    final amount = discounts?.payment(_cableService?.price) ?? 0;
 
     final bool isAppliedDiscount = ((discounts != null) &&
         (_cableService?.price ?? 0) >= (discounts.threshold));
+
+    final amount = billerState.isGuest
+        ? _cableService?.price
+        : discounts?.payment(_cableService?.price) ?? 0;
 
     final feedback = await Sheets.showSheet(
       child: SummaryWidget(

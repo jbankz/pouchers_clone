@@ -91,7 +91,7 @@ class _SummaryWidgetState extends State<SummaryWidget> {
             _buildRow('Amount', widget.summaryDto.amount?.toNaira ?? ''),
             const Gap(height: 22),
             _buildRow('Fee', widget.summaryDto.fee?.toNaira ?? ''),
-            const Gap(height: 22),
+            if (!widget.summaryDto.isGuest) const Gap(height: 22),
             if (!widget.summaryDto.isGuest)
               _buildRow('Cashback', widget.summaryDto.cashBack?.toNaira ?? ''),
           ],

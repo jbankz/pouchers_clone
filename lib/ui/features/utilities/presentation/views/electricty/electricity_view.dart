@@ -470,7 +470,9 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
     final bool isAppliedDiscount = ((discounts != null) &&
         _formatter.getUnformattedValue() >= (discounts.threshold));
 
-    final amount = discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
+    final amount = billerState.isGuest
+        ? _formatter.getUnformattedValue()
+        : discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
 
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(

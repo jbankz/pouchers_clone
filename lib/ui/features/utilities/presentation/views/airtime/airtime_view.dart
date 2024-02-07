@@ -37,10 +37,10 @@ import '../../../domain/model/top_deals_model.dart';
 import '../../notifier/billers_notifier.dart';
 import '../sheet/summary_sheet.dart';
 import '../widget/scheduling_widget.dart';
+import '../widget/top_deal_widget.dart';
 import '../widget/utility_icon.dart';
 import 'airtime_view.form.dart';
 import 'skeleton/airtime_skeleton.dart';
-import '../widget/top_deal_widget.dart';
 
 @FormView(fields: [FormTextField(name: 'phone'), FormTextField(name: 'amount')])
 class AirtimeView extends ConsumerStatefulWidget {
@@ -283,7 +283,9 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
     final bool isAppliedDiscount = ((discounts != null) &&
         _formatter.getUnformattedValue() >= (discounts.threshold));
 
-    final amount = discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
+    final amount = billerState.isGuest
+        ? _formatter.getUnformattedValue()
+        : discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
 
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(

@@ -263,11 +263,13 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
 
   Future<void> _handlePayment(BillersState billerState) async {
     final Discounts? discounts = billerState.discounts?.discount;
-    final amount =
-        discounts?.payment(_mobileOperatorServices?.servicePrice) ?? 0;
 
     final bool isAppliedDiscount = ((discounts != null) &&
         (_mobileOperatorServices?.servicePrice ?? 0) >= (discounts.threshold));
+
+    final amount = billerState.isGuest
+        ? (_mobileOperatorServices?.servicePrice ?? 0)
+        : discounts?.payment(_mobileOperatorServices?.servicePrice) ?? 0;
 
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(
