@@ -33,7 +33,7 @@ class _PinConfirmationSheetState extends ConsumerState<PinConfirmationSheet> {
   void initState() {
     super.initState();
     _keyPadController.addListener(() {
-      setState(() {});
+      if (mounted) setState(() {});
     });
   }
 
@@ -79,17 +79,20 @@ class _PinConfirmationSheetState extends ConsumerState<PinConfirmationSheet> {
                           }
                           PageRouter.pop(pin);
                         }),
-                    BiometricVerification(callback: (pin) async {
-                      if (widget.validatePinHere) {
-                        await ref
-                            .read(authNotifierProvider.notifier)
-                            .validatePin(pin, _cancelToken,
-                                onError: () => _keyPadController.clearAll(),
-                                onSuccess: () => PageRouter.pop(pin));
-                        return;
-                      }
-                      PageRouter.pop(pin);
-                    })
+                    BiometricVerification(
+                        popScreenWhenVerificationCompletes:
+                            !widget.validatePinHere,
+                        callback: (pin) async {
+                          if (widget.validatePinHere) {
+                            await ref
+                                .read(authNotifierProvider.notifier)
+                                .validatePin(pin, _cancelToken,
+                                    onError: () => _keyPadController.clearAll(),
+                                    onSuccess: () => PageRouter.pop(pin));
+                            return;
+                          }
+                          PageRouter.pop(pin);
+                        })
                   ],
                 ),
               ),

@@ -67,6 +67,11 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
               '${user.firstName ?? ''} ${user.lastName ?? ''}'.titleCase;
           final bool isAccountVerified = user.tierLevels == 3;
           final bool isBVNVerified = (user.tierLevels) > 1;
+          final bool isDobAvailable =
+              (user.dob != null && user.dob!.isNotEmpty);
+          final bool isGenderAvailable =
+              (user.gender != null && user.gender!.isNotEmpty);
+
           return Scaffold(
             backgroundColor: AppColors.kPurpleColor800,
             appBar: AppBar(
@@ -162,8 +167,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                   const Gap(height: 25),
                   Container(
                     width: double.infinity,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 15.w, vertical: 23.h),
+                    padding: EdgeInsets.symmetric(horizontal: 15.w),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16.r),
                         color: AppColors.white),
@@ -184,7 +188,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                             key: AppString.gender,
                             value: user.gender?.titleCase ?? '',
                             onTap: () {
-                              if (isBVNVerified) return;
+                              if (isBVNVerified && isGenderAvailable) return;
                               BottomSheets.showInputAlertDialog(
                                   barrierDismissible: false,
                                   child: const UpdateGenderWidget());
@@ -226,7 +230,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                             value: user.dob ?? '',
                             isLoading: userState.isBusy,
                             onTap: () async {
-                              if (isBVNVerified) return;
+                              if (isBVNVerified && isDobAvailable) return;
 
                               final date = await pickDate(
                                   dateOptions: DateOptions.past,
@@ -260,7 +264,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
         });
   }
 
-  GestureDetector _buildTile(
+  InkWell _buildTile(
           {required BuildContext context,
           required String key,
           required String value,
@@ -268,40 +272,45 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
           bool isLast = false,
           bool isLoading = false,
           void Function()? onTap}) =>
-      GestureDetector(
+      InkWell(
         onTap: onTap,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(key,
-                      style: context.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.kIconGrey),
-                      textAlign: TextAlign.left),
-                ),
-                const Gap(width: 30),
-                trailing ??
-                    Expanded(
-                        child: Text(value,
-                            style: context.headlineMedium
-                                ?.copyWith(fontWeight: FontWeight.w400),
-                            textAlign: TextAlign.right,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis)),
-                isLoading
-                    ? const CupertinoActivityIndicator()
-                    : const Icon(Icons.navigate_next,
-                        color: AppColors.kSecondaryTextColor)
-              ],
-            ),
-            if (!isLast)
-              const Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [Gap(height: 7), Divider(), Gap(height: 15)])
-          ],
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 15.h),
+          decoration: BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(
+                      color: !isLast
+                          ? (context.divider ?? Colors.transparent)
+                          : Colors.transparent))),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(key,
+                        style: context.headlineMedium?.copyWith(
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.kIconGrey),
+                        textAlign: TextAlign.left),
+                  ),
+                  const Gap(width: 30),
+                  trailing ??
+                      Expanded(
+                          child: Text(value,
+                              style: context.headlineMedium
+                                  ?.copyWith(fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.right,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis)),
+                  isLoading
+                      ? const CupertinoActivityIndicator()
+                      : const Icon(Icons.navigate_next,
+                          color: AppColors.kSecondaryTextColor)
+                ],
+              ),
+            ],
+          ),
         ),
       );
 }

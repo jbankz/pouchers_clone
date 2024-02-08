@@ -74,7 +74,9 @@ class _VirtualKeyPadState extends State<VirtualKeyPad> {
   @override
   void initState() {
     super.initState();
-    widget.keyPadController.addListener(() => setState(() {}));
+    widget.keyPadController.addListener(() {
+      if (mounted) setState(() {});
+    });
   }
 
   @override

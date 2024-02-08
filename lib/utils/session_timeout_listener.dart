@@ -22,6 +22,8 @@ class _SessionTimeOutListenerState extends State<SessionTimeOutListener> {
   Timer? _timer;
 
   void _startTimer() {
+    if (kDebugMode) return;
+
     _cancelTimer();
 
     _timer = Timer(widget.duration, widget.onTimeOut);
@@ -37,7 +39,7 @@ class _SessionTimeOutListenerState extends State<SessionTimeOutListener> {
   @override
   void initState() {
     super.initState();
-    if (kReleaseMode) _startTimer();
+    _startTimer();
   }
 
   @override

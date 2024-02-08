@@ -185,7 +185,7 @@ class TopDealsWidget extends HookConsumerWidget {
           ),
           const Gap(height: 4),
           Text(
-            (deal.price ?? 0).toNaira,
+            deal.price.toNaira,
             style: context.titleLarge?.copyWith(
               fontSize: 12.sp,
               fontWeight: FontWeight.w400,

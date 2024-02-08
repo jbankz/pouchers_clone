@@ -22,7 +22,9 @@ class _QuestionsOptionsSheetState extends ConsumerState<QuestionsOptionsSheet> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => ref
+        .read(authNotifierProvider.notifier)
+        .securityQuestions(_cancelToken));
   }
 
   @override

@@ -83,7 +83,7 @@ class HomeAppBar extends StatelessWidget {
                       builder: (_, box, __) {
                         final notifications = notificationDao
                             .retrieve(box)
-                            .where((element) => element.isRead)
+                            .where((element) => !element.isRead)
                             .toList();
                         return Stack(
                           clipBehavior: Clip.none,

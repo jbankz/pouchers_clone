@@ -40,14 +40,18 @@ class TierStatsWidget extends HookConsumerWidget {
                           color: user.tierLevels >= 3
                               ? AppColors.kLightYellow200
                               : AppColors.kLight100),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ProgressBar(status: user.tierLevels >= 1),
-                          ProgressBar(
-                              height: 4.6, status: user.tierLevels >= 2),
-                          ProgressBar(height: 4.6, status: user.tierLevels >= 3)
-                        ],
+                      child: SingleChildScrollView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ProgressBar(status: user.tierLevels >= 1),
+                            ProgressBar(
+                                height: 4.6, status: user.tierLevels >= 2),
+                            ProgressBar(
+                                height: 4.6, status: user.tierLevels >= 3)
+                          ],
+                        ),
                       ),
                     ),
                     Positioned(
