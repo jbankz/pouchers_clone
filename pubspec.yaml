@@ -43,8 +43,6 @@ dependencies:
   fast_contacts: ^3.0.3
   fluttercontactpicker: ^4.7.0
 
-
-
   # Util
   flutter_screenutil: ^5.9.0
 

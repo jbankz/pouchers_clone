@@ -2,7 +2,6 @@ import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -25,12 +24,10 @@ class _SplashViewState extends State<SplashView> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
-        await Future.wait([
-          initializeDB(),
-          IntercomManager.initialize(),
-          _sessionManager.initializeSession(),
-          Firebase.initializeApp()
-        ]);
+        await initializeDB();
+        await IntercomManager.initialize();
+        await _sessionManager.initializeSession();
+
         PageRouter.pushReplacement(Routes.onboardingView);
       } catch (e) {
         debugPrint(e.toString());
