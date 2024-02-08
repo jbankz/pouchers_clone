@@ -29,7 +29,8 @@ mixin _$MobileOperatorServices {
   String? get code => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get shortCode => throw _privateConstructorUsedError;
-  num? get price => throw _privateConstructorUsedError;
+  @StringToNumSerializer()
+  num get price => throw _privateConstructorUsedError;
   num get serviceId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -53,7 +54,7 @@ abstract class $MobileOperatorServicesCopyWith<$Res> {
       String? code,
       String? name,
       String? shortCode,
-      num? price,
+      @StringToNumSerializer() num price,
       num serviceId});
 }
 
@@ -79,7 +80,7 @@ class _$MobileOperatorServicesCopyWithImpl<$Res,
     Object? code = freezed,
     Object? name = freezed,
     Object? shortCode = freezed,
-    Object? price = freezed,
+    Object? price = null,
     Object? serviceId = null,
   }) {
     return _then(_value.copyWith(
@@ -115,10 +116,10 @@ class _$MobileOperatorServicesCopyWithImpl<$Res,
           ? _value.shortCode
           : shortCode // ignore: cast_nullable_to_non_nullable
               as String?,
-      price: freezed == price
+      price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as num?,
+              as num,
       serviceId: null == serviceId
           ? _value.serviceId
           : serviceId // ignore: cast_nullable_to_non_nullable
@@ -145,7 +146,7 @@ abstract class _$$MobileOperatorServicesImplCopyWith<$Res>
       String? code,
       String? name,
       String? shortCode,
-      num? price,
+      @StringToNumSerializer() num price,
       num serviceId});
 }
 
@@ -170,7 +171,7 @@ class __$$MobileOperatorServicesImplCopyWithImpl<$Res>
     Object? code = freezed,
     Object? name = freezed,
     Object? shortCode = freezed,
-    Object? price = freezed,
+    Object? price = null,
     Object? serviceId = null,
   }) {
     return _then(_$MobileOperatorServicesImpl(
@@ -206,10 +207,10 @@ class __$$MobileOperatorServicesImplCopyWithImpl<$Res>
           ? _value.shortCode
           : shortCode // ignore: cast_nullable_to_non_nullable
               as String?,
-      price: freezed == price
+      price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as num?,
+              as num,
       serviceId: null == serviceId
           ? _value.serviceId
           : serviceId // ignore: cast_nullable_to_non_nullable
@@ -230,7 +231,7 @@ class _$MobileOperatorServicesImpl implements _MobileOperatorServices {
       this.code,
       this.name,
       this.shortCode,
-      this.price,
+      @StringToNumSerializer() this.price = 0,
       this.serviceId = 0});
 
   factory _$MobileOperatorServicesImpl.fromJson(Map<String, dynamic> json) =>
@@ -255,7 +256,9 @@ class _$MobileOperatorServicesImpl implements _MobileOperatorServices {
   @override
   final String? shortCode;
   @override
-  final num? price;
+  @JsonKey()
+  @StringToNumSerializer()
+  final num price;
   @override
   @JsonKey()
   final num serviceId;
@@ -329,7 +332,7 @@ abstract class _MobileOperatorServices implements MobileOperatorServices {
       final String? code,
       final String? name,
       final String? shortCode,
-      final num? price,
+      @StringToNumSerializer() final num price,
       final num serviceId}) = _$MobileOperatorServicesImpl;
 
   factory _MobileOperatorServices.fromJson(Map<String, dynamic> json) =
@@ -352,7 +355,8 @@ abstract class _MobileOperatorServices implements MobileOperatorServices {
   @override
   String? get shortCode;
   @override
-  num? get price;
+  @StringToNumSerializer()
+  num get price;
   @override
   num get serviceId;
   @override

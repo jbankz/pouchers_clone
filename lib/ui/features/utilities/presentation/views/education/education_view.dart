@@ -16,6 +16,7 @@ import '../../../../../../utils/formatters/currency_formatter.dart';
 import '../../../../../common/app_colors.dart';
 import '../../../../../common/app_strings.dart';
 import '../../../../../widgets/dialog/bottom_sheet.dart';
+import '../../../../../widgets/dialog/guest_modal_sheet.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
@@ -33,11 +34,14 @@ import '../../../domain/enum/billers_category.dart';
 import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/billers.dart';
 import '../../../domain/model/cable_service.dart';
+import '../../../domain/model/discounts.dart';
+import '../../../domain/model/top_deals_model.dart';
 import '../../notifier/billers_notifier.dart';
 import '../../state/billers_state.dart';
 import '../sheet/provider_services_sheets.dart';
 import '../sheet/providers_sheets.dart';
 import '../sheet/summary_sheet.dart';
+import '../widget/top_deal_widget.dart';
 import 'education_view.form.dart';
 import 'skeleton/education_skeleton.dart';
 
@@ -91,6 +95,8 @@ class _EducationViewState extends ConsumerState<EducationView>
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
     final getMerchantState = ref.watch(merchantsNotifierProvider);
+    final discountData = billerState.discounts;
+    final filteredServices = discountData?.filteredServices ?? [];
 
     return Scaffold(
       appBar: AppBar(title: Text(AppString.education)),
@@ -110,6 +116,34 @@ class _EducationViewState extends ConsumerState<EducationView>
                         ScrollViewKeyboardDismissBehavior.onDrag,
                     children: [
                       _buildProviderTextField(billerState),
+                      TopDealsWidget(
+                          category: BillersCategory.education,
+                          filteredServices: filteredServices
+                              .map((topDeal) => TopDeals(
+                                  code: topDeal.code,
+                                  price: topDeal.price,
+                                  name: topDeal.name))
+                              .toList(),
+                          callback: (topDeal) {
+                            if (billerState.isPurchasing) return;
+
+                            if (billerState.isGuest) {
+                              BottomSheets.showAlertDialog(
+                                  child: const GuestDiscountSheet());
+                              return;
+                            }
+
+                            _cableService = CableService(
+                                name: topDeal.name,
+                                code: topDeal.code,
+                                price: topDeal.price,
+                                shortCode: topDeal.shortCode);
+
+                            amountController.text = _formatter
+                                .formatDouble(topDeal.price.toDouble());
+
+                            setState(() {});
+                          }),
                       const Gap(height: 24),
                       _buildSubscriptionTypeTextField(),
                       const Gap(height: 24),
@@ -210,10 +244,10 @@ class _EducationViewState extends ConsumerState<EducationView>
         _billersNotifier.resetCustomerInfo();
         context.nextFocus(subscriptionTypeFocusNode);
 
-        // _billersNotifier.billersDiscounts(
-        //     parameter: BillersCategory.education,
-        //     operatorId: _billers?.operatorpublicid,
-        //     cancelToken: _cancelToken);
+        _billersNotifier.billersDiscounts(
+            parameter: BillersCategory.education,
+            operatorId: _billers?.operatorpublicid,
+            cancelToken: _cancelToken);
       }
     });
   }
@@ -238,19 +272,29 @@ class _EducationViewState extends ConsumerState<EducationView>
     setState(() {});
   }
 
-  Future<void> _submitForActualUser({String? pin}) {
+  Future<void> _submitForActualUser(
+      {String? pin, required BillersState billerState}) {
     final MerchantState merchantState = ref.watch(merchantsNotifierProvider);
+
+    final Discounts? discounts = billerState.discounts?.discount;
+
+    final bool isAppliedDiscount = ((billerState.discounts != null) &&
+        _formatter.getUnformattedValue() >= (discounts?.threshold ?? 0));
+
+    final amount = discounts?.payment(_formatter.getUnformattedValue()) ??
+        _formatter.getUnformattedValue();
+
     return _billersNotifier.purchaseService(
         mobileDto: MobileDto(
           isMerchantPayment: true,
-          amount: _formatter.getUnformattedValue(),
+          amount: amount,
           merchantAccount: _billers?.operatorpublicid,
           merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
           merchantService: _cableService?.code,
           transactionPin: pin,
           subCategory: _billers?.displayName,
           category: ServiceCategory.education,
-          applyDiscount: false,
+          applyDiscount: isAppliedDiscount,
         ),
         onSuccess: () => PageRouter.pushNamed(Routes.successState,
             args: SuccessStateArguments(
@@ -286,7 +330,16 @@ class _EducationViewState extends ConsumerState<EducationView>
   }
 
   Future<void> _handlePayment(BillersState billerState) async {
+    final Discounts? discounts = billerState.discounts?.discount;
     final envs = envDao.envs;
+
+    final bool isAppliedDiscount = ((discounts != null) &&
+        (_cableService?.price ?? 0) >= (discounts.threshold));
+
+    final amount = billerState.isGuest
+        ? _formatter.getUnformattedValue()
+        : discounts?.payment(_formatter.getUnformattedValue()) ??
+            _formatter.getUnformattedValue();
 
     final String fee =
         envs.firstWhereOrNull((env) => env.name == Fees.educationFee)?.value ??
@@ -299,11 +352,11 @@ class _EducationViewState extends ConsumerState<EducationView>
             title: _billers?.name,
             imageUrl: _billers?.logoUrl,
             recipient: _billers?.displayName,
-            amount: _formatter.getUnformattedValue(),
-            cashBack: 0,
+            amount: amount,
+            cashBack: isAppliedDiscount ? discounts.discountValue : 0,
             fee: num.parse(fee)),
         biometricVerification: (pin) {
-          _submitForActualUser(pin: pin);
+          _submitForActualUser(pin: pin, billerState: billerState);
           return;
         },
       ),
@@ -320,7 +373,7 @@ class _EducationViewState extends ConsumerState<EducationView>
           child: const PinConfirmationSheet(),
         ) as String?;
         if (pin != null) {
-          _submitForActualUser(pin: pin);
+          _submitForActualUser(pin: pin, billerState: billerState);
         }
       }
     }

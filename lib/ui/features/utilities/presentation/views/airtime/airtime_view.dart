@@ -238,7 +238,8 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
     final bool isAppliedDiscount = ((billerState.discounts != null) &&
         _formatter.getUnformattedValue() >= (discounts?.threshold ?? 0));
 
-    final amount = discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
+    final amount = discounts?.payment(_formatter.getUnformattedValue()) ??
+        _formatter.getUnformattedValue();
 
     final mobileDto = MobileDto(
         category: ServiceCategory.airtime,

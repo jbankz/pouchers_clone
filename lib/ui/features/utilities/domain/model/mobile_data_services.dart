@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../../app/serializer/string_to_num_serializer.dart';
+
 part 'mobile_data_services.freezed.dart';
 part 'mobile_data_services.g.dart';
 
@@ -14,7 +16,7 @@ class MobileOperatorServices with _$MobileOperatorServices {
       String? code,
       String? name,
       String? shortCode,
-      num? price,
+      @StringToNumSerializer() @Default(0) num price,
       @Default(0) num serviceId}) = _MobileOperatorServices;
 
   factory MobileOperatorServices.fromJson(Map<String, dynamic> json) =>

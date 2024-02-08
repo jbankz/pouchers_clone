@@ -115,6 +115,33 @@ class TopDealsWidget extends HookConsumerWidget {
     );
   }
 
+  Column _buildEducationValues(TopDeals deal, BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            deal.name ?? '',
+            style: context.titleLarge?.copyWith(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: AppColors.kPrimaryTextColor,
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 1,
+          ),
+          const Gap(height: 4),
+          Text(
+            deal.price.toNaira,
+            style: context.titleLarge?.copyWith(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w400,
+              color: AppColors.kPrimaryTextColor,
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 1,
+          ),
+        ],
+      );
+
   Column _buildCableValues(TopDeals deal, BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -233,6 +260,8 @@ class TopDealsWidget extends HookConsumerWidget {
         return 1.0.h;
       case BillersCategory.cable:
         return 1.3.h;
+      case BillersCategory.education:
+        return 1.2.h;
       default:
         return 1.6.h;
     }
@@ -245,6 +274,8 @@ class TopDealsWidget extends HookConsumerWidget {
         return _buildAirtimeValues(deal, context);
       case BillersCategory.data:
         return _buildDataValues(deal, context);
+      case BillersCategory.education:
+        return _buildEducationValues(deal, context);
       case BillersCategory.cable:
         return _buildCableValues(deal, context);
       default:
