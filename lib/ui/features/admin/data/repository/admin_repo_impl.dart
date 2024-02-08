@@ -1,4 +1,5 @@
 import 'package:Pouchers/ui/features/admin/data/dao/banner_dao.dart';
+import 'package:Pouchers/ui/features/admin/data/dao/env_dao.dart';
 import 'package:Pouchers/ui/features/admin/data/source/admin_source.dart';
 import 'package:Pouchers/ui/features/admin/domain/dto/admin_dto.dart';
 import 'package:Pouchers/ui/features/admin/domain/model/banner.dart';
@@ -14,8 +15,12 @@ class AdminRepoImpl implements AdminRepo {
 
   @override
   Future<List<Envs>?> envs(
-          {AdminDto? adminDto, CancelToken? cancelToken}) async =>
-      await _adminSource.envs(adminDto: adminDto, cancelToken: cancelToken);
+      {AdminDto? adminDto, CancelToken? cancelToken}) async {
+    final envs =
+        await _adminSource.envs(adminDto: adminDto, cancelToken: cancelToken);
+    envDao.save(envs ?? []);
+    return envs;
+  }
 
   @override
   Future<List<Banner>> banners({CancelToken? cancelToken}) async {

@@ -24,4 +24,5 @@ class AppKeys {
   static const String transactionAnalytcDaoKey = 'transactionAnalytcDaoKey';
   static const String requestDaoKey = 'requestDaoKey';
   static const String scheduledDaoKey = 'scheduledDaoKey';
+  static const String envDaoKey = 'envDaoKey';
 }

@@ -29,4 +29,6 @@ class DbConstants {
   static const int twentySeven = 27;
   static const int twentyEight = 28;
   static const int twentyNine = 29;
+  static const int thirty = 30;
+  static const int thirtyOne = 31;
 }

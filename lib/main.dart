@@ -21,6 +21,7 @@ Future<void> main() async {
   await dotenv.load(fileName: AppConfig.fileName);
   await setupLocator();
   await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 

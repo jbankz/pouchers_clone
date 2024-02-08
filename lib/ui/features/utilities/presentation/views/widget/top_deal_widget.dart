@@ -7,7 +7,6 @@ import '../../../domain/enum/billers_category.dart';
 import '../../../../../widgets/bottom_sheet.dart';
 import '../../../../../widgets/dialog/guest_modal_sheet.dart';
 import '../../../../../widgets/gap.dart';
-import 'package:Pouchers/app/core/skeleton/widgets.dart';
 import 'package:Pouchers/ui/features/utilities/presentation/notifier/billers_notifier.dart';
 import 'package:Pouchers/utils/extension.dart';
 
@@ -30,93 +29,89 @@ class TopDealsWidget extends HookConsumerWidget {
     final billerState = ref.watch(billersNotifierProvider);
     final discount = billerState.discounts?.discount;
 
-    return Skeleton(
-      isLoading: billerState.isGettingDiscount,
-      skeleton: _buildTopDealSkeleton(context),
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 350),
-        transitionBuilder: (child, animation) =>
-            SizeTransition(sizeFactor: animation, child: child),
-        child: filteredServices.isEmpty
-            ? const SizedBox.shrink()
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Gap(height: 24),
-                  Text(
-                    AppString.topDeals,
-                    style: context.titleLarge?.copyWith(fontSize: 12.sp),
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 350),
+      transitionBuilder: (child, animation) =>
+          SizeTransition(sizeFactor: animation, child: child),
+      child: filteredServices.isEmpty
+          ? const SizedBox.shrink()
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Gap(height: 24),
+                Text(
+                  AppString.topDeals,
+                  style: context.titleLarge?.copyWith(fontSize: 12.sp),
+                ),
+                const Gap(height: 12),
+                GridView.builder(
+                  primary: false,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: filteredServices.take(6).length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisSpacing: 14.h,
+                    crossAxisSpacing: 16.w,
+                    childAspectRatio: _returnChildAspectRatio(),
+                    crossAxisCount: 3,
                   ),
-                  const Gap(height: 12),
-                  GridView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: filteredServices.take(6).length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisSpacing: 14.h,
-                      crossAxisSpacing: 16.w,
-                      childAspectRatio: _returnChildAspectRatio(),
-                      crossAxisCount: 3,
-                    ),
-                    itemBuilder: (_, index) {
-                      final deal = filteredServices[index];
-                      return InkWell(
-                        borderRadius: BorderRadius.circular(10.r),
-                        onTap: () {
-                          if (billerState.isGuest) {
-                            Sheets.showDialog(
-                              child: const GuestDiscountSheet(),
-                            );
-                          } else {
-                            callback(deal);
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            border: Border.all(
-                              width: 1.w,
-                              color: AppColors.kLightPurple,
-                            ),
-                          ),
-                          child: SingleChildScrollView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(vertical: 2.h),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(10.r),
-                                    ),
-                                    color: AppColors.kPrimaryColor,
-                                  ),
-                                  child: Text(
-                                    '${discount?.discountValue.toNaira} cashback',
-                                    style: context.titleLarge?.copyWith(
-                                      fontSize: 12.sp,
-                                      color: AppColors.kLightPurple,
-                                    ),
-                                  ),
-                                ),
-                                const Gap(height: 12),
-                                _returnWidget(deal, context),
-                                const Gap(height: 12),
-                              ],
-                            ),
+                  itemBuilder: (_, index) {
+                    final deal = filteredServices[index];
+                    return InkWell(
+                      borderRadius: BorderRadius.circular(10.r),
+                      onTap: () {
+                        if (billerState.isGuest) {
+                          Sheets.showDialog(
+                            child: const GuestDiscountSheet(),
+                          );
+                        } else {
+                          callback(deal);
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.r),
+                          border: Border.all(
+                            width: 1.w,
+                            color: AppColors.kLightPurple,
                           ),
                         ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-      ),
+                        child: SingleChildScrollView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.symmetric(vertical: 2.h),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(10.r),
+                                  ),
+                                  color: AppColors.kPrimaryColor,
+                                ),
+                                child: Text(
+                                  '${discount?.discountValue.toNaira} cashback',
+                                  style: context.titleLarge?.copyWith(
+                                    fontSize: 12.sp,
+                                    color: AppColors.kLightPurple,
+                                  ),
+                                ),
+                              ),
+                              const Gap(height: 12),
+                              _returnWidget(deal, context),
+                              const Gap(height: 12),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
     );
   }
 

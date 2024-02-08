@@ -1,6 +1,7 @@
 import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,8 @@ import '../../../../../widgets/dialog/guest_modal_sheet.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
+import '../../../../admin/data/dao/env_dao.dart';
+import '../../../../admin/domain/enum/fees.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
 import '../../../../dashboard/views/card/domain/enum/currency.dart';
 import '../../../../dashboard/views/card/presentation/notifier/module/module.dart';
@@ -91,7 +94,6 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
     final billerState = ref.watch(billersNotifierProvider);
     final discountData = billerState.discounts;
     final filteredServices = discountData?.filteredServices ?? [];
-
     return Scaffold(
       appBar: AppBar(title: Text(AppString.cableTv)),
       body: SafeArea(
@@ -309,25 +311,30 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
 
   Future<void> _handlePayment(BillersState billerState) async {
     final Discounts? discounts = billerState.discounts?.discount;
+    final envs = envDao.envs;
 
     final bool isAppliedDiscount = ((discounts != null) &&
         (_cableService?.price ?? 0) >= (discounts.threshold));
 
     final amount = billerState.isGuest
         ? _cableService?.price
-        : discounts?.payment(_cableService?.price) ?? 0;
+        : discounts?.payment(_cableService?.price) ?? _cableService?.price;
+
+    final String fee =
+        envs.firstWhereOrNull((env) => env.name == Fees.cableTvFee)?.value ??
+            '0';
 
     final feedback = await Sheets.showSheet(
       child: SummaryWidget(
         summaryDto: SummaryDto(
-          isGuest: billerState.isGuest,
-          recipientWidget: _buildRecipientWidget(billerState),
-          title: _billers?.name,
-          imageUrl: _billers?.logoUrl,
-          recipient: numberController.text,
-          amount: amount,
-          cashBack: isAppliedDiscount ? discounts.discountValue : 0,
-        ),
+            isGuest: billerState.isGuest,
+            recipientWidget: _buildRecipientWidget(billerState),
+            title: _billers?.name,
+            imageUrl: _billers?.logoUrl,
+            recipient: numberController.text,
+            amount: amount,
+            cashBack: isAppliedDiscount ? discounts.discountValue : 0,
+            fee: num.parse(fee)),
         biometricVerification: (pin) {
           _submitForActualUser(pin: pin);
           return;

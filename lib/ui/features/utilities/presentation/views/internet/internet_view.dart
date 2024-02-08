@@ -2,6 +2,7 @@ import 'package:Pouchers/ui/features/merchant/domain/model/get_merchants.dart';
 import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,8 @@ import '../../../../../widgets/dialog/bottom_sheet.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
+import '../../../../admin/data/dao/env_dao.dart';
+import '../../../../admin/domain/enum/fees.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
 import '../../../../dashboard/views/card/domain/enum/currency.dart';
 import '../../../../dashboard/views/card/presentation/notifier/module/module.dart';
@@ -390,18 +393,22 @@ class _InternetViewState extends ConsumerState<InternetView>
 
   Future<void> _handlePayment(
       BillersState billerState, GetMerchant? getMerchant) async {
+    final envs = envDao.envs;
+
+    final String fee =
+        envs.firstWhereOrNull((env) => env.name == Fees.internetFee)?.value ??
+            '0';
+
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(
         summaryDto: SummaryDto(
-          isGuest: billerState.isGuest,
-          recipientWidget: _buildRecipientWidget(billerState),
-          title: _billers?.name,
-          imageUrl: _billers?.logoUrl,
-          recipient: numberController.text,
-          amount: _cableService?.price ?? 0,
-          cashBack: 0,
-          fee: 0,
-        ),
+            isGuest: billerState.isGuest,
+            recipientWidget: _buildRecipientWidget(billerState),
+            title: _billers?.name,
+            imageUrl: _billers?.logoUrl,
+            recipient: numberController.text,
+            amount: _cableService?.price ?? 0,
+            fee: num.parse(fee)),
         biometricVerification: (pin) {
           _submitForActualUser(pin: pin, getMerchant: getMerchant);
           return;

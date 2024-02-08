@@ -48,7 +48,7 @@ extension ExtOnDiscounts on Discounts {
     if (discountType == DiscountType.percentage) {
       return amount - (amount * (discountValue / 100));
     }
-    return 0;
+    return amount;
   }
 
   List<MobileOperatorServices> get topDeals => List.generate(

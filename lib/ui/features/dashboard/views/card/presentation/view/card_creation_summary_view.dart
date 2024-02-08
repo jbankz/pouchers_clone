@@ -1,4 +1,5 @@
 import 'package:Pouchers/ui/common/app_colors.dart';
+import 'package:Pouchers/ui/features/admin/data/dao/env_dao.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_activity_type.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_status.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
@@ -57,9 +58,8 @@ class _CardCreationSymmaryViewState
         final cardState = ref.watch(cardNotifierProvider);
         final param = ref.watch(paramModule);
         final walletState = ref.watch(walletNotifierProvider);
-        final appState = ref.watch(adminNotifierProvider);
 
-        final envs = appState.data;
+        final envs = envDao.envs;
 
         final totalNairaFee = _cardNotifier.calculateTotalNairaFee(envs);
         final totalDollarFee = _cardNotifier.calculateTotalDollarFee(envs);

@@ -7,6 +7,7 @@ import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
 import 'package:Pouchers/ui/features/utilities/presentation/state/billers_state.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,8 @@ import '../../../../../widgets/dialog/guest_modal_sheet.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
+import '../../../../admin/data/dao/env_dao.dart';
+import '../../../../admin/domain/enum/fees.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
 import '../../../domain/enum/service_category.dart';
 import '../../../domain/model/billers.dart';
@@ -279,13 +282,19 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
 
   Future<void> _handlePayment(BillersState billerState) async {
     final Discounts? discounts = billerState.discounts?.discount;
+    final envs = envDao.envs;
 
     final bool isAppliedDiscount = ((discounts != null) &&
         _formatter.getUnformattedValue() >= (discounts.threshold));
 
     final amount = billerState.isGuest
         ? _formatter.getUnformattedValue()
-        : discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
+        : discounts?.payment(_formatter.getUnformattedValue()) ??
+            _formatter.getUnformattedValue();
+
+    final String fee =
+        envs.firstWhereOrNull((env) => env.name == Fees.airtimeFee)?.value ??
+            '0';
 
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(
@@ -299,7 +308,8 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                     color: AppColors.kPurple100, fontWeight: FontWeight.w700),
                 textAlign: TextAlign.right),
             amount: amount,
-            cashBack: isAppliedDiscount ? discounts.discountValue : 0),
+            cashBack: isAppliedDiscount ? discounts.discountValue : 0,
+            fee: num.parse(fee)),
         biometricVerification: (pin) {
           _submitForActualUser(pin: pin, billerState: billerState);
           return;

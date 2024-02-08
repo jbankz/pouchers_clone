@@ -8,7 +8,6 @@ part 'admin_state.freezed.dart';
 class AdminState<T> with _$AdminState<T> {
   const factory AdminState(
       {@Default(false) bool isBusy,
-      @Default([]) List<Envs> data,
       @Default([]) List<Banner> banner,
       String? errorMessage,
       StackTrace? stackTrace}) = _AdminState<T>;

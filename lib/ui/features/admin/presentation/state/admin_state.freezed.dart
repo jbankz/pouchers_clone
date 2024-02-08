@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$AdminState<T> {
   bool get isBusy => throw _privateConstructorUsedError;
-  List<Envs> get data => throw _privateConstructorUsedError;
   List<Banner> get banner => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
   StackTrace? get stackTrace => throw _privateConstructorUsedError;
@@ -35,7 +34,6 @@ abstract class $AdminStateCopyWith<T, $Res> {
   @useResult
   $Res call(
       {bool isBusy,
-      List<Envs> data,
       List<Banner> banner,
       String? errorMessage,
       StackTrace? stackTrace});
@@ -55,7 +53,6 @@ class _$AdminStateCopyWithImpl<T, $Res, $Val extends AdminState<T>>
   @override
   $Res call({
     Object? isBusy = null,
-    Object? data = null,
     Object? banner = null,
     Object? errorMessage = freezed,
     Object? stackTrace = freezed,
@@ -65,10 +62,6 @@ class _$AdminStateCopyWithImpl<T, $Res, $Val extends AdminState<T>>
           ? _value.isBusy
           : isBusy // ignore: cast_nullable_to_non_nullable
               as bool,
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as List<Envs>,
       banner: null == banner
           ? _value.banner
           : banner // ignore: cast_nullable_to_non_nullable
@@ -95,7 +88,6 @@ abstract class _$$AdminStateImplCopyWith<T, $Res>
   @useResult
   $Res call(
       {bool isBusy,
-      List<Envs> data,
       List<Banner> banner,
       String? errorMessage,
       StackTrace? stackTrace});
@@ -113,7 +105,6 @@ class __$$AdminStateImplCopyWithImpl<T, $Res>
   @override
   $Res call({
     Object? isBusy = null,
-    Object? data = null,
     Object? banner = null,
     Object? errorMessage = freezed,
     Object? stackTrace = freezed,
@@ -123,10 +114,6 @@ class __$$AdminStateImplCopyWithImpl<T, $Res>
           ? _value.isBusy
           : isBusy // ignore: cast_nullable_to_non_nullable
               as bool,
-      data: null == data
-          ? _value._data
-          : data // ignore: cast_nullable_to_non_nullable
-              as List<Envs>,
       banner: null == banner
           ? _value._banner
           : banner // ignore: cast_nullable_to_non_nullable
@@ -148,25 +135,14 @@ class __$$AdminStateImplCopyWithImpl<T, $Res>
 class _$AdminStateImpl<T> implements _AdminState<T> {
   const _$AdminStateImpl(
       {this.isBusy = false,
-      final List<Envs> data = const [],
       final List<Banner> banner = const [],
       this.errorMessage,
       this.stackTrace})
-      : _data = data,
-        _banner = banner;
+      : _banner = banner;
 
   @override
   @JsonKey()
   final bool isBusy;
-  final List<Envs> _data;
-  @override
-  @JsonKey()
-  List<Envs> get data {
-    if (_data is EqualUnmodifiableListView) return _data;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_data);
-  }
-
   final List<Banner> _banner;
   @override
   @JsonKey()
@@ -183,7 +159,7 @@ class _$AdminStateImpl<T> implements _AdminState<T> {
 
   @override
   String toString() {
-    return 'AdminState<$T>(isBusy: $isBusy, data: $data, banner: $banner, errorMessage: $errorMessage, stackTrace: $stackTrace)';
+    return 'AdminState<$T>(isBusy: $isBusy, banner: $banner, errorMessage: $errorMessage, stackTrace: $stackTrace)';
   }
 
   @override
@@ -192,7 +168,6 @@ class _$AdminStateImpl<T> implements _AdminState<T> {
         (other.runtimeType == runtimeType &&
             other is _$AdminStateImpl<T> &&
             (identical(other.isBusy, isBusy) || other.isBusy == isBusy) &&
-            const DeepCollectionEquality().equals(other._data, _data) &&
             const DeepCollectionEquality().equals(other._banner, _banner) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
@@ -201,13 +176,8 @@ class _$AdminStateImpl<T> implements _AdminState<T> {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      isBusy,
-      const DeepCollectionEquality().hash(_data),
-      const DeepCollectionEquality().hash(_banner),
-      errorMessage,
-      stackTrace);
+  int get hashCode => Object.hash(runtimeType, isBusy,
+      const DeepCollectionEquality().hash(_banner), errorMessage, stackTrace);
 
   @JsonKey(ignore: true)
   @override
@@ -219,15 +189,12 @@ class _$AdminStateImpl<T> implements _AdminState<T> {
 abstract class _AdminState<T> implements AdminState<T> {
   const factory _AdminState(
       {final bool isBusy,
-      final List<Envs> data,
       final List<Banner> banner,
       final String? errorMessage,
       final StackTrace? stackTrace}) = _$AdminStateImpl<T>;
 
   @override
   bool get isBusy;
-  @override
-  List<Envs> get data;
   @override
   List<Banner> get banner;
   @override
