@@ -10,7 +10,6 @@ import 'package:Pouchers/ui/features/profile/domain/model/idenitification_type.d
 import 'package:Pouchers/ui/notification/notification_tray.dart';
 import 'package:dio/dio.dart';
 import 'package:fast_contacts/fast_contacts.dart';
-import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../app/app.logger.dart';
@@ -34,7 +33,6 @@ class UserNotifier extends _$UserNotifier {
   final SessionManager _sessionManager = locator<SessionManager>();
   User? _user;
   List<User> _pouchersContacts = [];
-  final FlutterContactPicker _contactPicker = FlutterContactPicker();
 
   @override
   UserState build() =>
@@ -218,8 +216,6 @@ class UserNotifier extends _$UserNotifier {
       await ref.read(
           disableAccountProvider.call(reason, cancelToken: cancelToken).future);
 
-      /// clear users sessions
-      ///
       PageRouter.pushReplacement(Routes.signInView);
     } catch (e) {
       _logger.e(e.toString());

@@ -1,3 +1,5 @@
+import 'package:Pouchers/ui/features/admin/domain/enum/fees.dart';
+import 'package:Pouchers/ui/features/admin/domain/model/envs/envs.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_brand.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
@@ -16,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import '../../../ui/features/admin/data/dao/banner_dao.dart';
+import '../../../ui/features/admin/data/dao/env_dao.dart';
 import '../../../ui/features/admin/domain/model/banner.dart';
 import '../../../ui/features/dashboard/views/card/domain/enum/currency.dart';
 import '../../../ui/features/dashboard/views/transaction/data/dao/transaction_analytics_dao.dart';
@@ -80,6 +83,8 @@ Future<void> initializeDB() async {
       ..registerAdapter(AnalyticAdapter())
       ..registerAdapter(CardsAdapter())
       ..registerAdapter(CardTypeAdapter())
+      ..registerAdapter(FeesAdapter())
+      ..registerAdapter(EnvsAdapter())
       ..registerAdapter(CardBrandAdapter());
   } catch (e) {
     debugPrint(e.toString());
@@ -105,6 +110,7 @@ class HiveManager {
     requestSentDao = RequestSentDao();
     requestReceivedDao = RequestReceivedDao();
     transactionAnalyticsDao = TransactionAnalyticsDao();
+    envDao = EnvDao();
   }
 
   Future<void> clearHiveBox({bool reset = false}) async {
@@ -133,6 +139,7 @@ class HiveManager {
       await vouchersDao.truncate();
       await contactDao.truncate();
       await biometricDao.truncate();
+      await envDao.truncate();
     }
   }
 

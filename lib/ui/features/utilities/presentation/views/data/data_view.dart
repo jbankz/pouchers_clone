@@ -5,6 +5,7 @@ import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart
 import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/top_deals_model.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,8 @@ import '../../../../../widgets/dialog/guest_modal_sheet.dart';
 import '../../../../../widgets/edit_text_field_with.dart';
 import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/gap.dart';
+import '../../../../admin/data/dao/env_dao.dart';
+import '../../../../admin/domain/enum/fees.dart';
 import '../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
 import '../../../../dashboard/views/card/domain/enum/currency.dart';
 import '../../../../dashboard/views/card/presentation/notifier/module/module.dart';
@@ -263,13 +266,18 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
 
   Future<void> _handlePayment(BillersState billerState) async {
     final Discounts? discounts = billerState.discounts?.discount;
+    final envs = envDao.envs;
 
     final bool isAppliedDiscount = ((discounts != null) &&
         (_mobileOperatorServices?.servicePrice ?? 0) >= (discounts.threshold));
 
     final amount = billerState.isGuest
         ? (_mobileOperatorServices?.servicePrice ?? 0)
-        : discounts?.payment(_mobileOperatorServices?.servicePrice) ?? 0;
+        : discounts?.payment(_mobileOperatorServices?.servicePrice) ??
+            _mobileOperatorServices?.servicePrice;
+
+    final String fee =
+        envs.firstWhereOrNull((env) => env.name == Fees.dataFee)?.value ?? '0';
 
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(
@@ -279,7 +287,8 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
             imageUrl: _billers?.logoUrl,
             recipient: phoneController.text,
             amount: amount,
-            cashBack: isAppliedDiscount ? discounts.discountValue : 0),
+            cashBack: isAppliedDiscount ? discounts.discountValue : 0,
+            fee: num.parse(fee)),
         biometricVerification: (pin) {
           _submitForActualUser(billerState: billerState, pin: pin);
           return;

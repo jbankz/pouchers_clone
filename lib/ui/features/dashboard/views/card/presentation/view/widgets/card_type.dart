@@ -12,6 +12,7 @@ import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
 import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
 import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,6 +24,8 @@ import '../../../../../../../../app/app.router.dart';
 import '../../../../../../../../app/core/router/page_router.dart';
 import '../../../../../../../common/app_strings.dart';
 import '../../../../../../../widgets/gap.dart';
+import '../../../../../../admin/data/dao/env_dao.dart';
+import '../../../../../../admin/domain/enum/fees.dart';
 
 class CardTypeWidget extends ConsumerStatefulWidget {
   const CardTypeWidget({super.key, this.currency});
@@ -42,9 +45,8 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
   void initState() {
     super.initState();
     _paramNotifier = ref.read(paramModule.notifier);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(adminNotifierProvider.notifier).getEnvs();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //     (timeStamp) => ref.read(adminNotifierProvider.notifier).getEnvs());
   }
 
   @override
@@ -57,15 +59,14 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
   Widget build(BuildContext context) {
     final appState = ref.watch(adminNotifierProvider);
 
-    final envs = appState.data;
+    final envs = envDao.envs;
 
-    final Envs nairaCreation = envs.isEmpty
-        ? Envs()
-        : envs.singleWhere((env) => env.name == 'naira_card_creation_fee');
+    final Envs? nairaCreation =
+        envs.firstWhereOrNull((env) => env.name == Fees.nairaCardCreationFee);
 
-    final Envs dollarCreation = envs.isEmpty
-        ? Envs()
-        : envs.singleWhere((env) => env.name == 'dollar_card_creation_fee');
+    final Envs? dollarCreation =
+        envs.firstWhereOrNull((env) => env.name == Fees.dollarCardCreationFee);
+
     return ValueListenableBuilder<Box>(
         valueListenable: userDao.getListenable(),
         builder: (_, box, __) {
@@ -104,7 +105,7 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
                               if (widget.currency != Currency.NGN)
                                 _buildCardWidget(
                                     title: AppString.virtualNairaCard,
-                                    fee: num.parse(nairaCreation.value ?? '0')
+                                    fee: num.parse(nairaCreation?.value ?? '0')
                                         .toNaira,
                                     icon: AppImage.nairaSign,
                                     color: const Color.fromRGBO(34, 123, 65, 1),
@@ -115,7 +116,7 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
                               if (widget.currency != Currency.USD)
                                 _buildCardWidget(
                                     title: AppString.virtualDollarCard,
-                                    fee: num.parse(dollarCreation.value ?? '0')
+                                    fee: num.parse(dollarCreation?.value ?? '0')
                                         .toDollar,
                                     icon: AppImage.dollarSign,
                                     color: AppColors.kBrightPurple,

@@ -20,7 +20,7 @@ Envs _$EnvsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Envs {
-  String? get name => throw _privateConstructorUsedError;
+  Fees? get name => throw _privateConstructorUsedError;
   String? get value => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   DateTime? get updatedAt => throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ abstract class $EnvsCopyWith<$Res> {
       _$EnvsCopyWithImpl<$Res, Envs>;
   @useResult
   $Res call(
-      {String? name,
+      {Fees? name,
       String? value,
       @JsonKey(name: 'updated_at') DateTime? updatedAt});
 }
@@ -62,7 +62,7 @@ class _$EnvsCopyWithImpl<$Res, $Val extends Envs>
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as Fees?,
       value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
@@ -83,7 +83,7 @@ abstract class _$$EnvsImplCopyWith<$Res> implements $EnvsCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String? name,
+      {Fees? name,
       String? value,
       @JsonKey(name: 'updated_at') DateTime? updatedAt});
 }
@@ -106,7 +106,7 @@ class __$$EnvsImplCopyWithImpl<$Res>
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as Fees?,
       value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
@@ -129,7 +129,7 @@ class _$EnvsImpl implements _Envs {
       _$$EnvsImplFromJson(json);
 
   @override
-  final String? name;
+  final Fees? name;
   @override
   final String? value;
   @override
@@ -172,14 +172,14 @@ class _$EnvsImpl implements _Envs {
 
 abstract class _Envs implements Envs {
   factory _Envs(
-      {final String? name,
+      {final Fees? name,
       final String? value,
       @JsonKey(name: 'updated_at') final DateTime? updatedAt}) = _$EnvsImpl;
 
   factory _Envs.fromJson(Map<String, dynamic> json) = _$EnvsImpl.fromJson;
 
   @override
-  String? get name;
+  Fees? get name;
   @override
   String? get value;
   @override

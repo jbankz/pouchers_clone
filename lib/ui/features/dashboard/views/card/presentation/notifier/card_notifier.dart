@@ -1,9 +1,11 @@
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/admin/domain/enum/fees.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_activity_type.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/notification/notification_tray.dart';
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -207,41 +209,33 @@ class CardNotifier extends _$CardNotifier {
   }
 
   num calculateTotalNairaFee(List<Envs> envs) {
-    final Envs creationFee = envs.isEmpty
-        ? Envs()
-        : envs.singleWhere((env) => env.name == 'naira_card_creation_fee');
+    final Envs? creationFee =
+        envs.firstWhereOrNull((env) => env.name == Fees.nairaCardCreationFee);
 
-    final Envs sudoVerveFee = envs.isEmpty
-        ? Envs()
-        : envs.singleWhere(
-            (env) => env.name == 'sudo_verve_naira_card_creation_fee');
+    final Envs? sudoVerveFee = envs.firstWhereOrNull(
+        (env) => env.name == Fees.sudoVerveNairaCardCreationFee);
 
-    final Envs fundingFee = envs.isEmpty
-        ? Envs()
-        : envs.singleWhere((env) => env.name == 'naira_card_funding_fee');
+    final Envs? fundingFee =
+        envs.firstWhereOrNull((env) => env.name == Fees.nairaCardFundingFee);
 
-    return ((num.parse(creationFee.value ?? '0')) +
-        (num.parse(sudoVerveFee.value ?? '0')) +
-        (num.parse(fundingFee.value ?? '0')));
+    return ((num.parse(creationFee?.value ?? '0')) +
+        (num.parse(sudoVerveFee?.value ?? '0')) +
+        (num.parse(fundingFee?.value ?? '0')));
   }
 
   num calculateTotalDollarFee(List<Envs> envs) {
-    final Envs creationFee = envs.isEmpty
-        ? Envs()
-        : envs.singleWhere((env) => env.name == 'dollar_card_creation_fee');
+    final Envs? creationFee =
+        envs.firstWhereOrNull((env) => env.name == Fees.dollarCardCreationFee);
 
-    final Envs sudoCreationFee = envs.isEmpty
-        ? Envs()
-        : envs
-            .singleWhere((env) => env.name == 'sudo_dollar_card_creation_fee');
+    final Envs? sudoCreationFee = envs
+        .firstWhereOrNull((env) => env.name == Fees.sudoDollarCardCreationfee);
 
-    final Envs fundingFee = envs.isEmpty
-        ? Envs()
-        : envs.singleWhere((env) => env.name == 'dollar_card_funding_fee');
+    final Envs? fundingFee =
+        envs.firstWhereOrNull((env) => env.name == Fees.dollarCardFundingFee);
 
-    return ((num.parse(creationFee.value ?? '0')) +
-        (num.parse(sudoCreationFee.value ?? '0')) +
-        (num.parse(fundingFee.value ?? '0')));
+    return ((num.parse(creationFee?.value ?? '0')) +
+        (num.parse(sudoCreationFee?.value ?? '0')) +
+        (num.parse(fundingFee?.value ?? '0')));
   }
 
   void navigateToDetails(Cards card) {
