@@ -1,6 +1,6 @@
 import 'package:Pouchers/app/app.locator.dart';
-import 'package:Pouchers/app/helpers/response_handler.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -18,22 +18,15 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   AppConfig.setAppEnv(kDebugMode ? AppEnv.production : AppEnv.production);
-
   await dotenv.load(fileName: AppConfig.fileName);
-
   await setupLocator();
-
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> with ResponseHandler {
   @override
   Widget build(BuildContext context) => ProviderScope(
         child: ScreenUtilInit(
@@ -43,14 +36,13 @@ class _MyAppState extends State<MyApp> with ResponseHandler {
           child: OverlaySupport.global(
             child: AppTheme(
               child: MaterialApp(
-                title: AppConstants.appName,
-                theme: kThemeData,
-                darkTheme: kThemeData,
-                debugShowCheckedModeBanner: false,
-                themeMode: ThemeMode.light,
-                navigatorKey: StackedService.navigatorKey,
-                onGenerateRoute: StackedRouter().onGenerateRoute,
-              ),
+                  title: AppConstants.appName,
+                  theme: kThemeData,
+                  darkTheme: kThemeData,
+                  debugShowCheckedModeBanner: false,
+                  themeMode: ThemeMode.light,
+                  navigatorKey: StackedService.navigatorKey,
+                  onGenerateRoute: StackedRouter().onGenerateRoute),
             ),
           ),
         ),

@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../app/core/manager/firebase_messaging_manager.dart';
+import '../../../../app/helpers/response_handler.dart';
 import '../../../../utils/session_timeout_listener.dart';
 import 'account/views/account_view.dart';
 import 'card/presentation/view/virtual_card_view.dart';
@@ -21,7 +22,8 @@ class DashboardView extends ConsumerStatefulWidget {
   ConsumerState<DashboardView> createState() => _DashboardViewState();
 }
 
-class _DashboardViewState extends ConsumerState<DashboardView> {
+class _DashboardViewState extends ConsumerState<DashboardView>
+    with ResponseHandler {
   int _pageIndex = 0;
 
   @override
@@ -35,6 +37,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
   @override
   Widget build(BuildContext context) => Scaffold(
       body: SessionTimeOutListener(
+        onTimeOut: () => handleExpiredToken(),
         child: SafeArea(
           child: PageTransitionSwitcher(
             child: switch (_pageIndex) {
