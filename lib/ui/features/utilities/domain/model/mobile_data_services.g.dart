@@ -17,7 +17,9 @@ _$MobileOperatorServicesImpl _$$MobileOperatorServicesImplFromJson(
       code: json['code'] as String?,
       name: json['name'] as String?,
       shortCode: json['shortCode'] as String?,
-      price: json['price'] as num?,
+      price: json['price'] == null
+          ? 0
+          : const StringToNumSerializer().fromJson(json['price']),
       serviceId: json['serviceId'] as num? ?? 0,
     );
 
@@ -32,6 +34,6 @@ Map<String, dynamic> _$$MobileOperatorServicesImplToJson(
       'code': instance.code,
       'name': instance.name,
       'shortCode': instance.shortCode,
-      'price': instance.price,
+      'price': const StringToNumSerializer().toJson(instance.price),
       'serviceId': instance.serviceId,
     };
