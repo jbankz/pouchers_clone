@@ -1,4 +1,3 @@
-import 'package:Pouchers/app/app.logger.dart';
 import 'package:Pouchers/utils/debouncer.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';

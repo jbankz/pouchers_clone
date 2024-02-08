@@ -35,7 +35,7 @@ class VirtualKeyPadController extends ChangeNotifier {
         pins[i] = '';
       }
     }
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) => notifyListeners());
   }
 
   void removePin() {
