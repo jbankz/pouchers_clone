@@ -330,7 +330,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
         merchantService: _cableService?.code,
         merchantReferenceNumber: numberController.text,
         subCategory: _billers?.displayName,
-        amount: amount,
+        amount: _formatter.getUnformattedValue(),
         applyDiscount: isAppliedDiscount,
         transactionPin: pin);
 

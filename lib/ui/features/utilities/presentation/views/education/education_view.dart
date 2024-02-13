@@ -1,3 +1,4 @@
+import 'package:Pouchers/app/config/app_logger.dart';
 import 'package:Pouchers/ui/features/merchant/presentation/state/merchant_state.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -139,6 +140,9 @@ class _EducationViewState extends ConsumerState<EducationView>
                                 price: topDeal.price,
                                 shortCode: topDeal.shortCode);
 
+                            subscriptionTypeController.text =
+                                topDeal.name ?? '';
+
                             amountController.text = _formatter
                                 .formatDouble(topDeal.price.toDouble());
 
@@ -273,7 +277,7 @@ class _EducationViewState extends ConsumerState<EducationView>
   }
 
   Future<void> _submitForActualUser(
-      {String? pin, required BillersState billerState}) {
+      {String? pin, required BillersState billerState}) async {
     final MerchantState merchantState = ref.watch(merchantsNotifierProvider);
 
     final Discounts? discounts = billerState.discounts?.discount;
@@ -284,10 +288,10 @@ class _EducationViewState extends ConsumerState<EducationView>
     final amount = discounts?.payment(_formatter.getUnformattedValue()) ??
         _formatter.getUnformattedValue();
 
-    return _billersNotifier.purchaseService(
+    await _billersNotifier.purchaseService(
         mobileDto: MobileDto(
           isMerchantPayment: true,
-          amount: amount,
+          amount: _formatter.getUnformattedValue(),
           merchantAccount: _billers?.operatorpublicid,
           merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
           merchantService: _cableService?.code,

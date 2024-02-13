@@ -424,7 +424,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
 
     final mobileDto = MobileDto(
         isMerchantPayment: true,
-        amount: amount,
+        amount: _formatter.getUnformattedValue(),
         merchantAccount: _billers?.operatorpublicid,
         merchantReferenceNumber: numberController.text,
         merchantService: _cableService?.code,
