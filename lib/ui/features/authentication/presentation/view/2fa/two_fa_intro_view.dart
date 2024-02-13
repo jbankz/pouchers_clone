@@ -111,7 +111,7 @@ class TwoFaAuthView extends ConsumerWidget {
                           : AppString.setupFactorAuth,
                       onPressed: () async {
                         final pin = await BottomSheets.showSheet(
-                            isDismissible: false,
+                            isDismissible: true,
                             child: const PinConfirmationSheet(
                                 validatePinHere: true)) as String?;
                         if (pin != null) {
