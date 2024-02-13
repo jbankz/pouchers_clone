@@ -409,7 +409,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
     await _billersNotifier.purchaseService(
       mobileDto: MobileDto(
         isMerchantPayment: true,
-        amount: 100,
+        amount: _cableService?.price,
         merchantAccount: _billers?.operatorpublicid,
         merchantReferenceNumber: numberController.text,
         merchantService: _cableService?.code,
