@@ -1,5 +1,6 @@
 import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/utils/constant/theme_color_constants.dart';
+import 'package:Pouchers/utils/session_timeout_listener.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,6 @@ import 'package:stacked_services/stacked_services.dart';
 import 'app/app.router.dart';
 import 'app/config/app_config.dart';
 import 'app/core/constants/app_constants.dart';
-import 'app/core/theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           minTextAdapt: true,
           splitScreenMode: true,
           child: OverlaySupport.global(
-            child: AppTheme(
+            child: SessionTimeOutListener(
               child: MaterialApp(
                   title: AppConstants.appName,
                   theme: kThemeData,

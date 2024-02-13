@@ -1,56 +1,16 @@
-import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class SessionTimeOutListener extends StatefulWidget {
+import '../app/core/auto_logout/module/module.dart';
+
+class SessionTimeOutListener extends HookConsumerWidget {
+  const SessionTimeOutListener({super.key, required this.child});
+
   final Widget child;
-  final Duration duration;
-  final VoidCallback onTimeOut;
-
-  const SessionTimeOutListener(
-      {required this.child,
-      required this.onTimeOut,
-      this.duration = const Duration(minutes: 2),
-      super.key});
 
   @override
-  State<SessionTimeOutListener> createState() => _SessionTimeOutListenerState();
-}
-
-class _SessionTimeOutListenerState extends State<SessionTimeOutListener> {
-  Timer? _timer;
-
-  void _startTimer() {
-    if (kDebugMode) return;
-
-    _cancelTimer();
-
-    _timer = Timer(widget.duration, widget.onTimeOut);
-  }
-
-  void _cancelTimer() {
-    if (_timer != null) {
-      _timer?.cancel();
-      _timer = null;
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _startTimer();
-  }
-
-  @override
-  void dispose() {
-    _cancelTimer();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => Listener(
+  Widget build(BuildContext context, WidgetRef ref) => Listener(
       behavior: HitTestBehavior.translucent,
-      onPointerDown: (event) => _startTimer(),
-      child: widget.child);
+      onPointerDown: (event) => ref.read(timerProvider).reStartTimer(),
+      child: child);
 }

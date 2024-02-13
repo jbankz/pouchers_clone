@@ -221,6 +221,8 @@ extension ContextExtensions on BuildContext {
       MediaQuery.of(this).size.width < 850.0 &&
       MediaQuery.of(this).size.width >= 560.0;
 
+  bool get isKeyboardUp => MediaQuery.of(this).viewInsets.bottom > 0;
+
   double get width => MediaQuery.of(this).size.width;
 
   double get height => MediaQuery.of(this).size.height;
