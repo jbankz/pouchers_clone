@@ -131,7 +131,7 @@ class AppString {
   static String skip = 'Skip';
   static String tooManyRequest =
       'You are trying too many times, wait a minute.';
-  static String requestCancelled = "Request to server was cancelled";
+  static String requestCancelled = "Request cancelled";
   static String connectionFailed = "Connection failed...";
   static String connectionTimeout =
       "Connection timeout, please try again later";

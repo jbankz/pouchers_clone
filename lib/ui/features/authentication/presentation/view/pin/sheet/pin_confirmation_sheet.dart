@@ -80,8 +80,7 @@ class _PinConfirmationSheetState extends ConsumerState<PinConfirmationSheet> {
                           PageRouter.pop(pin);
                         }),
                     BiometricVerification(
-                        popScreenWhenVerificationCompletes:
-                            !widget.validatePinHere,
+                        popScreenWhenVerificationCompletes: false,
                         callback: (pin) async {
                           if (widget.validatePinHere) {
                             await ref
