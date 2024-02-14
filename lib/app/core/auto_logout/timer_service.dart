@@ -13,6 +13,8 @@ class TimerService with ResponseHandler {
   TimerService();
 
   void startTimer() {
+    if (kDebugMode) return;
+
     _timer = Timer.periodic(const Duration(seconds: 1), _onTimerTick);
   }
 

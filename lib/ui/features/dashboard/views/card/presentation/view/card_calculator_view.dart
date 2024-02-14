@@ -2,6 +2,8 @@ import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:Pouchers/ui/features/admin/data/dao/env_dao.dart';
+import 'package:Pouchers/ui/features/admin/domain/enum/fees.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
@@ -11,6 +13,7 @@ import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/ui/widgets/keypad/config/keypad_config.dart';
 import 'package:Pouchers/ui/widgets/keypad/virtual_keypad.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,10 +74,22 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
     final param = ref.watch(paramModule);
     final cardState = ref.watch(cardNotifierProvider);
 
+    final fee = (param.isNairaCardType
+            ? envDao.envs.firstWhereOrNull(
+                (element) => element.name == Fees.nairaCardFundingFee)
+            : envDao.envs.firstWhereOrNull(
+                (element) => element.name == Fees.dollarCardFundingFee))
+        ?.value;
+
+    final fundingFee = param.isNairaCardType
+        ? num.tryParse(fee ?? '0')?.toNaira
+        : num.tryParse(fee ?? '0')?.toDollar;
+
     return Scaffold(
       backgroundColor: AppColors.kPurpleColor,
       appBar: AppBar(
           backgroundColor: AppColors.kPurpleColor,
+          iconTheme: const IconThemeData(color: Colors.white),
           title: Text(param.appTitle,
               style: context.bodyLarge?.copyWith(
                   color: AppColors.white,
@@ -89,13 +104,13 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  param.isNairaCardType
-                      ? const Gap(height: 228)
-                      : Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Gap(height: 109),
-                            AnimatedSwitcher(
+                  const Gap(height: 80),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      param.isNairaCardType
+                          ? const SizedBox.shrink()
+                          : AnimatedSwitcher(
                               duration: const Duration(milliseconds: 250),
                               child: cardState.isBusy
                                   ? const CupertinoActivityIndicator(
@@ -116,21 +131,18 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
                                                   fontWeight: FontWeight.w500)),
                                     ),
                             ),
-                            const Gap(height: 81),
-                          ],
-                        ),
-                  // Text(
-                  //     _controller.pins.isEmpty
-                  //         ? param.isNairaCardType
-                  //             ? 0.toNaira
-                  //             : 0.toDollar
-                  //         : param.isNairaCardType
-                  //             ? _controller.pins.join().naira
-                  //             : _controller.pins.join().dollar,
-                  //     style: context.titleLarge?.copyWith(
-                  //         color: AppColors.kBackgroundColor,
-                  //         fontWeight: FontWeight.w700,
-                  //         fontSize: 40)),
+                      const Gap(height: 10),
+                    ],
+                  ),
+                  if (param.isCreatingCardActivity)
+                    Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 5.h),
+                        decoration: BoxDecoration(
+                            color: AppColors.white.withOpacity(.20),
+                            borderRadius: BorderRadius.circular(7.r)),
+                        child: const HookCreationFeeWidget()),
+                  const Gap(height: 43),
                   TextFormField(
                     textAlign: TextAlign.center,
                     controller: _moneyMaskedTextController,
@@ -160,14 +172,16 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
                         errorBorder: InputBorder.none),
                   ),
                   const Gap(height: 11),
-                  if (param.isCreatingCardActivity)
-                    const HookCreationFeeWidget(),
                   Text(
                     _errorMessage,
                     style: context.headlineLarge
                         ?.copyWith(color: AppColors.kColorOrange, fontSize: 12),
                   ),
-                  const Gap(height: 52),
+                  const Gap(height: 11),
+                  Text('Minumum Amount = $fundingFee',
+                      style: context.headlineLarge?.copyWith(
+                          fontSize: 14, fontWeight: FontWeight.w500)),
+                  const Gap(height: 51),
                 ],
               ),
             )),

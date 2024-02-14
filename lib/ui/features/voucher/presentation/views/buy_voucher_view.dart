@@ -8,6 +8,7 @@ import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,6 +19,7 @@ import '../../../../../utils/formatters/currency_formatter.dart';
 import '../../../../common/app_strings.dart';
 import '../../../../widgets/edit_text_field_with.dart';
 import '../../../profile/presentation/views/biometric/biometric_verification_view.dart';
+import '../../../profile/presentation/views/wallet/widget/balance_indicator_widget.dart';
 import 'buy_voucher_view.form.dart';
 
 @FormView(fields: [FormTextField(name: 'amount')])
@@ -71,6 +73,8 @@ class _BuyVoucherViewState extends ConsumerState<BuyVoucherView>
             children: [
               Expanded(
                 child: SingleChildScrollView(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                   child: Column(
                     children: [
                       Text(AppString.selectAmount,
@@ -123,6 +127,8 @@ class _BuyVoucherViewState extends ConsumerState<BuyVoucherView>
                   ),
                 ),
               ),
+              const Gap(height: 16),
+              BalanceIndicatorWidget(amount: _formatter.getUnformattedValue()),
               const Gap(height: 16),
               BiometricVerification(
                   isNotAffordable: _formatter.getUnformattedValue() >
