@@ -14,7 +14,6 @@ import 'package:Pouchers/ui/features/utilities/data/dao/billers_dao.dart';
 import 'package:Pouchers/ui/features/utilities/data/dao/cable_services_dao.dart';
 import 'package:Pouchers/ui/features/voucher/data/dao/vouchers_dao.dart';
 import 'package:Pouchers/ui/features/voucher/domain/enum/voucher_status.dart';
-import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import '../../../ui/features/admin/data/dao/banner_dao.dart';
@@ -47,9 +46,12 @@ import '../../../ui/features/utilities/domain/model/cable_service.dart';
 import '../../../ui/features/utilities/domain/model/get_cable_service.dart';
 import '../../../ui/features/voucher/domain/model/vouchers.dart';
 import '../../app.locator.dart';
+import '../../config/app_logger.dart';
 
 /// initialize local data storage
 Future<void> initializeDB() async {
+  final logger = getLogger("initializeDB");
+
   try {
     await Hive.initFlutter();
 
@@ -87,11 +89,13 @@ Future<void> initializeDB() async {
       ..registerAdapter(EnvsAdapter())
       ..registerAdapter(CardBrandAdapter());
   } catch (e) {
-    debugPrint(e.toString());
+    logger.e(e.toString());
   }
 }
 
 class HiveManager {
+  final logger = getLogger("HiveManager");
+
   Future openAllBox() async {
     userDao = UserDao();
     walletDao = WalletDao();
@@ -167,7 +171,7 @@ class HiveManager {
       final Box<T> box = await openBox<T>(name);
       await box.clear();
     } catch (_) {
-      debugPrint('clear $name error: ${_.toString()}');
+      logger.e('clear $name error: ${_.toString()}');
     }
   }
 }

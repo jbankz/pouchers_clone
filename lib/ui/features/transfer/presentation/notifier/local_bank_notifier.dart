@@ -3,6 +3,7 @@ import 'package:Pouchers/app/config/app_helper.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
+import 'package:Pouchers/ui/features/transfer/domain/model/guest_local_bank.dart';
 import 'package:Pouchers/ui/features/transfer/presentation/notifier/module/module.dart';
 import 'package:Pouchers/ui/features/transfer/presentation/state/local_bank_state.dart';
 import 'package:dio/dio.dart';
@@ -18,8 +19,22 @@ part 'local_bank_notifier.g.dart';
 class LocalBankNotifier extends _$LocalBankNotifier {
   final _logger = getLogger('LocalBankNotifier');
 
+  List<GuestLocalBank> _guestLocalBank = [];
+
   @override
   LocalBankState build() => const LocalBankState();
+
+  Future<void> getGuestLocalBanks([CancelToken? cancelToken]) async {
+    try {
+      state = state.copyWith(isBusy: true);
+      _guestLocalBank = await ref
+          .read(guestLocalBanksProvider.call(cancelToken: cancelToken).future);
+    } catch (e) {
+      _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(isBusy: false, guestLocalBanks: _guestLocalBank);
+    }
+  }
 
   Future<void> getLocalBanks([CancelToken? cancelToken]) async {
     try {

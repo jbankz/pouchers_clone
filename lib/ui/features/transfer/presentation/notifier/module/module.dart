@@ -6,9 +6,15 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../utilities/domain/dto/mobile_dto.dart';
 import '../../../../utilities/domain/model/schedule.dart';
+import '../../../domain/model/guest_local_bank.dart';
 import '../../../domain/model/transfer.dart';
 
 part 'module.g.dart';
+
+@riverpod
+Future<List<GuestLocalBank>> guestLocalBanks(GuestLocalBanksRef ref,
+        {CancelToken? cancelToken}) async =>
+    await ref.read(getGuestLocalBanksUseCaseModule).execute(cancelToken);
 
 @riverpod
 Future<List<LocalBank>> localBanks(LocalBanksRef ref,

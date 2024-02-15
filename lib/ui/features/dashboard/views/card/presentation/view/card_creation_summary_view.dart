@@ -18,7 +18,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../../common/app_strings.dart';
-import '../../../../../admin/presentation/notifier/admin_notifier.dart';
 import '../../../../../authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
 import '../../domain/dto/card_dto.dart';
 import '../../domain/enum/card_brand.dart';

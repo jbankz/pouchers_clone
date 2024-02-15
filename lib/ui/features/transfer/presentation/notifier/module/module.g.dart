@@ -6,7 +6,7 @@ part of 'module.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$localBanksHash() => r'285169a82be831fdedab87cd7dcf511653502fe9';
+String _$guestLocalBanksHash() => r'2626edf89c1c7042769ce6a08fdfffa7a3ba7e47';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -28,6 +28,137 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// See also [guestLocalBanks].
+@ProviderFor(guestLocalBanks)
+const guestLocalBanksProvider = GuestLocalBanksFamily();
+
+/// See also [guestLocalBanks].
+class GuestLocalBanksFamily extends Family<AsyncValue<List<GuestLocalBank>>> {
+  /// See also [guestLocalBanks].
+  const GuestLocalBanksFamily();
+
+  /// See also [guestLocalBanks].
+  GuestLocalBanksProvider call({
+    CancelToken? cancelToken,
+  }) {
+    return GuestLocalBanksProvider(
+      cancelToken: cancelToken,
+    );
+  }
+
+  @override
+  GuestLocalBanksProvider getProviderOverride(
+    covariant GuestLocalBanksProvider provider,
+  ) {
+    return call(
+      cancelToken: provider.cancelToken,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'guestLocalBanksProvider';
+}
+
+/// See also [guestLocalBanks].
+class GuestLocalBanksProvider
+    extends AutoDisposeFutureProvider<List<GuestLocalBank>> {
+  /// See also [guestLocalBanks].
+  GuestLocalBanksProvider({
+    CancelToken? cancelToken,
+  }) : this._internal(
+          (ref) => guestLocalBanks(
+            ref as GuestLocalBanksRef,
+            cancelToken: cancelToken,
+          ),
+          from: guestLocalBanksProvider,
+          name: r'guestLocalBanksProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$guestLocalBanksHash,
+          dependencies: GuestLocalBanksFamily._dependencies,
+          allTransitiveDependencies:
+              GuestLocalBanksFamily._allTransitiveDependencies,
+          cancelToken: cancelToken,
+        );
+
+  GuestLocalBanksProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.cancelToken,
+  }) : super.internal();
+
+  final CancelToken? cancelToken;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<GuestLocalBank>> Function(GuestLocalBanksRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GuestLocalBanksProvider._internal(
+        (ref) => create(ref as GuestLocalBanksRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        cancelToken: cancelToken,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<GuestLocalBank>> createElement() {
+    return _GuestLocalBanksProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GuestLocalBanksProvider && other.cancelToken == cancelToken;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, cancelToken.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GuestLocalBanksRef on AutoDisposeFutureProviderRef<List<GuestLocalBank>> {
+  /// The parameter `cancelToken` of this provider.
+  CancelToken? get cancelToken;
+}
+
+class _GuestLocalBanksProviderElement
+    extends AutoDisposeFutureProviderElement<List<GuestLocalBank>>
+    with GuestLocalBanksRef {
+  _GuestLocalBanksProviderElement(super.provider);
+
+  @override
+  CancelToken? get cancelToken =>
+      (origin as GuestLocalBanksProvider).cancelToken;
+}
+
+String _$localBanksHash() => r'285169a82be831fdedab87cd7dcf511653502fe9';
 
 /// See also [localBanks].
 @ProviderFor(localBanks)

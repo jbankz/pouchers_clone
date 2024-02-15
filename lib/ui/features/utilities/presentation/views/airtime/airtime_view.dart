@@ -1,4 +1,3 @@
-import 'package:Pouchers/app/config/app_logger.dart';
 import 'package:Pouchers/app/core/skeleton/widgets.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
@@ -292,8 +291,6 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
         ? _formatter.getUnformattedValue()
         : discounts?.payment(_formatter.getUnformattedValue()) ??
             _formatter.getUnformattedValue();
-
-    print(_formatter.getUnformattedValue());
 
     final String fee =
         envs.firstWhereOrNull((env) => env.name == Fees.airtimeFee)?.value ??

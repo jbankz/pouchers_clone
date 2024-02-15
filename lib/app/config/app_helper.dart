@@ -8,8 +8,11 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../core/manager/pdf_manager.dart';
+import 'app_logger.dart';
 
 class AppHelper {
+  static final logger = getLogger("AppHelper");
+
   static Future<void> copy(String value) async {
     try {
       Clipboard.setData(ClipboardData(text: value));
@@ -43,7 +46,7 @@ class AppHelper {
         await launchUrl(Uri.parse(url), mode: mode);
       }
     } catch (e) {
-      debugPrint('Could not launch: $e');
+      logger.e('Could not launch: $e');
     }
   }
 
@@ -62,7 +65,7 @@ class AppHelper {
         filename: 'Receipt_${DateTime.now().millisecondsSinceEpoch}$path',
       );
     } catch (e) {
-      debugPrint('Error sharing pdf: $e');
+      logger.e('Error sharing pdf: $e');
     }
   }
 }
