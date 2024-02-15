@@ -121,6 +121,7 @@ class ApiPath {
   static const String disable = '$_apiVersionOne/user/disable';
   static const String delete = '$_apiVersionOne/user';
   static const String localBanks = '$_apiVersionOne/payment/banks';
+  static const String guestLocalBanks = '$_apiVersionOne/guest-user/banks';
   static const String localBankTransfer =
       '$_apiVersionOne/payment/local-bank-transfer';
   static const String notification = '$_apiVersionOne/notification';

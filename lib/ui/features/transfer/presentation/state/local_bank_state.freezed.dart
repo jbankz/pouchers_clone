@@ -20,6 +20,8 @@ mixin _$LocalBankState<T> {
   T? get data => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
   StackTrace? get stackTrace => throw _privateConstructorUsedError;
+  List<GuestLocalBank> get guestLocalBanks =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $LocalBankStateCopyWith<T, LocalBankState<T>> get copyWith =>
@@ -33,7 +35,11 @@ abstract class $LocalBankStateCopyWith<T, $Res> {
       _$LocalBankStateCopyWithImpl<T, $Res, LocalBankState<T>>;
   @useResult
   $Res call(
-      {bool isBusy, T? data, String? errorMessage, StackTrace? stackTrace});
+      {bool isBusy,
+      T? data,
+      String? errorMessage,
+      StackTrace? stackTrace,
+      List<GuestLocalBank> guestLocalBanks});
 }
 
 /// @nodoc
@@ -53,6 +59,7 @@ class _$LocalBankStateCopyWithImpl<T, $Res, $Val extends LocalBankState<T>>
     Object? data = freezed,
     Object? errorMessage = freezed,
     Object? stackTrace = freezed,
+    Object? guestLocalBanks = null,
   }) {
     return _then(_value.copyWith(
       isBusy: null == isBusy
@@ -71,6 +78,10 @@ class _$LocalBankStateCopyWithImpl<T, $Res, $Val extends LocalBankState<T>>
           ? _value.stackTrace
           : stackTrace // ignore: cast_nullable_to_non_nullable
               as StackTrace?,
+      guestLocalBanks: null == guestLocalBanks
+          ? _value.guestLocalBanks
+          : guestLocalBanks // ignore: cast_nullable_to_non_nullable
+              as List<GuestLocalBank>,
     ) as $Val);
   }
 }
@@ -84,7 +95,11 @@ abstract class _$$LocalBankStateImplCopyWith<T, $Res>
   @override
   @useResult
   $Res call(
-      {bool isBusy, T? data, String? errorMessage, StackTrace? stackTrace});
+      {bool isBusy,
+      T? data,
+      String? errorMessage,
+      StackTrace? stackTrace,
+      List<GuestLocalBank> guestLocalBanks});
 }
 
 /// @nodoc
@@ -102,6 +117,7 @@ class __$$LocalBankStateImplCopyWithImpl<T, $Res>
     Object? data = freezed,
     Object? errorMessage = freezed,
     Object? stackTrace = freezed,
+    Object? guestLocalBanks = null,
   }) {
     return _then(_$LocalBankStateImpl<T>(
       isBusy: null == isBusy
@@ -120,6 +136,10 @@ class __$$LocalBankStateImplCopyWithImpl<T, $Res>
           ? _value.stackTrace
           : stackTrace // ignore: cast_nullable_to_non_nullable
               as StackTrace?,
+      guestLocalBanks: null == guestLocalBanks
+          ? _value._guestLocalBanks
+          : guestLocalBanks // ignore: cast_nullable_to_non_nullable
+              as List<GuestLocalBank>,
     ));
   }
 }
@@ -128,7 +148,12 @@ class __$$LocalBankStateImplCopyWithImpl<T, $Res>
 
 class _$LocalBankStateImpl<T> implements _LocalBankState<T> {
   const _$LocalBankStateImpl(
-      {this.isBusy = false, this.data, this.errorMessage, this.stackTrace});
+      {this.isBusy = false,
+      this.data,
+      this.errorMessage,
+      this.stackTrace,
+      final List<GuestLocalBank> guestLocalBanks = const []})
+      : _guestLocalBanks = guestLocalBanks;
 
   @override
   @JsonKey()
@@ -139,10 +164,18 @@ class _$LocalBankStateImpl<T> implements _LocalBankState<T> {
   final String? errorMessage;
   @override
   final StackTrace? stackTrace;
+  final List<GuestLocalBank> _guestLocalBanks;
+  @override
+  @JsonKey()
+  List<GuestLocalBank> get guestLocalBanks {
+    if (_guestLocalBanks is EqualUnmodifiableListView) return _guestLocalBanks;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_guestLocalBanks);
+  }
 
   @override
   String toString() {
-    return 'LocalBankState<$T>(isBusy: $isBusy, data: $data, errorMessage: $errorMessage, stackTrace: $stackTrace)';
+    return 'LocalBankState<$T>(isBusy: $isBusy, data: $data, errorMessage: $errorMessage, stackTrace: $stackTrace, guestLocalBanks: $guestLocalBanks)';
   }
 
   @override
@@ -155,12 +188,19 @@ class _$LocalBankStateImpl<T> implements _LocalBankState<T> {
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
             (identical(other.stackTrace, stackTrace) ||
-                other.stackTrace == stackTrace));
+                other.stackTrace == stackTrace) &&
+            const DeepCollectionEquality()
+                .equals(other._guestLocalBanks, _guestLocalBanks));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isBusy,
-      const DeepCollectionEquality().hash(data), errorMessage, stackTrace);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isBusy,
+      const DeepCollectionEquality().hash(data),
+      errorMessage,
+      stackTrace,
+      const DeepCollectionEquality().hash(_guestLocalBanks));
 
   @JsonKey(ignore: true)
   @override
@@ -175,7 +215,8 @@ abstract class _LocalBankState<T> implements LocalBankState<T> {
       {final bool isBusy,
       final T? data,
       final String? errorMessage,
-      final StackTrace? stackTrace}) = _$LocalBankStateImpl<T>;
+      final StackTrace? stackTrace,
+      final List<GuestLocalBank> guestLocalBanks}) = _$LocalBankStateImpl<T>;
 
   @override
   bool get isBusy;
@@ -185,6 +226,8 @@ abstract class _LocalBankState<T> implements LocalBankState<T> {
   String? get errorMessage;
   @override
   StackTrace? get stackTrace;
+  @override
+  List<GuestLocalBank> get guestLocalBanks;
   @override
   @JsonKey(ignore: true)
   _$$LocalBankStateImplCopyWith<T, _$LocalBankStateImpl<T>> get copyWith =>

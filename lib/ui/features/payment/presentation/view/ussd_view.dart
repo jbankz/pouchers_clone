@@ -3,7 +3,7 @@ import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/features/payment/domain/dto/debit_card_dto.dart';
-import 'package:Pouchers/ui/features/transfer/domain/model/attributes.dart';
+import 'package:Pouchers/ui/features/transfer/domain/model/guest_local_bank.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/ui/widgets/hint_widget.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -31,7 +31,7 @@ class UssdView extends StatefulWidget {
 }
 
 class _UssdViewState extends State<UssdView> with $UssdView {
-  Attributes? _attribute;
+  GuestLocalBank? _attribute;
 
   @override
   void initState() {
@@ -85,7 +85,7 @@ class _UssdViewState extends State<UssdView> with $UssdView {
                               color: AppColors.kSecondaryTextColor),
                           onTap: () async {
                             final response = await BottomSheets.showSheet(
-                                child: const UssdSheets()) as Attributes?;
+                                child: const UssdSheets()) as GuestLocalBank?;
                             if (response != null) {
                               _attribute = response;
                               setState(() =>
@@ -116,7 +116,8 @@ class _UssdViewState extends State<UssdView> with $UssdView {
                                         SvgPicture.asset(AppImage.call),
                                         const Gap(width: 10),
                                         Flexible(
-                                          child: Text('*901*000*340749339035#',
+                                          child: Text(
+                                              '*${_attribute?.ussdCode}*000*340749339035#',
                                               style: context.headlineLarge
                                                   ?.copyWith(
                                                       fontSize: 18,

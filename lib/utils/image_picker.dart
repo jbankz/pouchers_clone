@@ -14,11 +14,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../app/config/app_logger.dart';
 import '../ui/common/app_strings.dart';
 
 enum ProfileOptionAction { viewImage, profileCamera, library, remove }
 
 class ImagePickerHandler {
+  final logger = getLogger("ImagePickerHandler");
+
   Future<void> pickImage({required Function(XFile file) file}) async {
     final ProfileOptionAction? action = await _showModalBottomSheet();
 
@@ -143,7 +146,7 @@ class ImagePickerHandler {
       );
       if (pickedFile != null) return await _cropImage(pickedFile);
     } catch (e) {
-      debugPrint('Error: $e');
+      logger.e('Error: $e');
     }
     return null;
   }

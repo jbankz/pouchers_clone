@@ -179,10 +179,8 @@ class _SummaryWidgetState extends State<SummaryWidget> {
             ? AppString.proceed
             : 'Pay ${widget.summaryDto.amount?.toNaira}',
         onPressed: widget.summaryDto.isGuest
-            ? () async {
-                _handleCardPayment();
-              }
-            : (isAffordable ? null : () => PageRouter.pop(true)),
+            ? () => _handleCardPayment()
+            : (isAffordable ? null : () async => PageRouter.pop(true)),
       );
 
   Widget _buildRow(String title, String content, {Widget? widget}) => Row(
