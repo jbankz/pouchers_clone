@@ -85,6 +85,8 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
         ? num.tryParse(fee ?? '0')?.toNaira
         : num.tryParse(fee ?? '0')?.toDollar;
 
+    final minimumAccount = param.isNairaCardType ? 1000.toNaira : 1000.toDollar;
+
     return Scaffold(
       backgroundColor: AppColors.kPurpleColor,
       appBar: AppBar(
@@ -178,7 +180,7 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
                         ?.copyWith(color: AppColors.kColorOrange, fontSize: 12),
                   ),
                   const Gap(height: 11),
-                  Text('Minumum Amount = $fundingFee',
+                  Text('Minimum Amount = $minimumAccount',
                       style: context.headlineLarge?.copyWith(
                           fontSize: 14, fontWeight: FontWeight.w500)),
                   const Gap(height: 51),

@@ -107,10 +107,15 @@ class NetworkService with ResponseHandler {
     }
   }
 
-  Future<Options> _getOption({bool upload = false}) async => Options(headers: {
-        "Authorization": 'Bearer ${session.accessToken}',
-        'Content-Type': 'application/json',
-        if (upload) "Content-Disposition": "form-data",
-        if (upload) "Content-Type": "multipart/form-data"
-      });
+  Future<Options> _getOption({bool upload = false}) async => Options(
+          responseType: ResponseType.json,
+          followRedirects: false,
+          receiveTimeout:
+              const Duration(minutes: NetworkService.receiveTimeout),
+          headers: {
+            "Authorization": 'Bearer ${session.accessToken}',
+            'Content-Type': 'application/json',
+            if (upload) "Content-Disposition": "form-data",
+            if (upload) "Content-Type": "multipart/form-data",
+          });
 }

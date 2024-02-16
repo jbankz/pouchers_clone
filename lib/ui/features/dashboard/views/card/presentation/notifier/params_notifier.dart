@@ -34,8 +34,7 @@ class ParamNotifier extends ChangeNotifier {
   bool get isCreatingCardActivity =>
       _cardActivityType == CardActivityType.creating;
 
-  bool get isNairaCardType =>
-      (_cardDetail?.currency == Currency.NGN || _cardType == CardType.naira);
+  bool get isNairaCardType => _cardType == CardType.naira;
 
   Cards? _cardDetail;
   Cards? get cardDetail => _cardDetail;
