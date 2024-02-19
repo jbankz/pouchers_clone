@@ -24,10 +24,7 @@ class FirebaseMessagingManager {
     await _firebaseMessaging.requestPermission();
 
     await _firebaseMessaging.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+        alert: true, badge: true, sound: true);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       if (message.notification != null) {
