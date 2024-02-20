@@ -3,6 +3,8 @@ class DebitCardDto {
   final String? expiry;
   final String? cvv;
   final String? bank;
+  final String? reference;
 
-  DebitCardDto({this.cardNumber, this.expiry, this.cvv, this.bank});
+  DebitCardDto(
+      {this.cardNumber, this.expiry, this.cvv, this.bank, this.reference});
 }

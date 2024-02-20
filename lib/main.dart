@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -17,7 +18,11 @@ import 'app/core/constants/app_constants.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  AppConfig.setAppEnv(kDebugMode ? AppEnv.production : AppEnv.production);
+  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+    await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
+  }
+
+  AppConfig.setAppEnv(kDebugMode ? AppEnv.staging : AppEnv.production);
   await dotenv.load(fileName: AppConfig.fileName);
   await setupLocator();
   await Firebase.initializeApp();

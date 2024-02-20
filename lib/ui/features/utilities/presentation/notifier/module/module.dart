@@ -10,6 +10,7 @@ import '../../../domain/dto/mobile_dto.dart';
 import '../../../domain/model/discounts.dart';
 import '../../../domain/model/get_cable_service.dart';
 import '../../../domain/model/guest_services_purchase.dart';
+import '../../../domain/model/guest_services_purchase_status.dart';
 import '../../../domain/model/mobile_data_services.dart';
 import '../../../domain/model/schedule.dart';
 import '../../../domain/model/utility.dart';
@@ -83,4 +84,13 @@ Future<GuestServicesPurchase> guestUssdPayment(GuestUssdPaymentRef ref,
         {required MobileDto parameter, CancelToken? cancelToken}) async =>
     await ref
         .read(guestUssdPaymentUseCaseModule)
+        .execute(parameter: parameter, cancelToken: cancelToken);
+
+@riverpod
+Future<GuestServicesPurchaseStatus> guestPaymentStatus(
+        GuestPaymentStatusRef ref,
+        {required MobileDto parameter,
+        CancelToken? cancelToken}) async =>
+    await ref
+        .read(guestPaymentStatusUseCaseModule)
         .execute(parameter: parameter, cancelToken: cancelToken);

@@ -24,8 +24,9 @@ class MobileDto {
   final String? phoneNumber;
   final Payer? payer;
   final Currency? currency;
-  final String? bank;
+  String? bank;
   final String? scheduleId;
+  String? referenceNumber;
 
   MobileDto({
     this.category,
@@ -51,6 +52,7 @@ class MobileDto {
     this.phoneNumber,
     this.bank,
     this.scheduleId,
+    this.referenceNumber,
   });
 
   Map<String, dynamic> toJson() {
@@ -118,6 +120,9 @@ class MobileDto {
     }
     if (bank != null) {
       result.addAll({'bank': bank});
+    }
+    if (referenceNumber != null) {
+      result.addAll({'referenceNumber': referenceNumber});
     }
     return result;
   }

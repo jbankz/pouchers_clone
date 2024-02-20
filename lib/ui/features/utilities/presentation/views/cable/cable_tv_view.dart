@@ -69,6 +69,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
 
   Billers? _billers;
   CableService? _cableService;
+  MobileDto? _mobileDto;
 
   bool _beneficiary = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -323,6 +324,23 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
     final String fee =
         envs.firstWhereOrNull((env) => env.name == Fees.cableTvFee)?.value ??
             '0';
+    final guest = ref.watch(paramModule);
+
+    _mobileDto = MobileDto(
+        isMerchantPayment: true,
+        currency: Currency.NGN,
+        email: guest.customerEmail,
+        payer: Payer(email: guest.customerEmail, name: guest.customerName),
+        amount: _cableService?.price,
+        merchantAccount: _billers?.operatorpublicid,
+        merchantReferenceNumber:
+            ref.watch(billersNotifierProvider).cableService?.referenceNumber,
+        makeMerchantServiceArray: false,
+        merchantService: _cableService?.code,
+        subCategory: _billers?.displayName,
+        category: ServiceCategory.cable);
+
+    _billersNotifier.setMobileDataDto(_mobileDto);
 
     final feedback = await Sheets.showSheet(
       child: SummaryWidget(
@@ -360,28 +378,14 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
   }
 
   Future<void> _submitForGuest(dynamic feedback) async {
-    final guest = ref.watch(paramModule);
     final bool isCardPayment =
         (feedback is DebitCardDto? && feedback?.bank == null);
 
+    _mobileDto = _mobileDto?..bank = feedback?.bank;
+
     _billersNotifier.purchaseServiceForGuest(
         isCardPayment: isCardPayment,
-        mobileDto: MobileDto(
-            isMerchantPayment: true,
-            currency: Currency.NGN,
-            email: guest.customerEmail,
-            payer: Payer(email: guest.customerEmail, name: guest.customerName),
-            amount: _cableService?.price,
-            merchantAccount: _billers?.operatorpublicid,
-            merchantReferenceNumber: ref
-                .watch(billersNotifierProvider)
-                .cableService
-                ?.referenceNumber,
-            makeMerchantServiceArray: false,
-            merchantService: _cableService?.code,
-            subCategory: _billers?.displayName,
-            category: ServiceCategory.cable,
-            bank: feedback?.bank),
+        mobileDto: _mobileDto ?? MobileDto(),
         cancelToken: _cancelToken);
   }
 

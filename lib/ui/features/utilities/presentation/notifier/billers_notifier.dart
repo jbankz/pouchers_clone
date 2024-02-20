@@ -16,6 +16,7 @@ import '../../domain/dto/mobile_dto.dart';
 import '../../domain/enum/billers_category.dart';
 import '../../domain/model/billers.dart';
 import '../../domain/model/get_cable_service.dart';
+import '../../domain/model/guest_services_purchase.dart';
 import '../../domain/model/mobile_data_services.dart';
 import '../../domain/model/validate_customer.dart';
 import '../state/billers_state.dart';
@@ -30,7 +31,7 @@ class BillersNotifier extends _$BillersNotifier {
   List<MobileOperatorServices> _mobileOperatorServices = [];
   ValidateCustomer? _validateCustomerInfo;
   GetCableService? _getCableService;
-
+  GuestServicesPurchase? _guestServicesPurchase;
   DiscountsData? _discounts;
 
   final _session = locator<SessionManager>();
@@ -204,20 +205,55 @@ class BillersNotifier extends _$BillersNotifier {
     state = state.copyWith(validateCustomerInfo: _validateCustomerInfo);
   }
 
+  void setMobileDataDto(MobileDto? mobileDto) =>
+      state = state.copyWith(mobileDto: mobileDto);
+
+  Future<void> fetchBankUssdCodeForGuest(
+      {MobileDto? mobileDto, CancelToken? cancelToken}) async {
+    try {
+      state = state.copyWith(isGettingUssd: true);
+
+      _guestServicesPurchase = await ref.read(guestUssdPaymentProvider
+          .call(parameter: mobileDto ?? MobileDto(), cancelToken: cancelToken)
+          .future);
+    } catch (e) {
+      _logger.e(e.toString());
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(
+          isGettingUssd: false, guestServicesPurchase: _guestServicesPurchase);
+    }
+  }
+
+  Future<void> submitCardForGuest(
+      {MobileDto? mobileDto, CancelToken? cancelToken}) async {
+    try {
+      state = state.copyWith(isGettingUssd: true);
+
+      _guestServicesPurchase = await ref.read(guestCardPaymentProvider
+          .call(parameter: mobileDto ?? MobileDto(), cancelToken: cancelToken)
+          .future);
+
+      PageRouter.pushNamed(Routes.pagaWebView);
+    } catch (e) {
+      _logger.e(e.toString());
+      AppHelper.handleError(e);
+    } finally {
+      state = state.copyWith(
+          isGettingUssd: false, guestServicesPurchase: _guestServicesPurchase);
+    }
+  }
+
   Future<void> purchaseServiceForGuest(
       {required bool isCardPayment,
-      required MobileDto mobileDto,
+      required MobileDto? mobileDto,
       CancelToken? cancelToken}) async {
     try {
       state = state.copyWith(isPurchasing: true);
 
-      isCardPayment
-          ? await ref.read(guestCardPaymentProvider
-              .call(parameter: mobileDto, cancelToken: cancelToken)
-              .future)
-          : await ref.read(guestUssdPaymentProvider
-              .call(parameter: mobileDto, cancelToken: cancelToken)
-              .future);
+      await ref.read(guestPaymentStatusProvider
+          .call(parameter: mobileDto ?? MobileDto(), cancelToken: cancelToken)
+          .future);
 
       PageRouter.pushNamed(Routes.successState,
           args: SuccessStateArguments(

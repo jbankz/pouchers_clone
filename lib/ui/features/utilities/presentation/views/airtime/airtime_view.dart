@@ -59,6 +59,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
   final FlutterContactPicker _contactPicker = FlutterContactPicker();
 
   Billers? _billers;
+  MobileDto? _mobileDto;
 
   @override
   void initState() {
@@ -260,23 +261,16 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
         cancelToken: _cancelToken);
   }
 
-  Future<void> _submitForGuest(dynamic feedback) async {
-    final guest = ref.watch(paramModule);
-    final bool isCardPayment =
-        (feedback is DebitCardDto? && feedback?.bank == null);
+  Future<void> _submitForGuest(DebitCardDto? feedback) async {
+    final bool isCardPayment = (feedback?.bank == null);
+
+    _mobileDto = _mobileDto
+      ?..bank = feedback?.bank
+      ..referenceNumber = feedback?.reference;
 
     _billersNotifier.purchaseServiceForGuest(
         isCardPayment: isCardPayment,
-        mobileDto: MobileDto(
-            category: ServiceCategory.airtime,
-            subCategory: _billers?.displayName,
-            currency: Currency.NGN,
-            email: guest.customerEmail,
-            payer: Payer(email: guest.customerEmail, name: guest.customerName),
-            amount: _formatter.getUnformattedValue(),
-            phoneNumber: phoneController.text,
-            mobileOperatorPublicId: _billers?.operatorpublicid,
-            bank: feedback?.bank),
+        mobileDto: _mobileDto,
         cancelToken: _cancelToken);
   }
 
@@ -295,6 +289,20 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
     final String fee =
         envs.firstWhereOrNull((env) => env.name == Fees.airtimeFee)?.value ??
             '0';
+
+    final guest = ref.watch(paramModule);
+
+    _mobileDto = MobileDto(
+        category: ServiceCategory.airtime,
+        subCategory: _billers?.displayName,
+        currency: Currency.NGN,
+        email: guest.customerEmail,
+        payer: Payer(email: guest.customerEmail, name: guest.customerName),
+        amount: _formatter.getUnformattedValue(),
+        phoneNumber: phoneController.text,
+        mobileOperatorPublicId: _billers?.operatorpublicid);
+
+    _billersNotifier.setMobileDataDto(_mobileDto);
 
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(
@@ -321,7 +329,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
       if (billerState.isGuest) {
         // Handle for guest
         // You can add guest-specific logic here
-        _submitForGuest(feedback);
+        _submitForGuest(feedback as DebitCardDto?);
       } else if (feedback is bool && feedback) {
         // Handle for actual user
         final pin = await BottomSheets.showSheet(

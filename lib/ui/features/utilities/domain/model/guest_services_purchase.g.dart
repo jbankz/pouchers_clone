@@ -16,7 +16,7 @@ _$GuestServicesPurchaseImpl _$$GuestServicesPurchaseImplFromJson(
       totalPaymentAmount: json['totalPaymentAmount'] as num?,
       currency: $enumDecodeNullable(_$CurrencyEnumMap, json['currency']) ??
           Currency.NGN,
-      paymentMethod: (json['paymentMethod'] as List<dynamic>?)
+      paymentMethods: (json['paymentMethods'] as List<dynamic>?)
               ?.map((e) => PaymentMethod.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
@@ -32,7 +32,7 @@ Map<String, dynamic> _$$GuestServicesPurchaseImplToJson(
       'requestAmount': instance.requestAmount,
       'totalPaymentAmount': instance.totalPaymentAmount,
       'currency': _$CurrencyEnumMap[instance.currency]!,
-      'paymentMethod': instance.paymentMethod,
+      'paymentMethods': instance.paymentMethods,
     };
 
 const _$CurrencyEnumMap = {

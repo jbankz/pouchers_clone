@@ -72,6 +72,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
   Billers? _billers;
   final _debouncer = Debouncer();
   CableService? _cableService;
+  MobileDto? _mobileDto;
 
   @override
   void initState() {
@@ -346,33 +347,21 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
   }
 
   Future<void> _submitForGuest(dynamic feedback) async {
-    final guest = ref.watch(paramModule);
-    final merchantState = ref.watch(merchantsNotifierProvider);
-
     final bool isCardPayment =
         (feedback is DebitCardDto? && feedback?.bank == null);
 
+    _mobileDto = _mobileDto?..bank = feedback?.bank;
+
     _billersNotifier.purchaseServiceForGuest(
         isCardPayment: isCardPayment,
-        mobileDto: MobileDto(
-            isMerchantPayment: true,
-            category: ServiceCategory.betting,
-            merchantAccount: _billers?.operatorpublicid,
-            makeMerchantServiceArray: false,
-            merchantService: _cableService?.code,
-            merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
-            subCategory: _billers?.displayName,
-            amount: _formatter.getUnformattedValue(),
-            currency: Currency.NGN,
-            email: guest.customerEmail,
-            payer: Payer(email: guest.customerEmail, name: guest.customerName),
-            bank: feedback?.bank),
+        mobileDto: _mobileDto,
         cancelToken: _cancelToken);
   }
 
   Future<void> _handlePayment(BillersState billerState) async {
     final Discounts? discounts = billerState.discounts?.discount;
     final envs = envDao.envs;
+    final merchantState = ref.watch(merchantsNotifierProvider);
 
     final bool isAppliedDiscount = ((discounts != null) &&
         _formatter.getUnformattedValue() >= (discounts.threshold));
@@ -386,6 +375,23 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
             .firstWhereOrNull((env) => env.name == Fees.betWalletFundingFee)
             ?.value ??
         '0';
+
+    final guest = ref.watch(paramModule);
+
+    _mobileDto = MobileDto(
+        isMerchantPayment: true,
+        category: ServiceCategory.betting,
+        merchantAccount: _billers?.operatorpublicid,
+        makeMerchantServiceArray: false,
+        merchantService: _cableService?.code,
+        merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
+        subCategory: _billers?.displayName,
+        amount: _formatter.getUnformattedValue(),
+        currency: Currency.NGN,
+        email: guest.customerEmail,
+        payer: Payer(email: guest.customerEmail, name: guest.customerName));
+
+    _billersNotifier.setMobileDataDto(_mobileDto);
 
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(
