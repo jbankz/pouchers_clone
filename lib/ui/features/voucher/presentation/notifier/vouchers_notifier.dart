@@ -41,6 +41,8 @@ class VouchersNotifier extends _$VouchersNotifier {
           .call(parameter: voucherDto, cancelToken: cancelToken)
           .future);
 
+      await getVouchers(cancelToken: cancelToken);
+
       PageRouter.pushNamed(Routes.voucherSuccessView);
     } catch (e) {
       _logger.e(e.toString());
@@ -78,6 +80,8 @@ class VouchersNotifier extends _$VouchersNotifier {
       await ref.read(redeemVoucherProvider
           .call(parameter: voucherDto, cancelToken: cancelToken)
           .future);
+
+      await getVouchers(cancelToken: cancelToken);
 
       PageRouter.pushNamed(Routes.successState,
           args: SuccessStateArguments(
