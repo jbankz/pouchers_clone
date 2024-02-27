@@ -795,6 +795,7 @@ class StackedRouter extends _i1.RouterBase {
         pageBuilder: (context, animation, secondaryAnimation) =>
             _i6.SuccessState(
                 key: args.key,
+                statusImage: args.statusImage,
                 title: args.title,
                 message: args.message,
                 btnTitle: args.btnTitle,
@@ -1363,6 +1364,7 @@ class StackedRouter extends _i1.RouterBase {
 class SuccessStateArguments {
   const SuccessStateArguments({
     this.key,
+    this.statusImage,
     this.title = '',
     this.message = '',
     this.btnTitle = '',
@@ -1370,6 +1372,8 @@ class SuccessStateArguments {
   });
 
   final _i81.Key? key;
+
+  final _i81.Widget? statusImage;
 
   final String title;
 
@@ -1381,13 +1385,14 @@ class SuccessStateArguments {
 
   @override
   String toString() {
-    return '{"key": "$key", "title": "$title", "message": "$message", "btnTitle": "$btnTitle", "tap": "$tap"}';
+    return '{"key": "$key", "statusImage": "$statusImage", "title": "$title", "message": "$message", "btnTitle": "$btnTitle", "tap": "$tap"}';
   }
 
   @override
   bool operator ==(covariant SuccessStateArguments other) {
     if (identical(this, other)) return true;
     return other.key == key &&
+        other.statusImage == statusImage &&
         other.title == title &&
         other.message == message &&
         other.btnTitle == btnTitle &&
@@ -1397,6 +1402,7 @@ class SuccessStateArguments {
   @override
   int get hashCode {
     return key.hashCode ^
+        statusImage.hashCode ^
         title.hashCode ^
         message.hashCode ^
         btnTitle.hashCode ^
@@ -2091,6 +2097,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
 
   Future<dynamic> navigateToSuccessState({
     _i81.Key? key,
+    _i81.Widget? statusImage,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -2104,6 +2111,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
     return navigateTo<dynamic>(Routes.successState,
         arguments: SuccessStateArguments(
             key: key,
+            statusImage: statusImage,
             title: title,
             message: message,
             btnTitle: btnTitle,
@@ -3287,6 +3295,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
 
   Future<dynamic> replaceWithSuccessState({
     _i81.Key? key,
+    _i81.Widget? statusImage,
     String title = '',
     String message = '',
     String btnTitle = '',
@@ -3300,6 +3309,7 @@ extension NavigatorStateExtension on _i91.NavigationService {
     return replaceWith<dynamic>(Routes.successState,
         arguments: SuccessStateArguments(
             key: key,
+            statusImage: statusImage,
             title: title,
             message: message,
             btnTitle: btnTitle,

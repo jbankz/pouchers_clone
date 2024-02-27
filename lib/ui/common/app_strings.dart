@@ -549,6 +549,8 @@ class AppString {
 
   static String completedPurchase = 'Purchase successful';
   static String cardTransfer = 'Card transfer successful';
+  static String pendingTransfer =
+      'Please wait while your transaction is completed';
   static String bankTransfer = 'Bank transfer successful';
   static String postalCode = 'Postal Code';
   static String cityState = 'City/State';

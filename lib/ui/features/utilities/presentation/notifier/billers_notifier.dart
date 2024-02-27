@@ -2,12 +2,15 @@ import 'package:Pouchers/app/app.locator.dart';
 import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/manager/session_manager.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
+import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
 import 'package:Pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
 import 'package:Pouchers/ui/features/utilities/domain/dto/billers_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
 import 'package:Pouchers/ui/features/utilities/presentation/notifier/module/module.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../app/app.logger.dart';
@@ -257,10 +260,10 @@ class BillersNotifier extends _$BillersNotifier {
 
       PageRouter.pushNamed(Routes.successState,
           args: SuccessStateArguments(
-              title: AppString.completedPurchase,
-              message: isCardPayment
-                  ? AppString.cardTransfer
-                  : AppString.bankTransfer,
+              statusImage: SvgPicture.asset(AppImage.pending,
+                  height: 104.h, width: 104.w),
+              title: AppString.pendingOne,
+              message: AppString.pendingTransfer,
               btnTitle: AppString.proceed,
               tap: () => PageRouter.popToRoot(Routes.guestView)));
     } catch (e) {
