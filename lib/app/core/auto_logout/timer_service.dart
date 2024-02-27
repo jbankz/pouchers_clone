@@ -3,12 +3,16 @@ import 'dart:async';
 import 'package:Pouchers/app/helpers/response_handler.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../config/app_logger.dart';
+
 class TimerService with ResponseHandler {
   final StreamController<int> _timerController = StreamController<int>();
   Timer? _timer;
   int _secondsElapsed = 0;
 
   Stream<int> get timerStream => _timerController.stream;
+
+  final _logger = getLogger("TimerService");
 
   TimerService();
 
@@ -24,9 +28,7 @@ class TimerService with ResponseHandler {
       _timer = null;
       _secondsElapsed = 0;
 
-      if (callback != null) {
-        callback();
-      }
+      if (callback != null) callback();
     }
   }
 

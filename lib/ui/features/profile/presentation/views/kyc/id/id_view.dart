@@ -169,7 +169,10 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
                 ElevatedButtonWidget(
                     loading: appState.isBusy,
                     title: AppString.verify,
-                    onPressed: _submit)
+                    onPressed: null
+                    // onPressed: _submit
+
+                    )
               ],
             ),
           )),
@@ -188,7 +191,7 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
   }
 
   Future<void> _triggerDojah() async {
-    if (!_formKey.currentState!.validate()) return;
+    // if (!_formKey.currentState!.validate()) return;
 
     await _userNotifier.triggerDojah(
         identificationType: _identificationType, onSuccess: (_) => _submit());

@@ -114,7 +114,7 @@ class _BuyVoucherViewState extends ConsumerState<BuyVoucherView>
                         focusNode: amountFocusNode,
                         readOnly: voucherState.isBusy,
                         keyboardType: TextInputType.number,
-                        validator: FieldValidator.validateAmount(),
+                        validator: FieldValidator.validateAmount(minAmount: 10),
                         onChanged: (_) => setState(() => _amount = 0),
                         prefix: IconButton(
                             onPressed: () {},
@@ -141,11 +141,15 @@ class _BuyVoucherViewState extends ConsumerState<BuyVoucherView>
                   onPressed: _formatter.getUnformattedValue() >
                           (num.parse(walletDao.wallet.balance ?? '0'))
                       ? null
-                      : () => BottomSheets.showSheet(
+                      : () {
+                          if (!_formKey.currentState!.validate()) return;
+
+                          BottomSheets.showSheet(
                                   child: const PinConfirmationSheet())
                               .then((value) {
                             if (value != null) _submitRequest(value);
-                          }))
+                          });
+                        })
             ],
           ),
         ),

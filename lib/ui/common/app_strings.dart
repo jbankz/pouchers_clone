@@ -507,7 +507,7 @@ class AppString {
   static String transactionStatus = 'Status';
   static String transactionStatusMessage =
       'Your transfer is successful and the beneficiary\'s account has been credited.';
-  static String enterPoucherTag = 'enter poucher tag';
+  static String enterPoucherTag = 'Enter Poucher Tag';
   static String addNote = 'Add note';
   static String sendMoney = 'Send Money';
   static String sendTo = 'Send to';

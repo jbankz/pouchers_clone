@@ -39,6 +39,14 @@ class _SummaryWidgetState extends ConsumerState<SummaryWidget> {
 
   String _paymentOption = AppString.payWithCard;
 
+  final CancelToken _cancelToken = CancelToken();
+
+  @override
+  void dispose() {
+    _cancelToken.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final billerState = ref.watch(billersNotifierProvider);
@@ -222,13 +230,16 @@ class _SummaryWidgetState extends ConsumerState<SummaryWidget> {
     //     .read(billersNotifierProvider.notifier)
     //     .submitCardForGuest(mobileDto: mobileDto, cancelToken: CancelToken());
 
-    final response = _paymentOption == paymentOptions.first
-        ? await PageRouter.pushNamed(Routes.debitCardView,
-            args: DebitCardViewArguments(
-                amount: widget.summaryDto.amount?.toNaira)) as DebitCardDto?
-        : await PageRouter.pushNamed(Routes.ussdView,
-            args: UssdViewArguments(
-                amount: widget.summaryDto.amount?.toNaira)) as DebitCardDto?;
+    if (_paymentOption == paymentOptions.first) {
+      await ref.read(billersNotifierProvider.notifier).submitCardForGuest(
+          mobileDto: ref.watch(billersNotifierProvider).mobileDto,
+          cancelToken: _cancelToken);
+      return;
+    }
+
+    final response = await PageRouter.pushNamed(Routes.ussdView,
+            args: UssdViewArguments(amount: widget.summaryDto.amount?.toNaira))
+        as DebitCardDto?;
 
     PageRouter.pop(response);
   }

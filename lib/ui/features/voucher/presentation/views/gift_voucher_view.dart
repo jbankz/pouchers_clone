@@ -124,8 +124,8 @@ class _GiftVoucherViewState extends ConsumerState<GiftVoucherView>
                                     ]));
                               }).toList()),
                           label: _tag == _tags.first
-                              ? 'Enter email address'
-                              : 'Enter poucher tag',
+                              ? AppString.emailInstruction
+                              : AppString.enterPoucherTag,
                           controller: beneficiaryController,
                           readOnly: voucherState.isBusy,
                           focusNode: beneficiaryFocusNode,

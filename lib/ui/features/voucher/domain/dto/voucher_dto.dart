@@ -1,3 +1,5 @@
+import '../enum/voucher_status.dart';
+
 class VoucherDto {
   final num? amount;
   final String? transactionPin;
@@ -6,6 +8,7 @@ class VoucherDto {
   final String? tag;
   final int page;
   final int perPage;
+  final VoucherStatus? status;
 
   VoucherDto(
       {this.amount,
@@ -13,6 +16,7 @@ class VoucherDto {
       this.code,
       this.email,
       this.tag,
+      this.status,
       this.page = 1,
       this.perPage = 25});
 
@@ -25,6 +29,7 @@ class VoucherDto {
     if (code != null) result.addAll({'code': code});
     if (email != null) result.addAll({'email': email});
     if (tag != null) result.addAll({'tag': tag});
+    if (status != null) result.addAll({'status': status?.value});
 
     return result;
   }

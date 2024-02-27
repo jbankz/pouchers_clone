@@ -22,7 +22,7 @@ Future<void> main() async {
     await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
   }
 
-  AppConfig.setAppEnv(kDebugMode ? AppEnv.staging : AppEnv.production);
+  AppConfig.setAppEnv(kDebugMode ? AppEnv.production : AppEnv.production);
   await dotenv.load(fileName: AppConfig.fileName);
   await setupLocator();
   await Firebase.initializeApp();

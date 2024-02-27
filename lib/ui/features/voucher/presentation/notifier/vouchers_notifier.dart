@@ -10,6 +10,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../../app/app.logger.dart';
 import '../../../../../app/app.router.dart';
 import '../../../../../app/core/router/page_router.dart';
+import '../../domain/enum/voucher_status.dart';
 import '../state/voucher_state.dart';
 import 'module/module.dart';
 
@@ -92,11 +93,16 @@ class VouchersNotifier extends _$VouchersNotifier {
     }
   }
 
-  Future<void> getVouchers({CancelToken? cancelToken}) async {
+  Future<void> getVouchers(
+      {VoucherStatus? status,
+      bool? refreshed,
+      CancelToken? cancelToken}) async {
     try {
-      state = state.copyWith(isBusy: vouchersDao.box.isEmpty);
+      state = state.copyWith(isBusy: refreshed ?? vouchersDao.box.isEmpty);
       _vouchers = await ref.read(getVouchersProvider
-          .call(parameter: VoucherDto(page: _page), cancelToken: cancelToken)
+          .call(
+              parameter: VoucherDto(status: status, page: _page),
+              cancelToken: cancelToken)
           .future);
     } catch (e) {
       _logger.e(e.toString());

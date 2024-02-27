@@ -46,6 +46,7 @@ class FirebaseMessagingManager {
       await _firebaseMessaging.getToken().then(
         (String? token) {
           assert(token != null);
+
           widgetRef.read(userNotifierProvider.notifier).updateProfile(
               UserDto(fcmToken: token),
               showNotificationTray: false);
@@ -73,6 +74,8 @@ class FirebaseMessagingManager {
   // Handle background messages
   static Future<dynamic> _backgroundMessageHandler(
       Map<String, dynamic> message) async {
+    _logger.i(message);
+
     if (message.containsKey('data')) _logger.d(message['data']);
 
     if (message.containsKey('notification')) _logger.d(message['notification']);
