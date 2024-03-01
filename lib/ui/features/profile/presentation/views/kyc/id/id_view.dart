@@ -1,3 +1,4 @@
+import 'package:Pouchers/app/config/app_logger.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
@@ -110,7 +111,7 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
                               ? FieldValidator.validateString()
                               : FieldValidator.validateInt(),
                           textInputAction: TextInputAction.go,
-                          onFieldSubmitted: (_) => _submit()),
+                          onFieldSubmitted: (_) => _triggerDojah),
                       const Gap(height: 30),
                       InkWell(
                         borderRadius: BorderRadius.circular(10.r),
@@ -179,14 +180,15 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
     );
   }
 
-  void _submit() {
+  void _submit(Dojah dojah) {
     if (!_formKey.currentState!.validate()) return;
 
     _userNotifier.validateID(
         UserDto(
             idType: _identificationType?.value,
-            isUploadId: false,
-            idNumber: idController.text),
+            isUploadId: true,
+            idNumber: idController.text,
+            dojah: dojah),
         _cancelToken);
   }
 
@@ -194,6 +196,16 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
     // if (!_formKey.currentState!.validate()) return;
 
     await _userNotifier.triggerDojah(
-        identificationType: _identificationType, onSuccess: (_) => _submit());
+        identificationType: _identificationType,
+        onSuccess: (success) {
+          final response =
+              ((success as List<dynamic>).first as Map<String, dynamic>)['data']
+                      ?['government-data']?['data']?['entity'] ??
+                  {};
+
+          // final mapped =
+          //     response['data']?['government-data']?['data']?['entity'] ?? {};
+          _submit(Dojah.fromJson(response));
+        });
   }
 }
