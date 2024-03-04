@@ -188,10 +188,8 @@ class _VoucherViewState extends ConsumerState<VoucherView> {
     required String title,
     required String image,
     required Function() tapped,
-    EdgeInsetsGeometry padding = const EdgeInsets.symmetric(
-      horizontal: 40,
-      vertical: 42,
-    ),
+    EdgeInsetsGeometry padding =
+        const EdgeInsets.symmetric(horizontal: 40, vertical: 42),
   }) =>
       Expanded(
         child: CupertinoButton(

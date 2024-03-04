@@ -38,6 +38,8 @@ class _VoucherHistoryViewState extends ConsumerState<VoucherHistoryView> {
   VoucherStatus _tab = VoucherStatus.allType;
 
   final RefreshController _refreshController = RefreshController();
+  bool get _fetchAll =>
+      (_tab == VoucherStatus.allType || _tab == VoucherStatus.gifted);
 
   @override
   void initState() {
@@ -117,8 +119,7 @@ class _VoucherHistoryViewState extends ConsumerState<VoucherHistoryView> {
               (tab) => InkWell(
                 onTap: () async {
                   setState(() => _tab = tab);
-                  await _refresh(
-                      status: _tab == VoucherStatus.allType ? null : _tab);
+                  await _refresh(status: _fetchAll ? null : _tab);
                 },
                 borderRadius: BorderRadius.circular(15.r),
                 child: Container(
@@ -147,7 +148,12 @@ class _VoucherHistoryViewState extends ConsumerState<VoucherHistoryView> {
 
   Widget _buildVouchersList(List<Vouchers> vouchers) => ListView.separated(
         itemBuilder: (_, index) {
-          final voucher = vouchers[index];
+          final voucher = _tab == VoucherStatus.gifted
+              ? vouchers
+                  .where((element) => element.gifteeId != null)
+                  .toList()[index]
+              : vouchers[index];
+
           final bool isSameDate = index == 0
               ? false
               : voucher.createdAt!.isSameDate(vouchers[index - 1].createdAt!);
@@ -197,14 +203,15 @@ class _VoucherHistoryViewState extends ConsumerState<VoucherHistoryView> {
               bgColor: bgColor,
               textColor: textColor);
         },
-        separatorBuilder: (_, __) => const Column(
-          children: [
-            Gap(height: 8),
-            Divider(),
-            Gap(height: 8),
-          ],
-        ),
-        itemCount: vouchers.length,
+        separatorBuilder: (_, __) =>
+            const Column(children: [Gap(height: 8), Divider(), Gap(height: 8)]),
+        itemCount: _tab == VoucherStatus.gifted
+            ? vouchers
+                .where((element) => element.gifteeId != null)
+                .toList()
+                .length
+            : vouchers.length,
+        // itemCount: vouchers.length,
       );
 
   Widget _buildItems(

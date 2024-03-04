@@ -1,4 +1,3 @@
-import 'package:Pouchers/app/config/app_logger.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
