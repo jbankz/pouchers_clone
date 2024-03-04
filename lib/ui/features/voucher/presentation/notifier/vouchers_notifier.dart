@@ -68,6 +68,7 @@ class VouchersNotifier extends _$VouchersNotifier {
               tap: () => PageRouter.popToRoot(Routes.voucherView)));
     } catch (e) {
       _logger.e(e.toString());
+      AppHelper.handleError(e);
     } finally {
       state = state.copyWith(isBusy: false);
     }

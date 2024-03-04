@@ -17,7 +17,7 @@ Hide google json files from github =>
 
 
 TODO
-fix issue login out =>
+fix issue login out => DONE
 Remove verify button from NIN verification
 Setup workflow for Poucher using codemagic
 Setup shorebird for OTA 
