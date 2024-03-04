@@ -13,10 +13,8 @@ import 'package:hive/hive.dart';
 
 import '../../../../../../app/core/manager/intercom_manager.dart';
 import '../../../../../common/app_strings.dart';
-import '../../../../../widgets/dialog/bottom_sheet.dart';
 import '../../../../../widgets/profile_image.dart';
 import 'widgets/account_tile.dart';
-import 'widgets/logout_prompt_widget.dart';
 
 class AccountView extends ConsumerWidget {
   const AccountView({super.key});
@@ -121,17 +119,9 @@ class AccountView extends ConsumerWidget {
                       icon: AppImage.logOut,
                       title: AppString.logOut,
                       color: AppColors.kColorOrange,
-                      tapped: () => _showPrompt(ref))
+                      tapped: ref.read(userNotifierProvider.notifier).logOut)
                 ])),
               ),
             );
           });
-
-  Future<void> _showPrompt(WidgetRef ref) async {
-    final response =
-        await BottomSheets.showAlertDialog(child: const LogoutPrompt())
-            as bool?;
-
-    if (response != null) ref.read(userNotifierProvider.notifier).logout();
-  }
 }

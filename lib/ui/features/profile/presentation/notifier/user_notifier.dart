@@ -14,6 +14,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../app/app.logger.dart';
 import '../../../../../app/core/manager/dojah_manager.dart';
+import '../../../../widgets/dialog/bottom_sheet.dart';
+import '../../../dashboard/views/account/views/widgets/logout_prompt_widget.dart';
 import '../../data/dao/referral_dao.dart';
 import '../../domain/dto/user_dto.dart';
 import '../../domain/model/mocked/reasons.dart';
@@ -284,5 +286,13 @@ class UserNotifier extends _$UserNotifier {
       state =
           state.copyWith(isGettinContacts: false, contacts: _pouchersContacts);
     }
+  }
+
+  Future<void> logOut() async {
+    final response =
+        await BottomSheets.showAlertDialog(child: const LogoutPrompt())
+            as bool?;
+
+    if (response != null) ref.read(userNotifierProvider.notifier).logout();
   }
 }

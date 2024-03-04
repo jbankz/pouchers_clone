@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../profile/presentation/notifier/user_notifier.dart';
 import 'widgets/account_setting_tile.dart';
 
 class AccountSettingsView extends ConsumerWidget {
@@ -72,7 +73,9 @@ class AccountSettingsView extends ConsumerWidget {
                   const Divider(),
                 ]),
               ),
-              ElevatedButtonWidget(title: AppString.logOut, onPressed: () {})
+              ElevatedButtonWidget(
+                  title: AppString.logOut,
+                  onPressed: ref.read(userNotifierProvider.notifier).logOut)
             ],
           ),
         ),
