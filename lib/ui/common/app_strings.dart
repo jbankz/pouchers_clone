@@ -294,7 +294,7 @@ class AppString {
   static String howToFund = 'How to fund your Pouchers account';
   static String myCards = 'My Cards';
   static String cardDetail = 'Card details';
-  static String cardName = 'Card name';
+  static String cardName = 'Card Name';
   static String manage = 'Manage';
   static String freezeCard = 'Freeze card';
   static String freezeCardInfo = 'Temporary disable this card';
