@@ -216,7 +216,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                             if (!formKey.currentState!.validate()) return;
 
                             if (billerState.isGuest &&
-                                _formatter.getUnformattedValue() > 10000) {
+                                amountController.text.replaceComma > 10000) {
                               BottomSheets.showAlertDialog(
                                   child: const GuestMaximumSheet());
                               return;
@@ -236,17 +236,17 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
     final Discounts? discounts = billerState.discounts?.discount;
 
     final bool isAppliedDiscount = ((billerState.discounts != null) &&
-        _formatter.getUnformattedValue() >= (discounts?.threshold ?? 0));
+        amountController.text.replaceComma >= (discounts?.threshold ?? 0));
 
-    final amount = discounts?.payment(_formatter.getUnformattedValue()) ??
-        _formatter.getUnformattedValue();
+    final amount = discounts?.payment(amountController.text.replaceComma) ??
+        amountController.text.replaceComma;
 
     final mobileDto = MobileDto(
         category: ServiceCategory.airtime,
         subCategory: _billers?.displayName,
         destinationPhoneNumber: phoneController.text,
         mobileOperatorPublicId: _billers?.operatorpublicid,
-        amount: _formatter.getUnformattedValue(),
+        amount: amountController.text.replaceComma,
         applyDiscount: isAppliedDiscount,
         transactionPin: pin);
 
@@ -279,12 +279,12 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
     final envs = envDao.envs;
 
     final bool isAppliedDiscount = ((discounts != null) &&
-        _formatter.getUnformattedValue() >= (discounts.threshold));
+        amountController.text.replaceComma >= (discounts.threshold));
 
     final amount = billerState.isGuest
-        ? _formatter.getUnformattedValue()
-        : discounts?.payment(_formatter.getUnformattedValue()) ??
-            _formatter.getUnformattedValue();
+        ? amountController.text.replaceComma
+        : discounts?.payment(amountController.text.replaceComma) ??
+            amountController.text.replaceComma;
 
     final String fee =
         envs.firstWhereOrNull((env) => env.name == Fees.airtimeFee)?.value ??
@@ -298,7 +298,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
         currency: Currency.NGN,
         email: guest.customerEmail,
         payer: Payer(email: guest.customerEmail, name: guest.customerName),
-        amount: _formatter.getUnformattedValue(),
+        amount: amountController.text.replaceComma,
         phoneNumber: phoneController.text,
         mobileOperatorPublicId: _billers?.operatorpublicid);
 

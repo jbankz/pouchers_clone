@@ -272,7 +272,7 @@ class _ScheduleElectricityViewState
         onChanged: (value) => _debouncer.run(() {
           if (value.length >= 11) _validateCustomer();
         }),
-        validator: FieldValidator.validateMeterNumber(cardLength: 11),
+        validator: FieldValidator.validateMeterNumber(),
         inputFormatters: [context.digitsOnly, context.limit()],
         suffixIcon: CupertinoButton(
           padding: EdgeInsets.zero,
@@ -328,7 +328,7 @@ class _ScheduleElectricityViewState
           mobileDto: MobileDto(
             scheduleId: widget.schedule?.scheduleId,
             frequency: _frequency,
-            amount: _formatter.getUnformattedValue(),
+            amount: amountController.text.replaceComma,
             transactionPin: pin,
           ),
           cancelToken: _cancelToken);
@@ -336,7 +336,7 @@ class _ScheduleElectricityViewState
       await _billersNotifier.schedule(
         mobileDto: MobileDto(
             frequency: _frequency,
-            amount: _formatter.getUnformattedValue(),
+            amount: amountController.text.replaceComma,
             merchantReferenceNumber: numberController.text,
             makeMerchantServiceArray: false,
             merchantService: _cableService?.code,

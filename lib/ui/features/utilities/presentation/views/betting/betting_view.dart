@@ -179,7 +179,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
                             if (!formKey.currentState!.validate()) return;
 
                             if (billerState.isGuest &&
-                                _formatter.getUnformattedValue() > 10000) {
+                                amountController.text.replaceComma > 10000) {
                               BottomSheets.showAlertDialog(
                                   child: const GuestMaximumSheet());
                               return;
@@ -320,9 +320,9 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
     final Discounts? discounts = billerState.discounts?.discount;
 
     final bool isAppliedDiscount = (discounts != null &&
-        _formatter.getUnformattedValue() >= discounts.threshold);
+        amountController.text.replaceComma >= discounts.threshold);
 
-    final amount = discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
+    final amount = discounts?.payment(amountController.text.replaceComma) ?? 0;
 
     final mobileDto = MobileDto(
         isMerchantPayment: true,
@@ -331,7 +331,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
         merchantService: _cableService?.code,
         merchantReferenceNumber: numberController.text,
         subCategory: _billers?.displayName,
-        amount: _formatter.getUnformattedValue(),
+        amount: amountController.text.replaceComma,
         applyDiscount: isAppliedDiscount,
         transactionPin: pin);
 
@@ -364,12 +364,12 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
     final merchantState = ref.watch(merchantsNotifierProvider);
 
     final bool isAppliedDiscount = ((discounts != null) &&
-        _formatter.getUnformattedValue() >= (discounts.threshold));
+        amountController.text.replaceComma >= (discounts.threshold));
 
     final amount = billerState.isGuest
-        ? _formatter.getUnformattedValue()
-        : discounts?.payment(_formatter.getUnformattedValue()) ??
-            _formatter.getUnformattedValue();
+        ? amountController.text.replaceComma
+        : discounts?.payment(amountController.text.replaceComma) ??
+            amountController.text.replaceComma;
 
     final String fee = envs
             .firstWhereOrNull((env) => env.name == Fees.betWalletFundingFee)
@@ -386,7 +386,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
         merchantService: _cableService?.code,
         merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
         subCategory: _billers?.displayName,
-        amount: _formatter.getUnformattedValue(),
+        amount: amountController.text.replaceComma,
         currency: Currency.NGN,
         email: guest.customerEmail,
         payer: Payer(email: guest.customerEmail, name: guest.customerName));

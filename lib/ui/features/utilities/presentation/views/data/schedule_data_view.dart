@@ -260,13 +260,13 @@ class _ScheduleDataViewState extends ConsumerState<ScheduleDataView>
               scheduleId: widget.schedule?.scheduleId,
               frequency: _frequency,
               transactionPin: pin,
-              amount: _formatter.getUnformattedValue()),
+              amount: amountController.text.replaceComma),
           cancelToken: _cancelToken);
     } else {
       _billersNotifier.schedule(
           mobileDto: MobileDto(
               frequency: _frequency,
-              amount: _formatter.getUnformattedValue(),
+              amount: amountController.text.replaceComma,
               transactionPin: pin,
               subCategory: _billers?.displayName,
               category: ServiceCategory.data,

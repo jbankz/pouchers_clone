@@ -284,15 +284,15 @@ class _EducationViewState extends ConsumerState<EducationView>
     final Discounts? discounts = billerState.discounts?.discount;
 
     final bool isAppliedDiscount = ((billerState.discounts != null) &&
-        _formatter.getUnformattedValue() >= (discounts?.threshold ?? 0));
+        amountController.text.replaceComma >= (discounts?.threshold ?? 0));
 
-    final amount = discounts?.payment(_formatter.getUnformattedValue()) ??
-        _formatter.getUnformattedValue();
+    final amount = discounts?.payment(amountController.text.replaceComma) ??
+        amountController.text.replaceComma;
 
     await _billersNotifier.purchaseService(
         mobileDto: MobileDto(
           isMerchantPayment: true,
-          amount: _formatter.getUnformattedValue(),
+          amount: amountController.text.replaceComma,
           merchantAccount: _billers?.operatorpublicid,
           merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
           merchantService: _cableService?.code,
@@ -331,9 +331,9 @@ class _EducationViewState extends ConsumerState<EducationView>
         (_cableService?.price ?? 0) >= (discounts.threshold));
 
     final amount = billerState.isGuest
-        ? _formatter.getUnformattedValue()
-        : discounts?.payment(_formatter.getUnformattedValue()) ??
-            _formatter.getUnformattedValue();
+        ? amountController.text.replaceComma
+        : discounts?.payment(amountController.text.replaceComma) ??
+            amountController.text.replaceComma;
 
     final String fee =
         envs.firstWhereOrNull((env) => env.name == Fees.educationFee)?.value ??
@@ -342,7 +342,7 @@ class _EducationViewState extends ConsumerState<EducationView>
 
     _mobileDto = MobileDto(
         isMerchantPayment: true,
-        amount: _formatter.getUnformattedValue(),
+        amount: amountController.text.replaceComma,
         merchantAccount: _billers?.operatorpublicid,
         merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
         makeMerchantServiceArray: false,
