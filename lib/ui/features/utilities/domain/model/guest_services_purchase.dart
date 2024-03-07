@@ -14,7 +14,7 @@ class GuestServicesPurchase with _$GuestServicesPurchase {
       num? requestAmount,
       num? totalPaymentAmount,
       @Default(Currency.NGN) Currency currency,
-      @Default([]) List<PaymentMethod> paymentMethod}) = _GuestServicesPurchase;
+      @Default([]) List<PaymentMethod> paymentMethods}) = _GuestServicesPurchase;
 
   factory GuestServicesPurchase.fromJson(Map<String, dynamic> json) =>
       _$GuestServicesPurchaseFromJson(json);

@@ -18,6 +18,7 @@ class UserDto {
   final String? address;
   final String? state;
   final String? postalCode;
+  final Dojah? dojah;
 
   UserDto(
       {this.bvn,
@@ -38,7 +39,8 @@ class UserDto {
       this.profilePicture,
       this.address,
       this.state,
-      this.postalCode});
+      this.postalCode,
+      this.dojah});
 
   Map<String, dynamic> toJson() => {
         if (bvn != null) 'bvn': bvn,
@@ -60,5 +62,25 @@ class UserDto {
         if (address != null) 'address': address,
         if (state != null) 'state': state,
         if (postalCode != null) 'postal_code': postalCode,
+        if (dojah != null) 'dojah_response': dojah?.toJson()
       };
+}
+
+class Dojah {
+  final String? firstName;
+  final String? lastName;
+  final String? dateOfBirth;
+
+  Dojah({this.firstName, this.lastName, this.dateOfBirth});
+
+  Map<String, dynamic> toJson() => {
+        'first_name': firstName,
+        'last_name': lastName,
+        'date_of_birth': dateOfBirth
+      };
+
+  factory Dojah.fromJson(Map<String, dynamic> json) => Dojah(
+      firstName: json['first_name'] ?? '',
+      lastName: json['last_name'] ?? '',
+      dateOfBirth: json['date_of_birth'] ?? '');
 }

@@ -294,7 +294,7 @@ class AppString {
   static String howToFund = 'How to fund your Pouchers account';
   static String myCards = 'My Cards';
   static String cardDetail = 'Card details';
-  static String cardName = 'Card name';
+  static String cardName = 'Card Name';
   static String manage = 'Manage';
   static String freezeCard = 'Freeze card';
   static String freezeCardInfo = 'Temporary disable this card';
@@ -507,7 +507,7 @@ class AppString {
   static String transactionStatus = 'Status';
   static String transactionStatusMessage =
       'Your transfer is successful and the beneficiary\'s account has been credited.';
-  static String enterPoucherTag = 'enter poucher tag';
+  static String enterPoucherTag = 'Enter Poucher Tag';
   static String addNote = 'Add note';
   static String sendMoney = 'Send Money';
   static String sendTo = 'Send to';
@@ -549,6 +549,8 @@ class AppString {
 
   static String completedPurchase = 'Purchase successful';
   static String cardTransfer = 'Card transfer successful';
+  static String pendingTransfer =
+      'Please wait while your transaction is completed';
   static String bankTransfer = 'Bank transfer successful';
   static String postalCode = 'Postal Code';
   static String cityState = 'City/State';

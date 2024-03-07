@@ -65,6 +65,7 @@ class _EducationViewState extends ConsumerState<EducationView>
 
   Billers? _billers;
   CableService? _cableService;
+  MobileDto? _mobileDto;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final CurrencyFormatter _formatter = CurrencyFormatter(
@@ -283,15 +284,15 @@ class _EducationViewState extends ConsumerState<EducationView>
     final Discounts? discounts = billerState.discounts?.discount;
 
     final bool isAppliedDiscount = ((billerState.discounts != null) &&
-        _formatter.getUnformattedValue() >= (discounts?.threshold ?? 0));
+        amountController.text.replaceComma >= (discounts?.threshold ?? 0));
 
-    final amount = discounts?.payment(_formatter.getUnformattedValue()) ??
-        _formatter.getUnformattedValue();
+    final amount = discounts?.payment(amountController.text.replaceComma) ??
+        amountController.text.replaceComma;
 
     await _billersNotifier.purchaseService(
         mobileDto: MobileDto(
           isMerchantPayment: true,
-          amount: _formatter.getUnformattedValue(),
+          amount: amountController.text.replaceComma,
           merchantAccount: _billers?.operatorpublicid,
           merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
           merchantService: _cableService?.code,
@@ -310,44 +311,49 @@ class _EducationViewState extends ConsumerState<EducationView>
   }
 
   Future<void> _submitForGuest(dynamic feedback) async {
-    final guest = ref.watch(paramModule);
-    final MerchantState merchantState = ref.watch(merchantsNotifierProvider);
     final bool isCardPayment =
         (feedback is DebitCardDto? && feedback?.bank == null);
 
+    _mobileDto = _mobileDto?..bank = feedback?.bank;
+
     _billersNotifier.purchaseServiceForGuest(
         isCardPayment: isCardPayment,
-        mobileDto: MobileDto(
-            isMerchantPayment: true,
-            amount: _formatter.getUnformattedValue(),
-            merchantAccount: _billers?.operatorpublicid,
-            merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
-            makeMerchantServiceArray: false,
-            merchantService: _cableService?.code,
-            subCategory: _billers?.displayName,
-            category: ServiceCategory.education,
-            currency: Currency.NGN,
-            email: guest.customerEmail,
-            payer: Payer(email: guest.customerEmail, name: guest.customerName),
-            bank: feedback?.bank),
+        mobileDto: _mobileDto,
         cancelToken: _cancelToken);
   }
 
   Future<void> _handlePayment(BillersState billerState) async {
     final Discounts? discounts = billerState.discounts?.discount;
     final envs = envDao.envs;
+    final MerchantState merchantState = ref.watch(merchantsNotifierProvider);
 
     final bool isAppliedDiscount = ((discounts != null) &&
         (_cableService?.price ?? 0) >= (discounts.threshold));
 
     final amount = billerState.isGuest
-        ? _formatter.getUnformattedValue()
-        : discounts?.payment(_formatter.getUnformattedValue()) ??
-            _formatter.getUnformattedValue();
+        ? amountController.text.replaceComma
+        : discounts?.payment(amountController.text.replaceComma) ??
+            amountController.text.replaceComma;
 
     final String fee =
         envs.firstWhereOrNull((env) => env.name == Fees.educationFee)?.value ??
             '0';
+    final guest = ref.watch(paramModule);
+
+    _mobileDto = MobileDto(
+        isMerchantPayment: true,
+        amount: amountController.text.replaceComma,
+        merchantAccount: _billers?.operatorpublicid,
+        merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
+        makeMerchantServiceArray: false,
+        merchantService: _cableService?.code,
+        subCategory: _billers?.displayName,
+        category: ServiceCategory.education,
+        currency: Currency.NGN,
+        email: guest.customerEmail,
+        payer: Payer(email: guest.customerEmail, name: guest.customerName));
+
+    _billersNotifier.setMobileDataDto(_mobileDto);
 
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(

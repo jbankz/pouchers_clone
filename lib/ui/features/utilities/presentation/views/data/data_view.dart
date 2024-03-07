@@ -60,6 +60,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
 
   Billers? _billers;
   MobileOperatorServices? _mobileOperatorServices;
+  MobileDto? _mobileDto;
 
   @override
   void initState() {
@@ -243,24 +244,14 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
   }
 
   Future<void> _submitForGuest(dynamic feedback) async {
-    final guest = ref.watch(paramModule);
     final bool isCardPayment =
         (feedback is DebitCardDto? && feedback?.bank == null);
 
+    _mobileDto = _mobileDto?..bank = feedback?.bank;
+
     _billersNotifier.purchaseServiceForGuest(
         isCardPayment: isCardPayment,
-        mobileDto: MobileDto(
-            category: ServiceCategory.data,
-            subCategory: _billers?.displayName,
-            amount: _mobileOperatorServices?.servicePrice,
-            mobileOperatorPublicId: _billers?.operatorpublicid,
-            mobileOperatorServiceId:
-                _mobileOperatorServices?.serviceId.toString() ?? '',
-            currency: Currency.NGN,
-            email: guest.customerEmail,
-            phoneNumber: phoneController.text,
-            payer: Payer(email: guest.customerEmail, name: guest.customerName),
-            bank: feedback?.bank),
+        mobileDto: _mobileDto,
         cancelToken: _cancelToken);
   }
 
@@ -278,6 +269,22 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
 
     final String fee =
         envs.firstWhereOrNull((env) => env.name == Fees.dataFee)?.value ?? '0';
+
+    final guest = ref.watch(paramModule);
+
+    _mobileDto = MobileDto(
+        category: ServiceCategory.data,
+        subCategory: _billers?.displayName,
+        amount: _mobileOperatorServices?.servicePrice,
+        mobileOperatorPublicId: _billers?.operatorpublicid,
+        mobileOperatorServiceId:
+            _mobileOperatorServices?.serviceId.toString() ?? '',
+        currency: Currency.NGN,
+        email: guest.customerEmail,
+        phoneNumber: phoneController.text,
+        payer: Payer(email: guest.customerEmail, name: guest.customerName));
+
+    _billersNotifier.setMobileDataDto(_mobileDto);
 
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(

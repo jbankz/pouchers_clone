@@ -72,6 +72,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
   Billers? _billers;
   final _debouncer = Debouncer();
   CableService? _cableService;
+  MobileDto? _mobileDto;
 
   @override
   void initState() {
@@ -178,7 +179,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
                             if (!formKey.currentState!.validate()) return;
 
                             if (billerState.isGuest &&
-                                _formatter.getUnformattedValue() > 10000) {
+                                amountController.text.replaceComma > 10000) {
                               BottomSheets.showAlertDialog(
                                   child: const GuestMaximumSheet());
                               return;
@@ -319,9 +320,9 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
     final Discounts? discounts = billerState.discounts?.discount;
 
     final bool isAppliedDiscount = (discounts != null &&
-        _formatter.getUnformattedValue() >= discounts.threshold);
+        amountController.text.replaceComma >= discounts.threshold);
 
-    final amount = discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
+    final amount = discounts?.payment(amountController.text.replaceComma) ?? 0;
 
     final mobileDto = MobileDto(
         isMerchantPayment: true,
@@ -330,7 +331,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
         merchantService: _cableService?.code,
         merchantReferenceNumber: numberController.text,
         subCategory: _billers?.displayName,
-        amount: _formatter.getUnformattedValue(),
+        amount: amountController.text.replaceComma,
         applyDiscount: isAppliedDiscount,
         transactionPin: pin);
 
@@ -346,46 +347,51 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
   }
 
   Future<void> _submitForGuest(dynamic feedback) async {
-    final guest = ref.watch(paramModule);
-    final merchantState = ref.watch(merchantsNotifierProvider);
-
     final bool isCardPayment =
         (feedback is DebitCardDto? && feedback?.bank == null);
 
+    _mobileDto = _mobileDto?..bank = feedback?.bank;
+
     _billersNotifier.purchaseServiceForGuest(
         isCardPayment: isCardPayment,
-        mobileDto: MobileDto(
-            isMerchantPayment: true,
-            category: ServiceCategory.betting,
-            merchantAccount: _billers?.operatorpublicid,
-            makeMerchantServiceArray: false,
-            merchantService: _cableService?.code,
-            merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
-            subCategory: _billers?.displayName,
-            amount: _formatter.getUnformattedValue(),
-            currency: Currency.NGN,
-            email: guest.customerEmail,
-            payer: Payer(email: guest.customerEmail, name: guest.customerName),
-            bank: feedback?.bank),
+        mobileDto: _mobileDto,
         cancelToken: _cancelToken);
   }
 
   Future<void> _handlePayment(BillersState billerState) async {
     final Discounts? discounts = billerState.discounts?.discount;
     final envs = envDao.envs;
+    final merchantState = ref.watch(merchantsNotifierProvider);
 
     final bool isAppliedDiscount = ((discounts != null) &&
-        _formatter.getUnformattedValue() >= (discounts.threshold));
+        amountController.text.replaceComma >= (discounts.threshold));
 
     final amount = billerState.isGuest
-        ? _formatter.getUnformattedValue()
-        : discounts?.payment(_formatter.getUnformattedValue()) ??
-            _formatter.getUnformattedValue();
+        ? amountController.text.replaceComma
+        : discounts?.payment(amountController.text.replaceComma) ??
+            amountController.text.replaceComma;
 
     final String fee = envs
             .firstWhereOrNull((env) => env.name == Fees.betWalletFundingFee)
             ?.value ??
         '0';
+
+    final guest = ref.watch(paramModule);
+
+    _mobileDto = MobileDto(
+        isMerchantPayment: true,
+        category: ServiceCategory.betting,
+        merchantAccount: _billers?.operatorpublicid,
+        makeMerchantServiceArray: false,
+        merchantService: _cableService?.code,
+        merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
+        subCategory: _billers?.displayName,
+        amount: amountController.text.replaceComma,
+        currency: Currency.NGN,
+        email: guest.customerEmail,
+        payer: Payer(email: guest.customerEmail, name: guest.customerName));
+
+    _billersNotifier.setMobileDataDto(_mobileDto);
 
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(

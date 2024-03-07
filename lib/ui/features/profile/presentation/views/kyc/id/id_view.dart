@@ -110,8 +110,14 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
                               ? FieldValidator.validateString()
                               : FieldValidator.validateInt(),
                           textInputAction: TextInputAction.go,
-                          onFieldSubmitted: (_) => _submit()),
-                      const Gap(height: 30),
+                          onFieldSubmitted: (_) => _verifyNIN()),
+                      const Gap(height: 15),
+                      Center(
+                        child: Text('or',
+                            style: context.bodyMedium
+                                ?.copyWith(color: kDarkGrey100, fontSize: 14)),
+                      ),
+                      const Gap(height: 15),
                       InkWell(
                         borderRadius: BorderRadius.circular(10.r),
                         onTap: _triggerDojah,
@@ -169,14 +175,14 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
                 ElevatedButtonWidget(
                     loading: appState.isBusy,
                     title: AppString.verify,
-                    onPressed: _submit)
+                    onPressed: _verifyNIN)
               ],
             ),
           )),
     );
   }
 
-  void _submit() {
+  void _verifyNIN() {
     if (!_formKey.currentState!.validate()) return;
 
     _userNotifier.validateID(
@@ -188,9 +194,19 @@ class _IdViewState extends ConsumerState<IdView> with $IdView {
   }
 
   Future<void> _triggerDojah() async {
-    if (!_formKey.currentState!.validate()) return;
-
     await _userNotifier.triggerDojah(
-        identificationType: _identificationType, onSuccess: (_) => _submit());
+        identificationType: _identificationType,
+        onSuccess: (success) {
+          final response =
+              ((success as List<dynamic>).first as Map<String, dynamic>)['data']
+                      ?['government-data']?['data']?['entity'] ??
+                  {};
+          _userNotifier.validateID(
+              UserDto(
+                  idType: _identificationType?.value,
+                  isUploadId: true,
+                  dojah: Dojah.fromJson(response)),
+              _cancelToken);
+        });
   }
 }

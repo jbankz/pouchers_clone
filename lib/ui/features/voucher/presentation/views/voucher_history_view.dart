@@ -1,10 +1,8 @@
-import 'package:Pouchers/ui/features/voucher/data/dao/vouchers_dao.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hive/hive.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../../../../../app/core/skeleton/widgets.dart';
@@ -38,6 +36,8 @@ class _VoucherHistoryViewState extends ConsumerState<VoucherHistoryView> {
   VoucherStatus _tab = VoucherStatus.allType;
 
   final RefreshController _refreshController = RefreshController();
+  bool get _fetchAll =>
+      (_tab == VoucherStatus.allType || _tab == VoucherStatus.gifted);
 
   @override
   void initState() {
@@ -56,10 +56,11 @@ class _VoucherHistoryViewState extends ConsumerState<VoucherHistoryView> {
     _refresh();
   }
 
-  Future<void> _refresh() async {
+  Future<void> _refresh({VoucherStatus? status}) async {
     try {
       _vouchersNotifier.resetPageCount();
-      await _vouchersNotifier.getVouchers(cancelToken: _cancelToken);
+      await _vouchersNotifier.getVouchers(
+          status: status, refreshed: true, cancelToken: _cancelToken);
       _refreshController.refreshCompleted();
     } catch (e) {
       _refreshController.refreshFailed();
@@ -79,66 +80,45 @@ class _VoucherHistoryViewState extends ConsumerState<VoucherHistoryView> {
   @override
   Widget build(BuildContext context) {
     final voucherState = ref.watch(vouchersNotifierProvider);
+    final List<Vouchers> vouchers = voucherState.vouchers;
     return Scaffold(
       appBar: AppBar(title: Text(AppString.vouchers)),
-      body: ValueListenableBuilder<Box>(
-        valueListenable: vouchersDao.getListenable(),
-        builder: (_, box, __) {
-          final List<Vouchers> cachedVouchers = vouchersDao.retrieve(box);
-
-          final List<Vouchers> vouchers = _filterVouchers(cachedVouchers);
-
-          return SafeArea(
-            minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-            child: Column(
-              children: [
-                _buildTabsRow(),
-                const Gap(height: 24),
-                Flexible(
-                  child: Skeleton(
-                    isLoading: voucherState.isBusy,
-                    skeleton: const VouchersSkeleton(),
-                    child: SmartRefresher(
-                      enablePullUp: true,
-                      controller: _refreshController,
-                      onRefresh: _refresh,
-                      onLoading: _paginateNotification,
-                      child: vouchers.isEmpty
-                          ? const Center(child: EmptyVoucherView())
-                          : _buildVouchersList(vouchers),
-                    ),
-                  ),
+      body: SafeArea(
+        minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        child: Column(
+          children: [
+            _buildTabsRow(),
+            const Gap(height: 24),
+            Flexible(
+              child: Skeleton(
+                isLoading: voucherState.isBusy,
+                skeleton: const VouchersSkeleton(),
+                child: SmartRefresher(
+                  enablePullUp: true,
+                  controller: _refreshController,
+                  onRefresh: _refresh,
+                  onLoading: _paginateNotification,
+                  child: vouchers.isEmpty
+                      ? const Center(child: EmptyVoucherView())
+                      : _buildVouchersList(vouchers),
                 ),
-              ],
+              ),
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }
-
-  List<Vouchers> _filterVouchers(List<Vouchers> cachedVouchers) =>
-      cachedVouchers.where((element) {
-        switch (_tab) {
-          case VoucherStatus.allType:
-            return true;
-          case VoucherStatus.active:
-            return element.status == VoucherStatus.active;
-          case VoucherStatus.redeemed:
-            return element.status == VoucherStatus.redeemed;
-          case VoucherStatus.gifted:
-            return element.status == VoucherStatus.gifted;
-          default:
-            return false;
-        }
-      }).toList();
 
   Widget _buildTabsRow() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: _tabs
             .map(
               (tab) => InkWell(
-                onTap: () => setState(() => _tab = tab),
+                onTap: () async {
+                  setState(() => _tab = tab);
+                  await _refresh(status: _fetchAll ? null : _tab);
+                },
                 borderRadius: BorderRadius.circular(15.r),
                 child: Container(
                   padding:
@@ -166,7 +146,12 @@ class _VoucherHistoryViewState extends ConsumerState<VoucherHistoryView> {
 
   Widget _buildVouchersList(List<Vouchers> vouchers) => ListView.separated(
         itemBuilder: (_, index) {
-          final voucher = vouchers[index];
+          final voucher = _tab == VoucherStatus.gifted
+              ? vouchers
+                  .where((element) => element.gifteeId != null)
+                  .toList()[index]
+              : vouchers[index];
+
           final bool isSameDate = index == 0
               ? false
               : voucher.createdAt!.isSameDate(vouchers[index - 1].createdAt!);
@@ -175,6 +160,14 @@ class _VoucherHistoryViewState extends ConsumerState<VoucherHistoryView> {
 
           final Color bgColor = _getBackgroundColor(voucher.status);
           final Color textColor = _getTextColor(voucher.status);
+
+          final String status = switch (voucher.status) {
+            VoucherStatus.active => "Active",
+            VoucherStatus.redeemed => "Redeemed",
+            VoucherStatus.inactive => "Redeemed",
+            VoucherStatus.gifted => "Gifted",
+            VoucherStatus.allType => ""
+          };
 
           if (index == 0 || !(isSameDate)) {
             return Column(
@@ -189,25 +182,43 @@ class _VoucherHistoryViewState extends ConsumerState<VoucherHistoryView> {
                   textAlign: TextAlign.left,
                 ),
                 const Gap(height: 12),
-                _buildItems(voucher, context, isGifted, bgColor, textColor),
+                _buildItems(
+                    status: status,
+                    voucher: voucher,
+                    context: context,
+                    isGifted: isGifted,
+                    bgColor: bgColor,
+                    textColor: textColor),
               ],
             );
           }
 
-          return _buildItems(voucher, context, isGifted, bgColor, textColor);
+          return _buildItems(
+              status: status,
+              voucher: voucher,
+              context: context,
+              isGifted: isGifted,
+              bgColor: bgColor,
+              textColor: textColor);
         },
-        separatorBuilder: (_, __) => const Column(
-          children: [
-            Gap(height: 8),
-            Divider(),
-            Gap(height: 8),
-          ],
-        ),
-        itemCount: vouchers.length,
+        separatorBuilder: (_, __) =>
+            const Column(children: [Gap(height: 8), Divider(), Gap(height: 8)]),
+        itemCount: _tab == VoucherStatus.gifted
+            ? vouchers
+                .where((element) => element.gifteeId != null)
+                .toList()
+                .length
+            : vouchers.length,
+        // itemCount: vouchers.length,
       );
 
-  Widget _buildItems(Vouchers voucher, BuildContext context, bool isGifted,
-          Color bgColor, Color textColor) =>
+  Widget _buildItems(
+          {required String status,
+          required Vouchers voucher,
+          required BuildContext context,
+          required bool isGifted,
+          required Color bgColor,
+          required Color textColor}) =>
       Row(
         children: [
           Expanded(
@@ -245,7 +256,7 @@ class _VoucherHistoryViewState extends ConsumerState<VoucherHistoryView> {
                     borderRadius: BorderRadius.circular(15.r),
                   ),
                   child: Text(
-                    voucher.status.value.titleCase,
+                    status.titleCase,
                     style: context.headlineMedium?.copyWith(
                       fontSize: 12,
                       color: textColor,

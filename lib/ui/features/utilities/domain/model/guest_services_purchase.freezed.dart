@@ -28,7 +28,7 @@ mixin _$GuestServicesPurchase {
   num? get requestAmount => throw _privateConstructorUsedError;
   num? get totalPaymentAmount => throw _privateConstructorUsedError;
   Currency get currency => throw _privateConstructorUsedError;
-  List<PaymentMethod> get paymentMethod => throw _privateConstructorUsedError;
+  List<PaymentMethod> get paymentMethods => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,7 +49,7 @@ abstract class $GuestServicesPurchaseCopyWith<$Res> {
       num? requestAmount,
       num? totalPaymentAmount,
       Currency currency,
-      List<PaymentMethod> paymentMethod});
+      List<PaymentMethod> paymentMethods});
 }
 
 /// @nodoc
@@ -72,7 +72,7 @@ class _$GuestServicesPurchaseCopyWithImpl<$Res,
     Object? requestAmount = freezed,
     Object? totalPaymentAmount = freezed,
     Object? currency = null,
-    Object? paymentMethod = null,
+    Object? paymentMethods = null,
   }) {
     return _then(_value.copyWith(
       referenceNumber: freezed == referenceNumber
@@ -99,9 +99,9 @@ class _$GuestServicesPurchaseCopyWithImpl<$Res,
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
               as Currency,
-      paymentMethod: null == paymentMethod
-          ? _value.paymentMethod
-          : paymentMethod // ignore: cast_nullable_to_non_nullable
+      paymentMethods: null == paymentMethods
+          ? _value.paymentMethods
+          : paymentMethods // ignore: cast_nullable_to_non_nullable
               as List<PaymentMethod>,
     ) as $Val);
   }
@@ -123,7 +123,7 @@ abstract class _$$GuestServicesPurchaseImplCopyWith<$Res>
       num? requestAmount,
       num? totalPaymentAmount,
       Currency currency,
-      List<PaymentMethod> paymentMethod});
+      List<PaymentMethod> paymentMethods});
 }
 
 /// @nodoc
@@ -144,7 +144,7 @@ class __$$GuestServicesPurchaseImplCopyWithImpl<$Res>
     Object? requestAmount = freezed,
     Object? totalPaymentAmount = freezed,
     Object? currency = null,
-    Object? paymentMethod = null,
+    Object? paymentMethods = null,
   }) {
     return _then(_$GuestServicesPurchaseImpl(
       referenceNumber: freezed == referenceNumber
@@ -171,9 +171,9 @@ class __$$GuestServicesPurchaseImplCopyWithImpl<$Res>
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
               as Currency,
-      paymentMethod: null == paymentMethod
-          ? _value._paymentMethod
-          : paymentMethod // ignore: cast_nullable_to_non_nullable
+      paymentMethods: null == paymentMethods
+          ? _value._paymentMethods
+          : paymentMethods // ignore: cast_nullable_to_non_nullable
               as List<PaymentMethod>,
     ));
   }
@@ -189,8 +189,8 @@ class _$GuestServicesPurchaseImpl implements _GuestServicesPurchase {
       this.requestAmount,
       this.totalPaymentAmount,
       this.currency = Currency.NGN,
-      final List<PaymentMethod> paymentMethod = const []})
-      : _paymentMethod = paymentMethod;
+      final List<PaymentMethod> paymentMethods = const []})
+      : _paymentMethods = paymentMethods;
 
   factory _$GuestServicesPurchaseImpl.fromJson(Map<String, dynamic> json) =>
       _$$GuestServicesPurchaseImplFromJson(json);
@@ -209,18 +209,18 @@ class _$GuestServicesPurchaseImpl implements _GuestServicesPurchase {
   @override
   @JsonKey()
   final Currency currency;
-  final List<PaymentMethod> _paymentMethod;
+  final List<PaymentMethod> _paymentMethods;
   @override
   @JsonKey()
-  List<PaymentMethod> get paymentMethod {
-    if (_paymentMethod is EqualUnmodifiableListView) return _paymentMethod;
+  List<PaymentMethod> get paymentMethods {
+    if (_paymentMethods is EqualUnmodifiableListView) return _paymentMethods;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_paymentMethod);
+    return EqualUnmodifiableListView(_paymentMethods);
   }
 
   @override
   String toString() {
-    return 'GuestServicesPurchase(referenceNumber: $referenceNumber, statusCode: $statusCode, statusMessage: $statusMessage, requestAmount: $requestAmount, totalPaymentAmount: $totalPaymentAmount, currency: $currency, paymentMethod: $paymentMethod)';
+    return 'GuestServicesPurchase(referenceNumber: $referenceNumber, statusCode: $statusCode, statusMessage: $statusMessage, requestAmount: $requestAmount, totalPaymentAmount: $totalPaymentAmount, currency: $currency, paymentMethods: $paymentMethods)';
   }
 
   @override
@@ -241,7 +241,7 @@ class _$GuestServicesPurchaseImpl implements _GuestServicesPurchase {
             (identical(other.currency, currency) ||
                 other.currency == currency) &&
             const DeepCollectionEquality()
-                .equals(other._paymentMethod, _paymentMethod));
+                .equals(other._paymentMethods, _paymentMethods));
   }
 
   @JsonKey(ignore: true)
@@ -254,7 +254,7 @@ class _$GuestServicesPurchaseImpl implements _GuestServicesPurchase {
       requestAmount,
       totalPaymentAmount,
       currency,
-      const DeepCollectionEquality().hash(_paymentMethod));
+      const DeepCollectionEquality().hash(_paymentMethods));
 
   @JsonKey(ignore: true)
   @override
@@ -279,7 +279,7 @@ abstract class _GuestServicesPurchase implements GuestServicesPurchase {
       final num? requestAmount,
       final num? totalPaymentAmount,
       final Currency currency,
-      final List<PaymentMethod> paymentMethod}) = _$GuestServicesPurchaseImpl;
+      final List<PaymentMethod> paymentMethods}) = _$GuestServicesPurchaseImpl;
 
   factory _GuestServicesPurchase.fromJson(Map<String, dynamic> json) =
       _$GuestServicesPurchaseImpl.fromJson;
@@ -298,7 +298,7 @@ abstract class _GuestServicesPurchase implements GuestServicesPurchase {
   @override
   Currency get currency;
   @override
-  List<PaymentMethod> get paymentMethod;
+  List<PaymentMethod> get paymentMethods;
   @override
   @JsonKey(ignore: true)
   _$$GuestServicesPurchaseImplCopyWith<_$GuestServicesPurchaseImpl>

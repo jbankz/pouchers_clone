@@ -10,5 +10,6 @@
     "**/*.g.dart": true,
     "**/*.form.dart": true
   },
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "yaml.schemaStore.enable": false
 }

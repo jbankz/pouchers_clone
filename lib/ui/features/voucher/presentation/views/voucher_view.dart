@@ -81,9 +81,15 @@ class _VoucherViewState extends ConsumerState<VoucherView> {
                     Builder(builder: (_) {
                       if (voucherState.isBusy) return const SizedBox.shrink();
 
-                      if (vouchers.isEmpty) return const EmptyVoucherView();
+                      final unReedemedVouchers = vouchers
+                          .where((element) => !element.redeemed)
+                          .toList();
 
-                      return _buildSlider(vouchers.take(3).toList());
+                      if (unReedemedVouchers.isEmpty) {
+                        return const EmptyVoucherView();
+                      }
+
+                      return _buildSlider(unReedemedVouchers);
                     }),
                     _buildActionButtons(context),
                     const Gap(height: 20),
@@ -169,7 +175,10 @@ class _VoucherViewState extends ConsumerState<VoucherView> {
             context: context,
             title: AppString.voucherHistory,
             image: AppImage.voucherHistory,
-            tapped: () => PageRouter.pushNamed(Routes.voucherHistoryView),
+            tapped: () async {
+              await PageRouter.pushNamed(Routes.voucherHistoryView);
+              await _refresh();
+            },
           ),
         ],
       );
@@ -179,10 +188,8 @@ class _VoucherViewState extends ConsumerState<VoucherView> {
     required String title,
     required String image,
     required Function() tapped,
-    EdgeInsetsGeometry padding = const EdgeInsets.symmetric(
-      horizontal: 40,
-      vertical: 42,
-    ),
+    EdgeInsetsGeometry padding =
+        const EdgeInsets.symmetric(horizontal: 40, vertical: 42),
   }) =>
       Expanded(
         child: CupertinoButton(

@@ -328,8 +328,7 @@ class _VirtualCardDetailViewState extends ConsumerState<VirtualCardDetailView>
               alignment: Alignment.centerRight,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
               child: Transform(
-                transform:
-                    Matrix4.skewX(0.5), 
+                transform: Matrix4.skewX(0.5),
                 child: Text(cvv2 ?? '',
                     style: context.headlineMedium
                         ?.copyWith(fontStyle: FontStyle.italic, fontSize: 18),

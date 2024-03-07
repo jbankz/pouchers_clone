@@ -43,14 +43,23 @@ class FirebaseMessagingManager {
     );
 
     try {
-      await _firebaseMessaging.getToken().then(
-        (String? token) {
+      _firebaseMessaging
+        ..getToken().then((String? token) {
           assert(token != null);
+
           widgetRef.read(userNotifierProvider.notifier).updateProfile(
               UserDto(fcmToken: token),
               showNotificationTray: false);
-        },
-      );
+        })
+        ..onTokenRefresh.listen((token) {
+          (String? token) {
+            assert(token != null);
+
+            widgetRef.read(userNotifierProvider.notifier).updateProfile(
+                UserDto(fcmToken: token),
+                showNotificationTray: false);
+          };
+        });
     } catch (e, stack) {
       _logger.e('Error: $e ===> $stack');
     }
@@ -73,6 +82,8 @@ class FirebaseMessagingManager {
   // Handle background messages
   static Future<dynamic> _backgroundMessageHandler(
       Map<String, dynamic> message) async {
+    _logger.i(message);
+
     if (message.containsKey('data')) _logger.d(message['data']);
 
     if (message.containsKey('notification')) _logger.d(message['notification']);

@@ -2,21 +2,26 @@ import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/features/profile/data/dao/wallet_dao.dart';
+import 'package:Pouchers/ui/features/utilities/presentation/notifier/billers_notifier.dart';
 import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/utils/extension.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../common/app_strings.dart';
 import '../../../../payment/domain/dto/debit_card_dto.dart';
 import '../../../../profile/presentation/views/biometric/biometric_verification_view.dart';
 import '../../../../profile/presentation/views/wallet/widget/balance_indicator_widget.dart';
+import '../../../domain/dto/mobile_dto.dart';
 import '../../../domain/dto/summary_dto.dart';
+import '../../state/billers_state.dart';
 import '../widget/utility_icon.dart';
 
-class SummaryWidget extends StatefulWidget {
+class SummaryWidget extends ConsumerStatefulWidget {
   const SummaryWidget(
       {super.key,
       required this.summaryDto,
@@ -26,47 +31,59 @@ class SummaryWidget extends StatefulWidget {
   final Function(String pin) biometricVerification;
 
   @override
-  State<SummaryWidget> createState() => _SummaryWidgetState();
+  ConsumerState<SummaryWidget> createState() => _SummaryWidgetState();
 }
 
-class _SummaryWidgetState extends State<SummaryWidget> {
+class _SummaryWidgetState extends ConsumerState<SummaryWidget> {
   final paymentOptions = [AppString.payWithCard, AppString.payWithUssd];
 
   String _paymentOption = AppString.payWithCard;
 
-  @override
-  Widget build(BuildContext context) => ValueListenableBuilder<Box>(
-        valueListenable: walletDao.getListenable(),
-        builder: (_, box, __) {
-          final bool isNotAffordable = (widget.summaryDto.amount ?? 0) >
-              num.parse(walletDao.retrieve(box).balance ?? '0');
+  final CancelToken _cancelToken = CancelToken();
 
-          return SafeArea(
-            minimum: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Wrap(
-              children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _buildImage(),
-                    const Gap(height: 5),
-                    _buildTitle(),
-                    const Gap(height: 70),
-                    _buildSummaryContainer(),
-                    if (!widget.summaryDto.isGuest) _buildBalanceIndicator(),
-                    const Gap(height: 35),
-                    if (widget.summaryDto.isGuest) _buildPaymentOptions(),
-                    BiometricVerification(
-                        isNotAffordable: isNotAffordable,
-                        callback: widget.biometricVerification),
-                    _buildProceedButton(isNotAffordable),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
-      );
+  @override
+  void dispose() {
+    _cancelToken.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final billerState = ref.watch(billersNotifierProvider);
+
+    return ValueListenableBuilder<Box>(
+      valueListenable: walletDao.getListenable(),
+      builder: (_, box, __) {
+        final bool isNotAffordable = (widget.summaryDto.amount ?? 0) >
+            num.parse(walletDao.retrieve(box).balance ?? '0');
+
+        return SafeArea(
+          minimum: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Wrap(
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildImage(),
+                  const Gap(height: 5),
+                  _buildTitle(),
+                  const Gap(height: 70),
+                  _buildSummaryContainer(),
+                  if (!widget.summaryDto.isGuest) _buildBalanceIndicator(),
+                  const Gap(height: 35),
+                  if (widget.summaryDto.isGuest) _buildPaymentOptions(),
+                  BiometricVerification(
+                      isNotAffordable: isNotAffordable,
+                      callback: widget.biometricVerification),
+                  _buildProceedButton(isNotAffordable, billerState),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   Widget _buildImage() => UtitlityIcon(image: widget.summaryDto.imageUrl ?? '');
 
@@ -174,12 +191,15 @@ class _SummaryWidgetState extends State<SummaryWidget> {
         itemCount: 2,
       );
 
-  Widget _buildProceedButton(bool isAffordable) => ElevatedButtonWidget(
+  Widget _buildProceedButton(
+          bool isAffordable, BillersState<dynamic> billerState) =>
+      ElevatedButtonWidget(
+        loading: billerState.isGettingUssd,
         title: widget.summaryDto.isGuest
             ? AppString.proceed
             : 'Pay ${widget.summaryDto.amount?.toNaira}',
         onPressed: widget.summaryDto.isGuest
-            ? () => _handleCardPayment()
+            ? () => _handleCardPayment(billerState.mobileDto)
             : (isAffordable ? null : () async => PageRouter.pop(true)),
       );
 
@@ -205,14 +225,21 @@ class _SummaryWidgetState extends State<SummaryWidget> {
         ],
       );
 
-  Future<void> _handleCardPayment() async {
-    final response = _paymentOption == paymentOptions.first
-        ? await PageRouter.pushNamed(Routes.debitCardView,
-            args: DebitCardViewArguments(
-                amount: widget.summaryDto.amount?.toNaira)) as DebitCardDto?
-        : await PageRouter.pushNamed(Routes.ussdView,
-            args: UssdViewArguments(
-                amount: widget.summaryDto.amount?.toNaira)) as DebitCardDto?;
+  Future<void> _handleCardPayment(MobileDto? mobileDto) async {
+    // ref
+    //     .read(billersNotifierProvider.notifier)
+    //     .submitCardForGuest(mobileDto: mobileDto, cancelToken: CancelToken());
+
+    if (_paymentOption == paymentOptions.first) {
+      await ref.read(billersNotifierProvider.notifier).submitCardForGuest(
+          mobileDto: ref.watch(billersNotifierProvider).mobileDto,
+          cancelToken: _cancelToken);
+      return;
+    }
+
+    final response = await PageRouter.pushNamed(Routes.ussdView,
+            args: UssdViewArguments(amount: widget.summaryDto.amount?.toNaira))
+        as DebitCardDto?;
 
     PageRouter.pop(response);
   }

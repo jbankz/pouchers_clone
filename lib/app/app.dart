@@ -19,6 +19,7 @@ import '../ui/features/guest/guest_view.dart';
 import '../ui/features/notification/presentation/view/notification_details_view.dart';
 import '../ui/features/notification/presentation/view/notification_view.dart';
 import '../ui/features/payment/presentation/view/debit_card_view.dart';
+import '../ui/features/payment/presentation/view/inapp_web_view.dart';
 import '../ui/features/profile/presentation/views/account/account_details_view.dart';
 import '../ui/features/profile/presentation/views/biometric/biometric_setup_view.dart';
 import '../ui/features/profile/presentation/views/biometric/biometric_view.dart';
@@ -206,6 +207,7 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: RequestView),
     AdaptiveRoute(page: RequestMoneyView),
     AdaptiveRoute(page: ScheduleView),
+    AdaptiveRoute(page: PagaWebView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

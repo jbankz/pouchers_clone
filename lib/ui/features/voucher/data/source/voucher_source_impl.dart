@@ -35,7 +35,7 @@ class VoucherSourceImpl implements VoucherSource {
     final response = await _networkService.request(
         path: ApiPath.vouchers,
         requestType: RequestType.get,
-        data: voucherDto.toJson(),
+        queryParams: voucherDto.toJson(),
         cancelToken: cancelToken);
     return (response.data?['data']?['vouchers'] as List<dynamic>)
         .map((data) => Vouchers.fromJson(data as Map<String, dynamic>))

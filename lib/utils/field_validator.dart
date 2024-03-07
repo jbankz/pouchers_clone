@@ -79,7 +79,7 @@ class FieldValidator {
       };
 
   static String? Function(String?) validateMeterNumber(
-          {String? error, int cardLength = 0}) =>
+          {String? error, int cardLength = 13}) =>
       (String? value) {
         if (value == null || value.isEmpty) {
           return error ?? 'Field is required.';

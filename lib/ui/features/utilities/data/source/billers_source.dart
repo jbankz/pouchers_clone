@@ -7,6 +7,7 @@ import '../../domain/model/airtime_top_deals.dart';
 import '../../domain/model/discounts.dart';
 import '../../domain/model/get_cable_service.dart';
 import '../../domain/model/guest_services_purchase.dart';
+import '../../domain/model/guest_services_purchase_status.dart';
 import '../../domain/model/mobile_data_services.dart';
 import '../../domain/model/schedule.dart';
 import '../../domain/model/utility.dart';
@@ -31,5 +32,8 @@ abstract class BillerSource {
   Future<GuestServicesPurchase> guestCardPayment(MobileDto billersDto,
       {CancelToken? cancelToken});
   Future<GuestServicesPurchase> guestUSSDPayment(MobileDto billersDto,
+      {CancelToken? cancelToken});
+  Future<GuestServicesPurchaseStatus> guestUSSDPaymentStatus(
+      MobileDto billersDto,
       {CancelToken? cancelToken});
 }

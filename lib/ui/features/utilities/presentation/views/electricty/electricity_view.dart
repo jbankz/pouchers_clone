@@ -69,7 +69,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
   late BillersNotifier _billersNotifier;
   final CancelToken _cancelToken = CancelToken();
   final FlutterContactPicker _contactPicker = FlutterContactPicker();
-  final _debouncer = Debouncer(milliseconds: 600);
+  final _debouncer = Debouncer();
 
   Billers? _billers;
   CableService? _cableService;
@@ -77,8 +77,9 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
 
   bool _beneficiary = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final CurrencyFormatter _formatter =
-      CurrencyFormatter(enableNegative: false, name: '', symbol: '');
+  final CurrencyFormatter _formatter = CurrencyFormatter(
+      enableNegative: false, name: '', symbol: '', decimalDigits: 0);
+  MobileDto? _mobileDto;
 
   @override
   void initState() {
@@ -164,13 +165,16 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
                           onChanged: (String value) => _formatter
                               .formatDouble(double.tryParse(value) ?? 0),
                           validator:
-                              FieldValidator.validateAmount(minAmount: 500),
+                              FieldValidator.validateAmount(minAmount: 1000),
                           prefix: IconButton(
                               onPressed: () {},
                               icon: Text(AppString.nairaSymbol,
                                   style: context.headlineMedium
                                       ?.copyWith(fontSize: 16))),
-                          inputFormatters: [context.digitsOnly, _formatter]),
+                          inputFormatters: [
+                            context.digitsOnly,
+                            _formatter,
+                          ]),
                       const Gap(height: 24),
                       if (!billerState.isGuest)
                         SchedulingWidget(
@@ -261,9 +265,9 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
             _cableService == null,
         onFieldSubmitted: (_) {},
         onChanged: (value) => _debouncer.run(() {
-          if (value.length >= 10) _validateCustomer(getMerchant);
+          if (value.length >= 13) _validateCustomer(getMerchant);
         }),
-        validator: FieldValidator.validateMeterNumber(cardLength: 10),
+        validator: FieldValidator.validateMeterNumber(),
         inputFormatters: [context.digitsOnly],
         suffixIcon: CupertinoButton(
           padding: EdgeInsets.zero,
@@ -418,13 +422,13 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
     final Discounts? discounts = billerState.discounts?.discount;
 
     final bool isAppliedDiscount = ((billerState.discounts != null) &&
-        _formatter.getUnformattedValue() >= (discounts?.threshold ?? 0));
+        amountController.text.replaceComma >= (discounts?.threshold ?? 0));
 
-    final amount = discounts?.payment(_formatter.getUnformattedValue()) ?? 0;
+    final amount = discounts?.payment(amountController.text.replaceComma) ?? 0;
 
     final mobileDto = MobileDto(
         isMerchantPayment: true,
-        amount: _formatter.getUnformattedValue(),
+        amount: amountController.text.replaceComma,
         merchantAccount: _billers?.operatorpublicid,
         merchantReferenceNumber: numberController.text,
         merchantService: _cableService?.code,
@@ -445,25 +449,14 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
   }
 
   Future<void> _submitForGuest(dynamic feedback) async {
-    final guest = ref.watch(paramModule);
     final bool isCardPayment =
         (feedback is DebitCardDto? && feedback?.bank == null);
 
+    _mobileDto = _mobileDto?..bank = feedback?.bank;
+
     _billersNotifier.purchaseServiceForGuest(
         isCardPayment: isCardPayment,
-        mobileDto: MobileDto(
-            isMerchantPayment: true,
-            amount: _formatter.getUnformattedValue(),
-            merchantAccount: _billers?.operatorpublicid,
-            merchantReferenceNumber: numberController.text,
-            merchantService: _cableService?.code,
-            subCategory: _billers?.displayName,
-            makeMerchantServiceArray: false,
-            category: ServiceCategory.electricity,
-            currency: Currency.NGN,
-            email: guest.customerEmail,
-            payer: Payer(email: guest.customerEmail, name: guest.customerName),
-            bank: feedback?.bank),
+        mobileDto: _mobileDto,
         cancelToken: _cancelToken);
   }
 
@@ -472,17 +465,34 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
     final envs = envDao.envs;
 
     final bool isAppliedDiscount = ((discounts != null) &&
-        _formatter.getUnformattedValue() >= (discounts.threshold));
+        amountController.text.replaceComma >= (discounts.threshold));
 
     final amount = billerState.isGuest
-        ? _formatter.getUnformattedValue()
-        : discounts?.payment(_formatter.getUnformattedValue()) ??
-            _formatter.getUnformattedValue();
+        ? amountController.text.replaceComma
+        : discounts?.payment(amountController.text.replaceComma) ??
+            amountController.text.replaceComma;
 
     final String fee = envs
             .firstWhereOrNull((env) => env.name == Fees.electricityFee)
             ?.value ??
         '0';
+
+    final guest = ref.watch(paramModule);
+
+    _mobileDto = MobileDto(
+        isMerchantPayment: true,
+        amount: amountController.text.replaceComma,
+        merchantAccount: _billers?.operatorpublicid,
+        merchantReferenceNumber: numberController.text,
+        merchantService: _cableService?.code,
+        subCategory: _billers?.displayName,
+        makeMerchantServiceArray: false,
+        category: ServiceCategory.electricity,
+        currency: Currency.NGN,
+        email: guest.customerEmail,
+        payer: Payer(email: guest.customerEmail, name: guest.customerName));
+
+    _billersNotifier.setMobileDataDto(_mobileDto);
 
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(

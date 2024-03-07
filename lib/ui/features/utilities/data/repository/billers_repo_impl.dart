@@ -5,6 +5,7 @@ import 'package:Pouchers/ui/features/utilities/domain/model/airtime_top_deals.da
 import 'package:Pouchers/ui/features/utilities/domain/model/billers.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/guest_services_purchase.dart';
+import 'package:Pouchers/ui/features/utilities/domain/model/guest_services_purchase_status.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/mobile_data_services.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/schedule.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/utility.dart';
@@ -74,5 +75,12 @@ class BillersRepoImpl implements BillerRepo {
   Future<GuestServicesPurchase> guestUSSDPayment(MobileDto billersDto,
           {CancelToken? cancelToken}) async =>
       await _billersSource.guestUSSDPayment(billersDto,
+          cancelToken: cancelToken);
+
+  @override
+  Future<GuestServicesPurchaseStatus> guestUSSDPaymentStatus(
+          MobileDto billersDto,
+          {CancelToken? cancelToken}) async =>
+      await _billersSource.guestUSSDPaymentStatus(billersDto,
           cancelToken: cancelToken);
 }

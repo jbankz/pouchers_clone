@@ -1,7 +1,6 @@
 import 'package:Pouchers/app/config/app_helper.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,10 +37,7 @@ class _CardDetailsSheetState extends ConsumerState<CardDetailsSheet> {
   @override
   Widget build(BuildContext context) {
     final appState = ref.watch(cardNotifierProvider);
-    final param = ref.watch(paramModule);
-    final cardDetail = param.cardDetail;
-
-    // final data = appState.virtualCardDetails;
+    final cardDetail = appState.virtualCardDetails;
     return Wrap(
       children: [
         SizedBox(
@@ -71,12 +67,13 @@ class _CardDetailsSheetState extends ConsumerState<CardDetailsSheet> {
                                 _buildTile(
                                     context: context,
                                     title: AppString.cardNumber,
-                                    value: cardDetail?.accountNumber ?? ''),
+                                    value: cardDetail?.account?.accountNumber ??
+                                        ''),
                                 const Gap(height: 20),
                                 _buildTile(
                                     context: context,
                                     title: AppString.cardCVV,
-                                    value: ''),
+                                    value: cardDetail?.cvv2 ?? ''),
                                 const Gap(height: 20),
                                 _buildTile(
                                     context: context,
@@ -87,9 +84,9 @@ class _CardDetailsSheetState extends ConsumerState<CardDetailsSheet> {
                                 _buildTile(
                                     context: context,
                                     title: AppString.cardName,
-                                    value: param.cardDetail?.accountName
-                                            ?.titleCase ??
-                                        ''),
+                                    value:
+                                        cardDetail?.customer?.name?.titleCase ??
+                                            ''),
                               ],
                             ),
                           )

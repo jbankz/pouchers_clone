@@ -244,7 +244,7 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
       _scheduleNotifier.updateSchedule(
           mobileDto: MobileDto(
               scheduleId: widget.schedule?.scheduleId,
-              amount: _formatter.getUnformattedValue(),
+              amount: amountController.text.replaceComma,
               frequency: _frequency,
               transactionPin: pin),
           cancelToken: _cancelToken);
@@ -252,7 +252,7 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
       _billersNotifier.schedule(
           mobileDto: MobileDto(
               frequency: _frequency,
-              amount: _formatter.getUnformattedValue(),
+              amount: amountController.text.replaceComma,
               transactionPin: pin,
               subCategory: _billers?.name,
               category: ServiceCategory.airtime,

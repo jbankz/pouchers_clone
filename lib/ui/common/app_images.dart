@@ -146,4 +146,5 @@ class AppImage {
   static String searchContact = "${_iconPath}search_contact.svg";
   static String mingcuteFaceid = "${_iconPath}mingcute_faceid.svg";
   static String emptyRequest = "${_iconPath}empty_request.svg";
+  static String pending = "${_iconPath}pending.svg";
 }

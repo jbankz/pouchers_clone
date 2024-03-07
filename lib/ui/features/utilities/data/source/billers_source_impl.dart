@@ -3,6 +3,7 @@ import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/airtime_top_deals.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/billers.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/guest_services_purchase.dart';
+import 'package:Pouchers/ui/features/utilities/domain/model/guest_services_purchase_status.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/mobile_data_services.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
 import 'package:Pouchers/ui/features/utilities/domain/model/schedule.dart';
@@ -138,6 +139,19 @@ class BillersSourceImpl implements BillerSource {
         data: billersDto.toJson(),
         cancelToken: cancelToken);
     return GuestServicesPurchase.fromJson(
+        response.data?['data'] as Map<String, dynamic>);
+  }
+
+  @override
+  Future<GuestServicesPurchaseStatus> guestUSSDPaymentStatus(
+      MobileDto billersDto,
+      {CancelToken? cancelToken}) async {
+    final response = await networkService.request(
+        path: ApiPath.guestUssdPaymentStatus,
+        requestType: RequestType.post,
+        data: {'referenceNumber': billersDto.referenceNumber},
+        cancelToken: cancelToken);
+    return GuestServicesPurchaseStatus.fromJson(
         response.data?['data'] as Map<String, dynamic>);
   }
 }

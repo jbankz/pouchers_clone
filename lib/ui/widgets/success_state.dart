@@ -9,6 +9,7 @@ import 'package:lottie/lottie.dart';
 import '../common/app_colors.dart';
 
 class SuccessState extends StatelessWidget {
+  final Widget? statusImage;
   final String title;
   final String message;
   final String btnTitle;
@@ -16,6 +17,7 @@ class SuccessState extends StatelessWidget {
 
   const SuccessState(
       {super.key,
+      this.statusImage,
       this.title = '',
       this.message = '',
       this.btnTitle = '',
@@ -32,8 +34,9 @@ class SuccessState extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Lottie.asset(AppImage.success,
-                      height: 140.71.h, width: 157.w),
+                  statusImage ??
+                      Lottie.asset(AppImage.success,
+                          height: 140.71.h, width: 157.w),
                   const Gap(height: 28),
                   Text(title,
                       style: context.titleLarge?.copyWith(

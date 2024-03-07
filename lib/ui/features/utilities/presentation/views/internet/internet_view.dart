@@ -70,6 +70,7 @@ class _InternetViewState extends ConsumerState<InternetView>
   bool _beneficiary = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late MerchantsNotifier _merchantsNotifier;
+  MobileDto? _mobileDto;
 
   @override
   void initState() {
@@ -369,25 +370,14 @@ class _InternetViewState extends ConsumerState<InternetView>
 
   Future<void> _submitForGuest(
       dynamic feedback, GetMerchant? getMerchant) async {
-    final guest = ref.watch(paramModule);
     final bool isCardPayment =
         (feedback is DebitCardDto? && feedback?.bank == null);
 
+    _mobileDto = _mobileDto?..bank = feedback?.bank;
+
     _billersNotifier.purchaseServiceForGuest(
         isCardPayment: isCardPayment,
-        mobileDto: MobileDto(
-            isMerchantPayment: true,
-            amount: _cableService?.price,
-            merchantAccount: _billers?.operatorpublicid,
-            merchantReferenceNumber: getMerchant?.referenceNumber,
-            merchantService: _cableService?.code,
-            subCategory: _billers?.displayName,
-            makeMerchantServiceArray: false,
-            category: ServiceCategory.internet,
-            currency: Currency.NGN,
-            email: guest.customerEmail,
-            payer: Payer(email: guest.customerEmail, name: guest.customerName),
-            bank: feedback?.bank),
+        mobileDto: _mobileDto,
         cancelToken: _cancelToken);
   }
 
@@ -398,6 +388,22 @@ class _InternetViewState extends ConsumerState<InternetView>
     final String fee =
         envs.firstWhereOrNull((env) => env.name == Fees.internetFee)?.value ??
             '0';
+    final guest = ref.watch(paramModule);
+
+    _mobileDto = MobileDto(
+        isMerchantPayment: true,
+        amount: _cableService?.price,
+        merchantAccount: _billers?.operatorpublicid,
+        merchantReferenceNumber: getMerchant?.referenceNumber,
+        merchantService: _cableService?.code,
+        subCategory: _billers?.displayName,
+        makeMerchantServiceArray: false,
+        category: ServiceCategory.internet,
+        currency: Currency.NGN,
+        email: guest.customerEmail,
+        payer: Payer(email: guest.customerEmail, name: guest.customerName));
+
+    _billersNotifier.setMobileDataDto(_mobileDto);
 
     final feedback = await BottomSheets.showSheet(
       child: SummaryWidget(

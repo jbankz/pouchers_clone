@@ -8,6 +8,7 @@ import '../billers_usecase.dart';
 import '../cables_service_usecase.dart';
 import '../discounts_usecase.dart';
 import '../guest_card_payment_usecase.dart';
+import '../guest_payment_status_usecase.dart';
 import '../guest_ussd_payment_usecase.dart';
 import '../mobile_data_services_usecase.dart';
 import '../schedule_usecase.dart';
@@ -46,3 +47,7 @@ final guestUssdPaymentUseCaseModule = Provider<PoucherUseCaseWithRequiredParam>(
 
 final guestCardPaymentUseCaseModule = Provider<PoucherUseCaseWithRequiredParam>(
     (ref) => GuestCardPaymentUseCaseImpl(ref.read(billersRepoModule)));
+
+final guestPaymentStatusUseCaseModule =
+    Provider<PoucherUseCaseWithRequiredParam>(
+        (ref) => GuestPaymentStatusUseCaseImpl(ref.read(billersRepoModule)));

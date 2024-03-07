@@ -12,3 +12,12 @@ Check CVV in cards => DONE
 Check why users card is not displaying seen after having a card => DONE 
 Update Utilities to make use of Discounts => 
 Hide google json files from github => 
+
+
+
+
+TODO
+fix issue login out => DONE
+Remove verify button from NIN verification => DONE
+Setup workflow for Poucher using codemagic
+Setup shorebird for OTA 
