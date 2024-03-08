@@ -132,8 +132,8 @@ class _ManageCardSheetState extends ConsumerState<ManageCardSheet> {
                 cardId: ref.read(paramModule.notifier).cardDetail?.cardId,
                 status: CardStatus.active,
                 currency: ref.read(paramModule.notifier).isNairaCardType
-                    ? Currency.NGN
-                    : Currency.USD,
+                    ? Currency.ngn
+                    : Currency.usd,
                 transactionPin: pin),
             _cancelToken);
       }

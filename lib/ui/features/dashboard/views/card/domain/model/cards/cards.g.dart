@@ -86,7 +86,7 @@ _$CardsImpl _$$CardsImplFromJson(Map<String, dynamic> json) => _$CardsImpl(
       brand: $enumDecodeNullable(_$CardBrandEnumMap, json['brand']) ??
           CardBrand.verve,
       currency: $enumDecodeNullable(_$CurrencyEnumMap, json['currency']) ??
-          Currency.NGN,
+          Currency.ngn,
       last4: json['last4'] as String?,
       expiryMonth: json['expiry_month'] as String?,
       expiryYear: json['expiry_year'] as String?,
@@ -117,6 +117,6 @@ const _$CardBrandEnumMap = {
 };
 
 const _$CurrencyEnumMap = {
-  Currency.NGN: 'NGN',
-  Currency.USD: 'USD',
+  Currency.ngn: 'NGN',
+  Currency.usd: 'USD',
 };

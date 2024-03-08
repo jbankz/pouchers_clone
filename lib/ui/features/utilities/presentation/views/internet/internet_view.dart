@@ -399,7 +399,7 @@ class _InternetViewState extends ConsumerState<InternetView>
         subCategory: _billers?.displayName,
         makeMerchantServiceArray: false,
         category: ServiceCategory.internet,
-        currency: Currency.NGN,
+        currency: Currency.ngn,
         email: guest.customerEmail,
         payer: Payer(email: guest.customerEmail, name: guest.customerName));
 

@@ -44,6 +44,7 @@ mixin _$VirtualCardDetails {
   Account? get account => throw _privateConstructorUsedError;
   FundingSource? get fundingSource => throw _privateConstructorUsedError;
   String? get cvv2 => throw _privateConstructorUsedError;
+  String? get number => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -76,7 +77,8 @@ abstract class $VirtualCardDetailsCopyWith<$Res> {
       Customer? customer,
       Account? account,
       FundingSource? fundingSource,
-      String? cvv2});
+      String? cvv2,
+      String? number});
 
   $CustomerCopyWith<$Res>? get customer;
   $AccountCopyWith<$Res>? get account;
@@ -115,6 +117,7 @@ class _$VirtualCardDetailsCopyWithImpl<$Res, $Val extends VirtualCardDetails>
     Object? account = freezed,
     Object? fundingSource = freezed,
     Object? cvv2 = freezed,
+    Object? number = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -193,6 +196,10 @@ class _$VirtualCardDetailsCopyWithImpl<$Res, $Val extends VirtualCardDetails>
           ? _value.cvv2
           : cvv2 // ignore: cast_nullable_to_non_nullable
               as String?,
+      number: freezed == number
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -260,7 +267,8 @@ abstract class _$$VirtualCardDetailsImplCopyWith<$Res>
       Customer? customer,
       Account? account,
       FundingSource? fundingSource,
-      String? cvv2});
+      String? cvv2,
+      String? number});
 
   @override
   $CustomerCopyWith<$Res>? get customer;
@@ -300,6 +308,7 @@ class __$$VirtualCardDetailsImplCopyWithImpl<$Res>
     Object? account = freezed,
     Object? fundingSource = freezed,
     Object? cvv2 = freezed,
+    Object? number = freezed,
   }) {
     return _then(_$VirtualCardDetailsImpl(
       id: freezed == id
@@ -378,6 +387,10 @@ class __$$VirtualCardDetailsImplCopyWithImpl<$Res>
           ? _value.cvv2
           : cvv2 // ignore: cast_nullable_to_non_nullable
               as String?,
+      number: freezed == number
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -404,7 +417,8 @@ class _$VirtualCardDetailsImpl implements _VirtualCardDetails {
       this.customer,
       this.account,
       this.fundingSource,
-      this.cvv2});
+      this.cvv2,
+      this.number});
 
   factory _$VirtualCardDetailsImpl.fromJson(Map<String, dynamic> json) =>
       _$$VirtualCardDetailsImplFromJson(json);
@@ -457,10 +471,12 @@ class _$VirtualCardDetailsImpl implements _VirtualCardDetails {
   final FundingSource? fundingSource;
   @override
   final String? cvv2;
+  @override
+  final String? number;
 
   @override
   String toString() {
-    return 'VirtualCardDetails(id: $id, type: $type, brand: $brand, currency: $currency, maskedPan: $maskedPan, expiryMonth: $expiryMonth, expiryYear: $expiryYear, status: $status, is2FAEnrolled: $is2FAEnrolled, isDefaultPINChanged: $isDefaultPINChanged, disposable: $disposable, refundAccount: $refundAccount, isDeleted: $isDeleted, createdAt: $createdAt, updatedAt: $updatedAt, customer: $customer, account: $account, fundingSource: $fundingSource, cvv2: $cvv2)';
+    return 'VirtualCardDetails(id: $id, type: $type, brand: $brand, currency: $currency, maskedPan: $maskedPan, expiryMonth: $expiryMonth, expiryYear: $expiryYear, status: $status, is2FAEnrolled: $is2FAEnrolled, isDefaultPINChanged: $isDefaultPINChanged, disposable: $disposable, refundAccount: $refundAccount, isDeleted: $isDeleted, createdAt: $createdAt, updatedAt: $updatedAt, customer: $customer, account: $account, fundingSource: $fundingSource, cvv2: $cvv2, number: $number)';
   }
 
   @override
@@ -499,7 +515,8 @@ class _$VirtualCardDetailsImpl implements _VirtualCardDetails {
             (identical(other.account, account) || other.account == account) &&
             (identical(other.fundingSource, fundingSource) ||
                 other.fundingSource == fundingSource) &&
-            (identical(other.cvv2, cvv2) || other.cvv2 == cvv2));
+            (identical(other.cvv2, cvv2) || other.cvv2 == cvv2) &&
+            (identical(other.number, number) || other.number == number));
   }
 
   @JsonKey(ignore: true)
@@ -524,7 +541,8 @@ class _$VirtualCardDetailsImpl implements _VirtualCardDetails {
         customer,
         account,
         fundingSource,
-        cvv2
+        cvv2,
+        number
       ]);
 
   @JsonKey(ignore: true)
@@ -566,7 +584,8 @@ abstract class _VirtualCardDetails implements VirtualCardDetails {
       final Customer? customer,
       final Account? account,
       final FundingSource? fundingSource,
-      final String? cvv2}) = _$VirtualCardDetailsImpl;
+      final String? cvv2,
+      final String? number}) = _$VirtualCardDetailsImpl;
 
   factory _VirtualCardDetails.fromJson(Map<String, dynamic> json) =
       _$VirtualCardDetailsImpl.fromJson;
@@ -614,6 +633,8 @@ abstract class _VirtualCardDetails implements VirtualCardDetails {
   FundingSource? get fundingSource;
   @override
   String? get cvv2;
+  @override
+  String? get number;
   @override
   @JsonKey(ignore: true)
   _$$VirtualCardDetailsImplCopyWith<_$VirtualCardDetailsImpl> get copyWith =>
@@ -2040,7 +2061,7 @@ class _$AccountImpl implements _Account {
       {@JsonKey(name: '_id') this.id,
       this.business,
       this.type,
-      this.currency = Currency.NGN,
+      this.currency = Currency.ngn,
       this.accountName,
       this.bankCode,
       this.accountType,

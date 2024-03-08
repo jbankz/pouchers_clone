@@ -349,7 +349,7 @@ class _EducationViewState extends ConsumerState<EducationView>
         merchantService: _cableService?.code,
         subCategory: _billers?.displayName,
         category: ServiceCategory.education,
-        currency: Currency.NGN,
+        currency: Currency.ngn,
         email: guest.customerEmail,
         payer: Payer(email: guest.customerEmail, name: guest.customerName));
 

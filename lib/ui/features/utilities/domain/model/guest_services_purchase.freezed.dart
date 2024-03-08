@@ -188,7 +188,7 @@ class _$GuestServicesPurchaseImpl implements _GuestServicesPurchase {
       this.statusMessage,
       this.requestAmount,
       this.totalPaymentAmount,
-      this.currency = Currency.NGN,
+      this.currency = Currency.ngn,
       final List<PaymentMethod> paymentMethods = const []})
       : _paymentMethods = paymentMethods;
 

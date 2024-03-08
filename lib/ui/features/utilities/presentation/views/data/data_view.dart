@@ -279,7 +279,7 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
         mobileOperatorPublicId: _billers?.operatorpublicid,
         mobileOperatorServiceId:
             _mobileOperatorServices?.serviceId.toString() ?? '',
-        currency: Currency.NGN,
+        currency: Currency.ngn,
         email: guest.customerEmail,
         phoneNumber: phoneController.text,
         payer: Payer(email: guest.customerEmail, name: guest.customerName));

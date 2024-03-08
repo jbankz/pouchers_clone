@@ -295,7 +295,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
     _mobileDto = MobileDto(
         category: ServiceCategory.airtime,
         subCategory: _billers?.displayName,
-        currency: Currency.NGN,
+        currency: Currency.ngn,
         email: guest.customerEmail,
         payer: Payer(email: guest.customerEmail, name: guest.customerName),
         amount: amountController.text.replaceComma,

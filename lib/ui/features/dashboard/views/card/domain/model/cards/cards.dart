@@ -17,7 +17,7 @@ class Cards with _$Cards {
       @HiveField(3) @JsonKey(name: 'account_number') String? accountNumber,
       @HiveField(4) @JsonKey(name: 'account_name') String? accountName,
       @HiveField(5) @Default(CardBrand.verve) CardBrand? brand,
-      @HiveField(6) @Default(Currency.NGN) Currency? currency,
+      @HiveField(6) @Default(Currency.ngn) Currency? currency,
       @HiveField(7) String? last4,
       @HiveField(8) @JsonKey(name: 'expiry_month') String? expiryMonth,
       @HiveField(9) @JsonKey(name: 'expiry_year') String? expiryYear,

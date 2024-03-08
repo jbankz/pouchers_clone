@@ -578,4 +578,8 @@ class AppString {
   static String decline = 'Decline';
   static String deleteSchedule = 'Delete schedule';
   static String selectMonth = 'Select Month';
+  static String billingAddress = 'Billing Address';
+  static String zipCode = 'Zip Code';
+  static String city = 'City';
+  static String state = 'State';
 }

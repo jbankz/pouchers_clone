@@ -328,7 +328,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
 
     _mobileDto = MobileDto(
         isMerchantPayment: true,
-        currency: Currency.NGN,
+        currency: Currency.ngn,
         email: guest.customerEmail,
         payer: Payer(email: guest.customerEmail, name: guest.customerName),
         amount: _cableService?.price,

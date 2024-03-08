@@ -14,21 +14,21 @@ class CurrencyAdapter extends TypeAdapter<Currency> {
   Currency read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
-        return Currency.NGN;
+        return Currency.ngn;
       case 1:
-        return Currency.USD;
+        return Currency.usd;
       default:
-        return Currency.NGN;
+        return Currency.ngn;
     }
   }
 
   @override
   void write(BinaryWriter writer, Currency obj) {
     switch (obj) {
-      case Currency.NGN:
+      case Currency.ngn:
         writer.writeByte(0);
         break;
-      case Currency.USD:
+      case Currency.usd:
         writer.writeByte(1);
         break;
     }

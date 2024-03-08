@@ -143,10 +143,7 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: CardCalculatorView),
     AdaptiveRoute(page: CardCreationSymmaryView),
     AdaptiveRoute(page: FundWalletView),
-    CustomRoute(
-        page: VirtualCardDetailView,
-        opaque: false,
-        transitionsBuilder: TransitionsBuilders.fadeIn),
+    AdaptiveRoute(page: VirtualCardDetailView),
     CustomRoute(
         page: ProfileView,
         opaque: false,

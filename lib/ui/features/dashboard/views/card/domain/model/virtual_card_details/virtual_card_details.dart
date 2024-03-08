@@ -30,6 +30,7 @@ class VirtualCardDetails with _$VirtualCardDetails {
     Account? account,
     FundingSource? fundingSource,
     String? cvv2,
+    String? number,
   }) = _VirtualCardDetails;
 
   factory VirtualCardDetails.fromJson(Map<String, dynamic> json) =>
@@ -103,7 +104,7 @@ class Account with _$Account {
       {@JsonKey(name: '_id') String? id,
       String? business,
       String? type,
-      @Default(Currency.NGN) Currency currency,
+      @Default(Currency.ngn) Currency currency,
       String? accountName,
       String? bankCode,
       String? accountType,

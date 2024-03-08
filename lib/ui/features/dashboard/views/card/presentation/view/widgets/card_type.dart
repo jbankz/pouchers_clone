@@ -102,7 +102,7 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              if (widget.currency != Currency.NGN)
+                              if (widget.currency != Currency.ngn)
                                 _buildCardWidget(
                                     title: AppString.virtualNairaCard,
                                     fee: num.parse(nairaCreation?.value ?? '0')
@@ -111,9 +111,9 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
                                     color: const Color.fromRGBO(34, 123, 65, 1),
                                     callback: () =>
                                         _createCard(user, CardType.naira)),
-                              if (widget.currency != Currency.NGN)
+                              if (widget.currency != Currency.ngn)
                                 const Gap(height: 30),
-                              if (widget.currency != Currency.USD)
+                              if (widget.currency != Currency.usd)
                                 _buildCardWidget(
                                     title: AppString.virtualDollarCard,
                                     fee: num.parse(dollarCreation?.value ?? '0')

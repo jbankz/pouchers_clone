@@ -6,7 +6,7 @@ part of 'billers_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$billersNotifierHash() => r'121b61684297621feea724e44891514aeba822df';
+String _$billersNotifierHash() => r'c76d5dd658756a9759418aa35f1ede19c36e9d38';
 
 /// See also [BillersNotifier].
 @ProviderFor(BillersNotifier)
