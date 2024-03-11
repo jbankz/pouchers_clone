@@ -41,8 +41,8 @@ class _HistoryTabState extends ConsumerState<HistoryTab> {
     super.initState();
     _transactionHistoryNotifier =
         ref.read(transactionHistoryNotifierProvider.notifier);
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _refreshTransactions(isBusy: transactionHistoryDao.box.isEmpty));
+    Future.microtask(
+        () => _refreshTransactions(isBusy: transactionHistoryDao.box.isEmpty));
   }
 
   @override

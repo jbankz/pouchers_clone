@@ -264,9 +264,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
             _billers == null ||
             _cableService == null,
         onFieldSubmitted: (_) {},
-        onChanged: (value) => _debouncer.run(() {
-          if (value.length >= 13) _validateCustomer(getMerchant);
-        }),
+        onChanged: (_) => _debouncer.run(() => _validateCustomer(getMerchant)),
         validator: FieldValidator.validateMeterNumber(),
         inputFormatters: [context.digitsOnly],
         suffixIcon: CupertinoButton(

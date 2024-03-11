@@ -18,6 +18,7 @@ class UserDto {
   final String? address;
   final String? state;
   final String? postalCode;
+  final String? utilityBill;
   final Dojah? dojah;
 
   UserDto(
@@ -40,7 +41,8 @@ class UserDto {
       this.address,
       this.state,
       this.postalCode,
-      this.dojah});
+      this.dojah,
+      this.utilityBill});
 
   Map<String, dynamic> toJson() => {
         if (bvn != null) 'bvn': bvn,
@@ -62,7 +64,8 @@ class UserDto {
         if (address != null) 'address': address,
         if (state != null) 'state': state,
         if (postalCode != null) 'postal_code': postalCode,
-        if (dojah != null) 'dojah_response': dojah?.toJson()
+        if (dojah != null) 'dojah_response': dojah?.toJson(),
+        if (utilityBill != null) 'utility_bill': utilityBill
       };
 }
 

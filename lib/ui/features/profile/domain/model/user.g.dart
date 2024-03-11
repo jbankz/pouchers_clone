@@ -42,7 +42,7 @@ class UserAdapter extends TypeAdapter<User> {
       gender: fields[22] as String?,
       iscreatedpin: fields[23] as bool?,
       twoFactorTempSecret: fields[24] as String?,
-      utilityBill: fields[25] as dynamic,
+      utilityBill: fields[25] as String?,
       isPaymentBiometricActive: fields[26] as bool?,
       token: fields[27] as String?,
       refreshToken: fields[28] as String?,
@@ -168,7 +168,7 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       iscreatedpin: json['iscreatedpin'] as bool? ?? false,
       twoFactorTempSecret: json['two_factor_temp_secret'] as String?,
       is2faActive: json['is_2fa_active'] as bool?,
-      utilityBill: json['utility_bill'],
+      utilityBill: json['utility_bill'] as String?,
       isLoginBiometricActive:
           json['is_login_biometric_active'] as bool? ?? false,
       isPaymentBiometricActive:

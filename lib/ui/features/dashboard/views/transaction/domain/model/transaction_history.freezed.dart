@@ -646,6 +646,31 @@ mixin _$ExtraDetails {
   @StringToNumSerializer()
   @HiveField(7)
   num get amount => throw _privateConstructorUsedError;
+  @HiveField(8)
+  String? get customerId => throw _privateConstructorUsedError;
+  @HiveField(9)
+  String? get email => throw _privateConstructorUsedError;
+  @HiveField(10)
+  String? get token => throw _privateConstructorUsedError;
+  @HiveField(11)
+  String? get date => throw _privateConstructorUsedError;
+  @HiveField(12)
+  String? get transactionId => throw _privateConstructorUsedError;
+  @HiveField(13)
+  String? get vat => throw _privateConstructorUsedError;
+  @HiveField(14)
+  String? get customerReferenceNumber => throw _privateConstructorUsedError;
+  @HiveField(15)
+  String? get customerReceiptNumber => throw _privateConstructorUsedError;
+  @HiveField(16)
+  String? get customerFirstName => throw _privateConstructorUsedError;
+  @HiveField(17)
+  String? get customerName => throw _privateConstructorUsedError;
+  @HiveField(18)
+  String? get address => throw _privateConstructorUsedError;
+  @StringToNumSerializer()
+  @HiveField(19)
+  num get units => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -673,7 +698,19 @@ abstract class $ExtraDetailsCopyWith<$Res> {
       @HiveField(4) String? phoneNumber,
       @HiveField(5) ServiceCategory? category,
       @HiveField(6) String? subCategory,
-      @StringToNumSerializer() @HiveField(7) num amount});
+      @StringToNumSerializer() @HiveField(7) num amount,
+      @HiveField(8) String? customerId,
+      @HiveField(9) String? email,
+      @HiveField(10) String? token,
+      @HiveField(11) String? date,
+      @HiveField(12) String? transactionId,
+      @HiveField(13) String? vat,
+      @HiveField(14) String? customerReferenceNumber,
+      @HiveField(15) String? customerReceiptNumber,
+      @HiveField(16) String? customerFirstName,
+      @HiveField(17) String? customerName,
+      @HiveField(18) String? address,
+      @StringToNumSerializer() @HiveField(19) num units});
 }
 
 /// @nodoc
@@ -697,6 +734,18 @@ class _$ExtraDetailsCopyWithImpl<$Res, $Val extends ExtraDetails>
     Object? category = freezed,
     Object? subCategory = freezed,
     Object? amount = null,
+    Object? customerId = freezed,
+    Object? email = freezed,
+    Object? token = freezed,
+    Object? date = freezed,
+    Object? transactionId = freezed,
+    Object? vat = freezed,
+    Object? customerReferenceNumber = freezed,
+    Object? customerReceiptNumber = freezed,
+    Object? customerFirstName = freezed,
+    Object? customerName = freezed,
+    Object? address = freezed,
+    Object? units = null,
   }) {
     return _then(_value.copyWith(
       senderName: freezed == senderName
@@ -731,6 +780,54 @@ class _$ExtraDetailsCopyWithImpl<$Res, $Val extends ExtraDetails>
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as num,
+      customerId: freezed == customerId
+          ? _value.customerId
+          : customerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      token: freezed == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as String?,
+      date: freezed == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String?,
+      transactionId: freezed == transactionId
+          ? _value.transactionId
+          : transactionId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      vat: freezed == vat
+          ? _value.vat
+          : vat // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customerReferenceNumber: freezed == customerReferenceNumber
+          ? _value.customerReferenceNumber
+          : customerReferenceNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customerReceiptNumber: freezed == customerReceiptNumber
+          ? _value.customerReceiptNumber
+          : customerReceiptNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customerFirstName: freezed == customerFirstName
+          ? _value.customerFirstName
+          : customerFirstName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customerName: freezed == customerName
+          ? _value.customerName
+          : customerName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      address: freezed == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String?,
+      units: null == units
+          ? _value.units
+          : units // ignore: cast_nullable_to_non_nullable
+              as num,
     ) as $Val);
   }
 }
@@ -757,7 +854,19 @@ abstract class _$$ExtraDetailsImplCopyWith<$Res>
       @HiveField(4) String? phoneNumber,
       @HiveField(5) ServiceCategory? category,
       @HiveField(6) String? subCategory,
-      @StringToNumSerializer() @HiveField(7) num amount});
+      @StringToNumSerializer() @HiveField(7) num amount,
+      @HiveField(8) String? customerId,
+      @HiveField(9) String? email,
+      @HiveField(10) String? token,
+      @HiveField(11) String? date,
+      @HiveField(12) String? transactionId,
+      @HiveField(13) String? vat,
+      @HiveField(14) String? customerReferenceNumber,
+      @HiveField(15) String? customerReceiptNumber,
+      @HiveField(16) String? customerFirstName,
+      @HiveField(17) String? customerName,
+      @HiveField(18) String? address,
+      @StringToNumSerializer() @HiveField(19) num units});
 }
 
 /// @nodoc
@@ -779,6 +888,18 @@ class __$$ExtraDetailsImplCopyWithImpl<$Res>
     Object? category = freezed,
     Object? subCategory = freezed,
     Object? amount = null,
+    Object? customerId = freezed,
+    Object? email = freezed,
+    Object? token = freezed,
+    Object? date = freezed,
+    Object? transactionId = freezed,
+    Object? vat = freezed,
+    Object? customerReferenceNumber = freezed,
+    Object? customerReceiptNumber = freezed,
+    Object? customerFirstName = freezed,
+    Object? customerName = freezed,
+    Object? address = freezed,
+    Object? units = null,
   }) {
     return _then(_$ExtraDetailsImpl(
       senderName: freezed == senderName
@@ -813,6 +934,54 @@ class __$$ExtraDetailsImplCopyWithImpl<$Res>
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as num,
+      customerId: freezed == customerId
+          ? _value.customerId
+          : customerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      token: freezed == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as String?,
+      date: freezed == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String?,
+      transactionId: freezed == transactionId
+          ? _value.transactionId
+          : transactionId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      vat: freezed == vat
+          ? _value.vat
+          : vat // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customerReferenceNumber: freezed == customerReferenceNumber
+          ? _value.customerReferenceNumber
+          : customerReferenceNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customerReceiptNumber: freezed == customerReceiptNumber
+          ? _value.customerReceiptNumber
+          : customerReceiptNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customerFirstName: freezed == customerFirstName
+          ? _value.customerFirstName
+          : customerFirstName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customerName: freezed == customerName
+          ? _value.customerName
+          : customerName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      address: freezed == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String?,
+      units: null == units
+          ? _value.units
+          : units // ignore: cast_nullable_to_non_nullable
+              as num,
     ));
   }
 }
@@ -834,7 +1003,19 @@ class _$ExtraDetailsImpl implements _ExtraDetails {
       @HiveField(4) this.phoneNumber,
       @HiveField(5) this.category,
       @HiveField(6) this.subCategory,
-      @StringToNumSerializer() @HiveField(7) this.amount = 0});
+      @StringToNumSerializer() @HiveField(7) this.amount = 0,
+      @HiveField(8) this.customerId,
+      @HiveField(9) this.email,
+      @HiveField(10) this.token,
+      @HiveField(11) this.date,
+      @HiveField(12) this.transactionId,
+      @HiveField(13) this.vat,
+      @HiveField(14) this.customerReferenceNumber,
+      @HiveField(15) this.customerReceiptNumber,
+      @HiveField(16) this.customerFirstName,
+      @HiveField(17) this.customerName,
+      @HiveField(18) this.address,
+      @StringToNumSerializer() @HiveField(19) this.units = 0});
 
   factory _$ExtraDetailsImpl.fromJson(Map<String, dynamic> json) =>
       _$$ExtraDetailsImplFromJson(json);
@@ -871,10 +1052,48 @@ class _$ExtraDetailsImpl implements _ExtraDetails {
   @StringToNumSerializer()
   @HiveField(7)
   final num amount;
+  @override
+  @HiveField(8)
+  final String? customerId;
+  @override
+  @HiveField(9)
+  final String? email;
+  @override
+  @HiveField(10)
+  final String? token;
+  @override
+  @HiveField(11)
+  final String? date;
+  @override
+  @HiveField(12)
+  final String? transactionId;
+  @override
+  @HiveField(13)
+  final String? vat;
+  @override
+  @HiveField(14)
+  final String? customerReferenceNumber;
+  @override
+  @HiveField(15)
+  final String? customerReceiptNumber;
+  @override
+  @HiveField(16)
+  final String? customerFirstName;
+  @override
+  @HiveField(17)
+  final String? customerName;
+  @override
+  @HiveField(18)
+  final String? address;
+  @override
+  @JsonKey()
+  @StringToNumSerializer()
+  @HiveField(19)
+  final num units;
 
   @override
   String toString() {
-    return 'ExtraDetails(senderName: $senderName, senderTag: $senderTag, receiverTag: $receiverTag, receiverPicture: $receiverPicture, phoneNumber: $phoneNumber, category: $category, subCategory: $subCategory, amount: $amount)';
+    return 'ExtraDetails(senderName: $senderName, senderTag: $senderTag, receiverTag: $receiverTag, receiverPicture: $receiverPicture, phoneNumber: $phoneNumber, category: $category, subCategory: $subCategory, amount: $amount, customerId: $customerId, email: $email, token: $token, date: $date, transactionId: $transactionId, vat: $vat, customerReferenceNumber: $customerReferenceNumber, customerReceiptNumber: $customerReceiptNumber, customerFirstName: $customerFirstName, customerName: $customerName, address: $address, units: $units)';
   }
 
   @override
@@ -896,13 +1115,53 @@ class _$ExtraDetailsImpl implements _ExtraDetails {
                 other.category == category) &&
             (identical(other.subCategory, subCategory) ||
                 other.subCategory == subCategory) &&
-            (identical(other.amount, amount) || other.amount == amount));
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.customerId, customerId) ||
+                other.customerId == customerId) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.token, token) || other.token == token) &&
+            (identical(other.date, date) || other.date == date) &&
+            (identical(other.transactionId, transactionId) ||
+                other.transactionId == transactionId) &&
+            (identical(other.vat, vat) || other.vat == vat) &&
+            (identical(
+                    other.customerReferenceNumber, customerReferenceNumber) ||
+                other.customerReferenceNumber == customerReferenceNumber) &&
+            (identical(other.customerReceiptNumber, customerReceiptNumber) ||
+                other.customerReceiptNumber == customerReceiptNumber) &&
+            (identical(other.customerFirstName, customerFirstName) ||
+                other.customerFirstName == customerFirstName) &&
+            (identical(other.customerName, customerName) ||
+                other.customerName == customerName) &&
+            (identical(other.address, address) || other.address == address) &&
+            (identical(other.units, units) || other.units == units));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, senderName, senderTag,
-      receiverTag, receiverPicture, phoneNumber, category, subCategory, amount);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        senderName,
+        senderTag,
+        receiverTag,
+        receiverPicture,
+        phoneNumber,
+        category,
+        subCategory,
+        amount,
+        customerId,
+        email,
+        token,
+        date,
+        transactionId,
+        vat,
+        customerReferenceNumber,
+        customerReceiptNumber,
+        customerFirstName,
+        customerName,
+        address,
+        units
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -935,7 +1194,19 @@ abstract class _ExtraDetails implements ExtraDetails {
           @HiveField(4) final String? phoneNumber,
           @HiveField(5) final ServiceCategory? category,
           @HiveField(6) final String? subCategory,
-          @StringToNumSerializer() @HiveField(7) final num amount}) =
+          @StringToNumSerializer() @HiveField(7) final num amount,
+          @HiveField(8) final String? customerId,
+          @HiveField(9) final String? email,
+          @HiveField(10) final String? token,
+          @HiveField(11) final String? date,
+          @HiveField(12) final String? transactionId,
+          @HiveField(13) final String? vat,
+          @HiveField(14) final String? customerReferenceNumber,
+          @HiveField(15) final String? customerReceiptNumber,
+          @HiveField(16) final String? customerFirstName,
+          @HiveField(17) final String? customerName,
+          @HiveField(18) final String? address,
+          @StringToNumSerializer() @HiveField(19) final num units}) =
       _$ExtraDetailsImpl;
 
   factory _ExtraDetails.fromJson(Map<String, dynamic> json) =
@@ -972,6 +1243,43 @@ abstract class _ExtraDetails implements ExtraDetails {
   @StringToNumSerializer()
   @HiveField(7)
   num get amount;
+  @override
+  @HiveField(8)
+  String? get customerId;
+  @override
+  @HiveField(9)
+  String? get email;
+  @override
+  @HiveField(10)
+  String? get token;
+  @override
+  @HiveField(11)
+  String? get date;
+  @override
+  @HiveField(12)
+  String? get transactionId;
+  @override
+  @HiveField(13)
+  String? get vat;
+  @override
+  @HiveField(14)
+  String? get customerReferenceNumber;
+  @override
+  @HiveField(15)
+  String? get customerReceiptNumber;
+  @override
+  @HiveField(16)
+  String? get customerFirstName;
+  @override
+  @HiveField(17)
+  String? get customerName;
+  @override
+  @HiveField(18)
+  String? get address;
+  @override
+  @StringToNumSerializer()
+  @HiveField(19)
+  num get units;
   @override
   @JsonKey(ignore: true)
   _$$ExtraDetailsImplCopyWith<_$ExtraDetailsImpl> get copyWith =>

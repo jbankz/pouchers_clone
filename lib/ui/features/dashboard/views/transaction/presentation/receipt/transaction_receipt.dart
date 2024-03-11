@@ -113,7 +113,7 @@ Future<pw.Widget> generateTransactionReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.cable => _buildOperatorReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
-      ServiceCategory.electricity => _buildOperatorReceipt(
+      ServiceCategory.electricity => _buildElectricityReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.betting => _buildOperatorReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
@@ -159,6 +159,65 @@ Future<pw.Widget> generateTransactionReceipt(
     pw.SizedBox(height: 14),
   ]);
 }
+
+pw.Column _buildElectricityReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTile(
+            title: AppString.status,
+            value: transactionHistory?.status?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.operator,
+            value: transactionHistory?.extraDetails?.subCategory ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            font: robotFont,
+            title: AppString.token,
+            value: transactionHistory?.extraDetails?.token ?? ''),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            font: robotFont,
+            title: AppString.vat,
+            value: transactionHistory?.extraDetails?.vat ?? ''),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            font: robotFont,
+            title: AppString.transactionID,
+            value: transactionHistory?.extraDetails?.transactionId ?? ''),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            font: robotFont,
+            title: AppString.customerRefNumber,
+            value: transactionHistory?.extraDetails?.customerReferenceNumber ??
+                ''),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            font: robotFont,
+            title: AppString.customerReceiptNumber,
+            value:
+                transactionHistory?.extraDetails?.customerReceiptNumber ?? ''),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            font: robotFont,
+            title: AppString.customerName,
+            value: transactionHistory?.extraDetails?.customerName ?? ''),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            font: robotFont,
+            title: AppString.address,
+            value: transactionHistory?.extraDetails?.address ?? ''),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            font: robotFont,
+            title: AppString.units,
+            value: transactionHistory?.extraDetails?.units.toString() ?? ''),
+      ],
+    );
 
 pw.Column _buildOperatorReceipt(
         {TransactionHistory? transactionHistory, Font? robotFont}) =>

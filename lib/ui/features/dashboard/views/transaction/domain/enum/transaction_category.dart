@@ -13,5 +13,3 @@ enum TransactionCategory {
 
   final String value;
 }
-
-// transfer, airtime, data, cable, electricity, internet, voucher, betting, education, admin-credit-wallet, admin-debit-wallet

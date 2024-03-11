@@ -70,10 +70,22 @@ class ExtraDetails with _$ExtraDetails {
       @HiveField(4) String? phoneNumber,
       @HiveField(5) ServiceCategory? category,
       @HiveField(6) String? subCategory,
+      @StringToNumSerializer() @Default(0) @HiveField(7) num amount,
+      @HiveField(8) String? customerId,
+      @HiveField(9) String? email,
+      @HiveField(10) String? token,
+      @HiveField(11) String? date,
+      @HiveField(12) String? transactionId,
+      @HiveField(13) String? vat,
+      @HiveField(14) String? customerReferenceNumber,
+      @HiveField(15) String? customerReceiptNumber,
+      @HiveField(16) String? customerFirstName,
+      @HiveField(17) String? customerName,
+      @HiveField(18) String? address,
       @StringToNumSerializer()
       @Default(0)
-      @HiveField(7)
-      num amount}) = _ExtraDetails;
+      @HiveField(19)
+      num units}) = _ExtraDetails;
 
   factory ExtraDetails.fromJson(Map<String, dynamic> json) =>
       _$ExtraDetailsFromJson(json);
