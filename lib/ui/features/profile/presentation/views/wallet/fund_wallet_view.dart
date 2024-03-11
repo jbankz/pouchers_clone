@@ -185,7 +185,30 @@ class _FundWalletViewState extends ConsumerState<FundWalletView> {
                         ],
                       ),
                     ),
-                    const Gap(height: 16),
+                    const Gap(height: 40),
+                    RichText(
+                        textAlign: TextAlign.left,
+                        text: TextSpan(
+                            text: 'Note: We charge a',
+                            style: context.titleLarge?.copyWith(
+                                color: AppColors.kIconGrey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400),
+                            children: [
+                              TextSpan(
+                                  text: ' 2% Fee ',
+                                  style: context.titleLarge?.copyWith(
+                                      color: AppColors.kPrimaryTextColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700)),
+                              TextSpan(
+                                  text: 'when you fund your wallet.',
+                                  style: context.titleLarge?.copyWith(
+                                      color: AppColors.kIconGrey,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400)),
+                            ])),
+                    const Gap(height: 33),
                     ElevatedButtonWidget(
                         title: AppString.completedFunding,
                         loading: ref.watch(walletNotifierProvider).isBusy,
