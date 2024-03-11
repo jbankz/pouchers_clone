@@ -1,12 +1,10 @@
 import 'dart:io';
 
-import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/app/core/state/app_state.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/features/upload/domain/dto/upload_dto.dart';
 import 'package:Pouchers/ui/features/upload/presentation/notifier/upload_notifier.dart';
-import 'package:Pouchers/ui/notification/notification_tray.dart';
 import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/utils/extension.dart';
@@ -131,15 +129,10 @@ class _UtilityBillViewState extends ConsumerState<UtilityBillView> {
     );
   }
 
-  Future<void> _submit(AppState uploadState) async {
-    final response = await _uploadNotifier.uploadFile(
-        UploadDto(
-            file: (uploadState.data as File?),
-            utilityBill: (uploadState.data as File?)?.fileName),
-        _cancelToken);
-    if (response) {
-      triggerNotificationTray(AppString.utilityUploadMessage);
-      PageRouter.pop();
-    }
-  }
+  Future<void> _submit(AppState uploadState) async =>
+      await _uploadNotifier.uploadFile(
+          UploadDto(
+              file: (uploadState.data as File?),
+              utilityBill: (uploadState.data as File?)?.fileName),
+          _cancelToken);
 }

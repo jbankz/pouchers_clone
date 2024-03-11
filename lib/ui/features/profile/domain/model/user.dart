@@ -55,7 +55,7 @@ class User with _$User {
     @HiveField(24)
     String? twoFactorTempSecret,
     @JsonKey(name: 'is_2fa_active') bool? is2faActive,
-    @HiveField(25) @JsonKey(name: 'utility_bill') dynamic utilityBill,
+    @HiveField(25) @JsonKey(name: 'utility_bill') String? utilityBill,
     @JsonKey(name: 'is_login_biometric_active', defaultValue: false)
     bool? isLoginBiometricActive,
     @HiveField(26)

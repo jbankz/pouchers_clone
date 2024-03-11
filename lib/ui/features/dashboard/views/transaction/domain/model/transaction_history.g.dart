@@ -98,13 +98,25 @@ class ExtraDetailsAdapter extends TypeAdapter<ExtraDetails> {
       category: fields[5] as ServiceCategory?,
       subCategory: fields[6] as String?,
       amount: fields[7] as num,
+      customerId: fields[8] as String?,
+      email: fields[9] as String?,
+      token: fields[10] as String?,
+      date: fields[11] as String?,
+      transactionId: fields[12] as String?,
+      vat: fields[13] as String?,
+      customerReferenceNumber: fields[14] as String?,
+      customerReceiptNumber: fields[15] as String?,
+      customerFirstName: fields[16] as String?,
+      customerName: fields[17] as String?,
+      address: fields[18] as String?,
+      units: fields[19] as num,
     );
   }
 
   @override
   void write(BinaryWriter writer, ExtraDetails obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(20)
       ..writeByte(0)
       ..write(obj.senderName)
       ..writeByte(1)
@@ -120,7 +132,31 @@ class ExtraDetailsAdapter extends TypeAdapter<ExtraDetails> {
       ..writeByte(6)
       ..write(obj.subCategory)
       ..writeByte(7)
-      ..write(obj.amount);
+      ..write(obj.amount)
+      ..writeByte(8)
+      ..write(obj.customerId)
+      ..writeByte(9)
+      ..write(obj.email)
+      ..writeByte(10)
+      ..write(obj.token)
+      ..writeByte(11)
+      ..write(obj.date)
+      ..writeByte(12)
+      ..write(obj.transactionId)
+      ..writeByte(13)
+      ..write(obj.vat)
+      ..writeByte(14)
+      ..write(obj.customerReferenceNumber)
+      ..writeByte(15)
+      ..write(obj.customerReceiptNumber)
+      ..writeByte(16)
+      ..write(obj.customerFirstName)
+      ..writeByte(17)
+      ..write(obj.customerName)
+      ..writeByte(18)
+      ..write(obj.address)
+      ..writeByte(19)
+      ..write(obj.units);
   }
 
   @override
@@ -250,6 +286,20 @@ _$ExtraDetailsImpl _$$ExtraDetailsImplFromJson(Map<String, dynamic> json) =>
       amount: json['amount'] == null
           ? 0
           : const StringToNumSerializer().fromJson(json['amount']),
+      customerId: json['customerId'] as String?,
+      email: json['email'] as String?,
+      token: json['token'] as String?,
+      date: json['date'] as String?,
+      transactionId: json['transactionId'] as String?,
+      vat: json['vat'] as String?,
+      customerReferenceNumber: json['customerReferenceNumber'] as String?,
+      customerReceiptNumber: json['customerReceiptNumber'] as String?,
+      customerFirstName: json['customerFirstName'] as String?,
+      customerName: json['customerName'] as String?,
+      address: json['address'] as String?,
+      units: json['units'] == null
+          ? 0
+          : const StringToNumSerializer().fromJson(json['units']),
     );
 
 Map<String, dynamic> _$$ExtraDetailsImplToJson(_$ExtraDetailsImpl instance) =>
@@ -264,4 +314,16 @@ Map<String, dynamic> _$$ExtraDetailsImplToJson(_$ExtraDetailsImpl instance) =>
       'category': _$ServiceCategoryEnumMap[instance.category],
       'subCategory': instance.subCategory,
       'amount': const StringToNumSerializer().toJson(instance.amount),
+      'customerId': instance.customerId,
+      'email': instance.email,
+      'token': instance.token,
+      'date': instance.date,
+      'transactionId': instance.transactionId,
+      'vat': instance.vat,
+      'customerReferenceNumber': instance.customerReferenceNumber,
+      'customerReceiptNumber': instance.customerReceiptNumber,
+      'customerFirstName': instance.customerFirstName,
+      'customerName': instance.customerName,
+      'address': instance.address,
+      'units': const StringToNumSerializer().toJson(instance.units),
     };

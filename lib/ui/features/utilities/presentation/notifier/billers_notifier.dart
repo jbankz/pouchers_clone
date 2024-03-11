@@ -262,7 +262,7 @@ class BillersNotifier extends _$BillersNotifier {
           args: SuccessStateArguments(
               statusImage: SvgPicture.asset(AppImage.pending,
                   height: 104.h, width: 104.w),
-              title: AppString.pendingOne,
+              title: AppString.pending,
               message: AppString.pendingTransfer,
               btnTitle: AppString.proceed,
               tap: () => PageRouter.popToRoot(Routes.guestView)));

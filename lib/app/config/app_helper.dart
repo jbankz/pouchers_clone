@@ -15,6 +15,8 @@ class AppHelper {
 
   static Future<void> copy(String value) async {
     try {
+      await HapticFeedback.selectionClick();
+
       Clipboard.setData(ClipboardData(text: value));
       triggerNotificationTray('Copied');
     } catch (e) {
@@ -36,12 +38,16 @@ class AppHelper {
   }
 
   static Future<void> share(String link, {String? subject}) async {
+    await HapticFeedback.selectionClick();
+
     await Share.share(link, subject: subject);
   }
 
   static Future<void> triggerUrl(String url,
       {LaunchMode mode = LaunchMode.platformDefault}) async {
     try {
+      await HapticFeedback.selectionClick();
+
       if (await canLaunchUrl(Uri.parse(url))) {
         await launchUrl(Uri.parse(url), mode: mode);
       }
@@ -58,6 +64,8 @@ class AppHelper {
   static Future<void> shareReceipt(
       {Uint8List? uint8list, pw.Widget? widget}) async {
     try {
+      await HapticFeedback.selectionClick();
+
       final String path = uint8list != null ? '.png' : '.pdf';
       await Printing.sharePdf(
         bytes: uint8list ??

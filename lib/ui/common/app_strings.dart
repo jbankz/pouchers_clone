@@ -244,8 +244,8 @@ class AppString {
   static String completed = 'Completed';
   static String bvnCompleted = 'BVN verification successful';
   static String idCompleted = 'ID validation successful';
-  static String pending = ' Not Verified';
-  static String pendingOne = 'Pending';
+  static String pending = 'Pending';
+  static String unverified = 'Not Verified';
   static String verified = 'Verified';
   static String failed = 'Failed';
   static String uploadId = 'Upload ID';
@@ -270,7 +270,7 @@ class AppString {
   static String total = 'Total';
   static String youWillDebited = "You will be debited ";
   static String youWillDebited2 =
-      " from your wallet to complete this transactiton. Would you like to continue?";
+      " from your wallet to complete this transaction. Would you like to continue?";
   static String fromWallet =
       " from your wallet to fund the card. Would you like to continue?";
   static String insufficientFund =
@@ -582,4 +582,12 @@ class AppString {
   static String zipCode = 'Zip Code';
   static String city = 'City';
   static String state = 'State';
+  static String token = 'Token';
+  static String vat = 'VAT';
+  static String transactionID = 'Transaction ID';
+  static String customerRefNumber = 'Customer Reference Number';
+  static String customerReceiptNumber = 'Customer Receipt Number';
+  static String customerName = 'Customer Name';
+  static String address = 'Address';
+  static String units = 'Units';
 }

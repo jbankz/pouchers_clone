@@ -94,7 +94,7 @@ mixin _$User {
   bool? get is2faActive => throw _privateConstructorUsedError;
   @HiveField(25)
   @JsonKey(name: 'utility_bill')
-  dynamic get utilityBill => throw _privateConstructorUsedError;
+  String? get utilityBill => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_login_biometric_active', defaultValue: false)
   bool? get isLoginBiometricActive => throw _privateConstructorUsedError;
   @HiveField(26)
@@ -166,7 +166,7 @@ abstract class $UserCopyWith<$Res> {
       @HiveField(24)
       String? twoFactorTempSecret,
       @JsonKey(name: 'is_2fa_active') bool? is2faActive,
-      @HiveField(25) @JsonKey(name: 'utility_bill') dynamic utilityBill,
+      @HiveField(25) @JsonKey(name: 'utility_bill') String? utilityBill,
       @JsonKey(name: 'is_login_biometric_active', defaultValue: false)
       bool? isLoginBiometricActive,
       @HiveField(26)
@@ -340,7 +340,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
       utilityBill: freezed == utilityBill
           ? _value.utilityBill
           : utilityBill // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as String?,
       isLoginBiometricActive: freezed == isLoginBiometricActive
           ? _value.isLoginBiometricActive
           : isLoginBiometricActive // ignore: cast_nullable_to_non_nullable
@@ -424,7 +424,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       @HiveField(24)
       String? twoFactorTempSecret,
       @JsonKey(name: 'is_2fa_active') bool? is2faActive,
-      @HiveField(25) @JsonKey(name: 'utility_bill') dynamic utilityBill,
+      @HiveField(25) @JsonKey(name: 'utility_bill') String? utilityBill,
       @JsonKey(name: 'is_login_biometric_active', defaultValue: false)
       bool? isLoginBiometricActive,
       @HiveField(26)
@@ -595,7 +595,7 @@ class __$$UserImplCopyWithImpl<$Res>
       utilityBill: freezed == utilityBill
           ? _value.utilityBill
           : utilityBill // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as String?,
       isLoginBiometricActive: freezed == isLoginBiometricActive
           ? _value.isLoginBiometricActive
           : isLoginBiometricActive // ignore: cast_nullable_to_non_nullable
@@ -790,7 +790,7 @@ class _$UserImpl implements _User {
   @override
   @HiveField(25)
   @JsonKey(name: 'utility_bill')
-  final dynamic utilityBill;
+  final String? utilityBill;
   @override
   @JsonKey(name: 'is_login_biometric_active', defaultValue: false)
   final bool? isLoginBiometricActive;
@@ -836,14 +836,14 @@ class _$UserImpl implements _User {
                 other.lastName == lastName) &&
             (identical(other.verificationToken, verificationToken) ||
                 other.verificationToken == verificationToken) &&
-            (identical(
-                    other.verificationTokenExpires, verificationTokenExpires) ||
+            (identical(other.verificationTokenExpires, verificationTokenExpires) ||
                 other.verificationTokenExpires == verificationTokenExpires) &&
             (identical(other.tierLevels, tierLevels) ||
                 other.tierLevels == tierLevels) &&
             (identical(other.passwordResetToken, passwordResetToken) ||
                 other.passwordResetToken == passwordResetToken) &&
-            (identical(other.passwordResetTokenExpires, passwordResetTokenExpires) ||
+            (identical(other.passwordResetTokenExpires,
+                    passwordResetTokenExpires) ||
                 other.passwordResetTokenExpires == passwordResetTokenExpires) &&
             (identical(other.pinResetToken, pinResetToken) ||
                 other.pinResetToken == pinResetToken) &&
@@ -871,8 +871,8 @@ class _$UserImpl implements _User {
                 other.twoFactorTempSecret == twoFactorTempSecret) &&
             (identical(other.is2faActive, is2faActive) ||
                 other.is2faActive == is2faActive) &&
-            const DeepCollectionEquality()
-                .equals(other.utilityBill, utilityBill) &&
+            (identical(other.utilityBill, utilityBill) ||
+                other.utilityBill == utilityBill) &&
             (identical(other.isLoginBiometricActive, isLoginBiometricActive) ||
                 other.isLoginBiometricActive == isLoginBiometricActive) &&
             (identical(
@@ -919,7 +919,7 @@ class _$UserImpl implements _User {
         iscreatedpin,
         twoFactorTempSecret,
         is2faActive,
-        const DeepCollectionEquality().hash(utilityBill),
+        utilityBill,
         isLoginBiometricActive,
         isPaymentBiometricActive,
         token,
@@ -992,7 +992,7 @@ abstract class _User implements User {
       @HiveField(24)
       final String? twoFactorTempSecret,
       @JsonKey(name: 'is_2fa_active') final bool? is2faActive,
-      @HiveField(25) @JsonKey(name: 'utility_bill') final dynamic utilityBill,
+      @HiveField(25) @JsonKey(name: 'utility_bill') final String? utilityBill,
       @JsonKey(name: 'is_login_biometric_active', defaultValue: false)
       final bool? isLoginBiometricActive,
       @HiveField(26)
@@ -1110,7 +1110,7 @@ abstract class _User implements User {
   @override
   @HiveField(25)
   @JsonKey(name: 'utility_bill')
-  dynamic get utilityBill;
+  String? get utilityBill;
   @override
   @JsonKey(name: 'is_login_biometric_active', defaultValue: false)
   bool? get isLoginBiometricActive;

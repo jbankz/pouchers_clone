@@ -46,6 +46,17 @@ class _AccountVerificationViewState
       valueListenable: userDao.getListenable(),
       builder: (_, box, __) {
         final user = userDao.returnUser(box);
+
+        KycStatus utilstats = KycStatus.unverified;
+
+        if (user.utilityBill != null && user.tierLevels == 2) {
+          utilstats = KycStatus.pending;
+        }
+
+        if (user.utilityBill != null && user.tierLevels > 2) {
+          utilstats = KycStatus.verified;
+        }
+
         return Scaffold(
           backgroundColor: AppColors.kPurpleColor800,
           appBar: AppBar(
@@ -68,7 +79,7 @@ class _AccountVerificationViewState
                         desc: AppString.bvnVerify,
                         kycStatus: (user.tierLevels > 1)
                             ? KycStatus.verified
-                            : KycStatus.pending,
+                            : KycStatus.unverified,
                         onTap: () => PageRouter.pushNamed(Routes.bvnView,
                             args: const BvnViewArguments(
                                 routeName: Routes.accountVerificationView))),
@@ -76,17 +87,15 @@ class _AccountVerificationViewState
                     BuildVerificationTypes(
                         title: AppString.validId,
                         desc: AppString.validIdVerify,
-                        kycStatus: (user.tierLevels > 2)
+                        kycStatus: user.isUploadedIdentityCard
                             ? KycStatus.verified
-                            : KycStatus.pending,
+                            : KycStatus.unverified,
                         onTap: () => PageRouter.pushNamed(Routes.idView)),
                     const Gap(height: 15),
                     BuildVerificationTypes(
                         title: AppString.utilityBill,
                         desc: AppString.utilityBillVerify,
-                        kycStatus: (user.tierLevels > 3)
-                            ? KycStatus.verified
-                            : KycStatus.pending,
+                        kycStatus: utilstats,
                         onTap: () =>
                             PageRouter.pushNamed(Routes.utilityBillView)),
                   ],

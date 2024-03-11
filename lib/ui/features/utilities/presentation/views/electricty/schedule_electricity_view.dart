@@ -269,9 +269,7 @@ class _ScheduleElectricityViewState
             _billers == null ||
             _cableService == null,
         onFieldSubmitted: (_) {},
-        onChanged: (value) => _debouncer.run(() {
-          if (value.length >= 11) _validateCustomer();
-        }),
+        onChanged: (value) => _debouncer.run(() => _validateCustomer()),
         validator: FieldValidator.validateMeterNumber(),
         inputFormatters: [context.digitsOnly, context.limit()],
         suffixIcon: CupertinoButton(
