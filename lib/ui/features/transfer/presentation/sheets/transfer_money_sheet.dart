@@ -159,6 +159,9 @@ class _TransferMoneySheetState extends ConsumerState<TransferMoneySheet>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Text(AppString.howMuchToTransfer,
+                    style: context.titleTextStyle
+                        ?.copyWith(fontSize: 15, fontWeight: FontWeight.w700)),
                 TextFormField(
                   textAlign: TextAlign.center,
                   controller: _moneyMaskedTextController,

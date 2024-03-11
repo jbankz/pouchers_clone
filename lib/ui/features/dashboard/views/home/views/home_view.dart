@@ -38,7 +38,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _initializeNotifiers());
+    Future.microtask(() => _initializeNotifiers());
   }
 
   @override

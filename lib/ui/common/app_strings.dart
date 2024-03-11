@@ -590,4 +590,5 @@ class AppString {
   static String customerName = 'Customer Name';
   static String address = 'Address';
   static String units = 'Units';
+  static String howMuchToTransfer = 'How much do you want to transfer?';
 }
