@@ -8,13 +8,14 @@ part 'guest_services_purchase.g.dart';
 @freezed
 class GuestServicesPurchase with _$GuestServicesPurchase {
   factory GuestServicesPurchase(
-      {String? referenceNumber,
-      @StringToNumSerializer() num? statusCode,
-      String? statusMessage,
-      num? requestAmount,
-      num? totalPaymentAmount,
-      @Default(Currency.NGN) Currency currency,
-      @Default([]) List<PaymentMethod> paymentMethods}) = _GuestServicesPurchase;
+          {String? referenceNumber,
+          @StringToNumSerializer() num? statusCode,
+          String? statusMessage,
+          num? requestAmount,
+          num? totalPaymentAmount,
+          @Default(Currency.ngn) Currency currency,
+          @Default([]) List<PaymentMethod> paymentMethods}) =
+      _GuestServicesPurchase;
 
   factory GuestServicesPurchase.fromJson(Map<String, dynamic> json) =>
       _$GuestServicesPurchaseFromJson(json);

@@ -14,6 +14,7 @@ import '../../../../../../../app/app.router.dart';
 import '../../../../../../../app/core/router/page_router.dart';
 import '../../../../../../widgets/dialog/bottom_sheet.dart';
 import '../../../../../admin/domain/model/envs/envs.dart';
+import '../../../../../profile/data/dao/user_dao.dart';
 import '../../domain/model/cards/cards.dart';
 import '../../domain/model/get_card_transactions/datum.dart';
 import '../../domain/model/get_exchange_rate/get_exchange_rate.dart';
@@ -46,12 +47,14 @@ class CardNotifier extends _$CardNotifier {
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
 
+      await getCards(CardDto(userId: userDao.user.userId), cancelToken);
+
       PageRouter.pushNamed(Routes.successState,
           args: SuccessStateArguments(
               title: AppString.completed,
               message: AppString.cardCreated,
               btnTitle: AppString.proceed,
-              tap: () => PageRouter.pop()));
+              tap: () => PageRouter.popToRoot(Routes.dashboardView)));
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(), error: true);
@@ -68,12 +71,14 @@ class CardNotifier extends _$CardNotifier {
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
 
+      await getCards(CardDto(userId: userDao.user.userId), cancelToken);
+
       PageRouter.pushNamed(Routes.successState,
           args: SuccessStateArguments(
               title: AppString.completed,
               message: AppString.cardCreated,
               btnTitle: AppString.proceed,
-              tap: () => PageRouter.pop()));
+              tap: () => PageRouter.popToRoot(Routes.dashboardView)));
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(), error: true);
@@ -91,8 +96,9 @@ class CardNotifier extends _$CardNotifier {
           .future);
     } catch (e) {
       _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(isBusy: false, virtualCardDetails: _cardDetails);
     }
-    state = state.copyWith(isBusy: false, virtualCardDetails: _cardDetails);
   }
 
   Future<void> getAccountBalance(CardDto parameter,
@@ -156,7 +162,7 @@ class CardNotifier extends _$CardNotifier {
   Future<void> getCardTransactions(CardDto parameter,
       [CancelToken? cancelToken]) async {
     try {
-      state = state.copyWith(isBusy: true);
+      state = state.copyWith(isGettingCardTransactions: true);
 
       final getCardTransactions = await ref.read(getCardTransactionsProvider
           .call(parameter: parameter, cancelToken: cancelToken)
@@ -165,7 +171,8 @@ class CardNotifier extends _$CardNotifier {
     } catch (e) {
       _logger.e(e.toString());
     }
-    state = state.copyWith(isBusy: false, transactions: _transactions);
+    state = state.copyWith(
+        isGettingCardTransactions: false, transactions: _transactions);
   }
 
   Future<void> getCards(CardDto cardDto, [CancelToken? cancelToken]) async {

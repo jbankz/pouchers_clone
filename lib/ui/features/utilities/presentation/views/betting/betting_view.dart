@@ -322,8 +322,6 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
     final bool isAppliedDiscount = (discounts != null &&
         amountController.text.replaceComma >= discounts.threshold);
 
-    final amount = discounts?.payment(amountController.text.replaceComma) ?? 0;
-
     final mobileDto = MobileDto(
         isMerchantPayment: true,
         category: ServiceCategory.betting,
@@ -387,7 +385,7 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
         merchantReferenceNumber: merchantState.getMerchant?.referenceNumber,
         subCategory: _billers?.displayName,
         amount: amountController.text.replaceComma,
-        currency: Currency.NGN,
+        currency: Currency.ngn,
         email: guest.customerEmail,
         payer: Payer(email: guest.customerEmail, name: guest.customerName));
 

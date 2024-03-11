@@ -32,8 +32,8 @@ Map<String, dynamic> _$$GuestServicesPurchaseStatusImplToJson(
     };
 
 const _$CurrencyEnumMap = {
-  Currency.NGN: 'NGN',
-  Currency.USD: 'USD',
+  Currency.ngn: 'NGN',
+  Currency.usd: 'USD',
 };
 
 Json? _$JsonConverterToJson<Json, Value>(

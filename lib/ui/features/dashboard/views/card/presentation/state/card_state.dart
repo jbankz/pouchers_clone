@@ -11,6 +11,7 @@ part 'card_state.freezed.dart';
 class CardState<T> with _$CardState<T> {
   const factory CardState(
       {@Default(false) bool isBusy,
+      @Default(false) bool isGettingCardTransactions,
       GetExchangeRate? exchangeRate,
       VirtualCardDetails? virtualCardDetails,
       VirtualAccountBalance? virtualAccountBalance,

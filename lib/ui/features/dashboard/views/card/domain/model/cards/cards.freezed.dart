@@ -267,7 +267,7 @@ class _$CardsImpl implements _Cards {
       @HiveField(3) @JsonKey(name: 'account_number') this.accountNumber,
       @HiveField(4) @JsonKey(name: 'account_name') this.accountName,
       @HiveField(5) this.brand = CardBrand.verve,
-      @HiveField(6) this.currency = Currency.NGN,
+      @HiveField(6) this.currency = Currency.ngn,
       @HiveField(7) this.last4,
       @HiveField(8) @JsonKey(name: 'expiry_month') this.expiryMonth,
       @HiveField(9) @JsonKey(name: 'expiry_year') this.expiryYear,

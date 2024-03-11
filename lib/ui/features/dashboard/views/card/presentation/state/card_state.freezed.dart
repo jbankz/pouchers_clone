@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$CardState<T> {
   bool get isBusy => throw _privateConstructorUsedError;
+  bool get isGettingCardTransactions => throw _privateConstructorUsedError;
   GetExchangeRate? get exchangeRate => throw _privateConstructorUsedError;
   VirtualCardDetails? get virtualCardDetails =>
       throw _privateConstructorUsedError;
@@ -39,6 +40,7 @@ abstract class $CardStateCopyWith<T, $Res> {
   @useResult
   $Res call(
       {bool isBusy,
+      bool isGettingCardTransactions,
       GetExchangeRate? exchangeRate,
       VirtualCardDetails? virtualCardDetails,
       VirtualAccountBalance? virtualAccountBalance,
@@ -65,6 +67,7 @@ class _$CardStateCopyWithImpl<T, $Res, $Val extends CardState<T>>
   @override
   $Res call({
     Object? isBusy = null,
+    Object? isGettingCardTransactions = null,
     Object? exchangeRate = freezed,
     Object? virtualCardDetails = freezed,
     Object? virtualAccountBalance = freezed,
@@ -76,6 +79,10 @@ class _$CardStateCopyWithImpl<T, $Res, $Val extends CardState<T>>
       isBusy: null == isBusy
           ? _value.isBusy
           : isBusy // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isGettingCardTransactions: null == isGettingCardTransactions
+          ? _value.isGettingCardTransactions
+          : isGettingCardTransactions // ignore: cast_nullable_to_non_nullable
               as bool,
       exchangeRate: freezed == exchangeRate
           ? _value.exchangeRate
@@ -153,6 +160,7 @@ abstract class _$$CardStateImplCopyWith<T, $Res>
   @useResult
   $Res call(
       {bool isBusy,
+      bool isGettingCardTransactions,
       GetExchangeRate? exchangeRate,
       VirtualCardDetails? virtualCardDetails,
       VirtualAccountBalance? virtualAccountBalance,
@@ -180,6 +188,7 @@ class __$$CardStateImplCopyWithImpl<T, $Res>
   @override
   $Res call({
     Object? isBusy = null,
+    Object? isGettingCardTransactions = null,
     Object? exchangeRate = freezed,
     Object? virtualCardDetails = freezed,
     Object? virtualAccountBalance = freezed,
@@ -191,6 +200,10 @@ class __$$CardStateImplCopyWithImpl<T, $Res>
       isBusy: null == isBusy
           ? _value.isBusy
           : isBusy // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isGettingCardTransactions: null == isGettingCardTransactions
+          ? _value.isGettingCardTransactions
+          : isGettingCardTransactions // ignore: cast_nullable_to_non_nullable
               as bool,
       exchangeRate: freezed == exchangeRate
           ? _value.exchangeRate
@@ -225,6 +238,7 @@ class __$$CardStateImplCopyWithImpl<T, $Res>
 class _$CardStateImpl<T> implements _CardState<T> {
   const _$CardStateImpl(
       {this.isBusy = false,
+      this.isGettingCardTransactions = false,
       this.exchangeRate,
       this.virtualCardDetails,
       this.virtualAccountBalance,
@@ -236,6 +250,9 @@ class _$CardStateImpl<T> implements _CardState<T> {
   @override
   @JsonKey()
   final bool isBusy;
+  @override
+  @JsonKey()
+  final bool isGettingCardTransactions;
   @override
   final GetExchangeRate? exchangeRate;
   @override
@@ -257,7 +274,7 @@ class _$CardStateImpl<T> implements _CardState<T> {
 
   @override
   String toString() {
-    return 'CardState<$T>(isBusy: $isBusy, exchangeRate: $exchangeRate, virtualCardDetails: $virtualCardDetails, virtualAccountBalance: $virtualAccountBalance, errorMessage: $errorMessage, stackTrace: $stackTrace, transactions: $transactions)';
+    return 'CardState<$T>(isBusy: $isBusy, isGettingCardTransactions: $isGettingCardTransactions, exchangeRate: $exchangeRate, virtualCardDetails: $virtualCardDetails, virtualAccountBalance: $virtualAccountBalance, errorMessage: $errorMessage, stackTrace: $stackTrace, transactions: $transactions)';
   }
 
   @override
@@ -266,6 +283,9 @@ class _$CardStateImpl<T> implements _CardState<T> {
         (other.runtimeType == runtimeType &&
             other is _$CardStateImpl<T> &&
             (identical(other.isBusy, isBusy) || other.isBusy == isBusy) &&
+            (identical(other.isGettingCardTransactions,
+                    isGettingCardTransactions) ||
+                other.isGettingCardTransactions == isGettingCardTransactions) &&
             (identical(other.exchangeRate, exchangeRate) ||
                 other.exchangeRate == exchangeRate) &&
             (identical(other.virtualCardDetails, virtualCardDetails) ||
@@ -284,6 +304,7 @@ class _$CardStateImpl<T> implements _CardState<T> {
   int get hashCode => Object.hash(
       runtimeType,
       isBusy,
+      isGettingCardTransactions,
       exchangeRate,
       virtualCardDetails,
       virtualAccountBalance,
@@ -301,6 +322,7 @@ class _$CardStateImpl<T> implements _CardState<T> {
 abstract class _CardState<T> implements CardState<T> {
   const factory _CardState(
       {final bool isBusy,
+      final bool isGettingCardTransactions,
       final GetExchangeRate? exchangeRate,
       final VirtualCardDetails? virtualCardDetails,
       final VirtualAccountBalance? virtualAccountBalance,
@@ -310,6 +332,8 @@ abstract class _CardState<T> implements CardState<T> {
 
   @override
   bool get isBusy;
+  @override
+  bool get isGettingCardTransactions;
   @override
   GetExchangeRate? get exchangeRate;
   @override

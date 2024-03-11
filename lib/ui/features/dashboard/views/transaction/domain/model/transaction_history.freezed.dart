@@ -355,7 +355,7 @@ class _$TransactionHistoryImpl implements _TransactionHistory {
       @StringToNumSerializer()
       @JsonKey(name: 'transaction_fee')
       this.transactionFee = 0,
-      @HiveField(5) this.currency = Currency.NGN,
+      @HiveField(5) this.currency = Currency.ngn,
       @HiveField(6)
       @JsonKey(name: 'transaction_type')
       @HiveField(7)

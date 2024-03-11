@@ -147,4 +147,5 @@ class AppImage {
   static String mingcuteFaceid = "${_iconPath}mingcute_faceid.svg";
   static String emptyRequest = "${_iconPath}empty_request.svg";
   static String pending = "${_iconPath}pending.svg";
+  static String emptyTransactionIcon = "${_iconPath}empty_transaction_icon.svg";
 }

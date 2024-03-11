@@ -9,12 +9,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stacked/stacked_annotations.dart';
 
-import '../../../../../app/core/router/page_router.dart';
 import '../../../../../utils/field_validator.dart';
 import '../../../../common/app_strings.dart';
 import '../../../../widgets/edit_text_field_with.dart';
 import '../../../../widgets/elevated_button_widget.dart';
-import '../../domain/dto/debit_card_dto.dart';
 import 'debit_card_view.form.dart';
 
 @FormView(fields: [

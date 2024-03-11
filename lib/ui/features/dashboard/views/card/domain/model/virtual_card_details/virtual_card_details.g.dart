@@ -38,6 +38,7 @@ _$VirtualCardDetailsImpl _$$VirtualCardDetailsImplFromJson(
           : FundingSource.fromJson(
               json['fundingSource'] as Map<String, dynamic>),
       cvv2: json['cvv2'] as String?,
+      number: json['number'] as String?,
     );
 
 Map<String, dynamic> _$$VirtualCardDetailsImplToJson(
@@ -64,6 +65,7 @@ Map<String, dynamic> _$$VirtualCardDetailsImplToJson(
       'account': instance.account,
       'fundingSource': instance.fundingSource,
       'cvv2': instance.cvv2,
+      'number': instance.number,
     };
 
 const _$CardBrandEnumMap = {
@@ -73,8 +75,8 @@ const _$CardBrandEnumMap = {
 };
 
 const _$CurrencyEnumMap = {
-  Currency.NGN: 'NGN',
-  Currency.USD: 'USD',
+  Currency.ngn: 'NGN',
+  Currency.usd: 'USD',
 };
 
 const _$CardStatusEnumMap = {
@@ -197,7 +199,7 @@ _$AccountImpl _$$AccountImplFromJson(Map<String, dynamic> json) =>
       business: json['business'] as String?,
       type: json['type'] as String?,
       currency: $enumDecodeNullable(_$CurrencyEnumMap, json['currency']) ??
-          Currency.NGN,
+          Currency.ngn,
       accountName: json['accountName'] as String?,
       bankCode: json['bankCode'] as String?,
       accountType: json['accountType'] as String?,

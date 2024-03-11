@@ -24,7 +24,7 @@ class TransactionHistory with _$TransactionHistory {
       @Default(0)
       @JsonKey(name: 'transaction_fee')
       num transactionFee,
-      @HiveField(5) @Default(Currency.NGN) Currency currency,
+      @HiveField(5) @Default(Currency.ngn) Currency currency,
       @HiveField(6)
       @JsonKey(name: 'transaction_type')
       @HiveField(7)

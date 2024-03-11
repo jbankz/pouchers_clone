@@ -1,5 +1,4 @@
 import 'package:Pouchers/ui/features/admin/domain/model/banner.dart';
-import 'package:Pouchers/ui/features/admin/domain/model/envs/envs.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'admin_state.freezed.dart';

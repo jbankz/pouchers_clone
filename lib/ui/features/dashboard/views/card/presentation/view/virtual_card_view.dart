@@ -86,7 +86,7 @@ class _VirtualCardViewState extends ConsumerState<VirtualCardView> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 21.w, vertical: 13.h),
                                 decoration: BoxDecoration(
-                                    color: card.currency == Currency.NGN
+                                    color: card.currency == Currency.ngn
                                         ? AppColors.kGreen100Color
                                         : AppColors.kPurple400,
                                     borderRadius: BorderRadius.circular(16.r),
@@ -97,7 +97,7 @@ class _VirtualCardViewState extends ConsumerState<VirtualCardView> {
                                   children: [
                                     const Gap(height: 42),
                                     Image.asset(
-                                        card.currency == Currency.NGN
+                                        card.currency == Currency.ngn
                                             ? AppImage.virtualNaira
                                             : AppImage.virtualDollar,
                                         height: 71.h,
@@ -147,7 +147,7 @@ class _VirtualCardViewState extends ConsumerState<VirtualCardView> {
                   ),
                   if (cards.length != 2)
                     ElevatedButtonWidget(
-                        title: cards.first.currency == Currency.NGN
+                        title: cards.first.currency == Currency.ngn
                             ? AppString.createDollarCard
                             : AppString.createNairaCard,
                         onPressed: () => BottomSheets.showSheet(

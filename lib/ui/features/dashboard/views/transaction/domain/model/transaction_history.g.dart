@@ -150,7 +150,7 @@ _$TransactionHistoryImpl _$$TransactionHistoryImplFromJson(
           ? 0
           : const StringToNumSerializer().fromJson(json['transaction_fee']),
       currency: $enumDecodeNullable(_$CurrencyEnumMap, json['currency']) ??
-          Currency.NGN,
+          Currency.ngn,
       transactionType: $enumDecodeNullable(
               _$TransactionTypeEnumMap, json['transaction_type']) ??
           TransactionType.debit,
@@ -194,8 +194,8 @@ Map<String, dynamic> _$$TransactionHistoryImplToJson(
     };
 
 const _$CurrencyEnumMap = {
-  Currency.NGN: 'NGN',
-  Currency.USD: 'USD',
+  Currency.ngn: 'NGN',
+  Currency.usd: 'USD',
 };
 
 const _$TransactionTypeEnumMap = {

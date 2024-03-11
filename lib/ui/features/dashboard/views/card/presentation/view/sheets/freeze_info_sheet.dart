@@ -129,8 +129,8 @@ class _FreezeCardInfoSheetState extends ConsumerState<FreezeCardInfoSheet> {
           cardId: ref.read(paramModule.notifier).cardDetail?.cardId,
           status: CardStatus.inactive,
           currency: ref.read(paramModule.notifier).isNairaCardType
-              ? Currency.NGN
-              : Currency.USD,
+              ? Currency.ngn
+              : Currency.usd,
           transactionPin: pin));
     }
   }

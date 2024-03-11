@@ -238,9 +238,6 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
     final bool isAppliedDiscount = ((billerState.discounts != null) &&
         amountController.text.replaceComma >= (discounts?.threshold ?? 0));
 
-    final amount = discounts?.payment(amountController.text.replaceComma) ??
-        amountController.text.replaceComma;
-
     final mobileDto = MobileDto(
         category: ServiceCategory.airtime,
         subCategory: _billers?.displayName,
@@ -295,7 +292,7 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
     _mobileDto = MobileDto(
         category: ServiceCategory.airtime,
         subCategory: _billers?.displayName,
-        currency: Currency.NGN,
+        currency: Currency.ngn,
         email: guest.customerEmail,
         payer: Payer(email: guest.customerEmail, name: guest.customerName),
         amount: amountController.text.replaceComma,

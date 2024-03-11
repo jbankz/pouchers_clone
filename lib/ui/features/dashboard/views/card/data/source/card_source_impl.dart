@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:Pouchers/app/config/app_config.dart';
 import 'package:Pouchers/app/core/network/network_service.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
@@ -69,12 +71,16 @@ class CardSourceImpl implements CardSource<CardDto> {
   @override
   Future<VirtualAccountBalance?> getAccountBalance(
       {required CardDto cardDto, CancelToken? cancelToken}) async {
-    final response = await networkService.request(
-        path: '${ApiPath.balance}/${cardDto.cardId}/balance',
-        requestType: RequestType.get,
-        cancelToken: cancelToken);
-    return VirtualAccountBalance.fromJson(
-        response.data?['data'] as Map<String, dynamic>);
+    try {
+      final response = await networkService.request(
+          path: '${ApiPath.balance}/${cardDto.cardId}/balance',
+          requestType: RequestType.get,
+          cancelToken: cancelToken);
+      return VirtualAccountBalance.fromJson(
+          response.data?['data'] as Map<String, dynamic>);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -144,18 +150,30 @@ class CardSourceImpl implements CardSource<CardDto> {
         await getCardToken(cardDto: cardDto, cancelToken: cancelToken);
 
     /// Retrieve Card CVV
-    networkService.dio = Dio(baseOption.copyWith(baseUrl: AppConfig.vgsApiUrl));
+    final vgsService = NetworkService.internal(
+        dio: Dio(baseOption.copyWith(baseUrl: AppConfig.vgsApiUrl)));
 
-    final vgsSetup = await networkService.request(
+    final option = Options(headers: {
+      HttpHeaders.authorizationHeader: 'Bearer ${cardToken?.data?.token}'
+    });
+
+    final vgsCardCVV = await vgsService.request(
         path: '/cards/${cardDto.cardId}/secure-data/cvv2',
         requestType: RequestType.get,
-        options: Options(
-            headers: {'Authorization': 'Bearer ${cardToken?.data?.token}'}),
+        options: option,
         cancelToken: cancelToken);
 
-    response.data?['data']?['cvv2'] = vgsSetup.data?['data']?['cvv2'];
+    final vgsCardNumber = await vgsService.request(
+        path: '/cards/${cardDto.cardId}/secure-data/number',
+        requestType: RequestType.get,
+        options: option,
+        cancelToken: cancelToken);
 
-    return VirtualCardDetails.fromJson(
-        response.data?['data'] as Map<String, dynamic>);
+    final feedback = response.data?['data'] as Map<String, dynamic>
+      ..addAll({
+        ...{'cvv2': vgsCardCVV.data?['data']?['cvv2']},
+        ...{'number': vgsCardNumber.data?['data']?['number']}
+      });
+    return VirtualCardDetails.fromJson(feedback);
   }
 }

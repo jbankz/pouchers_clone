@@ -999,12 +999,9 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i34.VirtualCardDetailView: (data) {
-      return _i81.PageRouteBuilder<dynamic>(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            const _i34.VirtualCardDetailView(),
+      return _i1.buildAdaptivePageRoute<dynamic>(
+        builder: (context) => const _i34.VirtualCardDetailView(),
         settings: data,
-        opaque: false,
-        transitionsBuilder: data.transition ?? _i1.TransitionsBuilders.fadeIn,
       );
     },
     _i35.ProfileView: (data) {

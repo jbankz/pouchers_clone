@@ -216,10 +216,9 @@ class _CardCreationSymmaryViewState
         CardDto(
             amount: ((widget.cardDto.amount ?? 0) + totalNairaFee),
             country: param.country,
-            // bvn: param.bvn,
             transactionPin: pin,
             brand: CardBrand.verve,
-            currency: Currency.NGN),
+            currency: Currency.ngn),
         _cancelToken);
   }
 
@@ -229,10 +228,9 @@ class _CardCreationSymmaryViewState
             amount: ((totalDollarFee + (widget.cardDto.amount ?? 0)) *
                 (param.exchangeRate ?? 0)),
             country: param.country,
-            // bvn: param.bvn,
             transactionPin: pin,
             brand: CardBrand.visa,
-            currency: Currency.USD),
+            currency: Currency.usd),
         _cancelToken);
   }
 
@@ -280,7 +278,7 @@ class _CardCreationSymmaryViewState
                 : ((totalDollarFee + (widget.cardDto.amount ?? 0)) *
                     (param.exchangeRate ?? 0)),
             transactionPin: pin,
-            currency: param.isNairaCardType ? Currency.NGN : Currency.USD,
+            currency: param.isNairaCardType ? Currency.ngn : Currency.usd,
             status: CardStatus.active),
         _cancelToken);
   }

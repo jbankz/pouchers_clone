@@ -424,8 +424,6 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
     final bool isAppliedDiscount = ((billerState.discounts != null) &&
         amountController.text.replaceComma >= (discounts?.threshold ?? 0));
 
-    final amount = discounts?.payment(amountController.text.replaceComma) ?? 0;
-
     final mobileDto = MobileDto(
         isMerchantPayment: true,
         amount: amountController.text.replaceComma,
@@ -488,7 +486,7 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
         subCategory: _billers?.displayName,
         makeMerchantServiceArray: false,
         category: ServiceCategory.electricity,
-        currency: Currency.NGN,
+        currency: Currency.ngn,
         email: guest.customerEmail,
         payer: Payer(email: guest.customerEmail, name: guest.customerName));
 
