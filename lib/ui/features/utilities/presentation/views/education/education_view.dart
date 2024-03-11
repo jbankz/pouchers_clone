@@ -1,4 +1,3 @@
-import 'package:Pouchers/app/config/app_logger.dart';
 import 'package:Pouchers/ui/features/merchant/presentation/state/merchant_state.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -285,9 +284,6 @@ class _EducationViewState extends ConsumerState<EducationView>
 
     final bool isAppliedDiscount = ((billerState.discounts != null) &&
         amountController.text.replaceComma >= (discounts?.threshold ?? 0));
-
-    final amount = discounts?.payment(amountController.text.replaceComma) ??
-        amountController.text.replaceComma;
 
     await _billersNotifier.purchaseService(
         mobileDto: MobileDto(

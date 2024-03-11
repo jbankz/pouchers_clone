@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../../../../../../common/app_colors.dart';
 import '../../../../../../common/app_images.dart';
@@ -36,7 +37,7 @@ class _VirtualCardDetailViewState extends ConsumerState<VirtualCardDetailView>
   late AnimationController _animationController;
   late Animation<double> _animation;
   AnimationStatus _animationStatus = AnimationStatus.dismissed;
-
+  final RefreshController _refreshController = RefreshController();
   @override
   void initState() {
     super.initState();
@@ -49,10 +50,8 @@ class _VirtualCardDetailViewState extends ConsumerState<VirtualCardDetailView>
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _card = ref.read(paramModule.notifier).cardDetail;
-      _cardNotifier = ref.read(cardNotifierProvider.notifier)
-        ..getAccountBalance(CardDto(cardId: _card?.accountId))
-        ..getVirtualCardDetails(CardDto(cardId: _card?.cardId))
-        ..getCardTransactions(CardDto(cardId: _card?.cardId));
+      _cardNotifier = ref.read(cardNotifierProvider.notifier);
+      _refresh();
     });
   }
 
@@ -67,6 +66,17 @@ class _VirtualCardDetailViewState extends ConsumerState<VirtualCardDetailView>
       _animationController.forward();
     } else {
       _animationController.reverse();
+    }
+  }
+
+  Future<void> _refresh() async {
+    try {
+      await _cardNotifier.getAccountBalance(CardDto(cardId: _card?.accountId));
+      await _cardNotifier.getVirtualCardDetails(CardDto(cardId: _card?.cardId));
+      await _cardNotifier.getCardTransactions(CardDto(cardId: _card?.cardId));
+      _refreshController.refreshCompleted();
+    } catch (e) {
+      _refreshController.refreshFailed();
     }
   }
 
@@ -85,122 +95,134 @@ class _VirtualCardDetailViewState extends ConsumerState<VirtualCardDetailView>
       appBar: AppBar(title: Text(param.cardDetailsTitle)),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-        child: Column(
-          children: [
-            Hero(
-              tag: card?.cardId ?? '',
-              child: Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.identity()
-                    ..setEntry(3, 2, 0.001)
-                    ..rotateY((pi * _animation.value)),
-                  child: GestureDetector(
-                      onTap: _flip,
-                      child: isBack
-                          ? Transform(
-                              alignment: Alignment.center,
-                              transform: Matrix4.identity()
-                                ..setEntry(3, 2, 0.001)
-                                ..rotateY((pi)),
-                              child: const BackCardViewWidget())
-                          : const FrontCardViewWidget())),
-            ),
-            const Gap(height: 32),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
+        child: SmartRefresher(
+          controller: _refreshController,
+          onRefresh: _refresh,
+          child: SingleChildScrollView(
+            child: Column(
               children: [
-                _buildActionButton(
-                    context: context,
-                    icon: AppImage.fundCardIcon,
-                    label: AppString.fundCard,
-                    onTap: () => _cardNotifier.navigateToFundCard()),
-                const Gap(width: 40),
-                _buildActionButton(
-                    context: context,
-                    width: 78,
-                    icon: AppImage.cardDetailIcon,
-                    label: AppString.cardDetail,
-                    onTap: () => _cardNotifier.triggerDetails()),
-                const Gap(width: 40),
-                _buildActionButton(
-                    context: context,
-                    width: 51,
-                    icon: AppImage.manageIcon,
-                    label: AppString.manage,
-                    onTap: () async {
-                      await _cardNotifier.triggerManageCard();
-                      _cardNotifier.getVirtualCardDetails(
-                          CardDto(cardId: _card?.cardId));
-                    }),
+                Hero(
+                  tag: card?.cardId ?? '',
+                  child: Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateY((pi * _animation.value)),
+                      child: GestureDetector(
+                          onTap: _flip,
+                          child: isBack
+                              ? Transform(
+                                  alignment: Alignment.center,
+                                  transform: Matrix4.identity()
+                                    ..setEntry(3, 2, 0.001)
+                                    ..rotateY((pi)),
+                                  child: const BackCardViewWidget())
+                              : const FrontCardViewWidget())),
+                ),
+                const Gap(height: 32),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildActionButton(
+                        context: context,
+                        icon: AppImage.fundCardIcon,
+                        label: AppString.fundCard,
+                        onTap: () => _cardNotifier.navigateToFundCard()),
+                    const Gap(width: 40),
+                    _buildActionButton(
+                        context: context,
+                        width: 78,
+                        icon: AppImage.cardDetailIcon,
+                        label: AppString.cardDetail,
+                        onTap: () => _cardNotifier.triggerDetails()),
+                    const Gap(width: 40),
+                    _buildActionButton(
+                        context: context,
+                        width: 51,
+                        icon: AppImage.manageIcon,
+                        label: AppString.manage,
+                        onTap: () async {
+                          await _cardNotifier.triggerManageCard();
+                          _cardNotifier.getVirtualCardDetails(
+                              CardDto(cardId: _card?.cardId));
+                        }),
+                  ],
+                ),
+                const Gap(height: 49),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(AppString.transactionHistory,
+                      style: context.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.kDarkFill)),
+                ),
+                const Gap(height: 14),
+                transactions.isEmpty
+                    ? Column(mainAxisSize: MainAxisSize.min, children: [
+                        const Gap(height: 61),
+                        EmptyStateWidget(
+                            icon: AppImage.emptyTransactionIcon,
+                            message: 'No transactions yet')
+                      ])
+                    : Flexible(
+                        child: ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: transactions.length,
+                            physics: const NeverScrollableScrollPhysics(),
+                            separatorBuilder: (_, __) => Padding(
+                                padding: EdgeInsets.symmetric(vertical: 14.h),
+                                child: const Divider()),
+                            itemBuilder: (_, index) => Row(
+                                  children: [
+                                    Container(
+                                        height: 40.h,
+                                        width: 40.w,
+                                        decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: AppColors.kContainerColor),
+                                        child: SvgPicture.asset(
+                                            AppImage.sendGreen,
+                                            fit: BoxFit.scaleDown)),
+                                    const Gap(width: 10),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text('Card funding',
+                                              style: context.titleLarge
+                                                  ?.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 16,
+                                                      color:
+                                                          AppColors.kDarkFill),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis),
+                                          const Gap(height: 1),
+                                          Text('12 sep, 2022',
+                                              style: context.titleLarge
+                                                  ?.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 14))
+                                        ],
+                                      ),
+                                    ),
+                                    Text(
+                                      '+ ₦407,000.00 ',
+                                      style: context.titleLarge?.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color: AppColors.kDarkFill),
+                                      textAlign: TextAlign.right,
+                                    ),
+                                  ],
+                                )),
+                      )
               ],
             ),
-            const Gap(height: 49),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(AppString.transactionHistory,
-                  style: context.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700, color: AppColors.kDarkFill)),
-            ),
-            const Gap(height: 14),
-            transactions.isEmpty
-                ? Column(mainAxisSize: MainAxisSize.min, children: [
-                    const Gap(height: 61),
-                    EmptyStateWidget(
-                        icon: AppImage.emptyTransactionIcon,
-                        message: 'No transactions yet')
-                  ])
-                : Flexible(
-                    child: ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: transactions.length,
-                        separatorBuilder: (_, __) => Padding(
-                            padding: EdgeInsets.symmetric(vertical: 14.h),
-                            child: const Divider()),
-                        itemBuilder: (_, index) {
-                          final transaction = transactions[index];
-                          return Row(
-                            children: [
-                              Container(
-                                  height: 40.h,
-                                  width: 40.w,
-                                  decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppColors.kContainerColor),
-                                  child: SvgPicture.asset(AppImage.sendGreen,
-                                      fit: BoxFit.scaleDown)),
-                              const Gap(width: 10),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Card funding',
-                                        style: context.titleLarge?.copyWith(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                            color: AppColors.kDarkFill),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis),
-                                    const Gap(height: 1),
-                                    Text('12 sep, 2022',
-                                        style: context.titleLarge?.copyWith(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 14))
-                                  ],
-                                ),
-                              ),
-                              Text(
-                                '+ ₦407,000.00 ',
-                                style: context.titleLarge?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.kDarkFill),
-                                textAlign: TextAlign.right,
-                              ),
-                            ],
-                          );
-                        }),
-                  )
-          ],
+          ),
         ),
       ),
     );

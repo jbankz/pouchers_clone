@@ -2,8 +2,6 @@ import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/admin/data/dao/env_dao.dart';
-import 'package:Pouchers/ui/features/admin/domain/enum/fees.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
@@ -13,7 +11,6 @@ import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/ui/widgets/keypad/config/keypad_config.dart';
 import 'package:Pouchers/ui/widgets/keypad/virtual_keypad.dart';
 import 'package:Pouchers/utils/extension.dart';
-import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -73,17 +70,6 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
   Widget build(BuildContext context) {
     final param = ref.watch(paramModule);
     final cardState = ref.watch(cardNotifierProvider);
-
-    final fee = (param.isNairaCardType
-            ? envDao.envs.firstWhereOrNull(
-                (element) => element.name == Fees.nairaCardFundingFee)
-            : envDao.envs.firstWhereOrNull(
-                (element) => element.name == Fees.dollarCardFundingFee))
-        ?.value;
-
-    final fundingFee = param.isNairaCardType
-        ? num.tryParse(fee ?? '0')?.toNaira
-        : num.tryParse(fee ?? '0')?.toDollar;
 
     final minimumAccount = param.isNairaCardType ? 1000.toNaira : 1000.toDollar;
 

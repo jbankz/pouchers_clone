@@ -325,9 +325,6 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
         (_mobileOperatorServices?.servicePrice ?? 0) >=
             (discounts?.threshold ?? 0));
 
-    final amount =
-        discounts?.payment(_mobileOperatorServices?.servicePrice ?? 0) ?? 0;
-
     final mobileDto = MobileDto(
         category: ServiceCategory.data,
         subCategory: _billers?.displayName,

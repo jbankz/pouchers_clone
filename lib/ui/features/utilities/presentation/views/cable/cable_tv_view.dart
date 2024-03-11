@@ -119,7 +119,7 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
                               .map((topDeal) => TopDeals(
                                   name: topDeal.name,
                                   code: topDeal.code,
-                                  price: topDeal.price ?? 0,
+                                  price: topDeal.price,
                                   shortCode: topDeal.shortCode))
                               .toList(),
                           callback: (topDeal) {

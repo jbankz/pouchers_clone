@@ -12,8 +12,6 @@ class TimerService with ResponseHandler {
 
   Stream<int> get timerStream => _timerController.stream;
 
-  final _logger = getLogger("TimerService");
-
   TimerService();
 
   void startTimer() {

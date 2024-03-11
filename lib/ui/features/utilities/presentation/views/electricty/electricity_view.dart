@@ -424,8 +424,6 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
     final bool isAppliedDiscount = ((billerState.discounts != null) &&
         amountController.text.replaceComma >= (discounts?.threshold ?? 0));
 
-    final amount = discounts?.payment(amountController.text.replaceComma) ?? 0;
-
     final mobileDto = MobileDto(
         isMerchantPayment: true,
         amount: amountController.text.replaceComma,
