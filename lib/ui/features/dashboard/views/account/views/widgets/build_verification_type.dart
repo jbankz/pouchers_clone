@@ -52,8 +52,11 @@ class BuildVerificationTypes extends StatelessWidget {
       KycStatus.failed => AppColors.kColorOrangeLight
     };
 
+    final bool enableButton =
+        (kycStatus == KycStatus.unverified || kycStatus == KycStatus.failed);
+
     return InkWell(
-      onTap: kycStatus != KycStatus.unverified ? null : onTap,
+      onTap: enableButton ? onTap : null,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         width: double.infinity,

@@ -56,6 +56,9 @@ class _AccountVerificationViewState
         if (user.utilityBill != null && user.tierLevels > 2) {
           utilstats = KycStatus.verified;
         }
+        if (!user.isCompletedKyc && user.utilityBill == null) {
+          utilstats = KycStatus.failed;
+        }
 
         return Scaffold(
           backgroundColor: AppColors.kPurpleColor800,

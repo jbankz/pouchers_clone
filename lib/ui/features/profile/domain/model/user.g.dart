@@ -49,13 +49,14 @@ class UserAdapter extends TypeAdapter<User> {
       tokenExpireAt: fields[29] as String?,
       state: fields[30] as String?,
       postalCode: fields[31] as String?,
+      isCompletedKyc: fields[32] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(32)
+      ..writeByte(33)
       ..writeByte(0)
       ..write(obj.phoneNumber)
       ..writeByte(1)
@@ -119,7 +120,9 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(30)
       ..write(obj.state)
       ..writeByte(31)
-      ..write(obj.postalCode);
+      ..write(obj.postalCode)
+      ..writeByte(32)
+      ..write(obj.isCompletedKyc);
   }
 
   @override
@@ -178,6 +181,7 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       tokenExpireAt: json['tokenExpireAt'] as String?,
       state: json['state'] as String?,
       postalCode: json['postal_code'] as String?,
+      isCompletedKyc: json['is_completed_kyc'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
@@ -218,6 +222,7 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'tokenExpireAt': instance.tokenExpireAt,
       'state': instance.state,
       'postal_code': instance.postalCode,
+      'is_completed_kyc': instance.isCompletedKyc,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(
