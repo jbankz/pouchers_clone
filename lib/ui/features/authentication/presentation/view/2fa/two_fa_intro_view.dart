@@ -27,7 +27,7 @@ class TwoFaAuthView extends ConsumerWidget {
       valueListenable: userDao.getListenable(),
       builder: (_, box, __) {
         final user = userDao.returnUser(box);
-        final bool is2faActive = user.is2faActive ?? false;
+        final bool is2faActive = ((user.is2faActive ?? false));
         return Scaffold(
           appBar: AppBar(title: Text(AppString.authentication)),
           body: SafeArea(
@@ -87,6 +87,8 @@ class TwoFaAuthView extends ConsumerWidget {
                                                 title: AppString.urgentNote,
                                                 content:
                                                     AppString.urgentNoteHint,
+                                                buttonTextColor:
+                                                    AppColors.kLightOrange,
                                                 buttonText: AppString
                                                     .urgentNoteActionButton),
                                           )) as bool?;

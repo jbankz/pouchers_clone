@@ -58,6 +58,7 @@ class AppImage {
   static String verveIcon = "${_iconPath}verve_logo.svg";
   static String masterCardIcon = "${_iconPath}mastercard.svg";
   static String copyIcon = "${_iconPath}copy.svg";
+  static String tableCopyIcon = "${_iconPath}table_copy.svg";
   static String freezeCardIcon = "${_iconPath}freeze_card.svg";
   static String buyVoucher = "${_iconPath}buy_voucher.svg";
   static String giftVoucher = "${_iconPath}gift_voucher.svg";
@@ -148,4 +149,7 @@ class AppImage {
   static String emptyRequest = "${_iconPath}empty_request.svg";
   static String pending = "${_iconPath}pending.svg";
   static String emptyTransactionIcon = "${_iconPath}empty_transaction_icon.svg";
+  static String pdf = "${_iconPath}pdf.svg";
+  static String image = "${_iconPath}image.svg";
+  static String share = "${_iconPath}share.svg";
 }

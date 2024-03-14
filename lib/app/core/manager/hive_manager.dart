@@ -15,6 +15,7 @@ import 'package:Pouchers/ui/features/utilities/data/dao/cable_services_dao.dart'
 import 'package:Pouchers/ui/features/voucher/data/dao/vouchers_dao.dart';
 import 'package:Pouchers/ui/features/voucher/domain/enum/voucher_status.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../ui/features/admin/data/dao/banner_dao.dart';
 import '../../../ui/features/admin/data/dao/env_dao.dart';
@@ -149,14 +150,16 @@ class HiveManager {
 
   Future<Box<T>> openBox<T>(String boxName) async {
     Box<T> box;
+    final path = await getApplicationSupportDirectory();
+
     if (Hive.isBoxOpen(boxName)) {
       box = Hive.box<T>(boxName);
     } else {
       try {
-        box = await Hive.openBox<T>(boxName);
+        box = await Hive.openBox<T>(boxName, path: path.path);
       } catch (_) {
-        await Hive.deleteBoxFromDisk(boxName);
-        box = await Hive.openBox<T>(boxName);
+        await Hive.deleteBoxFromDisk(boxName, path: path.path);
+        box = await Hive.openBox<T>(boxName, path: path.path);
       }
     }
     return box;

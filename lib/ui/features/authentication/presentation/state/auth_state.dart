@@ -10,6 +10,7 @@ part 'auth_state.freezed.dart';
 class AuthState<T> with _$AuthState<T> {
   const factory AuthState(
       {@Default(false) bool isBusy,
+      @Default(false) bool isGettingSelectedQuestions,
       T? data,
       String? errorMessage,
       @Default([]) List<SecurityQuestions> securityQuestion,

@@ -367,7 +367,7 @@ class AppString {
   static String selectSecurityQue = 'Select your security question';
   static String selectSecurityQueInstr =
       'Please keep this secret as this will be required to reset your 2FA authentication.';
-  static String secondQuestion = 'Second question';
+  static String secondQuestion = 'Second Question';
   static String selectSecondQuestion = 'Select Question';
   static String answer = 'Answer';
   static String tapToCopy1 = 'Tap to copy';
@@ -522,7 +522,7 @@ class AppString {
 
   static String image = 'Image';
   static String pdf = 'PDF';
-  static String shareReceipt = 'Share receipt';
+  static String shareReceipt = 'Share Receipt';
   static String schedule = 'Schedule';
   static String scheduleTransfer = 'Schedule Transfer';
   static String share = 'Share';
@@ -591,4 +591,8 @@ class AppString {
   static String address = 'Address';
   static String units = 'Units';
   static String howMuchToTransfer = 'How much do you want to transfer?';
+  static String transactionId = 'Transaction ID';
+  static String downloadPdf = 'Download as PDF';
+  static String downloadImage = 'Download as Image';
+  static String showReceiptMessage = 'Receipt generated';
 }

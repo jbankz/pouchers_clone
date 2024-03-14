@@ -254,6 +254,8 @@ extension ContextExtensions on BuildContext {
 
   TextStyle? get titleTextStyle => Theme.of(this).appBarTheme.titleTextStyle;
 
+  Color get scaffoldBackgroundColor => Theme.of(this).scaffoldBackgroundColor;
+
   TextStyle? get bodyExtraSmall =>
       bodySmall?.copyWith(fontSize: 10, height: 1.6, letterSpacing: .5);
 

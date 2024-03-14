@@ -36,7 +36,6 @@ dependencies:
   intl: ^0.18.1
   hive: ^2.2.3
   pdf: ^3.8.4
-
   hooks_riverpod: ^2.4.6
 
   flutter_native_contact_picker: ^0.0.6
@@ -74,7 +73,7 @@ dependencies:
   image_cropper: ^5.0.1
   collection: ^1.18.0
   flutter_inappwebview: ^6.0.0
-
+  image_gallery_saver: ^2.0.3
   screenshot: ^2.1.0
   app_settings: ^5.1.1
   google_fonts: ^6.1.0

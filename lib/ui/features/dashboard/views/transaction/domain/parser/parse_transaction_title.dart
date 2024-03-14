@@ -21,5 +21,5 @@ String transactionTitle(TransactionHistory transaction) =>
       ServiceCategory.referralBonusPayment => 'Referral Bonus',
       ServiceCategory.internet => 'Internet Purchase',
       ServiceCategory.moneyRequest => "Request Money",
-      null => '',
+      null => ''
     };

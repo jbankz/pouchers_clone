@@ -81,6 +81,8 @@ PODS:
   - image_cropper (0.0.4):
     - Flutter
     - TOCropViewController (~> 2.6.1)
+  - image_gallery_saver (2.0.2):
+    - Flutter
   - image_picker_ios (0.0.1):
     - Flutter
   - Intercom (16.3.0)
@@ -150,6 +152,7 @@ DEPENDENCIES:
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - fluttercontactpicker (from `.symlinks/plugins/fluttercontactpicker/ios`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
+  - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - intercom_flutter (from `.symlinks/plugins/intercom_flutter/ios`)
   - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
@@ -205,6 +208,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttercontactpicker/ios"
   image_cropper:
     :path: ".symlinks/plugins/image_cropper/ios"
+  image_gallery_saver:
+    :path: ".symlinks/plugins/image_gallery_saver/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   intercom_flutter:
@@ -248,6 +253,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 57c22343ab29bc686febbf7cbb13bad167c2d8fe
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
   image_cropper: a3291c624a953049bc6a02e1f8c8ceb162a24b25
+  image_gallery_saver: cb43cc43141711190510e92c460eb1655cd343cb
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   Intercom: 1b47184829bb5c794cbaf6b0f39db026883fec4f
   intercom_flutter: 5ed2697e142e3767e9e7f2047584bec6ec4c4d2f

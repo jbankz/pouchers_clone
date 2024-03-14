@@ -16,8 +16,9 @@ import '../../../../widgets/edit_text_field_with.dart';
 import '../../../../widgets/ticket_widget.dart';
 import '../../domain/model/vouchers.dart';
 import '../notifier/vouchers_notifier.dart';
-import '../redeem_voucher_view.form.dart';
 import 'sheets/vouchers_sheets.dart';
+
+import 'redeem_voucher_view.form.dart';
 
 @FormView(fields: [FormTextField(name: 'code')])
 class RedeemVoucherView extends ConsumerStatefulWidget {

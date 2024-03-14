@@ -439,7 +439,7 @@ class AuthNotifier extends _$AuthNotifier {
 
   Future<void> selectedQuestions({CancelToken? cancelToken}) async {
     try {
-      state = state.copyWith(isBusy: true);
+      state = state.copyWith(isGettingSelectedQuestions: true);
 
       _selectedQuestions = await ref.read(
           selectedQuestionsProvider.call(cancelToken: cancelToken).future);
@@ -447,8 +447,9 @@ class AuthNotifier extends _$AuthNotifier {
       _logger.e(e.toString());
       AppHelper.handleError(e);
     } finally {
-      state =
-          state.copyWith(isBusy: false, selectedQuestions: _selectedQuestions);
+      state = state.copyWith(
+          isGettingSelectedQuestions: false,
+          selectedQuestions: _selectedQuestions);
     }
   }
 
