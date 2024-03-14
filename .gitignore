@@ -22,7 +22,7 @@
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
-#.vscode/
+.vscode/
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -73,3 +73,11 @@ note.todo
 /android/app/google-services.json
 /ios/Runner/GoogleService-Info.plist
 android/app/google-services.json
+
+note.todo
+
+# Generated files
+*.form.dart
+*.freezed.dart
+*.g.dart
+*.g.dart.json

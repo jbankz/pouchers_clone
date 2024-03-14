@@ -363,7 +363,7 @@ class AppString {
       'Two-factor authentication is enabled on this your\naccount to generate a secure code on device for\nconfirming transactions';
   static String unSuccessFactorAuth =
       'For extra security, enable two-factor authentication on your account to generate a secure code on device for confirming transactions';
-  static String setupFactorAuth = 'Setup 2FA authentication';
+  static String setupFactorAuth = 'Setup 2FA Authentication';
   static String selectSecurityQue = 'Select your security question';
   static String selectSecurityQueInstr =
       'Please keep this secret as this will be required to reset your 2FA authentication.';
