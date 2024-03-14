@@ -40,10 +40,9 @@ class _SelectedQuestionViewState extends ConsumerState<SelectedQuestionView>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _authNotifier = ref.read(authNotifierProvider.notifier)
-        ..selectedQuestions(_cancelToken);
-    });
+    Future.microtask(() =>
+        _authNotifier = ref.read(authNotifierProvider.notifier)
+          ..selectedQuestions(cancelToken: _cancelToken));
   }
 
   @override
@@ -106,11 +105,9 @@ class _SelectedQuestionViewState extends ConsumerState<SelectedQuestionView>
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Question ${index + 1}',
-                              style: context.headlineMedium?.copyWith(
-                                  fontSize: 24, fontWeight: FontWeight.w700),
-                            ),
+                            Text('Question ${index + 1}',
+                                style: context.headlineMedium?.copyWith(
+                                    fontSize: 24, fontWeight: FontWeight.w700)),
                             const Gap(height: 20),
                             EditTextFieldWidget(
                                 controller: answerController,
