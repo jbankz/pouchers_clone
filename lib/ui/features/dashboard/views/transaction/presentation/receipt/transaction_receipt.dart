@@ -30,7 +30,16 @@ Future<pw.Widget> generateTransactionReceipt(
   final String amount = isDebitTransaction
       ? '-${transactionHistory?.amount.toNaira}'
       : '+${transactionHistory?.amount.toNaira}';
+
+  final logo = await rootBundle.load(AppImage.logo1);
+  final appLogo = logo.buffer.asUint8List();
+
   return pw.Column(children: [
+    pw.Align(
+        alignment: Alignment.topRight,
+        child: pw.Image(pw.MemoryImage(appLogo), width: 48.76.w, height: 60.h)),
+    // pw.SvgPicture.asset(AppImage.logo, width: 48.76.w, height: 60.h)),
+    pw.SizedBox(height: 10),
     pw.Container(
         height: 121, width: 121, child: pw.Image(pw.MemoryImage(imageBytes))),
     pw.SizedBox(height: 14),
@@ -77,7 +86,7 @@ Future<pw.Widget> generateTransactionReceipt(
     pw.Row(
       mainAxisSize: pw.MainAxisSize.min,
       children: [
-        transactionHistory.updatedAt?.monthDayYear ?? '',
+        transactionHistory.updatedAt?.dateMonthYear ?? '',
         transactionHistory.updatedAt?.timeAloneWithMeridian12 ?? ''
       ]
           .map((date) => pw.Container(
@@ -101,9 +110,9 @@ Future<pw.Widget> generateTransactionReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.data => _buildAirtimeOrDataReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
-      ServiceCategory.voucherPurchase => _buildStatusReceipt(
+      ServiceCategory.voucherPurchase => _buildVoucherReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
-      ServiceCategory.voucherRedeem => _buildStatusReceipt(
+      ServiceCategory.voucherRedeem => _buildVoucherReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.fundWallet => _buildWalletFundingReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
@@ -115,7 +124,7 @@ Future<pw.Widget> generateTransactionReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.electricity => _buildElectricityReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
-      ServiceCategory.betting => _buildOperatorReceipt(
+      ServiceCategory.betting => _buildBettingReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.localBankTransfer => _buildTransferReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
@@ -159,6 +168,28 @@ Future<pw.Widget> generateTransactionReceipt(
     pw.SizedBox(height: 14),
   ]);
 }
+
+pw.Column _buildBettingReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTile(
+            title: AppString.status,
+            value: transactionHistory?.status?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.beneficiary,
+            value: transactionHistory?.beneficiaryName ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.operator,
+            value: transactionHistory?.extraDetails?.subCategory ?? '',
+            font: robotFont)
+      ],
+    );
 
 pw.Column _buildElectricityReceipt(
         {TransactionHistory? transactionHistory, Font? robotFont}) =>
@@ -257,6 +288,25 @@ pw.Column _buildWalletFundingReceipt(
             font: robotFont),
       ],
     );
+
+_buildVoucherReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(children: [
+      _buildTile(
+          title: AppString.status,
+          value: transactionHistory?.status?.titleCase ?? '',
+          font: robotFont),
+      pw.SizedBox(height: 16),
+      _buildTile(
+          title: AppString.beneficiary,
+          value: transactionHistory?.beneficiaryName?.titleCase ?? '',
+          font: robotFont),
+      pw.SizedBox(height: 16),
+      _buildTile(
+          title: AppString.voucherCode,
+          value: transactionHistory?.extraDetails?.voucherCode ?? '',
+          font: robotFont),
+    ]);
 
 _buildStatusReceipt(
         {TransactionHistory? transactionHistory, Font? robotFont}) =>

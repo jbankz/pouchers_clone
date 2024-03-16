@@ -161,6 +161,7 @@ extension DateTimeExtensions on DateTime {
   String get dayMonthTime1 => DateFormat('hh:mm a, MMM dd, yyyy').format(this);
 
   String get monthDayYear => DateFormat('MMM, dd, yyyy').format(this);
+  String get dateMonthYear => DateFormat('dd MMM yyyy').format(this);
 
   // Formats the date and time as "MM dd, hh:mm a"
   String get monthDayTime => DateFormat('MMM dd, hh:mm a').format(this);

@@ -595,4 +595,5 @@ class AppString {
   static String downloadPdf = 'Download as PDF';
   static String downloadImage = 'Download as Image';
   static String showReceiptMessage = 'Receipt generated';
+  static String voucherCode = 'Voucher Code';
 }

@@ -1,4 +1,6 @@
+import 'package:Pouchers/app/config/app_helper.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
+import 'package:Pouchers/ui/common/app_images.dart';
 import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart';
 import 'package:Pouchers/ui/features/dashboard/views/transaction/presentation/notifier/receipt_notifier.dart';
 import 'package:Pouchers/ui/features/dashboard/views/transaction/presentation/view/receipts/transfer_receipt.dart';
@@ -8,8 +10,10 @@ import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
 import 'package:Pouchers/ui/widgets/gap.dart';
 import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../../../../../../common/app_strings.dart';
@@ -17,9 +21,11 @@ import '../../domain/enum/receipt_type.dart';
 import '../../domain/enum/transaction_type.dart';
 import '../../domain/parser/parse_transaction_title.dart';
 import 'receipts/airtime_or_data_receipt.dart';
+import 'receipts/betting_receipt.dart';
 import 'receipts/build_electricity_receipt.dart';
 import 'receipts/operator_receipt.dart';
 import 'receipts/receipt_status.dart';
+import 'receipts/vouchers_receipt.dart';
 import 'receipts/wallet_funding_receipt.dart';
 import 'sheets/share_receipts_sheet.dart';
 
@@ -36,7 +42,7 @@ class TransactionDetailsView extends ConsumerStatefulWidget {
 class _TransactionDetailsViewState
     extends ConsumerState<TransactionDetailsView> {
   late ReceiptNotifier _receiptNotifier;
-  final padding = EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h);
+  final padding = EdgeInsets.symmetric(horizontal: 25.w, vertical: 15.h);
 
   @override
   void initState() {
@@ -57,142 +63,168 @@ class _TransactionDetailsViewState
         : '+${(widget.transactionHistory.amount + widget.transactionHistory.transactionFee).toNaira}';
 
     return Scaffold(
-      appBar: AppBar(title: Text(AppString.transactionReceipt)),
+      appBar: AppBar(
+          title: Text(AppString.transactionReceipt),
+          backgroundColor: AppColors.receiptBgColor),
+      backgroundColor: AppColors.receiptBgColor,
       body: SafeArea(
+          minimum: EdgeInsets.symmetric(horizontal: 20.w),
           child: SingleChildScrollView(
-        child: Column(children: [
-          Screenshot(
-            controller:
-                ref.watch(receiptNotifierProvider).screenshotController!,
-            child: Container(
-              color: context.scaffoldBackgroundColor,
-              padding: padding,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    height: 121.h,
-                    width: 121.w,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.kColorGreen.withOpacity(.30)),
-                    child: Center(
-                      child: Container(
-                        height: 80.h,
-                        width: 80.w,
-                        decoration: const BoxDecoration(
+            child: Column(children: [
+              Screenshot(
+                controller:
+                    ref.watch(receiptNotifierProvider).screenshotController!,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: context.scaffoldBackgroundColor,
+                      borderRadius: BorderRadius.circular(20.r)),
+                  padding: padding,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Align(
+                          alignment: Alignment.topRight,
+                          child: SvgPicture.asset(AppImage.logo,
+                              width: 48.76.w, height: 60.h)),
+                      const Gap(height: 10),
+                      Container(
+                        height: 121.h,
+                        width: 121.w,
+                        decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: AppColors.kColorGreen),
-                        child: const Center(
-                            child: Icon(Icons.check,
-                                color: AppColors.white, size: 48)),
+                            color: AppColors.kColorGreen.withOpacity(.30)),
+                        child: Center(
+                          child: Container(
+                            height: 80.h,
+                            width: 80.w,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.kColorGreen),
+                            child: const Center(
+                                child: Icon(Icons.check,
+                                    color: AppColors.white, size: 48)),
+                          ),
+                        ),
                       ),
-                    ),
+                      const Gap(height: 14),
+                      Text(
+                        AppString.transactionSuccess,
+                        style: context.headlineLarge?.copyWith(
+                            fontSize: 20,
+                            color: AppColors.limeGreen,
+                            fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.center,
+                      ),
+                      const Gap(height: 4),
+                      Text(
+                        AppString.transactionSuccessSummary,
+                        style: context.headlineMedium?.copyWith(
+                            fontSize: 16,
+                            color: AppColors.kDarkGrey100,
+                            fontWeight: FontWeight.w400),
+                        textAlign: TextAlign.center,
+                      ),
+                      const Gap(height: 16),
+                      _biuldTitle(context, amount, color),
+                      const Gap(height: 26),
+                      _buildTransactionDate(context),
+                      const Gap(height: 27),
+                      switch (widget.transactionHistory.transactionCategory) {
+                        ServiceCategory.p2p => TransferReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.airtime => AirtimeOrDataReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.data => AirtimeOrDataReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.voucherRedeem => VouchersReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.voucherPurchase => VouchersReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.fundWallet => WalletReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.adminDebitWallet => StatusReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.adminCreditWallet => StatusReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.cable => OperatorReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.electricity => ElectricityReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.betting => BettingReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.localBankTransfer => TransferReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.moneyRequest => StatusReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.referralBonusPayment => StatusReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.education => StatusReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.internet => StatusReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.createVirtualCard => StatusReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.fundVirtualCard => StatusReceipt(
+                            transactionHistory: widget.transactionHistory),
+                        null => StatusReceipt(
+                            transactionHistory: widget.transactionHistory)
+                      },
+                      const Gap(height: 29),
+                      InkWell(
+                        onTap: () async {
+                          await HapticFeedback.selectionClick();
+                          await AppHelper.copy(
+                              widget.transactionHistory.transactionId ?? '');
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 12.h),
+                          margin: EdgeInsets.symmetric(horizontal: 16.w),
+                          decoration: BoxDecoration(
+                              color: AppColors.kBackgroundColor,
+                              borderRadius: BorderRadius.circular(8.r)),
+                          child: Column(
+                            children: [
+                              Text(AppString.transactionNumber,
+                                  style: context.headlineMedium?.copyWith(
+                                      fontSize: 14,
+                                      color: AppColors.kIconGrey,
+                                      fontWeight: FontWeight.w400),
+                                  textAlign: TextAlign.center),
+                              const Gap(height: 8),
+                              Row(
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                        widget.transactionHistory
+                                                .transactionId ??
+                                            '',
+                                        style: context.headlineMedium?.copyWith(
+                                            fontSize: 16,
+                                            color: AppColors.kPrimaryTextColor,
+                                            fontWeight: FontWeight.w500),
+                                        textAlign: TextAlign.center),
+                                  ),
+                                  const Gap(width: 5),
+                                  SvgPicture.asset(AppImage.tableCopyIcon)
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const Gap(height: 14),
-                  Text(
-                    AppString.transactionSuccess,
-                    style: context.headlineLarge?.copyWith(
-                        fontSize: 20,
-                        color: AppColors.limeGreen,
-                        fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(height: 4),
-                  Text(
-                    AppString.transactionSuccessSummary,
-                    style: context.headlineMedium?.copyWith(
-                        fontSize: 16,
-                        color: AppColors.kDarkGrey100,
-                        fontWeight: FontWeight.w400),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(height: 16),
-                  _biuldTitle(context, amount, color),
-                  const Gap(height: 26),
-                  _buildTransactionDate(context),
-                  const Gap(height: 27),
-                  switch (widget.transactionHistory.transactionCategory) {
-                    ServiceCategory.p2p => TransferReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.airtime => AirtimeOrDataReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.data => AirtimeOrDataReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.voucherRedeem => StatusReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.voucherPurchase => StatusReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.fundWallet => WalletReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.adminDebitWallet => StatusReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.adminCreditWallet => StatusReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.cable => OperatorReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.electricity => ElectricityReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.betting => OperatorReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.localBankTransfer => TransferReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.moneyRequest => StatusReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.referralBonusPayment => StatusReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.education => StatusReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.internet => StatusReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.createVirtualCard => StatusReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    ServiceCategory.fundVirtualCard => StatusReceipt(
-                        transactionHistory: widget.transactionHistory),
-                    null => StatusReceipt(
-                        transactionHistory: widget.transactionHistory)
-                  },
-                  const Gap(height: 29),
-                  Container(
-                    width: double.infinity,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                    margin: EdgeInsets.symmetric(horizontal: 16.w),
-                    decoration: BoxDecoration(
-                        color: AppColors.kBackgroundColor,
-                        borderRadius: BorderRadius.circular(8.r)),
-                    child: Column(
-                      children: [
-                        Text(AppString.transactionNumber,
-                            style: context.headlineMedium?.copyWith(
-                                fontSize: 14,
-                                color: AppColors.kIconGrey,
-                                fontWeight: FontWeight.w400),
-                            textAlign: TextAlign.center),
-                        const Gap(height: 8),
-                        Text(widget.transactionHistory.transactionId ?? '',
-                            style: context.headlineMedium?.copyWith(
-                                fontSize: 16,
-                                color: AppColors.kPrimaryTextColor,
-                                fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.center)
-                      ],
-                    ),
-                  ),
-                  const Gap(height: 14),
-                ],
+                ),
               ),
-            ),
-          ),
-          Padding(
-            padding: padding,
-            child: ElevatedButtonWidget(
-                title: AppString.getReceipt,
-                loading: ref.watch(receiptNotifierProvider).isProcessing,
-                onPressed: _handleReceiptAction),
-          )
-        ]),
-      )),
+              const Gap(height: 30),
+              ElevatedButtonWidget(
+                  title: AppString.getReceipt,
+                  loading: ref.watch(receiptNotifierProvider).isProcessing,
+                  onPressed: _handleReceiptAction)
+            ]),
+          )),
     );
   }
 
@@ -223,7 +255,7 @@ class _TransactionDetailsViewState
   Row _buildTransactionDate(BuildContext context) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          widget.transactionHistory.updatedAt?.monthDayYear ?? '',
+          widget.transactionHistory.updatedAt?.dateMonthYear ?? '',
           widget.transactionHistory.updatedAt?.timeAloneWithMeridian12 ?? ''
         ]
             .map((date) => Container(

@@ -108,4 +108,5 @@ class AppColors {
   static const Color contentColorRed = Color(0xFFE80054);
   static const Color contentColorCyan = Color(0xFF50E4FF);
   static const Color silver = Color(0xFFC0C0C0);
+  static const Color receiptBgColor = Color(0xFFF1F1F8);
 }
