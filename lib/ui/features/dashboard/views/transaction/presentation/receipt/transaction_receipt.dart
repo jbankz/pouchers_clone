@@ -37,9 +37,6 @@ Future<pw.Widget> generateTransactionReceipt(
       ? '-${transactionHistory?.amount.toNaira}'
       : '+${transactionHistory?.amount.toNaira}';
 
-  final logo = await rootBundle.load(AppImage.logo1);
-  final appLogo = logo.buffer.asUint8List();
-
   return pw.Column(children: [
     pw.Align(
         alignment: Alignment.topRight,
