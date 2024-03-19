@@ -111,6 +111,7 @@ class AppImage {
   static String user = "${_iconPath}user.svg";
   static String customerService = "${_iconPath}customer_service.svg";
   static String logo = "${_iconPath}logo.svg";
+  static String fullLogo = "${_iconPath}full_logo.svg";
   static String logOut = "${_iconPath}log_out.svg";
   static String pointedArrow = "${_iconPath}pointed_arrow.svg";
   static String exclamation = "${_iconPath}exclamation.svg";
@@ -152,4 +153,8 @@ class AppImage {
   static String pdf = "${_iconPath}pdf.svg";
   static String image = "${_iconPath}image.svg";
   static String share = "${_iconPath}share.svg";
+  static String receiptFullNameLogo = "${_iconPath}receipt_logo.svg";
+  static String receiptLogo = "${_iconPath}receipt_logo.png";
+  static String receiptLogoBadge = "${_iconPath}receipt_logo_badge.png";
+  static String pouchers = "${_iconPath}pouchers.png";
 }

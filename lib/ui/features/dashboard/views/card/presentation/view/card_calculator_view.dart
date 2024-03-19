@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:Pouchers/app/app.router.dart';
 import 'package:Pouchers/app/core/router/page_router.dart';
 import 'package:Pouchers/ui/common/app_colors.dart';
@@ -14,6 +16,7 @@ import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -29,7 +32,8 @@ class CardCalculatorView extends ConsumerStatefulWidget {
   ConsumerState<CardCalculatorView> createState() => _CardCalculatorViewState();
 }
 
-class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
+class _CardCalculatorViewState extends ConsumerState<CardCalculatorView>
+    with TickerProviderStateMixin {
   final VirtualKeyPadController _controller =
       VirtualKeyPadController(applyPinLength: false);
   late ParamNotifier _paramNotifier;
@@ -39,6 +43,9 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
   String _errorMessage = '';
   bool get _isBtnDisabled =>
       _controller.pins.isEmpty || _errorMessage.isNotEmpty;
+
+  late AnimationController _keyboardAnimationController;
+  late AnimationController _scaleButtonController;
 
   @override
   void initState() {
@@ -50,7 +57,19 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
             : AppString.dollarSymbol,
         amountColor: AppColors.white,
         koboColor: AppColors.white.withOpacity(.50));
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
+    _keyboardAnimationController = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 500),
+        reverseDuration: const Duration(milliseconds: 150))
+      ..forward();
+    _scaleButtonController = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 600),
+        reverseDuration: const Duration(milliseconds: 150))
+      ..forward();
+
+    Future.microtask(() {
       _controller.addListener(() => setState(() {}));
       if (!_paramNotifier.isNairaCardType) {
         ref
@@ -64,6 +83,8 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
   void dispose() {
     super.dispose();
     _cancelToken.cancel();
+    _keyboardAnimationController.dispose();
+    _scaleButtonController.dispose();
   }
 
   @override
@@ -78,6 +99,7 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
       appBar: AppBar(
           backgroundColor: AppColors.kPurpleColor,
           iconTheme: const IconThemeData(color: Colors.white),
+          leading: _buildBackButton(),
           title: Text(param.appTitle,
               style: context.bodyLarge?.copyWith(
                   color: AppColors.white,
@@ -175,24 +197,29 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
             )),
             _buildVirtualKeyPad(),
             const Gap(height: 23),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: ElevatedButtonWidget(
-                  bacgroundColor: _isBtnDisabled ? null : AppColors.kPurpleDeep,
-                  title: AppString.fundCard,
-                  onPressed: _isBtnDisabled
-                      ? null
-                      : () {
-                          if (!param.isNairaCardType) {
-                            _paramNotifier.setExchangeRate(num.parse(
-                                (cardState.exchangeRate)?.rate ?? '0'));
-                          }
-                          PageRouter.pushNamed(Routes.cardCreationSymmaryView,
-                              args: CardCreationSymmaryViewArguments(
-                                  cardDto: CardDto(
-                                      amount: _moneyMaskedTextController
-                                          .numberValue)));
-                        }),
+            ScaleTransition(
+              scale: _scaleButtonController,
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: ElevatedButtonWidget(
+                    bacgroundColor:
+                        _isBtnDisabled ? null : AppColors.kPurpleDeep,
+                    title: AppString.fundCard,
+                    onPressed: _isBtnDisabled
+                        ? null
+                        : () {
+                            if (!param.isNairaCardType) {
+                              _paramNotifier.setExchangeRate(num.parse(
+                                  (cardState.exchangeRate)?.rate ?? '0'));
+                            }
+                            PageRouter.pushNamed(Routes.cardCreationSymmaryView,
+                                args: CardCreationSymmaryViewArguments(
+                                    cardDto: CardDto(
+                                        amount: _moneyMaskedTextController
+                                            .numberValue)));
+                          }),
+              ),
             )
           ],
         ),
@@ -200,25 +227,41 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView> {
     );
   }
 
-  Widget _buildVirtualKeyPad() => VirtualKeyPad(
-        keyPadController: _controller,
-        keypadConfig: KeypadConfig(
-            keypadColor: AppColors.white, showPoint: true, decimal: 2),
-        onTyping: () {
-          _controller.pins.join().isEmpty
-              ? _moneyMaskedTextController.updateValue(0)
-              : _moneyMaskedTextController
-                  .updateValue(double.parse(_controller.pins.join()));
+  Widget _buildVirtualKeyPad() => SlideTransition(
+        position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+            .animate(_keyboardAnimationController),
+        child: VirtualKeyPad(
+          keyPadController: _controller,
+          keypadConfig: KeypadConfig(
+              keypadColor: AppColors.white, showPoint: true, decimal: 2),
+          onTyping: () {
+            _controller.pins.join().isEmpty
+                ? _moneyMaskedTextController.updateValue(0)
+                : _moneyMaskedTextController
+                    .updateValue(double.parse(_controller.pins.join()));
 
-          if (_moneyMaskedTextController.numberValue >
-              num.parse(walletDao.wallet.balance ?? '0')) {
-            _errorMessage = AppString.insufficientFund;
-          } else {
-            _errorMessage = '';
-          }
+            if (_moneyMaskedTextController.numberValue >
+                num.parse(walletDao.wallet.balance ?? '0')) {
+              _errorMessage = AppString.insufficientFund;
+            } else {
+              _errorMessage = '';
+            }
 
-          setState(() {});
+            setState(() {});
+          },
+          onComplete: (_) {},
+        ),
+      );
+
+  InkWell _buildBackButton() => InkWell(
+        customBorder: const CircleBorder(),
+        child:
+            Icon(Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios),
+        onTap: () async {
+          await HapticFeedback.selectionClick();
+          await _scaleButtonController.reverse();
+          await _keyboardAnimationController.reverse();
+          PageRouter.pop();
         },
-        onComplete: (_) {},
       );
 }

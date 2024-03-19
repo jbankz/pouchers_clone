@@ -29,14 +29,6 @@ class HomeAppBar extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  // Container(
-                  //     height: 35.h,
-                  //     width: 35.w,
-                  //     decoration: const BoxDecoration(
-                  //         shape: BoxShape.circle,
-                  //         color: AppColors.paleLavenderGray),
-                  //     child: SvgPicture.asset(AppImage.bell,
-                  //         fit: BoxFit.scaleDown)),
                   ProfileImage(
                       height: 35,
                       width: 35,

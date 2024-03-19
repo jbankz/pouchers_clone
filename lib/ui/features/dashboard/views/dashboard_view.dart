@@ -3,6 +3,7 @@ import 'package:Pouchers/ui/common/app_colors.dart';
 import 'package:Pouchers/ui/features/dashboard/model/bottom_nav.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -63,19 +64,28 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                 offset: const Offset(0, -2))
           ],
         ),
-        child: BottomNavigationBar(
-            currentIndex: _pageIndex,
-            onTap: onTap,
-            items: List.generate(bottomNav.length, (index) {
-              final button = bottomNav[index];
-              return BottomNavigationBarItem(
-                  icon: SvgPicture.asset(button.icon,
-                      color: _pageIndex == index
-                          ? AppColors.kPrimaryColor
-                          : AppColors.kSecondaryTextColor),
-                  label: button.label);
-            }).toList()),
+        child: Theme(
+          data: ThemeData(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent),
+          child: BottomNavigationBar(
+              currentIndex: _pageIndex,
+              onTap: onTap,
+              type: BottomNavigationBarType.fixed,
+              items: List.generate(bottomNav.length, (index) {
+                final button = bottomNav[index];
+                return BottomNavigationBarItem(
+                    icon: SvgPicture.asset(button.icon,
+                        color: _pageIndex == index
+                            ? AppColors.kPrimaryColor
+                            : AppColors.kSecondaryTextColor),
+                    label: button.label);
+              }).toList()),
+        ),
       ));
 
-  void onTap(int value) => setState(() => _pageIndex = value);
+  Future<void> onTap(int value) async {
+    await HapticFeedback.selectionClick();
+    setState(() => _pageIndex = value);
+  }
 }

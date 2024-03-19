@@ -25,6 +25,7 @@ import 'receipts/betting_receipt.dart';
 import 'receipts/build_electricity_receipt.dart';
 import 'receipts/operator_receipt.dart';
 import 'receipts/receipt_status.dart';
+import 'receipts/receipts_tiles.dart';
 import 'receipts/vouchers_receipt.dart';
 import 'receipts/wallet_funding_receipt.dart';
 import 'sheets/share_receipts_sheet.dart';
@@ -84,9 +85,9 @@ class _TransactionDetailsViewState
                     children: [
                       Align(
                           alignment: Alignment.topRight,
-                          child: SvgPicture.asset(AppImage.logo,
-                              width: 48.76.w, height: 60.h)),
-                      const Gap(height: 10),
+                          child: SvgPicture.asset(AppImage.fullLogo,
+                              width: 124.17.w, height: 29.78.h)),
+                      const Gap(height: 20),
                       Container(
                         height: 121.h,
                         width: 121.w,
@@ -127,8 +128,12 @@ class _TransactionDetailsViewState
                       const Gap(height: 16),
                       _biuldTitle(context, amount, color),
                       const Gap(height: 26),
-                      _buildTransactionDate(context),
-                      const Gap(height: 27),
+                      ReceiptTiles(
+                          title: AppString.transactionDate,
+                          value: widget.transactionHistory.updatedAt
+                                  ?.dateMonthYearTime ??
+                              ''),
+                      const Gap(height: 16),
                       switch (widget.transactionHistory.transactionCategory) {
                         ServiceCategory.p2p => TransferReceipt(
                             transactionHistory: widget.transactionHistory),
@@ -194,18 +199,20 @@ class _TransactionDetailsViewState
                                   textAlign: TextAlign.center),
                               const Gap(height: 8),
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Flexible(
-                                    child: Text(
-                                        widget.transactionHistory
-                                                .transactionId ??
-                                            '',
-                                        style: context.headlineMedium?.copyWith(
-                                            fontSize: 16,
-                                            color: AppColors.kPrimaryTextColor,
-                                            fontWeight: FontWeight.w500),
-                                        textAlign: TextAlign.center),
-                                  ),
+                                      child: Text(
+                                          widget.transactionHistory
+                                                  .transactionId ??
+                                              '',
+                                          style: context.headlineMedium
+                                              ?.copyWith(
+                                                  fontSize: 16,
+                                                  color: AppColors
+                                                      .kPrimaryTextColor,
+                                                  fontWeight: FontWeight.w500),
+                                          textAlign: TextAlign.center)),
                                   const Gap(width: 5),
                                   SvgPicture.asset(AppImage.tableCopyIcon)
                                 ],
@@ -214,6 +221,31 @@ class _TransactionDetailsViewState
                           ),
                         ),
                       ),
+                      const Gap(height: 18.81),
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8.88.w, vertical: 8.88.h),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.88.r),
+                            color: AppColors.kPrimaryColor),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(AppImage.logo,
+                                color: AppColors.white,
+                                width: 36.09.w,
+                                height: 44.41.h),
+                            const Gap(width: 7.99),
+                            Flexible(
+                              child: Text(AppString.notOnPoucher,
+                                  style: context.bodyMedium?.copyWith(
+                                      color: AppColors.kBackgroundColor,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500)),
+                            )
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -250,26 +282,6 @@ class _TransactionDetailsViewState
             ),
           ),
         ],
-      );
-
-  Row _buildTransactionDate(BuildContext context) => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          widget.transactionHistory.updatedAt?.dateMonthYear ?? '',
-          widget.transactionHistory.updatedAt?.timeAloneWithMeridian12 ?? ''
-        ]
-            .map((date) => Container(
-                margin: EdgeInsets.symmetric(horizontal: 14.w),
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.r),
-                    border: Border.all(color: AppColors.kSecondaryTextColor)),
-                child: Text(date,
-                    style: context.headlineLarge?.copyWith(
-                        color: AppColors.kSecondaryTextColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500))))
-            .toList(),
       );
 
   Future<void> _handleReceiptAction() async {

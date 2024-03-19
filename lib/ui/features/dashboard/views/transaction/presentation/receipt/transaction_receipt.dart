@@ -18,7 +18,13 @@ Future<pw.Widget> generateTransactionReceipt(
     TransactionHistory? transactionHistory) async {
   final dmSansFont = await rootBundle.load("assets/fonts/DMSans-Bold.ttf");
   final img = await rootBundle.load(AppImage.check);
+  final fullNameLogo = await rootBundle.load(AppImage.pouchers);
+  final fullLogoBadge = await rootBundle.load(AppImage.receiptLogoBadge);
+
   final imageBytes = img.buffer.asUint8List();
+  final fullNameLogoBytes = fullNameLogo.buffer.asUint8List();
+  final fullLogoBadgeBytes = fullLogoBadge.buffer.asUint8List();
+
   final pw.Font getDmSansFont = pw.Font.ttf(dmSansFont);
   final robotFont = await PdfGoogleFonts.robotoBold();
 
@@ -37,9 +43,9 @@ Future<pw.Widget> generateTransactionReceipt(
   return pw.Column(children: [
     pw.Align(
         alignment: Alignment.topRight,
-        child: pw.Image(pw.MemoryImage(appLogo), width: 48.76.w, height: 60.h)),
-    // pw.SvgPicture.asset(AppImage.logo, width: 48.76.w, height: 60.h)),
-    pw.SizedBox(height: 10),
+        child: pw.Image(pw.MemoryImage(fullNameLogoBytes),
+            width: 100.w, height: 100.h)),
+    pw.SizedBox(height: 20),
     pw.Container(
         height: 121, width: 121, child: pw.Image(pw.MemoryImage(imageBytes))),
     pw.SizedBox(height: 14),
@@ -83,26 +89,30 @@ Future<pw.Widget> generateTransactionReceipt(
       ],
     ),
     pw.SizedBox(height: 26),
-    pw.Row(
-      mainAxisSize: pw.MainAxisSize.min,
-      children: [
-        transactionHistory.updatedAt?.dateMonthYear ?? '',
-        transactionHistory.updatedAt?.timeAloneWithMeridian12 ?? ''
-      ]
-          .map((date) => pw.Container(
-              margin: pw.EdgeInsets.symmetric(horizontal: 14.w),
-              padding: pw.EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-              decoration: pw.BoxDecoration(
-                  borderRadius: pw.BorderRadius.circular(10.r),
-                  border: pw.Border.all(
-                      color: PdfColor.fromInt(
-                          AppColors.kSecondaryTextColor.value))),
-              child: pw.Text(
-                date,
-              )))
-          .toList(),
-    ),
-    pw.SizedBox(height: 27),
+    // pw.Row(
+    //   mainAxisSize: pw.MainAxisSize.min,
+    //   children: [
+    //     transactionHistory.updatedAt?.dateMonthYear ?? '',
+    //     transactionHistory.updatedAt?.timeAloneWithMeridian12 ?? ''
+    //   ]
+    //       .map((date) => pw.Container(
+    //           margin: pw.EdgeInsets.symmetric(horizontal: 14.w),
+    //           padding: pw.EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+    //           decoration: pw.BoxDecoration(
+    //               borderRadius: pw.BorderRadius.circular(10.r),
+    //               border: pw.Border.all(
+    //                   color: PdfColor.fromInt(
+    //                       AppColors.kSecondaryTextColor.value))),
+    //           child: pw.Text(
+    //             date,
+    //           )))
+    //       .toList(),
+    // ),
+    _buildTile(
+        title: AppString.transactionDate,
+        value: transactionHistory.updatedAt?.dateMonthYearTime ?? '',
+        font: robotFont),
+    pw.SizedBox(height: 16),
     switch (transactionHistory.transactionCategory) {
       ServiceCategory.p2p => _buildTransferReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
@@ -165,7 +175,29 @@ Future<pw.Widget> generateTransactionReceipt(
         ],
       ),
     ),
-    pw.SizedBox(height: 14),
+    pw.SizedBox(height: 15),
+    pw.Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 8.88.w, vertical: 8.88.h),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.88.r),
+          color: PdfColor.fromInt(AppColors.kPrimaryColor.value)),
+      child: Row(
+        children: [
+          pw.Image(pw.MemoryImage(fullLogoBadgeBytes),
+              width: 36.09.w, height: 44.41.h),
+          pw.SizedBox(width: 7.99),
+          Flexible(
+            child: Text(AppString.notOnPoucher,
+                style: pw.TextStyle(
+                    color: PdfColor.fromInt(AppColors.kBackgroundColor.value),
+                    fontSize: 13,
+                    font: await PdfGoogleFonts.dMSansMedium(),
+                    fontWeight: pw.FontWeight.normal)),
+          )
+        ],
+      ),
+    )
   ]);
 }
 

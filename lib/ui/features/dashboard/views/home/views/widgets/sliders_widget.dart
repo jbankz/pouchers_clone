@@ -31,10 +31,8 @@ class SlidersWidget extends HookConsumerWidget {
                             child: CachedNetworkImage(
                               imageUrl: banners[index].imageUrl ?? '',
                               progressIndicatorBuilder: (_, __, ___) =>
-                                  Image.network(
-                                banners[index].imageUrl ?? '',
-                                fit: BoxFit.fill,
-                              ),
+                                  Image.network(banners[index].imageUrl ?? '',
+                                      fit: BoxFit.fill),
                               errorWidget: (_, __, ___) => Image.network(
                                 banners[index].imageUrl ?? '',
                                 fit: BoxFit.fill,

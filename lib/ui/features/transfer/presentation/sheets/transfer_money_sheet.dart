@@ -39,10 +39,11 @@ class TransferMoneySheet extends ConsumerStatefulWidget {
 }
 
 class _TransferMoneySheetState extends ConsumerState<TransferMoneySheet>
-    with $TransferMoneySheet {
+    with $TransferMoneySheet, SingleTickerProviderStateMixin {
   late WalletNotifier _walletNotifier;
 
   final CancelToken _cancelToken = CancelToken();
+  late AnimationController _animationController;
 
   int _uiIndex = 0;
   String _searchQuery = '';
@@ -57,7 +58,10 @@ class _TransferMoneySheetState extends ConsumerState<TransferMoneySheet>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 250))
+      ..forward();
+    Future.microtask(() {
       _walletNotifier = ref.read(walletNotifierProvider.notifier);
       ref.read(localBankNotifierProvider.notifier).getLocalBanks(_cancelToken);
     });
@@ -67,6 +71,7 @@ class _TransferMoneySheetState extends ConsumerState<TransferMoneySheet>
   void dispose() {
     super.dispose();
     _cancelToken.cancel();
+    _animationController.dispose();
     disposeForm();
   }
 
@@ -96,7 +101,14 @@ class _TransferMoneySheetState extends ConsumerState<TransferMoneySheet>
                   transitionBuilder: (child, animation) =>
                       FadeTransition(opacity: animation, child: child),
                   child: switch (_uiIndex) {
-                    0 => _buildFirstUI(context),
+                    0 => SlideTransition(
+                        position: Tween<Offset>(
+                                begin: const Offset(0, 1), end: Offset.zero)
+                            .animate(_animationController),
+                        child: FadeTransition(
+                            opacity: _animationController,
+                            child: _buildFirstUI(context)),
+                      ),
                     1 => _buildSecondUI(context, bankAccount),
                     2 => _buildThirdUI(context),
                     int() => const SizedBox.shrink()

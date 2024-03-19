@@ -596,4 +596,6 @@ class AppString {
   static String downloadImage = 'Download as Image';
   static String showReceiptMessage = 'Receipt generated';
   static String voucherCode = 'Voucher Code';
+  static String notOnPoucher =
+      'Not on Pouchers? Download now to access global financial & value-added services.';
 }

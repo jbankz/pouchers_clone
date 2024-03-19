@@ -145,8 +145,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                       title: AppString.vouchers,
                                       onPressed: () => PageRouter.pushNamed(
                                           Routes.voucherView)),
-                                  // onPressed: () => pushTo(context,
-                                  //     const Vouchers(isGuest: false))),
                                   Gap(width: 37.w),
                                   BuildQuickActionButton(
                                       icon: AppImage.educationIcon,

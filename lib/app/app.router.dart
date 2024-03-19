@@ -10,23 +10,23 @@ import 'package:flutter/material.dart' as _i81;
 import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/enum/two_fa_type.dart'
     as _i83;
 import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/first_security_question_view.dart'
-    as _i42;
-import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/second_security_question_view.dart'
-    as _i43;
-import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/selected_question_view.dart'
-    as _i47;
-import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_code_generator_view.dart'
-    as _i45;
-import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_code_view.dart'
-    as _i46;
-import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_view.dart'
-    as _i44;
-import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/two_fa_intro_view.dart'
     as _i41;
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/second_security_question_view.dart'
+    as _i42;
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/selected_question_view.dart'
+    as _i46;
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_code_generator_view.dart'
+    as _i44;
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_code_view.dart'
+    as _i45;
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/two_fa_google_authenticator_view.dart'
+    as _i43;
+import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/two_fa_intro_view.dart'
+    as _i40;
 import 'package:Pouchers/ui/features/authentication/presentation/view/otp/otp_view.dart'
     as _i13;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/confirm_password_view.dart'
-    as _i49;
+    as _i48;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/enum/password_confirmation_type.dart'
     as _i84;
 import 'package:Pouchers/ui/features/authentication/presentation/view/password/forgot_password_view.dart'
@@ -60,11 +60,11 @@ import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.da
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/bvn_requirement_view.dart'
     as _i30;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/card_calculator_view.dart'
-    as _i31;
+    as _i49;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/card_creation_summary_view.dart'
-    as _i32;
+    as _i31;
 import 'package:Pouchers/ui/features/dashboard/views/card/presentation/view/virtual_card_detail_view.dart'
-    as _i34;
+    as _i33;
 import 'package:Pouchers/ui/features/dashboard/views/dashboard_view.dart'
     as _i7;
 import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart'
@@ -92,13 +92,13 @@ import 'package:Pouchers/ui/features/payment/presentation/view/ussd_view.dart'
 import 'package:Pouchers/ui/features/profile/presentation/views/account/account_details_view.dart'
     as _i54;
 import 'package:Pouchers/ui/features/profile/presentation/views/biometric/biometric_setup_view.dart'
-    as _i40;
+    as _i39;
 import 'package:Pouchers/ui/features/profile/presentation/views/biometric/biometric_view.dart'
     as _i24;
 import 'package:Pouchers/ui/features/profile/presentation/views/delete/delete_view.dart'
     as _i50;
 import 'package:Pouchers/ui/features/profile/presentation/views/disable/disable_view.dart'
-    as _i48;
+    as _i47;
 import 'package:Pouchers/ui/features/profile/presentation/views/kyc/bvn/bvn_view.dart'
     as _i27;
 import 'package:Pouchers/ui/features/profile/presentation/views/kyc/id/id_view.dart'
@@ -106,19 +106,19 @@ import 'package:Pouchers/ui/features/profile/presentation/views/kyc/id/id_view.d
 import 'package:Pouchers/ui/features/profile/presentation/views/kyc/utility/utility_bill_view.dart'
     as _i29;
 import 'package:Pouchers/ui/features/profile/presentation/views/profile/phone/change_password_view.dart'
-    as _i38;
-import 'package:Pouchers/ui/features/profile/presentation/views/profile/phone/requst_change_of_phone_number_view.dart'
-    as _i36;
-import 'package:Pouchers/ui/features/profile/presentation/views/profile/phone/verify_phone_number_view.dart'
     as _i37;
+import 'package:Pouchers/ui/features/profile/presentation/views/profile/phone/requst_change_of_phone_number_view.dart'
+    as _i35;
+import 'package:Pouchers/ui/features/profile/presentation/views/profile/phone/verify_phone_number_view.dart'
+    as _i36;
 import 'package:Pouchers/ui/features/profile/presentation/views/profile/profile_image_view.dart'
     as _i64;
 import 'package:Pouchers/ui/features/profile/presentation/views/profile/profile_view.dart'
-    as _i35;
+    as _i34;
 import 'package:Pouchers/ui/features/profile/presentation/views/referral/referral_view.dart'
-    as _i39;
+    as _i38;
 import 'package:Pouchers/ui/features/profile/presentation/views/wallet/fund_wallet_view.dart'
-    as _i33;
+    as _i32;
 import 'package:Pouchers/ui/features/requests/domain/model/request_model.dart'
     as _i90;
 import 'package:Pouchers/ui/features/requests/presentation/view/request_money_view.dart'
@@ -140,11 +140,11 @@ import 'package:Pouchers/ui/features/transfer/presentation/views/schedule_transf
 import 'package:Pouchers/ui/features/transfer/presentation/views/transfer_money_confirmation_view.dart'
     as _i51;
 import 'package:Pouchers/ui/features/transfer/presentation/views/transfer_money_view.dart'
-    as _i72;
+    as _i73;
 import 'package:Pouchers/ui/features/transfer/presentation/views/transfer_receipt_view.dart'
     as _i75;
 import 'package:Pouchers/ui/features/transfer/presentation/views/transfer_success_view.dart'
-    as _i73;
+    as _i72;
 import 'package:Pouchers/ui/features/utilities/presentation/views/airtime/airtime_view.dart'
     as _i10;
 import 'package:Pouchers/ui/features/utilities/presentation/views/airtime/schedule_airtime_view.dart'
@@ -242,8 +242,6 @@ class Routes {
 
   static const requestBVNView = '/request-bv-nView';
 
-  static const cardCalculatorView = '/card-calculator-view';
-
   static const cardCreationSymmaryView = '/card-creation-symmary-view';
 
   static const fundWalletView = '/fund-wallet-view';
@@ -283,6 +281,8 @@ class Routes {
   static const disableView = '/disable-view';
 
   static const confirmPasswordView = '/confirm-password-view';
+
+  static const cardCalculatorView = '/card-calculator-view';
 
   static const deleteView = '/delete-view';
 
@@ -329,9 +329,9 @@ class Routes {
 
   static const ussdView = '/ussd-view';
 
-  static const transferMoneyView = '/transfer-money-view';
-
   static const transferSuccessState = '/transfer-success-state';
+
+  static const transferMoneyView = '/transfer-money-view';
 
   static const scheduleTransferMoneyView = '/schedule-transfer-money-view';
 
@@ -377,7 +377,6 @@ class Routes {
     idView,
     utilityBillView,
     requestBVNView,
-    cardCalculatorView,
     cardCreationSymmaryView,
     fundWalletView,
     virtualCardDetailView,
@@ -396,6 +395,7 @@ class Routes {
     selectedQuestionView,
     disableView,
     confirmPasswordView,
+    cardCalculatorView,
     deleteView,
     transferMoneyConfirmationView,
     notificationView,
@@ -418,8 +418,8 @@ class Routes {
     voucherSuccessView,
     voucherHistoryView,
     ussdView,
-    transferMoneyView,
     transferSuccessState,
+    transferMoneyView,
     scheduleTransferMoneyView,
     transferReceipt,
     transactionDetailsView,
@@ -549,80 +549,80 @@ class StackedRouter extends _i1.RouterBase {
       page: _i30.RequestBVNView,
     ),
     _i1.RouteDef(
-      Routes.cardCalculatorView,
-      page: _i31.CardCalculatorView,
-    ),
-    _i1.RouteDef(
       Routes.cardCreationSymmaryView,
-      page: _i32.CardCreationSymmaryView,
+      page: _i31.CardCreationSymmaryView,
     ),
     _i1.RouteDef(
       Routes.fundWalletView,
-      page: _i33.FundWalletView,
+      page: _i32.FundWalletView,
     ),
     _i1.RouteDef(
       Routes.virtualCardDetailView,
-      page: _i34.VirtualCardDetailView,
+      page: _i33.VirtualCardDetailView,
     ),
     _i1.RouteDef(
       Routes.profileView,
-      page: _i35.ProfileView,
+      page: _i34.ProfileView,
     ),
     _i1.RouteDef(
       Routes.requestChangeOfPhoneNumberView,
-      page: _i36.RequestChangeOfPhoneNumberView,
+      page: _i35.RequestChangeOfPhoneNumberView,
     ),
     _i1.RouteDef(
       Routes.verifyPhoneOtpView,
-      page: _i37.VerifyPhoneOtpView,
+      page: _i36.VerifyPhoneOtpView,
     ),
     _i1.RouteDef(
       Routes.changePhoneNumberView,
-      page: _i38.ChangePhoneNumberView,
+      page: _i37.ChangePhoneNumberView,
     ),
     _i1.RouteDef(
       Routes.referralView,
-      page: _i39.ReferralView,
+      page: _i38.ReferralView,
     ),
     _i1.RouteDef(
       Routes.biometricSetupView,
-      page: _i40.BiometricSetupView,
+      page: _i39.BiometricSetupView,
     ),
     _i1.RouteDef(
       Routes.twoFaAuthView,
-      page: _i41.TwoFaAuthView,
+      page: _i40.TwoFaAuthView,
     ),
     _i1.RouteDef(
       Routes.firstSecurityQuestionView,
-      page: _i42.FirstSecurityQuestionView,
+      page: _i41.FirstSecurityQuestionView,
     ),
     _i1.RouteDef(
       Routes.secondSecurityQuestionView,
-      page: _i43.SecondSecurityQuestionView,
+      page: _i42.SecondSecurityQuestionView,
     ),
     _i1.RouteDef(
       Routes.twoFaGoogleAuthenticatorView,
-      page: _i44.TwoFaGoogleAuthenticatorView,
+      page: _i43.TwoFaGoogleAuthenticatorView,
     ),
     _i1.RouteDef(
       Routes.twoFaGoogleAuthenticatorCodeGeneratorView,
-      page: _i45.TwoFaGoogleAuthenticatorCodeGeneratorView,
+      page: _i44.TwoFaGoogleAuthenticatorCodeGeneratorView,
     ),
     _i1.RouteDef(
       Routes.twoFaGoogleAuthenticatorCodeView,
-      page: _i46.TwoFaGoogleAuthenticatorCodeView,
+      page: _i45.TwoFaGoogleAuthenticatorCodeView,
     ),
     _i1.RouteDef(
       Routes.selectedQuestionView,
-      page: _i47.SelectedQuestionView,
+      page: _i46.SelectedQuestionView,
     ),
     _i1.RouteDef(
       Routes.disableView,
-      page: _i48.DisableView,
+      page: _i47.DisableView,
     ),
     _i1.RouteDef(
       Routes.confirmPasswordView,
-      page: _i49.ConfirmPasswordView,
+      page: _i48.ConfirmPasswordView,
+    ),
+    _i1.RouteDef(
+      Routes.cardCalculatorView,
+      page: _i49.CardCalculatorView,
     ),
     _i1.RouteDef(
       Routes.deleteView,
@@ -713,12 +713,12 @@ class StackedRouter extends _i1.RouterBase {
       page: _i71.UssdView,
     ),
     _i1.RouteDef(
-      Routes.transferMoneyView,
-      page: _i72.TransferMoneyView,
+      Routes.transferSuccessState,
+      page: _i72.TransferSuccessState,
     ),
     _i1.RouteDef(
-      Routes.transferSuccessState,
-      page: _i73.TransferSuccessState,
+      Routes.transferMoneyView,
+      page: _i73.TransferMoneyView,
     ),
     _i1.RouteDef(
       Routes.scheduleTransferMoneyView,
@@ -977,134 +977,138 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
-    _i31.CardCalculatorView: (data) {
-      return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i31.CardCalculatorView(),
-        settings: data,
-      );
-    },
-    _i32.CardCreationSymmaryView: (data) {
+    _i31.CardCreationSymmaryView: (data) {
       final args =
           data.getArgs<CardCreationSymmaryViewArguments>(nullOk: false);
       return _i1.buildAdaptivePageRoute<dynamic>(
         builder: (context) =>
-            _i32.CardCreationSymmaryView(key: args.key, cardDto: args.cardDto),
+            _i31.CardCreationSymmaryView(key: args.key, cardDto: args.cardDto),
         settings: data,
       );
     },
-    _i33.FundWalletView: (data) {
+    _i32.FundWalletView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i33.FundWalletView(),
+        builder: (context) => const _i32.FundWalletView(),
         settings: data,
       );
     },
-    _i34.VirtualCardDetailView: (data) {
+    _i33.VirtualCardDetailView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i34.VirtualCardDetailView(),
+        builder: (context) => const _i33.VirtualCardDetailView(),
         settings: data,
       );
     },
-    _i35.ProfileView: (data) {
+    _i34.ProfileView: (data) {
       return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const _i35.ProfileView(),
+            const _i34.ProfileView(),
         settings: data,
         opaque: false,
         transitionsBuilder: data.transition ?? _i1.TransitionsBuilders.fadeIn,
       );
     },
-    _i36.RequestChangeOfPhoneNumberView: (data) {
+    _i35.RequestChangeOfPhoneNumberView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i36.RequestChangeOfPhoneNumberView(),
+        builder: (context) => const _i35.RequestChangeOfPhoneNumberView(),
         settings: data,
       );
     },
-    _i37.VerifyPhoneOtpView: (data) {
+    _i36.VerifyPhoneOtpView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i37.VerifyPhoneOtpView(),
+        builder: (context) => const _i36.VerifyPhoneOtpView(),
         settings: data,
       );
     },
-    _i38.ChangePhoneNumberView: (data) {
+    _i37.ChangePhoneNumberView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i38.ChangePhoneNumberView(),
+        builder: (context) => const _i37.ChangePhoneNumberView(),
         settings: data,
       );
     },
-    _i39.ReferralView: (data) {
+    _i38.ReferralView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i39.ReferralView(),
+        builder: (context) => const _i38.ReferralView(),
         settings: data,
       );
     },
-    _i40.BiometricSetupView: (data) {
+    _i39.BiometricSetupView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i40.BiometricSetupView(),
+        builder: (context) => const _i39.BiometricSetupView(),
         settings: data,
       );
     },
-    _i41.TwoFaAuthView: (data) {
+    _i40.TwoFaAuthView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i41.TwoFaAuthView(),
+        builder: (context) => const _i40.TwoFaAuthView(),
         settings: data,
       );
     },
-    _i42.FirstSecurityQuestionView: (data) {
+    _i41.FirstSecurityQuestionView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i42.FirstSecurityQuestionView(),
+        builder: (context) => const _i41.FirstSecurityQuestionView(),
         settings: data,
       );
     },
-    _i43.SecondSecurityQuestionView: (data) {
+    _i42.SecondSecurityQuestionView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i43.SecondSecurityQuestionView(),
+        builder: (context) => const _i42.SecondSecurityQuestionView(),
         settings: data,
       );
     },
-    _i44.TwoFaGoogleAuthenticatorView: (data) {
+    _i43.TwoFaGoogleAuthenticatorView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i44.TwoFaGoogleAuthenticatorView(),
+        builder: (context) => const _i43.TwoFaGoogleAuthenticatorView(),
         settings: data,
       );
     },
-    _i45.TwoFaGoogleAuthenticatorCodeGeneratorView: (data) {
+    _i44.TwoFaGoogleAuthenticatorCodeGeneratorView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
         builder: (context) =>
-            const _i45.TwoFaGoogleAuthenticatorCodeGeneratorView(),
+            const _i44.TwoFaGoogleAuthenticatorCodeGeneratorView(),
         settings: data,
       );
     },
-    _i46.TwoFaGoogleAuthenticatorCodeView: (data) {
+    _i45.TwoFaGoogleAuthenticatorCodeView: (data) {
       final args = data.getArgs<TwoFaGoogleAuthenticatorCodeViewArguments>(
         orElse: () => const TwoFaGoogleAuthenticatorCodeViewArguments(),
       );
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => _i46.TwoFaGoogleAuthenticatorCodeView(
+        builder: (context) => _i45.TwoFaGoogleAuthenticatorCodeView(
             key: args.key, twoFaType: args.twoFaType),
         settings: data,
       );
     },
-    _i47.SelectedQuestionView: (data) {
+    _i46.SelectedQuestionView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i47.SelectedQuestionView(),
+        builder: (context) => const _i46.SelectedQuestionView(),
         settings: data,
       );
     },
-    _i48.DisableView: (data) {
+    _i47.DisableView: (data) {
       return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => const _i48.DisableView(),
+        builder: (context) => const _i47.DisableView(),
         settings: data,
       );
     },
-    _i49.ConfirmPasswordView: (data) {
+    _i48.ConfirmPasswordView: (data) {
       final args = data.getArgs<ConfirmPasswordViewArguments>(
         orElse: () => const ConfirmPasswordViewArguments(),
       );
       return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            _i49.ConfirmPasswordView(
+            _i48.ConfirmPasswordView(
                 key: args.key,
                 passwordConfirmationType: args.passwordConfirmationType),
+        settings: data,
+        opaque: false,
+        transitionsBuilder:
+            data.transition ?? _i1.TransitionsBuilders.slideBottom,
+      );
+    },
+    _i49.CardCalculatorView: (data) {
+      return _i81.PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const _i49.CardCalculatorView(),
         settings: data,
         opaque: false,
         transitionsBuilder:
@@ -1275,20 +1279,24 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
-    _i72.TransferMoneyView: (data) {
+    _i72.TransferSuccessState: (data) {
+      return _i81.PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const _i72.TransferSuccessState(),
+        settings: data,
+        opaque: false,
+        transitionsBuilder:
+            data.transition ?? _i1.TransitionsBuilders.slideBottom,
+      );
+    },
+    _i73.TransferMoneyView: (data) {
       final args = data.getArgs<TransferMoneyViewArguments>(
         orElse: () => const TransferMoneyViewArguments(),
       );
-      return _i1.buildAdaptivePageRoute<dynamic>(
-        builder: (context) => _i72.TransferMoneyView(
-            key: args.key, isRequestingMoney: args.isRequestingMoney),
-        settings: data,
-      );
-    },
-    _i73.TransferSuccessState: (data) {
       return _i81.PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const _i73.TransferSuccessState(),
+            _i73.TransferMoneyView(
+                key: args.key, isRequestingMoney: args.isRequestingMoney),
         settings: data,
         opaque: false,
         transitionsBuilder:
@@ -2479,20 +2487,6 @@ extension NavigatorStateExtension on _i91.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToCardCalculatorView([
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  ]) async {
-    return navigateTo<dynamic>(Routes.cardCalculatorView,
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
   Future<dynamic> navigateToCardCreationSymmaryView({
     _i81.Key? key,
     required _i82.CardDto cardDto,
@@ -2751,6 +2745,20 @@ extension NavigatorStateExtension on _i91.NavigationService {
     return navigateTo<dynamic>(Routes.confirmPasswordView,
         arguments: ConfirmPasswordViewArguments(
             key: key, passwordConfirmationType: passwordConfirmationType),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToCardCalculatorView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.cardCalculatorView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -3089,6 +3097,20 @@ extension NavigatorStateExtension on _i91.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToTransferSuccessState([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.transferSuccessState,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> navigateToTransferMoneyView({
     _i81.Key? key,
     bool isRequestingMoney = false,
@@ -3101,20 +3123,6 @@ extension NavigatorStateExtension on _i91.NavigationService {
     return navigateTo<dynamic>(Routes.transferMoneyView,
         arguments: TransferMoneyViewArguments(
             key: key, isRequestingMoney: isRequestingMoney),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> navigateToTransferSuccessState([
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  ]) async {
-    return navigateTo<dynamic>(Routes.transferSuccessState,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -3677,20 +3685,6 @@ extension NavigatorStateExtension on _i91.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithCardCalculatorView([
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  ]) async {
-    return replaceWith<dynamic>(Routes.cardCalculatorView,
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
   Future<dynamic> replaceWithCardCreationSymmaryView({
     _i81.Key? key,
     required _i82.CardDto cardDto,
@@ -3950,6 +3944,20 @@ extension NavigatorStateExtension on _i91.NavigationService {
     return replaceWith<dynamic>(Routes.confirmPasswordView,
         arguments: ConfirmPasswordViewArguments(
             key: key, passwordConfirmationType: passwordConfirmationType),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithCardCalculatorView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.cardCalculatorView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -4288,6 +4296,20 @@ extension NavigatorStateExtension on _i91.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> replaceWithTransferSuccessState([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.transferSuccessState,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithTransferMoneyView({
     _i81.Key? key,
     bool isRequestingMoney = false,
@@ -4300,20 +4322,6 @@ extension NavigatorStateExtension on _i91.NavigationService {
     return replaceWith<dynamic>(Routes.transferMoneyView,
         arguments: TransferMoneyViewArguments(
             key: key, isRequestingMoney: isRequestingMoney),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
-  Future<dynamic> replaceWithTransferSuccessState([
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  ]) async {
-    return replaceWith<dynamic>(Routes.transferSuccessState,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
