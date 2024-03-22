@@ -218,7 +218,7 @@ class FieldValidator {
           return error;
         }
         if ((min != null) && (value.length < min)) {
-          return error ?? 'Minimum length should be $min';
+          return error ?? 'Minimum length should be atleast $min characters';
         }
         if ((max != null) && (value.length > max)) {
           return error ?? 'Maximum length should be $max';

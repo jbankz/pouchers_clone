@@ -249,6 +249,8 @@ class UserNotifier extends _$UserNotifier {
       await ref
           .read(deleteAccountProvider.call(cancelToken: cancelToken).future);
 
+      await locator<SessionManager>().logOut();
+
       PageRouter.pushReplacement(Routes.signInView);
     } catch (e) {
       _logger.e(e.toString());

@@ -93,8 +93,10 @@ class AuthNotifier extends _$AuthNotifier {
 
       if (response?.data?.is2faActive == true) {
         PageRouter.pushNamed(Routes.twoFaGoogleAuthenticatorCodeView,
-            args: const TwoFaGoogleAuthenticatorCodeViewArguments(
-                twoFaType: TwoFaType.twoFaLoginVerification));
+            args: TwoFaGoogleAuthenticatorCodeViewArguments(
+                twoFaType: onSuccess != null
+                    ? TwoFaType.changePin
+                    : TwoFaType.twoFaLoginVerification));
         state = state.copyWith(isBusy: false);
         return;
       }

@@ -1,3 +1,4 @@
+import '../../../../../utilities/domain/enum/service_category.dart';
 
 class TransactionFilter {
   final String key;
@@ -18,9 +19,9 @@ List<TransactionFilter> filters = [
   TransactionFilter(key: 'Transfer', value: 'transfer'),
   TransactionFilter(key: 'Education', value: 'education'),
   // TransactionFilter(key: 'Wallet', value: ServiceCategory.fundWallet.value),
-  // TransactionFilter(
-  //     key: 'Admin Credit Wallet',
-  //     value: ServiceCategory.adminCreditWallet.value),
-  // TransactionFilter(
-  //     key: 'Admin Debit Wallet', value: ServiceCategory.adminDebitWallet.value)
+  TransactionFilter(
+      key: 'Admin Credit Wallet',
+      value: ServiceCategory.adminCreditWallet.value),
+  TransactionFilter(
+      key: 'Admin Debit Wallet', value: ServiceCategory.adminDebitWallet.value)
 ];

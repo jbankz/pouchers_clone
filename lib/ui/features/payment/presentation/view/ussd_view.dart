@@ -125,7 +125,7 @@ class _UssdViewState extends ConsumerState<UssdView> with $UssdView {
                                   children: [
                                       InkWell(
                                         onTap: () => AppHelper.triggerUrl(
-                                            'tel://${properties.uSSDShortCode}'),
+                                            'tel://${properties.uSSDShortCode?.replaceAll('+', "")}'),
                                         borderRadius:
                                             BorderRadius.circular(300.r),
                                         child: Container(
@@ -142,10 +142,11 @@ class _UssdViewState extends ConsumerState<UssdView> with $UssdView {
                                               const Gap(width: 10),
                                               Flexible(
                                                 child: Text(
-                                                    properties.uSSDShortCode ??
+                                                    properties.uSSDShortCode
+                                                            ?.replaceAll(
+                                                                '+', "") ??
                                                         '',
-                                                    style: context
-                                                        .headlineLarge
+                                                    style: context.headlineLarge
                                                         ?.copyWith(
                                                             fontSize: 18,
                                                             fontWeight:

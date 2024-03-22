@@ -30,9 +30,9 @@ class CardDto {
         if (amount != null) 'amount': amount,
         if (country != null) 'country': country,
         if (bvn != null) 'bvn': bvn,
-        if (currency != null) 'currency': currency?.name.toUpperCase(),
+        if (currency != null) 'currency': currency?.value,
         if (transactionPin != null) 'transactionPin': transactionPin,
-        if (brand != null) 'brand': brand?.name.titleCase,
+        if (brand != null) 'brand': brand?.value,
         if (status != null) 'status': status?.name
       };
 }

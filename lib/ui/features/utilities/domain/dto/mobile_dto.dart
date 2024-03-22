@@ -113,7 +113,7 @@ class MobileDto {
       result.addAll({'email': email});
     }
     if (currency != null) {
-      result.addAll({'currency': currency?.name});
+      result.addAll({'currency': currency?.value});
     }
     if (phoneNumber != null) {
       result.addAll({'phone_number': phoneNumber});

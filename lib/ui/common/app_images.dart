@@ -1,4 +1,5 @@
 class AppImage {
+  static const String _lottiePath = "assets/lotties/";
   static const String _iconPath = "assets/icons/";
   static const String _imagePath = "assets/images/";
 
@@ -157,4 +158,8 @@ class AppImage {
   static String receiptLogo = "${_iconPath}receipt_logo.png";
   static String receiptLogoBadge = "${_iconPath}receipt_logo_badge.png";
   static String pouchers = "${_iconPath}pouchers.png";
+  static String homeLottie = "${_lottiePath}home.json";
+  static String cardLottie = "${_lottiePath}credit-card.json";
+  static String compareLottie = "${_lottiePath}compare.json";
+  static String accountLottie = "${_lottiePath}account.json";
 }

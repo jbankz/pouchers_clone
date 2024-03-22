@@ -79,7 +79,7 @@ class _UpdateAddressWidgetState extends ConsumerState<UpdateAddressWidget>
                   controller: addressController,
                   focusNode: addressFocusNode,
                   keyboardType: TextInputType.text,
-                  validator: FieldValidator.validateString(),
+                  validator: FieldValidator.validateString(min: 15),
                   onFieldSubmitted: (_) => context.nextFocus(stateFocusNode)),
               const Gap(height: 20),
               EditTextFieldWidget(

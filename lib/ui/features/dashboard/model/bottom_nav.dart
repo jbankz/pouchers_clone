@@ -1,15 +1,31 @@
 import '../../../common/app_images.dart';
 
 class BottomNav {
-  final String icon;
+  final String enabledIcon;
+  final String disabledIcon;
   final String label;
 
-  BottomNav({required this.icon, required this.label});
+  BottomNav(
+      {required this.enabledIcon,
+      required this.disabledIcon,
+      required this.label});
 }
 
 List<BottomNav> get bottomNav => [
-      BottomNav(icon: AppImage.home, label: 'Home'),
-      BottomNav(icon: AppImage.card, label: 'Cards'),
-      BottomNav(icon: AppImage.transaction, label: 'Transactions'),
-      BottomNav(icon: AppImage.profile, label: 'Account')
+      BottomNav(
+          enabledIcon: AppImage.homeLottie,
+          disabledIcon: AppImage.home,
+          label: 'Home'),
+      BottomNav(
+          enabledIcon: AppImage.cardLottie,
+          disabledIcon: AppImage.card,
+          label: 'Cards'),
+      BottomNav(
+          enabledIcon: AppImage.compareLottie,
+          disabledIcon: AppImage.transaction,
+          label: 'Transactions'),
+      BottomNav(
+          enabledIcon: AppImage.accountLottie,
+          disabledIcon: AppImage.profile,
+          label: 'Account')
     ];
