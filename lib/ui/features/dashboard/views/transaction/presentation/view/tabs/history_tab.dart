@@ -236,7 +236,7 @@ class _HistoryTabState extends ConsumerState<HistoryTab> {
               const Gap(width: 23),
               Expanded(
                 child: Text(amount,
-                    style: context.headlineMedium?.copyWith(
+                    style: context.headlineLarge?.copyWith(
                         color: color,
                         fontSize: 14,
                         fontWeight: FontWeight.w400),

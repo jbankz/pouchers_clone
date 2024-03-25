@@ -51,6 +51,7 @@ class ElevatedButtonWidget extends StatelessWidget {
                 onPressed!();
               },
         style: ButtonStyle(
+            textStyle: MaterialStateProperty.resolveWith((states) => textStyle),
             side: outlinedColor == null
                 ? MaterialStateBorderSide.resolveWith(
                     (states) => const BorderSide(color: Colors.transparent))

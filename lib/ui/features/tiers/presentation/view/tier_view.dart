@@ -26,7 +26,7 @@ class _TierViewState extends ConsumerState<TierView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => ref
+    Future.microtask(() => ref
         .read(tierNotifierProvider.notifier)
         .fetchTier(cancelToken: _cancelToken));
   }

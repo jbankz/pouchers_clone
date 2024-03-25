@@ -26,7 +26,7 @@ class SuccessState extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
-          minimum: const EdgeInsets.symmetric(horizontal: 16),
+          minimum: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Column(
             children: [
               Expanded(

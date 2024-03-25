@@ -10,18 +10,15 @@ import '../../../../../widgets/gap.dart';
 class PaymentWidget extends StatelessWidget {
   const PaymentWidget(
       {super.key,
-      this.width = 56,
       required this.onPressed,
       required this.asset,
       required this.title});
   final void Function()? onPressed;
   final String title;
   final String asset;
-  final double? width;
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        width: width?.w,
         child: CupertinoButton(
           padding: EdgeInsets.zero,
           onPressed: onPressed,

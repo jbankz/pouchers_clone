@@ -44,7 +44,10 @@ class FirstSlideWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(amount.toNaira,
-                      style: context.titleSmall?.copyWith(fontSize: 14.sp)),
+                      style: context.headlineLarge?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.kPrimaryColor,
+                          fontSize: 14.sp)),
                   const Gap(height: 4),
                   Text(title,
                       style: context.headlineSmall

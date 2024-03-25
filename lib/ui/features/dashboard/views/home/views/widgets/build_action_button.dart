@@ -13,7 +13,6 @@ import '../../../../../../widgets/gap.dart';
 class BuildActionButton extends StatelessWidget {
   final String title;
   final String icon;
-  final double width;
   final void Function() onTap;
   final bool checkUsersLevel;
 
@@ -21,7 +20,6 @@ class BuildActionButton extends StatelessWidget {
       {super.key,
       required this.title,
       required this.icon,
-      this.width = 54,
       this.checkUsersLevel = true,
       required this.onTap});
 
@@ -38,26 +36,23 @@ class BuildActionButton extends StatelessWidget {
             }
             onTap();
           },
-          child: SizedBox(
-            width: width.w,
-            child: Column(
-              children: [
-                Container(
-                  height: 32.h,
-                  width: 32.w,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.white.withOpacity(.90)),
-                  child: SvgPicture.asset(icon, fit: BoxFit.scaleDown),
-                ),
-                Gap(height: 6.h),
-                Text(title,
-                    style: context.headlineLarge?.copyWith(
-                        color: AppColors.kPurple200,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12)),
-              ],
-            ),
+          child: Column(
+            children: [
+              Container(
+                height: 32.h,
+                width: 32.w,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.white.withOpacity(.90)),
+                child: SvgPicture.asset(icon, fit: BoxFit.scaleDown),
+              ),
+              Gap(height: 6.h),
+              Text(title,
+                  style: context.headlineLarge?.copyWith(
+                      color: AppColors.kPurple200,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12)),
+            ],
           ),
         );
       });

@@ -118,8 +118,9 @@ class _BuyVoucherViewState extends ConsumerState<BuyVoucherView>
                         prefix: IconButton(
                             onPressed: () {},
                             icon: Text(AppString.nairaSymbol,
-                                style: context.headlineMedium
-                                    ?.copyWith(fontSize: 16))),
+                                style: context.headlineLarge?.copyWith(
+                                    fontSize: 16,
+                                    color: AppColors.kPrimaryTextColor))),
                         inputFormatters: [context.digitsOnly, _formatter],
                       ),
                     ],

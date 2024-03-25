@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:pouchers/app/app.locator.dart';
 import 'package:pouchers/utils/constant/theme_color_constants.dart';
 import 'package:pouchers/utils/session_timeout_listener.dart';
@@ -27,7 +28,7 @@ Future<void> main() async {
   await setupLocator();
   await Firebase.initializeApp();
 
-  runApp(const MyApp());
+  runApp(DevicePreview(enabled: false, builder: (context) => const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

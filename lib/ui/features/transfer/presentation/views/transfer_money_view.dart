@@ -121,6 +121,7 @@ class _TransferMoneyViewState extends ConsumerState<TransferMoneyView>
                   fontSize: 15,
                   fontWeight: FontWeight.w500))),
       body: SafeArea(
+        minimum: EdgeInsets.symmetric(vertical: 16.h),
         child: Column(
           children: [
             Expanded(

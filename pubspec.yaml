@@ -80,6 +80,8 @@ dependencies:
   local_auth_ios: ^1.1.7
   path: ^1.9.0
   lottie: ^3.1.0
+  device_info_plus: ^10.0.1
+  device_preview: ^1.1.0
 
 dev_dependencies:
   flutter_test:

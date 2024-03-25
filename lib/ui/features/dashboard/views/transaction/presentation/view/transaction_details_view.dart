@@ -277,7 +277,7 @@ class _TransactionDetailsViewState
           Expanded(
             child: Text(
               amount,
-              style: context.headlineMedium?.copyWith(
+              style: context.headlineLarge?.copyWith(
                   fontSize: 20, color: color, fontWeight: FontWeight.w500),
               textAlign: TextAlign.right,
             ),

@@ -297,6 +297,8 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
             scale: .7,
             child: Switch.adaptive(
               activeColor: AppColors.kPrimaryColor,
+              inactiveTrackColor: AppColors.kBackgroundColor,
+              inactiveThumbColor: AppColors.kPrimaryColor,
               value: _beneficiary,
               onChanged: (value) =>
                   setState(() => _beneficiary = !_beneficiary),

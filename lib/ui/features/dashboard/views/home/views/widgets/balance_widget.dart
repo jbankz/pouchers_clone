@@ -70,49 +70,52 @@ class BalanceWidget extends HookConsumerWidget {
                 ),
                 const Gap(height: 29),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    BuildActionButton(
-                      icon: AppImage.walletOne,
-                      title: AppString.fundWallet,
-                      width: 65,
-                      checkUsersLevel: false,
-                      onTap: () => PageRouter.pushNamed(Routes.fundWalletView),
+                    Flexible(
+                      child: BuildActionButton(
+                        icon: AppImage.walletOne,
+                        title: AppString.fundWallet,
+                        checkUsersLevel: false,
+                        onTap: () =>
+                            PageRouter.pushNamed(Routes.fundWalletView),
+                      ),
                     ),
-                    Gap(width: 46.5.w),
-                    BuildActionButton(
-                        icon: AppImage.swap,
-                        title: AppString.transfer,
-                        width: 45,
-                        onTap: () => BottomSheets.showSheet(
-                            wrap: false, child: const TransferMoneySheet())),
-                    Gap(width: 46.5.w),
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        BuildActionButton(
-                            icon: AppImage.bag,
-                            title: AppString.request,
-                            width: 46,
-                            onTap: () => BottomSheets.showSheet(
-                                child: const RequestOptionSheet())),
-                        if (totalUnreadMessages > 0)
-                          Positioned(
-                            left: 30.w,
-                            top: -10,
-                            child: Container(
-                              height: 20.h,
-                              width: 20.w,
-                              alignment: Alignment.center,
-                              decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppColors.kColorRed),
-                              child: Text('$totalUnreadMessages',
-                                  style: context.bodyMedium?.copyWith(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500)),
-                            ),
-                          )
-                      ],
+                    Flexible(
+                      child: BuildActionButton(
+                          icon: AppImage.swap,
+                          title: AppString.transfer,
+                          onTap: () => BottomSheets.showSheet(
+                              wrap: false, child: const TransferMoneySheet())),
+                    ),
+                    Flexible(
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          BuildActionButton(
+                              icon: AppImage.bag,
+                              title: AppString.request,
+                              onTap: () => BottomSheets.showSheet(
+                                  child: const RequestOptionSheet())),
+                          if (totalUnreadMessages > 0)
+                            Positioned(
+                              left: 25.w,
+                              top: -10,
+                              child: Container(
+                                height: 20.h,
+                                width: 20.w,
+                                alignment: Alignment.center,
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.kColorRed),
+                                child: Text('$totalUnreadMessages',
+                                    style: context.bodyMedium?.copyWith(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500)),
+                              ),
+                            )
+                        ],
+                      ),
                     )
                   ],
                 ),

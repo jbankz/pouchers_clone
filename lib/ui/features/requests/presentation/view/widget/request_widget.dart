@@ -49,7 +49,7 @@ class RequestWidget extends StatelessWidget {
                           fontSize: 16, fontWeight: FontWeight.w500)),
                   const Gap(height: 3),
                   Text(request?.amount.toNaira ?? '',
-                      style: context.headlineMedium?.copyWith(
+                      style: context.headlineLarge?.copyWith(
                           fontSize: 14,
                           color: AppColors.kPurpleColor,
                           fontWeight: FontWeight.w400)),

@@ -108,7 +108,7 @@ class _VoucherViewState extends ConsumerState<VoucherView> {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            height: 124.h,
+            height: context.height * .2,
             child: PageView.builder(
               itemCount: vouchers.length,
               onPageChanged: (page) => setState(() => _pageIndex = page),

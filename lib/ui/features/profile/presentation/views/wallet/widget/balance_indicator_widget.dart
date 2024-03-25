@@ -110,7 +110,7 @@ class BalanceIndicatorWidget extends HookConsumerWidget {
                   ? const CupertinoActivityIndicator()
                   : Text(
                       'Balance - ${num.parse((wallet.balance) ?? '0').toNaira}',
-                      style: context.titleLarge?.copyWith(
+                      style: context.headlineLarge?.copyWith(
                           color: balanceColor,
                           fontSize: 14,
                           fontWeight: FontWeight.w500),

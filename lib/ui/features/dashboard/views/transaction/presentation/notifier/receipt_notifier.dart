@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:pouchers/app/config/app_helper.dart';
 import 'package:pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -28,14 +29,44 @@ class ReceiptNotifier extends _$ReceiptNotifier {
   ReceiptState build() =>
       ReceiptState(screenshotController: screenshotController);
 
+  Future<bool> _checkStoragePermission() async {
+    PermissionStatus status;
+    if (Platform.isAndroid) {
+      final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+      final AndroidDeviceInfo info = await deviceInfoPlugin.androidInfo;
+      if ((info.version.sdkInt) >= 33) {
+        status = await Permission.manageExternalStorage.request();
+      } else {
+        status = await Permission.storage.request();
+      }
+    } else {
+      status = await Permission.storage.request();
+    }
+
+    switch (status) {
+      case PermissionStatus.denied:
+        return false;
+      case PermissionStatus.granted:
+        return true;
+      case PermissionStatus.restricted:
+        return false;
+      case PermissionStatus.limited:
+        return true;
+      case PermissionStatus.permanentlyDenied:
+        return false;
+      case PermissionStatus.provisional:
+        return false;
+    }
+  }
+
   Future<void> downloadPdf(TransactionHistory transactionHistory) async {
     try {
       state = state.copyWith(isProcessing: true);
       final pdf = pw.Document();
 
-      final permission = await Permission.storage.request();
+      final permission = await _checkStoragePermission();
 
-      if (permission.isGranted) {
+      if (permission) {
         final response = await generateTransactionReceipt(transactionHistory);
 
         pdf.addPage(pw.Page(build: (context) => response));
@@ -93,8 +124,9 @@ class ReceiptNotifier extends _$ReceiptNotifier {
   Future<File?> _generateImage({String fileExtention = 'png'}) async {
     File? file;
 
-    final permission = await Permission.storage.request();
-    if (permission.isGranted) {
+    final permission = await _checkStoragePermission();
+
+    if (permission) {
       await screenshotController
           .capture(delay: const Duration(milliseconds: 10))
           .then((Uint8List? image) async {

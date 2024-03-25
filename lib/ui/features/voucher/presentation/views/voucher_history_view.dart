@@ -238,7 +238,7 @@ class _VoucherHistoryViewState extends ConsumerState<VoucherHistoryView> {
               children: [
                 Text(
                   voucher.amount.toNaira,
-                  style: context.headlineMedium?.copyWith(
+                  style: context.headlineLarge?.copyWith(
                     fontSize: 14,
                     color: isGifted
                         ? AppColors.kColorRedDeep
