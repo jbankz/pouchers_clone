@@ -1,6 +1,8 @@
 PODS:
   - app_settings (5.1.1):
     - Flutter
+  - device_info_plus (0.0.1):
+    - Flutter
   - fast_contacts (0.0.1):
     - Flutter
   - Firebase/CoreOnly (10.17.0):
@@ -142,6 +144,7 @@ PODS:
 
 DEPENDENCIES:
   - app_settings (from `.symlinks/plugins/app_settings/ios`)
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - fast_contacts (from `.symlinks/plugins/fast_contacts/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
@@ -188,6 +191,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   app_settings:
     :path: ".symlinks/plugins/app_settings/ios"
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   fast_contacts:
     :path: ".symlinks/plugins/fast_contacts/ios"
   firebase_core:
@@ -235,6 +240,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   app_settings: 017320c6a680cdc94c799949d95b84cb69389ebc
+  device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
   fast_contacts: d5f0da976a40f8fd07a9ff730c2e9bee8c3898dd
   Firebase: f4ac0b02927af9253ae094d23deecf0890da7374
   firebase_core: efc9455611b8769fa90fbdae5da182600bd6901c
