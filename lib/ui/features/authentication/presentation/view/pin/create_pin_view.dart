@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/authentication/presentation/view/pin/module/pin_module.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/features/authentication/presentation/view/pin/module/pin_module.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

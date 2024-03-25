@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:Pouchers/ui/notification/notification_tray.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/notification/notification_tray.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';

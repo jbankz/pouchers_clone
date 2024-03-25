@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/transfer/domain/model/transfer.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/transfer.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'transfer_state.freezed.dart';

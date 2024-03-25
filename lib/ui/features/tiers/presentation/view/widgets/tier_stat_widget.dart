@@ -1,7 +1,7 @@
-import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
-import 'package:Pouchers/ui/features/tiers/domain/model/tiers/data.dart';
-import 'package:Pouchers/ui/features/tiers/presentation/notifier/tier_notifier.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/features/profile/data/dao/user_dao.dart';
+import 'package:pouchers/ui/features/tiers/domain/model/tiers/data.dart';
+import 'package:pouchers/ui/features/tiers/presentation/notifier/tier_notifier.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';

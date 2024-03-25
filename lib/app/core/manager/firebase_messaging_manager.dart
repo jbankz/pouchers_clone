@@ -1,6 +1,6 @@
-import 'package:Pouchers/app/config/app_logger.dart';
-import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
-import 'package:Pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
+import 'package:pouchers/app/config/app_logger.dart';
+import 'package:pouchers/ui/features/profile/domain/dto/user_dto.dart';
+import 'package:pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

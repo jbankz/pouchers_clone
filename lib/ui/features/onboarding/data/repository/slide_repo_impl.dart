@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/onboarding/data/source/slide_source.dart';
+import 'package:pouchers/ui/features/onboarding/data/source/slide_source.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/repository/slide_repo.dart';

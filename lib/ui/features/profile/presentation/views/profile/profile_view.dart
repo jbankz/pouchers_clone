@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
-import 'package:Pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
-import 'package:Pouchers/ui/features/profile/presentation/views/profile/widget/update_address.dart';
-import 'package:Pouchers/ui/features/upload/domain/dto/upload_dto.dart';
-import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
-import 'package:Pouchers/utils/date_picker.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/features/profile/domain/dto/user_dto.dart';
+import 'package:pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
+import 'package:pouchers/ui/features/profile/presentation/views/profile/widget/update_address.dart';
+import 'package:pouchers/ui/features/upload/domain/dto/upload_dto.dart';
+import 'package:pouchers/ui/widgets/dialog/bottom_sheet.dart';
+import 'package:pouchers/utils/date_picker.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

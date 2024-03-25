@@ -1,8 +1,8 @@
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

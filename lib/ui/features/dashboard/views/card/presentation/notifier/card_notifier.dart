@@ -1,10 +1,10 @@
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/admin/domain/enum/fees.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_activity_type.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
-import 'package:Pouchers/ui/notification/notification_tray.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/admin/domain/enum/fees.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/card_activity_type.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
+import 'package:pouchers/ui/notification/notification_tray.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

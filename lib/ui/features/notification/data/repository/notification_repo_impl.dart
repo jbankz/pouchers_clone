@@ -1,6 +1,6 @@
-import 'package:Pouchers/ui/features/notification/data/dao/notification_dao.dart';
-import 'package:Pouchers/ui/features/notification/domain/dto/notification_dto.dart';
-import 'package:Pouchers/ui/features/notification/domain/model/notification_data_model.dart';
+import 'package:pouchers/ui/features/notification/data/dao/notification_dao.dart';
+import 'package:pouchers/ui/features/notification/domain/dto/notification_dto.dart';
+import 'package:pouchers/ui/features/notification/domain/model/notification_data_model.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/model/unread_payment_request.dart';

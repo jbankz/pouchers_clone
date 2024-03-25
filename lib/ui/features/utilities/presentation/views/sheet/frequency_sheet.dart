@@ -1,8 +1,8 @@
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/ui/widgets/elevated_button_widget.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

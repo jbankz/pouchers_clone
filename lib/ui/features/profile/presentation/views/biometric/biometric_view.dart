@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/widgets/elevated_button_widget.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

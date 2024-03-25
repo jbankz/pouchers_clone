@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
+import 'package:pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/usecase/poucher_usecase.dart';

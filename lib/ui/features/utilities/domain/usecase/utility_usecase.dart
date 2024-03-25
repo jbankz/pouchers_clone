@@ -1,6 +1,6 @@
-import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/utility.dart';
-import 'package:Pouchers/ui/features/utilities/domain/repository/billers_repo.dart';
+import 'package:pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/utility.dart';
+import 'package:pouchers/ui/features/utilities/domain/repository/billers_repo.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/usecase/poucher_usecase.dart';

@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/transfer/domain/model/local_bank.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/local_bank.dart';
 import 'package:dio/dio.dart';
 
 import '../../../domain/dto/transfer_money_dto.dart';

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:Pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,23 +8,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:dio/dio.dart';
 
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/wallet_dao.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
-import 'package:Pouchers/ui/features/profile/presentation/views/wallet/widget/balance_indicator_widget.dart';
-import 'package:Pouchers/ui/features/transfer/domain/dto/transfer_money_dto.dart';
-import 'package:Pouchers/ui/features/transfer/presentation/notifier/transfer_notifier.dart';
-import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
-import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/ui/widgets/keypad/config/keypad_config.dart';
-import 'package:Pouchers/ui/widgets/keypad/virtual_keypad.dart';
-import 'package:Pouchers/ui/widgets/profile_image.dart';
-import 'package:Pouchers/utils/extension.dart';
-import 'package:Pouchers/ui/widgets/sheets/confirmation_sheet.dart';
-import 'package:Pouchers/ui/features/transfer/presentation/state/transfer_state.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/profile/data/dao/wallet_dao.dart';
+import 'package:pouchers/ui/features/profile/domain/model/user.dart';
+import 'package:pouchers/ui/features/profile/presentation/views/wallet/widget/balance_indicator_widget.dart';
+import 'package:pouchers/ui/features/transfer/domain/dto/transfer_money_dto.dart';
+import 'package:pouchers/ui/features/transfer/presentation/notifier/transfer_notifier.dart';
+import 'package:pouchers/ui/widgets/dialog/bottom_sheet.dart';
+import 'package:pouchers/ui/widgets/elevated_button_widget.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/ui/widgets/keypad/config/keypad_config.dart';
+import 'package:pouchers/ui/widgets/keypad/virtual_keypad.dart';
+import 'package:pouchers/ui/widgets/profile_image.dart';
+import 'package:pouchers/utils/extension.dart';
+import 'package:pouchers/ui/widgets/sheets/confirmation_sheet.dart';
+import 'package:pouchers/ui/features/transfer/presentation/state/transfer_state.dart';
 
 import '../../../../../app/formatter/money_formatter.dart';
 import '../../../../widgets/keypad/virtual_key_pad_controller.dart';

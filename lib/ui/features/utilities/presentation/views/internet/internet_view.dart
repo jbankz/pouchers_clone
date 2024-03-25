@@ -1,6 +1,6 @@
-import 'package:Pouchers/ui/features/merchant/domain/model/get_merchants.dart';
-import 'package:Pouchers/utils/debouncer.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/features/merchant/domain/model/get_merchants.dart';
+import 'package:pouchers/utils/debouncer.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';

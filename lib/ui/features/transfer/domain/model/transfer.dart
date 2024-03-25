@@ -1,4 +1,4 @@
-import 'package:Pouchers/app/serializer/string_to_num_serializer.dart';
+import 'package:pouchers/app/serializer/string_to_num_serializer.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 

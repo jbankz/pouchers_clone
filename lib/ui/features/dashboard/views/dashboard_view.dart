@@ -6,8 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 
-import 'package:Pouchers/app/core/auto_logout/module/module.dart';
-import 'package:Pouchers/ui/features/dashboard/model/bottom_nav.dart';
+import 'package:pouchers/app/core/auto_logout/module/module.dart';
+import 'package:pouchers/ui/features/dashboard/model/bottom_nav.dart';
 
 import '../../../../app/core/manager/firebase_messaging_manager.dart';
 import '../../../common/app_colors.dart';

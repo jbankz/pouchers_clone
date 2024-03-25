@@ -1,6 +1,6 @@
-import 'package:Pouchers/app/app.locator.dart';
-import 'package:Pouchers/utils/constant/theme_color_constants.dart';
-import 'package:Pouchers/utils/session_timeout_listener.dart';
+import 'package:pouchers/app/app.locator.dart';
+import 'package:pouchers/utils/constant/theme_color_constants.dart';
+import 'package:pouchers/utils/session_timeout_listener.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

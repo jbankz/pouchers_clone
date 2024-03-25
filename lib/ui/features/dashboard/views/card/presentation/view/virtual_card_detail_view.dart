@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

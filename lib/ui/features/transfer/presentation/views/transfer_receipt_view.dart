@@ -1,10 +1,10 @@
-import 'package:Pouchers/app/config/app_helper.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/transfer/domain/model/transfer.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/ui/widgets/profile_image.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/config/app_helper.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/transfer.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/ui/widgets/profile_image.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';

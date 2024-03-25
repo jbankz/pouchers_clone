@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/upload/domain/dto/upload_dto.dart';
-import 'package:Pouchers/ui/features/upload/domain/usecase/module/module.dart';
+import 'package:pouchers/ui/features/upload/domain/dto/upload_dto.dart';
+import 'package:pouchers/ui/features/upload/domain/usecase/module/module.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

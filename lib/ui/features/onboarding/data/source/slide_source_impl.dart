@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/onboarding/presentation/views/widgets/third_slide_widget.dart';
+import 'package:pouchers/ui/features/onboarding/presentation/views/widgets/third_slide_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../common/app_colors.dart';

@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_brand.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/card_brand.dart';
 
 class CardIcon {
   static String returnIcon(CardBrand? brand) {

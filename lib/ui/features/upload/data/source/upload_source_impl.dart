@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:Pouchers/app/core/network/api_path.dart';
-import 'package:Pouchers/app/core/network/network_service.dart';
+import 'package:pouchers/app/core/network/api_path.dart';
+import 'package:pouchers/app/core/network/network_service.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/dto/upload_dto.dart';

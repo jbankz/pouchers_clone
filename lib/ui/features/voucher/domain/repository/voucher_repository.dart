@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/voucher/domain/dto/voucher_dto.dart';
-import 'package:Pouchers/ui/features/voucher/domain/model/buy_voucher.dart';
+import 'package:pouchers/ui/features/voucher/domain/dto/voucher_dto.dart';
+import 'package:pouchers/ui/features/voucher/domain/model/buy_voucher.dart';
 import 'package:dio/dio.dart';
 
 import '../model/vouchers.dart';

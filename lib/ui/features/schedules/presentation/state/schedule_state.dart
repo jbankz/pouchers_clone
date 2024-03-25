@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/schedules/domain/model/schedule_model.dart';
+import 'package:pouchers/ui/features/schedules/domain/model/schedule_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'schedule_state.freezed.dart';

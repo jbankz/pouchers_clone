@@ -1,6 +1,6 @@
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';

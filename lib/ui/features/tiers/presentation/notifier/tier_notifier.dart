@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/tiers/domain/model/tiers/data.dart';
-import 'package:Pouchers/ui/features/tiers/presentation/notifier/module/module.dart';
+import 'package:pouchers/ui/features/tiers/domain/model/tiers/data.dart';
+import 'package:pouchers/ui/features/tiers/presentation/notifier/module/module.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/admin/domain/dto/admin_dto.dart';
-import 'package:Pouchers/ui/features/admin/domain/model/envs/envs.dart';
+import 'package:pouchers/ui/features/admin/domain/dto/admin_dto.dart';
+import 'package:pouchers/ui/features/admin/domain/model/envs/envs.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/usecase/poucher_usecase.dart';

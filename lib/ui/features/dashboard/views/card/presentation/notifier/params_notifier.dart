@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/cards/cards.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/model/cards/cards.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../../../../../app/app.router.dart';

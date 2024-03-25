@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/dashboard/views/transaction/presentation/view/receipts/receipts_tiles.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/presentation/view/receipts/receipts_tiles.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../../common/app_strings.dart';

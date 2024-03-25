@@ -1,7 +1,7 @@
-import 'package:Pouchers/ui/features/notification/data/dao/notification_dao.dart';
-import 'package:Pouchers/ui/features/notification/domain/dto/notification_dto.dart';
-import 'package:Pouchers/ui/features/notification/presentation/notifier/module/module.dart';
-import 'package:Pouchers/ui/features/notification/presentation/view/state/notification_state.dart';
+import 'package:pouchers/ui/features/notification/data/dao/notification_dao.dart';
+import 'package:pouchers/ui/features/notification/domain/dto/notification_dto.dart';
+import 'package:pouchers/ui/features/notification/presentation/notifier/module/module.dart';
+import 'package:pouchers/ui/features/notification/presentation/view/state/notification_state.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

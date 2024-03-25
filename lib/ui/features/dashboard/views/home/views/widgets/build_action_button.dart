@@ -1,7 +1,7 @@
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
-import 'package:Pouchers/ui/notification/notification_tray.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/profile/data/dao/user_dao.dart';
+import 'package:pouchers/ui/notification/notification_tray.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';

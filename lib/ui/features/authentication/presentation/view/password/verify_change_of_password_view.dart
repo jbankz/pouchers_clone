@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
+import 'package:pouchers/ui/features/profile/data/dao/user_dao.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/transfer/domain/model/guest_local_bank.dart';
-import 'package:Pouchers/ui/features/transfer/domain/repository/local_bank_repository.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/guest_local_bank.dart';
+import 'package:pouchers/ui/features/transfer/domain/repository/local_bank_repository.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/usecase/poucher_usecase.dart';

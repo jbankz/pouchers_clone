@@ -1,6 +1,6 @@
-import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/first_security_question_view.dart';
-import 'package:Pouchers/ui/features/payment/presentation/view/ussd_view.dart';
-import 'package:Pouchers/ui/features/profile/presentation/views/wallet/fund_wallet_view.dart';
+import 'package:pouchers/ui/features/authentication/presentation/view/2fa/first_security_question_view.dart';
+import 'package:pouchers/ui/features/payment/presentation/view/ussd_view.dart';
+import 'package:pouchers/ui/features/profile/presentation/views/wallet/fund_wallet_view.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';

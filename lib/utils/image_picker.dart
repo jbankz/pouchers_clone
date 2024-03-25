@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

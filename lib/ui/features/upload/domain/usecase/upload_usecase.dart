@@ -1,6 +1,6 @@
-import 'package:Pouchers/app/core/usecase/poucher_usecase.dart';
-import 'package:Pouchers/ui/features/upload/domain/dto/upload_dto.dart';
-import 'package:Pouchers/ui/features/upload/domain/repository/upload_repo.dart';
+import 'package:pouchers/app/core/usecase/poucher_usecase.dart';
+import 'package:pouchers/ui/features/upload/domain/dto/upload_dto.dart';
+import 'package:pouchers/ui/features/upload/domain/repository/upload_repo.dart';
 import 'package:dio/dio.dart';
 
 class UploadUseCaseImpl

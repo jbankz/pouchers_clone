@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:Pouchers/app/app.locator.dart';
-import 'package:Pouchers/ui/common/app_keys.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/referral/referral.dart';
+import 'package:pouchers/app/app.locator.dart';
+import 'package:pouchers/ui/common/app_keys.dart';
+import 'package:pouchers/ui/features/profile/domain/model/referral/referral.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

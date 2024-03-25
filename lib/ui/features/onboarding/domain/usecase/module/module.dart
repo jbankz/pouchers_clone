@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/onboarding/data/repository/module/slider_repo_module.dart';
-import 'package:Pouchers/ui/features/onboarding/domain/usecase/get_sliders_usecase.dart';
+import 'package:pouchers/ui/features/onboarding/data/repository/module/slider_repo_module.dart';
+import 'package:pouchers/ui/features/onboarding/domain/usecase/get_sliders_usecase.dart';
 import 'package:riverpod/riverpod.dart';
 
 import '../../../../../../app/core/usecase/poucher_usecase.dart';

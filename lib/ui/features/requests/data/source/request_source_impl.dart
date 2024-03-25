@@ -1,6 +1,6 @@
-import 'package:Pouchers/ui/features/requests/domain/dto/request_dto.dart';
-import 'package:Pouchers/ui/features/requests/domain/model/request_model.dart';
-import 'package:Pouchers/ui/features/requests/domain/model/requested_money_model.dart';
+import 'package:pouchers/ui/features/requests/domain/dto/request_dto.dart';
+import 'package:pouchers/ui/features/requests/domain/model/request_model.dart';
+import 'package:pouchers/ui/features/requests/domain/model/requested_money_model.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/network/api_path.dart';

@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:Pouchers/ui/features/schedules/domain/dto/schedule_dto.dart';
-import 'package:Pouchers/ui/features/schedules/domain/model/schedule_model.dart';
-import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
+import 'package:pouchers/ui/features/schedules/domain/dto/schedule_dto.dart';
+import 'package:pouchers/ui/features/schedules/domain/model/schedule_model.dart';
+import 'package:pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/network/api_path.dart';

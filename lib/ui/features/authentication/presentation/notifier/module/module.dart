@@ -1,8 +1,8 @@
-import 'package:Pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
-import 'package:Pouchers/ui/features/authentication/domain/model/create_tag_model/create_tag_model.dart';
-import 'package:Pouchers/ui/features/authentication/domain/model/generate_2fa_token.dart';
-import 'package:Pouchers/ui/features/authentication/domain/model/set_questions.dart';
-import 'package:Pouchers/ui/features/authentication/domain/model/sign_in_model/sign_in_model.dart';
+import 'package:pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
+import 'package:pouchers/ui/features/authentication/domain/model/create_tag_model/create_tag_model.dart';
+import 'package:pouchers/ui/features/authentication/domain/model/generate_2fa_token.dart';
+import 'package:pouchers/ui/features/authentication/domain/model/set_questions.dart';
+import 'package:pouchers/ui/features/authentication/domain/model/sign_in_model/sign_in_model.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

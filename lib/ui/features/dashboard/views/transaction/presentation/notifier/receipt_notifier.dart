@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:Pouchers/app/config/app_helper.dart';
-import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart';
+import 'package:pouchers/app/config/app_helper.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';

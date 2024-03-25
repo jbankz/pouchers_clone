@@ -1,10 +1,10 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
-import 'package:Pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
-import 'package:Pouchers/ui/features/profile/presentation/views/widgets/account_info_sheet.dart';
-import 'package:Pouchers/ui/widgets/edit_text_field_with.dart';
-import 'package:Pouchers/utils/extension.dart';
-import 'package:Pouchers/utils/field_validator.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
+import 'package:pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
+import 'package:pouchers/ui/features/profile/presentation/views/widgets/account_info_sheet.dart';
+import 'package:pouchers/ui/widgets/edit_text_field_with.dart';
+import 'package:pouchers/utils/extension.dart';
+import 'package:pouchers/utils/field_validator.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

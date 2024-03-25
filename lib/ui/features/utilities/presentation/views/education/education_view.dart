@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/merchant/presentation/state/merchant_state.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/features/merchant/presentation/state/merchant_state.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';

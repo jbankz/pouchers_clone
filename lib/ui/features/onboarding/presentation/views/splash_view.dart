@@ -1,7 +1,7 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/core/manager/session_manager.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/core/manager/session_manager.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';

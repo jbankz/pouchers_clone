@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/notification/domain/dto/notification_dto.dart';
-import 'package:Pouchers/ui/features/notification/domain/model/notification_data_model.dart';
+import 'package:pouchers/ui/features/notification/domain/dto/notification_dto.dart';
+import 'package:pouchers/ui/features/notification/domain/model/notification_data_model.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

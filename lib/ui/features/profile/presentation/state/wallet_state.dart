@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/profile/domain/model/bank_account_details/bank_account_details.dart';
+import 'package:pouchers/ui/features/profile/domain/model/bank_account_details/bank_account_details.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'wallet_state.freezed.dart';

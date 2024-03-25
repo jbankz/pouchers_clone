@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_analytic.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_analytic.dart';
 import 'package:community_charts_flutter/community_charts_flutter.dart';
 import 'package:flutter/material.dart';
 

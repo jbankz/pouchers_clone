@@ -1,8 +1,8 @@
-import 'package:Pouchers/ui/features/voucher/data/dao/vouchers_dao.dart';
-import 'package:Pouchers/ui/features/voucher/data/source/voucher_source.dart';
-import 'package:Pouchers/ui/features/voucher/domain/dto/voucher_dto.dart';
-import 'package:Pouchers/ui/features/voucher/domain/model/buy_voucher.dart';
-import 'package:Pouchers/ui/features/voucher/domain/model/vouchers.dart';
+import 'package:pouchers/ui/features/voucher/data/dao/vouchers_dao.dart';
+import 'package:pouchers/ui/features/voucher/data/source/voucher_source.dart';
+import 'package:pouchers/ui/features/voucher/domain/dto/voucher_dto.dart';
+import 'package:pouchers/ui/features/voucher/domain/model/buy_voucher.dart';
+import 'package:pouchers/ui/features/voucher/domain/model/vouchers.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/repository/voucher_repository.dart';

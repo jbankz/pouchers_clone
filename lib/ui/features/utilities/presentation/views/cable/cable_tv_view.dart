@@ -1,5 +1,5 @@
-import 'package:Pouchers/utils/debouncer.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/utils/debouncer.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';

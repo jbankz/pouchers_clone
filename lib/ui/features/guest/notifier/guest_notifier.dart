@@ -1,5 +1,5 @@
-import 'package:Pouchers/app/core/manager/session_manager.dart';
-import 'package:Pouchers/ui/features/guest/state/guest_state.dart';
+import 'package:pouchers/app/core/manager/session_manager.dart';
+import 'package:pouchers/ui/features/guest/state/guest_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../app/app.locator.dart';

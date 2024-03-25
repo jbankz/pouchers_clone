@@ -1,8 +1,8 @@
-import 'package:Pouchers/app/app.locator.dart';
-import 'package:Pouchers/app/app.logger.dart';
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/core/manager/biometric_manager.dart';
-import 'package:Pouchers/ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
+import 'package:pouchers/app/app.locator.dart';
+import 'package:pouchers/app/app.logger.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/core/manager/biometric_manager.dart';
+import 'package:pouchers/ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../../app/core/manager/secure_manager.dart';

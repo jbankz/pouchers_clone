@@ -1,7 +1,7 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/utils/constant/theme_color_constants.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/utils/constant/theme_color_constants.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

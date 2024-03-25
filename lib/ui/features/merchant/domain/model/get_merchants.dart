@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/merchant/domain/model/merchants.dart';
+import 'package:pouchers/ui/features/merchant/domain/model/merchants.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

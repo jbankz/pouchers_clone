@@ -1,7 +1,7 @@
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/idenitification_type.dart';
-import 'package:Pouchers/ui/features/profile/presentation/notifier/valid_id_notifier.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/features/profile/domain/model/idenitification_type.dart';
+import 'package:pouchers/ui/features/profile/presentation/notifier/valid_id_notifier.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

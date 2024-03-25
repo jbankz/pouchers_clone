@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:Pouchers/ui/features/onboarding/domain/usecase/module/module.dart';
-import 'package:Pouchers/ui/features/onboarding/presentation/state/onboarding_state.dart';
+import 'package:pouchers/ui/features/onboarding/domain/usecase/module/module.dart';
+import 'package:pouchers/ui/features/onboarding/presentation/state/onboarding_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

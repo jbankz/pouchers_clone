@@ -1,9 +1,9 @@
-import 'package:Pouchers/app/config/app_helper.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/voucher/data/dao/vouchers_dao.dart';
-import 'package:Pouchers/ui/features/voucher/domain/dto/voucher_dto.dart';
-import 'package:Pouchers/ui/features/voucher/domain/model/buy_voucher.dart';
-import 'package:Pouchers/ui/features/voucher/domain/model/vouchers.dart';
+import 'package:pouchers/app/config/app_helper.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/voucher/data/dao/vouchers_dao.dart';
+import 'package:pouchers/ui/features/voucher/domain/dto/voucher_dto.dart';
+import 'package:pouchers/ui/features/voucher/domain/model/buy_voucher.dart';
+import 'package:pouchers/ui/features/voucher/domain/model/vouchers.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

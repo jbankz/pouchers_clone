@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/merchant/domain/model/get_merchants.dart';
-import 'package:Pouchers/ui/features/merchant/presentation/notifier/module/module.dart';
+import 'package:pouchers/ui/features/merchant/domain/model/get_merchants.dart';
+import 'package:pouchers/ui/features/merchant/presentation/notifier/module/module.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

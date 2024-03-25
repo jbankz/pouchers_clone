@@ -7,8 +7,8 @@ import '../../../domain/enum/billers_category.dart';
 import '../../../../../widgets/bottom_sheet.dart';
 import '../../../../../widgets/dialog/guest_modal_sheet.dart';
 import '../../../../../widgets/gap.dart';
-import 'package:Pouchers/ui/features/utilities/presentation/notifier/billers_notifier.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/features/utilities/presentation/notifier/billers_notifier.dart';
+import 'package:pouchers/utils/extension.dart';
 
 import '../../../domain/model/top_deals_model.dart';
 

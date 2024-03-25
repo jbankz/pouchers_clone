@@ -1,8 +1,8 @@
-import 'package:Pouchers/ui/features/profile/domain/model/bank_account_details/bank_account_details.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/idenitification_type.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/wallet.dart';
-import 'package:Pouchers/ui/features/profile/domain/usecase/module/module.dart';
+import 'package:pouchers/ui/features/profile/domain/model/bank_account_details/bank_account_details.dart';
+import 'package:pouchers/ui/features/profile/domain/model/idenitification_type.dart';
+import 'package:pouchers/ui/features/profile/domain/model/user.dart';
+import 'package:pouchers/ui/features/profile/domain/model/wallet.dart';
+import 'package:pouchers/ui/features/profile/domain/usecase/module/module.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

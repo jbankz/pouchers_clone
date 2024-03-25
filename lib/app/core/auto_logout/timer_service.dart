@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Pouchers/app/helpers/response_handler.dart';
+import 'package:pouchers/app/helpers/response_handler.dart';
 import 'package:flutter/foundation.dart';
 
 class TimerService with ResponseHandler {

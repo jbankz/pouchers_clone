@@ -1,11 +1,11 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/config/app_helper.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
-import 'package:Pouchers/ui/features/transfer/domain/model/guest_local_bank.dart';
-import 'package:Pouchers/ui/features/transfer/presentation/notifier/module/module.dart';
-import 'package:Pouchers/ui/features/transfer/presentation/state/local_bank_state.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/config/app_helper.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/guest_local_bank.dart';
+import 'package:pouchers/ui/features/transfer/presentation/notifier/module/module.dart';
+import 'package:pouchers/ui/features/transfer/presentation/state/local_bank_state.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

@@ -1,5 +1,5 @@
-import 'package:Pouchers/app/serializer/date_time_serializer.dart';
-import 'package:Pouchers/ui/features/voucher/domain/enum/voucher_status.dart';
+import 'package:pouchers/app/serializer/date_time_serializer.dart';
+import 'package:pouchers/ui/features/voucher/domain/enum/voucher_status.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

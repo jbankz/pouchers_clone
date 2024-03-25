@@ -1,9 +1,9 @@
-import 'package:Pouchers/ui/features/admin/data/dao/banner_dao.dart';
-import 'package:Pouchers/ui/features/admin/data/dao/env_dao.dart';
-import 'package:Pouchers/ui/features/admin/data/source/admin_source.dart';
-import 'package:Pouchers/ui/features/admin/domain/dto/admin_dto.dart';
-import 'package:Pouchers/ui/features/admin/domain/model/banner.dart';
-import 'package:Pouchers/ui/features/admin/domain/model/envs/envs.dart';
+import 'package:pouchers/ui/features/admin/data/dao/banner_dao.dart';
+import 'package:pouchers/ui/features/admin/data/dao/env_dao.dart';
+import 'package:pouchers/ui/features/admin/data/source/admin_source.dart';
+import 'package:pouchers/ui/features/admin/domain/dto/admin_dto.dart';
+import 'package:pouchers/ui/features/admin/domain/model/banner.dart';
+import 'package:pouchers/ui/features/admin/domain/model/envs/envs.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/repository/admin_repo.dart';

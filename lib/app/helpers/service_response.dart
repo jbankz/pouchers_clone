@@ -1,4 +1,4 @@
-import 'package:Pouchers/app/helpers/notifiers.dart';
+import 'package:pouchers/app/helpers/notifiers.dart';
 
 class ServiceRequest<T> {
   late final T serviceRequest;

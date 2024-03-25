@@ -1,13 +1,13 @@
-import 'package:Pouchers/app/app.locator.dart';
-import 'package:Pouchers/app/core/manager/intercom_manager.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
-import 'package:Pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
-import 'package:Pouchers/ui/features/authentication/domain/model/selected_questions.dart';
-import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/enum/two_fa_type.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
-import 'package:Pouchers/ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
-import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
+import 'package:pouchers/app/app.locator.dart';
+import 'package:pouchers/app/core/manager/intercom_manager.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
+import 'package:pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
+import 'package:pouchers/ui/features/authentication/domain/model/selected_questions.dart';
+import 'package:pouchers/ui/features/authentication/presentation/view/2fa/enum/two_fa_type.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
+import 'package:pouchers/ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
+import 'package:pouchers/ui/widgets/dialog/bottom_sheet.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

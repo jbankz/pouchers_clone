@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/tiers/data/source/tier_source.dart';
+import 'package:pouchers/ui/features/tiers/data/source/tier_source.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/model/tiers/data.dart';

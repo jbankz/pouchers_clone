@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
 
 import '../enum/service_category.dart';
 

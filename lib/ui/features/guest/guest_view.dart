@@ -1,10 +1,10 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/guest/notifier/guest_notifier.dart';
-import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/guest/notifier/guest_notifier.dart';
+import 'package:pouchers/ui/widgets/dialog/bottom_sheet.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

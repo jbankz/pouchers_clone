@@ -1,7 +1,7 @@
-import 'package:Pouchers/ui/features/admin/data/dao/env_dao.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/features/admin/data/dao/env_dao.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

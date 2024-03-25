@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/utilities/data/repository/module/billers_repo_module.dart';
+import 'package:pouchers/ui/features/utilities/data/repository/module/billers_repo_module.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

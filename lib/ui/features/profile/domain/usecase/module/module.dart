@@ -1,6 +1,6 @@
-import 'package:Pouchers/ui/features/profile/data/repository/module/module.dart';
-import 'package:Pouchers/ui/features/profile/domain/usecase/get_contacts_usecase.dart';
-import 'package:Pouchers/ui/features/profile/domain/usecase/request_phone_number_otp_usecase.dart';
+import 'package:pouchers/ui/features/profile/data/repository/module/module.dart';
+import 'package:pouchers/ui/features/profile/domain/usecase/get_contacts_usecase.dart';
+import 'package:pouchers/ui/features/profile/domain/usecase/request_phone_number_otp_usecase.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

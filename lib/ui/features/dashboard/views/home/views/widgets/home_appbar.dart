@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/notification/data/dao/notification_dao.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/features/notification/data/dao/notification_dao.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';

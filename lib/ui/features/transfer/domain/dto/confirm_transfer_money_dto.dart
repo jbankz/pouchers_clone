@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/profile/domain/model/bank_account_details/bank_account_details.dart';
-import 'package:Pouchers/ui/features/transfer/domain/model/attributes.dart';
+import 'package:pouchers/ui/features/profile/domain/model/bank_account_details/bank_account_details.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/attributes.dart';
 
 class ConfirmTransferMoney {
   final double amount;

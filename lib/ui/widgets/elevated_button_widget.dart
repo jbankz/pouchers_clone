@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

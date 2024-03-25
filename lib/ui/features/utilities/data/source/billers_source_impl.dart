@@ -1,14 +1,14 @@
-import 'package:Pouchers/ui/features/utilities/domain/dto/billers_dto.dart';
-import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/airtime_top_deals.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/billers.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/guest_services_purchase.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/guest_services_purchase_status.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/mobile_data_services.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/schedule.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/utility.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/validate_customer.dart';
+import 'package:pouchers/ui/features/utilities/domain/dto/billers_dto.dart';
+import 'package:pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/airtime_top_deals.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/billers.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/guest_services_purchase.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/guest_services_purchase_status.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/mobile_data_services.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/discounts.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/schedule.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/utility.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/validate_customer.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/network/api_path.dart';

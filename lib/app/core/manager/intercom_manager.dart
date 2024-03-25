@@ -1,4 +1,4 @@
-import 'package:Pouchers/app/config/app_config.dart';
+import 'package:pouchers/app/config/app_config.dart';
 import 'package:intercom_flutter/intercom_flutter.dart';
 
 import '../../../ui/features/profile/domain/model/user.dart';

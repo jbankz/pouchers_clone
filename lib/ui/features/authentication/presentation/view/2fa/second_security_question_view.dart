@@ -1,7 +1,7 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
-import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
+import 'package:pouchers/ui/widgets/dialog/bottom_sheet.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

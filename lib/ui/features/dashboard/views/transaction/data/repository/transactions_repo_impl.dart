@@ -1,8 +1,8 @@
-import 'package:Pouchers/ui/features/dashboard/views/transaction/data/dao/transaction_analytics_dao.dart';
-import 'package:Pouchers/ui/features/dashboard/views/transaction/data/dao/transaction_dao.dart';
-import 'package:Pouchers/ui/features/dashboard/views/transaction/data/source/transactions_source.dart';
-import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_analytic.dart';
-import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/data/dao/transaction_analytics_dao.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/data/dao/transaction_dao.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/data/source/transactions_source.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_analytic.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/dto/transaction_dto.dart';
