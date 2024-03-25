@@ -542,7 +542,6 @@ class AppString {
   static String senderTag = 'Sender Poucher Tag';
   static String beneficiary = 'Beneficiary';
   static String beneficiaryTag = 'Beneficiary Poucher Tag';
-  static String transactionNumber = 'Transaction Number';
   static String getReceipt = 'Get Receipt';
   static String operator = 'Operator';
   static String serviceUnavailable = 'Service Unavailable';
@@ -598,4 +597,6 @@ class AppString {
   static String voucherCode = 'Voucher Code';
   static String notOnPoucher =
       'Not on Pouchers? Download now to access global financial & value-added services.';
+  static String reason = 'Reason';
+  static String selectReason = 'Select Reason';
 }

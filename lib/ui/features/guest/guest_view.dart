@@ -21,7 +21,7 @@ class GuestView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _guestNotifier = ref.read(guestNotifierProvider.notifier);
+    final guestNotifier = ref.read(guestNotifierProvider.notifier);
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -48,17 +48,17 @@ class GuestView extends HookConsumerWidget {
                       PaymentWidget(
                           title: AppString.airtime,
                           asset: AppImage.airtimeIcon,
-                          onPressed: () => _guestNotifier
+                          onPressed: () => guestNotifier
                               .setRouteDestination(Routes.airtimeView)),
                       PaymentWidget(
                           title: AppString.cableTv,
                           asset: AppImage.televisionIcon,
-                          onPressed: () => _guestNotifier
+                          onPressed: () => guestNotifier
                               .setRouteDestination(Routes.cableTvView)),
                       PaymentWidget(
                           title: AppString.data,
                           asset: AppImage.dataIcon,
-                          onPressed: () => _guestNotifier
+                          onPressed: () => guestNotifier
                               .setRouteDestination(Routes.dataView)),
                     ],
                   ),
@@ -69,17 +69,17 @@ class GuestView extends HookConsumerWidget {
                       PaymentWidget(
                           title: AppString.electricity,
                           asset: AppImage.electricityIcon,
-                          onPressed: () => _guestNotifier
+                          onPressed: () => guestNotifier
                               .setRouteDestination(Routes.electricityView)),
                       PaymentWidget(
                           title: AppString.education,
                           asset: AppImage.educationIcon,
-                          onPressed: () => _guestNotifier
+                          onPressed: () => guestNotifier
                               .setRouteDestination(Routes.educationView)),
                       PaymentWidget(
                           title: AppString.internet,
                           asset: AppImage.wifiIcon,
-                          onPressed: () => _guestNotifier
+                          onPressed: () => guestNotifier
                               .setRouteDestination(Routes.internetView)),
                     ],
                   ),
@@ -102,7 +102,7 @@ class GuestView extends HookConsumerWidget {
                       PaymentWidget(
                           title: AppString.betting,
                           asset: AppImage.bettingIcon,
-                          onPressed: () => _guestNotifier
+                          onPressed: () => guestNotifier
                               .setRouteDestination(Routes.bettingView)),
                     ],
                   ),

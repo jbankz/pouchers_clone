@@ -64,7 +64,7 @@
                 android:screenOrientation="portrait"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
-        <provider
+        <!-- <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="{applicationID}.fileprovider"
             android:exported="false"
@@ -76,7 +76,7 @@
                 android:resource="@xml/file_paths"
                 tools:replace="android:resource"
                 />
-        </provider>
+        </provider> -->
 
     </application>
 </manifest>

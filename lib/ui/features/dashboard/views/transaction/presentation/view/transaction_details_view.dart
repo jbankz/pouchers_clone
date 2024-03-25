@@ -191,7 +191,7 @@ class _TransactionDetailsViewState
                               borderRadius: BorderRadius.circular(8.r)),
                           child: Column(
                             children: [
-                              Text(AppString.transactionNumber,
+                              Text(AppString.transactionId,
                                   style: context.headlineMedium?.copyWith(
                                       fontSize: 14,
                                       color: AppColors.kIconGrey,
@@ -232,7 +232,8 @@ class _TransactionDetailsViewState
                         child: Row(
                           children: [
                             SvgPicture.asset(AppImage.logo,
-                                color: AppColors.white,
+                                colorFilter: const ColorFilter.mode(
+                                    AppColors.white, BlendMode.srcIn),
                                 width: 36.09.w,
                                 height: 44.41.h),
                             const Gap(width: 7.99),

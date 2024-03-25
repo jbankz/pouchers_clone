@@ -1,5 +1,3 @@
-import 'package:Pouchers/utils/extension.dart';
-
 import '../enum/card_brand.dart';
 import '../enum/card_status.dart';
 import '../enum/currency.dart';

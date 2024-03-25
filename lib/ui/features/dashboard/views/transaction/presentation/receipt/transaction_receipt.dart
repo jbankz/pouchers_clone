@@ -154,7 +154,7 @@ Future<pw.Widget> generateTransactionReceipt(
           borderRadius: pw.BorderRadius.circular(8.r)),
       child: pw.Column(
         children: [
-          pw.Text(AppString.transactionNumber,
+          pw.Text(AppString.transactionId,
               textAlign: pw.TextAlign.center,
               style: pw.TextStyle(
                   color: PdfColor.fromInt(AppColors.kIconGrey.value),

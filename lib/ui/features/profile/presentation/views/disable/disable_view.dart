@@ -67,8 +67,8 @@ class _DisableViewState extends ConsumerState<DisableView> with $DisableView {
                 const Gap(height: 35),
                 EditTextFieldWidget(
                     readOnly: true,
-                    title: 'Reason',
-                    label: 'Select reason',
+                    title: AppString.reason,
+                    label: AppString.selectReason,
                     controller: reasonController,
                     focusNode: reasonFocusNode,
                     keyboardType: TextInputType.text,

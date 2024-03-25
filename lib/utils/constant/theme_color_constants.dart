@@ -144,8 +144,8 @@ const BorderRadius kBorderSmallRadius = BorderRadius.all(Radius.circular(8));
 const BorderRadius kBorderMidRadius =
     BorderRadius.all(Radius.circular(kRegularPadding));
 const BorderRadius kFullBorderRadius = BorderRadius.all(Radius.circular(100));
-BoxDecoration kTextFieldBoxDecoration = const BoxDecoration(
-    borderRadius: kBorderRadius, border: null, color: Colors.white);
+BoxDecoration kTextFieldBoxDecoration =
+    const BoxDecoration(borderRadius: kBorderRadius, color: Colors.white);
 BoxDecoration kBottomSheetBoxDecoration = const BoxDecoration(
   color: Colors.white,
   borderRadius: BorderRadius.only(
@@ -447,15 +447,15 @@ ThemeData kThemeDataDark = ThemeData.dark().copyWith(
     titleTextStyle: kBodyText1Style.copyWith(color: kPrimaryWhite),
   ),
   textTheme: TextTheme(
-    headline1: kHeadline1TextStyle.copyWith(color: kPrimaryWhite),
-    headline2: kHeadline2TextStyle.copyWith(color: kPrimaryWhite),
-    headline3: kHeadline3TextStyle.copyWith(color: kPrimaryWhite),
-    headline4: kHeadline4TextStyle.copyWith(color: kPrimaryWhite),
-    bodyText1: kBodyText1Style.copyWith(color: kPrimaryWhite),
-    bodyText2: kBodyText2Style.copyWith(color: kPrimaryWhite),
-    subtitle1: kSubtitle1Style.copyWith(color: kPrimaryWhite),
-    subtitle2: kSubtitle2Style.copyWith(color: kPrimaryWhite),
-    headline5: kHeadline5Style,
-    headline6: kHeadline6Style,
+    displayLarge: kHeadline1TextStyle.copyWith(color: kPrimaryWhite),
+    displayMedium: kHeadline2TextStyle.copyWith(color: kPrimaryWhite),
+    displaySmall: kHeadline3TextStyle.copyWith(color: kPrimaryWhite),
+    headlineMedium: kHeadline4TextStyle.copyWith(color: kPrimaryWhite),
+    bodyLarge: kBodyText1Style.copyWith(color: kPrimaryWhite),
+    bodyMedium: kBodyText2Style.copyWith(color: kPrimaryWhite),
+    titleMedium: kSubtitle1Style.copyWith(color: kPrimaryWhite),
+    titleSmall: kSubtitle2Style.copyWith(color: kPrimaryWhite),
+    headlineSmall: kHeadline5Style,
+    titleLarge: kHeadline6Style,
   ),
 );

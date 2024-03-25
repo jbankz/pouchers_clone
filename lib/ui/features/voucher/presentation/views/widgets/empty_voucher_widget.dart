@@ -18,14 +18,14 @@ class EmptyVoucherView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            height: 81.h,
-            width: 81.w,
-            padding: EdgeInsets.all(20.w),
-            decoration: const BoxDecoration(
-                shape: BoxShape.circle, color: AppColors.paleLavenderGray),
-            child: SvgPicture.asset(AppImage.voucherIcon,
-                color: AppColors.kIconGrey),
-          ),
+              height: 81.h,
+              width: 81.w,
+              padding: EdgeInsets.all(20.w),
+              decoration: const BoxDecoration(
+                  shape: BoxShape.circle, color: AppColors.paleLavenderGray),
+              child: SvgPicture.asset(AppImage.voucherIcon,
+                  colorFilter: const ColorFilter.mode(
+                      AppColors.kIconGrey, BlendMode.srcIn))),
           const Gap(height: 14),
           Text(message ?? AppString.emptyVoucher,
               style: context.headlineMedium?.copyWith(

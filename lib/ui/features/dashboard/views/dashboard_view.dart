@@ -83,7 +83,9 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                         ? Lottie.asset(button.enabledIcon,
                             height: 25.h, width: 25.w, fit: BoxFit.contain)
                         : SvgPicture.asset(button.disabledIcon,
-                            color: AppColors.kSecondaryTextColor),
+                            colorFilter: const ColorFilter.mode(
+                                AppColors.kSecondaryTextColor,
+                                BlendMode.srcIn)),
                     label: button.label);
               }).toList()),
         ),
