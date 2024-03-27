@@ -185,6 +185,7 @@ class _UssdViewState extends ConsumerState<UssdView> with $UssdView {
                   title: 'I have paid ${widget.amount}',
                   onPressed: () {
                     if (!formKey.currentState!.validate()) return;
+
                     PageRouter.pop(DebitCardDto(
                         bank: _attribute?.name,
                         reference: billerState

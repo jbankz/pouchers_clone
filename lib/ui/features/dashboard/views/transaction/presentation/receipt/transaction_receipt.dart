@@ -34,8 +34,8 @@ Future<pw.Widget> generateTransactionReceipt(
   final Color color =
       isDebitTransaction ? AppColors.kColorRedDeep : AppColors.limeGreen;
   final String amount = isDebitTransaction
-      ? '-${transactionHistory?.amount.toNaira}'
-      : '+${transactionHistory?.amount.toNaira}';
+      ? '${transactionHistory?.amount.toNaira}'
+      : '${transactionHistory?.amount.toNaira}';
 
   return pw.Column(children: [
     pw.Align(
@@ -256,12 +256,12 @@ pw.Column _buildElectricityReceipt(
             value: transactionHistory?.extraDetails?.customerReferenceNumber ??
                 ''),
         pw.SizedBox(height: 16),
-        _buildTile(
-            font: robotFont,
-            title: AppString.customerReceiptNumber,
-            value:
-                transactionHistory?.extraDetails?.customerReceiptNumber ?? ''),
-        pw.SizedBox(height: 16),
+        // _buildTile(
+        //     font: robotFont,
+        //     title: AppString.customerReceiptNumber,
+        //     value:
+        //         transactionHistory?.extraDetails?.customerReceiptNumber ?? ''),
+        // pw.SizedBox(height: 16),
         _buildTile(
             font: robotFont,
             title: AppString.customerName,

@@ -37,11 +37,11 @@ class ElectricityReceipt extends StatelessWidget {
                   transactionHistory?.extraDetails?.customerReferenceNumber ??
                       ''),
           const Gap(height: 16),
-          ReceiptTiles(
-              title: AppString.customerReceiptNumber,
-              value: transactionHistory?.extraDetails?.customerReceiptNumber ??
-                  ''),
-          const Gap(height: 16),
+          // ReceiptTiles(
+          //     title: AppString.customerReceiptNumber,
+          //     value: transactionHistory?.extraDetails?.customerReceiptNumber ??
+          //         ''),
+          // const Gap(height: 16),
           ReceiptTiles(
               title: AppString.customerName,
               value: transactionHistory?.extraDetails?.customerName ?? ''),

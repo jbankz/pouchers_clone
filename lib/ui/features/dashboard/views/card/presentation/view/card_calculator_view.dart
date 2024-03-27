@@ -92,7 +92,7 @@ class _CardCalculatorViewState extends ConsumerState<CardCalculatorView>
     final param = ref.watch(paramModule);
     final cardState = ref.watch(cardNotifierProvider);
 
-    final minimumAccount = param.isNairaCardType ? 1000.toNaira : 1000.toDollar;
+    final minimumAccount = param.isNairaCardType ? 1000.toNaira : 1.toDollar;
 
     return Scaffold(
       backgroundColor: AppColors.kPurpleColor,

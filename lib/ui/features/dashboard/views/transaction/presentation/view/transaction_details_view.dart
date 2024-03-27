@@ -60,8 +60,10 @@ class _TransactionDetailsViewState
         isDebitTransaction ? AppColors.kColorRedDeep : AppColors.limeGreen;
 
     final String amount = isDebitTransaction
-        ? '-${widget.transactionHistory.amount.toNaira}'
-        : '+${(widget.transactionHistory.amount + widget.transactionHistory.transactionFee).toNaira}';
+        ? widget.transactionHistory.amount.toNaira
+        : (widget.transactionHistory.amount +
+                widget.transactionHistory.transactionFee)
+            .toNaira;
 
     return Scaffold(
       appBar: AppBar(

@@ -169,9 +169,6 @@ class _HistoryTabState extends ConsumerState<HistoryTab> {
                               final Color color = isDebitTransaction
                                   ? AppColors.kColorRedDeep
                                   : AppColors.limeGreen;
-                              final String amount = isDebitTransaction
-                                  ? '-${transaction.amount.toNaira}'
-                                  : '+${transaction.amount.toNaira}';
 
                               if (index == 0 || !(isSameDate)) {
                                 return Column(
@@ -188,7 +185,7 @@ class _HistoryTabState extends ConsumerState<HistoryTab> {
                                     _buildItem(
                                         title: transactionTitle(transaction),
                                         context: context,
-                                        amount: amount,
+                                        amount: transaction.amount.toNaira,
                                         color: color,
                                         transactionHistory: transaction)
                                   ],
@@ -198,7 +195,7 @@ class _HistoryTabState extends ConsumerState<HistoryTab> {
                               return _buildItem(
                                   title: transactionTitle(transaction),
                                   context: context,
-                                  amount: amount,
+                                  amount: transaction.amount.toNaira,
                                   color: color,
                                   transactionHistory: transaction);
                             }),

@@ -247,7 +247,9 @@ class _DataViewState extends ConsumerState<DataView> with $DataView {
     final bool isCardPayment =
         (feedback is DebitCardDto? && feedback?.bank == null);
 
-    _mobileDto = _mobileDto?..bank = feedback?.bank;
+    _mobileDto = _mobileDto
+      ?..bank = feedback?.bank
+      ..referenceNumber = feedback?.reference;
 
     _billersNotifier.purchaseServiceForGuest(
         isCardPayment: isCardPayment,
