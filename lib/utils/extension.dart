@@ -88,6 +88,8 @@ extension StringExtensions on String {
 
   /// Use this only when you are sure the value to be parsed is a curreny format
   num get replaceComma => num.tryParse(replaceAll(',', '')) ?? 0;
+
+  num get toNum => num.tryParse(this) ?? 0;
 }
 
 // Extension for currency formatting

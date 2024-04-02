@@ -30,7 +30,7 @@ class EnvDao {
     if (clear) _box.clear();
 
     for (var env in envs) {
-      await _box.put(env.updatedAt?.toIso8601String(), env);
+      await _box.put(env.name?.value, env);
     }
   }
 

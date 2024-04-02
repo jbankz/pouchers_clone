@@ -9,6 +9,7 @@ class AdminDto {
   final String? tag;
   final String? pin;
   final String? resetCode;
+  final double? amount;
 
   AdminDto(
       {this.firstName,
@@ -20,7 +21,8 @@ class AdminDto {
       this.otp,
       this.tag,
       this.pin,
-      this.resetCode});
+      this.resetCode,
+      this.amount});
 
   Map<String, dynamic> toJson() => {
         if (firstName != null) 'first_name': firstName,
@@ -33,5 +35,6 @@ class AdminDto {
         if (tag != null) 'tag': tag,
         if (pin != null) 'pin': pin,
         if (resetCode != null) 'reset_code': resetCode,
+        if (amount != null) 'amount': amount.toString()
       };
 }

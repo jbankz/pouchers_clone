@@ -25,6 +25,8 @@ class BannerDao {
   Future<void> save(List<Banner> banners) async {
     if (banners.isEmpty) return;
 
+    await _box.clear();
+
     for (var banner in banners) {
       await _box.put(banner.id, banner);
     }

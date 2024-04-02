@@ -29,14 +29,14 @@ class SimpleLogPrinter extends LogPrinter {
 
   @override
   List<String> log(LogEvent event) {
-    final color = PrettyPrinter.levelColors[event.level];
-    final emoji = PrettyPrinter.levelEmojis[event.level];
-    final methodName = _getMethodName();
+    var color = PrettyPrinter.levelColors[event.level];
+    var emoji = PrettyPrinter.levelEmojis[event.level];
+    var methodName = _getMethodName();
 
-    final methodNameSection =
+    var methodNameSection =
         printCallingFunctionName && methodName != null ? ' | $methodName' : '';
-    final stackLog = event.stackTrace.toString();
-    final output =
+    var stackLog = event.stackTrace.toString();
+    var output =
         '$emoji $className$methodNameSection - ${event.message}${event.error != null ? '\nERROR: ${event.error}\n' : ''}${printCallStack ? '\nSTACKTRACE:\n$stackLog' : ''}';
 
     if (exludeLogsFromClasses
@@ -44,7 +44,7 @@ class SimpleLogPrinter extends LogPrinter {
         (showOnlyClass != null && className != showOnlyClass)) return [];
 
     final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
-    final List<String> result = [];
+    List<String> result = [];
 
     for (var line in output.split('\n')) {
       result.addAll(pattern.allMatches(line).map((match) {
@@ -110,17 +110,17 @@ class SimpleLogPrinter extends LogPrinter {
 final stackTraceRegex = RegExp(r'#[0-9]+[\s]+(.+) \(([^\s]+)\)');
 
 List<String>? _formatStackTrace(StackTrace stackTrace, int methodCount) {
-  final lines = stackTrace.toString().split('\n');
+  var lines = stackTrace.toString().split('\n');
 
-  final formatted = <String>[];
+  var formatted = <String>[];
   var count = 0;
   for (var line in lines) {
-    final match = stackTraceRegex.matchAsPrefix(line);
+    var match = stackTraceRegex.matchAsPrefix(line);
     if (match != null) {
       if (match.group(2)!.startsWith('package:logger')) {
         continue;
       }
-      final newLine = ("${match.group(1)}");
+      var newLine = ("${match.group(1)}");
       formatted.add(newLine.replaceAll('<anonymous closure>', '()'));
       if (++count == methodCount) {
         break;

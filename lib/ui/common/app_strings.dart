@@ -599,4 +599,6 @@ class AppString {
       'Not on Pouchers? Download now to access global financial & value-added services.';
   static String reason = 'Reason';
   static String selectReason = 'Select Reason';
+  static String equivalentIn = 'The equivalent in naira is';
+  static String currentExchangeRate = 'Current exchange rate ';
 }

@@ -14,9 +14,11 @@ class BuildQuickActionButton extends StatelessWidget {
   final String icon;
   final double width;
   final Function() onPressed;
+  final AnimationController animationController;
 
   const BuildQuickActionButton(
       {super.key,
+      required this.animationController,
       required this.title,
       required this.icon,
       required this.onPressed,
@@ -24,38 +26,47 @@ class BuildQuickActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Flexible(
-        child: CupertinoButton(
-          onPressed: () {
-            if (userDao.user.tierLevels > 1) {
-              onPressed();
-              return;
-            }
-            triggerNotificationTray(AppString.verifyBVNproceed, error: true);
-          },
-          padding: EdgeInsets.zero,
-          child: SizedBox(
-            width: width.w,
-            child: Column(
-              children: [
-                Container(
-                  height: 56.h,
-                  width: 56.w,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.paleLavenderGray),
-                  child: SvgPicture.asset(icon, fit: BoxFit.scaleDown),
-                ),
-                Gap(height: 12.h),
-                Text(
-                  title,
-                  style: context.headlineLarge?.copyWith(
-                      color: AppColors.kPrimaryBlack,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12),
-                ),
-              ],
+          child: FadeTransition(
+        opacity: animationController,
+        child: SlideTransition(
+          position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+              .animate(CurvedAnimation(
+                  parent: animationController, curve: Curves.easeIn)),
+          // scale: Tween(begin: 0.75, end: 1.0).animate(CurvedAnimation(
+          //     parent: animationController, curve: Curves.bounceInOut)),
+          child: CupertinoButton(
+            onPressed: () {
+              if (userDao.user.tierLevels > 1) {
+                onPressed();
+                return;
+              }
+              triggerNotificationTray(AppString.verifyBVNproceed, error: true);
+            },
+            padding: EdgeInsets.zero,
+            child: SizedBox(
+              width: width.w,
+              child: Column(
+                children: [
+                  Container(
+                    height: 56.h,
+                    width: 56.w,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.paleLavenderGray),
+                    child: SvgPicture.asset(icon, fit: BoxFit.scaleDown),
+                  ),
+                  Gap(height: 12.h),
+                  Text(
+                    title,
+                    style: context.headlineLarge?.copyWith(
+                        color: AppColors.kPrimaryBlack,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      );
+      ));
 }

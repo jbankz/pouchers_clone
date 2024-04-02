@@ -12,6 +12,7 @@ class CardState<T> with _$CardState<T> {
   const factory CardState(
       {@Default(false) bool isBusy,
       @Default(false) bool isGettingCardTransactions,
+      @Default(false) bool isGettingFundingFee,
       GetExchangeRate? exchangeRate,
       VirtualCardDetails? virtualCardDetails,
       VirtualAccountBalance? virtualAccountBalance,
