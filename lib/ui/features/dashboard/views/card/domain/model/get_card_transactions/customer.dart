@@ -18,7 +18,7 @@ class Customer with _$Customer {
     String? status,
     Individual? individual,
     BillingAddress? billingAddress,
-    bool? isDeleted,
+    @Default(false) bool isDeleted,
     DateTime? createdAt,
     DateTime? updatedAt,
     @JsonKey(name: '__v') int? v,

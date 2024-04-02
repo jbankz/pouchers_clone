@@ -14,8 +14,8 @@ class Terminal with _$Terminal {
     String? terminalType,
     String? panEntryMode,
     String? pinEntryMode,
-    bool? cardHolderPresence,
-    bool? cardPresence,
+    @Default(false) bool cardHolderPresence,
+    @Default(false) bool cardPresence,
     @JsonKey(name: '_id') String? id,
   }) = _Terminal;
 

@@ -18,9 +18,11 @@ class Card with _$Card {
     String? expiryMonth,
     String? expiryYear,
     String? status,
-    @JsonKey(name: 'is2FAEnrolled') bool? is2FaEnrolled,
-    @JsonKey(name: 'isDefaultPINChanged') bool? isDefaultPinChanged,
-    bool? isDeleted,
+    @JsonKey(name: 'is2FAEnrolled') @Default(false) bool is2FaEnrolled,
+    @JsonKey(name: 'isDefaultPINChanged')
+    @Default(false)
+    bool isDefaultPinChanged,
+    @Default(false) bool isDeleted,
     DateTime? createdAt,
     DateTime? updatedAt,
     @JsonKey(name: '__v') int? v,

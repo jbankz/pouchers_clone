@@ -20,7 +20,7 @@ import '../../../../../../widgets/dialog/bottom_sheet.dart';
 import '../../../../../admin/domain/model/envs/envs.dart';
 import '../../../../../profile/data/dao/user_dao.dart';
 import '../../domain/model/cards/cards.dart';
-import '../../domain/model/get_card_transactions/datum.dart';
+import '../../domain/model/get_card_transactions/transaction.dart';
 import '../../domain/model/get_exchange_rate/get_exchange_rate.dart';
 import '../../domain/model/virtual_account_balance/virtual_account_balance.dart';
 import '../../domain/model/virtual_card_details/virtual_card_details.dart';
@@ -37,7 +37,7 @@ class CardNotifier extends _$CardNotifier {
   GetExchangeRate? _exchangeRate;
   VirtualCardDetails? _cardDetails;
   VirtualAccountBalance? _accountBalance;
-  List<Datum> _transactions = [];
+  List<Transaction> _transactions = [];
 
   @override
   CardState build() => const CardState();

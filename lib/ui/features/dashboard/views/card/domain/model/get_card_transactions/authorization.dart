@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
 
 import 'fee_detail.dart';
 import 'merchant.dart';
@@ -18,15 +19,15 @@ class Authorization with _$Authorization {
     String? customer,
     String? account,
     String? card,
-    int? amount,
-    int? fee,
-    int? vat,
-    bool? approved,
-    String? currency,
+    @Default(0) num amount,
+    @Default(0) num fee,
+    @Default(0) num vat,
+    @Default(false) bool approved,
+    Currency? currency,
     String? status,
     String? authorizationMethod,
     List<dynamic>? balanceTransactions,
-    int? merchantAmount,
+    @Default(0) num merchantAmount,
     String? merchantCurrency,
     Merchant? merchant,
     Terminal? terminal,
@@ -34,7 +35,7 @@ class Authorization with _$Authorization {
     dynamic pendingRequest,
     List<RequestHistory>? requestHistory,
     Verification? verification,
-    bool? isDeleted,
+    @Default(false) bool isDeleted,
     DateTime? createdAt,
     DateTime? updatedAt,
     List<FeeDetail>? feeDetails,
