@@ -601,4 +601,5 @@ class AppString {
   static String selectReason = 'Select Reason';
   static String equivalentIn = 'The equivalent in naira is';
   static String currentExchangeRate = 'Current exchange rate ';
+  static String comingSoon = 'Coming soon';
 }

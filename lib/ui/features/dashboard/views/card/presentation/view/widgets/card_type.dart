@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:pouchers/app/core/skeleton/widgets.dart';
 import 'package:pouchers/ui/common/app_colors.dart';
 import 'package:pouchers/ui/common/app_images.dart';
@@ -115,13 +116,17 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
                                 const Gap(height: 30),
                               if (widget.currency != Currency.usd)
                                 _buildCardWidget(
+                                    isNotAvailable: true,
                                     title: AppString.virtualDollarCard,
                                     fee: num.parse(dollarCreation?.value ?? '0')
                                         .toDollar,
                                     icon: AppImage.dollarSign,
                                     color: AppColors.kBrightPurple,
-                                    callback: () =>
-                                        _createCard(user, CardType.dollar)),
+                                    callback: () async {
+                                      await HapticFeedback.selectionClick();
+                                    }
+                                    // _createCard(user, CardType.dollar),
+                                    ),
                             ],
                           ),
                         ),
@@ -140,59 +145,90 @@ class _CardTypeWidgetState extends ConsumerState<CardTypeWidget> {
           required String title,
           required String fee,
           required Color color,
-          required Function() callback}) =>
+          required Function() callback,
+          bool isNotAvailable = false}) =>
       InkWell(
-        borderRadius: BorderRadius.circular(13.r),
-        onTap: callback,
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: color, borderRadius: BorderRadius.circular(13.r)),
-          padding: EdgeInsets.fromLTRB(25.w, 23.h, 22.h, 17.h),
-          child: Row(
-            children: [
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          borderRadius: BorderRadius.circular(13.r),
+          onTap: callback,
+          child: Stack(children: [
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: color, borderRadius: BorderRadius.circular(13.r)),
+              padding: EdgeInsets.fromLTRB(25.w, 23.h, 22.w, 17.h),
+              child: Row(
                 children: [
-                  Text(title,
-                      style: context.titleMedium?.copyWith(
-                          color: AppColors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700)),
-                  const Gap(height: 22),
-                  Text(fee,
-                      style: context.titleMedium?.copyWith(
-                          color: AppColors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700)),
-                  const Gap(height: 2),
-                  Text(AppString.creationFeeApplies,
-                      style: context.titleMedium?.copyWith(
-                          color: AppColors.white.withOpacity(.80),
-                          fontSize: 12))
+                  Expanded(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title,
+                          style: context.titleMedium?.copyWith(
+                              color: isNotAvailable
+                                  ? AppColors.white.withOpacity(.7)
+                                  : AppColors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700)),
+                      const Gap(height: 22),
+                      Text(fee,
+                          style: context.titleMedium?.copyWith(
+                              color: isNotAvailable
+                                  ? AppColors.white.withOpacity(.7)
+                                  : AppColors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700)),
+                      const Gap(height: 2),
+                      Text(AppString.creationFeeApplies,
+                          style: context.titleMedium?.copyWith(
+                              color: isNotAvailable
+                                  ? AppColors.white.withOpacity(.7)
+                                  : AppColors.white.withOpacity(.80),
+                              fontSize: 12))
+                    ],
+                  )),
+                  Container(
+                    height: 100.h,
+                    width: 100.w,
+                    padding: EdgeInsets.fromLTRB(12.w, 9.h, 12.w, 15.h),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.white.withOpacity(.10)),
+                    child: Container(
+                      height: 76.h,
+                      width: 76.w,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.white.withOpacity(.3)),
+                      child: SvgPicture.asset(
+                        icon,
+                        fit: BoxFit.scaleDown,
+                        colorFilter: ColorFilter.mode(
+                            isNotAvailable
+                                ? AppColors.white.withOpacity(.7)
+                                : AppColors.white,
+                            BlendMode.srcIn),
+                      ),
+                    ),
+                  )
                 ],
-              )),
-              Container(
-                height: 100.h,
-                width: 100.w,
-                padding: EdgeInsets.fromLTRB(12.w, 9.h, 12.w, 15.h),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.white.withOpacity(.10)),
-                child: Container(
-                  height: 76.h,
-                  width: 76.w,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.white.withOpacity(.3)),
-                  child: SvgPicture.asset(icon, fit: BoxFit.scaleDown),
-                ),
-              )
-            ],
-          ),
-        ),
-      );
+              ),
+            ),
+            if (isNotAvailable)
+              Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                      margin: EdgeInsets.only(top: 10.h, right: 15.w),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.r),
+                          color: AppColors.green),
+                      child: Text(AppString.comingSoon,
+                          style: context.displaySmall?.copyWith(
+                              color: AppColors.white,
+                              fontSize: 9,
+                              fontWeight: FontWeight.w500))))
+          ]));
 
   Future<void> _createCard(User user, CardType cardType) async {
     if (user.tierLevels < 2) {

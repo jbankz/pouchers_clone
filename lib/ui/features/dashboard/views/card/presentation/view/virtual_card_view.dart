@@ -37,10 +37,9 @@ class _VirtualCardViewState extends ConsumerState<VirtualCardView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _cardNotifier = ref.read(cardNotifierProvider.notifier)
-        ..getCards(CardDto(userId: userDao.user.userId), _cancelToken);
-    });
+    Future.microtask(() =>
+        _cardNotifier = ref.read(cardNotifierProvider.notifier)
+          ..getCards(CardDto(userId: userDao.user.userId), _cancelToken));
   }
 
   @override
