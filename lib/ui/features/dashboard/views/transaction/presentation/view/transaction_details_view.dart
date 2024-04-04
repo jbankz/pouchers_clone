@@ -1,19 +1,20 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pouchers/app/config/app_helper.dart';
 import 'package:pouchers/ui/common/app_colors.dart';
 import 'package:pouchers/ui/common/app_images.dart';
 import 'package:pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart';
 import 'package:pouchers/ui/features/dashboard/views/transaction/presentation/notifier/receipt_notifier.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/presentation/view/receipts/cable_receipt.dart';
 import 'package:pouchers/ui/features/dashboard/views/transaction/presentation/view/receipts/transfer_receipt.dart';
 import 'package:pouchers/ui/features/utilities/domain/enum/service_category.dart';
 import 'package:pouchers/ui/widgets/dialog/bottom_sheet.dart';
 import 'package:pouchers/ui/widgets/elevated_button_widget.dart';
 import 'package:pouchers/ui/widgets/gap.dart';
 import 'package:pouchers/utils/extension.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../../../../../../common/app_strings.dart';
@@ -23,7 +24,8 @@ import '../../domain/parser/parse_transaction_title.dart';
 import 'receipts/airtime_or_data_receipt.dart';
 import 'receipts/betting_receipt.dart';
 import 'receipts/build_electricity_receipt.dart';
-import 'receipts/operator_receipt.dart';
+import 'receipts/created_virtual_card_receipt_status.dart';
+import 'receipts/education_receipt.dart';
 import 'receipts/receipt_status.dart';
 import 'receipts/receipts_tiles.dart';
 import 'receipts/vouchers_receipt.dart';
@@ -153,7 +155,7 @@ class _TransactionDetailsViewState
                             transactionHistory: widget.transactionHistory),
                         ServiceCategory.adminCreditWallet => StatusReceipt(
                             transactionHistory: widget.transactionHistory),
-                        ServiceCategory.cable => OperatorReceipt(
+                        ServiceCategory.cable => CableReceipt(
                             transactionHistory: widget.transactionHistory),
                         ServiceCategory.electricity => ElectricityReceipt(
                             transactionHistory: widget.transactionHistory),
@@ -165,12 +167,13 @@ class _TransactionDetailsViewState
                             transactionHistory: widget.transactionHistory),
                         ServiceCategory.referralBonusPayment => StatusReceipt(
                             transactionHistory: widget.transactionHistory),
-                        ServiceCategory.education => StatusReceipt(
+                        ServiceCategory.education => EducationReceipt(
                             transactionHistory: widget.transactionHistory),
                         ServiceCategory.internet => StatusReceipt(
                             transactionHistory: widget.transactionHistory),
-                        ServiceCategory.createVirtualCard => StatusReceipt(
-                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.createVirtualCard =>
+                          CreatedVirtualCardReceipt(
+                              transactionHistory: widget.transactionHistory),
                         ServiceCategory.fundVirtualCard => StatusReceipt(
                             transactionHistory: widget.transactionHistory),
                         null => StatusReceipt(

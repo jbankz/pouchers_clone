@@ -144,7 +144,7 @@ class _VirtualCardViewState extends ConsumerState<VirtualCardView> {
                           );
                         }),
                   ),
-                  if (cards.length != 2)
+                  if (cards.length != 2 && cards.first.currency != Currency.ngn)
                     ElevatedButtonWidget(
                         title: cards.first.currency == Currency.ngn
                             ? AppString.createDollarCard

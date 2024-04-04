@@ -56,35 +56,36 @@ class TransactionHistory with _$TransactionHistory {
 @freezed
 @HiveType(typeId: DbConstants.eighteen)
 class ExtraDetails with _$ExtraDetails {
-  factory ExtraDetails({
-    @HiveField(0) @JsonKey(name: 'sender_name') String? senderName,
-    @HiveField(1)
-    @JsonKey(name: 'sender_tag')
-    @TagSerializer()
-    String? senderTag,
-    @HiveField(2)
-    @JsonKey(name: 'receiver_tag')
-    @TagSerializer()
-    String? receiverTag,
-    @HiveField(3) @JsonKey(name: 'receiver_picture') String? receiverPicture,
-    @HiveField(4) String? phoneNumber,
-    @HiveField(5) ServiceCategory? category,
-    @HiveField(6) String? subCategory,
-    @StringToNumSerializer() @Default(0) @HiveField(7) num amount,
-    @HiveField(8) String? customerId,
-    @HiveField(9) String? email,
-    @HiveField(10) String? token,
-    @HiveField(11) String? date,
-    @HiveField(12) String? transactionId,
-    @HiveField(13) String? vat,
-    @HiveField(14) String? customerReferenceNumber,
-    @HiveField(15) String? customerReceiptNumber,
-    @HiveField(16) String? customerFirstName,
-    @HiveField(17) String? customerName,
-    @HiveField(18) String? address,
-    @StringToNumSerializer() @Default(0) @HiveField(19) num units,
-    @HiveField(20) @JsonKey(name: 'voucher_code') String? voucherCode,
-  }) = _ExtraDetails;
+  factory ExtraDetails(
+      {@HiveField(0) @JsonKey(name: 'sender_name') String? senderName,
+      @HiveField(1)
+      @JsonKey(name: 'sender_tag')
+      @TagSerializer()
+      String? senderTag,
+      @HiveField(2)
+      @JsonKey(name: 'receiver_tag')
+      @TagSerializer()
+      String? receiverTag,
+      @HiveField(3) @JsonKey(name: 'receiver_picture') String? receiverPicture,
+      @HiveField(4) String? phoneNumber,
+      @HiveField(5) ServiceCategory? category,
+      @HiveField(6) String? subCategory,
+      @StringToNumSerializer() @Default(0) @HiveField(7) num amount,
+      @HiveField(8) String? customerId,
+      @HiveField(9) String? email,
+      @HiveField(10) String? token,
+      @HiveField(11) String? date,
+      @HiveField(12) String? transactionId,
+      @HiveField(13) String? vat,
+      @HiveField(14) String? customerReferenceNumber,
+      @HiveField(15) String? customerReceiptNumber,
+      @HiveField(16) String? customerFirstName,
+      @HiveField(17) String? customerName,
+      @HiveField(18) String? address,
+      @StringToNumSerializer() @Default(0) @HiveField(19) num units,
+      @HiveField(20) @JsonKey(name: 'voucher_code') String? voucherCode,
+      @HiveField(21) String? resultCheckerPin,
+      @HiveField(22) String? serialNumber}) = _ExtraDetails;
 
   factory ExtraDetails.fromJson(Map<String, dynamic> json) =>
       _$ExtraDetailsFromJson(json);

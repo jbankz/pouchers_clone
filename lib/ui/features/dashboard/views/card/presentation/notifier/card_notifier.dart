@@ -144,8 +144,10 @@ class CardNotifier extends _$CardNotifier {
           .future);
     } catch (e) {
       _logger.e(e.toString());
+      triggerNotificationTray(e.toString(), error: true);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> freezeCard(CardDto parameter, [CancelToken? cancelToken]) async {
@@ -159,8 +161,9 @@ class CardNotifier extends _$CardNotifier {
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(), error: true);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> getCardTransactions(CardDto parameter,
@@ -174,9 +177,10 @@ class CardNotifier extends _$CardNotifier {
       _transactions = getCardTransactions?.data ?? [];
     } catch (e) {
       _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(
+          isGettingCardTransactions: false, transactions: _transactions);
     }
-    state = state.copyWith(
-        isGettingCardTransactions: false, transactions: _transactions);
   }
 
   Future<void> getCards(CardDto cardDto, [CancelToken? cancelToken]) async {
@@ -188,8 +192,9 @@ class CardNotifier extends _$CardNotifier {
           .future);
     } catch (e) {
       _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> getToken(CardDto parameter, [CancelToken? cancelToken]) async {
@@ -201,8 +206,9 @@ class CardNotifier extends _$CardNotifier {
           .future);
     } catch (e) {
       _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> getExchangeRate(CardDto parameter,
@@ -215,8 +221,9 @@ class CardNotifier extends _$CardNotifier {
           .future);
     } catch (e) {
       _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(isBusy: false, exchangeRate: _exchangeRate);
     }
-    state = state.copyWith(isBusy: false, exchangeRate: _exchangeRate);
   }
 
   num _returnFee(Fees fees) =>
@@ -226,7 +233,8 @@ class CardNotifier extends _$CardNotifier {
           ?.toNum ??
       0;
 
-  num calculateTotalNairaFee(List<Envs> envs, {double amount = 0}) {
+  num calculateCreationFeeTotalNairaFee(List<Envs> envs,
+      {bool isFunding = false, double amount = 0}) {
     final nairaCardCreationFee = _returnFee(Fees.nairaCardCreationFee);
     final sudoVerveNairaCardCreationFee =
         _returnFee(Fees.sudoVerveNairaCardCreationFee);
@@ -234,18 +242,28 @@ class CardNotifier extends _$CardNotifier {
         _returnFee(Fees.sudoVerveNairaCardFundingFee);
     final nairaCardFundingFee = _returnFee(Fees.nairaCardFundingFee);
 
+    if (isFunding) {
+      return sudoVerveNairaCardFundingFee +
+          ((nairaCardFundingFee / 100) * amount);
+    }
+
     return nairaCardCreationFee +
         sudoVerveNairaCardCreationFee +
         sudoVerveNairaCardFundingFee +
         ((nairaCardFundingFee / 100) * amount);
   }
 
-  num calculateTotalDollarFee(List<Envs> envs, {double amount = 0}) {
+  num calculateCreationFeeTotalDollarFee(List<Envs> envs,
+      {bool isFunding = false, double amount = 0}) {
     final dollarCardCreationFee = _returnFee(Fees.dollarCardCreationFee);
     final dollarCardFundingFee = _returnFee(Fees.dollarCardFundingFee);
     final sudoDollarCardFundingFee = _returnFee(Fees.sudoDollarCardFundingFee);
     final sudoDollarCardCreationfee =
         _returnFee(Fees.sudoDollarCardCreationfee);
+
+    if (isFunding) {
+      return sudoDollarCardFundingFee + ((dollarCardFundingFee / 100) * amount);
+    }
 
     return dollarCardCreationFee +
         ((dollarCardFundingFee / 100) * amount) +

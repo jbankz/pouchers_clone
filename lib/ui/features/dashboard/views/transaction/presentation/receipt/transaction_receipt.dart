@@ -127,7 +127,7 @@ Future<pw.Widget> generateTransactionReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.adminCreditWallet => _buildStatusReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
-      ServiceCategory.cable => _buildOperatorReceipt(
+      ServiceCategory.cable => _buildCableReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.electricity => _buildElectricityReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
@@ -138,9 +138,11 @@ Future<pw.Widget> generateTransactionReceipt(
       ServiceCategory.referralBonusPayment => pw.SizedBox.shrink(),
       ServiceCategory.moneyRequest => _buildStatusReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
-      ServiceCategory.education => pw.SizedBox.shrink(),
+      ServiceCategory.education => _buildEducationReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.internet => pw.SizedBox.shrink(),
-      ServiceCategory.createVirtualCard => pw.SizedBox.shrink(),
+      ServiceCategory.createVirtualCard => _buildCreatedVirtualCardReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.fundVirtualCard => pw.SizedBox.shrink(),
       null => pw.SizedBox.shrink()
     },
@@ -197,6 +199,23 @@ Future<pw.Widget> generateTransactionReceipt(
     )
   ]);
 }
+
+pw.Column _buildCreatedVirtualCardReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTile(
+            title: AppString.status,
+            value: transactionHistory?.status?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.beneficiary,
+            value: transactionHistory?.beneficiaryName?.titleCase ?? '',
+            font: robotFont),
+      ],
+    );
 
 pw.Column _buildBettingReceipt(
         {TransactionHistory? transactionHistory, Font? robotFont}) =>
@@ -279,7 +298,7 @@ pw.Column _buildElectricityReceipt(
       ],
     );
 
-pw.Column _buildOperatorReceipt(
+pw.Column _buildEducationReceipt(
         {TransactionHistory? transactionHistory, Font? robotFont}) =>
     pw.Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -290,8 +309,35 @@ pw.Column _buildOperatorReceipt(
             font: robotFont),
         pw.SizedBox(height: 16),
         _buildTile(
-            title: AppString.operator,
-            value: transactionHistory?.extraDetails?.subCategory ?? '',
+            title: AppString.beneficiary,
+            value: transactionHistory?.beneficiaryName?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.ePin,
+            value: transactionHistory?.extraDetails?.resultCheckerPin ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.serialNumber,
+            value: transactionHistory?.extraDetails?.serialNumber ?? '',
+            font: robotFont)
+      ],
+    );
+
+pw.Column _buildCableReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTile(
+            title: AppString.status,
+            value: transactionHistory?.status?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.beneficiary,
+            value: transactionHistory?.beneficiaryName?.titleCase ?? '',
             font: robotFont)
       ],
     );
@@ -402,16 +448,16 @@ pw.Column _buildAirtimeOrDataReceipt(
 pw.Row _buildTile(
         {required String title, required String value, required Font? font}) =>
     pw.Row(
+      mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        pw.Expanded(
-          child: pw.Text(title,
-              textAlign: pw.TextAlign.left,
-              style: pw.TextStyle(
-                  color: PdfColor.fromInt(AppColors.kSecondaryTextColor.value),
-                  fontSize: 14,
-                  font: font,
-                  fontWeight: pw.FontWeight.normal)),
-        ),
+        pw.Text(title,
+            textAlign: pw.TextAlign.left,
+            style: pw.TextStyle(
+                color: PdfColor.fromInt(AppColors.kSecondaryTextColor.value),
+                fontSize: 14,
+                font: font,
+                fontWeight: pw.FontWeight.normal)),
         pw.SizedBox(width: 23),
         pw.Expanded(
           child: pw.Text(value,

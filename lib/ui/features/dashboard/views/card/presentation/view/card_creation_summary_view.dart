@@ -63,10 +63,14 @@ class _CardCreationSymmaryViewState
 
         final envs = envDao.envs;
 
-        final totalNairaFee = _cardNotifier.calculateTotalNairaFee(envs,
-            amount: _amount.toDouble());
-        final totalDollarFee = _cardNotifier.calculateTotalDollarFee(envs,
-            amount: _amount.toDouble());
+        final totalNairaFee = _cardNotifier.calculateCreationFeeTotalNairaFee(
+            envs,
+            amount: _amount.toDouble(),
+            isFunding: !param.isCreatingCardActivity);
+        final totalDollarFee = _cardNotifier.calculateCreationFeeTotalDollarFee(
+            envs,
+            amount: _amount.toDouble(),
+            isFunding: !param.isCreatingCardActivity);
 
         final bool insufficient = (_amount + totalNairaFee) >
             num.parse((walletDao.wallet.balance ?? '0'));
@@ -117,6 +121,20 @@ class _CardCreationSymmaryViewState
                                 _tileWidget(
                                     context: context,
                                     title: AppString.creationFee,
+                                    value: param.isNairaCardType
+                                        ? totalNairaFee.toNaira
+                                        : totalDollarFee.toDollar),
+                                const Gap(height: 30),
+                              ],
+                            ),
+                          if (!param.isCreatingCardActivity)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _tileWidget(
+                                    context: context,
+                                    title: AppString.fundingFee,
                                     value: param.isNairaCardType
                                         ? totalNairaFee.toNaira
                                         : totalDollarFee.toDollar),
@@ -279,8 +297,7 @@ class _CardCreationSymmaryViewState
                 ? (_amount + totalNairaFee)
                 : ((totalDollarFee + _amount) * dollarRate),
             transactionPin: pin,
-            currency: param.isNairaCardType ? Currency.ngn : Currency.usd,
-            status: CardStatus.active),
+            currency: param.isNairaCardType ? Currency.ngn : Currency.usd),
         _cancelToken);
   }
 }

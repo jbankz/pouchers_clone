@@ -62,7 +62,7 @@ class CardSourceImpl implements CardSource<CardDto> {
       {required CardDto cardDto, CancelToken? cancelToken}) async {
     final response = await networkService.request(
         path: ApiPath.fundVirtualCard,
-        requestType: RequestType.patch,
+        requestType: RequestType.post,
         data: cardDto.toJson(),
         cancelToken: cancelToken);
     return FundVirtualAccount.fromJson(response.data as Map<String, dynamic>);

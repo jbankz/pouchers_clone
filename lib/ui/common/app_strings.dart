@@ -265,6 +265,7 @@ class AppString {
   static String fundCard = 'Fund Card';
   static String confirmation = 'Confirmation';
   static String creationFee = 'Creation fee';
+  static String fundingFee = 'Funding fee';
   static String totalInDollar = 'Total in dollars';
   static String totalInNaira = 'Total in naira';
   static String total = 'Total';
@@ -602,4 +603,6 @@ class AppString {
   static String equivalentIn = 'The equivalent in naira is';
   static String currentExchangeRate = 'Current exchange rate ';
   static String comingSoon = 'Coming soon';
+  static String ePin = 'E-PIN';
+  static String serialNumber = 'Serial Number';
 }

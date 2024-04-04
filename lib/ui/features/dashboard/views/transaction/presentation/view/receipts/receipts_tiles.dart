@@ -13,16 +13,16 @@ class ReceiptTiles extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: Text(
-              title,
-              style: context.headlineMedium?.copyWith(
-                  fontSize: 14,
-                  color: AppColors.kSecondaryTextColor,
-                  fontWeight: FontWeight.w500),
-              textAlign: TextAlign.left,
-            ),
+          Text(
+            title,
+            style: context.headlineMedium?.copyWith(
+                fontSize: 14,
+                color: AppColors.kSecondaryTextColor,
+                fontWeight: FontWeight.w500),
+            textAlign: TextAlign.left,
+            maxLines: 1,
           ),
           const Gap(width: 23),
           Expanded(
