@@ -20,6 +20,7 @@ List<TransactionFilter> filters = [
   TransactionFilter(key: 'Education', value: 'education'),
   TransactionFilter(key: 'Create Card', value: 'create_card'),
   TransactionFilter(key: 'Fund Card', value: 'fund_card'),
+  TransactionFilter(key: 'Referral', value: 'referral_bonus'),
   TransactionFilter(
       key: 'Admin Credit Wallet',
       value: ServiceCategory.adminCreditWallet.value),
