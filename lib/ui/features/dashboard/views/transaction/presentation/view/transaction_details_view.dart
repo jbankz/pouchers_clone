@@ -28,6 +28,7 @@ import 'receipts/created_virtual_card_receipt_status.dart';
 import 'receipts/education_receipt.dart';
 import 'receipts/receipt_status.dart';
 import 'receipts/receipts_tiles.dart';
+import 'receipts/referral_receipt.dart';
 import 'receipts/vouchers_receipt.dart';
 import 'receipts/wallet_funding_receipt.dart';
 import 'sheets/share_receipts_sheet.dart';
@@ -165,7 +166,7 @@ class _TransactionDetailsViewState
                             transactionHistory: widget.transactionHistory),
                         ServiceCategory.moneyRequest => StatusReceipt(
                             transactionHistory: widget.transactionHistory),
-                        ServiceCategory.referralBonusPayment => StatusReceipt(
+                        ServiceCategory.referralBonusPayment => ReferralReceipt(
                             transactionHistory: widget.transactionHistory),
                         ServiceCategory.education => EducationReceipt(
                             transactionHistory: widget.transactionHistory),
@@ -174,8 +175,9 @@ class _TransactionDetailsViewState
                         ServiceCategory.createVirtualCard =>
                           CreatedVirtualCardReceipt(
                               transactionHistory: widget.transactionHistory),
-                        ServiceCategory.fundVirtualCard => StatusReceipt(
-                            transactionHistory: widget.transactionHistory),
+                        ServiceCategory.fundVirtualCard =>
+                          CreatedVirtualCardReceipt(
+                              transactionHistory: widget.transactionHistory),
                         null => StatusReceipt(
                             transactionHistory: widget.transactionHistory)
                       },

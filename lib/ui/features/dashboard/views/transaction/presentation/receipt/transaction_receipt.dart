@@ -135,7 +135,8 @@ Future<pw.Widget> generateTransactionReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.localBankTransfer => _buildTransferReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
-      ServiceCategory.referralBonusPayment => pw.SizedBox.shrink(),
+      ServiceCategory.referralBonusPayment => _buildReferralBonusReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.moneyRequest => _buildStatusReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.education => _buildEducationReceipt(
@@ -143,7 +144,8 @@ Future<pw.Widget> generateTransactionReceipt(
       ServiceCategory.internet => pw.SizedBox.shrink(),
       ServiceCategory.createVirtualCard => _buildCreatedVirtualCardReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
-      ServiceCategory.fundVirtualCard => pw.SizedBox.shrink(),
+      ServiceCategory.fundVirtualCard => _buildCreatedVirtualCardReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
       null => pw.SizedBox.shrink()
     },
     pw.SizedBox(height: 27),
@@ -199,6 +201,23 @@ Future<pw.Widget> generateTransactionReceipt(
     )
   ]);
 }
+
+pw.Column _buildReferralBonusReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTile(
+            title: AppString.status,
+            value: transactionHistory?.status?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.beneficiary,
+            value: transactionHistory?.beneficiaryName?.titleCase ?? '',
+            font: robotFont),
+      ],
+    );
 
 pw.Column _buildCreatedVirtualCardReceipt(
         {TransactionHistory? transactionHistory, Font? robotFont}) =>
