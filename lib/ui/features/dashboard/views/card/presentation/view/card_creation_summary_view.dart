@@ -233,7 +233,8 @@ class _CardCreationSymmaryViewState
   void _createNairaCard(num totalNairaFee, ParamNotifier param, String pin) {
     _cardNotifier.createNairaVirtualCard(
         CardDto(
-            amount: _amount + totalNairaFee,
+            amount: _amount,
+            // amount: _amount + totalNairaFee,
             country: param.country,
             transactionPin: pin,
             brand: CardBrand.verve,
@@ -245,7 +246,8 @@ class _CardCreationSymmaryViewState
       num totalDollarFee, ParamNotifier param, String pin, num dollarRate) {
     _cardNotifier.createDollarVirtualCard(
         CardDto(
-            amount: ((totalDollarFee + _amount) * dollarRate),
+            amount: _amount,
+            // amount: ((totalDollarFee + _amount) * dollarRate),
             country: param.country,
             transactionPin: pin,
             brand: CardBrand.visa,
@@ -269,8 +271,11 @@ class _CardCreationSymmaryViewState
           const Gap(width: 16),
           Expanded(
               child: Text(value,
-                  style: context.headlineMedium
-                      ?.copyWith(fontWeight: FontWeight.w400),
+                  style: context.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.kPrimaryTextColor,
+                    fontSize: 14,
+                  ),
                   textAlign: TextAlign.right))
         ],
       );
@@ -293,9 +298,10 @@ class _CardCreationSymmaryViewState
       ParamNotifier param, String pin, num dollarRate) {
     _cardNotifier.fundVirtualCard(
         CardDto(
-            amount: param.isNairaCardType
-                ? (_amount + totalNairaFee)
-                : ((totalDollarFee + _amount) * dollarRate),
+            amount: _amount,
+            // amount: param.isNairaCardType
+            //     ? (_amount + totalNairaFee)
+            //     : ((totalDollarFee + _amount) * dollarRate),
             transactionPin: pin,
             currency: param.isNairaCardType ? Currency.ngn : Currency.usd),
         _cancelToken);

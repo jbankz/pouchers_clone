@@ -48,7 +48,7 @@ class _VirtualCardDetailViewState extends ConsumerState<VirtualCardDetailView>
       ..addListener(() => setState(() {}))
       ..addStatusListener((status) => _animationStatus = status);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    Future.microtask(() {
       _card = ref.read(paramModule.notifier).cardDetail;
       _cardNotifier = ref.read(cardNotifierProvider.notifier);
       _refresh();
@@ -71,9 +71,12 @@ class _VirtualCardDetailViewState extends ConsumerState<VirtualCardDetailView>
 
   Future<void> _refresh() async {
     try {
-      await _cardNotifier.getAccountBalance(CardDto(cardId: _card?.accountId));
-      await _cardNotifier.getVirtualCardDetails(CardDto(cardId: _card?.cardId));
-      await _cardNotifier.getCardTransactions(CardDto(cardId: _card?.cardId));
+      await Future.wait([
+        _cardNotifier.getAccountBalance(CardDto(cardId: _card?.accountId)),
+        _cardNotifier.getVirtualCardDetails(CardDto(cardId: _card?.cardId)),
+        _cardNotifier.getCardTransactions(CardDto(cardId: _card?.cardId)),
+      ]);
+
       _refreshController.refreshCompleted();
     } catch (e) {
       _refreshController.refreshFailed();
@@ -240,6 +243,7 @@ class _VirtualCardDetailViewState extends ConsumerState<VirtualCardDetailView>
           onTap: onTap,
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 height: 36.h,
@@ -250,7 +254,13 @@ class _VirtualCardDetailViewState extends ConsumerState<VirtualCardDetailView>
                 child: SvgPicture.asset(icon, fit: BoxFit.scaleDown),
               ),
               const Gap(height: 6),
-              Text(label, style: context.headlineMedium)
+              Text(
+                label,
+                style: context.headlineMedium,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              )
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,8 +71,11 @@ class FrontCardViewWidget extends HookConsumerWidget {
                               color: Colors.white)
                           : Text(
                               balance,
-                              style: context.displayLarge?.copyWith(
-                                  color: AppColors.white, fontSize: 24),
+                              style: context.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Altone',
+                                  color: AppColors.white,
+                                  fontSize: 24),
                             ),
                     ),
                   ],

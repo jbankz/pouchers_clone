@@ -142,6 +142,9 @@ class CardNotifier extends _$CardNotifier {
       await ref.read(fundVirtualCardProvider
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
+      triggerNotificationTray(AppString.fundedCardSuccess);
+
+      PageRouter.popToRoot(Routes.virtualCardDetailView);
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(), error: true);

@@ -260,8 +260,8 @@ class AppString {
   static String createDollarCard = 'Create Dollar Card';
   static String virtualNairaCard = 'Naira Virtual Card';
   static String virtualDollarCard = 'Dollar Virtual Card';
-  static String fundNairaCard = 'Fund Naira card';
-  static String fundDollarCard = 'Fund Dollar card';
+  static String fundNairaCard = 'Fund Naira Card';
+  static String fundDollarCard = 'Fund Dollar Card';
   static String fundCard = 'Fund Card';
   static String confirmation = 'Confirmation';
   static String creationFee = 'Creation fee';
@@ -605,4 +605,5 @@ class AppString {
   static String comingSoon = 'Coming soon';
   static String ePin = 'E-PIN';
   static String serialNumber = 'Serial Number';
+  static String fundedCardSuccess = 'Funded card successfully';
 }
