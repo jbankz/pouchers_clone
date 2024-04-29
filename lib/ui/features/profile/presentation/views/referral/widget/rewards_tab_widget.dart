@@ -33,6 +33,8 @@ class _RewardTabWidgetState extends ConsumerState<RewardTabWidget> {
 
   @override
   void initState() {
+    Future.microtask(
+        () => ref.read(userNotifierProvider.notifier).referrals(_cancelToken));
     super.initState();
   }
 
