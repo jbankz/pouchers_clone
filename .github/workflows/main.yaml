@@ -1,8 +1,14 @@
-name: Pouchers CI/CD.
 on:
+  pull_request:
+    branches:
+      - main
+      - master
   push:
     branches:
       - main
+      - master
+      - develop
+name: "Build & Release"
 jobs:
   build:
     name: Build & Release
@@ -15,28 +21,6 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: "3.19.6"
-      - run: |
-          cd $CM_BUILD_DIR
-          echo "Create .env and .env.staging"
-          touch .env,.env.staging
-          echo "Writing contents to .env file"
-          echo -e "APP_NAME=$APP_NAME\n\
-          API_URL=$API_URL\n\
-          TERMS_OF_USE=$TERMS_OF_USE\n\
-          PRIVACY_POLICY=$PRIVACY_POLICY\n\
-          INTERCOM_ANDROID_KEY=$INTERCOM_ANDROID_KEY\n\
-          INTERCOM_APP_ID=$INTERCOM_APP_ID\n\
-          INTERCOM_IOS_KEY=$INTERCOM_IOS_KEY\n\
-          DOJAH_PUBLIC_KEY=$DOJAH_PUBLIC_KEY\n\
-          DOJAH_APP_ID=$DOJAH_APP_ID\n\
-          DOJAH_DRIVER_LICENSE_KEY=$DOJAH_DRIVER_LICENSE_KEY\n\
-          DOJAH_VOTERS_CARD_KEY=$DOJAH_VOTERS_CARD_KEY\n\
-          DOJAH_INTERNATIONAL_PASSPORT_KEY=$DOJAH_INTERNATIONAL_PASSPORT_KEY\n\
-          DOJAH_VNIN_KEY=$DOJAH_VNIN_KEY\n\
-          DOJAH_NIN_KEY=$DOJAH_NIN_KEY\n\
-          VGS_API_URL=$VGS_API_URL" >> .env
-          echo "Finished writing contents to .env file"
-          cat .env
       - run: flutter pub get
       - run: flutter build apk --release --split-per-abi
       - run: |
@@ -53,3 +37,5 @@ jobs:
           artifacts: "build/app/outputs/apk/release/*,build/ios/iphoneos/app.ipa"
           tag: v1.0.${{ github.run_number }}
           token: ${{ secrets.P_TOKEN }}
+# push to master, main, develop
+# pull request on main master
