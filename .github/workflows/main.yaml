@@ -1,14 +1,8 @@
+name: Pouchers CI/CD
 on:
-  pull_request:
-    branches:
-      - main
-      - master
   push:
     branches:
       - main
-      - master
-      - develop
-name: "Build & Release"
 jobs:
   build:
     name: Build & Release
@@ -60,5 +54,3 @@ jobs:
           artifacts: "build/app/outputs/apk/release/*,build/ios/iphoneos/app.ipa"
           tag: v1.0.${{ github.run_number }}
           token: ${{ secrets.P_TOKEN }}
-# push to master, main, develop
-# pull request on main master
