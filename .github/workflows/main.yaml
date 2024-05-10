@@ -40,7 +40,6 @@ jobs:
         run: |
           echo "Navigating into android app module"
           cd android/app
-          rm google-service.json
           if [ ! -f google-services.json ]; then
             echo "Create google-services.json file"
             touch google-services.json
