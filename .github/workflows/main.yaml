@@ -27,48 +27,34 @@ jobs:
       - name: Create .env file if not exists
         run: |
           if [ ! -f .env ]; then
-            echo "Create .env file"
-            touch .env .env.staging
-            echo "Writing contents to .env file"
-            echo -e "APP_NAME=${{ secrets.APP_NAME }}\n\
-            API_URL=${{ secrets.API_URL }}\n\
-            TERMS_OF_USE=${{ secrets.TERMS_OF_USE }}\n\
-            PRIVACY_POLICY=${{ secrets.PRIVACY_POLICY }}\n\
-            INTERCOM_ANDROID_KEY=${{ secrets.INTERCOM_ANDROID_KEY }}\n\
-            INTERCOM_APP_ID=${{ secrets.INTERCOM_APP_ID }}\n\
-            INTERCOM_IOS_KEY=${{ secrets.INTERCOM_IOS_KEY }}\n\
-            DOJAH_PUBLIC_KEY=${{ secrets.DOJAH_PUBLIC_KEY }}\n\
-            DOJAH_APP_ID=${{ secrets.DOJAH_APP_ID }}\n\
-            DOJAH_DRIVER_LICENSE_KEY=${{ secrets.DOJAH_DRIVER_LICENSE_KEY }}\n\
-            DOJAH_VOTERS_CARD_KEY=${{ secrets.DOJAH_VOTERS_CARD_KEY }}\n\
-            DOJAH_INTERNATIONAL_PASSPORT_KEY=${{ secrets.DOJAH_INTERNATIONAL_PASSPORT_KEY }}\n\
-            DOJAH_VNIN_KEY=${{ secrets.DOJAH_VNIN_KEY }}\n\
-            DOJAH_NIN_KEY=${{ secrets.DOJAH_NIN_KEY }}\n\
-            VGS_API_URL=${{ secrets.VGS_API_URL }}" >> .env
-            echo "Finished writing contents to .env file"
-            cat .env
+            echo "Create .env and .env.staging file" 
+            touch .env,.env.staging
+            echo "Writing contents to environment files"
+            echo -e "${{ secrets.ENV }}" >> .env
+            echo -e "${{ secrets.ENV_STAGING }}" >> .env.staging
+            echo "Finished writing contents to environment files"
           else
-            echo ".env file already exists, skipping creation"
+            echo "environment file already exists, skipping creation"
           fi
-      - name: Create google-service.json file if not exists
+      - name: Create google-services.json file if not exists
         run: |
           echo "Navigating into android app module"
           cd android/app
-          if [ ! -f google-service.json ]; then
-            echo "Create google-service.json file"
-            touch google-service.json
-            echo "Writing contents to google-service.json file"
-            echo -e "${{ secrets.GOOGLE_SERVICE }}" >> google-service.json
-            echo "Finished writing contents to google-service.json file"
-            cat google-service.json
+          rm google-service.json
+          if [ ! -f google-services.json ]; then
+            echo "Create google-services.json file"
+            touch google-services.json
+            echo "Writing contents to google-services.json file"
+            echo -e "${{ secrets.GOOGLE_SERVICE }}" >> google-services.json
+            echo "Finished writing contents to google-services.json file"
           else
-            echo "google-service.json file already exists, skipping creation"
+            echo "google-services.json file already exists, skipping creation"
           fi
           echo "Exiting android app module"
           cd ../..
       - run: flutter clean
       - run: flutter pub get
-      - run: dart run build_runner build --delete-conflicting-outputs
+      - run: dart run build_runner build --delete-conflicting-outputsle
       - run: flutter build apk --release
       - run: |
           flutter build ios --no-codesign
