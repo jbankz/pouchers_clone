@@ -1,13 +1,13 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/wallet_dao.dart';
-import 'package:Pouchers/ui/features/profile/domain/dto/wallet_dto.dart';
-import 'package:Pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
-import 'package:Pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
-import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/profile/data/dao/wallet_dao.dart';
+import 'package:pouchers/ui/features/profile/domain/dto/wallet_dto.dart';
+import 'package:pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
+import 'package:pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
+import 'package:pouchers/ui/widgets/elevated_button_widget.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,10 +39,11 @@ class TransferMoneySheet extends ConsumerStatefulWidget {
 }
 
 class _TransferMoneySheetState extends ConsumerState<TransferMoneySheet>
-    with $TransferMoneySheet {
+    with $TransferMoneySheet, SingleTickerProviderStateMixin {
   late WalletNotifier _walletNotifier;
 
   final CancelToken _cancelToken = CancelToken();
+  late AnimationController _animationController;
 
   int _uiIndex = 0;
   String _searchQuery = '';
@@ -57,7 +58,10 @@ class _TransferMoneySheetState extends ConsumerState<TransferMoneySheet>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 250))
+      ..forward();
+    Future.microtask(() {
       _walletNotifier = ref.read(walletNotifierProvider.notifier);
       ref.read(localBankNotifierProvider.notifier).getLocalBanks(_cancelToken);
     });
@@ -67,6 +71,7 @@ class _TransferMoneySheetState extends ConsumerState<TransferMoneySheet>
   void dispose() {
     super.dispose();
     _cancelToken.cancel();
+    _animationController.dispose();
     disposeForm();
   }
 
@@ -96,7 +101,14 @@ class _TransferMoneySheetState extends ConsumerState<TransferMoneySheet>
                   transitionBuilder: (child, animation) =>
                       FadeTransition(opacity: animation, child: child),
                   child: switch (_uiIndex) {
-                    0 => _buildFirstUI(context),
+                    0 => SlideTransition(
+                        position: Tween<Offset>(
+                                begin: const Offset(0, 1), end: Offset.zero)
+                            .animate(_animationController),
+                        child: FadeTransition(
+                            opacity: _animationController,
+                            child: _buildFirstUI(context)),
+                      ),
                     1 => _buildSecondUI(context, bankAccount),
                     2 => _buildThirdUI(context),
                     int() => const SizedBox.shrink()
@@ -287,7 +299,8 @@ class _TransferMoneySheetState extends ConsumerState<TransferMoneySheet>
                                   attributes: _attributes ?? Attributes(),
                                   accountNumber:
                                       accountNumberController.text)));
-                    })
+                    }),
+          const Gap(height: 16),
         ],
       );
 

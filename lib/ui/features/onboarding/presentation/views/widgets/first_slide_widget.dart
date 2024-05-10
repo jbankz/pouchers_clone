@@ -1,4 +1,4 @@
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,7 +44,10 @@ class FirstSlideWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(amount.toNaira,
-                      style: context.titleSmall?.copyWith(fontSize: 14.sp)),
+                      style: context.headlineLarge?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.kPrimaryColor,
+                          fontSize: 14.sp)),
                   const Gap(height: 4),
                   Text(title,
                       style: context.headlineSmall

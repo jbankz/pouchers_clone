@@ -1,5 +1,5 @@
-import 'package:Pouchers/app/core/constants/db_constants.dart';
-import 'package:Pouchers/app/serializer/string_to_num_serializer.dart';
+import 'package:pouchers/app/core/constants/db_constants.dart';
+import 'package:pouchers/app/serializer/string_to_num_serializer.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

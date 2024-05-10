@@ -1,9 +1,9 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/tiers/presentation/notifier/tier_notifier.dart';
-import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/tiers/presentation/notifier/tier_notifier.dart';
+import 'package:pouchers/ui/widgets/elevated_button_widget.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +26,7 @@ class _TierViewState extends ConsumerState<TierView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => ref
+    Future.microtask(() => ref
         .read(tierNotifierProvider.notifier)
         .fetchTier(cancelToken: _cancelToken));
   }

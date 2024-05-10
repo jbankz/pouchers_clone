@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/dashboard/views/transaction/presentation/view/tabs/history_tab.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/presentation/view/tabs/history_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

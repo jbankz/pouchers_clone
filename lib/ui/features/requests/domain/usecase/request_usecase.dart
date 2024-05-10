@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/requests/domain/model/request_model.dart';
+import 'package:pouchers/ui/features/requests/domain/model/request_model.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/usecase/poucher_usecase.dart';

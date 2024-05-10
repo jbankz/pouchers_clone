@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/merchant/domain/model/get_merchants.dart';
+import 'package:pouchers/ui/features/merchant/domain/model/get_merchants.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'merchant_state.freezed.dart';

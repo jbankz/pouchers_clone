@@ -1,4 +1,4 @@
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,8 +10,13 @@ class Config {
   final String? title;
   final String? content;
   final String? buttonText;
+  final Color? buttonTextColor;
 
-  Config({this.title, this.content, this.buttonText});
+  Config(
+      {this.title,
+      this.content,
+      this.buttonText,
+      this.buttonTextColor = AppColors.kPurpleColor});
 }
 
 class AccountInfoWindow extends StatelessWidget {
@@ -51,7 +56,7 @@ class AccountInfoWindow extends StatelessWidget {
                     child: Text(config?.buttonText ?? '',
                         style: context.titleMedium?.copyWith(
                             fontSize: 18,
-                            color: AppColors.kPurpleColor,
+                            color: config?.buttonTextColor,
                             fontWeight: FontWeight.w700)),
                   ),
                 )

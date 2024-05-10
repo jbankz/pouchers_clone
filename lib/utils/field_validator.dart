@@ -218,7 +218,7 @@ class FieldValidator {
           return error;
         }
         if ((min != null) && (value.length < min)) {
-          return error ?? 'Minimum length should be $min';
+          return error ?? 'Minimum length should be atleast $min characters';
         }
         if ((max != null) && (value.length > max)) {
           return error ?? 'Maximum length should be $max';
@@ -323,8 +323,9 @@ class FieldValidator {
           TextEditingController passwordController,
           {String? error}) =>
       (String? value) {
-        if (value == null || value.isEmpty)
+        if (value == null || value.isEmpty) {
           return error ?? 'Please enter a password.';
+        }
 
         return validateDiffChange(
             passwordController, error ?? 'The passwords don\'t match')(value);

@@ -1,13 +1,13 @@
-import 'package:Pouchers/app/app.locator.dart';
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/config/app_helper.dart';
-import 'package:Pouchers/app/core/manager/session_manager.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/authentication/presentation/view/otp/notifier/module.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/idenitification_type.dart';
-import 'package:Pouchers/ui/notification/notification_tray.dart';
+import 'package:pouchers/app/app.locator.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/config/app_helper.dart';
+import 'package:pouchers/app/core/manager/session_manager.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/authentication/presentation/view/otp/notifier/module.dart';
+import 'package:pouchers/ui/features/profile/data/dao/user_dao.dart';
+import 'package:pouchers/ui/features/profile/domain/model/idenitification_type.dart';
+import 'package:pouchers/ui/notification/notification_tray.dart';
 import 'package:dio/dio.dart';
 import 'package:fast_contacts/fast_contacts.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -248,6 +248,8 @@ class UserNotifier extends _$UserNotifier {
 
       await ref
           .read(deleteAccountProvider.call(cancelToken: cancelToken).future);
+
+      await locator<SessionManager>().logOut();
 
       PageRouter.pushReplacement(Routes.signInView);
     } catch (e) {

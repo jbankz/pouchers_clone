@@ -1,4 +1,4 @@
-import 'package:Pouchers/app/core/skeleton/theme.dart';
+import 'package:pouchers/app/core/skeleton/theme.dart';
 import 'package:flutter/cupertino.dart';
 
 class AppTheme extends StatelessWidget {

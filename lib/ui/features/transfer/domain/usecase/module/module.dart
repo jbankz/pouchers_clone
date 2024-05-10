@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/transfer/data/repository/module/module.dart';
+import 'package:pouchers/ui/features/transfer/data/repository/module/module.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

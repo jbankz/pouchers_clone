@@ -1,10 +1,10 @@
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_status.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
-import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/card_status.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
+import 'package:pouchers/ui/widgets/dialog/bottom_sheet.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

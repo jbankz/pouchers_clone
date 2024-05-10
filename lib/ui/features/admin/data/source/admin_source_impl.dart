@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/admin/domain/model/banner.dart';
-import 'package:Pouchers/ui/features/admin/domain/model/envs/envs.dart';
+import 'package:pouchers/ui/features/admin/domain/model/banner.dart';
+import 'package:pouchers/ui/features/admin/domain/model/envs/envs.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/network/api_path.dart';

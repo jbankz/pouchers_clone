@@ -1,7 +1,7 @@
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
-import 'package:Pouchers/ui/notification/notification_tray.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
+import 'package:pouchers/ui/notification/notification_tray.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

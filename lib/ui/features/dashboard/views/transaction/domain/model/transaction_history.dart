@@ -1,5 +1,5 @@
-import 'package:Pouchers/app/serializer/string_to_num_serializer.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
+import 'package:pouchers/app/serializer/string_to_num_serializer.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
@@ -82,10 +82,10 @@ class ExtraDetails with _$ExtraDetails {
       @HiveField(16) String? customerFirstName,
       @HiveField(17) String? customerName,
       @HiveField(18) String? address,
-      @StringToNumSerializer()
-      @Default(0)
-      @HiveField(19)
-      num units}) = _ExtraDetails;
+      @StringToNumSerializer() @Default(0) @HiveField(19) num units,
+      @HiveField(20) @JsonKey(name: 'voucher_code') String? voucherCode,
+      @HiveField(21) String? resultCheckerPin,
+      @HiveField(22) String? serialNumber}) = _ExtraDetails;
 
   factory ExtraDetails.fromJson(Map<String, dynamic> json) =>
       _$ExtraDetailsFromJson(json);

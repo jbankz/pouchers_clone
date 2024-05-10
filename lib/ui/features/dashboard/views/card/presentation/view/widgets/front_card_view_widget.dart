@@ -1,9 +1,9 @@
-import 'package:Pouchers/utils/extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pouchers/utils/extension.dart';
 
 import '../../../../../../../common/app_colors.dart';
 import '../../../../../../../common/app_images.dart';
@@ -70,8 +70,11 @@ class FrontCardViewWidget extends HookConsumerWidget {
                               color: Colors.white)
                           : Text(
                               balance,
-                              style: context.displayLarge?.copyWith(
-                                  color: AppColors.white, fontSize: 24),
+                              style: context.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Altone',
+                                  color: AppColors.white,
+                                  fontSize: 24),
                             ),
                     ),
                   ],

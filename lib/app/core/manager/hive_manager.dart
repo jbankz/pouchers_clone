@@ -1,20 +1,21 @@
-import 'package:Pouchers/ui/features/admin/domain/enum/fees.dart';
-import 'package:Pouchers/ui/features/admin/domain/model/envs/envs.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_brand.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/cards/cards.dart';
-import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_analytic.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/referral/earning.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/referral/referral.dart';
-import 'package:Pouchers/ui/features/requests/domain/model/request_model.dart';
-import 'package:Pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
-import 'package:Pouchers/ui/features/transfer/domain/model/attributes.dart';
-import 'package:Pouchers/ui/features/utilities/data/dao/billers_dao.dart';
-import 'package:Pouchers/ui/features/utilities/data/dao/cable_services_dao.dart';
-import 'package:Pouchers/ui/features/voucher/data/dao/vouchers_dao.dart';
-import 'package:Pouchers/ui/features/voucher/domain/enum/voucher_status.dart';
+import 'package:pouchers/ui/features/admin/domain/enum/fees.dart';
+import 'package:pouchers/ui/features/admin/domain/model/envs/envs.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/card_brand.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/card_type.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/model/cards/cards.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_analytic.dart';
+import 'package:pouchers/ui/features/profile/domain/model/referral/earning.dart';
+import 'package:pouchers/ui/features/profile/domain/model/referral/referral.dart';
+import 'package:pouchers/ui/features/requests/domain/model/request_model.dart';
+import 'package:pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/attributes.dart';
+import 'package:pouchers/ui/features/utilities/data/dao/billers_dao.dart';
+import 'package:pouchers/ui/features/utilities/data/dao/cable_services_dao.dart';
+import 'package:pouchers/ui/features/voucher/data/dao/vouchers_dao.dart';
+import 'package:pouchers/ui/features/voucher/domain/enum/voucher_status.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../ui/features/admin/data/dao/banner_dao.dart';
 import '../../../ui/features/admin/data/dao/env_dao.dart';
@@ -149,14 +150,16 @@ class HiveManager {
 
   Future<Box<T>> openBox<T>(String boxName) async {
     Box<T> box;
+    final path = await getApplicationSupportDirectory();
+
     if (Hive.isBoxOpen(boxName)) {
       box = Hive.box<T>(boxName);
     } else {
       try {
-        box = await Hive.openBox<T>(boxName);
+        box = await Hive.openBox<T>(boxName, path: path.path);
       } catch (_) {
-        await Hive.deleteBoxFromDisk(boxName);
-        box = await Hive.openBox<T>(boxName);
+        await Hive.deleteBoxFromDisk(boxName, path: path.path);
+        box = await Hive.openBox<T>(boxName, path: path.path);
       }
     }
     return box;

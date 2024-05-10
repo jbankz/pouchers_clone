@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/notification/domain/model/notification_data_model.dart';
+import 'package:pouchers/ui/features/notification/domain/model/notification_data_model.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/usecase/poucher_usecase.dart';

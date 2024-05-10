@@ -4,13 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:path/path.dart' as path;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:Pouchers/app/app.locator.dart';
-import 'package:Pouchers/app/config/app_helper.dart';
-import 'package:Pouchers/app/core/manager/image_manager.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
-import 'package:Pouchers/ui/features/profile/presentation/notifier/module/module.dart';
-import 'package:Pouchers/ui/features/upload/presentation/notifier/module/module.dart';
+import 'package:pouchers/app/app.locator.dart';
+import 'package:pouchers/app/config/app_helper.dart';
+import 'package:pouchers/app/core/manager/image_manager.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/profile/domain/dto/user_dto.dart';
+import 'package:pouchers/ui/features/profile/presentation/notifier/module/module.dart';
+import 'package:pouchers/ui/features/upload/presentation/notifier/module/module.dart';
 
 import '../../../../../app/app.logger.dart';
 import '../../../../../app/core/router/page_router.dart';

@@ -1,6 +1,6 @@
-import 'package:Pouchers/app/app.locator.dart';
-import 'package:Pouchers/app/app.logger.dart';
-import 'package:Pouchers/ui/common/app_keys.dart';
+import 'package:pouchers/app/app.locator.dart';
+import 'package:pouchers/app/app.logger.dart';
+import 'package:pouchers/ui/common/app_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'hive_manager.dart';

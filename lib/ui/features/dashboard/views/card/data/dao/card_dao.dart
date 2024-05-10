@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:Pouchers/app/app.locator.dart';
-import 'package:Pouchers/app/config/app_logger.dart';
-import 'package:Pouchers/ui/common/app_keys.dart';
+import 'package:pouchers/app/app.locator.dart';
+import 'package:pouchers/app/config/app_logger.dart';
+import 'package:pouchers/ui/common/app_keys.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

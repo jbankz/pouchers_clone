@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/utils/extension.dart';
-import 'package:Pouchers/utils/field_validator.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/utils/extension.dart';
+import 'package:pouchers/utils/field_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -1,8 +1,8 @@
-import 'package:Pouchers/ui/features/requests/data/dao/request_sent_dao.dart';
-import 'package:Pouchers/ui/features/requests/domain/dto/request_dto.dart';
-import 'package:Pouchers/ui/features/requests/domain/enum/request_type.dart';
-import 'package:Pouchers/ui/features/requests/domain/model/request_model.dart';
-import 'package:Pouchers/ui/features/requests/domain/model/requested_money_model.dart';
+import 'package:pouchers/ui/features/requests/data/dao/request_sent_dao.dart';
+import 'package:pouchers/ui/features/requests/domain/dto/request_dto.dart';
+import 'package:pouchers/ui/features/requests/domain/enum/request_type.dart';
+import 'package:pouchers/ui/features/requests/domain/model/request_model.dart';
+import 'package:pouchers/ui/features/requests/domain/model/requested_money_model.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/repository/request_repo.dart';

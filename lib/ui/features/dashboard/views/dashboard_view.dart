@@ -1,12 +1,16 @@
-import 'package:Pouchers/app/core/auto_logout/module/module.dart';
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/features/dashboard/model/bottom_nav.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
+
+import 'package:pouchers/app/core/auto_logout/module/module.dart';
+import 'package:pouchers/ui/features/dashboard/model/bottom_nav.dart';
 
 import '../../../../app/core/manager/firebase_messaging_manager.dart';
+import '../../../common/app_colors.dart';
 import 'account/views/account_view.dart';
 import 'card/presentation/view/virtual_card_view.dart';
 import 'home/views/home_view.dart';
@@ -28,7 +32,8 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
   void initState() {
     super.initState();
     _pageIndex = widget.gottenIndex;
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+
+    Future.microtask(() async {
       await FirebaseMessagingManager.initializeInstance(ref);
       ref.read(timerProvider).startTimer();
     });
@@ -63,19 +68,32 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                 offset: const Offset(0, -2))
           ],
         ),
-        child: BottomNavigationBar(
-            currentIndex: _pageIndex,
-            onTap: onTap,
-            items: List.generate(bottomNav.length, (index) {
-              final button = bottomNav[index];
-              return BottomNavigationBarItem(
-                  icon: SvgPicture.asset(button.icon,
-                      color: _pageIndex == index
-                          ? AppColors.kPrimaryColor
-                          : AppColors.kSecondaryTextColor),
-                  label: button.label);
-            }).toList()),
+        child: Theme(
+          data: ThemeData(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent),
+          child: BottomNavigationBar(
+              currentIndex: _pageIndex,
+              onTap: onTap,
+              type: BottomNavigationBarType.fixed,
+              items: List.generate(bottomNav.length, (index) {
+                final button = bottomNav[index];
+                return BottomNavigationBarItem(
+                    icon: _pageIndex == index
+                        ? Lottie.asset(button.enabledIcon,
+                            height: 25.h, width: 25.w, fit: BoxFit.contain)
+                        : SvgPicture.asset(button.disabledIcon,
+                            colorFilter: const ColorFilter.mode(
+                                AppColors.kSecondaryTextColor,
+                                BlendMode.srcIn)),
+                    label: button.label);
+              }).toList()),
+        ),
       ));
 
-  void onTap(int value) => setState(() => _pageIndex = value);
+  Future<void> onTap(int value) async {
+    await HapticFeedback.selectionClick();
+    _pageIndex = value;
+    setState(() {});
+  }
 }

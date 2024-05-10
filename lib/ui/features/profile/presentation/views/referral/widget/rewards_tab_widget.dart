@@ -1,10 +1,10 @@
-import 'package:Pouchers/app/config/app_helper.dart';
-import 'package:Pouchers/app/core/skeleton/widgets.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/referral/earning.dart';
-import 'package:Pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/config/app_helper.dart';
+import 'package:pouchers/app/core/skeleton/widgets.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/profile/data/dao/user_dao.dart';
+import 'package:pouchers/ui/features/profile/domain/model/referral/earning.dart';
+import 'package:pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,6 +33,8 @@ class _RewardTabWidgetState extends ConsumerState<RewardTabWidget> {
 
   @override
   void initState() {
+    Future.microtask(
+        () => ref.read(userNotifierProvider.notifier).referrals(_cancelToken));
     super.initState();
   }
 

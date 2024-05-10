@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/profile/domain/dto/wallet_dto.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/bank_account_details/bank_account_details.dart';
+import 'package:pouchers/ui/features/profile/domain/dto/wallet_dto.dart';
+import 'package:pouchers/ui/features/profile/domain/model/bank_account_details/bank_account_details.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../../app/core/network/api_path.dart';

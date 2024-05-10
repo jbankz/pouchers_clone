@@ -96,7 +96,6 @@ class AppColors {
   static const Color mainGridLineColor = Colors.white10;
   static const Color borderColor = Colors.white54;
   static const Color gridLinesColor = Color(0x11FFFFFF);
-
   static const Color contentColorBlack = Colors.black;
   static const Color contentColorWhite = Colors.white;
   static const Color contentColorBlue = Color(0xFF2196F3);
@@ -108,4 +107,8 @@ class AppColors {
   static const Color contentColorRed = Color(0xFFE80054);
   static const Color contentColorCyan = Color(0xFF50E4FF);
   static const Color silver = Color(0xFFC0C0C0);
+  static const Color receiptBgColor = Color(0xFFF1F1F8);
+  static const Color heavyGrey = Color(0xFF4D4D4D);
+  static const Color lightGrey = Color(0xFFD9DBE7);
+  static const Color green = Color(0xFF26C485);
 }

@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/utilities/domain/dto/billers_dto.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/billers.dart';
+import 'package:pouchers/ui/features/utilities/domain/dto/billers_dto.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/billers.dart';
 import 'package:dio/dio.dart';
 
 import '../dto/mobile_dto.dart';

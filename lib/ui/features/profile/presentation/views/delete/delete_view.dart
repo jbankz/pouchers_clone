@@ -1,19 +1,19 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/config/app_config.dart';
-import 'package:Pouchers/app/config/app_helper.dart';
-import 'package:Pouchers/app/core/manager/intercom_manager.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/authentication/presentation/view/password/enum/password_confirmation_type.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/user_dao.dart';
-import 'package:Pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
-import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
-import 'package:Pouchers/ui/widgets/edit_text_field_with.dart';
-import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/utils/extension.dart';
-import 'package:Pouchers/utils/field_validator.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/config/app_config.dart';
+import 'package:pouchers/app/config/app_helper.dart';
+import 'package:pouchers/app/core/manager/intercom_manager.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/authentication/presentation/view/password/enum/password_confirmation_type.dart';
+import 'package:pouchers/ui/features/profile/data/dao/user_dao.dart';
+import 'package:pouchers/ui/features/profile/presentation/notifier/user_notifier.dart';
+import 'package:pouchers/ui/widgets/dialog/bottom_sheet.dart';
+import 'package:pouchers/ui/widgets/edit_text_field_with.dart';
+import 'package:pouchers/ui/widgets/elevated_button_widget.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/utils/extension.dart';
+import 'package:pouchers/utils/field_validator.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -76,8 +76,8 @@ class _DeleteViewState extends ConsumerState<DeleteView> with $DeleteView {
                 const Gap(height: 35),
                 EditTextFieldWidget(
                     readOnly: true,
-                    title: 'Reason',
-                    label: 'Select reason',
+                    title: AppString.reason,
+                    label: AppString.selectReason,
                     controller: reasonController,
                     focusNode: reasonFocusNode,
                     keyboardType: TextInputType.text,

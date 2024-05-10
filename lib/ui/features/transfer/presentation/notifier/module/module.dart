@@ -1,6 +1,6 @@
-import 'package:Pouchers/ui/features/transfer/domain/dto/transfer_money_dto.dart';
-import 'package:Pouchers/ui/features/transfer/domain/model/local_bank.dart';
-import 'package:Pouchers/ui/features/transfer/domain/usecase/module/module.dart';
+import 'package:pouchers/ui/features/transfer/domain/dto/transfer_money_dto.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/local_bank.dart';
+import 'package:pouchers/ui/features/transfer/domain/usecase/module/module.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

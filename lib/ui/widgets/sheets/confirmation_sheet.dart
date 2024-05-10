@@ -1,7 +1,7 @@
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
-import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
+import 'package:pouchers/ui/widgets/dialog/bottom_sheet.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -75,7 +75,7 @@ class _TransferConfirmationSheetState
                         fontWeight: FontWeight.w400),
                     children: [
                       TextSpan(
-                          text: widget.amount.toNaira.replaceAll('.00', ''),
+                          text: widget.amount.toString(),
                           style: context.titleLarge?.copyWith(
                               color: AppColors.kPrimaryTextColor,
                               fontWeight: FontWeight.w700)),

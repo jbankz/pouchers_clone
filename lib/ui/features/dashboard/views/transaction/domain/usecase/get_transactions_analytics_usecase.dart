@@ -1,4 +1,4 @@
-import 'package:Pouchers/app/core/usecase/poucher_usecase.dart';
+import 'package:pouchers/app/core/usecase/poucher_usecase.dart';
 import 'package:dio/dio.dart';
 
 import '../model/transaction_analytic.dart';

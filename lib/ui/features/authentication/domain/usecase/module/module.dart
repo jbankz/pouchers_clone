@@ -1,6 +1,6 @@
-import 'package:Pouchers/ui/features/authentication/data/repository/module/auth_repo_module.dart';
-import 'package:Pouchers/ui/features/authentication/domain/usecase/request_otp_usecase.dart';
-import 'package:Pouchers/ui/features/authentication/domain/usecase/sign_up_usecase.dart';
+import 'package:pouchers/ui/features/authentication/data/repository/module/auth_repo_module.dart';
+import 'package:pouchers/ui/features/authentication/domain/usecase/request_otp_usecase.dart';
+import 'package:pouchers/ui/features/authentication/domain/usecase/sign_up_usecase.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

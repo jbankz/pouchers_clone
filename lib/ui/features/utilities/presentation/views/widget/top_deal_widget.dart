@@ -7,8 +7,8 @@ import '../../../domain/enum/billers_category.dart';
 import '../../../../../widgets/bottom_sheet.dart';
 import '../../../../../widgets/dialog/guest_modal_sheet.dart';
 import '../../../../../widgets/gap.dart';
-import 'package:Pouchers/ui/features/utilities/presentation/notifier/billers_notifier.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/features/utilities/presentation/notifier/billers_notifier.dart';
+import 'package:pouchers/utils/extension.dart';
 
 import '../../../domain/model/top_deals_model.dart';
 
@@ -94,7 +94,7 @@ class TopDealsWidget extends HookConsumerWidget {
                                 ),
                                 child: Text(
                                   '${discount?.discountValue.toNaira} cashback',
-                                  style: context.titleLarge?.copyWith(
+                                  style: context.headlineLarge?.copyWith(
                                     fontSize: 12.sp,
                                     color: AppColors.kLightPurple,
                                   ),
@@ -173,7 +173,7 @@ class TopDealsWidget extends HookConsumerWidget {
 
   Text _buildAirtimeValues(TopDeals deal, BuildContext context) => Text(
         deal.price.toNaira,
-        style: context.titleLarge?.copyWith(
+        style: context.headlineLarge?.copyWith(
           fontSize: 12.sp,
           fontWeight: FontWeight.w400,
           color: AppColors.kPrimaryTextColor,
@@ -208,46 +208,13 @@ class TopDealsWidget extends HookConsumerWidget {
           const Gap(height: 4),
           Text(
             deal.price.toNaira,
-            style: context.titleLarge?.copyWith(
+            style: context.headlineLarge?.copyWith(
               fontSize: 12.sp,
               fontWeight: FontWeight.w400,
               color: AppColors.kPrimaryTextColor,
             ),
             textAlign: TextAlign.center,
             maxLines: 1,
-          ),
-        ],
-      );
-
-  Column _buildTopDealSkeleton(BuildContext context) => Column(
-        children: [
-          const Gap(height: 24),
-          Container(
-            height: 10.h,
-            margin: EdgeInsets.only(right: context.width * .7),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-          ),
-          const Gap(height: 12),
-          GridView.builder(
-            primary: false,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: 6,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisSpacing: 14.w,
-              crossAxisSpacing: 16.h,
-              childAspectRatio: 1.5,
-              crossAxisCount: 3,
-            ),
-            itemBuilder: (_, index) => Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.r),
-                color: Colors.white,
-              ),
-            ),
           ),
         ],
       );

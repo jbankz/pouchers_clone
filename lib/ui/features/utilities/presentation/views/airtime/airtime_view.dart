@@ -1,12 +1,12 @@
-import 'package:Pouchers/app/core/skeleton/widgets.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
-import 'package:Pouchers/ui/features/payment/domain/dto/debit_card_dto.dart';
-import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
-import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
-import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
-import 'package:Pouchers/ui/features/utilities/presentation/state/billers_state.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/core/skeleton/widgets.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
+import 'package:pouchers/ui/features/payment/domain/dto/debit_card_dto.dart';
+import 'package:pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
+import 'package:pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
+import 'package:pouchers/ui/features/utilities/domain/enum/billers_category.dart';
+import 'package:pouchers/ui/features/utilities/presentation/state/billers_state.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -192,8 +192,9 @@ class _AirtimeViewState extends ConsumerState<AirtimeView> with $AirtimeView {
                         prefix: IconButton(
                             onPressed: () {},
                             icon: Text(AppString.nairaSymbol,
-                                style: context.headlineMedium
-                                    ?.copyWith(fontSize: 16))),
+                                style: context.headlineLarge?.copyWith(
+                                    fontSize: 16,
+                                    color: AppColors.kPrimaryTextColor))),
                         inputFormatters: [context.digitsOnly, _formatter],
                       ),
                       const Gap(height: 24),

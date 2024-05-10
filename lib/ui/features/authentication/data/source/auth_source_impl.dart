@@ -1,12 +1,12 @@
-import 'package:Pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
-import 'package:Pouchers/ui/features/authentication/domain/model/generate_2fa_token.dart';
-import 'package:Pouchers/ui/features/authentication/domain/model/reset_password_model/reset_password_model.dart';
-import 'package:Pouchers/ui/features/authentication/domain/model/security_questions.dart';
-import 'package:Pouchers/ui/features/authentication/domain/model/selected_questions.dart';
-import 'package:Pouchers/ui/features/authentication/domain/model/set_questions.dart';
-import 'package:Pouchers/ui/features/authentication/domain/model/validate_reset_password_model/validate_reset_password_model.dart';
-import 'package:Pouchers/ui/features/authentication/domain/model/sign_in_model/sign_in_model.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
+import 'package:pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
+import 'package:pouchers/ui/features/authentication/domain/model/generate_2fa_token.dart';
+import 'package:pouchers/ui/features/authentication/domain/model/reset_password_model/reset_password_model.dart';
+import 'package:pouchers/ui/features/authentication/domain/model/security_questions.dart';
+import 'package:pouchers/ui/features/authentication/domain/model/selected_questions.dart';
+import 'package:pouchers/ui/features/authentication/domain/model/set_questions.dart';
+import 'package:pouchers/ui/features/authentication/domain/model/validate_reset_password_model/validate_reset_password_model.dart';
+import 'package:pouchers/ui/features/authentication/domain/model/sign_in_model/sign_in_model.dart';
+import 'package:pouchers/ui/features/profile/domain/model/user.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/network/api_path.dart';

@@ -1,4 +1,5 @@
 class AppImage {
+  static const String _lottiePath = "assets/lotties/";
   static const String _iconPath = "assets/icons/";
   static const String _imagePath = "assets/images/";
 
@@ -58,6 +59,7 @@ class AppImage {
   static String verveIcon = "${_iconPath}verve_logo.svg";
   static String masterCardIcon = "${_iconPath}mastercard.svg";
   static String copyIcon = "${_iconPath}copy.svg";
+  static String tableCopyIcon = "${_iconPath}table_copy.svg";
   static String freezeCardIcon = "${_iconPath}freeze_card.svg";
   static String buyVoucher = "${_iconPath}buy_voucher.svg";
   static String giftVoucher = "${_iconPath}gift_voucher.svg";
@@ -110,6 +112,7 @@ class AppImage {
   static String user = "${_iconPath}user.svg";
   static String customerService = "${_iconPath}customer_service.svg";
   static String logo = "${_iconPath}logo.svg";
+  static String fullLogo = "${_iconPath}full_logo.svg";
   static String logOut = "${_iconPath}log_out.svg";
   static String pointedArrow = "${_iconPath}pointed_arrow.svg";
   static String exclamation = "${_iconPath}exclamation.svg";
@@ -148,4 +151,15 @@ class AppImage {
   static String emptyRequest = "${_iconPath}empty_request.svg";
   static String pending = "${_iconPath}pending.svg";
   static String emptyTransactionIcon = "${_iconPath}empty_transaction_icon.svg";
+  static String pdf = "${_iconPath}pdf.svg";
+  static String image = "${_iconPath}image.svg";
+  static String share = "${_iconPath}share.svg";
+  static String receiptFullNameLogo = "${_iconPath}receipt_logo.svg";
+  static String receiptLogo = "${_iconPath}receipt_logo.png";
+  static String receiptLogoBadge = "${_iconPath}receipt_logo_badge.png";
+  static String pouchers = "${_iconPath}pouchers.png";
+  static String homeLottie = "${_lottiePath}home.json";
+  static String cardLottie = "${_lottiePath}credit-card.json";
+  static String compareLottie = "${_lottiePath}compare.json";
+  static String accountLottie = "${_lottiePath}account.json";
 }

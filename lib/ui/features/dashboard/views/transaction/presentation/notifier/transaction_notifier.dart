@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/dashboard/views/transaction/presentation/notifier/module/module.dart';
-import 'package:Pouchers/ui/features/dashboard/views/transaction/presentation/state/transaction_state.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/presentation/notifier/module/module.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/presentation/state/transaction_state.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

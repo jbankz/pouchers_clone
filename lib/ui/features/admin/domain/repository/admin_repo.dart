@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/admin/domain/model/envs/envs.dart';
+import 'package:pouchers/ui/features/admin/domain/model/envs/envs.dart';
 import 'package:dio/dio.dart';
 
 import '../dto/admin_dto.dart';

@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:Pouchers/app/helpers/response_handler.dart';
+import 'package:pouchers/app/helpers/response_handler.dart';
 import 'package:flutter/foundation.dart';
-
-import '../../config/app_logger.dart';
 
 class TimerService with ResponseHandler {
   final StreamController<int> _timerController = StreamController<int>();

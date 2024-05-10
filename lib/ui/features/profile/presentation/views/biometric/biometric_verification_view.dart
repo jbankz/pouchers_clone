@@ -1,9 +1,9 @@
-import 'package:Pouchers/app/app.locator.dart';
-import 'package:Pouchers/app/core/manager/session_manager.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/app/app.locator.dart';
+import 'package:pouchers/app/core/manager/session_manager.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';

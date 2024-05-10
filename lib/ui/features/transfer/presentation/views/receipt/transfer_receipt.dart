@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/transfer/domain/model/transfer.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/transfer.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pdf/pdf.dart';

@@ -1,16 +1,16 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/wallet_dao.dart';
-import 'package:Pouchers/ui/features/utilities/presentation/notifier/billers_notifier.dart';
-import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/ui/features/profile/data/dao/wallet_dao.dart';
+import 'package:pouchers/ui/features/utilities/presentation/notifier/billers_notifier.dart';
+import 'package:pouchers/ui/widgets/elevated_button_widget.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/utils/extension.dart';
 
 import '../../../../../common/app_strings.dart';
 import '../../../../payment/domain/dto/debit_card_dto.dart';
@@ -58,7 +58,7 @@ class _SummaryWidgetState extends ConsumerState<SummaryWidget> {
             num.parse(walletDao.retrieve(box).balance ?? '0');
 
         return SafeArea(
-          minimum: EdgeInsets.symmetric(horizontal: 20.w),
+          minimum: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
           child: Wrap(
             children: [
               Column(
@@ -195,6 +195,8 @@ class _SummaryWidgetState extends ConsumerState<SummaryWidget> {
           bool isAffordable, BillersState<dynamic> billerState) =>
       ElevatedButtonWidget(
         loading: billerState.isGettingUssd,
+        textStyle: context.headlineLarge?.copyWith(
+            fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
         title: widget.summaryDto.isGuest
             ? AppString.proceed
             : 'Pay ${widget.summaryDto.amount?.toNaira}',
@@ -216,7 +218,8 @@ class _SummaryWidgetState extends ConsumerState<SummaryWidget> {
             child: widget ??
                 Text(
                   content,
-                  style: context.titleLarge?.copyWith(
+                  style: context.headlineLarge?.copyWith(
+                      fontSize: 14,
                       color: AppColors.kPrimaryTextColor,
                       fontWeight: FontWeight.w700),
                   textAlign: TextAlign.right,

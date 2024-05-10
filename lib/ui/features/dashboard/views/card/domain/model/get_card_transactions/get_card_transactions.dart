@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'datum.dart';
+import 'transaction.dart';
 
 part 'get_card_transactions.freezed.dart';
 part 'get_card_transactions.g.dart';
@@ -11,7 +11,7 @@ class GetCardTransactions with _$GetCardTransactions {
     String? status,
     String? message,
     int? code,
-    List<Datum>? data,
+    List<Transaction>? data,
   }) = _GetCardTransactions;
 
   factory GetCardTransactions.fromJson(Map<String, dynamic> json) =>

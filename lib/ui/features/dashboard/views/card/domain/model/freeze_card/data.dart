@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_status.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/card_status.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'customer.dart';

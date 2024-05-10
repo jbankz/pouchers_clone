@@ -260,11 +260,12 @@ class AppString {
   static String createDollarCard = 'Create Dollar Card';
   static String virtualNairaCard = 'Naira Virtual Card';
   static String virtualDollarCard = 'Dollar Virtual Card';
-  static String fundNairaCard = 'Fund Naira card';
-  static String fundDollarCard = 'Fund Dollar card';
+  static String fundNairaCard = 'Fund Naira Card';
+  static String fundDollarCard = 'Fund Dollar Card';
   static String fundCard = 'Fund Card';
   static String confirmation = 'Confirmation';
   static String creationFee = 'Creation fee';
+  static String fundingFee = 'Funding fee';
   static String totalInDollar = 'Total in dollars';
   static String totalInNaira = 'Total in naira';
   static String total = 'Total';
@@ -367,7 +368,7 @@ class AppString {
   static String selectSecurityQue = 'Select your security question';
   static String selectSecurityQueInstr =
       'Please keep this secret as this will be required to reset your 2FA authentication.';
-  static String secondQuestion = 'Second question';
+  static String secondQuestion = 'Second Question';
   static String selectSecondQuestion = 'Select Question';
   static String answer = 'Answer';
   static String tapToCopy1 = 'Tap to copy';
@@ -522,7 +523,7 @@ class AppString {
 
   static String image = 'Image';
   static String pdf = 'PDF';
-  static String shareReceipt = 'Share receipt';
+  static String shareReceipt = 'Share Receipt';
   static String schedule = 'Schedule';
   static String scheduleTransfer = 'Schedule Transfer';
   static String share = 'Share';
@@ -542,7 +543,6 @@ class AppString {
   static String senderTag = 'Sender Poucher Tag';
   static String beneficiary = 'Beneficiary';
   static String beneficiaryTag = 'Beneficiary Poucher Tag';
-  static String transactionNumber = 'Transaction Number';
   static String getReceipt = 'Get Receipt';
   static String operator = 'Operator';
   static String serviceUnavailable = 'Service Unavailable';
@@ -591,4 +591,19 @@ class AppString {
   static String address = 'Address';
   static String units = 'Units';
   static String howMuchToTransfer = 'How much do you want to transfer?';
+  static String transactionId = 'Transaction ID';
+  static String downloadPdf = 'Download as PDF';
+  static String downloadImage = 'Download as Image';
+  static String showReceiptMessage = 'Receipt generated';
+  static String voucherCode = 'Voucher Code';
+  static String notOnPoucher =
+      'Not on Pouchers? Download now to access global financial & value-added services.';
+  static String reason = 'Reason';
+  static String selectReason = 'Select Reason';
+  static String equivalentIn = 'The equivalent in naira is';
+  static String currentExchangeRate = 'Current exchange rate ';
+  static String comingSoon = 'Coming soon';
+  static String ePin = 'E-PIN';
+  static String serialNumber = 'Serial Number';
+  static String fundedCardSuccess = 'Funded card successfully';
 }

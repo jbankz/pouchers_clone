@@ -1,6 +1,6 @@
-import 'package:Pouchers/app/core/network/network_service.dart';
-import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/schedule.dart';
+import 'package:pouchers/app/core/network/network_service.dart';
+import 'package:pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/schedule.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../../app/core/network/api_path.dart';

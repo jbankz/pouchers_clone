@@ -1,7 +1,10 @@
-import 'package:Pouchers/ui/notification/notification_tray.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'dart:io';
+
+import 'package:pouchers/ui/notification/notification_tray.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:share_plus/share_plus.dart';
@@ -74,6 +77,29 @@ class AppHelper {
       );
     } catch (e) {
       logger.e('Error sharing pdf: $e');
+    }
+  }
+
+  static Future<String> createFolderInAppDocDir(
+      [String folderName = 'Receipts']) async {
+    //Get this App Document Directory
+    final Directory? appDocDir = Platform.isIOS
+        ? await getApplicationDocumentsDirectory()
+        : await getExternalStorageDirectory();
+
+    //App Document Directory + folder name
+    final Directory appDocDirFolder =
+        Directory('${appDocDir?.path}/$folderName');
+
+    if (await appDocDirFolder.exists()) {
+      //if folder already exists return path
+      return appDocDirFolder.path;
+    } else {
+      //if folder not exists create folder and then return its path
+      final Directory appDocDirNewFolder =
+          await appDocDirFolder.create(recursive: true);
+
+      return appDocDirNewFolder.path;
     }
   }
 }

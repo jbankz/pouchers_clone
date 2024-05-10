@@ -1,13 +1,13 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/config/app_helper.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
-import 'package:Pouchers/ui/features/requests/domain/enum/request_money_action.dart';
-import 'package:Pouchers/ui/features/requests/domain/enum/request_type.dart';
-import 'package:Pouchers/ui/features/requests/presentation/notifier/request_notifier.dart';
-import 'package:Pouchers/ui/features/transfer/domain/model/transfer.dart';
-import 'package:Pouchers/ui/features/transfer/presentation/notifier/module/module.dart';
-import 'package:Pouchers/ui/features/transfer/presentation/state/transfer_state.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/config/app_helper.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
+import 'package:pouchers/ui/features/requests/domain/enum/request_money_action.dart';
+import 'package:pouchers/ui/features/requests/domain/enum/request_type.dart';
+import 'package:pouchers/ui/features/requests/presentation/notifier/request_notifier.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/transfer.dart';
+import 'package:pouchers/ui/features/transfer/presentation/notifier/module/module.dart';
+import 'package:pouchers/ui/features/transfer/presentation/state/transfer_state.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

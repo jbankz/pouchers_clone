@@ -1,6 +1,6 @@
-import 'package:Pouchers/app/core/skeleton/widgets.dart';
-import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/core/skeleton/widgets.dart';
+import 'package:pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -171,8 +171,9 @@ class _ScheduledAirtimeViewState extends ConsumerState<ScheduledAirtimeView>
                       prefix: IconButton(
                           onPressed: () {},
                           icon: Text(AppString.nairaSymbol,
-                              style: context.headlineMedium
-                                  ?.copyWith(fontSize: 16))),
+                              style: context.headlineLarge?.copyWith(
+                                  fontSize: 16,
+                                  color: AppColors.kPrimaryTextColor))),
                       inputFormatters: [context.digitsOnly, _formatter],
                     ),
                     const Gap(height: 24),

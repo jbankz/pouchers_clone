@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:Pouchers/app/app.locator.dart';
-import 'package:Pouchers/ui/common/app_keys.dart';
-import 'package:Pouchers/ui/features/admin/domain/model/envs/envs.dart';
+import 'package:pouchers/app/app.locator.dart';
+import 'package:pouchers/ui/common/app_keys.dart';
+import 'package:pouchers/ui/features/admin/domain/model/envs/envs.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -30,7 +30,7 @@ class EnvDao {
     if (clear) _box.clear();
 
     for (var env in envs) {
-      await _box.put(env.updatedAt?.toIso8601String(), env);
+      await _box.put(env.name?.value, env);
     }
   }
 

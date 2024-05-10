@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/notification/domain/model/notification_model.dart';
+import 'package:pouchers/ui/features/notification/domain/model/notification_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'notification_data_model.freezed.dart';

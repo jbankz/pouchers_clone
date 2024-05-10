@@ -1,5 +1,5 @@
-import 'package:Pouchers/utils/debouncer.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/utils/debouncer.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
@@ -297,6 +297,8 @@ class _CableTvViewState extends ConsumerState<CableTvView> with $CableTvView {
             scale: .7,
             child: Switch.adaptive(
               activeColor: AppColors.kPrimaryColor,
+              inactiveTrackColor: AppColors.kBackgroundColor,
+              inactiveThumbColor: AppColors.kPrimaryColor,
               value: _beneficiary,
               onChanged: (value) =>
                   setState(() => _beneficiary = !_beneficiary),

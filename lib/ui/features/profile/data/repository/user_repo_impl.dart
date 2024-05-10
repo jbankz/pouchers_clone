@@ -1,8 +1,8 @@
-import 'package:Pouchers/ui/features/profile/data/dao/contacts_dao.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/referral_dao.dart';
-import 'package:Pouchers/ui/features/profile/data/source/user/user_source.dart';
-import 'package:Pouchers/ui/features/profile/domain/dto/user_dto.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
+import 'package:pouchers/ui/features/profile/data/dao/contacts_dao.dart';
+import 'package:pouchers/ui/features/profile/data/dao/referral_dao.dart';
+import 'package:pouchers/ui/features/profile/data/source/user/user_source.dart';
+import 'package:pouchers/ui/features/profile/domain/dto/user_dto.dart';
+import 'package:pouchers/ui/features/profile/domain/model/user.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/model/referral/referral.dart';

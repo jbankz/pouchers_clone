@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/profile/domain/model/referral/referral_trail.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/features/profile/domain/model/referral/referral_trail.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

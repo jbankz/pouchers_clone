@@ -1,1 +1,1 @@
-enum TwoFaType { twoFaSetup, twoFaLoginVerification }
+enum TwoFaType { twoFaSetup, twoFaLoginVerification, changePin }

@@ -1,4 +1,4 @@
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pdf/pdf.dart';
@@ -18,7 +18,13 @@ Future<pw.Widget> generateTransactionReceipt(
     TransactionHistory? transactionHistory) async {
   final dmSansFont = await rootBundle.load("assets/fonts/DMSans-Bold.ttf");
   final img = await rootBundle.load(AppImage.check);
+  final fullNameLogo = await rootBundle.load(AppImage.pouchers);
+  final fullLogoBadge = await rootBundle.load(AppImage.receiptLogoBadge);
+
   final imageBytes = img.buffer.asUint8List();
+  final fullNameLogoBytes = fullNameLogo.buffer.asUint8List();
+  final fullLogoBadgeBytes = fullLogoBadge.buffer.asUint8List();
+
   final pw.Font getDmSansFont = pw.Font.ttf(dmSansFont);
   final robotFont = await PdfGoogleFonts.robotoBold();
 
@@ -28,9 +34,15 @@ Future<pw.Widget> generateTransactionReceipt(
   final Color color =
       isDebitTransaction ? AppColors.kColorRedDeep : AppColors.limeGreen;
   final String amount = isDebitTransaction
-      ? '-${transactionHistory?.amount.toNaira}'
-      : '+${transactionHistory?.amount.toNaira}';
+      ? '${transactionHistory?.amount.toNaira}'
+      : '${transactionHistory?.amount.toNaira}';
+
   return pw.Column(children: [
+    pw.Align(
+        alignment: Alignment.topRight,
+        child: pw.Image(pw.MemoryImage(fullNameLogoBytes),
+            width: 100.w, height: 100.h)),
+    pw.SizedBox(height: 20),
     pw.Container(
         height: 121, width: 121, child: pw.Image(pw.MemoryImage(imageBytes))),
     pw.SizedBox(height: 14),
@@ -74,26 +86,30 @@ Future<pw.Widget> generateTransactionReceipt(
       ],
     ),
     pw.SizedBox(height: 26),
-    pw.Row(
-      mainAxisSize: pw.MainAxisSize.min,
-      children: [
-        transactionHistory.updatedAt?.monthDayYear ?? '',
-        transactionHistory.updatedAt?.timeAloneWithMeridian12 ?? ''
-      ]
-          .map((date) => pw.Container(
-              margin: pw.EdgeInsets.symmetric(horizontal: 14.w),
-              padding: pw.EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-              decoration: pw.BoxDecoration(
-                  borderRadius: pw.BorderRadius.circular(10.r),
-                  border: pw.Border.all(
-                      color: PdfColor.fromInt(
-                          AppColors.kSecondaryTextColor.value))),
-              child: pw.Text(
-                date,
-              )))
-          .toList(),
-    ),
-    pw.SizedBox(height: 27),
+    // pw.Row(
+    //   mainAxisSize: pw.MainAxisSize.min,
+    //   children: [
+    //     transactionHistory.updatedAt?.dateMonthYear ?? '',
+    //     transactionHistory.updatedAt?.timeAloneWithMeridian12 ?? ''
+    //   ]
+    //       .map((date) => pw.Container(
+    //           margin: pw.EdgeInsets.symmetric(horizontal: 14.w),
+    //           padding: pw.EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+    //           decoration: pw.BoxDecoration(
+    //               borderRadius: pw.BorderRadius.circular(10.r),
+    //               border: pw.Border.all(
+    //                   color: PdfColor.fromInt(
+    //                       AppColors.kSecondaryTextColor.value))),
+    //           child: pw.Text(
+    //             date,
+    //           )))
+    //       .toList(),
+    // ),
+    _buildTile(
+        title: AppString.transactionDate,
+        value: transactionHistory.updatedAt?.dateMonthYearTime ?? '',
+        font: robotFont),
+    pw.SizedBox(height: 16),
     switch (transactionHistory.transactionCategory) {
       ServiceCategory.p2p => _buildTransferReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
@@ -101,9 +117,9 @@ Future<pw.Widget> generateTransactionReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.data => _buildAirtimeOrDataReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
-      ServiceCategory.voucherPurchase => _buildStatusReceipt(
+      ServiceCategory.voucherPurchase => _buildVoucherReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
-      ServiceCategory.voucherRedeem => _buildStatusReceipt(
+      ServiceCategory.voucherRedeem => _buildVoucherReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.fundWallet => _buildWalletFundingReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
@@ -111,21 +127,25 @@ Future<pw.Widget> generateTransactionReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.adminCreditWallet => _buildStatusReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
-      ServiceCategory.cable => _buildOperatorReceipt(
+      ServiceCategory.cable => _buildCableReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.electricity => _buildElectricityReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
-      ServiceCategory.betting => _buildOperatorReceipt(
+      ServiceCategory.betting => _buildBettingReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.localBankTransfer => _buildTransferReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
-      ServiceCategory.referralBonusPayment => pw.SizedBox.shrink(),
+      ServiceCategory.referralBonusPayment => _buildReferralBonusReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.moneyRequest => _buildStatusReceipt(
           robotFont: robotFont, transactionHistory: transactionHistory),
-      ServiceCategory.education => pw.SizedBox.shrink(),
+      ServiceCategory.education => _buildEducationReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
       ServiceCategory.internet => pw.SizedBox.shrink(),
-      ServiceCategory.createVirtualCard => pw.SizedBox.shrink(),
-      ServiceCategory.fundVirtualCard => pw.SizedBox.shrink(),
+      ServiceCategory.createVirtualCard => _buildCreatedVirtualCardReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
+      ServiceCategory.fundVirtualCard => _buildCreatedVirtualCardReceipt(
+          robotFont: robotFont, transactionHistory: transactionHistory),
       null => pw.SizedBox.shrink()
     },
     pw.SizedBox(height: 27),
@@ -138,7 +158,7 @@ Future<pw.Widget> generateTransactionReceipt(
           borderRadius: pw.BorderRadius.circular(8.r)),
       child: pw.Column(
         children: [
-          pw.Text(AppString.transactionNumber,
+          pw.Text(AppString.transactionId,
               textAlign: pw.TextAlign.center,
               style: pw.TextStyle(
                   color: PdfColor.fromInt(AppColors.kIconGrey.value),
@@ -156,9 +176,87 @@ Future<pw.Widget> generateTransactionReceipt(
         ],
       ),
     ),
-    pw.SizedBox(height: 14),
+    pw.SizedBox(height: 15),
+    pw.Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 8.88.w, vertical: 8.88.h),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.88.r),
+          color: PdfColor.fromInt(AppColors.kPrimaryColor.value)),
+      child: Row(
+        children: [
+          pw.Image(pw.MemoryImage(fullLogoBadgeBytes),
+              width: 36.09.w, height: 44.41.h),
+          pw.SizedBox(width: 7.99),
+          Flexible(
+            child: Text(AppString.notOnPoucher,
+                style: pw.TextStyle(
+                    color: PdfColor.fromInt(AppColors.kBackgroundColor.value),
+                    fontSize: 13,
+                    font: await PdfGoogleFonts.dMSansMedium(),
+                    fontWeight: pw.FontWeight.normal)),
+          )
+        ],
+      ),
+    )
   ]);
 }
+
+pw.Column _buildReferralBonusReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTile(
+            title: AppString.status,
+            value: transactionHistory?.status?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.beneficiary,
+            value: transactionHistory?.beneficiaryName?.titleCase ?? '',
+            font: robotFont),
+      ],
+    );
+
+pw.Column _buildCreatedVirtualCardReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTile(
+            title: AppString.status,
+            value: transactionHistory?.status?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.beneficiary,
+            value: transactionHistory?.beneficiaryName?.titleCase ?? '',
+            font: robotFont),
+      ],
+    );
+
+pw.Column _buildBettingReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTile(
+            title: AppString.status,
+            value: transactionHistory?.status?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.beneficiary,
+            value: transactionHistory?.beneficiaryName ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.operator,
+            value: transactionHistory?.extraDetails?.subCategory ?? '',
+            font: robotFont)
+      ],
+    );
 
 pw.Column _buildElectricityReceipt(
         {TransactionHistory? transactionHistory, Font? robotFont}) =>
@@ -196,12 +294,12 @@ pw.Column _buildElectricityReceipt(
             value: transactionHistory?.extraDetails?.customerReferenceNumber ??
                 ''),
         pw.SizedBox(height: 16),
-        _buildTile(
-            font: robotFont,
-            title: AppString.customerReceiptNumber,
-            value:
-                transactionHistory?.extraDetails?.customerReceiptNumber ?? ''),
-        pw.SizedBox(height: 16),
+        // _buildTile(
+        //     font: robotFont,
+        //     title: AppString.customerReceiptNumber,
+        //     value:
+        //         transactionHistory?.extraDetails?.customerReceiptNumber ?? ''),
+        // pw.SizedBox(height: 16),
         _buildTile(
             font: robotFont,
             title: AppString.customerName,
@@ -219,7 +317,7 @@ pw.Column _buildElectricityReceipt(
       ],
     );
 
-pw.Column _buildOperatorReceipt(
+pw.Column _buildEducationReceipt(
         {TransactionHistory? transactionHistory, Font? robotFont}) =>
     pw.Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,8 +328,35 @@ pw.Column _buildOperatorReceipt(
             font: robotFont),
         pw.SizedBox(height: 16),
         _buildTile(
-            title: AppString.operator,
-            value: transactionHistory?.extraDetails?.subCategory ?? '',
+            title: AppString.beneficiary,
+            value: transactionHistory?.beneficiaryName?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.ePin,
+            value: transactionHistory?.extraDetails?.resultCheckerPin ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.serialNumber,
+            value: transactionHistory?.extraDetails?.serialNumber ?? '',
+            font: robotFont)
+      ],
+    );
+
+pw.Column _buildCableReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTile(
+            title: AppString.status,
+            value: transactionHistory?.status?.titleCase ?? '',
+            font: robotFont),
+        pw.SizedBox(height: 16),
+        _buildTile(
+            title: AppString.beneficiary,
+            value: transactionHistory?.beneficiaryName?.titleCase ?? '',
             font: robotFont)
       ],
     );
@@ -257,6 +382,25 @@ pw.Column _buildWalletFundingReceipt(
             font: robotFont),
       ],
     );
+
+_buildVoucherReceipt(
+        {TransactionHistory? transactionHistory, Font? robotFont}) =>
+    pw.Column(children: [
+      _buildTile(
+          title: AppString.status,
+          value: transactionHistory?.status?.titleCase ?? '',
+          font: robotFont),
+      pw.SizedBox(height: 16),
+      _buildTile(
+          title: AppString.beneficiary,
+          value: transactionHistory?.beneficiaryName?.titleCase ?? '',
+          font: robotFont),
+      pw.SizedBox(height: 16),
+      _buildTile(
+          title: AppString.voucherCode,
+          value: transactionHistory?.extraDetails?.voucherCode ?? '',
+          font: robotFont),
+    ]);
 
 _buildStatusReceipt(
         {TransactionHistory? transactionHistory, Font? robotFont}) =>
@@ -323,16 +467,16 @@ pw.Column _buildAirtimeOrDataReceipt(
 pw.Row _buildTile(
         {required String title, required String value, required Font? font}) =>
     pw.Row(
+      mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        pw.Expanded(
-          child: pw.Text(title,
-              textAlign: pw.TextAlign.left,
-              style: pw.TextStyle(
-                  color: PdfColor.fromInt(AppColors.kSecondaryTextColor.value),
-                  fontSize: 14,
-                  font: font,
-                  fontWeight: pw.FontWeight.normal)),
-        ),
+        pw.Text(title,
+            textAlign: pw.TextAlign.left,
+            style: pw.TextStyle(
+                color: PdfColor.fromInt(AppColors.kSecondaryTextColor.value),
+                fontSize: 14,
+                font: font,
+                fontWeight: pw.FontWeight.normal)),
         pw.SizedBox(width: 23),
         pw.Expanded(
           child: pw.Text(value,

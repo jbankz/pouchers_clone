@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/profile/data/repository/user_repo_impl.dart';
-import 'package:Pouchers/ui/features/profile/domain/repository/wallet_repo.dart';
+import 'package:pouchers/ui/features/profile/data/repository/user_repo_impl.dart';
+import 'package:pouchers/ui/features/profile/domain/repository/wallet_repo.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../domain/repository/user_repo.dart';

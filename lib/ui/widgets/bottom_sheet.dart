@@ -1,4 +1,4 @@
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 
 import '../../app/core/router/page_router.dart';

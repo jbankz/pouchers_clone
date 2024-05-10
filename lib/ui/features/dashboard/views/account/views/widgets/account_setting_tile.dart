@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../common/app_colors.dart';

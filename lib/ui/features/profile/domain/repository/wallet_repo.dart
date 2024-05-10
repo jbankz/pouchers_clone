@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/profile/domain/model/wallet.dart';
+import 'package:pouchers/ui/features/profile/domain/model/wallet.dart';
 import 'package:dio/dio.dart';
 
 import '../dto/wallet_dto.dart';

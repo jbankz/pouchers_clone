@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Pouchers/app/app.locator.dart';
+import 'package:pouchers/app/app.locator.dart';
 import 'package:dio/dio.dart';
 
 import '../../helpers/response_handler.dart';

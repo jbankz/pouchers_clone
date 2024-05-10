@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:local_auth/local_auth.dart';

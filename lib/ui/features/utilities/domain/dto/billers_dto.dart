@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
+import 'package:pouchers/ui/features/utilities/domain/enum/billers_category.dart';
 
 class BillersDto {
   final BillersCategory? billersCategory;

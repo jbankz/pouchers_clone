@@ -1,6 +1,6 @@
-import 'package:Pouchers/ui/features/authentication/presentation/view/2fa/first_security_question_view.dart';
-import 'package:Pouchers/ui/features/payment/presentation/view/ussd_view.dart';
-import 'package:Pouchers/ui/features/profile/presentation/views/wallet/fund_wallet_view.dart';
+import 'package:pouchers/ui/features/authentication/presentation/view/2fa/first_security_question_view.dart';
+import 'package:pouchers/ui/features/payment/presentation/view/ussd_view.dart';
+import 'package:pouchers/ui/features/profile/presentation/views/wallet/fund_wallet_view.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -140,7 +140,6 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: IdView),
     AdaptiveRoute(page: UtilityBillView),
     AdaptiveRoute(page: RequestBVNView),
-    AdaptiveRoute(page: CardCalculatorView),
     AdaptiveRoute(page: CardCreationSymmaryView),
     AdaptiveRoute(page: FundWalletView),
     AdaptiveRoute(page: VirtualCardDetailView),
@@ -163,6 +162,10 @@ import 'core/manager/session_manager.dart';
     AdaptiveRoute(page: DisableView),
     CustomRoute(
         page: ConfirmPasswordView,
+        opaque: false,
+        transitionsBuilder: TransitionsBuilders.slideBottom),
+    CustomRoute(
+        page: CardCalculatorView,
         opaque: false,
         transitionsBuilder: TransitionsBuilders.slideBottom),
     AdaptiveRoute(page: DeleteView),
@@ -193,9 +196,12 @@ import 'core/manager/session_manager.dart';
         transitionsBuilder: TransitionsBuilders.slideBottom),
     AdaptiveRoute(page: VoucherHistoryView),
     AdaptiveRoute(page: UssdView),
-    AdaptiveRoute(page: TransferMoneyView),
     CustomRoute(
         page: TransferSuccessState,
+        opaque: false,
+        transitionsBuilder: TransitionsBuilders.slideBottom),
+    CustomRoute(
+        page: TransferMoneyView,
         opaque: false,
         transitionsBuilder: TransitionsBuilders.slideBottom),
     AdaptiveRoute(page: ScheduleTransferMoneyView),

@@ -1,10 +1,10 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
-import 'package:Pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
-import 'package:Pouchers/ui/features/profile/presentation/views/biometric/notifier/module.dart';
-import 'package:Pouchers/utils/extension.dart';
-import 'package:Pouchers/utils/field_validator.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
+import 'package:pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
+import 'package:pouchers/ui/features/profile/presentation/views/biometric/notifier/module.dart';
+import 'package:pouchers/utils/extension.dart';
+import 'package:pouchers/utils/field_validator.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -171,7 +171,7 @@ class _SignInViewState extends ConsumerState<SignInView> with $SignInView {
 
   Future<void> _authenticateUsingBiometric() async {
     await HapticFeedback.selectionClick();
-    
+
     ref.read(biometricNotifier.notifier).authenticateUser(
         callbackAction: () =>
             _authNotifier.signInUserWithBiometric(cancelToken: _cancelToken));

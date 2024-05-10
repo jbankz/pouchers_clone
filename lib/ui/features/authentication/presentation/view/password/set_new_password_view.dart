@@ -1,8 +1,8 @@
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
-import 'package:Pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
-import 'package:Pouchers/utils/extension.dart';
-import 'package:Pouchers/utils/field_validator.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
+import 'package:pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
+import 'package:pouchers/utils/extension.dart';
+import 'package:pouchers/utils/field_validator.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

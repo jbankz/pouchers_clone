@@ -1,12 +1,16 @@
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/admin/domain/enum/fees.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_activity_type.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
-import 'package:Pouchers/ui/notification/notification_tray.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/admin/data/dao/env_dao.dart';
+import 'package:pouchers/ui/features/admin/domain/dto/admin_dto.dart';
+import 'package:pouchers/ui/features/admin/domain/enum/fees.dart';
+import 'package:pouchers/ui/features/admin/presentation/notifier/admin_notifier.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/data/dao/card_dao.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/card_activity_type.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
+import 'package:pouchers/ui/notification/notification_tray.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../../../app/app.logger.dart';
@@ -16,7 +20,7 @@ import '../../../../../../widgets/dialog/bottom_sheet.dart';
 import '../../../../../admin/domain/model/envs/envs.dart';
 import '../../../../../profile/data/dao/user_dao.dart';
 import '../../domain/model/cards/cards.dart';
-import '../../domain/model/get_card_transactions/datum.dart';
+import '../../domain/model/get_card_transactions/transaction.dart';
 import '../../domain/model/get_exchange_rate/get_exchange_rate.dart';
 import '../../domain/model/virtual_account_balance/virtual_account_balance.dart';
 import '../../domain/model/virtual_card_details/virtual_card_details.dart';
@@ -33,7 +37,7 @@ class CardNotifier extends _$CardNotifier {
   GetExchangeRate? _exchangeRate;
   VirtualCardDetails? _cardDetails;
   VirtualAccountBalance? _accountBalance;
-  List<Datum> _transactions = [];
+  List<Transaction> _transactions = [];
 
   @override
   CardState build() => const CardState();
@@ -138,10 +142,15 @@ class CardNotifier extends _$CardNotifier {
       await ref.read(fundVirtualCardProvider
           .call(parameter: parameter, cancelToken: cancelToken)
           .future);
+      triggerNotificationTray(AppString.fundedCardSuccess);
+
+      PageRouter.popToRoot(Routes.virtualCardDetailView);
     } catch (e) {
       _logger.e(e.toString());
+      triggerNotificationTray(e.toString(), error: true);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> freezeCard(CardDto parameter, [CancelToken? cancelToken]) async {
@@ -155,8 +164,9 @@ class CardNotifier extends _$CardNotifier {
     } catch (e) {
       _logger.e(e.toString());
       triggerNotificationTray(e.toString(), error: true);
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> getCardTransactions(CardDto parameter,
@@ -170,9 +180,10 @@ class CardNotifier extends _$CardNotifier {
       _transactions = getCardTransactions?.data ?? [];
     } catch (e) {
       _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(
+          isGettingCardTransactions: false, transactions: _transactions);
     }
-    state = state.copyWith(
-        isGettingCardTransactions: false, transactions: _transactions);
   }
 
   Future<void> getCards(CardDto cardDto, [CancelToken? cancelToken]) async {
@@ -184,8 +195,9 @@ class CardNotifier extends _$CardNotifier {
           .future);
     } catch (e) {
       _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> getToken(CardDto parameter, [CancelToken? cancelToken]) async {
@@ -197,8 +209,9 @@ class CardNotifier extends _$CardNotifier {
           .future);
     } catch (e) {
       _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(isBusy: false);
     }
-    state = state.copyWith(isBusy: false);
   }
 
   Future<void> getExchangeRate(CardDto parameter,
@@ -211,38 +224,54 @@ class CardNotifier extends _$CardNotifier {
           .future);
     } catch (e) {
       _logger.e(e.toString());
+    } finally {
+      state = state.copyWith(isBusy: false, exchangeRate: _exchangeRate);
     }
-    state = state.copyWith(isBusy: false, exchangeRate: _exchangeRate);
   }
 
-  num calculateTotalNairaFee(List<Envs> envs) {
-    final Envs? creationFee =
-        envs.firstWhereOrNull((env) => env.name == Fees.nairaCardCreationFee);
+  num _returnFee(Fees fees) =>
+      envDao.envs
+          .firstWhereOrNull((element) => element.name == fees)
+          ?.value
+          ?.toNum ??
+      0;
 
-    final Envs? sudoVerveFee = envs.firstWhereOrNull(
-        (env) => env.name == Fees.sudoVerveNairaCardCreationFee);
+  num calculateCreationFeeTotalNairaFee(List<Envs> envs,
+      {bool isFunding = false, double amount = 0}) {
+    final nairaCardCreationFee = _returnFee(Fees.nairaCardCreationFee);
+    final sudoVerveNairaCardCreationFee =
+        _returnFee(Fees.sudoVerveNairaCardCreationFee);
+    final sudoVerveNairaCardFundingFee =
+        _returnFee(Fees.sudoVerveNairaCardFundingFee);
+    final nairaCardFundingFee = _returnFee(Fees.nairaCardFundingFee);
 
-    final Envs? fundingFee =
-        envs.firstWhereOrNull((env) => env.name == Fees.nairaCardFundingFee);
+    if (isFunding) {
+      return sudoVerveNairaCardFundingFee +
+          ((nairaCardFundingFee / 100) * amount);
+    }
 
-    return ((num.parse(creationFee?.value ?? '0')) +
-        (num.parse(sudoVerveFee?.value ?? '0')) +
-        (num.parse(fundingFee?.value ?? '0')));
+    return nairaCardCreationFee +
+        sudoVerveNairaCardCreationFee +
+        sudoVerveNairaCardFundingFee +
+        ((nairaCardFundingFee / 100) * amount);
   }
 
-  num calculateTotalDollarFee(List<Envs> envs) {
-    final Envs? creationFee =
-        envs.firstWhereOrNull((env) => env.name == Fees.dollarCardCreationFee);
+  num calculateCreationFeeTotalDollarFee(List<Envs> envs,
+      {bool isFunding = false, double amount = 0}) {
+    final dollarCardCreationFee = _returnFee(Fees.dollarCardCreationFee);
+    final dollarCardFundingFee = _returnFee(Fees.dollarCardFundingFee);
+    final sudoDollarCardFundingFee = _returnFee(Fees.sudoDollarCardFundingFee);
+    final sudoDollarCardCreationfee =
+        _returnFee(Fees.sudoDollarCardCreationfee);
 
-    final Envs? sudoCreationFee = envs
-        .firstWhereOrNull((env) => env.name == Fees.sudoDollarCardCreationfee);
+    if (isFunding) {
+      return sudoDollarCardFundingFee + ((dollarCardFundingFee / 100) * amount);
+    }
 
-    final Envs? fundingFee =
-        envs.firstWhereOrNull((env) => env.name == Fees.dollarCardFundingFee);
-
-    return ((num.parse(creationFee?.value ?? '0')) +
-        (num.parse(sudoCreationFee?.value ?? '0')) +
-        (num.parse(fundingFee?.value ?? '0')));
+    return dollarCardCreationFee +
+        ((dollarCardFundingFee / 100) * amount) +
+        sudoDollarCardFundingFee +
+        sudoDollarCardCreationfee;
   }
 
   void navigateToDetails(Cards card) {
@@ -262,4 +291,16 @@ class CardNotifier extends _$CardNotifier {
 
   Future<void> triggerManageCard() async =>
       await BottomSheets.showSheet(child: const ManageCardSheet());
+
+  Future<void> getSudoRate(double value, {CancelToken? cancelToken}) async {
+    try {
+      state = state.copyWith(isGettingFundingFee: true);
+      await ref.read(adminNotifierProvider.notifier).getEnvs(
+          parameter: AdminDto(amount: value), cancelToken: cancelToken);
+    } catch (e) {
+      _logger.e(e);
+    } finally {
+      state = state.copyWith(isGettingFundingFee: false);
+    }
+  }
 }

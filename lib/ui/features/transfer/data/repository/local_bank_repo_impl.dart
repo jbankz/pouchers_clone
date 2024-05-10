@@ -1,9 +1,9 @@
-import 'package:Pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
-import 'package:Pouchers/ui/features/transfer/data/source/local_banks/local_bank_source.dart';
-import 'package:Pouchers/ui/features/transfer/domain/dto/transfer_money_dto.dart';
-import 'package:Pouchers/ui/features/transfer/domain/model/guest_local_bank.dart';
-import 'package:Pouchers/ui/features/transfer/domain/model/local_bank.dart';
-import 'package:Pouchers/ui/features/transfer/domain/repository/local_bank_repository.dart';
+import 'package:pouchers/ui/features/transfer/data/dao/local_bank_dao.dart';
+import 'package:pouchers/ui/features/transfer/data/source/local_banks/local_bank_source.dart';
+import 'package:pouchers/ui/features/transfer/domain/dto/transfer_money_dto.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/guest_local_bank.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/local_bank.dart';
+import 'package:pouchers/ui/features/transfer/domain/repository/local_bank_repository.dart';
 import 'package:dio/dio.dart';
 
 class LocalBankRepoImpl implements LocalBankRepository {

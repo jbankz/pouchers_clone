@@ -1,8 +1,9 @@
-import 'package:Pouchers/ui/features/admin/presentation/notifier/module/module.dart';
+import 'package:pouchers/ui/features/admin/presentation/notifier/module/module.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../app/app.logger.dart';
+import '../../domain/dto/admin_dto.dart';
 import '../../domain/model/banner.dart';
 import '../state/admin_state.dart';
 
@@ -17,10 +18,12 @@ class AdminNotifier extends _$AdminNotifier {
   @override
   AdminState build() => const AdminState();
 
-  Future<void> getEnvs([CancelToken? cancelToken]) async {
+  Future<void> getEnvs({AdminDto? parameter, CancelToken? cancelToken}) async {
     try {
       state = state.copyWith(isBusy: true);
-      await ref.read(envsProvider.call(cancelToken: cancelToken).future);
+      await ref.read(envsProvider
+          .call(parameter: parameter, cancelToken: cancelToken)
+          .future);
     } catch (e) {
       _logger.e(e);
     } finally {

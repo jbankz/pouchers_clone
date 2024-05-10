@@ -1,18 +1,18 @@
 import 'dart:io';
 
-import 'package:Pouchers/app/config/app_config.dart';
-import 'package:Pouchers/app/core/network/network_service.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/created_virtual_card/created_virtual_card.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/freeze_card/freeze_card.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/fund_virtual_account/fund_virtual_account.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/cards/cards.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_card_token/get_card_token.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_card_transactions/get_card_transactions.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_exchange_rate/get_exchange_rate.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/get_virtual_account/get_virtual_account.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/virtual_account_balance/virtual_account_balance.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/model/virtual_card_details/virtual_card_details.dart';
+import 'package:pouchers/app/config/app_config.dart';
+import 'package:pouchers/app/core/network/network_service.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/model/created_virtual_card/created_virtual_card.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/model/freeze_card/freeze_card.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/model/fund_virtual_account/fund_virtual_account.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/model/cards/cards.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/model/get_card_token/get_card_token.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/model/get_card_transactions/get_card_transactions.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/model/get_exchange_rate/get_exchange_rate.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/model/get_virtual_account/get_virtual_account.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/model/virtual_account_balance/virtual_account_balance.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/model/virtual_card_details/virtual_card_details.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../../../app/core/network/api_path.dart';
@@ -62,7 +62,7 @@ class CardSourceImpl implements CardSource<CardDto> {
       {required CardDto cardDto, CancelToken? cancelToken}) async {
     final response = await networkService.request(
         path: ApiPath.fundVirtualCard,
-        requestType: RequestType.patch,
+        requestType: RequestType.post,
         data: cardDto.toJson(),
         cancelToken: cancelToken);
     return FundVirtualAccount.fromJson(response.data as Map<String, dynamic>);

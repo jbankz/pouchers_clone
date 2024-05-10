@@ -88,6 +88,8 @@ extension StringExtensions on String {
 
   /// Use this only when you are sure the value to be parsed is a curreny format
   num get replaceComma => num.tryParse(replaceAll(',', '')) ?? 0;
+
+  num get toNum => num.tryParse(this) ?? 0;
 }
 
 // Extension for currency formatting
@@ -161,6 +163,9 @@ extension DateTimeExtensions on DateTime {
   String get dayMonthTime1 => DateFormat('hh:mm a, MMM dd, yyyy').format(this);
 
   String get monthDayYear => DateFormat('MMM, dd, yyyy').format(this);
+  String get dateMonthYear => DateFormat('dd MMM yyyy').format(this);
+  String get dateMonthYearTime =>
+      DateFormat('dd MMM yyyy - hh:mm a').format(this);
 
   // Formats the date and time as "MM dd, hh:mm a"
   String get monthDayTime => DateFormat('MMM dd, hh:mm a').format(this);
@@ -253,6 +258,8 @@ extension ContextExtensions on BuildContext {
   TextStyle? get bodySmall => Theme.of(this).textTheme.bodySmall;
 
   TextStyle? get titleTextStyle => Theme.of(this).appBarTheme.titleTextStyle;
+
+  Color get scaffoldBackgroundColor => Theme.of(this).scaffoldBackgroundColor;
 
   TextStyle? get bodyExtraSmall =>
       bodySmall?.copyWith(fontSize: 10, height: 1.6, letterSpacing: .5);

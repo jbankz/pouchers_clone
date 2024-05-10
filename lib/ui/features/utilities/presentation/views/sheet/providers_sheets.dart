@@ -1,6 +1,6 @@
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/utilities/presentation/views/widget/unavailable_widget.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/utilities/presentation/views/widget/unavailable_widget.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

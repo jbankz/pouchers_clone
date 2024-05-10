@@ -1,6 +1,6 @@
-import 'package:Pouchers/app/core/constants/db_constants.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/card_brand.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
+import 'package:pouchers/app/core/constants/db_constants.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/card_brand.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 

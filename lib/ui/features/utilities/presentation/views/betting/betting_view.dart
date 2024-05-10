@@ -1,12 +1,12 @@
-import 'package:Pouchers/app/core/skeleton/widgets.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
-import 'package:Pouchers/ui/features/merchant/presentation/notifier/merchants_notifier.dart';
-import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
-import 'package:Pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
-import 'package:Pouchers/ui/features/utilities/domain/enum/billers_category.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
-import 'package:Pouchers/utils/debouncer.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/core/skeleton/widgets.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
+import 'package:pouchers/ui/features/merchant/presentation/notifier/merchants_notifier.dart';
+import 'package:pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
+import 'package:pouchers/ui/features/utilities/domain/dto/summary_dto.dart';
+import 'package:pouchers/ui/features/utilities/domain/enum/billers_category.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/discounts.dart';
+import 'package:pouchers/utils/debouncer.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
@@ -160,8 +160,9 @@ class _BettingViewState extends ConsumerState<BettingView> with $BettingView {
                         prefix: IconButton(
                             onPressed: () {},
                             icon: Text(AppString.nairaSymbol,
-                                style: context.headlineMedium
-                                    ?.copyWith(fontSize: 16))),
+                                style: context.headlineLarge?.copyWith(
+                                    fontSize: 16,
+                                    color: AppColors.kPrimaryTextColor))),
                         inputFormatters: [context.digitsOnly, _formatter],
                       ),
                     ],

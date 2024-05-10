@@ -1,11 +1,13 @@
-import 'package:Pouchers/app/config/app_helper.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/transfer/domain/model/transfer.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/ui/widgets/profile_image.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/config/app_helper.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/transfer.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/ui/widgets/profile_image.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:screenshot/screenshot.dart';
@@ -96,8 +98,37 @@ class _TransferReceiptState extends State<TransferReceipt> {
                         const Gap(height: 26),
                         _buildTileWidget(
                             context: context,
+                            title: AppString.transactionBeneficiary,
+                            value:
+                                widget.transfer?.receiverName?.titleCase ?? ''),
+                        const Gap(height: 26),
+                        _buildTileWidget(
+                            context: context,
                             title: AppString.poucherTag,
                             value: widget.transfer?.receiverTag ?? ''),
+                        const Gap(height: 26),
+                        _buildTileWidget(
+                            context: context,
+                            title: AppString.transactionId,
+                            trailing: InkWell(
+                              onTap: () => AppHelper.copy(
+                                  widget.transfer?.transactionId ?? ''),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                      child: Text(
+                                          widget.transfer?.transactionId ?? '',
+                                          style: context.headlineMedium
+                                              ?.copyWith(
+                                                  fontSize: 14,
+                                                  fontWeight:
+                                                      FontWeight.w500))),
+                                  const Gap(width: 2),
+                                  SvgPicture.asset(AppImage.tableCopyIcon),
+                                ],
+                              ),
+                            )),
                         const Gap(height: 26),
                         _buildTileWidget(
                             context: context,
@@ -141,8 +172,9 @@ class _TransferReceiptState extends State<TransferReceipt> {
   Row _buildTileWidget(
           {required BuildContext context,
           required String title,
-          required String value,
-          bool isSuccess = false}) =>
+          String value = '',
+          bool isSuccess = false,
+          Widget? trailing}) =>
       Row(
         children: [
           Expanded(
@@ -152,13 +184,14 @@ class _TransferReceiptState extends State<TransferReceipt> {
                       fontWeight: FontWeight.w400,
                       fontSize: 14),
                   textAlign: TextAlign.left)),
-          Expanded(
-              child: Text(value,
-                  style: context.headlineMedium?.copyWith(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: isSuccess ? AppColors.kColorGreen : null),
-                  textAlign: TextAlign.right)),
+          trailing ??
+              Expanded(
+                  child: Text(value,
+                      style: context.headlineMedium?.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: isSuccess ? AppColors.kColorGreen : null),
+                      textAlign: TextAlign.right)),
         ],
       );
 }

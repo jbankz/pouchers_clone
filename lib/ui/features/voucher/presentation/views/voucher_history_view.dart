@@ -1,4 +1,4 @@
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -238,7 +238,7 @@ class _VoucherHistoryViewState extends ConsumerState<VoucherHistoryView> {
               children: [
                 Text(
                   voucher.amount.toNaira,
-                  style: context.headlineMedium?.copyWith(
+                  style: context.headlineLarge?.copyWith(
                     fontSize: 14,
                     color: isGifted
                         ? AppColors.kColorRedDeep

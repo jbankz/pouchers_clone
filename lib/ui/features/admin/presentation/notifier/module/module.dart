@@ -1,7 +1,7 @@
-import 'package:Pouchers/ui/features/admin/domain/dto/admin_dto.dart';
-import 'package:Pouchers/ui/features/admin/domain/model/banner.dart';
-import 'package:Pouchers/ui/features/admin/domain/model/envs/envs.dart';
-import 'package:Pouchers/ui/features/admin/domain/usecase/module/module.dart';
+import 'package:pouchers/ui/features/admin/domain/dto/admin_dto.dart';
+import 'package:pouchers/ui/features/admin/domain/model/banner.dart';
+import 'package:pouchers/ui/features/admin/domain/model/envs/envs.dart';
+import 'package:pouchers/ui/features/admin/domain/usecase/module/module.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

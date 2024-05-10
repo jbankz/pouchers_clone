@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/voucher/data/repository/module/voucher_repo_module.dart';
+import 'package:pouchers/ui/features/voucher/data/repository/module/voucher_repo_module.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

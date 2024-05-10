@@ -1,11 +1,11 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/dashboard/views/home/views/sheet/request_options.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/wallet_dao.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/dashboard/views/home/views/sheet/request_options.dart';
+import 'package:pouchers/ui/features/profile/data/dao/wallet_dao.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -70,49 +70,52 @@ class BalanceWidget extends HookConsumerWidget {
                 ),
                 const Gap(height: 29),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    BuildActionButton(
-                      icon: AppImage.walletOne,
-                      title: AppString.fundWallet,
-                      width: 65,
-                      checkUsersLevel: false,
-                      onTap: () => PageRouter.pushNamed(Routes.fundWalletView),
+                    Flexible(
+                      child: BuildActionButton(
+                        icon: AppImage.walletOne,
+                        title: AppString.fundWallet,
+                        checkUsersLevel: false,
+                        onTap: () =>
+                            PageRouter.pushNamed(Routes.fundWalletView),
+                      ),
                     ),
-                    Gap(width: 46.5.w),
-                    BuildActionButton(
-                        icon: AppImage.swap,
-                        title: AppString.transfer,
-                        width: 45,
-                        onTap: () => BottomSheets.showSheet(
-                            wrap: false, child: const TransferMoneySheet())),
-                    Gap(width: 46.5.w),
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        BuildActionButton(
-                            icon: AppImage.bag,
-                            title: AppString.request,
-                            width: 46,
-                            onTap: () => BottomSheets.showSheet(
-                                child: const RequestOptionSheet())),
-                        if (totalUnreadMessages > 0)
-                          Positioned(
-                            left: 30.w,
-                            top: -10,
-                            child: Container(
-                              height: 20.h,
-                              width: 20.w,
-                              alignment: Alignment.center,
-                              decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppColors.kColorRed),
-                              child: Text('$totalUnreadMessages',
-                                  style: context.bodyMedium?.copyWith(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500)),
-                            ),
-                          )
-                      ],
+                    Flexible(
+                      child: BuildActionButton(
+                          icon: AppImage.swap,
+                          title: AppString.transfer,
+                          onTap: () => BottomSheets.showSheet(
+                              wrap: false, child: const TransferMoneySheet())),
+                    ),
+                    Flexible(
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          BuildActionButton(
+                              icon: AppImage.bag,
+                              title: AppString.request,
+                              onTap: () => BottomSheets.showSheet(
+                                  child: const RequestOptionSheet())),
+                          if (totalUnreadMessages > 0)
+                            Positioned(
+                              left: 25.w,
+                              top: -10,
+                              child: Container(
+                                height: 20.h,
+                                width: 20.w,
+                                alignment: Alignment.center,
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.kColorRed),
+                                child: Text('$totalUnreadMessages',
+                                    style: context.bodyMedium?.copyWith(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500)),
+                              ),
+                            )
+                        ],
+                      ),
                     )
                   ],
                 ),

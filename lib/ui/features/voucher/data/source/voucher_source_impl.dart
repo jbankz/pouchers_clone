@@ -1,8 +1,8 @@
-import 'package:Pouchers/app/core/network/api_path.dart';
-import 'package:Pouchers/app/core/network/network_service.dart';
-import 'package:Pouchers/ui/features/voucher/domain/dto/voucher_dto.dart';
-import 'package:Pouchers/ui/features/voucher/domain/model/buy_voucher.dart';
-import 'package:Pouchers/ui/features/voucher/domain/model/vouchers.dart';
+import 'package:pouchers/app/core/network/api_path.dart';
+import 'package:pouchers/app/core/network/network_service.dart';
+import 'package:pouchers/ui/features/voucher/domain/dto/voucher_dto.dart';
+import 'package:pouchers/ui/features/voucher/domain/model/buy_voucher.dart';
+import 'package:pouchers/ui/features/voucher/domain/model/vouchers.dart';
 import 'package:dio/dio.dart';
 
 import 'voucher_source.dart';

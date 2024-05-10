@@ -1,8 +1,8 @@
-import 'package:Pouchers/ui/features/utilities/domain/dto/billers_dto.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/airtime_top_deals.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/billers.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/validate_customer.dart';
-import 'package:Pouchers/ui/features/utilities/domain/usecase/module/module.dart';
+import 'package:pouchers/ui/features/utilities/domain/dto/billers_dto.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/airtime_top_deals.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/billers.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/validate_customer.dart';
+import 'package:pouchers/ui/features/utilities/domain/usecase/module/module.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

@@ -1,9 +1,9 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart';
-import 'package:Pouchers/ui/features/voucher/presentation/views/widgets/empty_voucher_widget.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart';
+import 'package:pouchers/ui/features/voucher/presentation/views/widgets/empty_voucher_widget.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -169,9 +169,6 @@ class _HistoryTabState extends ConsumerState<HistoryTab> {
                               final Color color = isDebitTransaction
                                   ? AppColors.kColorRedDeep
                                   : AppColors.limeGreen;
-                              final String amount = isDebitTransaction
-                                  ? '-${transaction.amount.toNaira}'
-                                  : '+${transaction.amount.toNaira}';
 
                               if (index == 0 || !(isSameDate)) {
                                 return Column(
@@ -188,7 +185,7 @@ class _HistoryTabState extends ConsumerState<HistoryTab> {
                                     _buildItem(
                                         title: transactionTitle(transaction),
                                         context: context,
-                                        amount: amount,
+                                        amount: transaction.amount.toNaira,
                                         color: color,
                                         transactionHistory: transaction)
                                   ],
@@ -198,7 +195,7 @@ class _HistoryTabState extends ConsumerState<HistoryTab> {
                               return _buildItem(
                                   title: transactionTitle(transaction),
                                   context: context,
-                                  amount: amount,
+                                  amount: transaction.amount.toNaira,
                                   color: color,
                                   transactionHistory: transaction);
                             }),
@@ -236,7 +233,7 @@ class _HistoryTabState extends ConsumerState<HistoryTab> {
               const Gap(width: 23),
               Expanded(
                 child: Text(amount,
-                    style: context.headlineMedium?.copyWith(
+                    style: context.headlineLarge?.copyWith(
                         color: color,
                         fontSize: 14,
                         fontWeight: FontWeight.w400),

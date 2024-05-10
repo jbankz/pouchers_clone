@@ -1,5 +1,5 @@
-import 'package:Pouchers/app/serializer/string_to_num_serializer.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
+import 'package:pouchers/app/serializer/string_to_num_serializer.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'guest_services_purchase_status.freezed.dart';

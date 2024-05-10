@@ -1,7 +1,7 @@
-import 'package:Pouchers/app/config/app_config.dart';
-import 'package:Pouchers/app/config/app_logger.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
+import 'package:pouchers/app/config/app_config.dart';
+import 'package:pouchers/app/config/app_logger.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/features/profile/domain/model/user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dojah_kyc/flutter_dojah_kyc.dart';
 

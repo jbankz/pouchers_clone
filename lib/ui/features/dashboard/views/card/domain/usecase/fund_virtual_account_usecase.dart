@@ -1,5 +1,5 @@
-import 'package:Pouchers/app/core/usecase/poucher_usecase.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
+import 'package:pouchers/app/core/usecase/poucher_usecase.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/dto/card_dto.dart';
 import 'package:dio/dio.dart';
 
 import '../model/fund_virtual_account/fund_virtual_account.dart';

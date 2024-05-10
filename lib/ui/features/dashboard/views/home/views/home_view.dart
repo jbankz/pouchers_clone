@@ -1,11 +1,11 @@
-import 'package:Pouchers/app/app.router.dart';
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/admin/presentation/notifier/admin_notifier.dart';
-import 'package:Pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/app.router.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/admin/presentation/notifier/admin_notifier.dart';
+import 'package:pouchers/ui/features/profile/presentation/notifier/wallet_notifier.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +26,8 @@ class HomeView extends ConsumerStatefulWidget {
   ConsumerState<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends ConsumerState<HomeView> {
+class _HomeViewState extends ConsumerState<HomeView>
+    with TickerProviderStateMixin {
   late WalletNotifier _walletNotifier;
   late AdminNotifier _adminNotifier;
   late NotificationNotifier _notificationNotifier;
@@ -35,16 +36,62 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   final RefreshController _refreshController = RefreshController();
 
+  late AnimationController _airtimeAnimationController;
+  late AnimationController _cableAnimationController;
+  late AnimationController _dataAnimationController;
+  late AnimationController _electricityAnimationController;
+  late AnimationController _educationAnimationController;
+  late AnimationController _internetAnimationController;
+  late AnimationController _vouchersAnimationController;
+  late AnimationController _bettingAnimationController;
+  late AnimationController _boardAnimationController;
+  late AnimationController _cardImageAnimationController;
+
   @override
   void initState() {
-    super.initState();
+    _initializeAnimationController();
     Future.microtask(() => _initializeNotifiers());
+    super.initState();
   }
 
   @override
   void dispose() {
-    super.dispose();
+    _disposeAnimationControllers();
     _cancelToken.cancel();
+    super.dispose();
+  }
+
+  void _initializeAnimationController() {
+    _boardAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500))
+      ..forward();
+    _airtimeAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500))
+      ..forward();
+    _dataAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 600))
+      ..forward();
+    _cableAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 700))
+      ..forward();
+    _electricityAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 800))
+      ..forward();
+    _internetAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 900))
+      ..forward();
+    _bettingAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1000))
+      ..forward();
+    _vouchersAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1100))
+      ..forward();
+    _educationAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1200))
+      ..forward();
+    _cardImageAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1200))
+      ..forward();
   }
 
   void _initializeNotifiers() {
@@ -53,6 +100,17 @@ class _HomeViewState extends ConsumerState<HomeView> {
     _notificationNotifier = ref.read(notificationNotifierProvider.notifier);
 
     _fetchData();
+  }
+
+  void _disposeAnimationControllers() {
+    _airtimeAnimationController.dispose();
+    _dataAnimationController.dispose();
+    _cableAnimationController.dispose();
+    _electricityAnimationController.dispose();
+    _internetAnimationController.dispose();
+    _bettingAnimationController.dispose();
+    _vouchersAnimationController.dispose();
+    _educationAnimationController.dispose();
   }
 
   Future<void> _fetchData() async {
@@ -86,7 +144,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Gap(height: 12),
-                              const BalanceWidget(),
+                              FadeTransition(
+                                  opacity: _boardAnimationController,
+                                  child: const BalanceWidget()),
                               const Gap(height: 36),
                               Text(AppString.quickLinks,
                                   style: context.headlineLarge?.copyWith(
@@ -99,24 +159,32 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   BuildQuickActionButton(
+                                      animationController:
+                                          _airtimeAnimationController,
                                       icon: AppImage.airtimeIcon,
                                       title: AppString.airtime,
                                       onPressed: () => PageRouter.pushNamed(
                                           Routes.airtimeView)),
                                   Gap(width: 37.w),
                                   BuildQuickActionButton(
+                                      animationController:
+                                          _dataAnimationController,
                                       icon: AppImage.dataIcon,
                                       title: AppString.data,
                                       onPressed: () => PageRouter.pushNamed(
                                           Routes.dataView)),
                                   Gap(width: 37.w),
                                   BuildQuickActionButton(
+                                      animationController:
+                                          _cableAnimationController,
                                       icon: AppImage.televisionIcon,
                                       title: AppString.cableTv,
                                       onPressed: () => PageRouter.pushNamed(
                                           Routes.cableTvView)),
                                   Gap(width: 37.w),
                                   BuildQuickActionButton(
+                                      animationController:
+                                          _electricityAnimationController,
                                       icon: AppImage.electricityIcon,
                                       title: AppString.electricity,
                                       onPressed: () => PageRouter.pushNamed(
@@ -129,26 +197,32 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   BuildQuickActionButton(
+                                      animationController:
+                                          _dataAnimationController,
                                       icon: AppImage.wifiIcon,
                                       title: AppString.internet,
                                       onPressed: () => PageRouter.pushNamed(
                                           Routes.internetView)),
                                   Gap(width: 37.w),
                                   BuildQuickActionButton(
+                                      animationController:
+                                          _bettingAnimationController,
                                       icon: AppImage.bettingIcon,
                                       title: AppString.betting,
                                       onPressed: () => PageRouter.pushNamed(
                                           Routes.bettingView)),
                                   Gap(width: 37.w),
                                   BuildQuickActionButton(
+                                      animationController:
+                                          _vouchersAnimationController,
                                       icon: AppImage.voucherIcon,
                                       title: AppString.vouchers,
                                       onPressed: () => PageRouter.pushNamed(
                                           Routes.voucherView)),
-                                  // onPressed: () => pushTo(context,
-                                  //     const Vouchers(isGuest: false))),
                                   Gap(width: 37.w),
                                   BuildQuickActionButton(
+                                      animationController:
+                                          _educationAnimationController,
                                       icon: AppImage.educationIcon,
                                       title: AppString.education,
                                       onPressed: () => PageRouter.pushNamed(
@@ -157,7 +231,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               ),
                             ])),
                     const Gap(height: 32),
-                    const SlidersWidget(),
+                    FadeTransition(
+                        opacity: _cardImageAnimationController,
+                        child: SlideTransition(
+                            position: Tween<Offset>(
+                                    begin: const Offset(0, 1), end: Offset.zero)
+                                .animate(CurvedAnimation(
+                                    parent: _cardImageAnimationController,
+                                    curve: Curves.easeIn)),
+                            child: const SlidersWidget())),
                     const Gap(height: 16),
                   ],
                 ),

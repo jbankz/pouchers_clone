@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
 
 import '../enum/service_category.dart';
 
@@ -113,7 +113,7 @@ class MobileDto {
       result.addAll({'email': email});
     }
     if (currency != null) {
-      result.addAll({'currency': currency?.name});
+      result.addAll({'currency': currency?.value});
     }
     if (phoneNumber != null) {
       result.addAll({'phone_number': phoneNumber});

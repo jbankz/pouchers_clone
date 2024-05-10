@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:Pouchers/app/app.locator.dart';
-import 'package:Pouchers/ui/common/app_keys.dart';
+import 'package:pouchers/app/app.locator.dart';
+import 'package:pouchers/ui/common/app_keys.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../../../app/core/manager/hive_manager.dart';
@@ -28,6 +29,7 @@ class WalletDao {
       _box.get(AppKeys.balanceVisibilityKey, defaultValue: false) as bool;
 
   Future<void> toggleBalanceVisibility() async {
+    await HapticFeedback.selectionClick();
     await _box.put(AppKeys.balanceVisibilityKey, !balanceVisibilty);
   }
 

@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/voucher/domain/repository/voucher_repository.dart';
+import 'package:pouchers/ui/features/voucher/domain/repository/voucher_repository.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/usecase/poucher_usecase.dart';

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/currency.dart';
 
 part 'account.freezed.dart';
 part 'account.g.dart';
@@ -9,18 +10,18 @@ class Account with _$Account {
     @JsonKey(name: '_id') String? id,
     String? business,
     String? type,
-    String? currency,
+    Currency? currency,
     String? accountName,
     String? bankCode,
     String? accountType,
     String? accountNumber,
-    int? currentBalance,
-    int? availableBalance,
+    @Default(0) num currentBalance,
+    @Default(0) num availableBalance,
     String? provider,
     String? providerReference,
     String? referenceCode,
-    bool? isDefault,
-    bool? isDeleted,
+    @Default(false) bool isDefault,
+    @Default(false) bool isDeleted,
     DateTime? createdAt,
     DateTime? updatedAt,
     @JsonKey(name: '__v') int? v,

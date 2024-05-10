@@ -1,8 +1,8 @@
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/app/core/skeleton/widgets.dart';
-import 'package:Pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/app/core/skeleton/widgets.dart';
+import 'package:pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

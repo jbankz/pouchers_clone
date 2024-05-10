@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/utilities/domain/model/airtime_top_deals.dart';
-import 'package:Pouchers/ui/features/utilities/domain/repository/billers_repo.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/airtime_top_deals.dart';
+import 'package:pouchers/ui/features/utilities/domain/repository/billers_repo.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../../app/core/usecase/poucher_usecase.dart';

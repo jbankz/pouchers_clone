@@ -1,7 +1,9 @@
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -27,42 +29,87 @@ class ReceiptActionSheet extends StatelessWidget {
               right: 16.w),
           child: SizedBox(
             width: double.infinity,
-            child: SingleChildScrollView(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              child: Column(
-                children: [
-                  const Gap(height: 8),
-                  Container(
-                    width: 24.w,
-                    height: 1.53.h,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Gap(height: 8),
+                Container(
+                  width: 24.w,
+                  height: 1.53.h,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4.r),
+                      color: context.dragHandleColor),
+                ),
+                const Gap(height: 45),
+                InkWell(
+                  onTap: () async {
+                    await HapticFeedback.selectionClick();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 12.h),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4.r),
-                        color: context.dragHandleColor),
+                        borderRadius: BorderRadius.circular(8.r),
+                        color: AppColors.kContainerColor),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(AppImage.copyIcon),
+                        const Gap(width: 10),
+                        Flexible(
+                            child: Text(
+                          'Share Receipt',
+                          style: context.headlineMedium?.copyWith(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.kPrimaryColor),
+                        ))
+                      ],
+                    ),
                   ),
-                  const Gap(height: 17),
-                  Text(AppString.share,
-                      style: context.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.w700, fontSize: 15)),
-                  const Gap(height: 31),
-                  Row(
-                    children: [
-                      _buildActionButton(
-                          context: context,
-                          image: AppImage.gallery,
-                          title: AppString.image,
-                          onTap: image),
-                      const Gap(width: 23),
-                      _buildActionButton(
-                          context: context,
-                          image: AppImage.pdfIcon,
-                          title: AppString.pdf,
-                          onTap: pdf)
-                    ],
-                  )
-                ],
-              ),
+                ),
+                const Gap(height: 22),
+              ],
             ),
           ),
+        ),
+      );
+
+  SingleChildScrollView _buildTempModal(BuildContext context) =>
+      SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: Column(
+          children: [
+            const Gap(height: 8),
+            Container(
+              width: 24.w,
+              height: 1.53.h,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4.r),
+                  color: context.dragHandleColor),
+            ),
+            const Gap(height: 17),
+            Text(AppString.share,
+                style: context.headlineMedium
+                    ?.copyWith(fontWeight: FontWeight.w700, fontSize: 15)),
+            const Gap(height: 31),
+            Row(
+              children: [
+                _buildActionButton(
+                    context: context,
+                    image: AppImage.gallery,
+                    title: AppString.image,
+                    onTap: image),
+                const Gap(width: 23),
+                _buildActionButton(
+                    context: context,
+                    image: AppImage.pdfIcon,
+                    title: AppString.pdf,
+                    onTap: pdf)
+              ],
+            )
+          ],
         ),
       );
 

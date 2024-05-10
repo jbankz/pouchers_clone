@@ -1,7 +1,7 @@
-import 'package:Pouchers/ui/features/merchant/domain/model/get_merchants.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/discounts.dart';
-import 'package:Pouchers/utils/debouncer.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/features/merchant/domain/model/get_merchants.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/discounts.dart';
+import 'package:pouchers/utils/debouncer.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
@@ -169,8 +169,9 @@ class _ElectricityViewState extends ConsumerState<ElectricityView>
                           prefix: IconButton(
                               onPressed: () {},
                               icon: Text(AppString.nairaSymbol,
-                                  style: context.headlineMedium
-                                      ?.copyWith(fontSize: 16))),
+                                  style: context.headlineLarge?.copyWith(
+                                      fontSize: 16,
+                                      color: AppColors.kPrimaryTextColor))),
                           inputFormatters: [
                             context.digitsOnly,
                             _formatter,

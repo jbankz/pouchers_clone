@@ -1,4 +1,4 @@
-import 'package:Pouchers/app/serializer/date_time_serializer.dart';
+import 'package:pouchers/app/serializer/date_time_serializer.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'schedule.freezed.dart';

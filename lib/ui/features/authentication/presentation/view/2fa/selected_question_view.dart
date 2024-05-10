@@ -1,17 +1,18 @@
-import 'package:Pouchers/app/core/manager/intercom_manager.dart';
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
-import 'package:Pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
-import 'package:Pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
-import 'package:Pouchers/ui/features/authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
-import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
-import 'package:Pouchers/ui/widgets/edit_text_field_with.dart';
-import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/utils/extension.dart';
-import 'package:Pouchers/utils/field_validator.dart';
+import 'package:pouchers/app/core/manager/intercom_manager.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/authentication/domain/dto/auth_dto.dart';
+import 'package:pouchers/ui/features/authentication/domain/dto/two_fa_dto.dart';
+import 'package:pouchers/ui/features/authentication/presentation/notifier/auth_notifier.dart';
+import 'package:pouchers/ui/features/authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import 'package:pouchers/ui/widgets/dialog/bottom_sheet.dart';
+import 'package:pouchers/ui/widgets/edit_text_field_with.dart';
+import 'package:pouchers/ui/widgets/elevated_button_widget.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/utils/extension.dart';
+import 'package:pouchers/utils/field_validator.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -66,11 +67,9 @@ class _SelectedQuestionViewState extends ConsumerState<SelectedQuestionView>
             children: [
               Expanded(
                   child: ListView(children: [
-                Text(
-                  AppString.answerTheQuestion,
-                  style: context.headlineMedium
-                      ?.copyWith(fontSize: 24, fontWeight: FontWeight.w700),
-                ),
+                Text(AppString.answerTheQuestion,
+                    style: context.headlineMedium
+                        ?.copyWith(fontSize: 24, fontWeight: FontWeight.w700)),
                 const Gap(height: 10),
                 RichText(
                   text: TextSpan(
@@ -94,32 +93,43 @@ class _SelectedQuestionViewState extends ConsumerState<SelectedQuestionView>
                 const Gap(height: 30),
                 SizedBox(
                   height: 144.h,
-                  child: PageView.builder(
-                      itemCount: authState.selectedQuestions.length,
-                      controller: _pageController,
-                      physics: const NeverScrollableScrollPhysics(),
-                      onPageChanged: (index) =>
-                          setState(() => _pageIndex = index),
-                      itemBuilder: (_, index) {
-                        final selectedQue = authState.selectedQuestions[index];
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Question ${index + 1}',
-                                style: context.headlineMedium?.copyWith(
-                                    fontSize: 24, fontWeight: FontWeight.w700)),
-                            const Gap(height: 20),
-                            EditTextFieldWidget(
-                                controller: answerController,
-                                focusNode: answerFocusNode,
-                                title: selectedQue.question,
-                                validator: FieldValidator.validateString(),
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.done,
-                                onFieldSubmitted: (value) => _submit())
-                          ],
-                        );
-                      }),
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 350),
+                    child: authState.isGettingSelectedQuestions
+                        ? const CupertinoActivityIndicator()
+                        : PageView.builder(
+                            itemCount: authState.selectedQuestions.length,
+                            controller: _pageController,
+                            physics: const NeverScrollableScrollPhysics(),
+                            onPageChanged: (index) =>
+                                setState(() => _pageIndex = index),
+                            itemBuilder: (_, index) {
+                              final selectedQue =
+                                  authState.selectedQuestions[index];
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      _pageIndex == 0
+                                          ? AppString.firstQue
+                                          : AppString.secondQuestion,
+                                      style: context.headlineMedium?.copyWith(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w700)),
+                                  const Gap(height: 20),
+                                  EditTextFieldWidget(
+                                      controller: answerController,
+                                      focusNode: answerFocusNode,
+                                      title: selectedQue.question,
+                                      validator:
+                                          FieldValidator.validateString(),
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.done,
+                                      onFieldSubmitted: (value) => _submit())
+                                ],
+                              );
+                            }),
+                  ),
                 ),
               ])),
               ElevatedButtonWidget(

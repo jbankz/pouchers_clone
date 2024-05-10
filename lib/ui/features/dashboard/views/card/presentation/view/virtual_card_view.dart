@@ -1,6 +1,6 @@
-import 'package:Pouchers/app/config/app_helper.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/config/app_helper.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,10 +37,9 @@ class _VirtualCardViewState extends ConsumerState<VirtualCardView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _cardNotifier = ref.read(cardNotifierProvider.notifier)
-        ..getCards(CardDto(userId: userDao.user.userId), _cancelToken);
-    });
+    Future.microtask(() =>
+        _cardNotifier = ref.read(cardNotifierProvider.notifier)
+          ..getCards(CardDto(userId: userDao.user.userId), _cancelToken));
   }
 
   @override
@@ -145,7 +144,7 @@ class _VirtualCardViewState extends ConsumerState<VirtualCardView> {
                           );
                         }),
                   ),
-                  if (cards.length != 2)
+                  if (cards.length != 2 && cards.first.currency != Currency.ngn)
                     ElevatedButtonWidget(
                         title: cards.first.currency == Currency.ngn
                             ? AppString.createDollarCard

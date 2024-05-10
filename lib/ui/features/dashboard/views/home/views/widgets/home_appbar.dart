@@ -1,5 +1,5 @@
-import 'package:Pouchers/ui/features/notification/data/dao/notification_dao.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/features/notification/data/dao/notification_dao.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +7,8 @@ import 'package:hive/hive.dart';
 
 import '../../../../../../../app/app.router.dart';
 import '../../../../../../../app/core/router/page_router.dart';
+import '../../../../../../../utils/animations/rotation_animated.dart';
+import '../../../../../../../utils/animations/shake_animated_widget.dart';
 import '../../../../../../common/app_colors.dart';
 import '../../../../../../common/app_images.dart';
 import '../../../../../../common/app_strings.dart';
@@ -29,14 +31,6 @@ class HomeAppBar extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  // Container(
-                  //     height: 35.h,
-                  //     width: 35.w,
-                  //     decoration: const BoxDecoration(
-                  //         shape: BoxShape.circle,
-                  //         color: AppColors.paleLavenderGray),
-                  //     child: SvgPicture.asset(AppImage.bell,
-                  //         fit: BoxFit.scaleDown)),
                   ProfileImage(
                       height: 35,
                       width: 35,
@@ -88,18 +82,23 @@ class HomeAppBar extends StatelessWidget {
                         return Stack(
                           clipBehavior: Clip.none,
                           children: [
-                            InkWell(
-                              onTap: () =>
-                                  PageRouter.pushNamed(Routes.notificationView),
-                              customBorder: const CircleBorder(),
-                              child: Container(
-                                  height: 35.h,
-                                  width: 35.w,
-                                  decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppColors.paleLavenderGray),
-                                  child: SvgPicture.asset(AppImage.bell,
-                                      fit: BoxFit.scaleDown)),
+                            ShakeAnimatedWidget(
+                              enabled: notifications.isNotEmpty,
+                              duration: const Duration(milliseconds: 1500),
+                              shakeAngle: Rotation.deg(z: 40),
+                              child: InkWell(
+                                onTap: () => PageRouter.pushNamed(
+                                    Routes.notificationView),
+                                customBorder: const CircleBorder(),
+                                child: Container(
+                                    height: 35.h,
+                                    width: 35.w,
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: AppColors.paleLavenderGray),
+                                    child: SvgPicture.asset(AppImage.bell,
+                                        fit: BoxFit.scaleDown)),
+                              ),
                             ),
                             if (notifications.isNotEmpty)
                               Positioned(

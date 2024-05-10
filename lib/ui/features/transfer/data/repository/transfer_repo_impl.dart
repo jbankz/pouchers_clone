@@ -1,9 +1,9 @@
-import 'package:Pouchers/ui/features/transfer/data/source/transfer/transfer_source.dart';
-import 'package:Pouchers/ui/features/transfer/domain/dto/transfer_money_dto.dart';
-import 'package:Pouchers/ui/features/transfer/domain/model/transfer.dart';
-import 'package:Pouchers/ui/features/transfer/domain/repository/transfer_repository.dart';
-import 'package:Pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
-import 'package:Pouchers/ui/features/utilities/domain/model/schedule.dart';
+import 'package:pouchers/ui/features/transfer/data/source/transfer/transfer_source.dart';
+import 'package:pouchers/ui/features/transfer/domain/dto/transfer_money_dto.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/transfer.dart';
+import 'package:pouchers/ui/features/transfer/domain/repository/transfer_repository.dart';
+import 'package:pouchers/ui/features/utilities/domain/dto/mobile_dto.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/schedule.dart';
 import 'package:dio/dio.dart';
 
 class TransferRepoImpl implements TransferRepository {

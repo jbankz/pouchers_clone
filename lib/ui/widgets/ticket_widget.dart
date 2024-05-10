@@ -1,4 +1,4 @@
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -52,7 +52,7 @@ class TicketWidget extends StatelessWidget {
                                     color: AppColors.kLightPurple)),
                             const Gap(height: 4),
                             Text(amount,
-                                style: context.headlineMedium?.copyWith(
+                                style: context.headlineLarge?.copyWith(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
                                     color: AppColors.white)),
@@ -62,11 +62,12 @@ class TicketWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Gap(height: 40),
+                const Gap(height: 45),
                 Container(
                   margin: margin ?? EdgeInsets.only(left: 150.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Flexible(
                         child: Column(

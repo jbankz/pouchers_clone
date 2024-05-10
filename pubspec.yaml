@@ -1,4 +1,4 @@
-name: Pouchers
+name: pouchers
 description: A Financial Application
 
 publish_to: "none"
@@ -32,11 +32,9 @@ dependencies:
   local_auth: ^2.1.2
   printing: ^5.11.0
   riverpod: ^2.0.2
-  lottie: ^2.7.0
   intl: ^0.18.1
   hive: ^2.2.3
   pdf: ^3.8.4
-
   hooks_riverpod: ^2.4.6
 
   flutter_native_contact_picker: ^0.0.6
@@ -74,13 +72,17 @@ dependencies:
   image_cropper: ^5.0.1
   collection: ^1.18.0
   flutter_inappwebview: ^6.0.0
-
+  image_gallery_saver: ^2.0.3
   screenshot: ^2.1.0
   app_settings: ^5.1.1
   google_fonts: ^6.1.0
   local_auth_android: ^1.0.37
   local_auth_ios: ^1.1.7
   path: ^1.9.0
+  lottie: ^3.1.0
+  device_info_plus: ^10.0.1
+  device_preview: ^1.1.0
+  vector_math: ^2.1.4
 
 dev_dependencies:
   flutter_test:
@@ -119,6 +121,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/lotties/
     - .env
     - .env.staging
 
@@ -147,19 +150,4 @@ analyzer:
   plugins:
     - custom_lint
 
-scripts:
-  build: dart run build_runner build --delete-conflicting-outputs
-  clean:
-    - flutter clean
-    - flutter pub get
-    - dart run build_runner build --delete-conflicting-outputs
-  watch: dart run build_runner watch
-  lint: dart run custom_lint
-  pod:
-    - cd ios
-    - pod repo update
-    - pod update
-  build_ipa:
-    - flutter clean
-    - flutter pub get
-    - flutter build ipa --obfuscate --split-debug-info=build/symbols/
+scripts: derry.yaml

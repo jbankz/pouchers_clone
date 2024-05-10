@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/utilities/data/source/billers_source.dart';
+import 'package:pouchers/ui/features/utilities/data/source/billers_source.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../app/core/network/module/network_module.dart';

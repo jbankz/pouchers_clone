@@ -1,4 +1,4 @@
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -49,7 +49,7 @@ class RequestWidget extends StatelessWidget {
                           fontSize: 16, fontWeight: FontWeight.w500)),
                   const Gap(height: 3),
                   Text(request?.amount.toNaira ?? '',
-                      style: context.headlineMedium?.copyWith(
+                      style: context.headlineLarge?.copyWith(
                           fontSize: 14,
                           color: AppColors.kPurpleColor,
                           fontWeight: FontWeight.w400)),

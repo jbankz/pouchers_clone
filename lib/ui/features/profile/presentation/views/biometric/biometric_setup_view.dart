@@ -1,10 +1,10 @@
-import 'package:Pouchers/app/core/router/page_router.dart';
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/features/authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
-import 'package:Pouchers/ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/core/router/page_router.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/features/authentication/presentation/view/pin/sheet/pin_confirmation_sheet.dart';
+import 'package:pouchers/ui/features/profile/presentation/views/biometric/dao/biometric_dao.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

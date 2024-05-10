@@ -1,26 +1,30 @@
+import 'dart:io';
+
+import 'package:pouchers/app/core/router/page_router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:dio/dio.dart';
 
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/common/app_strings.dart';
-import 'package:Pouchers/ui/features/profile/data/dao/wallet_dao.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/user.dart';
-import 'package:Pouchers/ui/features/profile/presentation/views/wallet/widget/balance_indicator_widget.dart';
-import 'package:Pouchers/ui/features/transfer/domain/dto/transfer_money_dto.dart';
-import 'package:Pouchers/ui/features/transfer/presentation/notifier/transfer_notifier.dart';
-import 'package:Pouchers/ui/widgets/dialog/bottom_sheet.dart';
-import 'package:Pouchers/ui/widgets/elevated_button_widget.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/ui/widgets/keypad/config/keypad_config.dart';
-import 'package:Pouchers/ui/widgets/keypad/virtual_keypad.dart';
-import 'package:Pouchers/ui/widgets/profile_image.dart';
-import 'package:Pouchers/utils/extension.dart';
-import 'package:Pouchers/ui/widgets/sheets/confirmation_sheet.dart';
-import 'package:Pouchers/ui/features/transfer/presentation/state/transfer_state.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/common/app_strings.dart';
+import 'package:pouchers/ui/features/profile/data/dao/wallet_dao.dart';
+import 'package:pouchers/ui/features/profile/domain/model/user.dart';
+import 'package:pouchers/ui/features/profile/presentation/views/wallet/widget/balance_indicator_widget.dart';
+import 'package:pouchers/ui/features/transfer/domain/dto/transfer_money_dto.dart';
+import 'package:pouchers/ui/features/transfer/presentation/notifier/transfer_notifier.dart';
+import 'package:pouchers/ui/widgets/dialog/bottom_sheet.dart';
+import 'package:pouchers/ui/widgets/elevated_button_widget.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/ui/widgets/keypad/config/keypad_config.dart';
+import 'package:pouchers/ui/widgets/keypad/virtual_keypad.dart';
+import 'package:pouchers/ui/widgets/profile_image.dart';
+import 'package:pouchers/utils/extension.dart';
+import 'package:pouchers/ui/widgets/sheets/confirmation_sheet.dart';
+import 'package:pouchers/ui/features/transfer/presentation/state/transfer_state.dart';
 
 import '../../../../../app/formatter/money_formatter.dart';
 import '../../../../widgets/keypad/virtual_key_pad_controller.dart';
@@ -36,7 +40,8 @@ class TransferMoneyView extends ConsumerStatefulWidget {
   ConsumerState<TransferMoneyView> createState() => _TransferMoneyViewState();
 }
 
-class _TransferMoneyViewState extends ConsumerState<TransferMoneyView> {
+class _TransferMoneyViewState extends ConsumerState<TransferMoneyView>
+    with TickerProviderStateMixin {
   final VirtualKeyPadController _controller =
       VirtualKeyPadController(applyPinLength: false);
   final CancelToken _cancelToken = CancelToken();
@@ -60,11 +65,30 @@ class _TransferMoneyViewState extends ConsumerState<TransferMoneyView> {
           amountColor: AppColors.white,
           koboColor: AppColors.white.withOpacity(.50));
 
+  late AnimationController _keyboardAnimationController;
+  late AnimationController _scaleButtonController;
+  late AnimationController _tagController;
+
   @override
   void initState() {
     super.initState();
     isRequestingMoney = widget.isRequestingMoney;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    _keyboardAnimationController = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 500),
+        reverseDuration: const Duration(milliseconds: 150))
+      ..forward();
+    _scaleButtonController = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 600),
+        reverseDuration: const Duration(milliseconds: 150))
+      ..forward();
+    _tagController = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 1000),
+        reverseDuration: const Duration(milliseconds: 150))
+      ..forward();
+    Future.microtask(() {
       _transferNotifier = ref.read(transferNotifierProvider.notifier);
       _controller.addListener(() => setState(() {}));
     });
@@ -74,6 +98,9 @@ class _TransferMoneyViewState extends ConsumerState<TransferMoneyView> {
   void dispose() {
     super.dispose();
     _cancelToken.cancel();
+    _keyboardAnimationController.dispose();
+    _scaleButtonController.dispose();
+    _tagController.dispose();
   }
 
   @override
@@ -82,17 +109,19 @@ class _TransferMoneyViewState extends ConsumerState<TransferMoneyView> {
     return Scaffold(
       backgroundColor: AppColors.kPurpleColor,
       appBar: AppBar(
-        backgroundColor: AppColors.kPurpleColor,
-        title: Text(
-          isRequestingMoney ? AppString.requestMoney : AppString.transferMoney,
-          style: context.bodyLarge?.copyWith(
-            color: AppColors.white,
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
+          backgroundColor: AppColors.kPurpleColor,
+          leading: _buildBackButton(),
+          iconTheme: const IconThemeData(color: Colors.white),
+          title: Text(
+              isRequestingMoney
+                  ? AppString.requestMoney
+                  : AppString.transferMoney,
+              style: context.bodyLarge?.copyWith(
+                  color: AppColors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500))),
       body: SafeArea(
+        minimum: EdgeInsets.symmetric(vertical: 16.h),
         child: Column(
           children: [
             Expanded(
@@ -155,176 +184,200 @@ class _TransferMoneyViewState extends ConsumerState<TransferMoneyView> {
     );
   }
 
-  Widget _buildTagContainer(BuildContext context) => Container(
-        margin: EdgeInsets.symmetric(horizontal: 33.w),
-        child: InkWell(
-          onTap: () async {
-            _userTag = await BottomSheets.showSheet(
-              child: TransferToPoucherTagSheet(
-                  isRequestingMoney: isRequestingMoney),
-            ) as User?;
-            setState(() {});
-          },
-          borderRadius: BorderRadius.circular(8.r),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 350),
-            padding: EdgeInsets.symmetric(
-              horizontal: _isUserAvailable ? 16.w : 30.w,
-              vertical: _isUserAvailable ? 11.h : 26.h,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.r),
-              color: AppColors.white,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    _isUserAvailable
-                        ? ProfileImage(
-                            image: _userTag?.profilePicture ?? '',
-                            height: 38,
-                            width: 38)
-                        : Text(
-                            '@',
-                            style: context.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700, fontSize: 16),
+  Widget _buildTagContainer(BuildContext context) => FadeTransition(
+        opacity: _tagController,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 33.w),
+          child: InkWell(
+            onTap: () async {
+              _userTag = await BottomSheets.showSheet(
+                child: TransferToPoucherTagSheet(
+                    isRequestingMoney: isRequestingMoney),
+              ) as User?;
+              setState(() {});
+            },
+            borderRadius: BorderRadius.circular(8.r),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 350),
+              padding: EdgeInsets.symmetric(
+                horizontal: _isUserAvailable ? 16.w : 30.w,
+                vertical: _isUserAvailable ? 11.h : 26.h,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.r),
+                color: AppColors.white,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      _isUserAvailable
+                          ? ProfileImage(
+                              image: _userTag?.profilePicture ?? '',
+                              height: 38,
+                              width: 38)
+                          : Text(
+                              '@',
+                              style: context.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w700, fontSize: 16),
+                            ),
+                      const Gap(width: 5),
+                      Expanded(
+                        child: Text(
+                          _isUserAvailable
+                              ? _fullName
+                              : isRequestingMoney
+                                  ? AppString.selectReceipient
+                                  : AppString.enterPoucherTag,
+                          style: context.titleMedium?.copyWith(
+                            color: AppColors.kIconGrey,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
                           ),
-                    const Gap(width: 5),
-                    Expanded(
-                      child: Text(
-                        _isUserAvailable
-                            ? _fullName
-                            : isRequestingMoney
-                                ? AppString.selectReceipient
-                                : AppString.enterPoucherTag,
-                        style: context.titleMedium?.copyWith(
-                          color: AppColors.kIconGrey,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
+                          maxLines: 1,
                         ),
-                        maxLines: 1,
                       ),
-                    ),
-                    const Gap(width: 5),
-                    Container(
-                      height: 24.h,
-                      width: 24.w,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.kPurple100,
+                      const Gap(width: 5),
+                      Container(
+                        height: 24.h,
+                        width: 24.w,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.kPurple100,
+                        ),
+                        child: const Icon(Icons.navigate_next,
+                            color: AppColors.white),
                       ),
-                      child: const Icon(Icons.navigate_next,
-                          color: AppColors.white),
-                    ),
-                  ],
-                ),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 350),
-                  child: !_isUserAvailable
-                      ? const SizedBox.shrink()
-                      : InkWell(
-                          onTap: () async {
-                            _note = await BottomSheets.showSheet(
-                              child: const TransferToPoucherNoteSheet(),
-                            ) as String?;
-                            setState(() {});
-                          },
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Gap(height: 10),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Flexible(
-                                    child: Text(
-                                      _note ?? AppString.addNote,
-                                      style: context.titleMedium?.copyWith(
-                                        color: AppColors.kSecondaryTextColor,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14,
+                    ],
+                  ),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 350),
+                    child: !_isUserAvailable
+                        ? const SizedBox.shrink()
+                        : InkWell(
+                            onTap: () async {
+                              _note = await BottomSheets.showSheet(
+                                child: const TransferToPoucherNoteSheet(),
+                              ) as String?;
+                              setState(() {});
+                            },
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Gap(height: 10),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        _note ?? AppString.addNote,
+                                        style: context.titleMedium?.copyWith(
+                                          color: AppColors.kSecondaryTextColor,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 14,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ),
-                                  SvgPicture.asset(AppImage.forwardArrow),
-                                ],
-                              ),
-                            ],
+                                    SvgPicture.asset(AppImage.forwardArrow),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       );
 
-  Widget _buildVirtualKeyPad() => VirtualKeyPad(
-        keyPadController: _controller,
-        keypadConfig: KeypadConfig(
-            keypadColor: AppColors.white, showPoint: true, decimal: 2),
-        onTyping: () {
-          _controller.pins.join().isEmpty
-              ? _moneyMaskedTextController.updateValue(0)
-              : _moneyMaskedTextController
-                  .updateValue(double.parse(_controller.pins.join()));
+  Widget _buildVirtualKeyPad() => SlideTransition(
+        position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+            .animate(_keyboardAnimationController),
+        child: VirtualKeyPad(
+          keyPadController: _controller,
+          keypadConfig: KeypadConfig(
+              keypadColor: AppColors.white, showPoint: true, decimal: 2),
+          onTyping: () {
+            _controller.pins.join().isEmpty
+                ? _moneyMaskedTextController.updateValue(0)
+                : _moneyMaskedTextController
+                    .updateValue(double.parse(_controller.pins.join()));
 
-          if (_moneyMaskedTextController.numberValue >
-              num.parse(walletDao.wallet.balance ?? '0')) {
-            _errorMessage = AppString.insufficientFund;
-          } else {
-            _errorMessage = '';
-          }
+            if (_moneyMaskedTextController.numberValue >
+                num.parse(walletDao.wallet.balance ?? '0')) {
+              _errorMessage = AppString.insufficientFund;
+            } else {
+              _errorMessage = '';
+            }
 
-          setState(() {});
-        },
-        onComplete: (_) {},
+            setState(() {});
+          },
+          onComplete: (_) {},
+        ),
       );
 
   Widget _buildTransferButton(
           BuildContext context, TransferState transferState) =>
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: ElevatedButtonWidget(
-          loading: transferState.isBusy,
-          bacgroundColor: _isBtnDisabled ? null : AppColors.kPurpleDeep,
-          title: isRequestingMoney ? AppString.request : AppString.transfer,
-          onPressed: _isBtnDisabled
-              ? null
-              : () async {
-                  if (isRequestingMoney) {
-                    _transferNotifier.requestMoney(
-                        transferMoneyDto: TransferMoneyDto(
+      ScaleTransition(
+        scale: _scaleButtonController,
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: ElevatedButtonWidget(
+            loading: transferState.isBusy,
+            bacgroundColor: _isBtnDisabled ? null : AppColors.kPurpleDeep,
+            title: isRequestingMoney ? AppString.request : AppString.transfer,
+            onPressed: _isBtnDisabled
+                ? null
+                : () async {
+                    if (isRequestingMoney) {
+                      _transferNotifier.requestMoney(
+                          transferMoneyDto: TransferMoneyDto(
+                              tag: _userTag?.tag,
+                              amount: _moneyMaskedTextController.numberValue
+                                  .toString(),
+                              note: _note),
+                          cancelToken: _cancelToken);
+                      return;
+                    }
+
+                    final response = await BottomSheets.showAlertDialog(
+                        child: TransferConfirmationSheet(
+                            isRequested: isRequestingMoney,
+                            amount: _moneyMaskedTextController.numberValue,
+                            receipient: _fullName)) as String?;
+
+                    if (response != null) {
+                      _transferNotifier.p2pTransfer(
+                        TransferMoneyDto(
                             tag: _userTag?.tag,
                             amount: _moneyMaskedTextController.numberValue
                                 .toString(),
-                            note: _note),
-                        cancelToken: _cancelToken);
-                    return;
-                  }
-
-                  final response = await BottomSheets.showAlertDialog(
-                      child: TransferConfirmationSheet(
-                          isRequested: isRequestingMoney,
-                          amount: _moneyMaskedTextController.numberValue,
-                          receipient: _fullName)) as String?;
-
-                  if (response != null) {
-                    _transferNotifier.p2pTransfer(
-                      TransferMoneyDto(
-                          tag: _userTag?.tag,
-                          amount:
-                              _moneyMaskedTextController.numberValue.toString(),
-                          note: _note,
-                          transactionPin: response),
-                      _cancelToken,
-                    );
-                  }
-                },
+                            note: _note,
+                            transactionPin: response),
+                        _cancelToken,
+                      );
+                    }
+                  },
+          ),
         ),
+      );
+
+  InkWell _buildBackButton() => InkWell(
+        customBorder: const CircleBorder(),
+        child:
+            Icon(Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios),
+        onTap: () async {
+          await HapticFeedback.selectionClick();
+          await _scaleButtonController.reverse();
+          await _tagController.reverse();
+          await _keyboardAnimationController.reverse();
+          PageRouter.pop();
+        },
       );
 }

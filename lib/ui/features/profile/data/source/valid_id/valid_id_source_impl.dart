@@ -1,6 +1,6 @@
-import 'package:Pouchers/app/config/app_config.dart';
-import 'package:Pouchers/ui/features/profile/domain/enum/id_enum.dart';
-import 'package:Pouchers/ui/features/profile/domain/model/idenitification_type.dart';
+import 'package:pouchers/app/config/app_config.dart';
+import 'package:pouchers/ui/features/profile/domain/enum/id_enum.dart';
+import 'package:pouchers/ui/features/profile/domain/model/idenitification_type.dart';
 
 import 'valid_id_source.dart';
 

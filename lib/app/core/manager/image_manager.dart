@@ -1,4 +1,4 @@
-import 'package:Pouchers/app/app.logger.dart';
+import 'package:pouchers/app/app.logger.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageManager {

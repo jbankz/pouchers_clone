@@ -1,6 +1,6 @@
-import 'package:Pouchers/ui/features/dashboard/views/card/data/repository/module/module.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/usecase/freeze_card_usecase.dart';
-import 'package:Pouchers/ui/features/dashboard/views/card/domain/usecase/get_exchange_rate_usecase.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/data/repository/module/module.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/usecase/freeze_card_usecase.dart';
+import 'package:pouchers/ui/features/dashboard/views/card/domain/usecase/get_exchange_rate_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../../app/core/usecase/poucher_usecase.dart';

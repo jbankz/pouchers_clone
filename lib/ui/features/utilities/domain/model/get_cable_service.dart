@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/utilities/domain/model/cable_service.dart';
+import 'package:pouchers/ui/features/utilities/domain/model/cable_service.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 

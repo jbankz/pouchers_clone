@@ -1,6 +1,6 @@
-import 'package:Pouchers/app/core/usecase/poucher_usecase.dart';
-import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/dto/transaction_dto.dart';
-import 'package:Pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart';
+import 'package:pouchers/app/core/usecase/poucher_usecase.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/domain/dto/transaction_dto.dart';
+import 'package:pouchers/ui/features/dashboard/views/transaction/domain/model/transaction_history.dart';
 import 'package:dio/dio.dart';
 
 import '../repository/transactions_repo.dart';

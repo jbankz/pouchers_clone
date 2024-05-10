@@ -1,8 +1,10 @@
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../common/app_colors.dart';
 
 class EditTextFieldWidget extends StatelessWidget {
   const EditTextFieldWidget(
@@ -30,7 +32,8 @@ class EditTextFieldWidget extends StatelessWidget {
       this.contentPadding,
       this.maxLines = 1,
       this.alignLabelWithHint,
-      this.titleWidget});
+      this.titleWidget,
+      this.style});
 
   final String? title;
   final String label;
@@ -57,6 +60,7 @@ class EditTextFieldWidget extends StatelessWidget {
   final bool? alignLabelWithHint;
 
   final Widget? titleWidget;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -83,6 +87,11 @@ class EditTextFieldWidget extends StatelessWidget {
             textInputAction: textInputAction,
             autovalidateMode: autovalidateMode,
             autocorrect: autocorrect,
+            style: style ??
+                context.headlineLarge?.copyWith(
+                    color: AppColors.kPrimaryTextColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
             decoration: InputDecoration(
               label: Text(label),
               hintText: label,

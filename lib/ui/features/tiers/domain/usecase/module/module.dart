@@ -1,4 +1,4 @@
-import 'package:Pouchers/ui/features/tiers/data/repository/module/tier_repo_module.dart';
+import 'package:pouchers/ui/features/tiers/data/repository/module/tier_repo_module.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

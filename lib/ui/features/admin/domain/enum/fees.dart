@@ -79,7 +79,9 @@ enum Fees {
   @HiveField(34)
   sendPulseAccessToken('send_pulse_access_token'),
   @HiveField(35)
-  dataUtilityProvider('data_utility_provider');
+  dataUtilityProvider('data_utility_provider'),
+  @HiveField(36)
+  sudoDollarCardFundingFee('sudo_dollar_card_funding_fee');
 
   final String value;
 

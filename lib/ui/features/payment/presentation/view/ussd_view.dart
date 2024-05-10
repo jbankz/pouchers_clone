@@ -1,11 +1,11 @@
-import 'package:Pouchers/app/config/app_helper.dart';
-import 'package:Pouchers/ui/common/app_colors.dart';
-import 'package:Pouchers/ui/common/app_images.dart';
-import 'package:Pouchers/ui/features/transfer/domain/model/guest_local_bank.dart';
-import 'package:Pouchers/ui/features/utilities/presentation/notifier/billers_notifier.dart';
-import 'package:Pouchers/ui/widgets/gap.dart';
-import 'package:Pouchers/ui/widgets/hint_widget.dart';
-import 'package:Pouchers/utils/extension.dart';
+import 'package:pouchers/app/config/app_helper.dart';
+import 'package:pouchers/ui/common/app_colors.dart';
+import 'package:pouchers/ui/common/app_images.dart';
+import 'package:pouchers/ui/features/transfer/domain/model/guest_local_bank.dart';
+import 'package:pouchers/ui/features/utilities/presentation/notifier/billers_notifier.dart';
+import 'package:pouchers/ui/widgets/gap.dart';
+import 'package:pouchers/ui/widgets/hint_widget.dart';
+import 'package:pouchers/utils/extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -125,7 +125,7 @@ class _UssdViewState extends ConsumerState<UssdView> with $UssdView {
                                   children: [
                                       InkWell(
                                         onTap: () => AppHelper.triggerUrl(
-                                            'tel://${properties.uSSDShortCode}'),
+                                            'tel://${properties.uSSDShortCode?.replaceAll('+', "")}'),
                                         borderRadius:
                                             BorderRadius.circular(300.r),
                                         child: Container(
@@ -142,10 +142,11 @@ class _UssdViewState extends ConsumerState<UssdView> with $UssdView {
                                               const Gap(width: 10),
                                               Flexible(
                                                 child: Text(
-                                                    properties.uSSDShortCode ??
+                                                    properties.uSSDShortCode
+                                                            ?.replaceAll(
+                                                                '+', "") ??
                                                         '',
-                                                    style: context
-                                                        .headlineLarge
+                                                    style: context.headlineLarge
                                                         ?.copyWith(
                                                             fontSize: 18,
                                                             fontWeight:
@@ -184,6 +185,7 @@ class _UssdViewState extends ConsumerState<UssdView> with $UssdView {
                   title: 'I have paid ${widget.amount}',
                   onPressed: () {
                     if (!formKey.currentState!.validate()) return;
+
                     PageRouter.pop(DebitCardDto(
                         bank: _attribute?.name,
                         reference: billerState
