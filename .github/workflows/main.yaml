@@ -43,7 +43,9 @@ jobs:
           VGS_API_URL=${{ secrets.VGS_API_URL }}" >> .env
           echo "Finished writing contents to .env file"
           cat .env
+      - run: flutter clean
       - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter build apk --release --split-per-abi
       - run: |
           flutter build ios --no-codesign
