@@ -7,32 +7,58 @@ on:
     branches:
       - main
       - master
+      - develop
 name: "Build & Release"
 jobs:
   build:
-    name: "Build & Release"
+    name: Build & Release
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-java@v1
         with:
-          java-version: '12.x'
+          java-version: "12.x"
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '3.19.6'
+          flutter-version: "3.19.6"
+      - name: Create .env and .env.staging
+      - run: |
+          cd $CM_BUILD_DIR
+          echo "Create .env and .env.staging"
+          touch .env,.env.staging
+          echo "Writing contents to .env file"
+          echo -e "APP_NAME=$APP_NAME\n\
+          API_URL=$API_URL\n\
+          TERMS_OF_USE=$TERMS_OF_USE\n\
+          PRIVACY_POLICY=$PRIVACY_POLICY\n\
+          INTERCOM_ANDROID_KEY=$INTERCOM_ANDROID_KEY\n\
+          INTERCOM_APP_ID=$INTERCOM_APP_ID\n\
+          INTERCOM_IOS_KEY=$INTERCOM_IOS_KEY\n\
+          DOJAH_PUBLIC_KEY=$DOJAH_PUBLIC_KEY\n\
+          DOJAH_APP_ID=$DOJAH_APP_ID\n\
+          DOJAH_DRIVER_LICENSE_KEY=$DOJAH_DRIVER_LICENSE_KEY\n\
+          DOJAH_VOTERS_CARD_KEY=$DOJAH_VOTERS_CARD_KEY\n\
+          DOJAH_INTERNATIONAL_PASSPORT_KEY=$DOJAH_INTERNATIONAL_PASSPORT_KEY\n\
+          DOJAH_VNIN_KEY=$DOJAH_VNIN_KEY\n\
+          DOJAH_NIN_KEY=$DOJAH_NIN_KEY\n\
+          VGS_API_URL=$VGS_API_URL" >> .env
+          echo "Finished writing contents to .env file"
+          cat .env
       - run: flutter pub get
-      - run: flutter test
-      - run: flutter build apk --debug --split-per-abi
-      - name: Push to Release
+      - run: flutter build apk --release --split-per-abi
+      - run: |
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          ln -s ../Runner.app
+          cd ..
+          zip -r app.ipa Payload
+      - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
-          artifacts:  "build/app/outputs/apk/debug/*"
+          artifacts: "build/app/outputs/apk/release/*,build/ios/iphoneos/app.ipa"
           tag: v1.0.${{ github.run_number }}
           token: ${{ secrets.P_TOKEN }}
-
-
-
-
-
-# Push to master or main branch develop
+# push to master, main, develop
 # pull request on main master
