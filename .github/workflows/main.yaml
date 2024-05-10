@@ -49,12 +49,13 @@ jobs:
           else
             echo "google-services.json file already exists, skipping creation"
           fi
+          cat google-services.json
           echo "Exiting android app module"
           cd ../..
       - run: flutter clean
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs
-      - run: flutter build apk --release
+      - run: flutter build apk --release --split-per-abi
       - run: |
           flutter build ios --no-codesign
           cd build/ios/iphoneos
