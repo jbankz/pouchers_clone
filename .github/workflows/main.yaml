@@ -15,7 +15,6 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: "3.19.6"
-      - name: Create .env and .env.staging
       - run: |
           cd $CM_BUILD_DIR
           echo "Create .env and .env.staging"
