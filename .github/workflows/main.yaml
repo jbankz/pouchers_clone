@@ -53,7 +53,7 @@ jobs:
           cd ../..
       - run: flutter clean
       - run: flutter pub get
-      - run: dart run build_runner build --delete-conflicting-outputsle
+      - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter build apk --release
       - run: |
           flutter build ios --no-codesign
