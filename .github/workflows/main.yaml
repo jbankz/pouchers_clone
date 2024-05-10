@@ -23,34 +23,36 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: stable
-          flutter-version: "3.19.6"
-      - run: |
-          cd $CM_BUILD_DIR
-          echo "Create .env and .env.staging"
-          touch .env,.env.staging
-          echo "Writing contents to .env file"
-          echo -e "APP_NAME=${{ secrets.APP_NAME }}\n\
-          API_URL=${{ secrets.API_URL }}\n\
-          TERMS_OF_USE=${{ secrets.TERMS_OF_USE }}\n\
-          PRIVACY_POLICY=${{ secrets.PRIVACY_POLICY }}\n\
-          INTERCOM_ANDROID_KEY=${{ secrets.INTERCOM_ANDROID_KEY }}\n\
-          INTERCOM_APP_ID=${{ secrets.INTERCOM_APP_ID }}\n\
-          INTERCOM_IOS_KEY=${{ secrets.INTERCOM_IOS_KEY }}\n\
-          DOJAH_PUBLIC_KEY=${{ secrets.DOJAH_PUBLIC_KEY }}\n\
-          DOJAH_APP_ID=${{ secrets.DOJAH_APP_ID }}\n\
-          DOJAH_DRIVER_LICENSE_KEY=${{ secrets.DOJAH_DRIVER_LICENSE_KEY }}\n\
-          DOJAH_VOTERS_CARD_KEY=${{ secrets.DOJAH_VOTERS_CARD_KEY }}\n\
-          DOJAH_INTERNATIONAL_PASSPORT_KEY=${{ secrets.DOJAH_INTERNATIONAL_PASSPORT_KEY }}\n\
-          DOJAH_VNIN_KEY=${{ secrets.DOJAH_VNIN_KEY }}\n\
-          DOJAH_NIN_KEY=${{ secrets.DOJAH_NIN_KEY }}\n\
-          VGS_API_URL=${{ secrets.VGS_API_URL }}" >> .env
-          echo "Finished writing contents to .env file"
-          cat .env
+          flutter-version: latest
+      - name: Create .env file if not exists
+        run: |
+          if [ ! -f .env ]; then
+            echo "Create .env file"
+            touch .env .env.staging
+            echo "Writing contents to .env file"
+            echo -e "APP_NAME=${{ secrets.APP_NAME }}\n\
+            API_URL=${{ secrets.API_URL }}\n\
+            TERMS_OF_USE=${{ secrets.TERMS_OF_USE }}\n\
+            PRIVACY_POLICY=${{ secrets.PRIVACY_POLICY }}\n\
+            INTERCOM_ANDROID_KEY=${{ secrets.INTERCOM_ANDROID_KEY }}\n\
+            INTERCOM_APP_ID=${{ secrets.INTERCOM_APP_ID }}\n\
+            INTERCOM_IOS_KEY=${{ secrets.INTERCOM_IOS_KEY }}\n\
+            DOJAH_PUBLIC_KEY=${{ secrets.DOJAH_PUBLIC_KEY }}\n\
+            DOJAH_APP_ID=${{ secrets.DOJAH_APP_ID }}\n\
+            DOJAH_DRIVER_LICENSE_KEY=${{ secrets.DOJAH_DRIVER_LICENSE_KEY }}\n\
+            DOJAH_VOTERS_CARD_KEY=${{ secrets.DOJAH_VOTERS_CARD_KEY }}\n\
+            DOJAH_INTERNATIONAL_PASSPORT_KEY=${{ secrets.DOJAH_INTERNATIONAL_PASSPORT_KEY }}\n\
+            DOJAH_VNIN_KEY=${{ secrets.DOJAH_VNIN_KEY }}\n\
+            DOJAH_NIN_KEY=${{ secrets.DOJAH_NIN_KEY }}\n\
+            VGS_API_URL=${{ secrets.VGS_API_URL }}" >> .env
+            echo "Finished writing contents to .env file"
+            cat .env
+          else
+            echo ".env file already exists, skipping creation"
+          fi
       - run: flutter clean
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs
-      - run: |
-          cat .env
       - run: flutter build apk --release --split-per-abi
       - run: |
           flutter build ios --no-codesign
