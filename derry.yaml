@@ -17,3 +17,19 @@ build_apk:
   - flutter clean
   - flutter pub get
   - flutter build apk --release
+init_shorebird:
+  - shorebird init
+release_android:
+  - shorebird release android
+release_ios:
+  - shorebird release ios
+patch_android_stagin:
+  - shorebird patch android --staging
+patch_ios_stagin:
+  - shorebird patch ios --staging
+patch_android:
+  - shorebird patch android
+patch_ios:
+  - shorebird patch ios
+preview:
+  - shorebird preview
