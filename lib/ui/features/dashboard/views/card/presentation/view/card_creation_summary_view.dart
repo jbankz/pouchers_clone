@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pouchers/ui/common/app_colors.dart';
 import 'package:pouchers/ui/features/admin/data/dao/env_dao.dart';
 import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/card_activity_type.dart';
-import 'package:pouchers/ui/features/dashboard/views/card/domain/enum/card_status.dart';
 import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/card_notifier.dart';
 import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/module/module.dart';
 import 'package:pouchers/ui/features/dashboard/views/card/presentation/notifier/params_notifier.dart';
