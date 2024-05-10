@@ -1,4 +1,4 @@
-name: Pouchers CI/CD
+name: Pouchers CI/CD.
 on:
   push:
     branches:
