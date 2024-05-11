@@ -49,11 +49,7 @@ jobs:
           echo "Navigating into android app module"
           cd android/app
           if [ ! -f google-services.json ]; then
-            echo "Create google-services.json file"
-            touch google-services.json
-            echo "Writing contents to google-services.json file"
-            cat << EOF > google-services.json
-            echo "Finished writing contents to google-services.json file"
+            echo "${{ secrets.ANDROID_GOOGLE_SERVICE }}" | base64 -d > google-services.json
           else
             echo "google-services.json file already exists, skipping creation"
           fi
