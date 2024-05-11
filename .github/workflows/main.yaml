@@ -57,15 +57,15 @@ jobs:
       - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter build apk --release --split-per-abi
       - run: |
-        #     flutter build ios --no-codesign
-        #     cd build/ios/iphoneos
-        #     mkdir Payload
-        #     cd Payload
-        #     ln -s ../Runner.app
-        #     cd ..
-        #     zip -r app.ipa Payload
-        # - name: Push to Releases
-        #   uses: ncipollo/release-action@v1
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          ln -s ../Runner.app
+          cd ..
+          zip -r app.ipa Payload
+      - name: Push to Releases
+        uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/apk/release/*,build/ios/iphoneos/app.ipa"
           tag: v1.0.${{ github.run_number }}
