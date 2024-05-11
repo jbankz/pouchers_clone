@@ -70,9 +70,9 @@ amplifytools.xcconfig
 **.sample
 #amplify-do-not-edit-end
 note.todo
-# /android/app/google-services.json
+/android/app/google-services.json
 /ios/Runner/GoogleService-Info.plist
-# android/app/google-services.json
+android/app/google-services.json
 
 note.todo
 

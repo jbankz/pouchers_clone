@@ -36,22 +36,22 @@ jobs:
           else
             echo "environment file already exists, skipping creation"
           fi
-      # - name: Create google-services.json file if not exists
-      #   run: |
-      #     echo "Navigating into android app module"
-      #     cd android/app
-      #     if [ ! -f google-services.json ]; then
-      #       echo "Create google-services.json file"
-      #       touch google-services.json
-      #       echo "Writing contents to google-services.json file"
-      #       echo -e "${{ secrets.GOOGLE_SERVICE }}" >> google-services.json
-      #       echo "Finished writing contents to google-services.json file"
-      #     else
-      #       echo "google-services.json file already exists, skipping creation"
-      #     fi
-      #     echo "Exiting android app module"
-      #     cat google-services.json
-      #     cd ../..
+      - name: Create google-services.json file if not exists
+        run: |
+          echo "Navigating into android app module"
+          cd android/app
+          if [ ! -f google-services.json ]; then
+            echo "Create google-services.json file"
+            touch google-services.json
+            echo "Writing contents to google-services.json file"
+            echo -e "${{ secrets.GOOGLE_SERVICE }}" >> google-services.json
+            echo "Finished writing contents to google-services.json file"
+          else
+            echo "google-services.json file already exists, skipping creation"
+          fi
+          echo "Exiting android app module"
+          cat google-services.json
+          cd ../..
       - run: flutter clean
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs
