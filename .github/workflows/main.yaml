@@ -15,28 +15,36 @@ jobs:
   build:
     name: Build & Release
     runs-on: macos-latest
+
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
+      - name: Checkout Repository
+        uses: actions/checkout@v1
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
         with:
           java-version: "17.x"
-      - uses: subosito/flutter-action@v1
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
         with:
           channel: stable
           flutter-version: "3.19.6"
-      - name: Create .env file if not exists
+
+      - name: Create .env files if they don't exist
         run: |
           if [ ! -f .env ]; then
-            echo "Create .env and .env.staging file" 
-            touch .env,.env.staging
+            echo "Create .env and .env.staging files" 
+            touch .env .env.staging
             echo "Writing contents to environment files"
-            echo -e "${{ secrets.ENV }}" >> .env
-            echo -e "${{ secrets.ENV_STAGING }}" >> .env.staging
+            echo "${{ secrets.ENV }}" >> .env
+            echo "${{ secrets.ENV_STAGING }}" >> .env.staging
             echo "Finished writing contents to environment files"
           else
-            echo "environment file already exists, skipping creation"
+            echo "Environment files already exist, skipping creation"
           fi
-      - name: Create google-services.json file if not exists
+
+      - name: Create google-services.json file if it doesn't exist
         run: |
           echo "Navigating into android app module"
           cd android/app
@@ -44,19 +52,29 @@ jobs:
             echo "Create google-services.json file"
             touch google-services.json
             echo "Writing contents to google-services.json file"
-            echo -e "${{ secrets.GOOGLE_SERVICE }}" >> google-services.json
+            cat << EOF > google-services.json
             echo "Finished writing contents to google-services.json file"
           else
             echo "google-services.json file already exists, skipping creation"
           fi
           echo "Exiting android app module"
           cat google-services.json
-          cd ../..
-      - run: flutter clean
-      - run: flutter pub get
-      - run: dart run build_runner build --delete-conflicting-outputs
-      - run: flutter build apk --release --split-per-abi
-      - run: |
+          cd ../../
+
+      - name: Flutter Clean
+        run: flutter clean
+
+      - name: Flutter Pub Get
+        run: flutter pub get
+
+      - name: Build Flutter App
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Build Android APK
+        run: flutter build apk --release --split-per-abi
+
+      - name: Build iOS IPA
+        run: |
           flutter build ios --no-codesign
           cd build/ios/iphoneos
           mkdir Payload
@@ -64,6 +82,7 @@ jobs:
           ln -s ../Runner.app
           cd ..
           zip -r app.ipa Payload
+
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
