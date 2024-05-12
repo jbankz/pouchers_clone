@@ -99,10 +99,13 @@ jobs:
         run: |
           flutter build ios --no-codesign
           if cd build/ios/iphoneos; then
-            mkdir -p Payload
-            ln -s ../Runner.app Payload/
-            cd ..
-            zip -r app.ipa Payload || exit 1
+            # Check if the `Payload` directory exists
+            if [ ! -d "Payload" ]; then
+                # If it doesn't exist, create it
+                mkdir Payload || exit 1
+            fi
+                # Create the .ipa file
+                zip -r app.ipa Payload
           else
             echo "Failed to navigate to build/ios/iphoneos directory"
             exit 1
