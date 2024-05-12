@@ -87,7 +87,7 @@ jobs:
         run: flutter pub get
 
       # Step 9: Build Flutter App
-      - name: Build Flutter App
+      - name: Generate Genereated Files
         run: dart run build_runner build --delete-conflicting-outputs
 
       # Step 10: Build Android APK
