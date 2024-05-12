@@ -34,40 +34,67 @@ jobs:
           channel: stable
           flutter-version: "3.19.6"
 
-      # Step 4: Create files if they don't exist
-      - name: Create files if they don't exist
+      # Step 4: Create .env files if they don't exist
+      - name: Create .env files if they don't exist
         run: |
-          create_file_if_not_exists() {
-            local file=$1
-            local secret=$2
-            if [ ! -f "$file" ]; then
-              echo "${{ secrets[secret] }}" | base64 -d > "$file" || exit 1
-            else
-              echo "$file already exists, skipping creation"
-            fi
-          }
-          create_file_if_not_exists .env ENV
-          create_file_if_not_exists .env.staging ENV_STAGING
-          create_file_if_not_exists android/app/google-services.json ANDROID_GOOGLE_SERVICE
-          create_file_if_not_exists ios/Runner/GoogleService-Info.plist IOS_GOOGLE_SERVICE
+          if [ ! -f .env ]; then
+            echo "${{ secrets.ENV }}" | base64 -d > .env || exit 1
+            echo "${{ secrets.ENV_STAGING }}" | base64 -d > .env.staging || exit 1
+          else
+            echo "Environment files already exist, skipping creation"
+          fi
 
-      # Step 5: Flutter Clean
+      # Step 5: Create google-services.json file if it doesn't exist
+      - name: Create google-services.json file if it doesn't exist
+        run: |
+          echo "Navigating into android app module"
+          if cd android/app; then
+            if [ ! -f google-services.json ]; then
+              echo "${{ secrets.ANDROID_GOOGLE_SERVICE }}" | base64 -d > google-services.json || exit 1
+            else
+              echo "google-services.json file already exists, skipping creation"
+            fi
+            echo "Exiting android app module"
+            cd ../..
+          else
+            echo "Failed to navigate to android/app directory"
+            exit 1
+          fi
+
+      # Step 6: Create GoogleService-Info.plist file if it doesn't exist
+      - name: Create GoogleService-Info.plist file if it doesn't exist
+        run: |
+          echo "Navigating into android app module"
+          if cd ios/Runner; then
+            if [ ! -f GoogleService-Info.plist ]; then
+              echo "${{ secrets.IOS_GOOGLE_SERVICE }}" | base64 -d > GoogleService-Info.plist || exit 1
+            else
+              echo "GoogleService-Info.plist file already exists, skipping creation"
+            fi
+            echo "Exiting ios module"
+            cd ../..
+          else
+            echo "Failed to navigate to ios/Runner directory"
+            exit 1
+          fi
+
+      # Step 7: Flutter Clean
       - name: Flutter Clean
         run: flutter clean
 
-      # Step 6: Flutter Pub Get
+      # Step 8: Flutter Pub Get
       - name: Flutter Pub Get
         run: flutter pub get
 
-      # Step 7: Build Flutter App
+      # Step 9: Build Flutter App
       - name: Build Flutter App
         run: dart run build_runner build --delete-conflicting-outputs
 
-      # Step 8: Build Android APK
+      # Step 10: Build Android APK
       - name: Build Android APK
         run: flutter build apk --release --split-per-abi
 
-      # Step 9: Build iOS IPA
+      # Step 11: Build iOS IPA
       - name: Build iOS IPA
         run: |
           flutter build ios --no-codesign
@@ -81,7 +108,7 @@ jobs:
             exit 1
           fi
 
-      # Step 10: Push to Releases
+      # Step 12: Push to Releases
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
