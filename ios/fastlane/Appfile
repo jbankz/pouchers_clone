@@ -1,5 +1,6 @@
 app_identifier("com.enyata.pouchers") # The bundle identifier of your app
 apple_id("vsquare396@gmail.com") # Your Apple Developer Portal username
+apple_password("vsquare396@gmail.com") # Your Apple Developer Portal username
 
 itc_team_id("126204354") # App Store Connect Team ID
 team_id("APJ9SQHUZF") # Developer Portal Team ID
