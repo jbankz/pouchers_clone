@@ -97,6 +97,7 @@ jobs:
           fastlane beta
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          GIT_URL: ${{ secrets.GIT_URL }}
 
       # Step 10: Build Android APK
       # - name: Build Android APK
