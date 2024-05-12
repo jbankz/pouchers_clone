@@ -3,7 +3,6 @@ apple_id("vsquare396@gmail.com") # Your Apple Developer Portal username
 
 itc_team_id("126204354") # App Store Connect Team ID
 team_id("APJ9SQHUZF") # Developer Portal Team ID
-git_url("https://github.com/jbankz/pouchers_clone.git") # Git url
 
 # For more information about the Appfile, see:
 #     https://docs.fastlane.tools/advanced/#appfile
