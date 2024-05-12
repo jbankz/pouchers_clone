@@ -17,68 +17,71 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      # Step 1: Checkout Repository
       - name: Checkout Repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
+      # Step 2: Setup Java
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
           java-version: "17.x"
 
+      # Step 3: Setup Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v1
         with:
           channel: stable
           flutter-version: "3.19.6"
 
-      - name: Create .env files if they don't exist
+      # Step 4: Create files if they don't exist
+      - name: Create files if they don't exist
         run: |
-          if [ ! -f .env ]; then
-            echo "Create .env and .env.staging files" 
-            touch .env .env.staging
-            echo "Writing contents to environment files"
-            echo "${{ secrets.ENV }}" >> .env
-            echo "${{ secrets.ENV_STAGING }}" >> .env.staging
-            echo "Finished writing contents to environment files"
-          else
-            echo "Environment files already exist, skipping creation"
-          fi
+          create_file_if_not_exists() {
+            local file=$1
+            local secret=$2
+            if [ ! -f "$file" ]; then
+              echo "${{ secrets.$secret }}" | base64 -d > "$file" || exit 1
+            else
+              echo "$file already exists, skipping creation"
+            fi
+          }
+          create_file_if_not_exists .env ENV
+          create_file_if_not_exists .env.staging ENV_STAGING
+          create_file_if_not_exists android/app/google-services.json ANDROID_GOOGLE_SERVICE
+          create_file_if_not_exists ios/Runner/GoogleService-Info.plist IOS_GOOGLE_SERVICE
 
-      - name: Create google-services.json file if it doesn't exist
-        run: |
-          echo "Navigating into android app module"
-          cd android/app
-          if [ ! -f google-services.json ]; then
-            echo "${{ secrets.ANDROID_GOOGLE_SERVICE }}" | base64 -d > google-services.json
-          else
-            echo "google-services.json file already exists, skipping creation"
-          fi
-          echo "Exiting android app module"
-          cat google-services.json
-          cd ../../
-
+      # Step 5: Flutter Clean
       - name: Flutter Clean
         run: flutter clean
 
+      # Step 6: Flutter Pub Get
       - name: Flutter Pub Get
         run: flutter pub get
 
+      # Step 7: Build Flutter App
       - name: Build Flutter App
         run: dart run build_runner build --delete-conflicting-outputs
 
+      # Step 8: Build Android APK
       - name: Build Android APK
         run: flutter build apk --release --split-per-abi
 
+      # Step 9: Build iOS IPA
       - name: Build iOS IPA
         run: |
           flutter build ios --no-codesign
-          cd build/ios/iphoneos
-          mkdir Payload
-          cd Payload
-          ln -s ../Runner.app
-          cd ..
-          zip -r app.ipa Payload
+          if cd build/ios/iphoneos; then
+            mkdir -p Payload
+            ln -s ../Runner.app Payload/
+            cd ..
+            zip -r app.ipa Payload || exit 1
+          else
+            echo "Failed to navigate to build/ios/iphoneos directory"
+            exit 1
+          fi
 
+      # Step 10: Push to Releases
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
