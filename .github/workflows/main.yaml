@@ -79,16 +79,16 @@ jobs:
           fi
 
       # Step 7: Flutter Clean
-      # - name: Flutter Clean
-      #   run: flutter clean
+      - name: Flutter Clean
+        run: flutter clean
 
-      # # Step 8: Flutter Pub Get
-      # - name: Flutter Pub Get
-      #   run: flutter pub get
+      # Step 8: Flutter Pub Get
+      - name: Flutter Pub Get
+        run: flutter pub get
 
       # Step 9: Build Flutter App
-      # - name: Generate Genereated Files
-      #   run: dart run build_runner build --delete-conflicting-outputs
+      - name: Generate Genereated Files
+        run: dart run build_runner build --delete-conflicting-outputs
 
       # Step 10: Build Flutter App
       - name: Deploy IOS using fastlane
@@ -99,8 +99,8 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           GIT_URL: ${{ secrets.GIT_URL }}
           FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
-          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_SESSION }}
-          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          # FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
 
       # Step 10: Build Android APK
       # - name: Build Android APK
