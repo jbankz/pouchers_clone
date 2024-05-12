@@ -95,6 +95,8 @@ jobs:
         run: |
           cd ios
           fastlane beta
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
       # Step 10: Build Android APK
       # - name: Build Android APK
@@ -118,9 +120,9 @@ jobs:
       #     fi
 
       # Step 12: Push to Releases
-      - name: Push to Releases
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/apk/release/*,build/ios/iphoneos/app.ipa"
-          tag: v1.0.${{ github.run_number }}
-          token: ${{ secrets.P_TOKEN }}
+      # - name: Push to Releases
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: "build/app/outputs/apk/release/*,build/ios/iphoneos/app.ipa"
+      #     tag: v1.0.${{ github.run_number }}
+      #     token: ${{ secrets.P_TOKEN }}
