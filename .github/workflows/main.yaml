@@ -90,26 +90,32 @@ jobs:
       - name: Generate Genereated Files
         run: dart run build_runner build --delete-conflicting-outputs
 
+      # Step 10: Build Flutter App
+      - name: Deploy IOS using fastlane
+        run: |
+          cd ios
+          fastlane beta
+
       # Step 10: Build Android APK
-      - name: Build Android APK
-        run: flutter build apk --release --split-per-abi
+      # - name: Build Android APK
+      #   run: flutter build apk --release --split-per-abi
 
       # Step 11: Build iOS IPA
-      - name: Build iOS IPA
-        run: |
-          flutter build ios --no-codesign
-          if cd build/ios/iphoneos; then
-            # Check if the `Payload` directory exists
-            if [ ! -d "Payload" ]; then
-                # If it doesn't exist, create it
-                mkdir Payload || exit 1
-            fi
-                # Create the .ipa file
-                zip -r app.ipa Payload
-          else
-            echo "Failed to navigate to build/ios/iphoneos directory"
-            exit 1
-          fi
+      # - name: Build iOS IPA
+      #   run: |
+      #     flutter build ios --no-codesign
+      #     if cd build/ios/iphoneos; then
+      #       # Check if the `Payload` directory exists
+      #       if [ ! -d "Payload" ]; then
+      #           # If it doesn't exist, create it
+      #           mkdir Payload || exit 1
+      #       fi
+      #           # Create the .ipa file
+      #           zip -r app.ipa Payload
+      #     else
+      #       echo "Failed to navigate to build/ios/iphoneos directory"
+      #       exit 1
+      #     fi
 
       # Step 12: Push to Releases
       - name: Push to Releases
