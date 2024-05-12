@@ -41,7 +41,7 @@ jobs:
             local file=$1
             local secret=$2
             if [ ! -f "$file" ]; then
-              echo "${{ secrets.$secret }}" | base64 -d > "$file" || exit 1
+              echo "${{ secrets[secret] }}" | base64 -d > "$file" || exit 1
             else
               echo "$file already exists, skipping creation"
             fi
