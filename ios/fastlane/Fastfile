@@ -18,20 +18,18 @@ default_platform(:ios)
 platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
-    # setup_ci if ENV['CI']
-    # match(type: "appstore", readonly: false)
-    # update_code_signing_settings(use_automatic_signing: true)
-    # sync_code_signing(type: "appstore")    # see code signing guide for more information
-    # build_app(workspace: "Runner.xcworkspace", scheme: "Runner",
-    # skip_build_archive: true,
-    # archive_path: "../build/ios/archive/Runner.xcarchive",
-    # )
-    # upload_to_testflight(skip_waiting_for_build_processing: true)
+    setup_ci if ENV['CI']
+    match(type: "appstore", readonly: false)
+    update_code_signing_settings(use_automatic_signing: true)
+    sync_code_signing(type: "appstore")    # see code signing guide for more information
+    enable_automatic_code_signing
+    build_app(workspace: "Runner.xcworkspace", scheme: "Runner",
+    skip_build_archive: true,
+    archive_path: "../build/ios/archive/Runner.xcarchive",
+    )
+    upload_to_testflight(skip_waiting_for_build_processing: true)
     # increment_build_number(xcodeproj: "Runner.xcodeproj")
 
-    setup_ci if ENV['CI']
-    match(type: 'appstore')
-    build_app
-    upload_to_testflight(skip_waiting_for_build_processing: true)
+ 
   end
 end
