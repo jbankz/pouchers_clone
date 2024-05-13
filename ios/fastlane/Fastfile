@@ -20,11 +20,11 @@ platform :ios do
   lane :beta do
     setup_ci if ENV['CI']
     match(type: "appstore", readonly: false)
+    # update_code_signing_settings(use_automatic_signing: true)
     sync_code_signing(type: "appstore")    # see code signing guide for more information
-    build_app(scheme: "MyApp")
+    build_app(scheme: "Runner")
     upload_to_testflight
     # increment_build_number(xcodeproj: "Runner.xcodeproj")
-    # update_code_signing_settings(use_automatic_signing: true)
     # sync_code_signing(type: "appstore")    # see code signing guide for more information
     # build_app
     # build_app(workspace: "Runner.xcworkspace", scheme: "Runner",
