@@ -81,3 +81,7 @@ note.todo
 *.freezed.dart
 *.g.dart
 *.g.dart.json
+ios/Runner.ipa
+ios/Runner.app.dSYM.zip
+ios/Gemfile.lock
+ios/Podfile.lock

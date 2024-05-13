@@ -1,56 +1,132 @@
-name: Pouchers CI/CD
+name: "Build & Release"
+
 on:
+  pull_request:
+    branches:
+      - main
+      - master
   push:
     branches:
       - main
+      - master
+      - develop
+
 jobs:
   build:
     name: Build & Release
     runs-on: macos-latest
+
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
+      # Step 1: Checkout Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Step 2: Setup Java
+      - name: Setup Java
+        uses: actions/setup-java@v1
         with:
-          java-version: "12.x"
-      - uses: subosito/flutter-action@v1
+          java-version: "17.x"
+
+      # Step 3: Setup Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
         with:
+          channel: stable
           flutter-version: "3.19.6"
-      - name: Create .env and .env.staging
-      - run: |
-          cd $CM_BUILD_DIR
-          echo "Create .env and .env.staging"
-          touch .env,.env.staging
-          echo "Writing contents to .env file"
-          echo -e "APP_NAME=$APP_NAME\n\
-          API_URL=$API_URL\n\
-          TERMS_OF_USE=$TERMS_OF_USE\n\
-          PRIVACY_POLICY=$PRIVACY_POLICY\n\
-          INTERCOM_ANDROID_KEY=$INTERCOM_ANDROID_KEY\n\
-          INTERCOM_APP_ID=$INTERCOM_APP_ID\n\
-          INTERCOM_IOS_KEY=$INTERCOM_IOS_KEY\n\
-          DOJAH_PUBLIC_KEY=$DOJAH_PUBLIC_KEY\n\
-          DOJAH_APP_ID=$DOJAH_APP_ID\n\
-          DOJAH_DRIVER_LICENSE_KEY=$DOJAH_DRIVER_LICENSE_KEY\n\
-          DOJAH_VOTERS_CARD_KEY=$DOJAH_VOTERS_CARD_KEY\n\
-          DOJAH_INTERNATIONAL_PASSPORT_KEY=$DOJAH_INTERNATIONAL_PASSPORT_KEY\n\
-          DOJAH_VNIN_KEY=$DOJAH_VNIN_KEY\n\
-          DOJAH_NIN_KEY=$DOJAH_NIN_KEY\n\
-          VGS_API_URL=$VGS_API_URL" >> .env
-          echo "Finished writing contents to .env file"
-          cat .env
-      - run: flutter pub get
-      - run: flutter build apk --release --split-per-abi
-      - run: |
-          flutter build ios --no-codesign
-          cd build/ios/iphoneos
-          mkdir Payload
-          cd Payload
-          ln -s ../Runner.app
-          cd ..
-          zip -r app.ipa Payload
-      - name: Push to Releases
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/apk/release/*,build/ios/iphoneos/app.ipa"
-          tag: v1.0.${{ github.run_number }}
-          token: ${{ secrets.P_TOKEN }}
+
+      # Step 4: Create .env files if they don't exist
+      - name: Create .env files if they don't exist
+        run: |
+          if [ ! -f .env ]; then
+            echo "${{ secrets.ENV }}" | base64 -d > .env || exit 1
+            echo "${{ secrets.ENV_STAGING }}" | base64 -d > .env.staging || exit 1
+          else
+            echo "Environment files already exist, skipping creation"
+          fi
+
+      # Step 5: Create google-services.json file if it doesn't exist
+      - name: Create google-services.json file if it doesn't exist
+        run: |
+          echo "Navigating into android app module"
+          if cd android/app; then
+            if [ ! -f google-services.json ]; then
+              echo "${{ secrets.ANDROID_GOOGLE_SERVICE }}" | base64 -d > google-services.json || exit 1
+            else
+              echo "google-services.json file already exists, skipping creation"
+            fi
+            echo "Exiting android app module"
+            cd ../..
+          else
+            echo "Failed to navigate to android/app directory"
+            exit 1
+          fi
+
+      # Step 6: Create GoogleService-Info.plist file if it doesn't exist
+      - name: Create GoogleService-Info.plist file if it doesn't exist
+        run: |
+          echo "Navigating into android app module"
+          if cd ios/Runner; then
+            if [ ! -f GoogleService-Info.plist ]; then
+              echo "${{ secrets.IOS_GOOGLE_SERVICE }}" | base64 -d > GoogleService-Info.plist || exit 1
+            else
+              echo "GoogleService-Info.plist file already exists, skipping creation"
+            fi
+            echo "Exiting ios module"
+            cd ../..
+          else
+            echo "Failed to navigate to ios/Runner directory"
+            exit 1
+          fi
+
+      # Step 7: Flutter Clean
+      - name: Flutter Clean
+        run: flutter clean
+
+      # Step 8: Flutter Pub Get
+      - name: Flutter Pub Get
+        run: flutter pub get
+
+      # # Step 9: Build Flutter App
+      # - name: Generate Generated Files
+      #   run: dart run build_runner build --delete-conflicting-outputs
+
+      # Step 10: Build Flutter App
+      - name: Deploy IOS using fastlane
+        run: |
+          cd ios
+          fastlane beta
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          GIT_URL: ${{ secrets.GIT_URL }}
+          FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+
+      # Step 10: Build Android APK
+      # - name: Build Android APK
+      #   run: flutter build apk --release --split-per-abi
+
+      # Step 11: Build iOS IPA
+      # - name: Build iOS IPA
+      #   run: |
+      #     flutter build ios --no-codesign
+      #     if cd build/ios/iphoneos; then
+      #       # Check if the `Payload` directory exists
+      #       if [ ! -d "Payload" ]; then
+      #           # If it doesn't exist, create it
+      #           mkdir Payload || exit 1
+      #       fi
+      #           # Create the .ipa file
+      #           zip -r app.ipa Payload
+      #     else
+      #       echo "Failed to navigate to build/ios/iphoneos directory"
+      #       exit 1
+      #     fi
+
+      # Step 12: Push to Releases
+      # - name: Push to Releases
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: "build/app/outputs/apk/release/*,build/ios/iphoneos/app.ipa"
+      #     tag: v1.0.${{ github.run_number }}
+      #     token: ${{ secrets.P_TOKEN }}
