@@ -22,7 +22,11 @@ platform :ios do
     match(type: "appstore", readonly: false)
     increment_build_number(xcodeproj: "Runner.xcodeproj")
     update_code_signing_settings(use_automatic_signing: true)
-    build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
+    # build_app(workspace: "Runner.xcworkspace", scheme: "Runner",
+    #   skip_build_archive: true,
+    #   archive_path: "../build/ios/archive/Runner.xcarchive",
+    # )
+    build_app
     upload_to_testflight(skip_waiting_for_build_processing: true)
   end
 end
